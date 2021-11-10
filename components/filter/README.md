@@ -10,22 +10,11 @@ Filter with multiple dimensions:
 <!-- docs: demo align:start autoSize:false size:large -->
 ```html
 <script type="module">
+  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-        var filter = document.querySelector('d2l-filter');
-        filter.opened = true;
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-filter>
     <d2l-filter-dimension-set key="course" text="Course">
         <d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
@@ -53,22 +42,11 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 <!-- docs: demo live name:d2l-filter autoSize:false align:start size:large -->
 ```html
 <script type="module">
+  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-        var filter = document.querySelector('d2l-filter');
-        filter.opened = true;
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-filter>
     <d2l-filter-dimension-set key="course" text="Course">
         <d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
@@ -185,22 +163,11 @@ Set dimension on mobile:
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoSize:false size:large -->
 ```html
 <script type="module">
+  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-        var filter = document.querySelector('d2l-filter');
-        filter.opened = true;
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
     <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>

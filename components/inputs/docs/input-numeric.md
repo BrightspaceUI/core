@@ -29,8 +29,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-number.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var input = document.querySelector('#number');
     input.addEventListener('change', (e) => {
@@ -112,8 +111,7 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-percent.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var input = document.querySelector('#percent');
     input.addEventListener('change', (e) => {
