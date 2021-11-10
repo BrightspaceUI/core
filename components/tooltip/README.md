@@ -11,8 +11,7 @@ Tooltips display additional information when users focus or hover on a point of 
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     setTimeout(function() {
       var tooltip = document.querySelector('#tooltip');

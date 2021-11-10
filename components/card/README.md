@@ -55,8 +55,8 @@ Cards are composed of 3 sections. Each card will have a content section but is n
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
 <style>
@@ -115,8 +115,8 @@ The `d2l-card` element is a container that provides specific layout using severa
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
 <d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
@@ -228,8 +228,8 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
 <d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">

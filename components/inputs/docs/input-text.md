@@ -57,8 +57,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var input = document.querySelector('#text');
     input.addEventListener('change', (e) => {
@@ -181,8 +180,7 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-textarea.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var input = document.querySelector('#textarea');
     input.addEventListener('change', (e) => {

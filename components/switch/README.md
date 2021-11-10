@@ -2,7 +2,7 @@
 
 A switch is used to toggle between two states, on and off, just like a light switch.
 
-<!-- docs: demo name:d2l-switch -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
@@ -36,7 +36,6 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
-  import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
 <d2l-switch text="My Switch"></d2l-switch>
 ```
@@ -77,7 +76,6 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
-
 <d2l-switch-visibility></d2l-switch-visibility>
 ```
 
