@@ -111,6 +111,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
 				left: 0;
 				right: calc(-50% + 21px) !important;
+			}
 		`];
 	}
 

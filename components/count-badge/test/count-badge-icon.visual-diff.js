@@ -20,9 +20,9 @@ describe('d2l-count-badge-icon', () => {
 			const rect = elem.getBoundingClientRect();
 			return {
 				x: rect.x - 30,
-				y: rect.y,
+				y: rect.y - 10,
 				width: rect.width + 120,
-				height: rect.height + 50
+				height: rect.height + 60
 			};
 		});
 	}
