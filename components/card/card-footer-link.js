@@ -94,8 +94,8 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				display: inline-block;
 				height: 100%;
 				outline: none;
-				width: 100%;
 				padding-top: 7px;
+				width: 100%;
 			}
 			d2l-count-badge-icon {
 				text-align: initial;

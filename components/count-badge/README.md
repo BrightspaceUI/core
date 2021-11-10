@@ -46,7 +46,7 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 | `number` | Number, required | The number to display on the badge.  Must be a positive integer. |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
-| `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
+| `max-digits`, default: `2` when `type="notification"`, `5` when `type="count"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and five for `"count"` type. Must be between 1-5.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
 | `text`, required | String | Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
@@ -88,7 +88,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 | `icon` | String | Required: [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
-| `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
+| `max-digits`, default: `2` when `type="notification"`, `5` when `type="count"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and five for `"count"` type. Must be between 1-5.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
 | `text`  | String | REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
@@ -124,7 +124,7 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 | `number` | Number, required | The number to display on the badge.  Must be a positive integer. |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
-| `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
+| `max-digits`, default: `2` when `type="notification"`, `5` when `type="count"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and five for `"count"` type. Must be between 1-5.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
 | `text`, required | String | Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
@@ -166,7 +166,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 | `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
-| `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
+| `max-digits`, default: `2` when `type="notification"`, `5` when `type="count"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and five for `"count"` type. Must be between 1-5.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
 | `text`, required | String | Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
