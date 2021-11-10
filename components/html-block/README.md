@@ -103,7 +103,7 @@ Examples are provided to display how user-authored math can be embedded within y
 </d2l-html-block>
 ```
 
-**LaTeX:** Rendering LaTeX requires the `us125413-mathjax-render-latex` feature flag to be enabled. For demo purposes we are modifying `mathjaxContext` directly.
+**LaTeX:** Rendering LaTeX requires the `us125413-mathjax-render-latex` feature flag to be enabled.
 
 <!-- docs: demo code -->
 ```html
@@ -120,13 +120,14 @@ Examples are provided to display how user-authored math can be embedded within y
       else return defaultValue;
     }
   };
-
-  /** ignore below */
-  document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: true });
+  <!-- docs: start hidden content -->
+  document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: true });<!-- docs: end hidden content -->
 </script>
 <d2l-html-block>
   <template>
-    <div>$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</div>
+    <div class="latex-container">
+      $$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+    </div>
   </template>
 </d2l-html-block>
 ```
