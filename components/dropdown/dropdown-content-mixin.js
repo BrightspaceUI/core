@@ -325,9 +325,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				if (isNaN(newVerticalOffset)) {
 					newVerticalOffset = 20;
 				}
-				// for IE11
-				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${newVerticalOffset}px` });
-				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${newVerticalOffset}px`);
+				this.style.setProperty('--d2l-dropdown-verticaloffset', `${newVerticalOffset}px`);
 			}
 		});
 	}
