@@ -38,7 +38,7 @@ The `d2l-button` element can be used just like the native button element, but al
 ![Button](./screenshots/button.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name: d2l-button -->
+<!-- docs: demo live name:d2l-button -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
