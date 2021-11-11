@@ -187,6 +187,10 @@ describe('d2l-filter', () => {
 				it(type, async function() {
 					const selector = `#${type}`;
 					await open(page, selector);
+					page.waitForTimeout(50);
+					await page.$eval (selector, async(elem)  => {
+						requestAnimationFrame(async() => await elem.updateComplete);
+					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 			});
@@ -309,6 +313,10 @@ describe('d2l-filter', () => {
 				it(type, async function() {
 					const selector = `#${type}`;
 					await open(page, selector);
+					page.waitForTimeout(50);
+					await page.$eval (selector, async(elem)  => {
+						requestAnimationFrame(async() => await elem.updateComplete);
+					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 			});
