@@ -43,8 +43,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var input = document.querySelector('#checkbox');
     input.addEventListener('change', (e) => {

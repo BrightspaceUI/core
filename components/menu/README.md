@@ -77,8 +77,7 @@ The `d2l-menu item` component is used with JS handlers and can be wired-up to th
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     document.querySelector('#menu').addEventListener('d2l-menu-item-select', (e) => {
       console.log('item selected:', e.target);
@@ -170,8 +169,7 @@ The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item-checkbox.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     document.querySelector('#menu-checkbox').addEventListener('d2l-menu-item-change', (e) => {
       console.log('item selection changed:', e.target);
@@ -221,8 +219,7 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item-radio.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     document.querySelector('#menu-radio').addEventListener('d2l-menu-item-change', (e) => {
       console.log('item selection changed:', e.target);

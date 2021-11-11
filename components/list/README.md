@@ -5,8 +5,8 @@ A list displays a collection of objects of the same type. A list is primarily us
 <!-- docs: demo autoSize:false size:large -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
