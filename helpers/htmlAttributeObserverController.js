@@ -10,7 +10,7 @@ export class HtmlAttributeObserverController {
 
 	constructor(host, ...attributes) {
 		if (attributes.length === 0) throw new Error(
-			`Can't construct controller; must supply at least one observed attribute.`
+			'Can\'t construct controller; must supply at least one observed attribute.'
 		);
 
 		this._host = host;
@@ -19,7 +19,7 @@ export class HtmlAttributeObserverController {
 	}
 
 	hostConnected() {
-		this._setAttributes(this._attributes);
+		this._updateAttributeValues(this._attributes);
 		if (controllerCallbacks.size === 0) contextObserver.observe(document.documentElement, { attributes: true });
 		controllerCallbacks.set(this, this._handleContextChange.bind(this));
 	}
@@ -31,16 +31,16 @@ export class HtmlAttributeObserverController {
 	_handleContextChange(attributeNames) {
 		const attributes = attributeNames.filter(attr => this._attributes.includes(attr));
 		if (attributes.length === 0) return;
-		this._setAttributes(attributes);
+		this._updateAttributeValues(attributes);
 		this._host.requestUpdate();
 	}
 
-	_setAttributes(attributes) {
-		attributes.forEach(attribute => {
+	_updateAttributeValues(names) {
+		names.forEach(name => {
 			this.values.set(
-				attribute,
-				document.documentElement.hasAttribute(attribute)
-					? document.documentElement.getAttribute(attribute)
+				name,
+				document.documentElement.hasAttribute(name)
+					? document.documentElement.getAttribute(name)
 					: undefined
 			);
 		});

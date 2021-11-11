@@ -8,7 +8,7 @@ export class HtmlBlockMathRenderer {
 
 	async render(elem, contextValue) {
 		if (contextValue === undefined) return elem;
-		
+
 		const context = JSON.parse(contextValue) || {};
 		const isLatexSupported = context.renderLatex;
 
@@ -29,27 +29,6 @@ export class HtmlBlockMathRenderer {
 		return temp.shadowRoot.firstChild;
 	}
 
-}
-
-export async function htmlBlockMathRenderer(elem) {
-	const context = JSON.parse(document.documentElement.getAttribute('data-mathjax-context')) || {};
-	const isLatexSupported = context.renderLatex;
-
-	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
-
-	const mathJaxConfig = {
-		renderLatex: isLatexSupported,
-		outputScale: context.outputScale || 1
-	};
-
-	await loadMathJax(mathJaxConfig);
-
-	const temp = document.createElement('div');
-	temp.attachShadow({ mode: 'open' });
-	temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
-
-	window.MathJax.typesetShadow(temp.shadowRoot);
-	return temp.shadowRoot.firstChild;
 }
 
 export function loadMathJax(mathJaxConfig) {

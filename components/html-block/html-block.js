@@ -141,7 +141,7 @@ class HtmlBlock extends LitElement {
 		super();
 		this._contextObserverController = new HtmlAttributeObserverController(
 			this,
-			...HtmlBlock._renderers.reduce((renderers, currentRenderer) => {
+			...getRenderers().reduce((renderers, currentRenderer) => {
 				if (currentRenderer.contextAttribute) renderers.push(currentRenderer.contextAttribute);
 				return renderers;
 			}, [])
@@ -151,7 +151,7 @@ class HtmlBlock extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		this._contextObserverController.hostConnected();
-		
+
 		if (!this._templateObserver) return;
 
 		const template = this.querySelector('template');
@@ -180,7 +180,7 @@ class HtmlBlock extends LitElement {
 
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		this._context = {...this._contextObserverController.values};
+		this._context = { ...this._contextObserverController.values };
 	}
 
 	updated() {
@@ -189,10 +189,6 @@ class HtmlBlock extends LitElement {
 			const template = this.querySelector('template');
 			this._stamp(template);
 		}
-	}
-
-	static get _renderers() {
-		return getRenderers();
 	}
 
 	_contextObjectHasChanged() {
@@ -212,7 +208,7 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				for (const renderer of HtmlBlock._renderers) {
+				for (const renderer of getRenderers()) {
 					if (renderer.contextAttribute) {
 						temp = await renderer.render(temp, this._contextObserverController.values.get(renderer.contextAttribute));
 					} else {
