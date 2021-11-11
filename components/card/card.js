@@ -82,7 +82,6 @@ class Card extends RtlMixin(LitElement) {
 				box-sizing: border-box;
 				display: inline-block;
 				position: relative;
-				transition: transform 300ms ease-out 50ms, box-shadow 0.2s;
 				z-index: 0;
 			}
 			.d2l-card-container {
@@ -185,10 +184,6 @@ class Card extends RtlMixin(LitElement) {
 				border: none;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
 			}
-			:host(:hover),
-			:host([subtle]:hover) {
-				transform: translateY(-4px);
-			}
 			:host(:hover) {
 				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
 			}
@@ -203,7 +198,6 @@ class Card extends RtlMixin(LitElement) {
 			:host([subtle][_active]:hover) {
 				border-color: transparent;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				transform: translateY(-4px);
 			}
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
@@ -225,16 +219,16 @@ class Card extends RtlMixin(LitElement) {
 				box-shadow: none;
 				transform: none;
 			}
-			@media (prefers-reduced-motion: reduce) {
+			@media (prefers-reduced-motion: no-preference) {
 				:host {
-					transition: none;
+					transition: transform 300ms ease-out 50ms, box-shadow 0.2s;
 				}
 
 				:host(:hover),
 				:host([subtle]:hover),
 				:host([_active]:hover),
 				:host([subtle][_active]:hover) {
-					transform: none;
+					transform: translateY(-4px);
 				}
 			}
 		`];
