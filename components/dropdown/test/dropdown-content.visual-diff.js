@@ -88,6 +88,9 @@ describe('d2l-dropdown-content', () => {
 			const selector = `#${testName}`;
 			await open(page, selector);
 			await page.waitForTimeout(50);
+			await page.$eval (selector, async(elem)  => {
+				requestAnimationFrame(async() => await elem.updateComplete);
+			});
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});
