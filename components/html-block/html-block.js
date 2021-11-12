@@ -142,7 +142,7 @@ class HtmlBlock extends LitElement {
 		this._contextObserverController = new HtmlAttributeObserverController(
 			this,
 			...getRenderers().reduce((renderers, currentRenderer) => {
-				if (currentRenderer.contextAttribute) renderers.push(currentRenderer.contextAttribute);
+				if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => renderers.push(attr));
 				return renderers;
 			}, [])
 		);
@@ -209,8 +209,10 @@ class HtmlBlock extends LitElement {
 				temp.appendChild(fragment);
 
 				for (const renderer of getRenderers()) {
-					if (renderer.contextAttribute) {
-						temp = await renderer.render(temp, this._contextObserverController.values.get(renderer.contextAttribute));
+					if (renderer.contextAttributes) {
+						const contextValues = new Map();
+						renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
+						temp = await renderer.render(temp, contextValues);
 					} else {
 						temp = await renderer.render(temp);
 					}

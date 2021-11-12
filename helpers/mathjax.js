@@ -1,15 +1,17 @@
+const mathjaxContextAttribute = 'data-mathjax-context';
+
 let mathJaxLoaded;
 
 export class HtmlBlockMathRenderer {
 
-	get contextAttribute() {
-		return 'data-mathjax-context';
+	get contextAttributes() {
+		return [mathjaxContextAttribute];
 	}
 
-	async render(elem, contextValue) {
-		if (contextValue === undefined) return elem;
+	async render(elem, contextValues) {
+		if (!contextValues || !contextValues.has(mathjaxContextAttribute)) return elem;
 
-		const context = JSON.parse(contextValue) || {};
+		const context = JSON.parse(contextValues.get(mathjaxContextAttribute)) || {};
 		const isLatexSupported = context.renderLatex;
 
 		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
