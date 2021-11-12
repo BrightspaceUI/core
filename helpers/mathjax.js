@@ -9,9 +9,11 @@ export class HtmlBlockMathRenderer {
 	}
 
 	async render(elem, contextValues) {
-		if (!contextValues || !contextValues.has(mathjaxContextAttribute)) return elem;
+		if (!contextValues) return elem;
+		const contextVal = contextValues.get(mathjaxContextAttribute);
+		if (contextVal === undefined) return elem;
 
-		const context = JSON.parse(contextValues.get(mathjaxContextAttribute)) || {};
+		const context = JSON.parse(contextVal) || {};
 		const isLatexSupported = context.renderLatex;
 
 		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
