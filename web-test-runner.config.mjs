@@ -1,5 +1,4 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
-import { chromeLauncher } from '@web/test-runner';
 
 function getPattern(type) {
 	return `+(components|directives|helpers|mixins|templates)/**/*.${type}.js`;
@@ -7,7 +6,6 @@ function getPattern(type) {
 
 export default {
 	files: getPattern('test'),
-	browsers: [chromeLauncher({ launchOptions: { args: ['--no-sandbox'] } })],
 	nodeResolve: true,
 	groups: [
 		{
