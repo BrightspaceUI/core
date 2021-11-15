@@ -3,12 +3,12 @@ import '../calendar/calendar.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../icons/icon.js';
-import '../overflow-group/overflow-group.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { classMap } from 'lit-html/directives/class-map';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -17,7 +17,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { classMap } from 'lit-html/directives/class-map';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
@@ -235,7 +234,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const nowButton = this.nowButton ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.setToNow`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
+		const nowButton = this.nowButton ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
@@ -265,11 +264,9 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 					min-value="${ifDefined(this.minValue)}"
 					selected-value="${ifDefined(this._shownValue)}">
 					<div class="${classMap(buttonsSlotClasses)}">
-					<d2l-overflow-group min-to-show="2">
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 						${nowButton}
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 						${clearButton}
-					</d2l-overflow-group>
 					</div>
 				</d2l-calendar>
 			</d2l-dropdown-content>` : null;
@@ -312,8 +309,8 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
 				<d2l-calendar selected-value="2018-09-08">
 					<div class="d2l-calendar-slot-buttons">
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}"></d2l-button-subtle>
 						${nowButton}
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}"></d2l-button-subtle>
 					</div>
 				</d2l-calendar>
 			</div>` : null}
