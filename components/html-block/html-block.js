@@ -139,18 +139,19 @@ class HtmlBlock extends LitElement {
 
 	constructor() {
 		super();
-		this._contextObserverController = new HtmlAttributeObserverController(
-			this,
-			...getRenderers().reduce((renderers, currentRenderer) => {
-				if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => renderers.push(attr));
-				return renderers;
-			}, [])
-		);
+
+		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
+			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
+			return attrs;
+		}, []);
+
+		if (rendererContextAttributes.length === 0) return;
+		this._contextObserverController = new HtmlAttributeObserverController(this, ...rendererContextAttributes);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._contextObserverController.hostConnected();
+		if (this._contextObserverController) this._contextObserverController.hostConnected();
 
 		if (!this._templateObserver) return;
 
@@ -160,7 +161,7 @@ class HtmlBlock extends LitElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._contextObserverController.hostDisconnected();
+		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
 		if (this._templateObserver) this._templateObserver.disconnect();
 	}
 
@@ -180,12 +181,12 @@ class HtmlBlock extends LitElement {
 
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		this._context = { ...this._contextObserverController.values };
+		this._context = this._contextObserverController ? { ...this._contextObserverController.values } : {};
 	}
 
 	updated() {
 		super.updated();
-		if (this._contextObjectHasChanged()) {
+		if (this._contextObserverController && this._contextObjectHasChanged()) {
 			const template = this.querySelector('template');
 			this._stamp(template);
 		}
@@ -209,7 +210,7 @@ class HtmlBlock extends LitElement {
 				temp.appendChild(fragment);
 
 				for (const renderer of getRenderers()) {
-					if (renderer.contextAttributes) {
+					if (this._contextObserverController && renderer.contextAttributes) {
 						const contextValues = new Map();
 						renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
 						temp = await renderer.render(temp, contextValues);
