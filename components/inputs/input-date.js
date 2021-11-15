@@ -3,6 +3,7 @@ import '../calendar/calendar.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../icons/icon.js';
+import '../overflow-group/overflow-group.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -16,6 +17,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { classMap } from 'lit-html/directives/class-map';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
@@ -61,6 +63,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 * Disables validation of max and min value. The min and max value will still be enforced but the component will not be put into an error state or show an error tooltip.
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
+			/**
+			 * @ignore
+			 * Optionally add a 'Now' button to be used in date-time pickers only.
+			 */
+			nowButton: { attribute: 'show-now', type: Boolean },
 			/**
 			 * Indicates if the calendar dropdown is open
 			 * @type {boolean}
@@ -129,6 +136,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 				margin-top: 0.3rem;
 				padding-top: 0.3rem;
 			}
+
+			.d2l-calendar-slot-buttons-overflow {
+				display: flex;
+				justify-content: center;
+			}
 		`];
 	}
 
@@ -140,6 +152,8 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.labelHidden = false;
 		/** @ignore */
 		this.noValidateMinMax = false;
+		/** @ignore */
+		this.nowButton = false;
 		this.opened = false;
 		this.required = false;
 		this.value = '';
@@ -221,12 +235,17 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
+		const nowButton = this.nowButton ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.setToNow`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
+		const buttonsSlotClasses = {
+			'd2l-calendar-slot-buttons': true,
+			'd2l-calendar-slot-buttons-overflow' : clearButton && nowButton
+		};
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
 				@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -245,9 +264,12 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					selected-value="${ifDefined(this._shownValue)}">
-					<div class="d2l-calendar-slot-buttons">
+					<div class="${classMap(buttonsSlotClasses)}">
+					<d2l-overflow-group min-to-show="2">
+						${nowButton}
 						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 						${clearButton}
+					</d2l-overflow-group>
 					</div>
 				</d2l-calendar>
 			</d2l-dropdown-content>` : null;
@@ -290,6 +312,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
 				<d2l-calendar selected-value="2018-09-08">
 					<div class="d2l-calendar-slot-buttons">
+						${nowButton}
 						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}"></d2l-button-subtle>
 					</div>
 				</d2l-calendar>
@@ -462,6 +485,15 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.opened = !this.opened;
 	}
 
+	async _handleSetToNow() {
+		const date = getToday();
+		await this._updateValueDispatchEvent(formatDateInISO(date), true);
+		if (this._dropdown) {
+			this._dropdown.close();
+		}
+		this.focus();
+	}
+
 	async _handleSetToToday() {
 		const date = getToday();
 		await this._updateValueDispatchEvent(formatDateInISO(date));
@@ -503,10 +535,13 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : (this.emptyText ? this.emptyText : '');
 	}
 
-	async _updateValueDispatchEvent(dateInISO) {
-		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
+	async _updateValueDispatchEvent(dateInISO, setToNow) {
+		// prevent validation from happening multiple times for same change,
+		// except for now button that affects time
+		if (!setToNow && dateInISO === this._shownValue) return;
 		this._shownValue = dateInISO;
 		this.value = dateInISO;
+		this.setToNow = setToNow;
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

@@ -24,6 +24,8 @@ const INTERVALS = new Map();
 
 export function getIntervalNumber(size) {
 	switch (size) {
+		case 'one':
+			return 1;
 		case 'five':
 			return 5;
 		case 'ten':
@@ -47,6 +49,12 @@ export function getDefaultTime(time, enforceTimeIntervals, timeInterval) {
 			return END_OF_DAY;
 		case 'startOfDay':
 			return enforceTimeIntervals ? MIDNIGHT : START_OF_DAY;
+		case 'now': {
+			const today = getToday();
+			const date = new Date(today.year, today.month - 1, today.date, today.hours, today.minutes, 0);
+			const timeAtInterval =  getTimeAtInterval('one', date);
+			return timeAtInterval;
+		}
 		case undefined: {
 			const today = getToday();
 			const date = new Date(today.year, today.month - 1, today.date, today.hours, today.minutes, 0);

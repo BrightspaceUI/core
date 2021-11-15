@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "Rhaid i'r dyddiad fod ar ôl {minDate}",
 	"components.input-date.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
 	"components.input-date.openInstructions": "Defnyddio fformat dyddiad {format}. Pwyswch saeth i lawr neu Enter i gael mynediad at galendr bach.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "Gosod i Heddiw",
 	"components.input-number.hintInteger": "Mae'r maes hwn yn derbyn gwerthoedd cyfanrif yn unig (dim degolion)",
 	"components.input-number.hintDecimalDuplicate": "Mae degol eisoes yn y nifer hwn",

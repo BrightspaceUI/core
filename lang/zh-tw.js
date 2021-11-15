@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "日期必須晚於 {minDate}",
 	"components.input-date.errorOutsideRange": "日期必須介於 {minDate} 與 {maxDate} 之間",
 	"components.input-date.openInstructions": "使用日期格式 {format}。按向下箭頭，或按下「Enter」以存取迷你行事曆。",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "設為今天",
 	"components.input-number.hintInteger": "此欄位僅接受整數值 (無小數位數)",
 	"components.input-number.hintDecimalDuplicate": "這個數字已經有一個小數位數",

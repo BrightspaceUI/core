@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "日付は {minDate} より後にする必要があります",
 	"components.input-date.errorOutsideRange": "日付は {minDate} から {maxDate} の間にする必要があります",
 	"components.input-date.openInstructions": "日付形式 {format} を使用します。ミニカレンダーにアクセスするには下矢印を使うか Enter を押します。",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "今日に設定",
 	"components.input-number.hintInteger": "このフィールドには整数値のみ入力できます（小数不可）。",
 	"components.input-number.hintDecimalDuplicate": "この数値にはすでに小数があります",

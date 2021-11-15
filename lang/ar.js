@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "يجب أن يكون التاريخ بعد {minDate}",
 	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "تعيين إلى اليوم",
 	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
 	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري في هذا الرقم",

@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "날짜는 {minDate} 이후여야 합니다.",
 	"components.input-date.errorOutsideRange": "날짜는 {minDate}와 {maxDate} 사이여야 합니다.",
 	"components.input-date.openInstructions": "{format} 날짜 형식을 사용하십시오. 미니 달력에 접근하려면 아래쪽 화살표를 누르거나 Enter 키를 누르십시오.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "오늘로 설정",
 	"components.input-number.hintInteger": "이 필드는 정수 값만 허용합니다(소수점 없음)",
 	"components.input-number.hintDecimalDuplicate": "이 숫자에 이미 소수점이 있습니다",

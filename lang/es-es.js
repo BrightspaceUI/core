@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "La fecha debe ser posterior al {minDate}",
 	"components.input-date.errorOutsideRange": "La fecha debe estar entre el {minDate} y el {maxDate}",
 	"components.input-date.openInstructions": "Usar formato de fecha {format}. Use la fecha hacia abajo o pulse Intro para acceder al minicalendario.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "Establezca la fecha en Hoy",
 	"components.input-number.hintInteger": "Este campo sólo acepta valores enteros (sin decimales)",
 	"components.input-number.hintDecimalDuplicate": "Ya hay un decimal en este número",

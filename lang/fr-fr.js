@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
 	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utilisez la flèche vers le bas ou appuyez sur Entrée pour accéder au mini-calendrier.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "Défini sur Aujourd'hui",
 	"components.input-number.hintInteger": "Ce champ accepte uniquement les valeurs entières (pas de décimales)",
 	"components.input-number.hintDecimalDuplicate": "Il existe déjà une décimale dans ce nombre",

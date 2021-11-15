@@ -50,6 +50,7 @@ export default {
 	"components.input-date.errorMinDateOnly": "A data precisa ser posterior a {minDate}",
 	"components.input-date.errorOutsideRange": "A data precisa estar entre {minDate} e {maxDate}",
 	"components.input-date.openInstructions": "Adote o formato de data {format}. Use a tecla de seta para baixo ou pressione Enter para acessar o minicalendário.",
+	"components.input-date.setToNow": "Set to Now",
 	"components.input-date.setToToday": "Definir como Hoje",
 	"components.input-number.hintInteger": "Este campo aceita apenas valores inteiros (não decimais)",
 	"components.input-number.hintDecimalDuplicate": "Já existe um decimal neste número",
