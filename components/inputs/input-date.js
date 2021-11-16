@@ -8,7 +8,6 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
-import { classMap } from 'lit-html/directives/class-map';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -66,7 +65,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 * @ignore
 			 * Optionally add a 'Now' button to be used in date-time pickers only.
 			 */
-			nowButton: { attribute: 'show-now', type: Boolean },
+			nowButton: { attribute: 'now-button', type: Boolean },
 			/**
 			 * Indicates if the calendar dropdown is open
 			 * @type {boolean}
@@ -301,7 +300,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 				<d2l-calendar selected-value="2018-09-08">
 					<div class="d2l-calendar-slot-buttons">
 						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}"></d2l-button-subtle>
-						${nowButton}
 					</div>
 				</d2l-calendar>
 			</div>` : null}
@@ -474,17 +472,12 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 	}
 
 	async _handleSetToNow() {
-		const date = getToday();
-		await this._updateValueDispatchEvent(formatDateInISO(date), true);
-		if (this._dropdown) {
-			this._dropdown.close();
-		}
-		this.focus();
+		await this._handleSetToToday(undefined, true);
 	}
 
-	async _handleSetToToday() {
+	async _handleSetToToday(_, setToNow) {
 		const date = getToday();
-		await this._updateValueDispatchEvent(formatDateInISO(date));
+		await this._updateValueDispatchEvent(formatDateInISO(date), setToNow);
 		if (this._dropdown) {
 			this._dropdown.close();
 		}

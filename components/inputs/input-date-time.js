@@ -243,9 +243,9 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 				?skeleton="${this.skeleton}">
 				<div class="d2l-input-date-time-container">
 					<d2l-input-date 
-						show-now
 						?novalidate="${this.noValidate}"
 						novalidateminmax
+						now-button
 						@change="${this._handleDateChange}"
 						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
@@ -308,8 +308,9 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			this.value = '';
 		} else {
 			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
-			let time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
+			let time;
 			if (e.target.setToNow) time = _getFormattedDefaultTime('now');
+			else time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
 			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();
