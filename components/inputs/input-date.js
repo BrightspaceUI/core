@@ -131,14 +131,9 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			.d2l-calendar-slot-buttons {
 				border-top: 1px solid var(--d2l-color-gypsum);
 				display: flex;
-				justify-content: flex-end;
+				justify-content: center;
 				margin-top: 0.3rem;
 				padding-top: 0.3rem;
-			}
-
-			.d2l-calendar-slot-buttons-overflow {
-				display: flex;
-				justify-content: center;
 			}
 		`];
 	}
@@ -241,10 +236,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
-		const buttonsSlotClasses = {
-			'd2l-calendar-slot-buttons': true,
-			'd2l-calendar-slot-buttons-overflow' : clearButton && nowButton
-		};
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
 				@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -263,7 +254,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					selected-value="${ifDefined(this._shownValue)}">
-					<div class="${classMap(buttonsSlotClasses)}">
+					<div class="d2l-calendar-slot-buttons">
 						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 						${nowButton}
 						${clearButton}
