@@ -9,10 +9,10 @@ const valueFixture = '<d2l-input-date-time label="label text" value="2019-03-02T
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
 const minMaxLocalizedFixture = '<d2l-input-date-time label="label text" localized min-value="2018-08-27T03:30:00" max-value="2018-09-30T17:30:00"></d2l-input-date-time>';
 
-function dispatchEvent(elem, eventType) {
-	const e = new Event(
+function dispatchEvent(elem, eventType, setToNow) {
+	const e = new CustomEvent(
 		eventType,
-		{ bubbles: true, composed: true }
+		{ bubbles: true, composed: true, detail: { setToNow: setToNow } }
 	);
 	elem.dispatchEvent(e);
 }

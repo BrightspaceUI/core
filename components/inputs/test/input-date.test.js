@@ -4,7 +4,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
-const basicFixture = '<d2l-input-date now-button label="label text"></d2l-input-date>';
+const basicFixture = '<d2l-input-date has-now label="label text"></d2l-input-date>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
