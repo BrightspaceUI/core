@@ -3,9 +3,8 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { provideInstance } from '../../../mixins/provider-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
-provideInstance(document, 'html-block-renderers', [
-	async elem => {
-
+class TestRenderer {
+	async render(elem) {
 		const elemsToReplace = elem.querySelectorAll('[data-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
 
@@ -21,10 +20,11 @@ provideInstance(document, 'html-block-renderers', [
 		}, 0);
 
 		return elem;
+	}
+}
 
-	},
-	async elem => {
-
+class TestAsyncRenderer {
+	async render(elem) {
 		const elemsToReplace = elem.querySelectorAll('[data-async-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
 
@@ -47,8 +47,12 @@ provideInstance(document, 'html-block-renderers', [
 		}, 0);
 
 		return elem;
-
 	}
+}
+
+provideInstance(document, 'html-block-renderers', [
+	new TestRenderer(),
+	new TestAsyncRenderer()
 ]);
 
 describe('d2l-html-block', () => {
