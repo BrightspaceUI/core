@@ -242,7 +242,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
 				<div class="d2l-input-date-time-container">
-					<d2l-input-date 
+					<d2l-input-date
 						?novalidate="${this.noValidate}"
 						novalidateminmax
 						now-button

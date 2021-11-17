@@ -2,6 +2,7 @@ import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
 const valueFixture = '<d2l-input-date-time label="label text" value="2019-03-02T05:00:00.000Z"></d2l-input-date-time>';
@@ -288,6 +289,25 @@ describe('d2l-input-date-time', () => {
 			setTimeout(() => dispatchEvent(inputElem, 'change'));
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-02-02T05:01:00.000Z');
+		});
+
+		it('should fire "change" event when now button clicked in date-picker', async() => {
+			const dateTimeString = '2018-02-12T20:00:00';
+			const newToday = new Date(`${dateTimeString}Z`);
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			const elem = await fixture(basicFixture);
+			const dateInput = getChildElem(elem, 'd2l-input-date');
+			await elem.updateComplete;
+			dateInput.opened = true;
+			await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+			await elem.updateComplete;
+
+			const button = getChildElem(dateInput, 'd2l-button-subtle[text="Now"]');
+			setTimeout(() => button.click());
+
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal(`${dateTimeString}.000Z`);
+			clock.restore();
 		});
 
 		it('should fire "change" event when time value changes and there is a date', async() => {

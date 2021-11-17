@@ -4,7 +4,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
-const basicFixture = '<d2l-input-date label="label text"></d2l-input-date>';
+const basicFixture = '<d2l-input-date now-button label="label text"></d2l-input-date>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -147,14 +147,34 @@ describe('d2l-input-date', () => {
 			expect(elem.value).to.equal('2018-03-24');
 		});
 
-		it('should fire "change" event when "Set to Today" is clicked', async() => {
+		it('should fire "change" event when "Today" is clicked', async() => {
 			const newToday = new Date('2018-02-12T20:00:00Z');
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 
 			const elem = await fixture(basicFixture);
 			elem._dropdownFirstOpened = true;
 			await elem.updateComplete;
-			const button = getChildElem(elem, 'd2l-button-subtle[text="Set to Today"]');
+			const button = getChildElem(elem, 'd2l-button-subtle[text="Today"]');
+			setTimeout(() => button.click());
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2018-02-12');
+
+			clock.restore();
+		});
+
+		it('should fire "change" event when "Now" is clicked multiple times', async() => {
+			const newToday = new Date('2018-02-12T20:00:00Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
+			const button = getChildElem(elem, 'd2l-button-subtle[text="Now"]');
+			setTimeout(() => button.click());
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2018-02-12');
+
+			// change event should be fired even though the date did not change
 			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-02-12');
