@@ -62,11 +62,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
-			 * @ignore
-			 * Optionally add a 'Now' button to be used in date-time pickers only.
-			 */
-			nowButton: { attribute: 'now-button', type: Boolean },
-			/**
 			 * Indicates if the calendar dropdown is open
 			 * @type {boolean}
 			 */
@@ -76,6 +71,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 * Optionally add a 'Now' button to be used in date-time pickers only.
+			 */
+			setToNow: { attribute: 'has-now', type: Boolean },
 			/**
 			 * Value of the input
 			 * @type {string}
@@ -146,7 +146,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		/** @ignore */
 		this.noValidateMinMax = false;
 		/** @ignore */
-		this.nowButton = false;
+		this.setToNow = false;
 		this.opened = false;
 		this.required = false;
 		this.value = '';
@@ -228,7 +228,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const nowButton = this.nowButton ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
+		const nowButton = this.setToNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
@@ -522,10 +522,12 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		if (!setToNow && dateInISO === this._shownValue) return;
 		this._shownValue = dateInISO;
 		this.value = dateInISO;
-		this.setToNow = setToNow;
 		this.dispatchEvent(new CustomEvent(
-			'change',
-			{ bubbles: true, composed: false }
+			'change', {
+				bubbles: true,
+				composed: false,
+				detail: { setToNow: setToNow }
+			}
 		));
 	}
 
