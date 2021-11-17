@@ -341,18 +341,18 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-focusing': this._focusing,
 			'd2l-hovering': this._hovering,
+			'd2l-dragging-over': this._draggingOver
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
 			'd2l-hovering': this._hoveringPrimaryAction,
-			'd2l-focusing': this._focusingPrimaryAction,
+			'd2l-focusing': this._focusingPrimaryAction
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout
 					@focusin="${this._onFocusIn}"
@@ -361,6 +361,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					data-breakpoint="${this._breakpoint}"
 					data-separators="${ifDefined(this._separators)}"
 					?grid-active="${this.role === 'rowgroup'}">
+					${this._renderDropTarget()}
 					${this._renderDragHandle(this._renderOutsideControl)}
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`

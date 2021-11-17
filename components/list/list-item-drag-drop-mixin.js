@@ -1,13 +1,13 @@
 import { css, html } from 'lit-element/lit-element.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
 
-export const dropLocation = Object.freeze({
+export const moveLocations = Object.freeze({
 	above: 1,
 	below: 2,
 	first: 3,
@@ -17,7 +17,9 @@ export const dropLocation = Object.freeze({
 	void: 0
 });
 
-const dropTargetLeaveDelay = 1000; //ms
+export const dropLocation = moveLocations; // backwards compatibility
+
+const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
 const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
 
@@ -311,11 +313,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				display: grid;
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
-				height: 100%;
-				position: absolute;
-				top: 0;
-				width: 100%;
-				z-index: 100;
 			}
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
@@ -382,9 +379,28 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onDragEnd(e) {
 		const dragState = getDragState();
 		this.dragging = false;
-		if (dragState.shouldDrop(e.timeStamp)) {
+
+		if (!dragState.shouldDrop(e.timeStamp)) return;
+
+		const dragTargetList = findComposedAncestor(dragState.dragTarget, node => node.tagName === 'D2L-LIST');
+		const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
+
+		if (dragTargetList === dropTargetList) {
 			this._annoucePositionChange(dragState.dragTargetKey, dragState.dropTargetKey, dragState.dropLocation);
 		}
+
+		this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
+			detail: {
+				sourceItems: [ dragState.dragTarget ],
+				target: {
+					item: dragState.dropTarget,
+					location: dragState.dropLocation
+				}
+			},
+			bubbles: true,
+			composed: true
+		}));
+
 		clearDragState();
 	}
 
@@ -461,18 +477,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		dragState.setActiveDropTarget(this, dragState.dropLocation);
 	}
 
-	_onDropTargetBottomDrag(e) {
+	_onDropTargetBottomDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		const dragState = getDragState();
 		dragState.setActiveDropTarget(this, dropLocation.below);
 		this._inBottomArea = true;
-	}
-
-	_onDropTargetDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		const dragState = getDragState();
-		dragState.setActiveDropTarget(this, dropLocation.above);
-		this._inTopArea = true;
 	}
 
 	_onDropTargetLowerDragEnter(e) {
@@ -482,6 +491,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			dragState.setActiveDropTarget(this, dropLocation.above);
 			this._inBottomArea = false;
 		}
+	}
+
+	_onDropTargetTopDragEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		const dragState = getDragState();
+		dragState.setActiveDropTarget(this, dropLocation.above);
+		this._inTopArea = true;
 	}
 
 	_onDropTargetUpperDragEnter(e) {
@@ -504,9 +520,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
-		if (this === dragState.dragTarget) {
-			return;
-		}
+		if (this === dragState.dragTarget) return;
+		if (isComposedAncestor(dragState.dragTarget, this)) return;
+
 		dragState.addDropTarget(this);
 		this._draggingOver = true;
 		e.dataTransfer.dropEffect = 'move';
@@ -635,11 +651,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_renderDropTarget(templateMethod) {
 		templateMethod = templateMethod || (DropTarget => DropTarget);
 		return this.draggable && this._draggingOver ? templateMethod(html`
-			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
-				<div @dragenter="${this._onDropTargetDragEnter}"></div>
+			<div class="d2l-list-item-drag-drop-grid" slot="drop-target" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
+				<div @dragenter="${this._onDropTargetTopDragEnter}"></div>
 				<div @dragenter="${this._onDropTargetUpperDragEnter}"></div>
 				<div @dragenter="${this._onDropTargetLowerDragEnter}"></div>
-				<div @dragenter="${this._onDropTargetBottomDrag}"></div>
+				<div @dragenter="${this._onDropTargetBottomDragEnter}"></div>
 			</div>
 		`) : nothing;
 	}
