@@ -472,7 +472,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				|| isComposedAncestor(this.__getOpener(), activeElement)) {
 				return;
 			}
-
 			this.close();
 		}, 0);
 	}
@@ -1023,7 +1022,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 		/** Dispatched when user focus enters the dropdown content (trap-focus option only) */
-		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { detail:{ applyFocus: this.__applyFocus } }));
 	}
 
 	async _handleMobileResize() {
