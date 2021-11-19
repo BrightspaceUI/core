@@ -42,6 +42,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
+			 * @ignore
+			 * Optionally add a 'Now' button to be used in date-time pickers only.
+			 */
+			hasNow: { attribute: 'has-now', type: Boolean },
+			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
 			 */
@@ -71,11 +76,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 * Optionally add a 'Now' button to be used in date-time pickers only.
-			 */
-			setToNow: { attribute: 'has-now', type: Boolean },
 			/**
 			 * Value of the input
 			 * @type {string}
@@ -142,11 +142,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 
 		this.disabled = false;
 		this.emptyText = '';
+		/** @ignore */
+		this.hasNow = false;
 		this.labelHidden = false;
 		/** @ignore */
 		this.noValidateMinMax = false;
-		/** @ignore */
-		this.setToNow = false;
 		this.opened = false;
 		this.required = false;
 		this.value = '';
@@ -228,7 +228,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const nowButton = this.setToNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
+		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
