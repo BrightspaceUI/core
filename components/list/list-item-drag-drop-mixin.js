@@ -1,11 +1,12 @@
 import { css, html } from 'lit-element/lit-element.js';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
+import { SelectionInfo } from '../selection/selection-mixin.js';
 
 export const moveLocations = Object.freeze({
 	above: 1,
@@ -40,20 +41,16 @@ const isDragSupported = () => {
 };
 
 class DragState {
-	constructor(dragTarget) {
-		this._dragTarget = dragTarget;
+	constructor(dragTargets) {
+		this._dragTargets = dragTargets;
 		this._activeDropTarget = null;
 		this._dropTargets = new Map();
 		this._dropLocation = dropLocation.void;
 		this._time = 0;
 	}
 
-	get dragTarget() {
-		return this._dragTarget;
-	}
-
-	get dragTargetKey() {
-		return this._dragTarget && this._dragTarget.key;
+	get dragTargets() {
+		return this._dragTargets;
 	}
 
 	get dropLocation() {
@@ -119,9 +116,9 @@ class DragState {
 
 let dragState = null;
 
-function createDragState(target) {
+function createDragState(targets) {
 	clearDragState();
-	dragState = new DragState(target);
+	dragState = new DragState(targets ? targets : []);
 	return dragState;
 }
 
@@ -371,6 +368,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		});
 	}
 
+	_getRootList(node) {
+		let rootList;
+		while (node) {
+			if (node.tagName === 'D2L-LIST') rootList = node;
+			node = getComposedParent(node);
+		}
+		return rootList;
+	}
+
 	_onContextMenu(e) {
 		if (isDragSupported()) return;
 		e.preventDefault();
@@ -381,26 +387,31 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const dragState = getDragState();
 		this.dragging = false;
 
-		if (!dragState.shouldDrop(e.timeStamp)) return;
+		if (dragState.shouldDrop(e.timeStamp)) {
 
-		const dragTargetList = findComposedAncestor(dragState.dragTarget, node => node.tagName === 'D2L-LIST');
-		const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
+			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
+			const shouldDispatchPositionChange = !dragState.dragTargets.find(dragTarget => {
+				const dragTargetList = findComposedAncestor(dragTarget, node => node.tagName === 'D2L-LIST');
+				return dragTargetList !== dropTargetList;
+			});
 
-		if (dragTargetList === dropTargetList) {
-			this._annoucePositionChange(dragState.dragTargetKey, dragState.dropTargetKey, dragState.dropLocation);
+			if (shouldDispatchPositionChange && dragState.dragTargets.length === 1) {
+				this._annoucePositionChange(dragState.dragTargets[0].key, dragState.dropTargetKey, dragState.dropLocation);
+			}
+
+			this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
+				detail: {
+					sourceItems: dragState.dragTargets,
+					target: {
+						item: dragState.dropTarget,
+						location: dragState.dropLocation
+					}
+				},
+				bubbles: true,
+				composed: true
+			}));
+
 		}
-
-		this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
-			detail: {
-				sourceItems: [ dragState.dragTarget ],
-				target: {
-					item: dragState.dropTarget,
-					location: dragState.dropLocation
-				}
-			},
-			bubbles: true,
-			composed: true
-		}));
 
 		clearDragState();
 	}
@@ -450,7 +461,29 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setDragImage(nodeImage, 50, 50);
 		}
 
-		createDragState(this);
+		const rootList = this._getRootList(this);
+
+		// getSelectionInfo(false) is fast so we can quickly check the state
+		if (rootList.getSelectionInfo(false).state === SelectionInfo.states.none) {
+			createDragState([this]);
+		} else {
+
+			// get the seelcted items, but do not include selected items of selected items
+			const getDragTargets = list => {
+				let dragTargets = [];
+				list.getItems().forEach(item => {
+					if (item.selected || item === this) {
+						dragTargets.push(item);
+					} else if (item._selectionProvider) {
+						dragTargets = [...dragTargets, ...getDragTargets(item._selectionProvider)];
+					}
+				});
+				return dragTargets;
+			};
+			const dragTargets = getDragTargets(rootList);
+
+			createDragState(dragTargets);
+		}
 
 		setTimeout(() => {
 			this.dragging = true;
@@ -522,7 +555,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
 		if (this === dragState.dragTarget) return;
-		if (isComposedAncestor(dragState.dragTarget, this)) return;
+
+		// check if any of the drag targets are ancestors of the drop target
+		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
+			return isComposedAncestor(dragTarget, this);
+		});
+		if (invalidDropTarget) return;
 
 		dragState.addDropTarget(this);
 		this._draggingOver = true;

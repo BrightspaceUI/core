@@ -91,17 +91,25 @@ class List extends SelectionMixin(LitElement) {
 		`;
 	}
 
+	getItems() {
+		const slot = this.shadowRoot.querySelector('slot:not([name])');
+		if (!slot) return [];
+		return slot.assignedNodes({ flatten: true }).filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
+		});
+	}
+
 	getListItemCount() {
-		return this._getItems().length;
+		return this.getItems().length;
 	}
 
 	getListItemIndex(item) {
-		return this._getItems().indexOf(item);
+		return this.getItems().indexOf(item);
 	}
 
 	getSelectedListItems(includeNested) {
 		let selectedItems = [];
-		this._getItems().forEach(item => {
+		this.getItems().forEach(item => {
 			if (item.selected) selectedItems.push(item);
 			if (includeNested && item._selectionProvider) {
 				selectedItems = [...selectedItems, ...item._selectionProvider.getSelectedListItems(includeNested)];
@@ -116,21 +124,13 @@ class List extends SelectionMixin(LitElement) {
 
 		let keys = selectionInfo.keys;
 
-		this._getItems().forEach(item => {
+		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
 			}
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
-	}
-
-	_getItems() {
-		const slot = this.shadowRoot.querySelector('slot:not([name])');
-		if (!slot) return [];
-		return slot.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
-		});
 	}
 
 	_handleKeyDown(e) {
