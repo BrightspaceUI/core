@@ -12,85 +12,84 @@
 		<style>
 			/* ripping these off for now until we can get a local tabs menu to test this on. */
 			.vui-tabmenu {
-				border-bottom: 1px solid #ddd;
-				padding-left: 0;
+				border-bottom: 1px solid #dddddd;
+				list-style: none;
 				margin-bottom: 0;
 				margin-top: 0;
-				list-style: none;
+				padding-left: 0;
 			}
-			.vui-tabmenu:after,.vui-tabmenu:before {
-				display: table;
+			.vui-tabmenu::after, .vui-tabmenu::before {
 				content: " ";
+				display: table;
 			}
-			.vui-tabmenu:after {
+			.vui-tabmenu::after {
 				clear: both;
 			}
-			.vui-tabmenu>.vui-tabmenu-item {
+			.vui-tabmenu > .vui-tabmenu-item {
+				display: block;
 				float: left;
 				margin-bottom: -1px;
-				position: relative;
-				display: block;
-				text-align: center;
 				overflow: hidden;
-			}
-			.vui-tabmenu>.vui-tabmenu-item>a {
-				margin-right: 2px;
-				line-height: 1.428571429;
-				border: 1px solid transparent;
 				position: relative;
-				display: block;
-				padding: 10px 15px;
+				text-align: center;
+			}
+			.vui-tabmenu > .vui-tabmenu-item > a {
+				border: 1px solid transparent;
 				color: #a2a2a2;
-			}
-			.vui-tabmenu>.vui-tabmenu-item:last-child>a {
-				margin-right: 0px;
-			}
-			.vui-tabmenu>.vui-tabmenu-item>a:hover {
-				color: #666;
-			}
-			.vui-tabmenu>.vui-tabmenu-item-select>a{
-				color: #666;
-				cursor: default;
-				border: 1px solid #ddd;
-				border-bottom-color: transparent;
-				font-weight: bold;
-				background-color: #fafafa;
-				/*border-top: 4px solid #00617F;*/
-			}
-			.vui-tabmenu>.vui-tabmenu-item>a>.vui-tabmenu-item-blue {
 				display: block;
+				line-height: 1.428571429;
+				margin-right: 2px;
+				padding: 10px 15px;
+				position: relative;
+			}
+			.vui-tabmenu > .vui-tabmenu-item:last-child > a {
+				margin-right: 0;
+			}
+			.vui-tabmenu > .vui-tabmenu-item > a:hover {
+				color: #666666;
+			}
+			.vui-tabmenu > .vui-tabmenu-item-select > a {
+				background-color: #fafafa;
+				border: 1px solid #dddddd;
+				border-bottom-color: transparent;
+				color: #666666;
+				cursor: default;
+				font-weight: bold;
+			}
+			.vui-tabmenu > .vui-tabmenu-item > a > .vui-tabmenu-item-blue {
 				background-color: #bababa;
+				display: block;
 				height: 16px;
-				width: 1px;
 				position: absolute;
 				right: -3px;
 				top: 10px;
+				width: 1px;
 			}
-			.vui-tabmenu>.vui-tabmenu-item-select-prev>a>.vui-tabmenu-item-blue,
-			.vui-tabmenu>.vui-tabmenu-item:last-child>a>.vui-tabmenu-item-blue {
+			.vui-tabmenu > .vui-tabmenu-item-select-prev > a > .vui-tabmenu-item-blue,
+			.vui-tabmenu > .vui-tabmenu-item:last-child > a > .vui-tabmenu-item-blue {
 				display: none;
 			}
-			.vui-tabmenu>.vui-tabmenu-item-select:last-child>a>.vui-tabmenu-item-blue,
-			.vui-tabmenu>.vui-tabmenu-item-select>a>.vui-tabmenu-item-blue {
+			.vui-tabmenu > .vui-tabmenu-item-select:last-child > a > .vui-tabmenu-item-blue,
+			.vui-tabmenu > .vui-tabmenu-item-select > a > .vui-tabmenu-item-blue {
+				background-color: #00617f;
+				border: 1px solid #00617f;
 				display: block;
 				height: 2px;
-				width: 100%;
+				left: -1px;
 				position: absolute;
 				top: -1px;
-				background-color: #00617F;
-				left: -1px;
-				border: 1px solid #00617f;
+				width: 100%;
 			}
-			[dir="rtl"] .vui-tabmenu>.vui-tabmenu-item-select:last-child>a>.vui-tabmenu-item-blue,
-			[dir="rtl"] .vui-tabmenu>.vui-tabmenu-item-select>a>.vui-tabmenu-item-blue {
+			[dir="rtl"] .vui-tabmenu > .vui-tabmenu-item-select:last-child > a > .vui-tabmenu-item-blue,
+			[dir="rtl"] .vui-tabmenu > .vui-tabmenu-item-select > a > .vui-tabmenu-item-blue {
 				right: -1px;
 			}
 			.d2l-textblock {
-    			word-wrap: break-word;
-    			margin-bottom: 0;
+				margin-bottom: 0;
+				word-wrap: break-word;
 			}
 			.d2l-hidden {
-    			display: none !important;
+				display: none !important;
 			}
 		</style>
 	</head>
@@ -149,7 +148,7 @@
 
 				<div class="content">
 					<p>I love Tea!</p>
-					<div style="width: 100px; height: 300px;"></div>
+					<div style="height: 300px; width: 100px;"></div>
 				</div>
 				<d2l-floating-buttons id="wc-buttons-tea">
 					<d2l-button primary id="btn-make-more-tea">Brew more Tea!</d2l-button>
