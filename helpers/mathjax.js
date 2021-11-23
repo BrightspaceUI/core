@@ -1,24 +1,38 @@
+const mathjaxContextAttribute = 'data-mathjax-context';
+
 let mathJaxLoaded;
 
-export async function htmlBlockMathRenderer(elem) {
-	const context = JSON.parse(document.documentElement.getAttribute('data-mathjax-context')) || {};
-	const isLatexSupported = context.renderLatex;
+export class HtmlBlockMathRenderer {
 
-	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
+	get contextAttributes() {
+		return [mathjaxContextAttribute];
+	}
 
-	const mathJaxConfig = {
-		renderLatex: isLatexSupported,
-		outputScale: context.outputScale || 1
-	};
+	async render(elem, contextValues) {
+		if (!contextValues) return elem;
+		const contextVal = contextValues.get(mathjaxContextAttribute);
+		if (contextVal === undefined) return elem;
 
-	await loadMathJax(mathJaxConfig);
+		const context = JSON.parse(contextVal) || {};
+		const isLatexSupported = context.renderLatex;
 
-	const temp = document.createElement('div');
-	temp.attachShadow({ mode: 'open' });
-	temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
-	window.MathJax.typesetShadow(temp.shadowRoot);
-	return temp.shadowRoot.firstChild;
+		const mathJaxConfig = {
+			renderLatex: isLatexSupported,
+			outputScale: context.outputScale || 1
+		};
+
+		await loadMathJax(mathJaxConfig);
+
+		const temp = document.createElement('div');
+		temp.attachShadow({ mode: 'open' });
+		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+
+		window.MathJax.typesetShadow(temp.shadowRoot);
+		return temp.shadowRoot.firstChild;
+	}
+
 }
 
 export function loadMathJax(mathJaxConfig) {

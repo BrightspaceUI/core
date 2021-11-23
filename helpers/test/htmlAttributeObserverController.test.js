@@ -4,37 +4,51 @@ import { LitElement } from 'lit-element/lit-element.js';
 
 const testAttr = 'test-attr';
 const testAttrVal = 'test';
+const otherTestAttr = 'other-test-attr';
+const otherTestAttrVal = 'other-test';
 const controllerUpdateEvent = 'test-controller-update';
 
-const testHost = listeningAttribute => defineCE(
+const testHost = listeningAttributes => defineCE(
 	class extends LitElement {
 		constructor() {
 			super();
-			this._controller = new HtmlAttributeObserverController(this, listeningAttribute || testAttr);
+			const attributes = listeningAttributes || [testAttr];
+			this._controller = new HtmlAttributeObserverController(this, ...attributes);
 		}
 		connectedCallback() {
 			super.connectedCallback();
 			this._controller.hostConnected();
-			this._initialControllerVal = this._controller.value;
+			this._initialControllerVal = { ...this._controller.values };
 		}
 		disconnectedCallback() {
 			super.disconnectedCallback();
 			this._controller.hostDisconnected();
 		}
 		render() {
-			return html`<span id="val">${this._controller.value}</span>`;
+			const htmlSegments = [];
+			for (const [attr, val] of this._controller.values) {
+				htmlSegments.push(html`<div id="${attr}">${val}</div>`);
+			}
+			return html`${htmlSegments}`;
 		}
 		updated() {
 			super.updated();
-			if (this._controller.value !== this._initialControllerVal) {
-				this.dispatchEvent(new CustomEvent(controllerUpdateEvent));
+			if (this._hasChanged()) this.dispatchEvent(new CustomEvent(controllerUpdateEvent));
+		}
+		getControllerVal(attr) {
+			return this._controller.values.get(attr);
+		}
+		getRenderedVal(attr) {
+			const elem = this.shadowRoot.querySelector(`#${attr}`);
+			return (elem && elem.textContent) || undefined;
+		}
+		_hasChanged() {
+			if (this._initialControllerVal.size !== this._controller.values.size) return true;
+			for (const [attr, val] of this._initialControllerVal) {
+				if (!this._controller.values.has(attr)) return true;
+				if (this._controller.values.get(attr) !== val) return true;
 			}
-		}
-		getControllerVal() {
-			return this._controller.value;
-		}
-		getRenderedVal() {
-			return this.shadowRoot.querySelector('#val').textContent;
+			return false;
 		}
 	},
 );
@@ -58,14 +72,14 @@ describe('htmlAttributeObserverController', () => {
 		it('returns attribute value if attribute present', async() => {
 			setAttribute();
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
-			expect(elem.getControllerVal()).to.equal(testAttrVal);
-			expect(elem.getRenderedVal()).to.equal(testAttrVal);
+			expect(elem.getControllerVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getRenderedVal(testAttr)).to.equal(testAttrVal);
 		});
 
 		it('returns undefined if attribute not present', async() => {
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
-			expect(elem.getControllerVal()).to.equal(undefined);
-			expect(elem.getRenderedVal()).to.equal('');
+			expect(elem.getControllerVal(testAttr)).to.equal(undefined);
+			expect(elem.getRenderedVal(testAttr)).to.equal(undefined);
 		});
 
 	});
@@ -76,8 +90,8 @@ describe('htmlAttributeObserverController', () => {
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
 			setAttribute();
 			await oneEvent(elem, controllerUpdateEvent);
-			expect(elem.getControllerVal()).to.equal(testAttrVal);
-			expect(elem.getRenderedVal()).to.equal(testAttrVal);
+			expect(elem.getControllerVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getRenderedVal(testAttr)).to.equal(testAttrVal);
 		});
 
 		it('returns undefined if attribute is removed', async() => {
@@ -85,8 +99,8 @@ describe('htmlAttributeObserverController', () => {
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
 			removeAttribute();
 			await oneEvent(elem, controllerUpdateEvent);
-			expect(elem.getControllerVal()).to.equal(undefined);
-			expect(elem.getRenderedVal()).to.equal('');
+			expect(elem.getControllerVal(testAttr)).to.equal(undefined);
+			expect(elem.getRenderedVal(testAttr)).to.equal(undefined);
 		});
 
 		it('does not update if host is disconnected', async() => {
@@ -95,8 +109,8 @@ describe('htmlAttributeObserverController', () => {
 			await elem.updateComplete;
 
 			setAttribute();
-			expect(elem.getControllerVal()).to.equal(undefined);
-			expect(elem.getRenderedVal()).to.equal('');
+			expect(elem.getControllerVal(testAttr)).to.equal(undefined);
+			expect(elem.getRenderedVal(testAttr)).to.equal(undefined);
 		});
 
 	});
@@ -104,16 +118,53 @@ describe('htmlAttributeObserverController', () => {
 	describe('Multiple controllers', () => {
 
 		it('only updates the listening controller', async() => {
-			const otherAttribute = 'some-other-attribute';
+			const ignoredAttribute = 'some-other-attribute';
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
-			const otherElem = await fixture(`<${testHost(otherAttribute)}></${testHost(otherAttribute)}>`);
+			const otherElem = await fixture(`<${testHost([ignoredAttribute])}></${testHost([ignoredAttribute])}>`);
 			setAttribute();
 
 			await oneEvent(elem, controllerUpdateEvent);
-			expect(elem.getControllerVal()).to.equal(testAttrVal);
-			expect(elem.getRenderedVal()).to.equal(testAttrVal);
-			expect(otherElem.getControllerVal()).to.equal(undefined);
-			expect(otherElem.getRenderedVal()).to.equal('');
+			expect(elem.getControllerVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getRenderedVal(testAttr)).to.equal(testAttrVal);
+			expect(otherElem.getControllerVal(testAttr)).to.equal(undefined);
+			expect(otherElem.getRenderedVal(testAttr)).to.equal(undefined);
+		});
+
+	});
+
+	describe('Multiple attributes', () => {
+
+		const setOtherAttribute = () => {
+			document.documentElement.setAttribute(otherTestAttr, otherTestAttrVal);
+		};
+
+		const removeOtherAttribute = () => {
+			document.documentElement.removeAttribute(otherTestAttr);
+		};
+
+		beforeEach(() => {
+			removeOtherAttribute();
+		});
+
+		it('returns new value if any attribute is changed', async() => {
+			const elem = await fixture(`<${testHost([testAttr, otherTestAttr])}></${testHost([testAttr, otherTestAttr])}>`);
+			setAttribute();
+			await oneEvent(elem, controllerUpdateEvent);
+			expect(elem.getControllerVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getControllerVal(otherTestAttr)).to.equal(undefined);
+			expect(elem.getRenderedVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getRenderedVal(otherTestAttr)).to.equal(undefined);
+		});
+
+		it('returns new value if all attributes are changed', async() => {
+			setAttribute();
+			const elem = await fixture(`<${testHost([testAttr, otherTestAttr])}></${testHost([testAttr, otherTestAttr])}>`);
+			setOtherAttribute();
+			await oneEvent(elem, controllerUpdateEvent);
+			expect(elem.getControllerVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getControllerVal(otherTestAttr)).to.equal(otherTestAttrVal);
+			expect(elem.getRenderedVal(testAttr)).to.equal(testAttrVal);
+			expect(elem.getRenderedVal(otherTestAttr)).to.equal(otherTestAttrVal);
 		});
 
 	});
