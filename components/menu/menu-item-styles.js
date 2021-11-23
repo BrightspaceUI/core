@@ -18,6 +18,7 @@ export const menuItemStyles = css`
 
 	:host(:hover),
 	:host(.focus-visible),
+	:host(.focus-visible[first]),
 	:host([first]:hover) {
 		background-color: var(--d2l-menu-background-color-hover);
 		border-bottom: 1px solid var(--d2l-menu-border-color-hover);
