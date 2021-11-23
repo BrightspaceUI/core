@@ -13,7 +13,7 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
-		return dropdownContentStyles;
+		return [dropdownContentStyles];
 	}
 
 	constructor() {
@@ -112,9 +112,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		menu.resize();
 
-		if (this.__applyFocus) {
-			menu.focus();
-		}
+		menu.focus();
 	}
 
 	_onSelect(e) {
