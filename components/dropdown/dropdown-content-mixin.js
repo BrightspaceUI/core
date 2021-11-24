@@ -239,7 +239,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		this.noAutoClose = false;
 		this.noAutoFit = false;
-		this.noAutoFocus = false;
+		this.noAutoFocus = true;
 		this.noMobileCloseButton = false;
 		this.noPadding = false;
 		this.noPaddingFooter = false;

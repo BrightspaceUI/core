@@ -13,7 +13,7 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
-		return [dropdownContentStyles];
+		return dropdownContentStyles;
 	}
 
 	constructor() {
