@@ -455,11 +455,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		// Legacy-Edge doesn't support setDragImage. Experience is not degraded for Legacy-Edge by doing this fix.
-		if (e.dataTransfer.setDragImage) {
-			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
-			e.dataTransfer.setDragImage(nodeImage, 50, 50);
-		}
+		const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+		e.dataTransfer.setDragImage(nodeImage, 50, 50);
 
 		const rootList = this._getRootList(this);
 
