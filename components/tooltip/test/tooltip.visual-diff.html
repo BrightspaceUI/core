@@ -13,15 +13,15 @@
 	<style>
 
 		html, body {
+			box-sizing: border-box;
 			height: 100%;
 			margin: 0;
-			box-sizing: border-box;
 		}
 		.visual-diff {
+			height: 100%;
 			margin: 0;
 			position: relative;
 			width: 100%;
-			height: 100%;
 		}
 		.tooltip-target {
 			background-color: gray;
@@ -264,7 +264,7 @@
 		</div>
 
 		<div id="bounded">
-			<div style="width: 200px; overflow: hidden;">
+			<div style="overflow: hidden; width: 200px;">
 				<div class="tooltip-target top left" id="bounded-target"></div>
 				<d2l-tooltip for="bounded-target">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore

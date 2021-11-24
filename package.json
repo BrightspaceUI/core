@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.205.0",
+  "version": "1.207.3",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -14,7 +14,7 @@
     "lint": "npm run lint:eslint && npm run lint:style && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
-    "lint:style": "stylelint \"**/*.js\"",
+    "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --node-resolve --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
@@ -42,7 +42,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@brightspace-ui/stylelint-config": "^0.2",
+    "@brightspace-ui/stylelint-config": "^0.3",
     "@open-wc/testing": "^2",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
@@ -58,7 +58,7 @@
     "lit-analyzer": "^1",
     "node-sass": "^6",
     "sinon": "^12",
-    "stylelint": "^13"
+    "stylelint": "^14"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",

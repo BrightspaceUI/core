@@ -42,6 +42,11 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
+			 * @ignore
+			 * Optionally add a 'Now' button to be used in date-time pickers only.
+			 */
+			hasNow: { attribute: 'has-now', type: Boolean },
+			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
 			 */
@@ -125,7 +130,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			.d2l-calendar-slot-buttons {
 				border-top: 1px solid var(--d2l-color-gypsum);
 				display: flex;
-				justify-content: flex-end;
+				justify-content: center;
 				margin-top: 0.3rem;
 				padding-top: 0.3rem;
 			}
@@ -137,6 +142,8 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 
 		this.disabled = false;
 		this.emptyText = '';
+		/** @ignore */
+		this.hasNow = false;
 		this.labelHidden = false;
 		/** @ignore */
 		this.noValidateMinMax = false;
@@ -221,6 +228,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
+		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
@@ -246,7 +254,8 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 					min-value="${ifDefined(this.minValue)}"
 					selected-value="${ifDefined(this._shownValue)}">
 					<div class="d2l-calendar-slot-buttons">
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+						${nowButton}
 						${clearButton}
 					</div>
 				</d2l-calendar>
@@ -290,7 +299,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
 				<d2l-calendar selected-value="2018-09-08">
 					<div class="d2l-calendar-slot-buttons">
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}"></d2l-button-subtle>
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}"></d2l-button-subtle>
 					</div>
 				</d2l-calendar>
 			</div>` : null}
@@ -462,9 +471,13 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this.opened = !this.opened;
 	}
 
-	async _handleSetToToday() {
+	async _handleSetToNow() {
+		await this._handleSetToToday(undefined, true);
+	}
+
+	async _handleSetToToday(_, setToNow) {
 		const date = getToday();
-		await this._updateValueDispatchEvent(formatDateInISO(date));
+		await this._updateValueDispatchEvent(formatDateInISO(date), setToNow);
 		if (this._dropdown) {
 			this._dropdown.close();
 		}
@@ -503,13 +516,18 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : (this.emptyText ? this.emptyText : '');
 	}
 
-	async _updateValueDispatchEvent(dateInISO) {
-		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
+	async _updateValueDispatchEvent(dateInISO, setToNow) {
+		// prevent validation from happening multiple times for same change,
+		// except for now button that affects time
+		if (!setToNow && dateInISO === this._shownValue) return;
 		this._shownValue = dateInISO;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
-			'change',
-			{ bubbles: true, composed: false }
+			'change', {
+				bubbles: true,
+				composed: false,
+				detail: { setToNow: setToNow }
+			}
 		));
 	}
 

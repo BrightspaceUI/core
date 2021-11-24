@@ -260,7 +260,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			} else {
 				this._isOpenedViaClick = true;
 				this._isHovering = false;
-				this.openDropdown(true);
+				this.openDropdown(false);
 			}
 		} else this.toggleOpen(false);
 	}
