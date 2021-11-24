@@ -120,7 +120,7 @@ class HtmlBlock extends LitElement {
 
 	static get properties() {
 		return {
-			_deferRendering: { Type: Boolean, attribute: 'defer-rendering', reflect: true }
+			_noDeferredRendering: { Type: Boolean, attribute: 'no-deferred-rendering', reflect: true }
 		};
 	}
 
@@ -137,10 +137,10 @@ class HtmlBlock extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([defer-rendering="false"]) div.d2l-html-block-rendered {
+			:host([no-deferred-rendering="true"]) div.d2l-html-block-rendered {
 				display: none;
 			}
-			:host([defer-rendering])::slotted(*) {
+			:host([no-deferred-rendering="false"])::slotted(*) {
 				display: none;
 			}
 		`];
@@ -148,6 +148,7 @@ class HtmlBlock extends LitElement {
 
 	constructor() {
 		super();
+		this._noDeferredRendering = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
@@ -214,7 +215,7 @@ class HtmlBlock extends LitElement {
 
 	async _render(elem) {
 		for (const renderer of getRenderers()) {
-			if (!this._deferRendering && !renderer.canRenderInline) continue;
+			if (this._noDeferredRendering && !renderer.canRenderInline) continue;
 
 			if (this._contextObserverController && renderer.contextAttributes) {
 				const contextValues = new Map();
@@ -232,7 +233,7 @@ class HtmlBlock extends LitElement {
 		const noDeferredRenderingContainer = this.querySelector('div.no-deferred-rendering');
 		if (!noDeferredRenderingContainer) return;
 
-		this._deferRendering = false;
+		this._noDeferredRendering = true;
 		await this._render(noDeferredRenderingContainer);
 	}
 
@@ -254,7 +255,7 @@ class HtmlBlock extends LitElement {
 
 		if (this._templateObserver) this._templateObserver.disconnect();
 		if (template) {
-			this._deferRendering = true;
+			this._noDeferredRendering = false;
 			this._templateObserver = new MutationObserver(() => stampHTML(template));
 			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
 		}
