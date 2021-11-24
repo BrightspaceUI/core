@@ -239,7 +239,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		this.noAutoClose = false;
 		this.noAutoFit = false;
-		this.noAutoFocus = true;
+		this.noAutoFocus = false;
 		this.noMobileCloseButton = false;
 		this.noPadding = false;
 		this.noPaddingFooter = false;
@@ -394,7 +394,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (this.opened) {
 			this.close();
 		} else {
-			this.open(applyFocus);
+			this.open(!this.noAutoFocus && applyFocus);
 		}
 	}
 
@@ -518,12 +518,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			await this.__position();
 			this._showBackdrop = this._useMobileStyling && this.mobileTray;
-
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
-					requestAnimationFrame(() => focusable.focus());
+					focusable.focus();
 				} else {
 					content.setAttribute('tabindex', '-1');
 					content.focus();
@@ -1010,12 +1008,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	_handleFocusTrapEnter() {
-		if (this.__applyFocus && !this.noAutoFocus) {
+		if (!this.noAutoFocus) {
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
-				// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
-				requestAnimationFrame(() => focusable.focus());
+				focusable.focus();
 			} else {
 				content.setAttribute('tabindex', '-1');
 				content.focus();

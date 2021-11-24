@@ -112,7 +112,9 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		menu.resize();
 
-		menu.focus();
+		if (this.__applyFocus) {
+			menu.focus();
+		}
 	}
 
 	_onSelect(e) {
