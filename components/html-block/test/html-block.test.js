@@ -91,7 +91,6 @@ describe('d2l-html-block', () => {
 			<template></template>
 		</d2l-html-block>
 	`;
-
 	const replacementFixture = html`
 		<d2l-html-block>
 			<template><span data-replace-id="1">first</span><span data-replace-id="2">second</span></template>
@@ -140,7 +139,7 @@ describe('d2l-html-block', () => {
 		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
 		const htmlBlock = await fixture(noDeferredRenderingReplacementFixture);
 		await replacementComplete;
-		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
+		const spans = htmlBlock.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1');
 		expect(spans[1].innerHTML).to.equal('second');
 	});
