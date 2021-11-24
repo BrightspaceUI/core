@@ -13,6 +13,7 @@
 		import '../../menu/menu-item-radio.js';
 		import '../dropdown.js';
 		import '../dropdown-menu.js';
+		import '../dropdown-button.js';
 	</script>
 </head>
 
@@ -132,7 +133,7 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-dropdown>
-					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-button no-auto-focus class="d2l-dropdown-opener">Open it!</d2l-dropdown-button>
 					<d2l-dropdown-menu id="dropdown" no-padding-footer mobile-tray="right" max-height="300">
 						<div slot="header" style="font-weight: bold; text-align: center; width: 100%;">Physics Topics</div>
 						<d2l-menu label="Physics Topics">
