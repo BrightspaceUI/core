@@ -17,6 +17,11 @@ class List extends SelectionMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Whether to the user can drag multiple items
+			 * @type {boolean}
+			 */
+			dragMultiple: { type: Boolean, attribute: 'drag-multiple' },
+			/**
 			 * Whether to extend the separators beyond the content's edge
 			 * @type {boolean}
 			 */

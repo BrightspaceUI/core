@@ -464,7 +464,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const rootList = this._getRootList(this);
 
 		// getSelectionInfo(false) is fast so we can quickly check the state
-		if (rootList.getSelectionInfo(false).state === SelectionInfo.states.none) {
+		if (!rootList.dragMultiple || rootList.getSelectionInfo(false).state === SelectionInfo.states.none) {
 			createDragState([this]);
 		} else {
 
