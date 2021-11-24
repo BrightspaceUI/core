@@ -118,6 +118,12 @@ const getRenderers = () => {
  */
 class HtmlBlock extends LitElement {
 
+	static get properties() {
+		return {
+			_deferRendering: { Type: Boolean, attribute: 'defer-rendering', reflect: true }
+		};
+	}
+
 	static get styles() {
 		return [ htmlBlockContentStyles, css`
 			:host {
@@ -131,7 +137,10 @@ class HtmlBlock extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			::slotted(*) {
+			:host([defer-rendering="false"]) div.d2l-html-block-rendered {
+				display: none;
+			}
+			:host([defer-rendering])::slotted(*) {
 				display: none;
 			}
 		`];
@@ -177,7 +186,8 @@ class HtmlBlock extends LitElement {
 			const template = e.target.assignedNodes({ flatten: true })
 				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
 
-			this._stamp(template);
+			if (template) this._stamp(template);
+			else this._renderInline();
 
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
@@ -188,7 +198,8 @@ class HtmlBlock extends LitElement {
 		super.updated();
 		if (this._contextObserverController && this._contextObjectHasChanged()) {
 			const template = this.querySelector('template');
-			this._stamp(template);
+			if (template) this._stamp(template);
+			else this._renderInline();
 		}
 	}
 
@@ -201,6 +212,30 @@ class HtmlBlock extends LitElement {
 		return false;
 	}
 
+	async _render(elem) {
+		for (const renderer of getRenderers()) {
+			if (!this._deferRendering && !renderer.canRenderInline) continue;
+
+			if (this._contextObserverController && renderer.contextAttributes) {
+				const contextValues = new Map();
+				renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
+				elem = await renderer.render(elem, contextValues);
+			} else {
+				elem = await renderer.render(elem);
+			}
+		}
+
+		return elem;
+	}
+
+	async _renderInline() {
+		const noDeferredRenderingContainer = this.querySelector('div.no-deferred-rendering');
+		if (!noDeferredRenderingContainer) return;
+
+		this._deferRendering = false;
+		await this._render(noDeferredRenderingContainer);
+	}
+
 	_stamp(template) {
 		const stampHTML = async template => {
 			const fragment = template ? document.importNode(template.content, true) : null;
@@ -209,15 +244,7 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				for (const renderer of getRenderers()) {
-					if (this._contextObserverController && renderer.contextAttributes) {
-						const contextValues = new Map();
-						renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
-						temp = await renderer.render(temp, contextValues);
-					} else {
-						temp = await renderer.render(temp);
-					}
-				}
+				temp = await this._render(temp);
 				this._renderContainer.innerHTML = temp.innerHTML;
 
 			} else {
@@ -227,6 +254,7 @@ class HtmlBlock extends LitElement {
 
 		if (this._templateObserver) this._templateObserver.disconnect();
 		if (template) {
+			this._deferRendering = true;
 			this._templateObserver = new MutationObserver(() => stampHTML(template));
 			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
 		}

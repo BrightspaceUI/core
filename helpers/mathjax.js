@@ -4,6 +4,12 @@ let mathJaxLoaded;
 
 export class HtmlBlockMathRenderer {
 
+	get canRenderInline() {
+		// The custom MathJax ShadowAdaptor creates a new document and renders
+		// its contents to the DOM.
+		return false;
+	}
+
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
 	}
