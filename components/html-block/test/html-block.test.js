@@ -102,8 +102,8 @@ describe('d2l-html-block', () => {
 		</d2l-html-block>
 	`;
 	const noDeferredRenderingReplacementFixture = html`
-		<d2l-html-block>
-			<div class="no-deferred-rendering"><span data-replace-id="1">first</span><span data-no-inline-replace-id="2">second</span></div>
+		<d2l-html-block no-deferred-rendering>
+			<div><span data-replace-id="1">first</span><span data-no-inline-replace-id="2">second</span></div>
 		</d2l-html-block>
 	`;
 
