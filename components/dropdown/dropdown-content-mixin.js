@@ -1008,7 +1008,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	_handleFocusTrapEnter() {
-		if (!this.noAutoFocus) {
+		if (this.__applyFocus && !this.noAutoFocus) {
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
