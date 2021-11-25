@@ -120,7 +120,7 @@ class HtmlBlock extends LitElement {
 
 	static get properties() {
 		return {
-			_noDeferredRendering: { Type: Boolean, attribute: 'no-deferred-rendering', reflect: true }
+			_noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering', reflect: true }
 		};
 	}
 
@@ -137,10 +137,10 @@ class HtmlBlock extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([no-deferred-rendering="true"]) div.d2l-html-block-rendered {
+			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
 			}
-			:host([no-deferred-rendering="false"]) ::slotted(*) {
+			:host(:not([no-deferred-rendering])) ::slotted(*) {
 				display: none;
 			}
 		`];
