@@ -229,12 +229,12 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _render(slot) {
-		if (this.noDeferredRendering) await this._renderInline();
+		if (this.noDeferredRendering) await this._renderInline(slot);
 		else this._stamp(slot);
 	}
 
-	async _renderInline() {
-		const noDeferredRenderingContainer = this._findSlottedElement('DIV');
+	async _renderInline(slot) {
+		const noDeferredRenderingContainer = this._findSlottedElement('DIV', slot);
 		if (!noDeferredRenderingContainer) return;
 		await this._processRenderers(noDeferredRenderingContainer);
 	}
