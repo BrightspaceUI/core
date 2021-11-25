@@ -45,10 +45,9 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ![example screenshot of date input](../screenshots/date.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date align:flex-start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-date.js';
 </script>
 <d2l-input-date label="Birthdate">
@@ -96,10 +95,9 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ![example screenshot of date range input](../screenshots/date-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-range align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-range align:flex-start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
 </script>
 <d2l-input-date-range label="Availability Range">
@@ -153,10 +151,9 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 ![example screenshot of time input](../screenshots/time.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-time align:flex-start autoSize:false size:large -->
+<!-- docs: demo live name:d2l-input-time align:flex-start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-time.js';
 </script>
 <d2l-input-time label="Time">
@@ -194,7 +191,7 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 | `labelled-by` | String | Use when another visible element should act as the label |
 
-### Time Range Input [d2l-input-time-range]
+## Time Range Input [d2l-input-time-range]
 
 Use the `<d2l-input-time-range>` component when users need to enter two times in a range, and the date is already known. The component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
@@ -204,10 +201,9 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 ![example screenshot of time range input](../screenshots/time-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-time-range align:flex-start autoSize:false size:large -->
+<!-- docs: demo live name:d2l-input-time-range align:flex-start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-time-range.js';
 </script>
 <d2l-input-time-range label="Availability Range">
@@ -257,10 +253,9 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ![example screenshot of date input](../screenshots/date-time.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-time align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-time align:flex-start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
 </script>
 <d2l-input-date-time label="Due Date">
@@ -309,10 +304,9 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ![example screenshot of date-time range input](../screenshots/date-time-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/inputs/input-date-time-range.js';
 </script>
 <d2l-input-date-time-range label="Availability Range">

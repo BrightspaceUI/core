@@ -1,7 +1,7 @@
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
 
-<!-- docs: demo autoSize:false align:flex-start size:medium -->
+<!-- docs: demo align:flex-start autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
@@ -26,10 +26,9 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 
 `d2l-dropdown` is a generic opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`) enabling alternate opener implementation using existing elements/components. Provide and indicate your own opener element with the class attribute value `d2l-dropdown-opener`.  Wire-up is automatic.
 
-<!-- docs: demo live name:d2l-dropdown autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -72,10 +71,9 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ![screenshot the basic dropdown-button opener](./screenshots/dropdown-button.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-button autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-button align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -105,10 +103,9 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ![screenshot the basic dropdown-button-subtle opener](./screenshots/dropdown-button-subtle.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-button-subtle align:flex-start autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-dropdown-button-subtle align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -146,10 +143,9 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 ![screenshot the basic dropdown-context-menu opener](./screenshots/dropdown-context-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -188,10 +184,9 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 ![screenshot the basic dropdown-more opener](./screenshots/dropdown-more.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-more autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-more align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -231,10 +226,9 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the dropdown-content with mobile-tray="right"](./screenshots/dropdown-content-mobile-tray.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-content autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-content align:flex-start autoSize:false autoOpen:true size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
@@ -294,10 +288,9 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-menu](./screenshots/dropdown-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-menu size:medium align:flex-start autoSize:false -->
+<!-- docs: demo live name:d2l-dropdown-menu align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -338,10 +331,9 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-tabs](./screenshots/dropdown-tabs.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-tabs size:large autoSize:false align:flex-start -->
+<!-- docs: demo live name:d2l-dropdown-tabs autoOpen:true autoSize:false align:flex-start size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
   import '@brightspace-ui/core/components/menu/menu.js';

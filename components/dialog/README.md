@@ -2,10 +2,9 @@
 
 Dialogs interrupt the user to complete a set of tasks, confirm an action, or offer important options.
 
-<!-- docs: demo autoSize:false size:large -->
+<!-- docs: demo autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/dialog/dialog.js';
 </script>
