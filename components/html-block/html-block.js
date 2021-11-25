@@ -214,7 +214,7 @@ class HtmlBlock extends LitElement {
 
 	async _processRenderers(elem) {
 		for (const renderer of getRenderers()) {
-			if (this._noDeferredRendering && !renderer.canRenderInline) continue;
+			if (this.noDeferredRendering && !renderer.canRenderInline) continue;
 
 			if (this._contextObserverController && renderer.contextAttributes) {
 				const contextValues = new Map();
