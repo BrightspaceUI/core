@@ -140,7 +140,7 @@ class HtmlBlock extends LitElement {
 			:host([no-deferred-rendering="true"]) div.d2l-html-block-rendered {
 				display: none;
 			}
-			:host([no-deferred-rendering="false"])::slotted(*) {
+			:host([no-deferred-rendering="false"]) ::slotted(*) {
 				display: none;
 			}
 		`];
