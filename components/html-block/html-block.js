@@ -259,7 +259,6 @@ class HtmlBlock extends LitElement {
 
 		if (this._templateObserver) this._templateObserver.disconnect();
 		if (template) {
-			this._noDeferredRendering = false;
 			this._templateObserver = new MutationObserver(() => stampHTML(template));
 			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
 		}
