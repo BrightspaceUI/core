@@ -16,6 +16,7 @@ import { formatDateInISO,
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { HtmlAttributeObserverController } from '../../helpers/htmlAttributeObserverController.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -123,6 +124,8 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		this._namespace = 'components.input-date-time';
 		this._preventDefaultValidation = false;
 		this._timeOpened = false;
+
+		this._contextObserverController = new HtmlAttributeObserverController(this, 'data-timezone');
 	}
 
 	get maxValue() { return this._maxValue; }
@@ -188,6 +191,16 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			}
 		}
 		return super.validationMessage;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		if (this._contextObserverController) this._contextObserverController.hostConnected();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
 	}
 
 	firstUpdated(changedProperties) {
