@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 export function getOpenEvent(page, selector) {
 	return page.$eval(selector, filter => {
 		const content = filter.shadowRoot.querySelector('[dropdown-content]');
@@ -17,6 +18,15 @@ export function getShowCompleteEvent(page, selector) {
 export async function open(page, selector) {
 	const openEvent = getOpenEvent(page, selector);
 	await page.$eval(selector, filter => filter.opened = true);
+	return openEvent;
+}
+
+export async function openWithKeyboard(page, selector) {
+	const openEvent = getOpenEvent(page, selector);
+	await page.$eval(selector, filter => {
+		filter.opened = true;
+		forceFocusVisible(selector);
+	});
 	return openEvent;
 }
 
