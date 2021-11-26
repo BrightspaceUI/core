@@ -1,3 +1,6 @@
+import { bundlePerformancePlugin } from 'web-test-runner-performance';
+import { defaultReporter } from '@web/test-runner';
+import { esbuildPlugin } from '@web/dev-server-esbuild';
 import { playwrightLauncher } from '@web/test-runner-playwright';
 
 function getPattern(type) {
@@ -23,7 +26,24 @@ export default {
 		},
 		{
 			name: 'perf',
-			files: getPattern('perf')
+			files: getPattern('perf'),
+			concurrency: 1,
+			concurrentBrowsers: 1,
+			nodeResolve: true,
+			testsFinishTimeout: 20000,
+			browsers: [playwrightLauncher({
+				async createPage({ context }) {
+					const page = await context.newPage();
+					await page.emulateMedia({ reducedMotion: 'reduce' });
+					return page;
+				}
+			})],
+			reporters: [
+				defaultReporter({ reportTestResults: true, reportTestProgress: true })
+			],
+			plugins: [
+				bundlePerformancePlugin()
+			],
 		}
 	],
 	testFramework: {
