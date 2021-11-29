@@ -160,13 +160,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this._validity;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.validateOnInit) {
-			this.requestValidate(true);
-		}
-	}
-
 	updated(changedProperties) {
 		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
 			let errors = this._errors;
