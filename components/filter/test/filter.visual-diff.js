@@ -1,4 +1,4 @@
-import { getRect, open, openWithKeyboard, reset, show } from './filter-helper.js';
+import { getRect, open, reset, show } from './filter-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -192,27 +192,6 @@ describe('d2l-filter', () => {
 						requestAnimationFrame(async() => await elem.updateComplete);
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
-				});
-			});
-			[
-				'single-set-empty',
-				'single-set-single-selection',
-				'single-set-single-selection-select-all',
-				'single-set-multi-selection',
-				'single-set-multi-selection-no-search',
-				'single-set-multi-selection-no-search-select-all',
-				'single-set-multi-selection-all-selected',
-				'multiple-empty',
-				'multiple-selected'
-			].forEach(type => {
-				it(type, async function() {
-					const selector = `#${type}`;
-					await openWithKeyboard(page, selector);
-					page.waitForTimeout(50);
-					await page.$eval (selector, async(elem)  => {
-						requestAnimationFrame(async() => await elem.updateComplete);
-					});
-					await visualDiff.screenshotAndCompare(page, `${this.test.fullTitle()}-keyboard-focused`, { captureBeyondViewport: false });
 				});
 			});
 

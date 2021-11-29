@@ -21,14 +21,6 @@ export async function open(page, selector) {
 	return openEvent;
 }
 
-export async function openWithKeyboard(page, selector) {
-	const openEvent = getOpenEvent(page, selector);
-	await page.$eval(selector, filter => {
-		filter.opened = true;
-		forceFocusVisible(selector);
-	});
-	return openEvent;
-}
 
 export async function show(page, selector, dimensionNum) {
 	const showCompleteEvent = getShowCompleteEvent(page, selector);
