@@ -113,8 +113,11 @@ describe('d2l-html-block', () => {
 
 	it('should not explode if no replacements', async() => {
 		const htmlBlock = await fixture(emptyReplacementFixture);
-		expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
-			.to.equal('');
+		// Wait a frame for rendering to finish, since we temporarily add elements to the DOM
+		requestAnimationFrame(() => {
+			expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
+				.to.equal('');
+		});
 	});
 
 	it('should do replacements', async() => {
