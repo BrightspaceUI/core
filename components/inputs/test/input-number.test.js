@@ -1,6 +1,4 @@
 import '../input-number.js';
-import '../../form/form.js';
-import '../../validation/validation-custom.js';
 import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -14,18 +12,6 @@ const minFixture = html`<d2l-input-number label="label" min="5"></d2l-input-numb
 const minExclusiveFixture = html`<d2l-input-number label="label" min="5" min-exclusive></d2l-input-number>`;
 const maxFixture = html`<d2l-input-number label="label" max="10"></d2l-input-number>`;
 const maxExclusiveFixture = html`<d2l-input-number label="label" max="10" max-exclusive></d2l-input-number>`;
-const minMaxWithValueFeature = html`<d2l-input-number label="label" min="5" max="10" value="11"></d2l-input-number>`;
-const minMaxWithValueAndImmediateValidationFeature = html`<d2l-input-number label="label" validate-on-init min="5" max="10" value="11"></d2l-input-number>`;
-const customValidatorFixture = html`
-	<d2l-form>
-		<d2l-input-number validate-on-init id="input" label="label" value="11"></d2l-input-number>
-		<d2l-validation-custom
-			for="input"
-			failure-text="Test"
-			@d2l-validation-custom-validate=${e => e.detail.resolve(false)}
-		></d2l-validation-custom>
-	</d2l-form>
-`;
 
 function dispatchEvent(elem, eventType) {
 	const e = new Event(
@@ -647,24 +633,6 @@ describe('d2l-input-number', () => {
 				expect(elem.valueTrailingZeroes).to.equal(val);
 				expect(elem._formattedValue).to.equal(val);
 			});
-		});
-
-		it('should not validate immediately if validate-on-init is not set', async() => {
-			const elem = await fixture(minMaxWithValueFeature);
-			expect(!elem.hasAttribute('invalid'));
-			await elem.validate();
-			expect(elem.hasAttribute('hasAttribute'));
-		});
-
-		it('should validate immediately if validate-on-init is set', async() => {
-			const elem = await fixture(minMaxWithValueAndImmediateValidationFeature);
-			expect(elem.hasAttribute('invalid'));
-		});
-
-		it('should validate custom validators when attached if validate-on-init is set', async() => {
-			const elem = await fixture(customValidatorFixture);
-			await oneEvent(elem, 'd2l-form-element-errors-change');
-			expect(elem.hasAttribute('invalid'));
 		});
 
 	});
