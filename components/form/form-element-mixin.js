@@ -227,7 +227,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	validationCustomConnected(custom) {
 		this._validationCustoms.add(custom);
-		if (validateOnInit) {
+		if (this.validateOnInit) {
 			this.requestValidate(true);
 		}
 	}
