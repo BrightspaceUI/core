@@ -15,6 +15,7 @@ import { formatDateInISO,
 	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { HtmlAttributeObserverController } from '../../helpers/htmlAttributeObserverController.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -120,12 +121,11 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		this.opened = false;
 		this.required = false;
 		this.timeDefaultValue = 'startOfDay';
+		this._documentLocaleSettings = getDocumentLocaleSettings();
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
 		this._preventDefaultValidation = false;
 		this._timeOpened = false;
-
-		this._contextObserverController = new HtmlAttributeObserverController(this, 'data-timezone');
 	}
 
 	get maxValue() { return this._maxValue; }
@@ -195,12 +195,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this._contextObserverController) this._contextObserverController.hostConnected();
+		this._documentLocaleSettings.addChangeListener(this._handleLocaleChange.bind(this));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
+		this._documentLocaleSettings.removeChangeListener(this._handleLocaleChange.bind(this));
 	}
 
 	firstUpdated(changedProperties) {
@@ -354,6 +354,10 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	_handleInputTimeFocus() {
 		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.show();
+	}
+
+	_handleLocaleChange() {
+		this.requestUpdate();
 	}
 
 	async _handleTimeChange(e) {
