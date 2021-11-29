@@ -41,7 +41,7 @@ jobs:
         env:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
-        run: npx web-test-runner --config web-test-runner.sauce.config.js --group default
+        run: npx web-test-runner --config web-test-runner.sauce.config.mjs --group default
   playwright:
     name: Accessibility and Unit Tests (Playwright)
     timeout-minutes: 10
@@ -61,4 +61,4 @@ jobs:
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests
-        run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
+        run: npx web-test-runner --config web-test-runner.config.mjs --group default --playwright --browsers chromium firefox webkit

@@ -1,4 +1,4 @@
-import config from './web-test-runner.config.js';
+import config from './web-test-runner.config.mjs';
 import { createSauceLabsLauncher } from '@web/test-runner-saucelabs';
 
 const sauceLabsOptions = {

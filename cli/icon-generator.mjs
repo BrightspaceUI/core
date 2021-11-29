@@ -1,6 +1,6 @@
 import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
-import { cleanDir } from './cleanDir.js';
+import { cleanDir } from './cleanDir.mjs';
 import path from 'path';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
