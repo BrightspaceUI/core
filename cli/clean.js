@@ -1,6 +1,8 @@
-const chalk = require('chalk'),
-	cleanDir = require('./cleanDir.js'),
-	path = require('path');
+import chalk from 'chalk';
+import { cleanDir } from './cleanDir.js';
+import path from 'path';
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const outputRoot = path.join(__dirname, '../generated');
 
 try {
