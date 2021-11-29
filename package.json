@@ -48,7 +48,7 @@
     "@web/test-runner": "^0.13",
     "@web/test-runner-playwright": "^0.8.8",
     "axe-core": "^4",
-    "chalk": "^4",
+    "chalk": "^5",
     "eslint": "^7",
     "eslint-config-brightspace": "^0.16",
     "eslint-plugin-html": "^6",
