@@ -181,13 +181,13 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		if (this._selectionProvider === nestedList) return;
 
 		if (this._selectionProvider && this._selectionProvider !== nestedList) {
-			this._selectionProvider.unsubscribeObserver(this);
+			this._selectionProvider.getController('observer').unsubscribe(this);
 			this._selectionProvider = null;
 		}
 
 		if (nestedList) {
 			this._selectionProvider = nestedList;
-			this._selectionProvider.subscribeObserver(this);
+			this._selectionProvider.getController('observer').subscribe(this);
 		}
 	}
 

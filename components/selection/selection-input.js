@@ -5,6 +5,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { SubscriberController } from '../../helpers/subscriptionControllers.js';
 
 const keyCodes = {
 	SPACE: 32
@@ -40,8 +41,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {string}
 			 */
 			key: { type: String },
-			_indeterminate: { type: Boolean },
-			_provider: { type: Object }
+			_indeterminate: { type: Boolean }
 		};
 	}
 
@@ -61,26 +61,21 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		super();
 		this.selected = false;
 		this._indeterminate = false;
+
+		this._subscriberController = new SubscriberController(this,
+			{ onSubscribe: () => { this.requestUpdate(); } },
+			{ eventName: 'd2l-selection-input-subscribe', controllerId: 'input' }
+		);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => {
-			const evt = new CustomEvent('d2l-selection-input-subscribe', {
-				bubbles: true,
-				composed: true,
-				detail: {}
-			});
-			this.dispatchEvent(evt);
-			this._provider = evt.detail.provider;
-		});
+		this._subscriberController.hostConnected();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (!this._provider) return;
-		this._provider.unsubscribeSelectable(this);
+		this._subscriberController.hostDisconnected();
 	}
 
 	firstUpdated(changedProperties) {
@@ -89,8 +84,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	render() {
-		if (!this._provider) return;
-		if (this._provider.selectionSingle) {
+		if (!this._subscriberController.provider) return;
+		if (this._subscriberController.provider.selectionSingle) {
 			const radioClasses = {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
@@ -127,6 +122,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+
+		this._subscriberController.hostUpdated(changedProperties);
 
 		if ((changedProperties.has('selected') && !(changedProperties.get('selected') === undefined && this.selected === false))
 			|| (changedProperties.has('_indeterminate') && !(changedProperties.get('_indeterminate') === undefined && this._indeterminate === false))) {

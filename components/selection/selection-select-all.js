@@ -39,7 +39,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	render() {
-		if (this._provider && this._provider.selectionSingle) return;
+		if (this._subscriberController.provider && this._subscriberController.provider.selectionSingle) return;
 
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
@@ -62,7 +62,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	_handleCheckboxChange(e) {
-		if (this._provider) this._provider.setSelectionForAll(e.target.checked);
+		if (this._subscriberController.provider) this._subscriberController.provider.setSelectionForAll(e.target.checked);
 	}
 
 }
