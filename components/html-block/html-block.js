@@ -245,8 +245,10 @@ class HtmlBlock extends LitElement {
 			if (fragment) {
 
 				let temp = document.createElement('div');
+				temp.style.display = 'none';
 				temp.appendChild(fragment);
 
+				this._renderContainer.appendChild(temp);
 				temp = await this._processRenderers(temp);
 				this._renderContainer.innerHTML = temp.innerHTML;
 
