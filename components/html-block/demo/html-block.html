@@ -10,6 +10,10 @@
 			import { provideInstance } from '../../../mixins/provider-mixin.js';
 
 			class DemoReplacementRenderer {
+				get canRenderInline() {
+					return true;
+				}
+
 				async render(elem) {
 					const elemsToReplace = elem.querySelectorAll('[data-replace-me-id]');
 					if (elemsToReplace.length === 0) return elem;
@@ -38,7 +42,7 @@
 
 		</script>
 		<script>
-			document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: window.location.search.indexOf('latex=true') !== -1 });
+			document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ outputScale: 1.1, renderLatex: window.location.search.indexOf('latex=true') !== -1 });
 		</script>
 	</head>
 	<body unresolved>
@@ -184,6 +188,119 @@
 								</mrow>
 							</math>
 						</template>
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>HTML Block (math, no deferred rendering)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block no-deferred-rendering>
+						<div>
+							<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+								<mi>x</mi>
+								<mo>=</mo>
+								<mrow>
+									<mfrac>
+										<mrow>
+											<mo>&#x2212;</mo>
+											<mi>b</mi>
+											<mo>&#xB1;</mo>
+											<msqrt>
+												<msup>
+													<mi>b</mi>
+													<mn>2</mn>
+												</msup>
+												<mo>&#x2212;</mo>
+												<mn>4</mn>
+												<mi>a</mi>
+												<mi>c</mi>
+											</msqrt>
+										</mrow>
+										<mrow>
+											<mn>2</mn>
+											<mi>a</mi>
+										</mrow>
+									</mfrac>
+								</mrow>
+								<mtext>.</mtext>
+							</math>
+							<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+								<msup>
+									<mrow>
+										<mo>(</mo>
+										<mrow>
+											<munderover>
+												<mo>∑<!-- ∑ --></mo>
+												<mrow class="MJX-TeXAtom-ORD">
+													<mi>k</mi>
+													<mo>=</mo>
+													<mn>1</mn>
+												</mrow>
+												<mi>n</mi>
+											</munderover>
+											<msub>
+												<mi>a</mi>
+												<mi>k</mi>
+											</msub>
+											<msub>
+												<mi>b</mi>
+												<mi>k</mi>
+											</msub>
+										</mrow>
+										<mo>)</mo>
+									</mrow>
+									<mrow class="MJX-TeXAtom-ORD">
+										<mspace width="negativethinmathspace"></mspace>
+										<mspace width="negativethinmathspace"></mspace>
+										<mn>2</mn>
+									</mrow>
+								</msup>
+								<mo>≤<!-- ≤ --></mo>
+								<mrow>
+									<mo>(</mo>
+									<mrow>
+										<munderover>
+											<mo>∑<!-- ∑ --></mo>
+											<mrow class="MJX-TeXAtom-ORD">
+												<mi>k</mi>
+												<mo>=</mo>
+												<mn>1</mn>
+											</mrow>
+											<mi>n</mi>
+										</munderover>
+										<msubsup>
+											<mi>a</mi>
+											<mi>k</mi>
+											<mn>2</mn>
+										</msubsup>
+									</mrow>
+									<mo>)</mo>
+								</mrow>
+								<mrow>
+									<mo>(</mo>
+									<mrow>
+										<munderover>
+											<mo>∑<!-- ∑ --></mo>
+											<mrow class="MJX-TeXAtom-ORD">
+												<mi>k</mi>
+												<mo>=</mo>
+												<mn>1</mn>
+											</mrow>
+											<mi>n</mi>
+										</munderover>
+										<msubsup>
+											<mi>b</mi>
+											<mi>k</mi>
+											<mn>2</mn>
+										</msubsup>
+									</mrow>
+									<mo>)</mo>
+								</mrow>
+							</math>
+							<p>The wizard (<span data-replace-me-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.</p>
+						</div>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>

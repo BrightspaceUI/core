@@ -7,10 +7,9 @@ Filter with multiple dimensions:
 ![Filter with multiple dimensions](./screenshots/filter-multi-dim.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo align:start autoSize:false size:large -->
+<!-- docs: demo align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
@@ -39,10 +38,9 @@ Filter with multiple dimensions:
 
 The `d2l-filter` component allows a user to filter on one or more dimensions of data from a single dropdown.
 
-<!-- docs: demo live name:d2l-filter autoSize:false align:start size:large -->
+<!-- docs: demo live name:d2l-filter align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
@@ -78,7 +76,7 @@ Filter with a single dimension:
 ![Filters with single dimension](./screenshots/filter.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo code autoSize:false align:start size:large -->
+<!-- docs: demo code align:start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -160,10 +158,9 @@ Set dimension on mobile:
 ![Set dimension on mobile](./screenshots/filter-mobile.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-filter-dimension-set align:start autoSize:false size:large -->
+<!-- docs: demo live name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
-  import './pages/assets/open-first-item-helper.js';
   import '@brightspace-ui/core/components/filter/filter.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';

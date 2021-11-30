@@ -99,6 +99,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			noValidate: { type: Boolean, attribute: 'novalidate' },
 			/**
 			 * @ignore
+			 * Perform validation immediately instead of waiting for the user to make changes.
+			 */
+			validateOnInit: { type: Boolean, attribute: 'validate-on-init' },
+			/**
+			 * @ignore
 			 */
 			validationError: { type: String, attribute: false },
 			/**
@@ -124,6 +129,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.invalid = false;
 		/** @ignore */
 		this.noValidate = false;
+		/** @ignore */
+		this.validateOnInit = false;
 		/** @ignore */
 		this.validationError = null;
 		/** @ignore */
@@ -171,6 +178,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				this.dispatchEvent(new CustomEvent('invalid-change'));
 			}
 		}
+		if (this.validateOnInit && (changedProperties.has('noValidate') || changedProperties.has('validateOnInit'))) {
+			this.requestValidate(true);
+		}
 	}
 
 	async requestValidate(showNewErrors = true) {
@@ -210,6 +220,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	validationCustomConnected(custom) {
 		this._validationCustoms.add(custom);
+		if (this.validateOnInit) {
+			this.requestValidate(true);
+		}
 	}
 
 	validationCustomDisconnected(custom) {
