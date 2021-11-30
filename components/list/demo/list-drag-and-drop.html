@@ -57,5 +57,12 @@
 
 
 	</d2l-demo-page>
+
+	<script>
+		document.body.addEventListener('d2l-list-items-move', e => {
+			console.log('d2l-list-items-move', e.detail);
+		});
+	</script>
+
 </body>
 </html>
