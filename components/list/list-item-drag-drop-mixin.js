@@ -1,5 +1,5 @@
 import { css, html } from 'lit-element/lit-element.js';
-import { findComposedAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
@@ -15,6 +15,7 @@ export const moveLocations = Object.freeze({
 	last: 4,
 	shiftDown: 5,
 	shiftUp: 6,
+	nest: 7,
 	void: 0
 });
 
@@ -346,12 +347,92 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 	}
 
+	focusDragHandle() {
+		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+	}
+
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
 			detail: new NewPositionEventDetails({ dragTargetKey, dropTargetKey, dropLocation }),
 			bubbles: true
 		}));
+	}
+
+	_dispatchListItemsMove(sourceItems, targetItem, moveLocation) {
+		this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
+			detail: {
+				sourceItems: sourceItems,
+				target: {
+					item: targetItem,
+					location: moveLocation
+				}
+			},
+			bubbles: true,
+			composed: true
+		}));
+	}
+
+	_dispatchMoveListItemFirst(moveToRoot) {
+		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		this._dispatchListItemsMove([this], list.children[0], moveLocations.above);
+	}
+
+	_dispatchMoveListItemLast(moveToRoot) {
+		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		this._dispatchListItemsMove([this], list.children[list.children.length - 1], moveLocations.below);
+	}
+
+	_dispatchMoveListItemNest() {
+		const listItem = this.previousElementSibling;
+		if (listItem) {
+			this._dispatchListItemsMove([this], listItem, moveLocations.nest);
+		}
+	}
+
+	_dispatchMoveListItemNext() {
+
+		const listItem = this.nextElementSibling;
+		if (listItem) {
+			const nestedList = listItem._getNestedList();
+			if (nestedList && nestedList.children.length > 0) {
+				this._dispatchListItemsMove([this], nestedList.children[0], moveLocations.above);
+			} else {
+				this._dispatchListItemsMove([this], listItem, moveLocations.below);
+			}
+		} else {
+			const parentListItem = this._getParentListItem();
+			if (parentListItem) {
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.below);
+			}
+		}
+
+	}
+
+	_dispatchMoveListItemPrevious() {
+
+		const listItem = this.previousElementSibling;
+		if (listItem) {
+			const nestedList = listItem._getNestedList();
+			if (nestedList && nestedList.children.length > 0) {
+				this._dispatchListItemsMove([this], nestedList.children[nestedList.children.length - 1], moveLocations.below);
+			} else {
+				this._dispatchListItemsMove([this], listItem, moveLocations.above);
+			}
+		} else {
+			const parentListItem = this._getParentListItem();
+			if (parentListItem) {
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.above);
+			}
+		}
+
+	}
+
+	_dispatchMoveListItemUnnest() {
+		const listItem = this._getParentListItem();
+		if (listItem) {
+			this._dispatchListItemsMove([this], listItem, moveLocations.below);
+		}
 	}
 
 	_findListItemFromCoordinates(x, y) {
@@ -366,15 +447,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			currentPosition: parent.getListItemIndex(this) + 1,
 			count: parent.getListItemCount()
 		});
-	}
-
-	_getRootList(node) {
-		let rootList;
-		while (node) {
-			if (node.tagName === 'D2L-LIST') rootList = node;
-			node = getComposedParent(node);
-		}
-		return rootList;
 	}
 
 	_onContextMenu(e) {
@@ -399,17 +471,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._annoucePositionChange(dragState.dragTargets[0].key, dragState.dropTargetKey, dragState.dropLocation);
 			}
 
-			this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
-				detail: {
-					sourceItems: dragState.dragTargets,
-					target: {
-						item: dragState.dropTarget,
-						location: dragState.dropLocation
-					}
-				},
-				bubbles: true,
-				composed: true
-			}));
+			this._dispatchListItemsMove(dragState.dragTargets, dragState.dropTarget, dragState.dropLocation);
 
 		}
 
@@ -427,15 +489,31 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				break;
 			case dragActions.up:
 				this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+				this._dispatchMoveListItemPrevious();
 				break;
 			case dragActions.down:
 				this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+				this._dispatchMoveListItemNext();
+				break;
+			case dragActions.nest:
+				this._dispatchMoveListItemNest();
+				break;
+			case dragActions.unnest:
+				this._dispatchMoveListItemUnnest();
 				break;
 			case dragActions.first:
 				this._annoucePositionChange(this.key, null, dropLocation.first);
+				this._dispatchMoveListItemFirst();
+				break;
+			case dragActions.rootFirst:
+				this._dispatchMoveListItemFirst(true);
 				break;
 			case dragActions.last:
 				this._annoucePositionChange(this.key, null, dropLocation.last);
+				this._dispatchMoveListItemLast();
+				break;
+			case dragActions.rootLast:
+				this._dispatchMoveListItemLast(true);
 				break;
 			default:
 				break;

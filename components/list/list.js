@@ -100,8 +100,19 @@ class List extends SelectionMixin(LitElement) {
 		const slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'rowgroup' || node.role === 'listitem');
 		});
+	}
+
+	getListItemByKey(key) {
+		const items = this.getItems();
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].key === key) return items[i];
+			if (items[i]._selectionProvider) {
+				const tempItem = items[i]._selectionProvider.getListItemByKey(key);
+				if (tempItem) return tempItem;
+			}
+		}
 	}
 
 	getListItemCount() {

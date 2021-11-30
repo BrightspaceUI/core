@@ -1,4 +1,3 @@
-
 import '../button/button-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -6,6 +5,7 @@ import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = Object.freeze({
 	DOWN: 40,
@@ -26,16 +26,20 @@ export const dragActions = Object.freeze({
 	down: 'down',
 	first: 'first',
 	last: 'last',
+	nest: 'nest',
 	nextElement: 'next-element',
 	previousElement: 'previous-element',
+	rootFirst: 'rootFirst',
+	rootLast: 'rootLast',
 	save: 'keyboard-deactivate-save',
+	unnest: 'unnest',
 	up: 'up'
 });
 
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
  */
-class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
+class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -176,11 +180,11 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				break;
 			case keyCodes.HOME:
 				this._movingElement = true;
-				action = dragActions.first;
+				action = (e.ctrlKey ? dragActions.rootFirst : dragActions.first);
 				break;
 			case keyCodes.END:
 				this._movingElement = true;
-				action = dragActions.last;
+				action = (e.ctrlKey ? dragActions.rootLast : dragActions.last);
 				break;
 			case keyCodes.TAB:
 				action = e.shiftKey ? dragActions.previousElement : dragActions.nextElement;
@@ -189,9 +193,16 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				action = dragActions.cancel;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
+			case keyCodes.RIGHT:
+				this._movingElement = true;
+				action = (this.dir === 'rtl' ? dragActions.unnest : dragActions.nest);
+				break;
+			case keyCodes.LEFT:
+				this._movingElement = true;
+				action = (this.dir === 'rtl' ? dragActions.nest : dragActions.unnest) ;
+				break;
 			case keyCodes.ENTER:
 			case keyCodes.SPACE:
-			case keyCodes.RIGHT:
 				action = dragActions.save;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
@@ -221,7 +232,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onInactiveKeyboard(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
 			this._dispatchAction(dragActions.active);
 			this._keyboardActive = true;
 			e.preventDefault();
@@ -229,7 +240,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onInactiveKeyDown(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
 			e.preventDefault();
 		}
 	}

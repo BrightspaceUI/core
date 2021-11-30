@@ -109,7 +109,7 @@ class ListDemoDragAndDrop extends LitElement {
 		`;
 	}
 
-	_handleListItemsMove(e) {
+	async _handleListItemsMove(e) {
 
 		const sourceListItems = e.detail.sourceItems;
 		if (!sourceListItems || sourceListItems.length === 0) return;
@@ -141,12 +141,28 @@ class ListDemoDragAndDrop extends LitElement {
 
 		// append data elements to new location
 		const targetInfo = getItemInfo(this.items, target.item.key);
-		const targetIndex = (target.location === moveLocations.above ? targetInfo.index : targetInfo.index + 1);
+		let targetItems;
+		let targetIndex;
+		if (target.location === moveLocations.nest) {
+			if (!targetInfo.item.items) targetInfo.item.items = [];
+			targetItems = targetInfo.item.items;
+			targetIndex = targetItems.length;
+		} else {
+			targetItems = targetInfo.owner;
+			if (target.location === moveLocations.above) targetIndex = targetInfo.index;
+			else if (target.location === moveLocations.below) targetIndex = targetInfo.index + 1;
+		}
 		for (let i = dataToMove.length - 1; i >= 0; i--) {
-			targetInfo.owner.splice(targetIndex, 0, dataToMove[i]);
+			targetItems.splice(targetIndex, 0, dataToMove[i]);
 		}
 
-		this.requestUpdate();
+		await this.requestUpdate();
+
+		requestAnimationFrame(() => {
+			const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
+			newItem.focusDragHandle();
+		});
+
 	}
 
 }
