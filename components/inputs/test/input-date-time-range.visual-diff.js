@@ -56,7 +56,6 @@ describe('d2l-input-date-time-range', () => {
 		'slotted-content',
 		'start-end-label',
 		'start-end-value',
-		'start-end-value',
 		'start-value',
 		'wide-basic',
 		'wide-hidden-labels-values',
@@ -77,6 +76,17 @@ describe('d2l-input-date-time-range', () => {
 		});
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('timezone change', async function() {
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+		});
+		const rect = await visualDiff.getRect(page, '#start-end-value');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+		});
 	});
 
 	describe('opened behavior', () => {

@@ -4,6 +4,12 @@ let mathJaxLoaded;
 
 export class HtmlBlockMathRenderer {
 
+	get canRenderInline() {
+		// The custom MathJax ShadowAdaptor creates a new document and renders
+		// its contents to the DOM.
+		return false;
+	}
+
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
 	}
@@ -26,9 +32,11 @@ export class HtmlBlockMathRenderer {
 		await loadMathJax(mathJaxConfig);
 
 		const temp = document.createElement('div');
+		temp.style.display = 'none';
 		temp.attachShadow({ mode: 'open' });
 		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
 
+		elem.appendChild(temp);
 		window.MathJax.typesetShadow(temp.shadowRoot);
 		return temp.shadowRoot.firstChild;
 	}

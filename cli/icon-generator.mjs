@@ -1,8 +1,9 @@
-const chalk = require('chalk'),
-	cleanDir = require('./cleanDir.js'),
-	fs = require('fs'),
-	path = require('path');
+import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import chalk from 'chalk';
+import { cleanDir } from './cleanDir.mjs';
+import path from 'path';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const imagePath = path.join(__dirname, '../components/icons/images');
 const outputRoot = path.join(__dirname, '../generated');
 const outputPath = path.join(outputRoot, 'icons');
@@ -11,11 +12,11 @@ function getSvgsInDir(dir) {
 
 	const dirPath = path.join(imagePath, dir);
 
-	if (!fs.lstatSync(dirPath).isDirectory()) {
+	if (!lstatSync(dirPath).isDirectory()) {
 		return [];
 	}
 
-	const svgs = fs.readdirSync(dirPath)
+	const svgs = readdirSync(dirPath)
 		.filter((file) => {
 			return (path.extname(file) === '.svg');
 		}).map((file) => {
@@ -27,7 +28,7 @@ function getSvgsInDir(dir) {
 
 function getSvgs() {
 	const svgs = [];
-	const dirs = fs.readdirSync(imagePath);
+	const dirs = readdirSync(imagePath);
 	dirs.forEach((dir) => {
 		const newSvgs = getSvgsInDir(dir);
 		if (newSvgs.length > 0) {
@@ -46,15 +47,15 @@ function createSvg(category, name) {
 	const sourcePath = path.join(imagePath, category, `${name}.svg`);
 	const destPath = path.join(outputPath, category, `${name}.js`);
 
-	if (!fs.existsSync(categoryPath)) {
-		fs.mkdirSync(categoryPath);
+	if (!existsSync(categoryPath)) {
+		mkdirSync(categoryPath);
 	}
 
-	const data = fs.readFileSync(sourcePath);
+	const data = readFileSync(sourcePath);
 	/* eslint-disable-next-line prefer-template */
 	const output = '// auto-generated\n' + 'export const val = `' + data + '`;\n';
 
-	fs.writeFileSync(destPath, output);
+	writeFileSync(destPath, output);
 
 }
 
@@ -83,7 +84,7 @@ function createLoader(categories) {
 		'}\n';
 	const filePath = path.join(outputPath, 'presetIconLoader.js');
 
-	fs.writeFileSync(filePath, template);
+	writeFileSync(filePath, template);
 
 }
 
@@ -149,7 +150,7 @@ function createCatalogue(categories) {
 	});
 
 	const outputPath = path.join(__dirname, '../components/icons/catalogue.md');
-	fs.writeFileSync(outputPath, output);
+	writeFileSync(outputPath, output);
 
 }
 
@@ -159,11 +160,11 @@ function generate() {
 	console.group();
 
 	console.log(chalk.blue('Clearing output directory...'));
-	if (!fs.existsSync(outputRoot)) {
-		fs.mkdirSync(outputRoot, { recursive: true });
+	if (!existsSync(outputRoot)) {
+		mkdirSync(outputRoot, { recursive: true });
 	}
 	cleanDir(outputPath);
-	fs.mkdirSync(outputPath, { recursive: true });
+	mkdirSync(outputPath, { recursive: true });
 
 	const categories = getSvgs();
 	console.log(chalk.blue('Found SVGs, generating output...'));

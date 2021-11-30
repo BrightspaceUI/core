@@ -33,7 +33,7 @@ const formTag = defineCE(
 	}
 );
 
-const formFixture = `<${formTag}></${formTag}`;
+const formFixture = `<${formTag}></${formTag}>`;
 
 describe('form-element', () => {
 
@@ -193,6 +193,24 @@ describe('form-element', () => {
 			await formElement.requestValidate(false);
 			expect(formElement.invalid).to.be.false;
 			expect(formElement.validationError).to.be.null;
+		});
+
+	});
+
+	describe('validate-on-init', () => {
+		it('should not validate immediately if validate-on-init is not set', async() => {
+			form.isValidationCustomValid = false;
+			await formElement.performUpdate();
+			expect(formElement.invalid).to.be.false;
+			await formElement.validate();
+			expect(formElement.invalid).to.be.true;
+		});
+
+		it('should validate immediately if validate-on-init is set', async() => {
+			form.isValidationCustomValid = false;
+			formElement.validateOnInit = true;
+			await oneEvent(formElement, 'invalid-change');
+			expect(formElement.invalid).to.be.true;
 		});
 
 	});

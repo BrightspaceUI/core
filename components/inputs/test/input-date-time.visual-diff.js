@@ -112,6 +112,17 @@ describe('d2l-input-date-time', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('timezone change', async function() {
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+		});
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+		});
+	});
+
 	describe('opened behavior', () => {
 
 		before(async() => {
