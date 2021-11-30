@@ -312,9 +312,25 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		return nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
 	}
 
+	_getNextListItemSibling() {
+		let nextElement = this.nextElementSibling;
+		while (nextElement) {
+			if (this._isListItem(nextElement)) return nextElement;
+			nextElement = nextElement.nextElementSibling;
+		}
+	}
+
 	_getParentListItem() {
 		const parentListItem = findComposedAncestor(this.parentNode, node => this._isListItem(node));
 		return parentListItem;
+	}
+
+	_getPreviousListItemSibling() {
+		let previousElement = this.previousElementSibling;
+		while (previousElement) {
+			if (this._isListItem(previousElement)) return previousElement;
+			previousElement = previousElement.previousElementSibling;
+		}
 	}
 
 	_getRootList(node) {

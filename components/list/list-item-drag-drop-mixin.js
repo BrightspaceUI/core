@@ -375,28 +375,30 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_dispatchMoveListItemFirst(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
-		this._dispatchListItemsMove([this], list.children[0], moveLocations.above);
+		const items = list.getItems();
+		this._dispatchListItemsMove([this], items[0], moveLocations.above);
 	}
 
 	_dispatchMoveListItemLast(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
-		this._dispatchListItemsMove([this], list.children[list.children.length - 1], moveLocations.below);
+		const items = list.getItems();
+		this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below);
 	}
 
 	_dispatchMoveListItemNest() {
-		const listItem = this.previousElementSibling;
+		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
 			this._dispatchListItemsMove([this], listItem, moveLocations.nest);
 		}
 	}
 
 	_dispatchMoveListItemNext() {
-
-		const listItem = this.nextElementSibling;
+		const listItem = this._getNextListItemSibling();
 		if (listItem) {
 			const nestedList = listItem._getNestedList();
-			if (nestedList && nestedList.children.length > 0) {
-				this._dispatchListItemsMove([this], nestedList.children[0], moveLocations.above);
+			const items = (nestedList ? nestedList.getItems() : []);
+			if (items.length > 0) {
+				this._dispatchListItemsMove([this], items[0], moveLocations.above);
 			} else {
 				this._dispatchListItemsMove([this], listItem, moveLocations.below);
 			}
@@ -406,16 +408,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.below);
 			}
 		}
-
 	}
 
 	_dispatchMoveListItemPrevious() {
-
-		const listItem = this.previousElementSibling;
+		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
 			const nestedList = listItem._getNestedList();
-			if (nestedList && nestedList.children.length > 0) {
-				this._dispatchListItemsMove([this], nestedList.children[nestedList.children.length - 1], moveLocations.below);
+			const items = (nestedList ? nestedList.getItems() : []);
+			if (items.length > 0) {
+				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below);
 			} else {
 				this._dispatchListItemsMove([this], listItem, moveLocations.above);
 			}
@@ -425,7 +426,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.above);
 			}
 		}
-
 	}
 
 	_dispatchMoveListItemUnnest() {
