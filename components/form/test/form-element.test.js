@@ -196,7 +196,7 @@ describe('form-element', () => {
 		});
 
 	});
-	
+
 	describe('validate-on-init', () => {
 		it('should not validate immediately if validate-on-init is not set', async() => {
 			form.isValidationCustomValid = false;
