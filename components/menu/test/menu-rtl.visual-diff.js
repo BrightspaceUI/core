@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-menu rtl', () => {
 
-	const visualDiff = new VisualDiff('menu-rtl', __dirname);
+	const visualDiff = new VisualDiff('menu-rtl', import.meta.url);
 
 	let browser, page;
 

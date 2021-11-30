@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-mixin', () => {
 
-	const visualDiff = new VisualDiff('dialog-mixin', __dirname);
+	const visualDiff = new VisualDiff('dialog-mixin', import.meta.url);
 
 	let browser, page;
 

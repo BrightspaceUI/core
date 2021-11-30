@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-async-container-mixin', function() {
 
-	const visualDiff = new VisualDiff('async-container-mixin', __dirname);
+	const visualDiff = new VisualDiff('async-container-mixin', import.meta.url);
 
 	let browser, page;
 

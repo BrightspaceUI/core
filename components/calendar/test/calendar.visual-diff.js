@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-calendar', () => {
 
-	const visualDiff = new VisualDiff('calendar', __dirname);
+	const visualDiff = new VisualDiff('calendar', import.meta.url);
 
 	let browser, page;
 

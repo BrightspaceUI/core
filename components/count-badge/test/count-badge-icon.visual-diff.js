@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-count-badge-icon', () => {
 
-	const visualDiff = new VisualDiff('count-badge-icon', __dirname);
+	const visualDiff = new VisualDiff('count-badge-icon', import.meta.url);
 
 	let browser, page;
 

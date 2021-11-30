@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-alert', () => {
 
-	const visualDiff = new VisualDiff('alert', __dirname);
+	const visualDiff = new VisualDiff('alert', import.meta.url);
 
 	let browser, page;
 

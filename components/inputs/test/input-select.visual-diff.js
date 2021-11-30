@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-select', () => {
 
-	const visualDiff = new VisualDiff('input-select', __dirname);
+	const visualDiff = new VisualDiff('input-select', import.meta.url);
 
 	let browser, page;
 

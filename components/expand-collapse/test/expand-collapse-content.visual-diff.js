@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-expand-collapse-content', () => {
 
-	const visualDiff = new VisualDiff('expand-collapse-content', __dirname);
+	const visualDiff = new VisualDiff('expand-collapse-content', import.meta.url);
 
 	let browser, page;
 
