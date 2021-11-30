@@ -4,8 +4,8 @@ export class ProviderController {
 
 	constructor(host, callbacks, options) {
 		this._host = host;
-		this._callbacks = callbacks;
-		this._eventName = options.eventName;
+		this._callbacks = callbacks || {};
+		this._eventName = options && options.eventName;
 		this.subscribers = new Map();
 
 		this._handleSubscribe = this._handleSubscribe.bind(this);
@@ -53,29 +53,25 @@ export class ProviderController {
 	}
 }
 
-export class SubscriberController {
+export class EventSubscriberController {
 
 	constructor(host, callbacks, options) {
 		this._host = host;
-		this._callbacks = callbacks;
-		this._eventName = options.eventName;
-		this._forPropertyName = options.forProperty;
-		this._controllerId = options.controllerId;
-		this._providers = new Map();
+		this._callbacks = callbacks || {};
+		this._eventName = options && options.eventName;
+		this._controllerId = options && options.controllerId;
+		this._provider = null;
 	}
 
-	// This method is basically offered for convenience
-	// Components using the event method or a forProperty that takes a string will know they only have one provider
 	get provider() {
-		return this._providers.values().next().value;
-	}
-
-	get providers() {
-		return Array.from(this._providers.values());
+		return this._provider;
 	}
 
 	hostConnected() {
-		if (!this._eventName || this._host[this._forPropertyName]) return;
+		/* Do we try not to fire this event if someone wants to use the other provider instead based on set attributes?
+		 * That's really the selection-observer-mixin's problem, not these cotnrollers, who should assume you want to use them...
+		 */
+
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
 			const evt = new CustomEvent(this._eventName, {
@@ -84,10 +80,29 @@ export class SubscriberController {
 				detail: {}
 			});
 			this._host.dispatchEvent(evt);
-			// When using the event method, the provider is not guarenteed to have an id so we use the provider as the key here
-			this._providers.set(evt.detail.provider, evt.detail.provider);
+			this._provider = evt.detail.provider;
 			if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(evt.detail.provider);
 		});
+	}
+
+	hostDisconnected() {
+		if (this._provider) this._provider.getController(this._controllerId).unsubscribe(this._host);
+	}
+
+}
+
+export class ForPropertySubscriberController {
+
+	constructor(host, callbacks, options) {
+		this._host = host;
+		this._callbacks = callbacks || {};
+		this._forPropertyName = options && options.forProperty;
+		this._controllerId = options && options.controllerId;
+		this._providers = new Map();
+	}
+
+	get providers() {
+		return Array.from(this._providers.values());
 	}
 
 	hostDisconnected() {

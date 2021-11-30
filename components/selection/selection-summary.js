@@ -35,7 +35,8 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	}
 
 	render() {
-		if (this._subscriberController.provider && this._subscriberController.provider.selectionSingle) return;
+		const provider = this._getSelectionProvider();
+		if (provider && provider.selectionSingle) return;
 
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText ?
 			this.noSelectionText : this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));

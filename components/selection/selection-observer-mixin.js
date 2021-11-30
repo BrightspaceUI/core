@@ -1,5 +1,5 @@
+import { EventSubscriberController, ForPropertySubscriberController } from '../../helpers/subscriptionControllers.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SubscriberController } from '../../helpers/subscriptionControllers.js';
 
 export const SelectionObserverMixin = superclass => class extends superclass {
 
@@ -23,28 +23,42 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super();
 		this.selectionInfo = new SelectionInfo();
 
-		this._subscriberController = new SubscriberController(this,
+		this._eventSubscriberController = new EventSubscriberController(this, {},
+			{ eventName: 'd2l-selection-observer-subscribe', controllerId: 'observer' }
+		);
+
+		this._forPropertySubscriberController = new ForPropertySubscriberController(this,
 			{ onUnsubscribe: this._clearSelectionInfo.bind(this) },
-			{ eventName: 'd2l-selection-observer-subscribe', forProperty: 'selectionFor', controllerId: 'observer' }
+			{ forProperty: 'selectionFor', controllerId: 'observer' }
 		);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._subscriberController.hostConnected();
+		this._eventSubscriberController.hostConnected();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._subscriberController.hostDisconnected();
+		this._eventSubscriberController.hostDisconnected();
+		this._forPropertySubscriberController.hostDisconnected();
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		this._subscriberController.hostUpdated(changedProperties);
+		this._forPropertySubscriberController.hostUpdated(changedProperties);
 	}
 
 	_clearSelectionInfo() {
 		this.selectionInfo = new SelectionInfo();
+	}
+
+	_getSelectionProvider() {
+		if (this.selectionFor) {
+			// Selection components currently only support one provider id in selectionFor
+			return this._forPropertySubscriberController.providers[0];
+		} else {
+			return this._eventSubscriberController.provider;
+		}
 	}
 };

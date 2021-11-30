@@ -5,7 +5,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { SubscriberController } from '../../helpers/subscriptionControllers.js';
+import { EventSubscriberController } from '../../helpers/subscriptionControllers.js';
 
 const keyCodes = {
 	SPACE: 32
@@ -62,7 +62,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		this.selected = false;
 		this._indeterminate = false;
 
-		this._subscriberController = new SubscriberController(this,
+		this._subscriberController = new EventSubscriberController(this,
 			{ onSubscribe: () => { this.requestUpdate(); } },
 			{ eventName: 'd2l-selection-input-subscribe', controllerId: 'input' }
 		);
@@ -122,8 +122,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-
-		this._subscriberController.hostUpdated(changedProperties);
 
 		if ((changedProperties.has('selected') && !(changedProperties.get('selected') === undefined && this.selected === false))
 			|| (changedProperties.has('_indeterminate') && !(changedProperties.get('_indeterminate') === undefined && this._indeterminate === false))) {
