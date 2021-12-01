@@ -1,4 +1,3 @@
-/*global forceFocusVisible */
 export function getOpenEvent(page, selector) {
 	return page.$eval(selector, filter => {
 		const content = filter.shadowRoot.querySelector('[dropdown-content]');
@@ -20,7 +19,6 @@ export async function open(page, selector) {
 	await page.$eval(selector, filter => filter.opened = true);
 	return openEvent;
 }
-
 
 export async function show(page, selector, dimensionNum) {
 	const showCompleteEvent = getShowCompleteEvent(page, selector);
