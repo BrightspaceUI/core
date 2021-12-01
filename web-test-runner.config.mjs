@@ -1,7 +1,6 @@
-import { bundlePerformancePlugin } from 'web-test-runner-performance';
 import { defaultReporter } from '@web/test-runner';
-import { esbuildPlugin } from '@web/dev-server-esbuild';
 import { playwrightLauncher } from '@web/test-runner-playwright';
+import { renderPerformancePlugin } from 'web-test-runner-performance';
 
 function getPattern(type) {
 	return `+(components|directives|helpers|mixins|templates)/**/*.${type}.js`;
@@ -32,19 +31,17 @@ export default {
 			nodeResolve: true,
 			testsFinishTimeout: 20000,
 			browsers: [playwrightLauncher({
+				launchOptions: { headless: false },
 				async createPage({ context }) {
 					const page = await context.newPage();
 					await page.emulateMedia({ reducedMotion: 'reduce' });
 					return page;
 				}
 			})],
-			reporters: [
-				defaultReporter({ reportTestResults: true, reportTestProgress: true })
-			],
-			plugins: [
-				bundlePerformancePlugin()
-			],
 		}
+	],
+	plugins: [
+		renderPerformancePlugin(),
 	],
 	testFramework: {
 		config: {
