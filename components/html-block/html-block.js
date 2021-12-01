@@ -5,6 +5,11 @@ import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
 export const htmlBlockContentStyles = css`
+	.d2l-html-block-compact {
+		font-size: 0.8rem;
+		font-weight: 400;
+		line-height: 1.2rem;
+	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
 	}
@@ -49,7 +54,11 @@ export const htmlBlockContentStyles = css`
 	ul, ol {
 		list-style-position: outside;
 		margin: 1em 0;
-		padding-left: 3em;
+		padding-inline-start: 3em;
+	}
+	.d2l-html-block-compact ul,
+	.d2l-html-block-compact ol {
+		padding-inline-start: 1.5em;
 	}
 	ul, ul[type="disc"] {
 		list-style-type: disc;
@@ -95,11 +104,6 @@ export const htmlBlockContentStyles = css`
 	:host([dir="rtl"]) {
 		text-align: right;
 	}
-	:host([dir="rtl"]) ul,
-	:host([dir="rtl"]) ol {
-		padding-left: 0;
-		padding-right: 3em;
-	}
 `;
 
 let renderers;
@@ -120,6 +124,11 @@ class HtmlBlock extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether compact styles should be applied
+			 * @type {Boolean}
+			 */
+			compact: { type: Boolean },
 			/**
 			 * Whether to disable deferred rendering of the user-authored HTML. Do *not* set this
 			 * unless your HTML relies on script executions that may break upon stamping.
@@ -153,6 +162,7 @@ class HtmlBlock extends LitElement {
 
 	constructor() {
 		super();
+		this.compact = false;
 		this.noDeferredRendering = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
@@ -185,7 +195,7 @@ class HtmlBlock extends LitElement {
 
 		if (this._renderContainer) return;
 
-		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered"></div><slot></slot>';
+		this.shadowRoot.innerHTML += `<div class="d2l-html-block-rendered${this.compact ? ' d2l-html-block-compact' : ''}"></div><slot></slot>`;
 
 		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
