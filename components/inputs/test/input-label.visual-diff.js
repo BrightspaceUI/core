@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-label', () => {
 
-	const visualDiff = new VisualDiff('input-label', __dirname);
+	const visualDiff = new VisualDiff('input-label', import.meta.url);
 
 	let browser, page;
 

@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip', () => {
 
-	const visualDiff = new VisualDiff('tooltip', __dirname);
+	const visualDiff = new VisualDiff('tooltip', import.meta.url);
 
 	let browser, page;
 

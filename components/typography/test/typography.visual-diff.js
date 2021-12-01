@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-typography', function() {
 
-	const visualDiff = new VisualDiff('typography', __dirname);
+	const visualDiff = new VisualDiff('typography', import.meta.url);
 
 	let browser, page;
 

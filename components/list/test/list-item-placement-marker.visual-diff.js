@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-list-item-placement-marker', () => {
 
-	const visualDiff = new VisualDiff('list-item-placement-marker', __dirname);
+	const visualDiff = new VisualDiff('list-item-placement-marker', import.meta.url);
 
 	let browser, page;
 

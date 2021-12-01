@@ -5,7 +5,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-card', () => {
 
-	const visualDiff = new VisualDiff('card', __dirname);
+	const visualDiff = new VisualDiff('card', import.meta.url);
 
 	let browser, page;
 

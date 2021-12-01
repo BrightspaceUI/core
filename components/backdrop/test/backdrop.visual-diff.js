@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-backdrop', () => {
 
-	const visualDiff = new VisualDiff('backdrop', __dirname);
+	const visualDiff = new VisualDiff('backdrop', import.meta.url);
 
 	let browser, page;
 

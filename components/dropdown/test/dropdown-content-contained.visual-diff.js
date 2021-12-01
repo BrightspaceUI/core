@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-content-contained', () => {
 
-	const visualDiff = new VisualDiff('dropdown-content-contained', __dirname);
+	const visualDiff = new VisualDiff('dropdown-content-contained', import.meta.url);
 
 	let browser, page;
 

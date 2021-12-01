@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-floating-buttons', () => {
 
-	const visualDiff = new VisualDiff('floating-buttons', __dirname);
+	const visualDiff = new VisualDiff('floating-buttons', import.meta.url);
 
 	let browser, page;
 
