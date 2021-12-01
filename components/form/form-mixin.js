@@ -6,6 +6,7 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
+import { ProviderController } from '../../helpers/subscriptionControllers.js';
 
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
@@ -27,21 +28,25 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 
 		this.trackChanges = false;
 		this._tooltips = new Map();
-		this._validationCustoms = new Set();
 		this._errors = new Map();
+
+		this._validationCustomsController = new ProviderController(this, {},
+			{ eventName: 'd2l-validation-custom-connected' }
+		);
 
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
-		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
+		this._validationCustomsController.hostConnected();
 		window.addEventListener('beforeunload', this._onUnload);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this._validationCustomsController.hostDisconnected();
 		window.removeEventListener('beforeunload', this._onUnload);
 	}
 
@@ -50,6 +55,10 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this.addEventListener('change', this._onFormElementChange);
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
+	}
+
+	getController() {
+		return this._validationCustomsController;
 	}
 
 	// eslint-disable-next-line no-unused-vars
@@ -154,7 +163,7 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		if (isCustomFormElement(ele)) {
 			return ele.validate(showNewErrors);
 		} else if (isNativeFormElement(ele)) {
-			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
+			const customs = Array.from(this._validationCustomsController.subscribers.values()).filter(custom => custom.forElement === ele);
 			const results = await Promise.all(customs.map(custom => custom.validate()));
 			const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 			if (!ele.checkValidity()) {
@@ -169,18 +178,6 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 			return errors;
 		}
 		return [];
-	}
-
-	_validationCustomConnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this._validationCustoms.add(custom);
-
-		const onDisconnect = () => {
-			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
-			this._validationCustoms.delete(custom);
-		};
-		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };

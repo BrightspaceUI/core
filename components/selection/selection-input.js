@@ -1,12 +1,11 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { EventSubscriberController } from '../../helpers/subscriptionControllers.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { EventSubscriberController } from '../../helpers/subscriptionControllers.js';
-
 const keyCodes = {
 	SPACE: 32
 };

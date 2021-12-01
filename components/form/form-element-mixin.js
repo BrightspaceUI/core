@@ -1,5 +1,6 @@
 import { isCustomFormElement } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { ProviderController } from '../../helpers/subscriptionControllers.js';
 
 export class FormElementValidityState {
 
@@ -111,10 +112,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	constructor() {
 		super();
-		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 		this._onFormElementErrorsChange = this._onFormElementErrorsChange.bind(this);
 
-		this._validationCustoms = new Set();
 		this._validity = new FormElementValidityState({});
 		/** @ignore */
 		this.forceInvalid = false;
@@ -130,7 +129,10 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.childErrors = new Map();
 		this._errors = [];
 
-		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this._validationCustomsController = new ProviderController(this, {},
+			{ eventName: 'd2l-validation-custom-connected' }
+		);
+
 		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
@@ -153,6 +155,16 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this._validity;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this._validationCustomsController.hostConnected();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this._validationCustomsController.hostDisconnected();
+	}
+
 	updated(changedProperties) {
 		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
 			let errors = this._errors;
@@ -173,11 +185,15 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		}
 	}
 
+	getController() {
+		return this._validationCustomsController;
+	}
+
 	async requestValidate(showNewErrors = true) {
 		if (this.noValidate) {
 			return [];
 		}
-		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
+		const customs = Array.from(this._validationCustomsController.subscribers.values()).filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 		if (!this.validity.valid) {
@@ -208,14 +224,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this._errors;
 	}
 
-	validationCustomConnected(custom) {
-		this._validationCustoms.add(custom);
-	}
-
-	validationCustomDisconnected(custom) {
-		this._validationCustoms.delete(custom);
-	}
-
 	_onFormElementErrorsChange(e) {
 		e.stopPropagation();
 		const errors = e.detail.errors;
@@ -228,18 +236,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			this.childErrors.set(e.target, errors);
 			this.requestUpdate('childErrors');
 		}
-	}
-
-	_validationCustomConnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this.validationCustomConnected(custom);
-
-		const onDisconnect = () => {
-			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
-			this.validationCustomDisconnected(custom);
-		};
-		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };
