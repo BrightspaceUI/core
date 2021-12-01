@@ -521,7 +521,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					focusable.focus();
+					// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
+					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
 					content.focus();
@@ -1012,7 +1013,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
-				focusable.focus();
+				// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
+				requestAnimationFrame(() => focusable.focus());
 			} else {
 				content.setAttribute('tabindex', '-1');
 				content.focus();
