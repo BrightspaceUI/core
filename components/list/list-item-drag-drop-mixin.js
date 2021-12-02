@@ -264,6 +264,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
+			 * **Drag & drop:** Whether the items can be dropped as nested children
+			 * @type {boolean}
+			 */
+			dropNested: { type: Boolean, attribute: 'drop-nested' },
+			/**
 			 * **Drag & drop:** Text to drag and drop
 			 * @type {string}
 			 */
@@ -274,7 +279,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
-			_dropLocation: { type: Number },
+			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
 			_keyboardActive: { type: Boolean },
@@ -311,6 +316,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				display: grid;
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
+			}
+			:host([_drop-location="7"]) d2l-list-item-generic-layout {
+				background-color: var(--d2l-color-regolith);
 			}
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
@@ -596,10 +604,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDropTargetLowerDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
-		if (this._inBottomArea) {
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, dropLocation.above);
+		if (this.dropNested) {
 			this._inBottomArea = false;
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, moveLocations.nest);
+		} else {
+			if (this._inBottomArea) {
+				const dragState = getDragState();
+				dragState.setActiveDropTarget(this, dropLocation.above);
+				this._inBottomArea = false;
+			}
 		}
 	}
 
@@ -612,10 +626,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDropTargetUpperDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
-		if (this._inTopArea) {
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, dropLocation.below);
+		if (this.dropNested) {
 			this._inTopArea = false;
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, moveLocations.nest);
+		} else {
+			if (this._inTopArea) {
+				const dragState = getDragState();
+				dragState.setActiveDropTarget(this, dropLocation.below);
+				this._inTopArea = false;
+			}
 		}
 	}
 
