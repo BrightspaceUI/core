@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-breadcrumbs', () => {
 
-	const visualDiff = new VisualDiff('breadcrumbs', __dirname);
+	const visualDiff = new VisualDiff('breadcrumbs', import.meta.url);
 
 	let browser, page;
 

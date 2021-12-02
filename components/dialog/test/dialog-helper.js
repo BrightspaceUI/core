@@ -1,4 +1,4 @@
-import oneEvent from '@brightspace-ui/visual-diff/helpers/oneEvent.js';
+import { oneEvent } from '@brightspace-ui/visual-diff';
 
 export async function close(page, selector) {
 	const closeEvent = getCloseEvent(page, selector);

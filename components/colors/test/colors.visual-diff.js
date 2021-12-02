@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('colors', () => {
 
-	const visualDiff = new VisualDiff('colors', __dirname);
+	const visualDiff = new VisualDiff('colors', import.meta.url);
 
 	let browser, page;
 

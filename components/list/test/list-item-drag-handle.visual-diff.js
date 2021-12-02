@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-list-item-drag-handle', () => {
 
-	const visualDiff = new VisualDiff('list-item-drag-handle', __dirname);
+	const visualDiff = new VisualDiff('list-item-drag-handle', import.meta.url);
 
 	let browser, page;
 

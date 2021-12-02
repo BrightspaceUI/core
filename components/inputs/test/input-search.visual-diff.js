@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-search', () => {
 
-	const visualDiff = new VisualDiff('input-search', __dirname);
+	const visualDiff = new VisualDiff('input-search', import.meta.url);
 
 	let browser, page;
 

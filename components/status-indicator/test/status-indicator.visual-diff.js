@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-status-indicator', () => {
 
-	const visualDiff = new VisualDiff('status-indicator', __dirname);
+	const visualDiff = new VisualDiff('status-indicator', import.meta.url);
 
 	let browser, page;
 

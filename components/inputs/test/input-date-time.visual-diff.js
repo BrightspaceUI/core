@@ -35,7 +35,7 @@ async function focusOnInput(page, selector, inputSelector) {
 
 describe('d2l-input-date-time', () => {
 
-	const visualDiff = new VisualDiff('input-date-time', __dirname);
+	const visualDiff = new VisualDiff('input-date-time', import.meta.url);
 
 	let browser, page;
 

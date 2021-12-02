@@ -125,23 +125,23 @@ If you'd like to run the tests locally to help troubleshoot or develop new tests
 
 ```shell
 # Install dependencies locally
-npm install esm mocha puppeteer @brightspace-ui/visual-diff --no-save
+npm install mocha puppeteer @brightspace-ui/visual-diff --no-save
 
 # run visual-diff tests
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm
+npx mocha './**/*.visual-diff.js' -t 10000
 
 # subset of visual-diff tests:
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm -g some-pattern
+npx mocha './**/*.visual-diff.js' -t 10000 -g some-pattern
 
 # update visual-diff goldens
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm --golden
+npx mocha './**/*.visual-diff.js' -t 10000 --golden
 ```
 
 ## Versioning & Releasing
 
 > TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `main`. Read on for more details...
 
-The [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/master/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
+The [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
 
 ### Version Changes
 

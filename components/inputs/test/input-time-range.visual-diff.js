@@ -25,7 +25,7 @@ async function getRect(page, selector, timePickerIndex) {
 
 describe('d2l-input-time-range', () => {
 
-	const visualDiff = new VisualDiff('input-time-range', __dirname);
+	const visualDiff = new VisualDiff('input-time-range', import.meta.url);
 
 	let browser, page;
 

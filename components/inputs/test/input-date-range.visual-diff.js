@@ -25,7 +25,7 @@ async function getRect(page, selector, dateInputNum) {
 
 describe('d2l-input-date-range', () => {
 
-	const visualDiff = new VisualDiff('input-date-range', __dirname);
+	const visualDiff = new VisualDiff('input-date-range', import.meta.url);
 
 	let browser, page;
 

@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-time', () => {
 
-	const visualDiff = new VisualDiff('input-time', __dirname);
+	const visualDiff = new VisualDiff('input-time', import.meta.url);
 
 	let browser, page;
 
