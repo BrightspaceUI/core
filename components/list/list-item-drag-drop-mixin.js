@@ -360,7 +360,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_dispatchListItemsMove(sourceItems, targetItem, moveLocation) {
-		this.dispatchEvent(new CustomEvent('d2l-list-items-move', {
+		const rootList = this._getRootList();
+		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
 			detail: {
 				sourceItems: sourceItems,
 				target: {
