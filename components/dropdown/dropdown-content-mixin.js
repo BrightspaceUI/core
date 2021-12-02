@@ -394,7 +394,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (this.opened) {
 			this.close();
 		} else {
-			this.open(applyFocus);
+			this.open(!this.noAutoFocus && applyFocus);
 		}
 	}
 
@@ -518,11 +518,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			await this.__position();
 			this._showBackdrop = this._useMobileStyling && this.mobileTray;
-
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
+					// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
 					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
@@ -1014,7 +1013,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
-				// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
+				// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
 				requestAnimationFrame(() => focusable.focus());
 			} else {
 				content.setAttribute('tabindex', '-1');
