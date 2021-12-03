@@ -53,7 +53,6 @@ export default {
 			<body>
 				<script src="./tools/resize-observer-test-error-handler.js"></script>
 				<script type="module" src="${testFramework}"></script>
-				<script src="./tools/perf-test-helper.js" type="module"></script>
 			</body>
 		</html>`
 };

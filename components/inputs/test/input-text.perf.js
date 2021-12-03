@@ -1,7 +1,6 @@
 import '../input-text.js';
-import { html, testRenderTime } from 'web-test-runner-performance/browser.js';
-import { expect } from '@open-wc/testing';
-// import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
+import { expect, html } from '@open-wc/testing';
+import { testRenderTime } from 'web-test-runner-performance/browser.js';
 
 describe('d2l-input-text', () => {
 
