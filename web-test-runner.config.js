@@ -31,7 +31,6 @@ export default {
 			nodeResolve: true,
 			testsFinishTimeout: 20000,
 			browsers: [playwrightLauncher({
-				launchOptions: { headless: false },
 				async createPage({ context }) {
 					const page = await context.newPage();
 					await page.emulateMedia({ reducedMotion: 'reduce' });
