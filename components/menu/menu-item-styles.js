@@ -15,9 +15,10 @@ export const menuItemStyles = css`
 		outline: none;
 		width: 100%;
 	}
-	:host(:focus),
+
 	:host(:hover),
-	:host([first]:focus),
+	:host(.focus-visible),
+	:host(.focus-visible[first]),
 	:host([first]:hover) {
 		background-color: var(--d2l-menu-background-color-hover);
 		border-bottom: 1px solid var(--d2l-menu-border-color-hover);
@@ -26,7 +27,7 @@ export const menuItemStyles = css`
 		z-index: 2;
 	}
 
-	:host([disabled]), :host([disabled]:hover), :host([disabled]:focus) {
+	:host([disabled]), :host([disabled]:hover), :host([disabled].focus-visible) {
 		cursor: default;
 		opacity: 0.75;
 	}
@@ -39,7 +40,7 @@ export const menuItemStyles = css`
 		border-top-color: transparent;
 	}
 
-	:host([last]:focus),
+	:host([last].focus-visible),
 	:host([last]:hover) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
