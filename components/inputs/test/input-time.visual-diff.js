@@ -50,12 +50,6 @@ describe('d2l-input-time', () => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
 		});
 
-		/* skipping due to flake
-		it('intially opened', async function() {
-			const rect = await getRect(page, '#opened');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});*/
-
 		it('opened-disabled', async function() {
 			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 			const rect = await visualDiff.getRect(page, '#opened-disabled');
