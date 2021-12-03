@@ -318,7 +318,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				grid-template-rows: 1rem 1fr 1fr 1rem;
 			}
 			:host([_drop-location="7"]) d2l-list-item-generic-layout {
-				background-color: var(--d2l-color-regolith);
+				border-radius: 6px;
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
