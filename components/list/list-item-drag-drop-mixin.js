@@ -466,10 +466,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragEnd(e) {
+
 		const dragState = getDragState();
 		this.dragging = false;
 
-		if (dragState.shouldDrop(e.timeStamp)) {
+		if (e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
 
 			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
 			const shouldDispatchPositionChange = !dragState.dragTargets.find(dragTarget => {
