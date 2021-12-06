@@ -68,6 +68,8 @@
     "ifrau": "^0.39",
     "intl-messageformat": "^7",
     "lit": "^2.0.2",
+    "lit-element": "^3.0.2",
+    "lit-html": "^2.0.2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }

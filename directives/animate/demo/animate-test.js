@@ -5,7 +5,6 @@ import '../../../components/list/list-item.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { hide, show } from '../animate.js';
 
-
 export class AnimateTest extends LitElement {
 
 	static get properties() {
@@ -50,7 +49,6 @@ export class AnimateTest extends LitElement {
 			if (item.state === 'remove') {
 				item.state = 'removed';
 				animateAction = hide();
-				console.log("hide");
 				showItem = true;
 			} else if (item.state === 'new') {
 				item.state = 'existing';
