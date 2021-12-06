@@ -17,7 +17,7 @@ async function getRect(page, id) {
 
 describe('d2l-table', () => {
 
-	const visualDiff = new VisualDiff('table', __dirname);
+	const visualDiff = new VisualDiff('table', import.meta.url);
 
 	let browser, page;
 	before(async() => {

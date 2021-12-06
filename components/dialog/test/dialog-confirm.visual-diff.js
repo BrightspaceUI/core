@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-confirm', () => {
 
-	const visualDiff = new VisualDiff('dialog-confirm', __dirname);
+	const visualDiff = new VisualDiff('dialog-confirm', import.meta.url);
 
 	let browser, page;
 

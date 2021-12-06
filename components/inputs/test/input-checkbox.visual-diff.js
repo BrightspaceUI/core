@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-checkbox', () => {
 
-	const visualDiff = new VisualDiff('input-checkbox', __dirname);
+	const visualDiff = new VisualDiff('input-checkbox', import.meta.url);
 
 	let browser, page;
 

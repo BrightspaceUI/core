@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-icon-custom', () => {
 
-	const visualDiff = new VisualDiff('icon-custom', __dirname);
+	const visualDiff = new VisualDiff('icon-custom', import.meta.url);
 
 	let browser, page;
 

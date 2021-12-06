@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-time', () => {
 
-	const visualDiff = new VisualDiff('input-time', __dirname);
+	const visualDiff = new VisualDiff('input-time', import.meta.url);
 
 	let browser, page;
 
@@ -48,11 +48,6 @@ describe('d2l-input-time', () => {
 
 		after(async() => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
-		});
-
-		it('intially opened', async function() {
-			const rect = await getRect(page, '#opened');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('opened-disabled', async function() {

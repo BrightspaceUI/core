@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-alert-toast', () => {
 
-	const visualDiff = new VisualDiff('alert-toast', __dirname);
+	const visualDiff = new VisualDiff('alert-toast', import.meta.url);
 
 	let browser, page;
 

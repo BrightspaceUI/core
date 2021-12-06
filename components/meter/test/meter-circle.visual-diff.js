@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-meter-circle', () => {
 
-	const visualDiff = new VisualDiff('meter-circle', __dirname);
+	const visualDiff = new VisualDiff('meter-circle', import.meta.url);
 
 	let browser, page;
 

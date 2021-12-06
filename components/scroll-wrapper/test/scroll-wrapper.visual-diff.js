@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-scroll-wrapper', () => {
 
-	const visualDiff = new VisualDiff('scroll-wrapper', __dirname);
+	const visualDiff = new VisualDiff('scroll-wrapper', import.meta.url);
 
 	let browser, page;
 	before(async() => {

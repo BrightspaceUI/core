@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-template-primary-secondary', () => {
-	const visualDiff = new VisualDiff('primary-secondary', __dirname);
+	const visualDiff = new VisualDiff('primary-secondary', import.meta.url);
 
 	let browser, page;
 

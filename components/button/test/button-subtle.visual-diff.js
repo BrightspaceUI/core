@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-button-subtle', () => {
 
-	const visualDiff = new VisualDiff('button-subtle', __dirname);
+	const visualDiff = new VisualDiff('button-subtle', import.meta.url);
 
 	let browser, page;
 

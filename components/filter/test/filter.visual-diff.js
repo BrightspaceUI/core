@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-filter', () => {
 
-	const visualDiff = new VisualDiff('filter', __dirname);
+	const visualDiff = new VisualDiff('filter', import.meta.url);
 
 	let browser, page;
 
@@ -174,7 +174,7 @@ describe('d2l-filter', () => {
 			});
 
 			[
-				'single-set-empty',
+				/*'single-set-empty', // flaky */
 				'single-set-single-selection',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection',

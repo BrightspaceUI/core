@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-fullscreen', () => {
 
-	const visualDiff = new VisualDiff('dialog-fullscreen', __dirname);
+	const visualDiff = new VisualDiff('dialog-fullscreen', import.meta.url);
 
 	let browser, page;
 

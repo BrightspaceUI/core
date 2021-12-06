@@ -1,4 +1,4 @@
-import oneEvent from '@brightspace-ui/visual-diff/helpers/oneEvent.js';
+import { oneEvent } from '@brightspace-ui/visual-diff';
 
 export function getOpenEvent(page, selector) {
 	return oneEvent(page, selector, 'd2l-dropdown-open');

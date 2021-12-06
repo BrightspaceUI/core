@@ -4,21 +4,38 @@ Alerts communicate critical information relating to the state of the system and 
 <!-- docs: demo autoSize:false align:start -->
 ```html
 <script type="module">
-	import '@brightspace-ui/core/components/alert/alert-toast.js';
+  import '@brightspace-ui/core/components/alert/alert-toast.js';
+  import '@brightspace-ui/core/components/button/button.js';
+
+  var alert = document.querySelector('#alert');
+  var alertToast = document.querySelector('#alert-toast');
+  var button = document.querySelector('#open');
+
+  alert.addEventListener('d2l-alert-close', function() {
+    if (!alertToast.open) button.style.display = 'block';
+  });
+  alertToast.addEventListener('d2l-alert-toast-close', function() {
+    if (alert.hasAttribute('hidden')) button.style.display = 'block';
+  });
+
+  button.addEventListener('click', () => {
+    alert.removeAttribute('hidden');
+    alertToast.open = true;
+    button.style.display = 'none';
+  });
 </script>
-<!-- docs: start hidden content -->
 <style>
   d2l-alert-toast {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
 </style>
-<!-- docs: end hidden content -->
 
-<d2l-alert type="default" button-text="Undo" has-close-button>
+<d2l-button id="open" style="align-self:center;display:none;">Show Alerts</d2l-button>
+<d2l-alert id="alert" type="default" button-text="Undo" has-close-button>
 	A message.
 </d2l-alert>
-<d2l-alert-toast type="success" open no-auto-close>
+<d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
 	A message.
 </d2l-alert-toast>
 ```
