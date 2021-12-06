@@ -159,10 +159,12 @@ class ListDemoDragAndDrop extends LitElement {
 
 		await this.requestUpdate();
 
-		requestAnimationFrame(() => {
-			const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
-			newItem.focusDragHandle();
-		});
+		if (e.detail.keyboardActive) {
+			requestAnimationFrame(() => {
+				const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
+				newItem.activateDragHandle();
+			});
+		}
 
 	}
 

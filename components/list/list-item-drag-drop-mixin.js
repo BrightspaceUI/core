@@ -356,7 +356,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 	}
 
-	focusDragHandle() {
+	activateDragHandle() {
 		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
 
@@ -368,10 +368,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
-	_dispatchListItemsMove(sourceItems, targetItem, moveLocation) {
+	_dispatchListItemsMove(sourceItems, targetItem, moveLocation, keyboardActive) {
+		if (!keyboardActive) keyboardActive = false;
 		const rootList = this._getRootList();
 		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
 			detail: {
+				keyboardActive: keyboardActive,
 				sourceItems: sourceItems,
 				target: {
 					item: targetItem,
@@ -386,19 +388,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemFirst(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
-		this._dispatchListItemsMove([this], items[0], moveLocations.above);
+		this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
 	}
 
 	_dispatchMoveListItemLast(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
-		this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below);
+		this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
 	}
 
 	_dispatchMoveListItemNest() {
 		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
-			this._dispatchListItemsMove([this], listItem, moveLocations.nest);
+			this._dispatchListItemsMove([this], listItem, moveLocations.nest, true);
 		}
 	}
 
@@ -408,14 +410,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			const nestedList = listItem._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
-				this._dispatchListItemsMove([this], items[0], moveLocations.above);
+				this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.below);
+				this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
-				this._dispatchListItemsMove([this], parentListItem, moveLocations.below);
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.below, true);
 			}
 		}
 	}
@@ -426,14 +428,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			const nestedList = listItem._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
-				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below);
+				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.above);
+				this._dispatchListItemsMove([this], listItem, moveLocations.above, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
-				this._dispatchListItemsMove([this], parentListItem, moveLocations.above);
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.above, true);
 			}
 		}
 	}
@@ -441,7 +443,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemUnnest() {
 		const listItem = this._getParentListItem();
 		if (listItem) {
-			this._dispatchListItemsMove([this], listItem, moveLocations.below);
+			this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
 		}
 	}
 
@@ -482,7 +484,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._annoucePositionChange(dragState.dragTargets[0].key, dragState.dropTargetKey, dragState.dropLocation);
 			}
 
-			this._dispatchListItemsMove(dragState.dragTargets, dragState.dropTarget, dragState.dropLocation);
+			this._dispatchListItemsMove(dragState.dragTargets, dragState.dropTarget, dragState.dropLocation, false);
 
 		}
 
