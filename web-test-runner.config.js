@@ -1,4 +1,3 @@
-import { defaultReporter } from '@web/test-runner';
 import { playwrightLauncher } from '@web/test-runner-playwright';
 import { renderPerformancePlugin } from 'web-test-runner-performance';
 
@@ -28,8 +27,6 @@ export default {
 			files: getPattern('perf'),
 			concurrency: 1,
 			concurrentBrowsers: 1,
-			nodeResolve: true,
-			testsFinishTimeout: 20000,
 			browsers: [playwrightLauncher({
 				async createPage({ context }) {
 					const page = await context.newPage();
