@@ -2,7 +2,7 @@ import '../input-text.js';
 import { html, testRenderTime } from 'web-test-runner-performance/browser.js';
 import { expect } from '@open-wc/testing';
 
-describe.only('d2l-input-text', () => {
+describe('d2l-input-text', () => {
 
 	it('normal', async() => {
 		const element = html`<d2l-input-text label="label"></d2l-input-text>`;

@@ -1,6 +1,6 @@
 import '../link.js';
-import { expect, html } from '@open-wc/testing';
-import { testRenderTime } from 'web-test-runner-performance/browser.js';
+import { html, testRenderTime } from 'web-test-runner-performance/browser.js';
+import { expect } from '@open-wc/testing';
 
 describe('d2l-link', () => {
 
