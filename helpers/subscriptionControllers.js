@@ -133,22 +133,41 @@ export class ForPropertySubscriberController {
 		});
 	}
 
+	_updateProvider(providerId, elapsedTime) {
+		const providerComponent = this._host.getRootNode().querySelector(`#${cssEscape(providerId)}`);
+		if (!providerComponent && this._callbacks.onError) {
+			if (elapsedTime < 3000) {
+				setTimeout(() => {
+					this._updateProvider(providerId, elapsedTime + 100);
+				}, 100);
+			} else {
+				this._callbacks.onError(providerId);
+			}
+		}
+
+		if (this._providers.get(providerId) === providerComponent) return;
+
+		if (providerComponent) {
+			providerComponent.getController(this._controllerId).subscribe(this._host);
+			this._providers.set(providerId, providerComponent);
+			if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(providerComponent);
+		} else {
+			this._providers.delete(providerId);
+			if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(providerComponent);
+		}
+	}
+
 	_updateProviders() {
 		let providerIds = this._host[this._forPropertyName];
+		if (!providerIds) {
+			// callback for no provider ids?
+			return;
+		}
+
 		if (typeof(providerIds) === 'string') providerIds = [providerIds];
 
 		providerIds.forEach(providerId => {
-			const providerComponent = this._host.getRootNode().querySelector(`#${cssEscape(providerId)}`);
-			if (this._providers.get(providerId) === providerComponent) return;
-
-			if (providerComponent) {
-				providerComponent.getController(this._controllerId).subscribe(this._host);
-				this._providers.set(providerId, providerComponent);
-				if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(providerComponent);
-			} else {
-				this._providers.delete(providerId);
-				if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(providerComponent);
-			}
+			this._updateProvider(providerId, 0);
 		});
 	}
 

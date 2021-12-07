@@ -25,7 +25,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 	get forElement() {
 		if (this.for) {
 			// Validation custom components only support one for element
-			return this._forPropertySubscriberController.providers[0];
+			return this._forPropertySubscriberController.providers.length > 0 ? this._forPropertySubscriberController.providers[0] : null;
 		} else {
 			return this._eventSubscriberController.provider;
 		}
