@@ -135,14 +135,14 @@ describe('d2l-list-item-generic-layout', () => {
 	describe('grid enabling', () => {
 		it('enables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(normalFixture);
-			el._getItems().forEach(item => {
+			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.true;
 			});
 		});
 
 		it('disables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(nonGridFixture);
-			el._getItems().forEach(item => {
+			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.undefined;
 			});
 		});

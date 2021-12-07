@@ -104,17 +104,6 @@ describe('ListItemDragDropMixin', () => {
 			});
 		});
 
-		it('should have the list item go back to normal when dragging ends', async() => {
-			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag-area');
-			dispatchDragEvent(dragArea, 'dragstart');
-			await oneEvent(dragArea, 'dragstart');
-			await element.updateComplete;
-			dispatchDragEvent(dragArea, 'dragend');
-			await oneEvent(dragArea, 'dragend');
-			await element.updateComplete;
-			setDropGrid();
-			expect(dropGrid).to.be.null;
-		});
 	});
 });
 
