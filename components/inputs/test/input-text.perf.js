@@ -6,7 +6,7 @@ describe('d2l-input-text', () => {
 
 	it('normal', async() => {
 		const element = html`<d2l-input-text label="label"></d2l-input-text>`;
-		const result = await testRenderTime(element, { iterations: 100 });
+		const result = await testRenderTime(element, { iterations: 1000 });
 		expect(result.duration).to.be.below(1500);
 	});
 
@@ -16,13 +16,13 @@ describe('d2l-input-text', () => {
 				<span slot="right">right</span>
 				<span slot="after">after</span>
 			</d2l-input-text>`;
-		const result = await testRenderTime(element, { iterations: 100 });
+		const result = await testRenderTime(element, { iterations: 1000 });
 		expect(result.duration).to.be.below(1500);
 	});
 
 	it('unit', async() => {
 		const element = html`<d2l-input-text label="label" unit="%"></d2l-input-text>`;
-		const result = await testRenderTime(element, { iterations: 100 });
+		const result = await testRenderTime(element, { iterations: 1000 });
 		expect(result.duration).to.be.below(1500);
 	});
 

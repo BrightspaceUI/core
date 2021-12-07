@@ -7,8 +7,8 @@ describe('d2l-input-number', () => {
 
 	it('normal', async() => {
 		const element = html`<d2l-input-number label="label" value="18"></d2l-input-number>`;
-		const result = await testRenderTime(element, { iterations: 500 });
-		expect(result.duration).to.be.below(1500);
+		const result = await testRenderTime(element, { iterations: 1000 });
+		expect(result.duration).to.be.below(2000);
 	});
 
 	it('min-max', async() => {
@@ -24,7 +24,7 @@ describe('d2l-input-number', () => {
 	it('integer-only', async() => {
 		const element = html`<d2l-input-number label="label" value="18" max-fraction-digits="0" max="150" min="0"></d2l-input-number>`;
 		const result = await testRenderTime(element, { iterations: 1000 });
-		expect(result.duration).to.be.below(1500);
+		expect(result.duration).to.be.below(2000);
 	});
 	it('after-slot', async() => {
 		const element =
