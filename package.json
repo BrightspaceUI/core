@@ -59,7 +59,8 @@
     "lit-analyzer": "^1",
     "node-sass": "^7",
     "sinon": "^12",
-    "stylelint": "^14"
+    "stylelint": "^14",
+    "web-test-runner-performance": "^0.1.4"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
