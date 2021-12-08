@@ -114,6 +114,7 @@ class List extends SelectionMixin(LitElement) {
 				if (tempItem) return tempItem;
 			}
 		}
+		return null;
 	}
 
 	getListItemCount() {
