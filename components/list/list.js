@@ -53,6 +53,7 @@ class List extends SelectionMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
 		this._listItemChanges = [];

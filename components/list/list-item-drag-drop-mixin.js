@@ -340,8 +340,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._itemDragId = getUniqueId();
+		this.draggable = false;
 		/** @ignore */
 		this.dragging = false;
+		this.dropNested = false;
 	}
 
 	connectedCallback() {
@@ -380,8 +382,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					location: moveLocation
 				}
 			},
-			bubbles: true,
-			composed: true
+			bubbles: true
 		}));
 	}
 
@@ -472,6 +473,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const dragState = getDragState();
 		this.dragging = false;
 
+		// check the dropEffect in case the user cancelled by Escape while dragging ('none' set by browser)
 		if (e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
 
 			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');

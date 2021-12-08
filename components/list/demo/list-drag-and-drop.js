@@ -114,10 +114,7 @@ class ListDemoDragAndDrop extends LitElement {
 	async _handleListItemsMove(e) {
 
 		const sourceListItems = e.detail.sourceItems;
-		if (!sourceListItems || sourceListItems.length === 0) return;
-
 		const target = e.detail.target;
-		if (!target || !target.item) return;
 
 		// helper that gets the array containing item data, the item data, and the index within the array
 		const getItemInfo = (items, key) => {
