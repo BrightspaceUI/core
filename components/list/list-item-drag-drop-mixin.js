@@ -298,6 +298,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 			.d2l-list-item-drag-bottom-marker,
 			.d2l-list-item-drag-top-marker {
+				pointer-events: none;
 				position: absolute;
 				width: 100%;
 				z-index: 1;
