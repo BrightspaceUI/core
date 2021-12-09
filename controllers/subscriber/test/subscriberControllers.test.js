@@ -178,10 +178,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
-			expect(registry._eventSubscribers.subscribers.size).to.equal(1);
-			expect(registry._idSubscribers.subscribers.size).to.equal(1);
-			expect(registry._onSubscribeTargets.length).to.equal(2);
-
 			const newNode = document.createElement('div');
 			registry._eventSubscribers.subscribe(newNode);
 			expect(registry._eventSubscribers.subscribers.size).to.equal(2);
@@ -197,8 +193,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Event and id subscribers are unsubscribed properly and onUnsubscribe is called', async() => {
-			expect(registry._eventSubscribers.subscribers.size).to.equal(1);
-			expect(registry._idSubscribers.subscribers.size).to.equal(1);
 			expect(registry._onUnsubscribeTargets.length).to.equal(0);
 
 			let removed = elem.querySelector('#event');
@@ -217,10 +211,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Subscribers can be unsubscribed manually', () => {
-			expect(registry._eventSubscribers.subscribers.size).to.equal(1);
-			expect(registry._idSubscribers.subscribers.size).to.equal(1);
-			expect(registry._onUnsubscribeTargets.length).to.equal(0);
-
 			let removed = elem.querySelector('#event');
 			registry._eventSubscribers.unsubscribe(removed);
 			expect(registry._eventSubscribers.subscribers.size).to.equal(0);
@@ -236,6 +226,7 @@ describe('SubscriberRegistryController', () => {
 
 		it('Calls to updateSubscribers are debounced', async() => {
 			expect(registry._updateSubscribersCalledWith.length).to.equal(0);
+
 			registry._idSubscribers.updateSubscribers();
 			registry._eventSubscribers.updateSubscribers();
 			registry._eventSubscribers.updateSubscribers();
@@ -275,9 +266,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
-			expect(registry._subscribers.subscribers.size).to.equal(2);
-			expect(registry._onSubscribeTargets.length).to.equal(2);
-
 			const newNode = document.createElement('div');
 			registry._subscribers.subscribe(newNode);
 			expect(registry._subscribers.subscribers.size).to.equal(3);
@@ -287,7 +275,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Event and id subscribers are unsubscribed properly and onUnsubscribe is called', async() => {
-			expect(registry._subscribers.subscribers.size).to.equal(2);
 			expect(registry._onUnsubscribeTargets.length).to.equal(0);
 
 			let removed = elem.querySelector('#event');
@@ -307,9 +294,6 @@ describe('SubscriberRegistryController', () => {
 		});
 
 		it('Subscribers can be unsubscribed manually', () => {
-			expect(registry._subscribers.subscribers.size).to.equal(2);
-			expect(registry._onUnsubscribeTargets.length).to.equal(0);
-
 			let removed = elem.querySelector('#event');
 			registry._subscribers.unsubscribe(removed);
 			expect(registry._subscribers.subscribers.size).to.equal(1);
@@ -326,6 +310,7 @@ describe('SubscriberRegistryController', () => {
 
 		it('Calls to updateSubscribers are debounced', async() => {
 			expect(registry._updateSubscribersCalledWith.length).to.equal(0);
+
 			registry._subscribers.updateSubscribers();
 			registry._subscribers.updateSubscribers();
 			registry._subscribers.updateSubscribers();
@@ -401,12 +386,7 @@ describe('IdSubscriberController', () => {
 			const singleSubscriber = elem.querySelector('#single');
 			const multipleSubscriber = elem.querySelector('#multiple');
 			expect(singleSubscriber._onUnsubscribeRegistryIds.length).to.equal(0);
-			expect(singleSubscriber._subscriberController.registries.length).to.equal(1);
-			expect(singleSubscriber._subscriberController.registries[0]).to.equal(registry1);
 			expect(multipleSubscriber._onUnsubscribeRegistryIds.length).to.equal(0);
-			expect(multipleSubscriber._subscriberController.registries.length).to.equal(2);
-			expect(multipleSubscriber._subscriberController.registries[0]).to.equal(registry1);
-			expect(multipleSubscriber._subscriberController.registries[1]).to.equal(registry2);
 
 			registry1.remove();
 			await singleSubscriber.updateComplete;
@@ -451,8 +431,6 @@ describe('IdSubscriberController', () => {
 			const registry1 = elem.querySelector('#registry-1');
 			const registry2 = elem.querySelector('#registry-2');
 			const singleSubscriber = elem.querySelector('#single');
-			expect(singleSubscriber._onSubscribeRegistries.length).to.equal(1);
-			expect(singleSubscriber._onSubscribeRegistries[0]).to.equal(registry1);
 			expect(singleSubscriber._onUnsubscribeRegistryIds.length).to.equal(0);
 			expect(singleSubscriber._subscriberController.registries.length).to.equal(1);
 			expect(singleSubscriber._subscriberController.registries[0]).to.equal(registry1);
