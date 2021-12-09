@@ -472,7 +472,8 @@ describe('IdSubscriberController', () => {
 
 			expect(singleSubscriber._onSubscribeRegistries.length).to.equal(2);
 			expect(singleSubscriber._onSubscribeRegistries[1]).to.equal(registry2);
-			expect(singleSubscriber._onUnsubscribeRegistryIds.length).to.equal(0); // We don't call onUnsubscribe for an id property change
+			expect(singleSubscriber._onUnsubscribeRegistryIds.length).to.equal(1);
+			expect(singleSubscriber._onUnsubscribeRegistryIds[0]).to.equal('registry-1');
 			expect(singleSubscriber._subscriberController.registries.length).to.equal(1);
 			expect(singleSubscriber._subscriberController.registries[0]).to.equal(registry2);
 			expect(registry1.getController('id').subscribers.has(singleSubscriber)).to.be.false;

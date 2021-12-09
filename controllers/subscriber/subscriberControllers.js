@@ -124,6 +124,7 @@ export class IdSubscriberController {
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registries.forEach(registry => {
 			registry.getController(this._controllerId).unsubscribe(this._host);
+			if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(registry.id);
 		});
 		this._registries = new Map();
 
