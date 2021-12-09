@@ -17,6 +17,11 @@ class List extends SelectionMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Whether to the user can drag multiple items
+			 * @type {boolean}
+			 */
+			dragMultiple: { type: Boolean, attribute: 'drag-multiple' },
+			/**
 			 * Whether to extend the separators beyond the content's edge
 			 * @type {boolean}
 			 */
@@ -48,6 +53,7 @@ class List extends SelectionMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
 		this._listItemChanges = [];
@@ -91,17 +97,37 @@ class List extends SelectionMixin(LitElement) {
 		`;
 	}
 
+	getItems() {
+		const slot = this.shadowRoot.querySelector('slot:not([name])');
+		if (!slot) return [];
+		return slot.assignedNodes({ flatten: true }).filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'rowgroup' || node.role === 'listitem');
+		});
+	}
+
+	getListItemByKey(key) {
+		const items = this.getItems();
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].key === key) return items[i];
+			if (items[i]._selectionProvider) {
+				const tempItem = items[i]._selectionProvider.getListItemByKey(key);
+				if (tempItem) return tempItem;
+			}
+		}
+		return null;
+	}
+
 	getListItemCount() {
-		return this._getItems().length;
+		return this.getItems().length;
 	}
 
 	getListItemIndex(item) {
-		return this._getItems().indexOf(item);
+		return this.getItems().indexOf(item);
 	}
 
 	getSelectedListItems(includeNested) {
 		let selectedItems = [];
-		this._getItems().forEach(item => {
+		this.getItems().forEach(item => {
 			if (item.selected) selectedItems.push(item);
 			if (includeNested && item._selectionProvider) {
 				selectedItems = [...selectedItems, ...item._selectionProvider.getSelectedListItems(includeNested)];
@@ -116,21 +142,13 @@ class List extends SelectionMixin(LitElement) {
 
 		let keys = selectionInfo.keys;
 
-		this._getItems().forEach(item => {
+		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
 			}
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
-	}
-
-	_getItems() {
-		const slot = this.shadowRoot.querySelector('slot:not([name])');
-		if (!slot) return [];
-		return slot.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
-		});
 	}
 
 	_handleKeyDown(e) {

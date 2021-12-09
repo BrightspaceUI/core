@@ -113,16 +113,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		}));
 	}
 
-	_getNestedList() {
-		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
-		let nestedNodes = nestedSlot.assignedNodes();
-		if (nestedNodes.length === 0) {
-			nestedNodes = [...nestedSlot.childNodes];
-		}
-
-		return nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
-	}
-
 	_onCheckboxActionClick(event) {
 		event.preventDefault();
 		if (this.disabled) return;
@@ -138,6 +128,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 				this._selectionProvider.setSelectionForAll(this.selected);
 			}
 		}
+	}
+
+	_onNestedSlotChange() {
+		this._updateNestedSelectionProvider();
 	}
 
 	_onSelectionProviderConnected(e) {

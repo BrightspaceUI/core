@@ -1,23 +1,27 @@
 import { css, html } from 'lit-element/lit-element.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
+import { SelectionInfo } from '../selection/selection-mixin.js';
 
-export const dropLocation = Object.freeze({
+export const moveLocations = Object.freeze({
 	above: 1,
 	below: 2,
 	first: 3,
 	last: 4,
 	shiftDown: 5,
 	shiftUp: 6,
+	nest: 7,
 	void: 0
 });
 
-const dropTargetLeaveDelay = 1000; //ms
+export const dropLocation = moveLocations; // backwards compatibility
+
+const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
 const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
 
@@ -38,20 +42,16 @@ const isDragSupported = () => {
 };
 
 class DragState {
-	constructor(dragTarget) {
-		this._dragTarget = dragTarget;
+	constructor(dragTargets) {
+		this._dragTargets = dragTargets;
 		this._activeDropTarget = null;
 		this._dropTargets = new Map();
 		this._dropLocation = dropLocation.void;
 		this._time = 0;
 	}
 
-	get dragTarget() {
-		return this._dragTarget;
-	}
-
-	get dragTargetKey() {
-		return this._dragTarget && this._dragTarget.key;
+	get dragTargets() {
+		return this._dragTargets;
 	}
 
 	get dropLocation() {
@@ -117,9 +117,9 @@ class DragState {
 
 let dragState = null;
 
-function createDragState(target) {
+function createDragState(targets) {
 	clearDragState();
-	dragState = new DragState(target);
+	dragState = new DragState(targets ? targets : []);
 	return dragState;
 }
 
@@ -264,6 +264,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
+			 * **Drag & drop:** Whether the items can be dropped as nested children
+			 * @type {boolean}
+			 */
+			dropNested: { type: Boolean, attribute: 'drop-nested' },
+			/**
 			 * **Drag & drop:** Text to drag and drop
 			 * @type {string}
 			 */
@@ -274,7 +279,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
-			_dropLocation: { type: Number },
+			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
 			_keyboardActive: { type: Boolean },
@@ -293,6 +298,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 			.d2l-list-item-drag-bottom-marker,
 			.d2l-list-item-drag-top-marker {
+				pointer-events: none;
 				position: absolute;
 				width: 100%;
 				z-index: 1;
@@ -311,16 +317,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				display: grid;
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
-				height: 100%;
-				position: absolute;
-				top: 0;
-				width: 100%;
-				z-index: 100;
+			}
+			:host([_drop-location="7"]) d2l-list-item-generic-layout {
+				border-radius: 6px;
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
 					opacity: 0;
 				}
+				:host([selected]) d2l-list-item-drag-handle,
 				d2l-list-item-drag-handle.d2l-hovering,
 				d2l-list-item-drag-handle.d2l-focusing {
 					opacity: 1;
@@ -335,8 +341,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._itemDragId = getUniqueId();
+		this.draggable = false;
 		/** @ignore */
 		this.dragging = false;
+		this.dropNested = false;
 	}
 
 	connectedCallback() {
@@ -351,12 +359,94 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 	}
 
+	activateDragHandle() {
+		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+	}
+
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
 			detail: new NewPositionEventDetails({ dragTargetKey, dropTargetKey, dropLocation }),
 			bubbles: true
 		}));
+	}
+
+	_dispatchListItemsMove(sourceItems, targetItem, moveLocation, keyboardActive) {
+		if (!keyboardActive) keyboardActive = false;
+		const rootList = this._getRootList();
+		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
+			detail: {
+				keyboardActive: keyboardActive,
+				sourceItems: sourceItems,
+				target: {
+					item: targetItem,
+					location: moveLocation
+				}
+			},
+			bubbles: true
+		}));
+	}
+
+	_dispatchMoveListItemFirst(moveToRoot) {
+		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		const items = list.getItems();
+		this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
+	}
+
+	_dispatchMoveListItemLast(moveToRoot) {
+		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		const items = list.getItems();
+		this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
+	}
+
+	_dispatchMoveListItemNest() {
+		const listItem = this._getPreviousListItemSibling();
+		if (listItem) {
+			this._dispatchListItemsMove([this], listItem, moveLocations.nest, true);
+		}
+	}
+
+	_dispatchMoveListItemNext() {
+		const listItem = this._getNextListItemSibling();
+		if (listItem) {
+			const nestedList = listItem._getNestedList();
+			const items = (nestedList ? nestedList.getItems() : []);
+			if (items.length > 0) {
+				this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
+			} else {
+				this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+			}
+		} else {
+			const parentListItem = this._getParentListItem();
+			if (parentListItem) {
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.below, true);
+			}
+		}
+	}
+
+	_dispatchMoveListItemPrevious() {
+		const listItem = this._getPreviousListItemSibling();
+		if (listItem) {
+			const nestedList = listItem._getNestedList();
+			const items = (nestedList ? nestedList.getItems() : []);
+			if (items.length > 0) {
+				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
+			} else {
+				this._dispatchListItemsMove([this], listItem, moveLocations.above, true);
+			}
+		} else {
+			const parentListItem = this._getParentListItem();
+			if (parentListItem) {
+				this._dispatchListItemsMove([this], parentListItem, moveLocations.above, true);
+			}
+		}
+	}
+
+	_dispatchMoveListItemUnnest() {
+		const listItem = this._getParentListItem();
+		if (listItem) {
+			this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+		}
 	}
 
 	_findListItemFromCoordinates(x, y) {
@@ -380,11 +470,27 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragEnd(e) {
+
 		const dragState = getDragState();
 		this.dragging = false;
-		if (dragState.shouldDrop(e.timeStamp)) {
-			this._annoucePositionChange(dragState.dragTargetKey, dragState.dropTargetKey, dragState.dropLocation);
+
+		// check the dropEffect in case the user cancelled by Escape while dragging ('none' set by browser)
+		if (e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
+
+			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
+			const shouldDispatchPositionChange = !dragState.dragTargets.find(dragTarget => {
+				const dragTargetList = findComposedAncestor(dragTarget, node => node.tagName === 'D2L-LIST');
+				return dragTargetList !== dropTargetList;
+			});
+
+			if (shouldDispatchPositionChange && dragState.dragTargets.length === 1) {
+				this._annoucePositionChange(dragState.dragTargets[0].key, dragState.dropTargetKey, dragState.dropLocation);
+			}
+
+			this._dispatchListItemsMove(dragState.dragTargets, dragState.dropTarget, dragState.dropLocation, false);
+
 		}
+
 		clearDragState();
 	}
 
@@ -399,15 +505,31 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				break;
 			case dragActions.up:
 				this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+				this._dispatchMoveListItemPrevious();
 				break;
 			case dragActions.down:
 				this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+				this._dispatchMoveListItemNext();
+				break;
+			case dragActions.nest:
+				this._dispatchMoveListItemNest();
+				break;
+			case dragActions.unnest:
+				this._dispatchMoveListItemUnnest();
 				break;
 			case dragActions.first:
 				this._annoucePositionChange(this.key, null, dropLocation.first);
+				this._dispatchMoveListItemFirst();
+				break;
+			case dragActions.rootFirst:
+				this._dispatchMoveListItemFirst(true);
 				break;
 			case dragActions.last:
 				this._annoucePositionChange(this.key, null, dropLocation.last);
+				this._dispatchMoveListItemLast();
+				break;
+			case dragActions.rootLast:
+				this._dispatchMoveListItemLast(true);
 				break;
 			default:
 				break;
@@ -427,13 +549,32 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		// Legacy-Edge doesn't support setDragImage. Experience is not degraded for Legacy-Edge by doing this fix.
-		if (e.dataTransfer.setDragImage) {
-			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
-			e.dataTransfer.setDragImage(nodeImage, 50, 50);
-		}
+		const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+		e.dataTransfer.setDragImage(nodeImage, 50, 50);
 
-		createDragState(this);
+		const rootList = this._getRootList(this);
+
+		// getSelectionInfo(false) is fast so we can quickly check the state
+		if (!rootList.dragMultiple || rootList.getSelectionInfo(false).state === SelectionInfo.states.none) {
+			createDragState([this]);
+		} else {
+
+			// get the seelcted items, but do not include selected items of selected items
+			const getDragTargets = list => {
+				let dragTargets = [];
+				list.getItems().forEach(item => {
+					if (item.selected || item === this) {
+						dragTargets.push(item);
+					} else if (item._selectionProvider) {
+						dragTargets = [...dragTargets, ...getDragTargets(item._selectionProvider)];
+					}
+				});
+				return dragTargets;
+			};
+			const dragTargets = getDragTargets(rootList);
+
+			createDragState(dragTargets);
+		}
 
 		setTimeout(() => {
 			this.dragging = true;
@@ -461,35 +602,47 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		dragState.setActiveDropTarget(this, dragState.dropLocation);
 	}
 
-	_onDropTargetBottomDrag(e) {
+	_onDropTargetBottomDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		const dragState = getDragState();
 		dragState.setActiveDropTarget(this, dropLocation.below);
 		this._inBottomArea = true;
 	}
 
-	_onDropTargetDragEnter(e) {
+	_onDropTargetLowerDragEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		if (this.dropNested) {
+			this._inBottomArea = false;
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, moveLocations.nest);
+		} else {
+			if (this._inBottomArea) {
+				const dragState = getDragState();
+				dragState.setActiveDropTarget(this, dropLocation.above);
+				this._inBottomArea = false;
+			}
+		}
+	}
+
+	_onDropTargetTopDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		const dragState = getDragState();
 		dragState.setActiveDropTarget(this, dropLocation.above);
 		this._inTopArea = true;
 	}
 
-	_onDropTargetLowerDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		if (this._inBottomArea) {
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, dropLocation.above);
-			this._inBottomArea = false;
-		}
-	}
-
 	_onDropTargetUpperDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
-		if (this._inTopArea) {
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, dropLocation.below);
+		if (this.dropNested) {
 			this._inTopArea = false;
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, moveLocations.nest);
+		} else {
+			if (this._inTopArea) {
+				const dragState = getDragState();
+				dragState.setActiveDropTarget(this, dropLocation.below);
+				this._inTopArea = false;
+			}
 		}
 	}
 
@@ -504,9 +657,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
-		if (this === dragState.dragTarget) {
-			return;
-		}
+		if (this === dragState.dragTarget) return;
+
+		// check if any of the drag targets are ancestors of the drop target
+		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
+			return isComposedAncestor(dragTarget, this);
+		});
+		if (invalidDropTarget) return;
+
 		dragState.addDropTarget(this);
 		this._draggingOver = true;
 		e.dataTransfer.dropEffect = 'move';
@@ -635,11 +793,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_renderDropTarget(templateMethod) {
 		templateMethod = templateMethod || (DropTarget => DropTarget);
 		return this.draggable && this._draggingOver ? templateMethod(html`
-			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
-				<div @dragenter="${this._onDropTargetDragEnter}"></div>
+			<div class="d2l-list-item-drag-drop-grid" slot="drop-target" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
+				<div @dragenter="${this._onDropTargetTopDragEnter}"></div>
 				<div @dragenter="${this._onDropTargetUpperDragEnter}"></div>
 				<div @dragenter="${this._onDropTargetLowerDragEnter}"></div>
-				<div @dragenter="${this._onDropTargetBottomDrag}"></div>
+				<div @dragenter="${this._onDropTargetBottomDragEnter}"></div>
 			</div>
 		`) : nothing;
 	}

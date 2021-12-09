@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -301,6 +302,52 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		});
 	}
 
+	_getNestedList() {
+		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
+		let nestedNodes = nestedSlot.assignedNodes();
+		if (nestedNodes.length === 0) {
+			nestedNodes = [...nestedSlot.childNodes];
+		}
+
+		return nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
+	}
+
+	_getNextListItemSibling() {
+		let nextElement = this.nextElementSibling;
+		while (nextElement) {
+			if (this._isListItem(nextElement)) return nextElement;
+			nextElement = nextElement.nextElementSibling;
+		}
+	}
+
+	_getParentListItem() {
+		const parentListItem = findComposedAncestor(this.parentNode, node => this._isListItem(node));
+		return parentListItem;
+	}
+
+	_getPreviousListItemSibling() {
+		let previousElement = this.previousElementSibling;
+		while (previousElement) {
+			if (this._isListItem(previousElement)) return previousElement;
+			previousElement = previousElement.previousElementSibling;
+		}
+	}
+
+	_getRootList(node) {
+		if (!node) node = this;
+		let rootList;
+		while (node) {
+			if (node.tagName === 'D2L-LIST') rootList = node;
+			node = getComposedParent(node);
+		}
+		return rootList;
+	}
+
+	_isListItem(node) {
+		if (!node) node = this;
+		return node.role === 'rowgroup' || node.role === 'listitem';
+	}
+
 	_onFocusIn() {
 		this._focusing = true;
 	}
@@ -341,18 +388,18 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-focusing': this._focusing,
 			'd2l-hovering': this._hovering,
+			'd2l-dragging-over': this._draggingOver
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
 			'd2l-hovering': this._hoveringPrimaryAction,
-			'd2l-focusing': this._focusingPrimaryAction,
+			'd2l-focusing': this._focusingPrimaryAction
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout
 					@focusin="${this._onFocusIn}"
@@ -361,6 +408,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					data-breakpoint="${this._breakpoint}"
 					data-separators="${ifDefined(this._separators)}"
 					?grid-active="${this.role === 'rowgroup'}">
+					${this._renderDropTarget()}
 					${this._renderDragHandle(this._renderOutsideControl)}
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
@@ -391,7 +439,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
 					<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-						<slot name="nested">${nested}</slot>
+						<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>

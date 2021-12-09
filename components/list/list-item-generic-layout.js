@@ -67,6 +67,17 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				grid-row: nested-start / nested-end;
 			}
+			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
+				z-index: 6;
+			}
+
+			::slotted([slot="drop-target"]) {
+				height: 100%;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 5;
+			}
 
 			::slotted([slot="outside-control"]),
 			::slotted([slot="control"]),
@@ -115,7 +126,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				z-index: 3;
 			}
-
 		`;
 	}
 
@@ -148,6 +158,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<slot name="drop-target"></slot>
 			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
