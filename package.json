@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.210.0",
+  "version": "1.210.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -59,7 +59,8 @@
     "lit-analyzer": "^1",
     "node-sass": "^7",
     "sinon": "^12",
-    "stylelint": "^14"
+    "stylelint": "^14",
+    "web-test-runner-performance": "^0.1.4"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
