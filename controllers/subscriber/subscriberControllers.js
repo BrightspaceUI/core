@@ -144,8 +144,7 @@ export class IdSubscriberController {
 		let registryIds = this._host[this._idPropertyName];
 		if (!registryIds) return;
 
-		if (typeof(registryIds) === 'string') registryIds = [registryIds];
-
+		registryIds = registryIds.split(' ');
 		registryIds.forEach(registryId => {
 			this._updateRegistry(registryId, 0);
 		});

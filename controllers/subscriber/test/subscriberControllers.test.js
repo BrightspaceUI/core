@@ -117,16 +117,7 @@ const idSubscriber = defineCE(
 	class extends LitElement {
 		static get properties() {
 			return {
-				for: {
-					converter: {
-						fromAttribute: (value) => {
-							return value.split(' ');
-						},
-						toAttribute: (value) => {
-							return value.join(' ');
-						}
-					}
-				}
+				for: { type: String }
 			};
 		}
 		constructor() {
