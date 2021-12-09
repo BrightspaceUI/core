@@ -252,6 +252,7 @@ describe('SubscriberRegistryController', () => {
 			registry._idSubscribers.updateSubscribers();
 			registry._eventSubscribers.updateSubscribers();
 			await nextFrame();
+			await nextFrame();
 			expect(registry._updateSubscribersCalledWith.length).to.equal(2);
 			expect(registry._updateSubscribersCalledWith[0]).to.equal(registry._idSubscribers.subscribers);
 			expect(registry._updateSubscribersCalledWith[1]).to.equal(registry._eventSubscribers.subscribers);
