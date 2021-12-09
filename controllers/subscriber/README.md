@@ -9,40 +9,40 @@ Create an instance of the `SubscriberRegistryController` in the component that w
 ```js
 import { SubscriberRegistryController } from '@brightspace-ui/core/controllers/subscriber/subscriberControllers.js';
 
-class InterestingFactSubscription extends LitElement {
+class CableSubscription extends LitElement {
 	constructor() {
 		super();
-		this._catFactSubscribers = new SubscriberRegistryController(this,
-			{ onSubscribe: this._sendCatsAreBestWelcome.bind(this), updateSubscribers: this._sendCatFact.bind(this) },
-			{ eventName: 'd2l-interesting-fact-subscribe-cat' }
+		this._sportsSubscribers = new SubscriberRegistryController(this,
+			{ onSubscribe: this._unlockSportsChannels.bind(this) },
+			{ eventName: 'd2l-channels-subscribe-sports' }
 		);
 
-		this._dogFactSubscribers = new SubscriberRegistryController(this, {},
-			{ updateSubscribers: this._sendDogFact.bind(this) },
-			{ eventName: 'd2l-interesting-fact-subscribe-dog' }
+		this._movieSubscribers = new SubscriberRegistryController(this, {},
+			{ onSubscribe: this._unlockMovieChannels.bind(this), updateSubscribers: this._sendMovieGuide.bind(this) },
+			{ eventName: 'd2l-channels-subscribe-movies' }
 		);
 
 		// This controller only supports registering by id - no event is needed
-		this._generalFactSubscribers = new SubscriberRegistryController(this,
-			{ updateSubscribers: this._sendGeneralFact.bind(this) }, {});
+		this._kidsChannelSubscribers = new SubscriberRegistryController(this,
+			{ onSubscribe: this._unlockKidsChannels.bind(this) }, {});
 	}
 
 	getController(controllerId) {
-	 	if (controllerId === 'cat') {
-			return this._catFactSubscribers;
-		} else if (controllerId === 'dog') {
-			return this._selectablesController;
-		} else if (controllerId === 'general') {
-			return this._generalFactSubscribers;
+		if (controllerId === 'sports') {
+			return this._sportsSubscribers;
+		} else if (controllerId === 'movies') {
+			return this._movieSubscribers;
+		} else if (controllerId === 'kids') {
+			return this._kidsChannelSubscribers;
 		}
 	}
 
-	_sendCatFact(subscribers) {
-		subscribers.forEach(subscriber => subscriber.catFact = 'A house cat is genetically 95.6% tiger.');
+	_sendMovieGuide(subscribers) {
+		subscribers.forEach(subscriber => subscriber.updateGuide(new MovieGuide(new Date().getMonth())));
 	}
 
-	_sendGeneralFact(subscribers) {
-		subscribers.forEach(subscriber => subscriber.setFact('Like fingerprints, everyone\'s tongue print is different.'));
+	_unlockMovieChannels(subscriber) {
+		subscriber.addChannels([330, 331, 332, 333, 334, 335]);
 	}
 
 	...
@@ -60,66 +60,64 @@ Once this has been set up, components can subscribe to particular registries two
 Like the `SubscriberRegistryController`, these `*subscriberController`s take optional callbacks to throw at different points in the subscription process.
 
 ```js
-import { EventSubscriberController, ForPropertySubscriberController } from '@brightspace-ui/core/controllers/subscriber/subscriberControllers.js';
+import { EventSubscriberController, IdSubscriberController } from '@brightspace-ui/core/controllers/subscriber/subscriberControllers.js';
 
-class AnimalFactsUI extends LitElement {
+class GeneralViewer extends LitElement {
 	static get properties() {
 		return {
-			catFact: { type: String },
-			dogFact: { type: String }
+			_subscribedChannels: { type: Object }
 		};
 	}
 
 	constructor() {
 		super();
-		this._catSubscriberController = new EventSubscriberController(this,
-			{ onSubscribe: this._catsRejoice.bind(this) }
-			{ eventName: 'd2l-interesting-fact-subscribe-cat', controllerId: 'cat' }
+		this._subscribedChannels = new Set();
+	
+		this._sportsSubscription = new EventSubscriberController(this,
+			{ onError: this._onSportsError.bind(this) }
+			{ eventName: 'd2l-channels-subscribe-sports', controllerId: 'sports' }
 		);
 
-		this._dogSubscriberController = new EventSubscriberController(this, {},
-			{ eventName: 'd2l-interesting-fact-subscribe-dog', controllerId: 'dog' }
+		this._movieSubscription = new EventSubscriberController(this, {},
+			{ eventName: 'd2l-channels-subscribe-movies', controllerId: 'movies' }
 		);
 	}
 
-	render() {
-		return html`
-			<p>Cat Fact: ${this.catFact}</p>
-			<p>Dog Fact: ${this.dogFact}</p>
-		`;
+	addChannels(channels) {
+		channels.forEach(channel => this._subscribedChannels.add(channel));
+	}
+
+	_onSportsError() {
+		throw new Error('Where are the sports?');
 	}
 
 	...
 }
 
-class GeneralFactsUI extends LitElement {
+class YoungerViewer extends LitElement {
 	static get properties() {
 		return {
 			for: { type: String },
-			_fact: { type: String }
+			_subscribedChannels: { type: Object }
 		};
 	}
 
 	constructor() {
 		super();
-		this._generalSubscriberController = new IdSubscriberController(this,
-			{ onError: this._onError.bind(this) },
-			{ idPropertyName: 'for', controllerId: 'general' }
+		this._subscribedChannels = new Set();
+
+		this._kidsSubscription = new IdSubscriberController(this,
+			{ onSubscribe: this._onSubscribe.bind(this) },
+			{ idPropertyName: 'for', controllerId: 'kids' }
 		);
 	}
 
-	render() {
-		return html`
-			<p>Did you know? ${this._fact}</p>
-		`;
+	addChannels(channels) {
+		channels.forEach(channel => this._subscribedChannels.add(channel));
 	}
 
-	setFact(fact) {
-		this._fact = fact;
-	}
-
-	_onError() {
-		throw new Error('We need facts!');
+	_onSubscribe(cableProviderId) {
+		console.log(`Subscribed with ${cableProviderId} successfully.`);
 	}
 
 	...
@@ -128,10 +126,10 @@ class GeneralFactsUI extends LitElement {
 
 An example of what this could look like altogether:
 ```html
-<interesting-fact-subscription id="facts">
-	<animal-facts-ui></animal-facts-ui>
-</interesting-fact-subscription>
-<general-facts-ui for="facts"></general-facts-ui>
+<cable-subscription id="rogers">
+	<general-viewer></general-viewer>
+</cable-subscription>
+<younger-viewer for="rogers"></younger-viewer>
 ```
 
 NOTE: Until we are on Lit 2, the controller lifecycle events will need to be manually called:
