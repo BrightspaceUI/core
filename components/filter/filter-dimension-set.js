@@ -38,7 +38,12 @@ class FilterDimensionSet extends LitElement {
 			 * REQUIRED: The text that is displayed for the dimension title
 			 * @type {string}
 			 */
-			text: { type: String }
+			text: { type: String },
+			/**
+			 * Whether to hide the dimension in the text used by filter info subscribers
+			 * @type {boolean}
+			 */
+			valueOnlyForSubscribers: { type: Boolean, attribute: 'value-only-for-subscribers' }
 		};
 	}
 
@@ -49,6 +54,7 @@ class FilterDimensionSet extends LitElement {
 		this.selectAll = false;
 		this.selectionSingle = false;
 		this.text = '';
+		this.valueOnlyForSubscribers = false;
 		this._slot = null;
 	}
 

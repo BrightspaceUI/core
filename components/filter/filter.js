@@ -19,6 +19,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FilterInfoProviderMixin } from './filter-info-provider-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -36,7 +37,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
-class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Filter extends LocalizeCoreElement(RtlMixin(FilterInfoProviderMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -210,6 +211,26 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			</d2l-dropdown-button-subtle>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
+	}
+
+	focus() {
+		const opener = this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		if (opener) opener.focus();
+	}
+
+	requestFilterClearAll() {
+		this._handleClearAll();
+	}
+
+	requestFilterValueClear(key) {
+		const keys = key.split(' ');
+		const dimension = this._dimensions.find(dimension => dimension.key === keys[0]);
+
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				this._performChangeSetDimension(dimension, keys[1], false);
+				break;
+		}
 	}
 
 	_buildDimension(dimension, singleDimension) {
@@ -423,6 +444,27 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 	}
 
+	_getActiveFilters() {
+		const activeFilters = [];
+
+		this._dimensions.forEach(dimension => {
+			switch (dimension.type) {
+				case 'd2l-filter-dimension-set': {
+					dimension.values.forEach(value => {
+						if (value.selected) {
+							const key = `${dimension.key} ${value.key}`;
+							const text = dimension.valueOnlyForSubscribers ? value.text : this.localize('components.filter.activeFilterInfo', { filterName: dimension.text, activeFilter: value.text });
+							activeFilters.push({ key: key, text: text });
+						}
+					});
+					break;
+				}
+			}
+		});
+
+		return activeFilters;
+	}
+
 	_getSlottedNodes(slot) {
 		const dimensionTypes = ['d2l-filter-dimension-set'];
 		const nodes = slot.assignedNodes({ flatten: true });
@@ -433,20 +475,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimensionKey = e.target.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
-		const value = dimension.values.find(value => value.key === valueKey);
 		const selected = e.detail.selected;
 
-		value.selected = selected;
-
-		if (selected) {
-			dimension.appliedCount++;
-			this._totalAppliedCount++;
-		} else {
-			dimension.appliedCount--;
-			this._totalAppliedCount--;
-		}
-
-		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
+		this._performChangeSetDimension(dimension, valueKey, selected);
 	}
 
 	_handleClear() {
@@ -455,6 +486,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
+
+		this.getController().updateSubscribers();
 
 		if (!this._activeDimensionKey) {
 			announce(this.localize('components.filter.clearAnnounceSingle'));
@@ -474,6 +507,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		this._dispatchChangeEventNow(true);
 		this.requestUpdate();
+
+		this.getController().updateSubscribers();
 
 		announce(this.localize('components.filter.clearAllAnnounce'));
 	}
@@ -503,9 +538,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					dimension.appliedCount--;
 					this._totalAppliedCount--;
 				}
+				this.getController().updateSubscribers();
 			} else if (prop === 'values') {
 				if (dimension.searchValue) shouldSearch = true;
 				shouldRecount = true;
+				this.getController().updateSubscribers();
 			}
 		});
 
@@ -600,6 +637,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.valueOnlyForSubscribers = dimension.valueOnlyForSubscribers;
 					const values = dimension._getValues();
 					info.values = values;
 					break;
@@ -610,6 +648,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._setFilterCounts();
+		this.getController().updateSubscribers();
 	}
 
 	_isDimensionEmpty(dimension) {
@@ -619,6 +658,23 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		return false;
+	}
+
+	_performChangeSetDimension(dimension, valueKey, selected) {
+		const value = dimension.values.find(value => value.key === valueKey);
+
+		value.selected = selected;
+
+		if (selected) {
+			dimension.appliedCount++;
+			this._totalAppliedCount++;
+		} else {
+			dimension.appliedCount--;
+			this._totalAppliedCount--;
+		}
+
+		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
+		this.getController().updateSubscribers();
 	}
 
 	_performDimensionClear(dimension) {
