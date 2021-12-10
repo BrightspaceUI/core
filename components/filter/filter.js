@@ -212,6 +212,25 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
+	focus() {
+		const opener = this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		if (opener) opener.focus();
+	}
+
+	requestFilterClearAll() {
+		this._handleClearAll();
+	}
+
+	requestFilterValueClear(keyObject) {
+		const dimension = this._dimensions.find(dimension => dimension.key === keyObject.dimension);
+
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				this._performChangeSetDimension(dimension, keyObject.value, false);
+				break;
+		}
+	}
+
 	_buildDimension(dimension, singleDimension) {
 		let dimensionHTML;
 		switch (dimension.type) {
@@ -433,20 +452,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimensionKey = e.target.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
-		const value = dimension.values.find(value => value.key === valueKey);
 		const selected = e.detail.selected;
 
-		value.selected = selected;
-
-		if (selected) {
-			dimension.appliedCount++;
-			this._totalAppliedCount++;
-		} else {
-			dimension.appliedCount--;
-			this._totalAppliedCount--;
-		}
-
-		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
+		this._performChangeSetDimension(dimension, valueKey, selected);
 	}
 
 	_handleClear() {
@@ -619,6 +627,22 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		return false;
+	}
+
+	_performChangeSetDimension(dimension, valueKey, selected) {
+		const value = dimension.values.find(value => value.key === valueKey);
+		if (value.selected === selected) return;
+		value.selected = selected;
+
+		if (selected) {
+			dimension.appliedCount++;
+			this._totalAppliedCount++;
+		} else {
+			dimension.appliedCount--;
+			this._totalAppliedCount--;
+		}
+
+		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
 	}
 
 	_performDimensionClear(dimension) {
