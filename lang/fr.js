@@ -9,6 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Fermer cette boîte de dialogue",
 	"components.dropdown.close": "Fermer",
+	"components.filter.activeFilterInfo": "{filterName}: {activeFilter}",
 	"components.filter.clear": "Effacer",
 	"components.filter.clearAll": "Effacer tout",
 	"components.filter.clearAllAnnounce": "Effacement de tous les filtres en cours",

@@ -9,6 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "이 대화 상자 닫기",
 	"components.dropdown.close": "닫기",
+	"components.filter.activeFilterInfo": "{filterName}: {activeFilter}",
 	"components.filter.clear": "지우기",
 	"components.filter.clearAll": "모두 지우기",
 	"components.filter.clearAllAnnounce": "모든 필터 지우기",
