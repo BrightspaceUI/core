@@ -2,7 +2,7 @@ import { playwrightLauncher } from '@web/test-runner-playwright';
 import { renderPerformancePlugin } from 'web-test-runner-performance';
 
 function getPattern(type) {
-	return `+(components|directives|helpers|mixins|templates)/**/*.${type}.js`;
+	return `+(components|controllers|directives|helpers|mixins|templates)/**/*.${type}.js`;
 }
 
 export default {
