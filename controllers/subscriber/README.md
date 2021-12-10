@@ -107,7 +107,7 @@ class YoungerViewer extends LitElement {
 		this._subscribedChannels = new Set();
 
 		this._kidsSubscription = new IdSubscriberController(this,
-			{ onSubscribe: this._onSubscribe.bind(this) },
+			{ onSubscribe: this._onSubscribe.bind(this), onUnsubscribe: this._onUnsubscribe.bind(this) },
 			{ idPropertyName: 'for', controllerId: 'kids' }
 		);
 	}
@@ -116,8 +116,12 @@ class YoungerViewer extends LitElement {
 		channels.forEach(channel => this._subscribedChannels.add(channel));
 	}
 
-	_onSubscribe(cableProviderId) {
-		console.log(`Subscribed with ${cableProviderId} successfully.`);
+	_onSubscribe(cableProvider) {
+		console.log(`Subscribed with ${cableProvider.id} successfully.`);
+	}
+
+	_onUnsubscribe(cableProviderId) {
+		console.log(`Looks like ${cableProviderId} is having an outage again.`);
 	}
 
 	...
