@@ -9,6 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number} +",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
 	"components.dropdown.close": "Sluiten",
+	"components.filter.activeFilterText": "{filterName}: {activeFilter}",
 	"components.filter.clear": "Wissen",
 	"components.filter.clearAll": "Alles wissen",
 	"components.filter.clearAllAnnounce": "Alle filters wissen",

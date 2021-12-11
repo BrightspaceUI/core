@@ -9,6 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
 	"components.dropdown.close": "Kapat",
+	"components.filter.activeFilterText": "{filterName}: {activeFilter}",
 	"components.filter.clear": "Temizle",
 	"components.filter.clearAll": "Tümünü Temizle",
 	"components.filter.clearAllAnnounce": "Tüm filtreler temizleniyor",
