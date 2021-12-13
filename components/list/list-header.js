@@ -7,6 +7,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A header for list components containing select-all, etc.
+ * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
 class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 

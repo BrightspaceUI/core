@@ -264,7 +264,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
-			 * **Drag & drop:** Whether the items can be dropped as nested children
+			 * **Drag & drop:** Whether nested items can be dropped on this item
 			 * @type {boolean}
 			 */
 			dropNested: { type: Boolean, attribute: 'drop-nested' },
@@ -374,6 +374,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchListItemsMove(sourceItems, targetItem, moveLocation, keyboardActive) {
 		if (!keyboardActive) keyboardActive = false;
 		const rootList = this._getRootList();
+		/** @ignore */
 		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
 			detail: {
 				keyboardActive: keyboardActive,

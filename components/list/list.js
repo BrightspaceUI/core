@@ -10,12 +10,20 @@ export const listSelectionStates = SelectionInfo.states;
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
- * @slot - List content (e.g., `listitem`s)
+ * @slot - Slot for list items (ex. `d2l-list-item`, `d2l-list-item-button`, or custom items)
+ * @slot header - Slot for `d2l-list-header` to be rendered above the list
+ * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
 class List extends SelectionMixin(LitElement) {
 
 	static get properties() {
 		return {
+			 /**
+			 * Not publicly available yet. Whether the user can drag multiple items
+			 * @type {boolean}
+ 			 * @ignore
+ 			 */
+			dragMultiple: { type: Boolean, reflect: true, attribute: 'drag-multiple' },
 			/**
 			 * Whether to the user can drag multiple items
 			 * @type {boolean}
