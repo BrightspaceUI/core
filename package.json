@@ -48,10 +48,10 @@
     "@open-wc/testing": "^2",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
-    "@web/test-runner-playwright": "^0.8.8",
+    "@web/test-runner-playwright": "^0.8",
     "axe-core": "^4",
     "chalk": "^5",
-    "eslint": "^7",
+    "eslint": "^8",
     "eslint-config-brightspace": "^0.16",
     "eslint-plugin-html": "^6",
     "eslint-plugin-import": "^2",
@@ -61,7 +61,7 @@
     "node-sass": "^7",
     "sinon": "^12",
     "stylelint": "^14",
-    "web-test-runner-performance": "^0.1.4"
+    "web-test-runner-performance": "^0.1"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
@@ -71,7 +71,7 @@
     "ifrau": "^0.39",
     "intl-messageformat": "^7",
     "lit-element": "^2",
-    "lit-html": "^1.4.1",
+    "lit-html": "^1",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }
