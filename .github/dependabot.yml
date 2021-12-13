@@ -7,5 +7,3 @@ updates:
     ignore:
       - dependency-name: "@formatjs/intl-pluralrules"
       - dependency-name: "intl-messageformat"
-        # mocha needs to be < 8.1, may be fixed but waiting for release
-      - dependency-name: "mocha"
