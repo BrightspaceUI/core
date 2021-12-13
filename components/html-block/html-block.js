@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
-import { HtmlAttributeObserverController } from '../../helpers/htmlAttributeObserverController.js';
+import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
