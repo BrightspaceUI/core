@@ -96,7 +96,7 @@ class ListDemoDragAndDrop extends LitElement {
 							action-href="http://www.d2l.com"
 							draggable
 							drag-handle-text="${item.primaryText}"
-							drop-nested="${ifDefined(item.dropNested ? item.dropNested : undefined)}"
+							?drop-nested="${item.dropNested}"
 							key="${item.key}"
 							label="${item.primaryText}"
 							selectable>
