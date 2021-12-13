@@ -17,6 +17,7 @@ jobs:
           persist-credentials: false
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
+          node-version-file: .nvmrc
           cache: 'npm'
       - name: Install dependencies
         run: |
