@@ -13,8 +13,7 @@ class ListItem extends ListItemLinkMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Address of item link if navigable (deprecated, use action-href instead)
-			 * @ignore
+			 * Address of item link if navigable
 			 * @type {string}
 			 */
 			href: { type: String }
