@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.211.0",
+  "version": "1.213.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -14,7 +14,7 @@
     "build": "npm run build:clean && npm run build:icons && npm run build:sass",
     "lint": "npm run lint:eslint && npm run lint:style && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
-    "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
+    "lint:lit": "lit-analyzer \"{components,controllers,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
     "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --node-resolve --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe",
@@ -26,6 +26,7 @@
   "files": [
     "custom-elements.json",
     "/components",
+    "/controllers",
     "/directives",
     "/generated",
     "/helpers",
@@ -47,10 +48,10 @@
     "@open-wc/testing": "^2",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
-    "@web/test-runner-playwright": "^0.8.8",
+    "@web/test-runner-playwright": "^0.8",
     "axe-core": "^4",
     "chalk": "^5",
-    "eslint": "^7",
+    "eslint": "^8",
     "eslint-config-brightspace": "^0.16",
     "eslint-plugin-html": "^6",
     "eslint-plugin-import": "^2",
@@ -60,7 +61,7 @@
     "node-sass": "^7",
     "sinon": "^12",
     "stylelint": "^14",
-    "web-test-runner-performance": "^0.1.4"
+    "web-test-runner-performance": "^0.1"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
@@ -70,7 +71,7 @@
     "ifrau": "^0.39",
     "intl-messageformat": "^7",
     "lit-element": "^2",
-    "lit-html": "^1.4.1",
+    "lit-html": "^1",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }

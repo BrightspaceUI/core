@@ -6,6 +6,13 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "@formatjs/intl-pluralrules"
+      # Lit 2 upgrade
+      - dependency-name: "@open-wc/testing"
+        versions: ["3.x"]
       - dependency-name: "intl-messageformat"
-        # mocha needs to be < 8.1, may be fixed but waiting for release
-      - dependency-name: "mocha"
+      # Lit 2 upgrade
+      - dependency-name: "lit-element"
+        versions: ["3.x"]
+      # Lit 2 upgrade
+      - dependency-name: "lit-html"
+        versions: ["2.x"]

@@ -141,6 +141,39 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[1].appliedCount).to.equal(0);
 			expect(elem._totalAppliedCount).to.equal(0);
 		});
+
+		it('requestFilterValueClear clears the corresponding active filter value', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			expect(elem._dimensions[2].values[1].selected).to.be.true;
+			expect(elem._dimensions[2].appliedCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(2);
+
+			elem.requestFilterValueClear({ dimension: '3', value: '2' });
+			expect(elem._dimensions[2].values[1].selected).to.be.false;
+			expect(elem._dimensions[2].appliedCount).to.equal(0);
+			expect(elem._totalAppliedCount).to.equal(1);
+			expect(elem._changeEventsToDispatch.size).to.equal(1);
+			const changeEventDim = elem._changeEventsToDispatch.get('3');
+			expect(changeEventDim.dimensionKey).to.equal('3');
+			expect(changeEventDim.cleared).to.be.false;
+			expect(changeEventDim.changes.size).to.equal(1);
+			const changeEvent = changeEventDim.changes.get('2');
+			expect(changeEvent.valueKey).to.equal('2');
+			expect(changeEvent.selected).to.be.false;
+		});
+
+		it('requestFilterValueClear does nothing if the filter value is already inactive', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			expect(elem._dimensions[2].values[0].selected).to.be.false;
+			expect(elem._dimensions[2].appliedCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(2);
+
+			elem.requestFilterValueClear({ dimension: '3', value: '1' });
+			expect(elem._dimensions[2].values[0].selected).to.be.false;
+			expect(elem._dimensions[2].appliedCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(2);
+			expect(elem._changeEventsToDispatch.size).to.equal(0);
+		});
 	});
 
 	describe('searching', () => {
