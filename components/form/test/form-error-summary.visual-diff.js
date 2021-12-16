@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-form-error-summary', () => {
 
-	const visualDiff = new VisualDiff('form-error-summary', __dirname);
+	const visualDiff = new VisualDiff('form-error-summary', import.meta.url);
 
 	let browser, page;
 

@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-openers', () => {
 
-	const visualDiff = new VisualDiff('dropdown-openers', __dirname);
+	const visualDiff = new VisualDiff('dropdown-openers', import.meta.url);
 
 	let browser, page;
 

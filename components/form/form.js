@@ -6,7 +6,6 @@ import { FormMixin } from './form-mixin.js';
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
  * Values of these interactive controls are aggregated but the user is responsible for handling submission via the @d2l-form-submit event.
  * @slot - The native and custom form elements that participate in validation and submission
- * @fires d2l-form-dirty - Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not.
  */
 class Form extends FormMixin(LitElement) {
 

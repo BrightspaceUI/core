@@ -2,25 +2,22 @@
 
 Dialogs interrupt the user to complete a set of tasks, confirm an action, or offer important options.
 
-<!-- docs: demo autoSize:false size:large -->
+<!-- docs: demo autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/dialog/dialog.js';
 
-  window.addEventListener('load', function () {
-    setTimeout(function() {
-      var dialog = document.querySelector('#dialog');
-      dialog.opened = true;
-    }, 100);
+  document.querySelector('#open-demo').addEventListener('click', () => {
+    document.querySelector('#dialog-demo').opened = true;
   });
 </script>
-
-<d2l-dialog id="dialog" title-text="Dialog Title">
+<d2l-dialog id="dialog-demo" title-text="Dialog Title">
   <div>Some dialog content</div>
   <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
   <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 </d2l-dialog>
+<d2l-button id="open-demo">Show Dialog</d2l-button>
 ```
 
 ## General Dialog [d2l-dialog]
@@ -55,8 +52,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/dialog/dialog.js';
-</script>
-<script>
+
   document.querySelector('#open').addEventListener('click', () => {
     document.querySelector('#dialog').opened = true;
   });

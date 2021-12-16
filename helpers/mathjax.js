@@ -1,24 +1,46 @@
+const mathjaxContextAttribute = 'data-mathjax-context';
+
 let mathJaxLoaded;
 
-export async function htmlBlockMathRenderer(elem) {
-	const context = JSON.parse(document.documentElement.getAttribute('data-mathjax-context')) || {};
-	const isLatexSupported = context.renderLatex;
+export class HtmlBlockMathRenderer {
 
-	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
+	get canRenderInline() {
+		// The custom MathJax ShadowAdaptor creates a new document and renders
+		// its contents to the DOM.
+		return false;
+	}
 
-	const mathJaxConfig = {
-		renderLatex: isLatexSupported,
-		outputScale: context.outputScale || 1
-	};
+	get contextAttributes() {
+		return [mathjaxContextAttribute];
+	}
 
-	await loadMathJax(mathJaxConfig);
+	async render(elem, contextValues) {
+		if (!contextValues) return elem;
+		const contextVal = contextValues.get(mathjaxContextAttribute);
+		if (contextVal === undefined) return elem;
 
-	const temp = document.createElement('div');
-	temp.attachShadow({ mode: 'open' });
-	temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+		const context = JSON.parse(contextVal) || {};
+		const isLatexSupported = context.renderLatex;
 
-	window.MathJax.typesetShadow(temp.shadowRoot);
-	return temp.shadowRoot.firstChild;
+		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
+
+		const mathJaxConfig = {
+			renderLatex: isLatexSupported,
+			outputScale: context.outputScale || 1
+		};
+
+		await loadMathJax(mathJaxConfig);
+
+		const temp = document.createElement('div');
+		temp.style.display = 'none';
+		temp.attachShadow({ mode: 'open' });
+		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+
+		elem.appendChild(temp);
+		window.MathJax.typesetShadow(temp.shadowRoot);
+		return temp.shadowRoot.firstChild;
+	}
+
 }
 
 export function loadMathJax(mathJaxConfig) {

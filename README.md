@@ -55,6 +55,8 @@ npm install @brightspace-ui/core
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
   * [Validation](components/validation/): plugin custom validation logic to native and custom form elements
+* Controllers
+  * [Subscriber](controllers/subscriber/): for managing a registry of subscribers in a many-to-many relationship
 * Directives
   * [Animate](directives/animate/): animate showing, hiding and removal of elements
 * Helpers
@@ -119,29 +121,32 @@ Note: The axe tests require `prefers-reduced-motion` emulation to be turned on i
 
 This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.
 
-The golden snapshots in source control must be updated by Github Actions.  If your PR's code changes result in visual differences, a PR with the new goldens will be automatically opened for you against your branch.
+The golden snapshots in source control must be updated by the [visual-diff GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/visual-diff).  If a pull request results in visual differences, a draft pull request with the new goldens will automatically be opened against its branch.
 
-If you'd like to run the tests locally to help troubleshoot or develop new tests, you can use these commands:
+To run the tests locally to help troubleshoot or develop new tests, first install these dependencies:
 
 ```shell
-# Install dependencies locally
-npm install esm mocha puppeteer @brightspace-ui/visual-diff --no-save
+npm install @brightspace-ui/visual-diff@X mocha@Y puppeteer@Z  --no-save
+```
 
+Replace `X`, `Y` and `Z` with [the current versions](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
+
+Then run the tests:
+
+```shell
 # run visual-diff tests
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm
-
+npx mocha './**/*.visual-diff.js' -t 10000
 # subset of visual-diff tests:
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm -g some-pattern
-
+npx mocha './**/*.visual-diff.js' -t 10000 -g some-pattern
 # update visual-diff goldens
-npx mocha './**/*.visual-diff.js' -t 10000 --require esm --golden
+npx mocha './**/*.visual-diff.js' -t 10000 --golden
 ```
 
 ## Versioning & Releasing
 
 > TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `main`. Read on for more details...
 
-The [sematic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/master/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
+The [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
 
 ### Version Changes
 

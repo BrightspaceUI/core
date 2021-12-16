@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-skeleton', () => {
 
-	const visualDiff = new VisualDiff('skeleton', __dirname);
+	const visualDiff = new VisualDiff('skeleton', import.meta.url);
 
 	let browser, page;
 

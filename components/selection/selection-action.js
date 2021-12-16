@@ -11,22 +11,26 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * An action associated with a selection component.
- * @fires d2l-selection-action-click - Dispatched when the user clicks the action; provides the selection info
+ * @fires d2l-selection-action-click - Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected.
+ * @fires d2l-selection-observer-subscribe - Internal event
  */
 class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Preset icon key (e.g. "tier1:gear")
+			 * Preset icon key (e.g. `tier1:gear`)
+			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
 			/**
 			 * Whether the action requires one or more selected items
+			 * @type {boolean}
 			 */
 			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
 			/**
 			 * REQUIRED: The text for the action
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true }
 		};

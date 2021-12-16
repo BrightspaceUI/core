@@ -28,11 +28,10 @@ jobs:
       - name: Create custom-elements.json
         run: npx wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json
       - name: Prepare Translations for NPM
-        uses: BrightspaceUI/actions/prepare-translations-for-npm@master
+        uses: BrightspaceUI/actions/prepare-translations-for-npm@main
       - name: Semantic Release
-        uses: BrightspaceUI/actions/semantic-release@master
+        uses: BrightspaceUI/actions/semantic-release@main
         with:
-          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

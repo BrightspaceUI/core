@@ -6,6 +6,7 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 		return {
 			/**
 			 * This will set the item to be selected by default
+			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
@@ -42,6 +43,7 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 				selected: this.selected
 			}
 		};
+		/** Dispatched when the selected menu item changes */
 		this.dispatchEvent(new CustomEvent('d2l-menu-item-change', eventDetails));
 	}
 

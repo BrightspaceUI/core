@@ -25,7 +25,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			 */
 			key: { type: String, reflect: true },
 			/**
-			 * **Selection:** Indicates a input should be rendered for selecting the item
+			 * **Selection:** Indicates an input should be rendered for selecting the item
 			 * @type {boolean}
 			 */
 			selectable: { type: Boolean },
@@ -60,6 +60,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 
 	constructor() {
 		super();
+		this.disabled = false;
+		this.selectable = false;
 		this.selected = false;
 		this.selectionInfo = new SelectionInfo();
 		this._checkboxId = getUniqueId();
@@ -105,21 +107,12 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
 		await this.updateComplete;
+		/** Dispatched when the component item is selected */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
 			composed: true,
 			bubbles: true
 		}));
-	}
-
-	_getNestedList() {
-		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
-		let nestedNodes = nestedSlot.assignedNodes();
-		if (nestedNodes.length === 0) {
-			nestedNodes = [...nestedSlot.childNodes];
-		}
-
-		return nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
 	}
 
 	_onCheckboxActionClick(event) {
@@ -137,6 +130,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 				this._selectionProvider.setSelectionForAll(this.selected);
 			}
 		}
+	}
+
+	_onNestedSlotChange() {
+		this._updateNestedSelectionProvider();
 	}
 
 	_onSelectionProviderConnected(e) {

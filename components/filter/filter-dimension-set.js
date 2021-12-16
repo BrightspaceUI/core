@@ -4,7 +4,6 @@ import { html, LitElement } from 'lit-element/lit-element.js';
  * A component to represent the main filter dimension type - a set of possible values that can be selected.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
  * @slot - For d2l-filter-dimension-set-value components
- * @fires d2l-filter-dimension-data-change - @ignore
  */
 class FilterDimensionSet extends LitElement {
 
@@ -12,10 +11,12 @@ class FilterDimensionSet extends LitElement {
 		return {
 			/**
 			 * REQUIRED: Unique key to represent this dimension in the filter
+			 * @type {string}
 			 */
 			key: { type: String },
 			/**
 			 * Whether the values for this dimension are still loading and a loading spinner should be displayed
+			 * @type {boolean}
 			 */
 			loading: { type: Boolean },
 			/**
@@ -25,14 +26,17 @@ class FilterDimensionSet extends LitElement {
 			searchType: { type: String, attribute: 'search-type' },
 			/**
 			 * Adds a select all checkbox and summary for this dimension
+			 * @type {boolean}
 			 */
 			selectAll: { type: Boolean, attribute: 'select-all' },
 			/**
 			 * Whether only one value can be selected at a time for this dimension
+			 * @type {boolean}
 			 */
 			selectionSingle: { type: Boolean, attribute: 'selection-single' },
 			/**
 			 * REQUIRED: The text that is displayed for the dimension title
+			 * @type {string}
 			 */
 			text: { type: String }
 		};

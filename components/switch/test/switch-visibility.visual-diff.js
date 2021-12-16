@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-switch-visibility', () => {
 
-	const visualDiff = new VisualDiff('switch-visibility', __dirname);
+	const visualDiff = new VisualDiff('switch-visibility', import.meta.url);
 
 	let browser, page;
 

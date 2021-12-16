@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-overflow-group', () => {
 
-	const visualDiff = new VisualDiff('overflow-group', __dirname);
+	const visualDiff = new VisualDiff('overflow-group', import.meta.url);
 
 	let browser, page;
 

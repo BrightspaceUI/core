@@ -15,14 +15,17 @@ class InputFieldset extends SkeletonMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * REQUIRED: Label for the fieldset
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
 			 * Hides the label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
 			 * Indicates that a value is required for inputs in the fieldset
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true }
 		};

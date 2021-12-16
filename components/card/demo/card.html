@@ -30,12 +30,12 @@
 				text-align: center;
 			}
 			.badge > img {
+				background-color: white;
+				border: 1px solid #494c4e;
+				border-radius: 6px;
+				height: 70px;
 				object-fit: cover;
 				object-position: center;
-				height: 70px;
-				background-color: white;
-				border-radius: 6px;
-				border: 1px solid #494c4e;
 			}
 			.badge-status {
 				background-color: white;
@@ -61,7 +61,7 @@
 				<template>
 					<div class="subtle-demo">
 
-						<d2l-card subtle align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+						<d2l-card subtle align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 280px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 							<div slot="badge" class="badge">
 								<img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stick_Figure.svg/340px-Stick_Figure.svg.png">
@@ -69,7 +69,7 @@
 							<div slot="content">Image Badge</div>
 						</d2l-card>
 
-						<d2l-card subtle align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+						<d2l-card subtle align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 280px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 							<div class="badge-status" slot="badge">
 								<d2l-status-indicator text="Success" state="success"></d2l-status-indicator>
@@ -77,7 +77,7 @@
 							<div slot="content">Status Badge</div>
 						</d2l-card>
 
-						<d2l-card subtle align-center text="No Link" style="width: 245px; height: 280px;">
+						<d2l-card subtle align-center text="No Link" style="height: 280px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 							<div slot="content">No Link</div>
 						</d2l-card>
@@ -92,7 +92,7 @@
 				<template>
 					<div class="subtle-demo">
 
-						<d2l-card subtle align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+						<d2l-card subtle align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 300px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 									<d2l-dropdown-content>
@@ -119,7 +119,7 @@
 							</div>
 						</d2l-card>
 
-						<d2l-card subtle align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="width: 245px; height: 300px;">
+						<d2l-card subtle align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="height: 300px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg">
 							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 									<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
@@ -139,7 +139,7 @@
 							</div>
 						</d2l-card>
 
-						<d2l-card subtle align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="width: 245px; height: 300px;">
+						<d2l-card subtle align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="height: 300px; width: 245px;">
 							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg">
 							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 									<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
@@ -158,7 +158,7 @@
 			<d2l-demo-snippet>
 				<template>
 
-					<d2l-card align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+					<d2l-card align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 280px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 						<div slot="badge" class="badge">
 							<img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stick_Figure.svg/340px-Stick_Figure.svg.png">
@@ -166,7 +166,7 @@
 						<div slot="content">Image Badge</div>
 					</d2l-card>
 
-					<d2l-card align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+					<d2l-card align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 280px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 						<div class="badge-status" slot="badge">
 							<d2l-status-indicator text="Success" state="success"></d2l-status-indicator>
@@ -174,7 +174,7 @@
 						<div slot="content">Status Badge</div>
 					</d2l-card>
 
-					<d2l-card align-center text="No Link" style="width: 245px; height: 280px;">
+					<d2l-card align-center text="No Link" style="height: 280px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 						<div slot="content">No Link</div>
 					</d2l-card>
@@ -187,7 +187,7 @@
 			<d2l-demo-snippet>
 				<template>
 
-					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 300px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 								<d2l-dropdown-content>
@@ -214,7 +214,7 @@
 						</div>
 					</d2l-card>
 
-					<d2l-card align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="width: 245px; height: 300px;">
+					<d2l-card align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="height: 300px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg">
 						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 								<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
@@ -224,7 +224,7 @@
 						<d2l-button slot="footer" style="width: 100%;">Shiny Button</d2l-button>
 					</d2l-card>
 
-					<d2l-card align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="width: 245px; height: 300px;">
+					<d2l-card align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="height: 300px; width: 245px;">
 						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg">
 						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
 								<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
@@ -252,8 +252,8 @@
 			<d2l-demo-snippet>
 				<template>
 
-					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
-						<d2l-card-loading-shimmer slot="header" loading style="display: block; width: 100%; height: 103.5px;">
+					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="height: 300px; width: 245px;">
+						<d2l-card-loading-shimmer slot="header" loading style="display: block; height: 103.5px; width: 100%;">
 							<img  alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
 						</d2l-card-loading-shimmer>
 						<div slot="content"><div>Hydrology</div><d2l-card-content-meta>This is some extra meta data that will fill the content slot of the card.</d2l-card-content-meta></div>

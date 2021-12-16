@@ -19,6 +19,22 @@ const normalFixture = html`
 	</div>
 `;
 
+const openOnHoverFixture = html`
+	<div>
+		<div id="optionallyFocusable">
+			<d2l-dropdown open-on-hover>
+				<button class="another-class d2l-dropdown-opener"></button>
+				<d2l-dropdown-content>
+					<p id="non_focusable_inside">a</p>
+					<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
+				</d2l-dropdown-content>
+			</d2l-dropdown>
+			<p id="non_focusable_outside">c</p>
+			<button id="focusable_outside">out here</button>
+		</div>
+	</div>
+`;
+
 describe('d2l-dropdown', () => {
 
 	let dropdown, content;
@@ -104,6 +120,46 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.false;
 		});
 
+	});
+
+	describe('keyboard interaction', () => {
+		[
+			13,
+			32
+		].forEach((keycode) => {
+			it('should open when key is pressed', async() => {
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keypress', true, true);
+				eventObj.keyCode = keycode;
+
+				const dropdownContainer = dropdown.querySelector('d2l-dropdown');
+				const opener = dropdownContainer.getOpenerElement();
+				setTimeout(() => opener.dispatchEvent(eventObj));
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				expect(content.opened).to.be.true;
+			});
+		});
+
+		[
+			13,
+			32
+		].forEach((keycode) => {
+			it('should not close when opening keys are pressed inside content', async() => {
+
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+				await aTimeout(0);
+
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keypress', true, true);
+				eventObj.keyCode = keycode;
+
+				setTimeout(() => content.dispatchEvent(eventObj));
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+			});
+		});
 	});
 
 	describe('scrollTo', () => {
@@ -366,6 +422,252 @@ describe('d2l-dropdown', () => {
 			await focusTrap.updateComplete;
 			expect(focusTrap.trap).to.be.false;
 		});
+	});
+
+	describe('open-on-hover option', () => {
+
+		let dropdown, dropdownOpener, content, opener;
+
+		beforeEach(async() => {
+			dropdown = await fixture(openOnHoverFixture);
+			content = dropdown.querySelector('d2l-dropdown-content');
+			dropdownOpener = dropdown.querySelector('d2l-dropdown');
+			opener = dropdown.querySelector('.d2l-dropdown-opener');
+			await content.updateComplete;
+		});
+
+		it('gets opener when the opener has multiple classes', () => {
+			const dropdownContainer = dropdown.querySelector('d2l-dropdown');
+			const actualOpener = dropdownContainer.getOpenerElement();
+			const expectedOpener = dropdown.querySelector('.d2l-dropdown-opener');
+			expect(actualOpener).to.equal(expectedOpener);
+		});
+
+		describe('toggleOpen', () => {
+
+			it('opens dropdown when closed', async() => {
+				content.toggleOpen();
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+			});
+
+			it('closes dropdown when open', async() => {
+				content.toggleOpen();
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				setTimeout(() => content.toggleOpen());
+				await oneEvent(content, 'd2l-dropdown-close');
+
+				expect(content.opened).to.be.false;
+			});
+
+		});
+
+		describe('hover', () => {
+
+			it('opens dropdown when mouse hovers on opener', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+			});
+
+			it('closes dropdown when mouse leaves opener', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
+				await oneEvent(content, 'd2l-dropdown-close');
+
+				expect(content.opened).to.be.false;
+			});
+
+			it('does not close when hovering to content', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				setTimeout(() => content.dispatchEvent(new Event('mouseenter', { bubbles: true })));
+				await aTimeout(800);
+
+				expect(content.opened).to.be.true;
+			});
+
+			it('dropdown closes when mouse leaves content', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				content.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+
+				content.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
+			});
+
+			it('clicking outside closes dropdown', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').click());
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
+			});
+
+			it('clicking inside does not close dropdown', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_inside').click());
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+			});
+		});
+
+		describe('click', () => {
+
+			it('opens dropdown when opener clicked', async() => {
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+			});
+
+			it('if open closes dropdown when opener clicked', async() => {
+				content.toggleOpen();
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				setTimeout(() => content.toggleOpen());
+				await oneEvent(content, 'd2l-dropdown-close');
+
+				expect(content.opened).to.be.false;
+			});
+
+			it('hovering outside does not close dropdown', async() => {
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+			});
+
+			it('hovering then clicking content does not close dropdown, can hover out', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_inside').dispatchEvent(new Event('mouseup', { bubbles: true })));
+				// wait 100ms to ensure dropdown did not close
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_inside').dispatchEvent(new Event('mouseleave', { bubbles: true })));
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
+			});
+
+			it('hovering then clicking opener does not close dropdown, can hover out', async() => {
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				// wait 100ms to ensure dropdown did not close
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+			});
+
+			it('clicking outside closes dropdown', async() => {
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').click());
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
+			});
+
+			it('clicking inside does not close dropdown', async() => {
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_inside').click());
+				await aTimeout(800);
+				expect(content.opened).to.be.true;
+			});
+		});
+
+		describe('auto-close', () => {
+
+			it('should close when focus element outside receives focus', async() => {
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+				await nextFrame();
+				await triggerFocusFor(dropdown.querySelector('#focusable_outside'));
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
+			});
+
+			it('should close when element outside is clicked', async() => {
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').click());
+				await oneEvent(content, 'd2l-dropdown-close');
+
+				expect(content.opened).to.be.false;
+			});
+
+			it('should close when ESC key is pressed', async() => {
+
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+				await aTimeout(0);
+
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keyup', true, true);
+				eventObj.keyCode = 27;
+
+				setTimeout(() => document.dispatchEvent(eventObj));
+				await oneEvent(content, 'd2l-dropdown-close');
+
+				expect(content.opened).to.be.false;
+			});
+
+		});
+
+		describe('aria-expanded', () => {
+
+			it('should set aria-expanded on the opener', async() => {
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+				await dropdownOpener.updateComplete;
+				expect(opener.getAttribute('aria-expanded')).to.equal('true');
+
+				setTimeout(() => content.removeAttribute('opened'));
+				await oneEvent(content, 'd2l-dropdown-close');
+				await dropdownOpener.updateComplete;
+				expect(opener.getAttribute('aria-expanded')).to.equal('false');
+			});
+		});
+
 	});
 
 });

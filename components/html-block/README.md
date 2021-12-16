@@ -15,34 +15,34 @@ Place the user-authored HTML within a `template` and the `d2l-html-block` will s
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
 <d2l-html-block>
-	<template>
-		<!-- docs: start hidden content -->
-		<style>
-			div {
-				--d2l-icon-fill-color: var(--d2l-color-cinnabar);
-			}
-			span {
-				color: var(--d2l-color-cinnabar);
-				margin-left: 10px;
-				vertical-align: middle;
-			}
-			d2l-icon {
-				align-self: center;
-				flex-shrink: 0;
-			}
-			.warning-container {
-				align-items: center;
-				display: flex;
-				justify-content: center;
-			}
-		</style>
+  <template>
+    <!-- docs: start hidden content -->
+    <style>
+      div {
+        --d2l-icon-fill-color: var(--d2l-color-cinnabar);
+      }
+      span {
+        color: var(--d2l-color-cinnabar);
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+      d2l-icon {
+        align-self: center;
+        flex-shrink: 0;
+      }
+      .warning-container {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      }
+    </style>
 <!-- docs: end hidden content --><div class="warning-container">
-			<d2l-icon icon="tier3:alert"></d2l-icon>
-			<span>
-				<b>Important:</b> user-authored HTML must be trusted or properly sanitized!
-			</span>
-		</div>
-	</template>
+      <d2l-icon icon="tier3:alert"></d2l-icon>
+      <span>
+        <b>Important:</b> user-authored HTML must be trusted or properly sanitized!
+      </span>
+    </div>
+  </template>
 </d2l-html-block>
 ```
 
@@ -50,20 +50,20 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 ```html
 <script type="module">
-	import { html, LitElement } from 'lit-element/lit-element.js';
-	import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-	import '@brightspace-ui/core/components/icons/icon.js';
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+  import '@brightspace-ui/core/components/icons/icon.js';
 
-	class SomeComponent extends LitElement {
-		render() {
-			return html`
-				<d2l-html-block>
-					<template>${unsafeHTML(this._unsafeHTML)}</template>
-				</d2l-html-block>`;
-		}
-	}
+  class SomeComponent extends LitElement {
+    render() {
+      return html`
+        <d2l-html-block>
+          <template>${unsafeHTML(this._unsafeHTML)}</template>
+        </d2l-html-block>`;
+    }
+  }
 
-	customElements.define('d2l-some-component', SomeComponent);
+  customElements.define('d2l-some-component', SomeComponent);
 </script>
 <d2l-some-component></d2l-some-component>
 ```
@@ -79,27 +79,27 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
 <d2l-html-block>
-	<template>
-		<div class="mathml-container">
-			<math xmlns="http://www.w3.org/1998/Math/MathML">
-				<msqrt>
-					<mn>3</mn>
-					<mi>x</mi>
-					<mo>&#x2212;</mo>
-					<mn>1</mn>
-				</msqrt>
-				<mo>+</mo>
-				<mo stretchy="false">(</mo>
-				<mn>1</mn>
-				<mo>+</mo>
-				<mi>x</mi>
-				<msup>
-					<mo stretchy="false">)</mo>
-					<mn>2</mn>
-				</msup>
-			</math>
-		</div>
-	</template>
+  <template>
+    <div class="mathml-container">
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <msqrt>
+          <mn>3</mn>
+          <mi>x</mi>
+          <mo>&#x2212;</mo>
+          <mn>1</mn>
+        </msqrt>
+        <mo>+</mo>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>+</mo>
+        <mi>x</mi>
+        <msup>
+          <mo stretchy="false">)</mo>
+          <mn>2</mn>
+        </msup>
+      </math>
+    </div>
+  </template>
 </d2l-html-block>
 ```
 
@@ -109,26 +109,25 @@ Examples are provided to display how user-authored math can be embedded within y
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';
-  import '@brightspace-ui/core/components/icons/icon.js';
 
-</script>
-<script>
-	window.D2L = {};
-	D2L.LP = {};
-	D2L.LP.Web = {};
-	D2L.LP.Web.UI = {};
-	D2L.LP.Web.UI.Flags = {
-		Flag: (feature, defaultValue) => {
-			if (feature === 'us125413-mathjax-render-latex') return true;
-			else return defaultValue;
-		}
-	};
+  window.D2L = {};
+  D2L.LP = {};
+  D2L.LP.Web = {};
+  D2L.LP.Web.UI = {};
+  D2L.LP.Web.UI.Flags = {
+    Flag: (feature, defaultValue) => {
+      if (feature === 'us125413-mathjax-render-latex') return true;
+      else return defaultValue;
+    }
+  };
+  <!-- docs: start hidden content -->
+  document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: true });<!-- docs: end hidden content -->
 </script>
 <d2l-html-block>
-	<template>
-		<div class="latex-container">
-			$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
-		</div>
-	</template>
+  <template>
+    <div class="latex-container">
+      $$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+    </div>
+  </template>
 </d2l-html-block>
 ```

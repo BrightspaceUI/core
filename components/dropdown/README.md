@@ -1,12 +1,12 @@
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
-<!-- docs: demo autoSize:false align:flex-start size:medium -->
+
+<!-- docs: demo align:flex-start autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
-</script>
-<script>
+
   window.addEventListener('load', function () {
     var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
@@ -26,24 +26,12 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 
 `d2l-dropdown` is a generic opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`) enabling alternate opener implementation using existing elements/components. Provide and indicate your own opener element with the class attribute value `d2l-dropdown-opener`.  Wire-up is automatic.
 
-<!-- docs: demo live name:d2l-dropdown autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown>
   <button class="d2l-dropdown-opener">Open!</button>
   <d2l-dropdown-content>
@@ -83,24 +71,12 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ![screenshot the basic dropdown-button opener](./screenshots/dropdown-button.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-button autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-button align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-button text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -117,6 +93,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
 | `primary` | Boolean, default: `false` | Optionally render button as primary button |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 <!-- docs: end hidden content -->
 
 ## Opener: Button Subtle [d2l-dropdown-button-subtle]
@@ -126,24 +103,12 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ![screenshot the basic dropdown-button-subtle opener](./screenshots/dropdown-button-subtle.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-button-subtle align:flex-start autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-dropdown-button-subtle align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button-subtle');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-button-subtle text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -160,6 +125,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `description` | String | A description to be added to the inner `button` opener for accessibility |
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from automatically on click or on key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -177,24 +143,12 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 ![screenshot the basic dropdown-context-menu opener](./screenshots/dropdown-context-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-context-menu');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-context-menu text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -209,6 +163,7 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 | `text` | String | Used as `aria-label` for the button |
 | `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
@@ -229,24 +184,12 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 ![screenshot the basic dropdown-more opener](./screenshots/dropdown-more.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-more autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-more align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-more');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-more text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -261,6 +204,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 | `text` | String | Used as `aria-label` for the button |
 | `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
@@ -282,24 +226,12 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the dropdown-content with mobile-tray="right"](./screenshots/dropdown-content-mobile-tray.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-content autoSize:false align:flex-start size:medium -->
+<!-- docs: demo live name:d2l-dropdown-content align:flex-start autoSize:false autoOpen:true size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-content min-width="150" max-width="400" mobile-tray="bottom">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -356,7 +288,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-menu](./screenshots/dropdown-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-menu size:medium align:flex-start autoSize:false -->
+<!-- docs: demo live name:d2l-dropdown-menu align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
@@ -365,20 +297,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/menu/menu-item.js';
   import '@brightspace-ui/core/components/tabs/tabs.js';
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
-
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-menu>
     <d2l-menu label="Astronomy">
@@ -412,7 +331,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-tabs](./screenshots/dropdown-tabs.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-tabs size:large autoSize:false align:flex-start -->
+<!-- docs: demo live name:d2l-dropdown-tabs autoOpen:true autoSize:false align:flex-start size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
@@ -422,18 +341,6 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/tabs/tabs.js';
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
-<!-- docs: start hidden content -->
-<script>
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
-    }, 100);
-  });
-</script>
-<!-- docs: end hidden content -->
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-tabs min-width="175" max-width="300">
     <d2l-tabs>

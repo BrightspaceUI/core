@@ -5,8 +5,8 @@ A list displays a collection of objects of the same type. A list is primarily us
 <!-- docs: demo autoSize:false size:large -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
@@ -15,13 +15,13 @@ A list displays a collection of objects of the same type. A list is primarily us
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item>
+  <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
       <div slot="secondary">Secondary information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item href="http://www.d2l.com" key="1">
+  <d2l-list-item href="http://www.d2l.com" key="1" label="List Item 2">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>More exciting list item</div>
@@ -38,7 +38,7 @@ A list displays a collection of objects of the same type. A list is primarily us
       </d2l-dropdown-more>
     </div>
   </d2l-list-item>
-  <d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+  <d2l-list-item href="http://www.d2l.com" selectable key="2" selected label="List Item 3">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg">
     <d2l-list-item-content>
       <div>Selectable list item (selected)</div>
@@ -115,14 +115,14 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item selectable>
+  <d2l-list-item selectable label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
       <div slot="secondary">Secondary information</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item selectable>
+  <d2l-list-item selectable label="List Item 2">
     <d2l-list-item-content>
       <div>Regular list item 2</div>
       <div slot="secondary">Secondary information</div>
@@ -137,6 +137,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 | Property | Type | Description |
 |---|---|---|
+| `drag-multiple` | Boolean | Whether the user can drag multiple items |
 | `grid` | Boolean | Enables keyboard grid for supported list items. See [Accessibility](#accessibility). |
 | `selection-single` | Boolean | Whether to render with single selection behaviour. If `selection-single` is specified, the list-items will render with radios instead of checkboxes, and the list component will maintain a single selected item. |
 | `separators` | String | Display separators (`all` (default), `between`, `none`) |
@@ -150,17 +151,20 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ### Methods
 
-- `getListItemCount`: returns the length of the items within the list
-- `getListItemIndex` (Object): returns the index of the given element within the list
-- `getSelectionInfo` (Object): returns a `SelectionInfo` object containing the `state` (`none`, `some`, `all`), and the `keys` (Array) for the selected items
+- `getItems()` (Array): returns the list items within the list
+- `getListItemByKey(key)` (ListItem): returns the list item element from the root or nested lists for the specified key
+- `getListItemCount()` (Number): returns the number of items within the list
+- `getListItemIndex(item)` (Object): returns the index of the given element within the list
+- `getSelectedListItems(includeNested)` (Array): returns the selected items; pass `true` to include nested lists
+- `getSelectionInfo(includeNested)` (Object): returns a `SelectionInfo` object containing the `state` (`none`, `some`, `all`), and the `keys` (Array) for the selected items
 
 ## Selection Lists
 
-The `d2l-list` supports selectable items within a list, including both single and multi. Selection is enabled when a `d2l-list-item` has the `selectable` attribute set on it, and is by default multi-select which is indicated by a checkbox. Setting `selection-single` on the `d2l-list` wrapper enables single selection, which renders the selectable items with radio buttons. A `d2l-list-header` component can be added before the `d2l-list-item` component in order to have an easy multi-select header with actions.
+The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-header` component can be added to `d2l-list`'s `header` slot to provide select-all and bulk actions.
 
 ### Accessibility Properties
 
-If a `d2l-list-item` is selectable then it should have a `label` attribute set on it which corresponds to the hidden label for the checkbox.
+If a `d2l-list-item` is selectable then it should have a `label` attribute that corresponds to the hidden label for the checkbox.
 
 ### Example
 
@@ -201,12 +205,15 @@ The `d2l-list` supports drag & drop.
 ![List](./screenshots/drag-and-drop.gif?raw=true)
 <!-- docs: end hidden content -->
 
-Because the list itself is a rendering component, there is some light work involved in hooking up this behaviour.
+The `d2l-list` is simply a rendering component, so there is some light work involved in hooking up this behaviour. In order for items to be draggable, they must have their `draggable` and `key` attributes set. Optionally, the `drop-nested` attribute can be applied to items to indicate whether other items can be dropped as nested children on the item.
 
-- `d2l-list-item` components within the list must be `draggable` and have `key` set to something unique
-- Reordering and re-rendering is the controlling component's responsibility
+Reordering and re-rendering is the consuming component's responsibility. For a simple flat list, listen for the `d2l-list-item-position-change` event and call the `reorder` helper method. Alternatively, or for more complex lists such as those with nested lists, listen for the `d2l-list-items-move` event on the root list and update the consumer data using the provided source and target event detail.
 
-Here is a simple component example that adds drag 'n' drop to a list:
+### Accessibility Properties
+
+If an item is draggable, the `drag-handle-text` attribute should be used to provide an accessible label for assistive technology in keyboard mode.
+
+### Example
 
 <!-- docs: demo code autoSize:false size:medium -->
 ```html
@@ -226,25 +233,16 @@ Here is a simple component example that adds drag 'n' drop to a list:
     constructor() {
       super();
       this.list = [
-        {
-          key: '1',
-          content: 'Initially first list item'
-        },
-        {
-          key: '2',
-          content: 'Initially second list item'
-        },
-        {
-          key: '3',
-          content: 'Initially third list item'
-        }
+        { key: '1', content: 'Initially first list item' },
+        { key: '2', content: 'Initially second list item' },
+        { key: '3', content: 'Initially third list item' }
       ];
     }
 
     render() {
       const listItems = this.list.map((item) => {
         return html`
-          <d2l-list-item draggable key="${item.key}">
+          <d2l-list-item draggable key="${item.key}" label="Draggable List Item">
             <d2l-list-item-content>
               ${item.content}
               <div slot="secondary">Secondary information</div>
@@ -299,7 +297,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item selectable key="ast" label="Atronomy">
+  <d2l-list-item selectable key="ast" label="Astronomy">
     <d2l-list-item-content>
       <div>Astronomy</div>
       <div slot="supporting-info">Supporting information</div>
@@ -318,7 +316,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 
 ## List Item [d2l-list-item]
 
-The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection. It extends `ListItemLinkMixin` and `ListItemMixin` and has all the same use cases as the mixin.
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection.
 
 <!-- docs: start hidden content -->
 ![List](./screenshots/list-item.png?raw=true)
@@ -334,7 +332,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 </script>
 
 <d2l-list>
-  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+  <d2l-list-item href="http://www.d2l.com" selectable key="3" label="Geomorphology and GIS">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
@@ -352,7 +350,20 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 | Property | Type | Description |
 |---|---|---|
+| `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
+| `disabled` | Boolean | Disables the input |
+| `draggable` |  Boolean | Whether the item is draggable |
+| `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
+| `drop-nested` | Boolean | Whether nested items can be dropped on this item |
+| `drop-text` | String | Text to drag and drop |
 | `href` | String | Address of item link if navigable |
+| `key` | String | Value to identify item if selectable or draggable |
+| `label` | String | Explicitly defined label for the element |
+| `labelled-by` | String | The id of element that provides the label for this element |
+| `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
+| `selected` | Boolean | Whether the item is selected |
+| `skeleton` | Boolean | Renders the input as a skeleton loader |
+| `slim` | Boolean | Whether to render the list-item with reduced whitespace|
 
 ### Events
 
@@ -374,6 +385,56 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
   - Breakpoint 3
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
+
+## Button List Item [d2l-list-item-button]
+
+The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
+
+<!-- docs: start hidden content -->
+![List](./screenshots/list-item.png?raw=true)
+<!-- docs: end hidden content -->
+
+<!-- docs: demo live name:d2l-list-item-button -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item-button.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+</script>
+
+<d2l-list style="width: 100%">
+  <d2l-list-item-button href="http://www.d2l.com" selectable key="1" label="Geomorphology and GIS">
+    <d2l-list-item-content>
+      <div>Geomorphology and GIS </div>
+      <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+    </d2l-list-item-content>
+  </d2l-list-item-button>
+</d2l-list>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
+| `disabled` | Boolean | Disables the input |
+| `draggable` |  Boolean | Whether the item is draggable |
+| `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
+| `drop-nested` | Boolean | Whether nested items can be dropped on this item |
+| `drop-text` | String | Text to drag and drop |
+| `key` | String | Value to identify item if selectable or draggable |
+| `label` | String | Explicitly defined label for the element |
+| `labelled-by` | String | The id of element that provides the label for this element |
+| `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
+| `selected` | Boolean | Whether the item is selected |
+| `skeleton` | Boolean | Renders the input as a skeleton loader |
+| `slim` | Boolean | Whether to render the list-item with reduced whitespace|
+
+### Events
+
+- `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
+<!-- docs: end hidden content -->
 
 ## ListItemMixin
 
@@ -410,42 +471,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - illustration (TemplateResult):  Provide an illustration for your list item.
 - content (TemplateResult): Core content of the list item, such as a d2l-list-item-content element.
 - actions (TemplateResult): Secondary actions for the list item.
-
-### Accessibility Properties
-
-- `drag-handle-text`: The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
-
-## Button List Item [d2l-list-item-button]
-
-The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action. It extends `ListItemButtonMixin` and `ListItemMixin` and has all the same use cases as the mixin.
-
-<!-- docs: start hidden content -->
-![List](./screenshots/list-item.png?raw=true)
-<!-- docs: end hidden content -->
-
-<!-- docs: demo live name:d2l-list-item-button -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-item-button.js';
-  import '@brightspace-ui/core/components/list/list-item-content.js';
-</script>
-
-<d2l-list style="width: 100%">
-  <d2l-list-item-button href="http://www.d2l.com" selectable key="1">
-    <d2l-list-item-content>
-      <div>Geomorphology and GIS </div>
-      <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-    </d2l-list-item-content>
-  </d2l-list-item-button>
-</d2l-list>
-```
-
-<!-- docs: start hidden content -->
-### Events
-
-- `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
-<!-- docs: end hidden content -->
+- nested (TemplateResult): Optional `d2l-list` for a nested list.
 
 ## List Item Content
 
@@ -464,7 +490,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item>
+  <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Item 1</div>
       <div slot="secondary">Secondary Info for item 1</div>
@@ -493,6 +519,13 @@ This event includes a detail object with helper methods attached to it.
   - `announceFn(any, Number) (optional)`: A callback function that takes a given item in the array and its index, and returns the text to announce
   - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
 
+## Event Details: @d2l-list-items-move
+
+**Properties**
+
+- `keyboardActive`: (Boolean) Whether the drag handle is in keyboard mode
+- `sourceItems`: (Array) Items being moved
+- `target`: (Object) The target reference `item` where items are being moved, and the `location` (`moveLocations.above`, `moveLocations.below`, or `moveLocations.nest`)
 
 <!-- docs: start hidden content -->
 ## Future Improvements

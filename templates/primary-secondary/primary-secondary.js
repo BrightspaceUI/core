@@ -484,6 +484,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			/**
 			 * Whether the panels are user resizable. This only applies to desktop users,
 			 * mobile users will always be able to resize.
+			 * @type {boolean}
 			 */
 			resizable: { type: Boolean, reflect: true },
 			/**
@@ -491,6 +492,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			 * should not be shared between pages so that users can save different divider
 			 * positions on different pages. If no key is provided, the template will fall
 			 * back its default size.
+			 * @type {string}
 			 */
 			storageKey: { type: String, attribute: 'storage-key' },
 			/**

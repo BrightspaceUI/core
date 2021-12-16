@@ -3,7 +3,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-offscreen', () => {
 
-	const visualDiff = new VisualDiff('offscreen', __dirname);
+	const visualDiff = new VisualDiff('offscreen', import.meta.url);
 
 	let browser, page;
 

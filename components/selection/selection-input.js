@@ -13,6 +13,7 @@ const keyCodes = {
 /**
  * An input (radio or checkbox) for use in selection components such as lists and tables.
  * @fires d2l-selection-change - Dispatched when the selected state changes
+ * @fires d2l-selection-input-subscribe - Internal event
  */
 class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
@@ -20,18 +21,23 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		return {
 			/**
 			 * State of the input
+			 * @type {boolean}
 			 */
 			selected: { type: Boolean },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Private. Force hovering state of input
+			 * @ignore
+			 * @type {boolean}
 			 */
 			hovering: { type: Boolean },
 			/**
-			 * Key for the selectable
+			 * REQUIRED: Key for the selectable
+			 * @type {string}
 			 */
 			key: { type: String },
 			_indeterminate: { type: Boolean },
@@ -89,10 +95,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
 				'd2l-skeletize': true,
-				'd2l-hovering': this.hovering
+				'd2l-hovering': this.hovering,
+				'd2l-disabled': this.disabled
 			};
 			return html`
 				<div
+					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
@@ -100,7 +108,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					@keydown="${this._handleRadioKeyDown}"
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
-					tabindex="0"></div>
+					tabindex="${ifDefined(this.disabled ? undefined : 0)}"></div>
 			`;
 		} else {
 			return html`

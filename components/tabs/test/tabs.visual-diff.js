@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tabs', () => {
 
-	const visualDiff = new VisualDiff('tabs', __dirname);
+	const visualDiff = new VisualDiff('tabs', import.meta.url);
 
 	let browser, page;
 

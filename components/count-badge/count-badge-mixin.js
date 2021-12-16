@@ -120,7 +120,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			
 			:host([type="count"]) .d2l-count-badge-number {
 				background-color: var(--d2l-color-gypsum);
-				color: var(--d2l-color-tungsten);
+				color: var(--d2l-color-ferrite);
 			}
 			
 			:host([size="small"]) .d2l-count-badge-number {

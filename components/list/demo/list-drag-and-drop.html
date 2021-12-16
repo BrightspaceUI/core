@@ -6,45 +6,38 @@
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script type="module">
 		import '../../demo/demo-page.js';
-		import './list-demo-drag-and-drop-usage.js';
+		import './list-drag-and-drop-position.js';
+		import './list-drag-and-drop.js';
 	</script>
 </head>
 <body unresolved>
 
 	<d2l-demo-page page-title="d2l-list (with drag & drop)">
 
-		<h2>Draggable</h2>
+		<h2>Position Change Event</h2>
 
 		<d2l-demo-snippet>
 			<template>
-				<d2l-list-demo-drag-and-drop-usage></d2l-list-demo-drag-and-drop-usage>
+				<d2l-demo-list-drag-and-drop-position grid selectable hrefs></d2l-demo-list-drag-and-drop-position>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Draggable and Selectable</h2>
+		<h2>Move Event</h2>
 
 		<d2l-demo-snippet>
 			<template>
-				<d2l-list-demo-drag-and-drop-usage selectable></d2l-list-demo-drag-and-drop-usage>
+				<d2l-demo-list-drag-and-drop></d2l-demo-list-drag-and-drop>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Draggable with Grid and Selectable</h2>
-
-		<d2l-demo-snippet>
-			<template>
-				<d2l-list-demo-drag-and-drop-usage grid selectable></d2l-list-demo-drag-and-drop-usage>
-			</template>
-		</d2l-demo-snippet>
-
-		<h2>All the Fixins (grid, draggable, selectable, hrefs)</h2>
-
-		<d2l-demo-snippet>
-			<template>
-				<d2l-list-demo-drag-and-drop-usage grid selectable hrefs></d2l-list-demo-drag-and-drop-usage>
-			</template>
-		</d2l-demo-snippet>
 
 	</d2l-demo-page>
+
+	<script>
+		document.body.addEventListener('d2l-list-items-move', e => {
+			console.log('d2l-list-items-move', e.detail);
+		});
+	</script>
+
 </body>
 </html>

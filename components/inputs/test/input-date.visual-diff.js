@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-date', () => {
 
-	const visualDiff = new VisualDiff('input-date', __dirname);
+	const visualDiff = new VisualDiff('input-date', import.meta.url);
 
 	let browser, page;
 
@@ -413,7 +413,7 @@ describe('d2l-input-date', () => {
 			it('set to today', async function() {
 				await open(page, '#value');
 				await page.$eval('#value', (elem) => {
-					const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Set to Today"]');
+					const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Today"]');
 					button.click();
 				});
 				const rect = await visualDiff.getRect(page, '#value');

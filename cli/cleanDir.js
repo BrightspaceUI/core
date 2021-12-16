@@ -1,21 +1,21 @@
-const fs = require('fs'),
-	path = require('path');
+import { existsSync, lstatSync, readdirSync, rmdirSync, unlinkSync } from 'fs';
+import path from 'path';
 
-module.exports = function cleanDir(dirPath) {
+export function cleanDir(dirPath) {
 
-	if (!fs.existsSync(dirPath))
+	if (!existsSync(dirPath))
 		return;
 
-	const files = fs.readdirSync(dirPath);
+	const files = readdirSync(dirPath);
 	files.forEach((file) => {
 		const currentPath = path.join(dirPath, file);
-		if (fs.lstatSync(currentPath).isDirectory()) {
+		if (lstatSync(currentPath).isDirectory()) {
 			cleanDir(currentPath);
 		} else {
-			fs.unlinkSync(currentPath);
+			unlinkSync(currentPath);
 		}
 	});
 
-	fs.rmdirSync(dirPath);
+	rmdirSync(dirPath);
 
-};
+}

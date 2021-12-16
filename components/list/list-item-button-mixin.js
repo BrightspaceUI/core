@@ -35,6 +35,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_onButtonClick() {
+		/** Dispatched when the item's primary button action is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
 	}
 

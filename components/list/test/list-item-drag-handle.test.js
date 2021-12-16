@@ -42,8 +42,7 @@ describe('ListItemDragHandle', () => {
 
 		[
 			{ keyPress: keyCodes.ENTER },
-			{ keyPress: keyCodes.SPACE },
-			{ keyPress: keyCodes.LEFT }
+			{ keyPress: keyCodes.SPACE }
 		].forEach(testCase => {
 			it(`Dispatch drag handle action event for ${dragActions.active} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;
@@ -79,7 +78,8 @@ describe('ListItemDragHandle', () => {
 			{ keyPress: keyCodes.ESC, result: dragActions.cancel },
 			{ keyPress: keyCodes.ENTER, result: dragActions.save },
 			{ keyPress: keyCodes.SPACE, result: dragActions.save },
-			{ keyPress: keyCodes.RIGHT, result: dragActions.save }
+			{ keyPress: keyCodes.RIGHT, result: dragActions.nest },
+			{ keyPress: keyCodes.LEFT, result: dragActions.unnest }
 		].forEach(testCase => {
 			it(`Dispatch drag handle action event for ${testCase.result} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;

@@ -6,8 +6,6 @@ import { menuItemStyles } from './menu-item-styles.js';
 /**
  * A menu item component used for navigating.
  * @fires click - Dispatched when the link is clicked
- * @fires d2l-menu-item-select - Dispatched when the menu item is selected
- * @fires d2l-menu-item-visibility-change - Dispatched when the visibility of the menu item changes
  */
 class MenuItemLink extends MenuItemMixin(LitElement) {
 

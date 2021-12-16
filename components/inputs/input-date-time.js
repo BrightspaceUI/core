@@ -15,6 +15,7 @@ import { formatDateInISO,
 	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
@@ -37,7 +38,7 @@ function _getFormattedDefaultTime(defaultValue) {
 
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
- * @fires change - Dispatched when there is a change to selected date or selected time. "value" corresponds to the selected value and is formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ * @fires change - Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
 class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
@@ -45,14 +46,17 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		return {
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Hides the fieldset label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
+			 * @type {boolean}
 			 */
 			localized: { reflect: true, type: Boolean },
 			/**
@@ -67,10 +71,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
 			 * Indicates if the date or time dropdown is open
+			 * @type {boolean}
 			 */
 			opened: { type: Boolean },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -80,6 +86,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String },
 			_maxValueLocalized: { type: String },
@@ -113,6 +120,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		this.opened = false;
 		this.required = false;
 		this.timeDefaultValue = 'startOfDay';
+		this._documentLocaleSettings = getDocumentLocaleSettings();
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
 		this._preventDefaultValidation = false;
@@ -184,6 +192,16 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		return super.validationMessage;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this._documentLocaleSettings.addChangeListener(this._handleLocaleChange.bind(this));
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this._documentLocaleSettings.removeChangeListener(this._handleLocaleChange.bind(this));
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -239,6 +257,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 					<d2l-input-date
 						?novalidate="${this.noValidate}"
 						novalidateminmax
+						has-now
 						@change="${this._handleDateChange}"
 						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
@@ -301,7 +320,9 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			this.value = '';
 		} else {
 			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
-			const time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
+			let time;
+			if (e.detail && e.detail.setToNow) time = _getFormattedDefaultTime('now');
+			else time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
 			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();
@@ -332,6 +353,10 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	_handleInputTimeFocus() {
 		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.show();
+	}
+
+	_handleLocaleChange() {
+		this.requestUpdate();
 	}
 
 	async _handleTimeChange(e) {

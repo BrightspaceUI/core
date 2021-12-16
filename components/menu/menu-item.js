@@ -6,8 +6,6 @@ import { menuItemStyles } from './menu-item-styles.js';
 /**
  * A menu item component used with JS handlers.
  * @slot - Default content placed inside of the component
- * @fires d2l-menu-item-select - Dispatched when a menu item is selected
- * @fires d2l-menu-item-visibility-change - Dispatched when the visibility of the menu item changes
  */
 class MenuItem extends MenuItemMixin(LitElement) {
 

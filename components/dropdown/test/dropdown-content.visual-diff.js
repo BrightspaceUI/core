@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-content', () => {
 
-	const visualDiff = new VisualDiff('dropdown-content', __dirname);
+	const visualDiff = new VisualDiff('dropdown-content', import.meta.url);
 
 	let browser, page;
 
@@ -88,6 +88,9 @@ describe('d2l-dropdown-content', () => {
 			const selector = `#${testName}`;
 			await open(page, selector);
 			await page.waitForTimeout(50);
+			await page.$eval (selector, async(elem)  => {
+				requestAnimationFrame(async() => await elem.updateComplete);
+			});
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});

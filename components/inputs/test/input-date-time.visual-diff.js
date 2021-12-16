@@ -35,7 +35,7 @@ async function focusOnInput(page, selector, inputSelector) {
 
 describe('d2l-input-date-time', () => {
 
-	const visualDiff = new VisualDiff('input-date-time', __dirname);
+	const visualDiff = new VisualDiff('input-date-time', import.meta.url);
 
 	let browser, page;
 
@@ -110,6 +110,17 @@ describe('d2l-input-date-time', () => {
 		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20', true);
 		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('timezone change', async function() {
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+		});
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await page.evaluate(() => {
+			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+		});
 	});
 
 	describe('opened behavior', () => {
