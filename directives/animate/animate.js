@@ -1,8 +1,8 @@
-import { directive, PropertyPart } from 'lit/directive.js';
+import { directive, PartType } from 'lit-html/directive.js';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
-import { AsyncDirective } from 'lit/async-directive.js';
+import { AsyncDirective } from 'lit-html/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-import { noChange } from 'lit';
+import { noChange } from 'lit-html';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const showTransitionDuration = 300;
