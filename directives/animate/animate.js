@@ -1,6 +1,8 @@
-import { directive, PropertyPart } from 'lit-html';
+import { directive, PartType } from 'lit-html/directive.js';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { AsyncDirective } from 'lit-html/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
+import { noChange } from 'lit-html';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10,15 +12,13 @@ const moveYValue = 20;
 
 class AnimationState {
 
-	constructor(propertyPart) {
-
-		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
+	constructor(partInfo) {
+		if (!(partInfo.type === PartType.PROPERTY) || partInfo.name !== 'animate') {
+			throw new Error('animate directives must be used with "animate" property');
 		}
-
 		this.id = 0;
 		this.clone = null;
-		this.elem = propertyPart.committer.element;
+		this.elem = partInfo.element;
 		this.state = 'unknown';
 		this.styleAttr = null;
 		this.styleAttrUse = false;
@@ -289,20 +289,37 @@ class AnimationState {
 
 }
 
-async function helper(part, action, opts) {
-	let state = stateMap.get(part);
-	if (state === undefined) {
-		state = new AnimationState(part);
-		stateMap.set(part, state);
+class Hide extends AsyncDirective {
+	render() {
+		return noChange;
 	}
-	opts = opts || {};
-	if (action === 'show') {
-		state.show(opts);
-	} else if (action === 'hide') {
+	update(part, [opts]) {
+		opts = opts || {};
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
 		state.hide(opts);
+		return this.render();
 	}
 }
 
-export const hide = directive((opts) => async(part) => helper(part, 'hide', opts));
+class Show extends AsyncDirective {
+	render() {
+		return noChange;
+	}
+	update(part, [opts]) {
+		opts = opts || {};
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
+		state.show(opts);
+		return this.render();
+	}
+}
 
-export const show = directive((opts) => async(part) => helper(part, 'show', opts));
+export const hide = directive(Hide);
+export const show = directive(Show);
