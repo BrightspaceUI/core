@@ -36,9 +36,7 @@ class CodeView extends LitElement {
 			const path = `/node_modules/prismjs/components/prism-${language}.min.js`;
 			this._dependenciesPromise = import(path);
 		}
-		if (this.shadowRoot) {
-			this._updateCode(this.shadowRoot.querySelector('slot'));
-		}
+		this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
