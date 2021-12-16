@@ -1,9 +1,10 @@
-import { directive, PropertyPart } from 'lit/directive.js';
+import { directive, PartType } from 'lit-html/directive.js';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
-import { AsyncDirective } from 'lit/async-directive.js';
+import { AsyncDirective } from 'lit-html/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-import { noChange } from 'lit';
+import { noChange } from 'lit-html';
 
+const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const showTransitionDuration = 300;
 const hideTransitionDuration = 200;
@@ -11,15 +12,13 @@ const moveYValue = 20;
 
 class AnimationState {
 
-	constructor(propertyPart) {
-
-		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
+	constructor(partInfo) {
+		if (!(partInfo.type === PartType.PROPERTY) || partInfo.name !== 'animate') {
+			throw new Error('animate directives must be used with "animate" property');
 		}
-
 		this.id = 0;
 		this.clone = null;
-		this.elem = propertyPart.committer.element;
+		this.elem = partInfo.element;
 		this.state = 'unknown';
 		this.styleAttr = null;
 		this.styleAttrUse = false;
@@ -290,52 +289,37 @@ class AnimationState {
 
 }
 
-export class Hide extends AsyncDirective {
-	state;
-	constructor(propertyPart) {
-		super(propertyPart);
-		if (!(propertyPart.type === PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
-		}
-	}
-	// Do SSR-compatible rendering (arguments are passed from call site)
-	render(part) {
-		// Previous state available on class field
-		if (this.state === undefined) {
-			this.state = new AnimationState(part);
-		}
-		return noChange;
-	}
-	update(part, opts) {
-		/* Any imperative updates to DOM/parts would go here */
-		opts = opts || {};
-		this.state.hide(opts);
-		return this.render(part);
-	}
-}
-
-export class Show extends AsyncDirective {
-	state;
-	constructor(propertyPart) {
-		super(propertyPart);
-		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
-		}
-	}
-	// Do SSR-compatible rendering (arguments are passed from call site)
-	render(part) {
-		// Previous state available on class field
-		if (this.state === undefined) {
-			this.state = new AnimationState(part);
-		}
+class Hide extends AsyncDirective {
+	render() {
 		return noChange;
 	}
 	update(part, [opts]) {
-		/* Any imperative updates to DOM/parts would go here */
 		opts = opts || {};
-		this.state.show(opts);
-		return this.render(part);
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
+		state.hide(opts);
+		return this.render();
 	}
 }
+
+class Show extends AsyncDirective {
+	render() {
+		return noChange;
+	}
+	update(part, [opts]) {
+		opts = opts || {};
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
+		state.show(opts);
+		return this.render();
+	}
+}
+
 export const hide = directive(Hide);
 export const show = directive(Show);
