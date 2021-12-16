@@ -11,15 +11,13 @@ const moveYValue = 20;
 
 class AnimationState {
 
-	constructor(propertyPart) {
-
-		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
+	constructor(partInfo) {
+		if (!(partInfo.type === PartType.PROPERTY) || partInfo.name !== 'animate') {
+			throw new Error('animate directives must be used with "animate" property');
 		}
-
 		this.id = 0;
 		this.clone = null;
-		this.elem = propertyPart.committer.element;
+		this.elem = partInfo.element;
 		this.state = 'unknown';
 		this.styleAttr = null;
 		this.styleAttrUse = false;
@@ -291,23 +289,14 @@ class AnimationState {
 }
 
 export class Hide extends AsyncDirective {
-	state;
-	constructor(propertyPart) {
-		super(propertyPart);
-		if (!(propertyPart.type === PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
-		}
+	constructor(partInfo) {
+		super(partInfo);
+		this.state = new AnimationState(partInfo);
 	}
-	// Do SSR-compatible rendering (arguments are passed from call site)
-	render(part) {
-		// Previous state available on class field
-		if (this.state === undefined) {
-			this.state = new AnimationState(part);
-		}
+	render() {
 		return noChange;
 	}
-	update(part, opts) {
-		/* Any imperative updates to DOM/parts would go here */
+	update(part, [opts]) {
 		opts = opts || {};
 		this.state.hide(opts);
 		return this.render(part);
@@ -315,26 +304,17 @@ export class Hide extends AsyncDirective {
 }
 
 export class Show extends AsyncDirective {
-	state;
-	constructor(propertyPart) {
-		super(propertyPart);
-		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animate" property');
-		}
+	constructor(partInfo) {
+		super(partInfo);
+		this.state = new AnimationState(partInfo);
 	}
-	// Do SSR-compatible rendering (arguments are passed from call site)
-	render(part) {
-		// Previous state available on class field
-		if (this.state === undefined) {
-			this.state = new AnimationState(part);
-		}
+	render() {
 		return noChange;
 	}
 	update(part, [opts]) {
-		/* Any imperative updates to DOM/parts would go here */
 		opts = opts || {};
 		this.state.show(opts);
-		return this.render(part);
+		return this.render(opts);
 	}
 }
 export const hide = directive(Hide);
