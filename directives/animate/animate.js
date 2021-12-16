@@ -4,6 +4,7 @@ import { AsyncDirective } from 'lit-html/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { noChange } from 'lit-html';
 
+const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const showTransitionDuration = 300;
 const hideTransitionDuration = 200;
@@ -288,34 +289,37 @@ class AnimationState {
 
 }
 
-export class Hide extends AsyncDirective {
-	constructor(partInfo) {
-		super(partInfo);
-		this.state = new AnimationState(partInfo);
-	}
+class Hide extends AsyncDirective {
 	render() {
 		return noChange;
 	}
 	update(part, [opts]) {
 		opts = opts || {};
-		this.state.hide(opts);
-		return this.render(part);
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
+		state.hide(opts);
+		return this.render();
 	}
 }
 
-export class Show extends AsyncDirective {
-	constructor(partInfo) {
-		super(partInfo);
-		this.state = new AnimationState(partInfo);
-	}
+class Show extends AsyncDirective {
 	render() {
 		return noChange;
 	}
 	update(part, [opts]) {
 		opts = opts || {};
-		this.state.show(opts);
-		return this.render(opts);
+		let state = stateMap.get(part.element);
+		if (state === undefined) {
+			state = new AnimationState(part);
+			stateMap.set(part.element, state);
+		}
+		state.show(opts);
+		return this.render();
 	}
 }
+
 export const hide = directive(Hide);
 export const show = directive(Show);
