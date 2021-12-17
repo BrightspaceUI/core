@@ -171,7 +171,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusCellItem(num, itemNum) {
-		const cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
+		const cell = this.shadowRoot ? this.shadowRoot.querySelector(`[data-cell-num="${num}"]`) : undefined;
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);

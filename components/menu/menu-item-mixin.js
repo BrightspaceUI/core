@@ -109,7 +109,7 @@ export const MenuItemMixin = superclass => class extends FocusVisiblePolyfillMix
 	}
 
 	__initializeItem() {
-		const slot = this.shadowRoot.querySelector('slot:not([name])');
+		const slot = this.shadowRoot ? this.shadowRoot.querySelector('slot:not([name])') : undefined;
 		if (!slot) {
 			return;
 		}

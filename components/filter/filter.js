@@ -213,7 +213,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const opener = this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		const opener = this.shadowRoot ? this.shadowRoot.querySelector('d2l-dropdown-button-subtle') : undefined;
 		if (opener) opener.focus();
 	}
 

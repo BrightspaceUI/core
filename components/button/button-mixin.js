@@ -108,7 +108,7 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 	}
 
 	focus() {
-		const button = this.shadowRoot.querySelector('button');
+		const button = this.shadowRoot ? this.shadowRoot.querySelector('button') : undefined;
 		if (button) button.focus();
 	}
 

@@ -290,7 +290,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 			this.__isAutoSized = true;
 			let rect;
-			if (view === this) {
+			if (view === this && this.shadowRoot) {
 				rect = this.shadowRoot.querySelector('.d2l-hierarchical-view-content').getBoundingClientRect();
 			} else {
 				rect = view.getBoundingClientRect();

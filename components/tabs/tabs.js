@@ -488,7 +488,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	async _focusSelected() {
-		const selectedTab = this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
+		const selectedTab = this.shadowRoot ?
+			this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]')
+			: undefined;
 		if (!selectedTab) return;
 
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);

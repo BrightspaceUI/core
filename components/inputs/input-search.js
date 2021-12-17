@@ -123,7 +123,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-text');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-text') : undefined;
 		if (elem) elem.focus();
 	}
 

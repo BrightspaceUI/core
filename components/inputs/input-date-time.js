@@ -296,7 +296,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-date');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date') : undefined;
 		if (elem) elem.focus();
 	}
 
@@ -346,12 +346,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	_handleInputTimeBlur() {
-		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+		const tooltip = this.shadowRoot ? this.shadowRoot.querySelector('d2l-tooltip') : undefined;
 		if (tooltip) tooltip.hide();
 	}
 
 	_handleInputTimeFocus() {
-		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+		const tooltip = this.shadowRoot ? this.shadowRoot.querySelector('d2l-tooltip') : undefined;
 		if (tooltip) tooltip.show();
 	}
 

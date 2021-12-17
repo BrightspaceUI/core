@@ -252,7 +252,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-date');
+		const input = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date') : undefined;
 		if (input) input.focus();
 	}
 

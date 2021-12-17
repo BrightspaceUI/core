@@ -132,7 +132,7 @@ class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(Localize
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-number');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-number') : undefined;
 		if (elem) elem.focus();
 	}
 

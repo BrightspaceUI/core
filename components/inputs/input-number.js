@@ -366,7 +366,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 	}
 
 	async focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-text');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-text') : undefined;
 		if (elem) {
 			elem.focus();
 		} else {

@@ -304,7 +304,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-time');
+		const input = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-time') : undefined;
 		if (input) input.focus();
 	}
 

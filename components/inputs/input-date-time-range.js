@@ -308,7 +308,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-date-time');
+		const input = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date-time') : undefined;
 		if (input) input.focus();
 	}
 

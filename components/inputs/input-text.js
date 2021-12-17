@@ -464,7 +464,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	}
 
 	async focus() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
 		if (elem) {
 			elem.focus();
 		} else {
@@ -572,7 +572,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 		this._prevValue = (oldVal === undefined) ? '' : oldVal;
 		this._value = val;
 
-		const input = this.shadowRoot.querySelector('.d2l-input');
+		const input = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
 		if (!input) return;
 
 		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });

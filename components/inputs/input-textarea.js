@@ -264,7 +264,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 	}
 
 	async focus() {
-		const elem = this.shadowRoot.querySelector('textarea');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('textarea') : undefined;
 		if (elem) {
 			elem.focus();
 		} else {

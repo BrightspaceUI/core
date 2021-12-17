@@ -205,7 +205,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('input.d2l-input-checkbox');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('input.d2l-input-checkbox') : undefined;
 		if (elem) elem.focus();
 	}
 
