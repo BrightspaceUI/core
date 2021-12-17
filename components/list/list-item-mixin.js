@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
+import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -13,6 +14,18 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+let tabPressed = false;
+document.addEventListener('keydown', e => {
+	if (e.keyCode !== 9) return;
+	tabPressed = true;
+});
+document.addEventListener('keyup', e => {
+	if (e.keyCode !== 9) return;
+	tabPressed = false;
+});
+
+let hasDisplayedKeyboardFocusTooltip = false;
 
 const ro = new ResizeObserver(entries => {
 	entries.forEach(entry => {
@@ -40,6 +53,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 */
 			slim: { type: Boolean },
 			_breakpoint: { type: Number },
+			_displayKeyboardFocusTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
@@ -237,6 +251,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host([draggable][selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
 				transform: rotate(1deg);
 			}
+			d2l-tooltip > div {
+				font-weight: 700;
+			}
+			d2l-tooltip > ul {
+				padding-inline-start: 1rem;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -249,6 +269,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this.slim = false;
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
+		this._displayKeyboardFocusTooltip = false;
 	}
 
 	get breakpoints() {
@@ -350,6 +371,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusIn() {
 		this._focusing = true;
+		if (this.role !== 'rowgroup' || !tabPressed || hasDisplayedKeyboardFocusTooltip) return;
+		this._displayKeyboardFocusTooltip = true;
+		hasDisplayedKeyboardFocusTooltip = true;
 	}
 
 	_onFocusInPrimaryAction() {
@@ -358,6 +382,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusOut() {
 		this._focusing = false;
+		this._displayKeyboardFocusTooltip = false;
 	}
 
 	_onFocusOutPrimaryAction() {
@@ -397,6 +422,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
+		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -412,11 +438,11 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					${this._renderDragHandle(this._renderOutsideControl)}
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
-					<div slot="control">${ this._renderCheckbox() }</div>
+					<div slot="control">${this._renderCheckbox()}</div>
 					<div slot="control-action"
 						@mouseenter="${this._onMouseEnter}"
 						@mouseleave="${this._onMouseLeave}">
-							${ this._renderCheckboxAction('') }
+							${this._renderCheckboxAction('')}
 					</div>` : nothing }
 					${primaryAction ? html`
 					<div slot="content-action"
@@ -445,6 +471,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				<div class="d2l-list-item-active-border"></div>
 			</div>
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._displayKeyboardFocusTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
 	}
@@ -455,6 +482,18 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_renderOutsideControlAction(dragTarget) {
 		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+	}
+
+	_renderTooltipContent() {
+		return html`
+			<div>Keyboard Navigation for Lists:</div>
+			<ul>
+				<li>Up and Down Arrows to move through the list.</li>
+				<li>Left and Right Arrows to move through options in each item.</li>
+				<li>Page Up and Page Down to jump between parent items.</li>
+				<li>Use Enter to activate the highlighted option.</li>
+			</ul>
+		`;
 	}
 
 };
