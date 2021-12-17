@@ -137,6 +137,7 @@ class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(Localize
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const inputNumberElem = this.shadowRoot.querySelector('d2l-input-number');
 		await inputNumberElem.updateComplete;
 		const childErrors = await inputNumberElem.validate();

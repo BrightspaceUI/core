@@ -69,7 +69,7 @@ class FormNativeDemo extends LitElement {
 	}
 
 	_onClick(e) {
-		this.shadowRoot.querySelector('d2l-form-native').requestSubmit(e.target);
+		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-form-native').requestSubmit(e.target);
 	}
 
 	_validatePassword(e) {

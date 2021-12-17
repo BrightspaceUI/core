@@ -84,7 +84,7 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	}
 
 	_onClick() {
-		this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click'));
+		if (this.shadowRoot) this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click'));
 	}
 
 	_onKeyDown(e) {

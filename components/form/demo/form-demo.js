@@ -86,7 +86,7 @@ class FormNestedDemo extends LitElement {
 	}
 
 	_submit() {
-		this.shadowRoot.querySelector('#root').submit();
+		if (this.shadowRoot) this.shadowRoot.querySelector('#root').submit();
 	}
 
 	_validatePassword(e) {

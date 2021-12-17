@@ -360,7 +360,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	activateDragHandle() {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
@@ -550,8 +550,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
-		e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		if (this.shadowRoot) {
+			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+			e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		}
 
 		const rootList = this._getRootList(this);
 
@@ -583,6 +585,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragTargetClick(e) {
+		if (!this.shadowRoot) return;
 		if (this._keyboardActiveOnNextClick) {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		} else {
@@ -691,7 +694,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 		if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
 		// simulate dragend
-		this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragend'));
+		if (this.shadowRoot)
+			this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragend'));
 	}
 
 	/**
@@ -743,7 +747,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		// simulate dragstart for touch and hold
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
-			this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
+			if (this.shadowRoot)
+				this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
 		}, touchHoldDuration);
 	}
 

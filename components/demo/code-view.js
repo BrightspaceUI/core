@@ -52,7 +52,7 @@ class CodeView extends LitElement {
 	}
 
 	forceUpdate() {
-		this._updateCode(this.shadowRoot.querySelector('slot'));
+		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot'));
 	}
 
 	get _codeTemplate() {

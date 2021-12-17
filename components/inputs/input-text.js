@@ -271,13 +271,13 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 	/** @ignore */
 	get selectionEnd() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
 		return elem ? elem.selectionEnd : 0;
 	}
 
 	/** @ignore */
 	get selectionStart() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
 		return elem ? elem.selectionStart : 0;
 	}
 
@@ -301,7 +301,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 	/** @ignore */
 	get validity() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
+		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
 		if (!elem.validity.valid) {
 			return elem.validity;
 		}
@@ -318,7 +318,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
-		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
+		const container = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-text-container') : undefined;
 		if (!container) return;
 		container.removeEventListener('blur', this._handleBlur, true);
 		container.removeEventListener('focus', this._handleFocus, true);
@@ -331,7 +331,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 		this._setValue(this.value, true);
 
-		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
+		const container = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-text-container') : undefined;
 		if (!container) return;
 		container.addEventListener('blur', this._handleBlur, true);
 		container.addEventListener('focus', this._handleFocus, true);
@@ -595,7 +595,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	_updateInputLayout() {
 
 		// defer until we're visible
-		if (!this._isIntersecting) return;
+		if (!this.shadowRoot || !this._isIntersecting) return;
 
 		const firstContainer = this.shadowRoot.querySelector('.d2l-input-inside-before');
 		const firstSlotHasNodes = firstContainer.querySelector('slot').assignedNodes({ flatten: true }).length > 0

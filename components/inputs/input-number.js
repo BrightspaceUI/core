@@ -376,6 +376,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
 		await inputTextElem.updateComplete;
 		const childErrors = await inputTextElem.validate();

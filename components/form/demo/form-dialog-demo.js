@@ -66,11 +66,11 @@ class FormDialogDemo extends LitElement {
 		e.stopPropagation();
 		// eslint-disable-next-line no-console
 		console.log(e.detail.formData);
-		this.shadowRoot.querySelector('#dialog').opened = false;
+		if (this.shadowRoot) this.shadowRoot.querySelector('#dialog').opened = false;
 	}
 
 	_onDialogSubmitClicked() {
-		this.shadowRoot.querySelector('#dialog-secondary-form').submit();
+		if (this.shadowRoot) this.shadowRoot.querySelector('#dialog-secondary-form').submit();
 	}
 
 	_onSubmit(e) {
@@ -79,11 +79,11 @@ class FormDialogDemo extends LitElement {
 	}
 
 	_onSubmitClicked() {
-		this.shadowRoot.querySelector('#dialog-main-form').submit();
+		if (this.shadowRoot) this.shadowRoot.querySelector('#dialog-main-form').submit();
 	}
 
 	_openDialog() {
-		this.shadowRoot.querySelector('#dialog').opened = true;
+		if (this.shadowRoot) this.shadowRoot.querySelector('#dialog').opened = true;
 	}
 
 	_validatePassword(e) {

@@ -301,6 +301,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
 		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
 		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
@@ -319,7 +320,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		if (!newDate) {
 			this.value = '';
 		} else {
-			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
+			const inputTime = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-time') : undefined;
 			let time;
 			if (e.detail && e.detail.setToNow) time = _getFormattedDefaultTime('now');
 			else time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
@@ -360,7 +361,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	async _handleTimeChange(e) {
-		const date = this.shadowRoot.querySelector('d2l-input-date').value;
+		const date = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date').value : undefined;
 		const time = e.target.value;
 		this.value = this.localized ? _formatLocalDateTimeInISO(date, time) : getUTCDateTimeFromLocalDateTime(date, time);
 		this._dispatchChangeEvent();

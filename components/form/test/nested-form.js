@@ -41,6 +41,7 @@ class NestedForm extends LitElement {
 	}
 
 	fill() {
+		if (!this.shadowRoot) return;
 		const firstName = this.shadowRoot.querySelector('#composed-nested-first-name');
 		firstName.value = 'John Doe';
 

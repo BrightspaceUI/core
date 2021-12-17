@@ -25,6 +25,7 @@ class AnnounceTest extends LitElement {
 	}
 
 	_handleAnnounce() {
+		if (!this.shadowRoot) return;
 		const value1 = this.shadowRoot.querySelector('#msg1').value;
 		if (value1.length > 0) announce(value1);
 		const value2 = this.shadowRoot.querySelector('#msg2').value;

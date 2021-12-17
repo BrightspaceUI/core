@@ -222,7 +222,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	isActive() {
-		if (this.childView && !this.shown) {
+		if ((this.childView && !this.shown) || !this.shadowRoot) {
 			return false;
 		} else {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
@@ -325,6 +325,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			view.resize();
 			return;
 		}
+		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 		const contentRect = content.getBoundingClientRect();
 		if (contentRect.height < 1) return;
@@ -432,7 +433,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
 
 		const parentView = this.__getParentViewFromEvent(e);
-		if (parentView === this) {
+		if (this.shadowRoot && parentView === this) {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 			const data = e.detail.data;
@@ -495,16 +496,18 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			/* deep link scenario */
 			this.show(e.detail.data, e.detail.sourceView);
 		}
-		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
+		const content = this.shadowRoot ?
+			this.shadowRoot.querySelector('.d2l-hierarchical-view-content')
+			: undefined;
 
-		if (reduceMotion) {
+		if (this.shadowRoot && reduceMotion) {
 
 			content.classList.add('d2l-child-view-show');
 			requestAnimationFrame(() => {
 				e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
 			});
 
-		} else {
+		} else if (this.shadowRoot) {
 
 			if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
 				const animationEnd = () => {

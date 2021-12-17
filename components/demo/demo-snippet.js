@@ -105,18 +105,19 @@ class DemoSnippet extends LitElement {
 
 		changedProperties.forEach((_, prop) => {
 			if (prop === '_code') {
-				this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+				if (this.shadowRoot) this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
 				this._updateHasSkeleton();
 			}
 		});
 	}
 
 	forceCodeUpdate() {
-		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
+		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
 	}
 
 	_applyAttr(name, value, applyToShadowRoot) {
 		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
 		if (nodes.length === 0) return;
 		const doApply = (nodes, isRoot) => {
@@ -191,6 +192,7 @@ class DemoSnippet extends LitElement {
 	}
 
 	_removeImportedDemo() {
+		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
 		for (let i = nodes.length - 1; i === 0; i--) {
 			nodes[i].parentNode.removeChild(nodes[i]);
@@ -231,6 +233,7 @@ class DemoSnippet extends LitElement {
 	_updateHasSkeleton() {
 
 		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
 
 		const doApply = (nodes) => {

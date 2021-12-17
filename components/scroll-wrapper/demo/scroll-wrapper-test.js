@@ -53,7 +53,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	focus() {
-		forceFocusVisible(this.shadowRoot.querySelector('d2l-scroll-wrapper')._container);
+		if (this.shadowRoot) forceFocusVisible(this.shadowRoot.querySelector('d2l-scroll-wrapper')._container);
 	}
 
 }

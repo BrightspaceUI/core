@@ -61,13 +61,15 @@ class FocusTrap extends LitElement {
 	}
 
 	_focusFirst() {
-		const focusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
+		const focusable = this.shadowRoot ?
+			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'))
+			: undefined;
 		if (focusable) forceFocusVisible(focusable);
 		this.dispatchEvent(new CustomEvent('d2l-focus-trap-enter', { bubbles: true, composed: true }));
 	}
 
 	_getContainer() {
-		return this.shadowRoot.querySelector('.d2l-focus-trap-start').parentNode;
+		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-focus-trap-start').parentNode : undefined;
 	}
 
 	_handleBodyFocus(e) {
@@ -80,7 +82,7 @@ class FocusTrap extends LitElement {
 
 	_handleEndFocusIn(e) {
 		const container = this._getContainer();
-		if (isComposedAncestor(container, e.relatedTarget)) {
+		if (this.shadowRoot && isComposedAncestor(container, e.relatedTarget)) {
 			// user is exiting trap via forward tabbing...
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
@@ -96,7 +98,7 @@ class FocusTrap extends LitElement {
 
 	_handleStartFocusIn(e) {
 		const container = this._getContainer();
-		if (isComposedAncestor(container, e.relatedTarget)) {
+		if (this.shadowRoot && isComposedAncestor(container, e.relatedTarget)) {
 			// user is exiting trap via back tabbing...
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {

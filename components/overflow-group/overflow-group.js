@@ -318,7 +318,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_chomp() {
-		if (!this._itemLayouts) return;
+		if (!this.shadowRoot || !this._itemLayouts) return;
 
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');

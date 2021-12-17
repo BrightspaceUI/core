@@ -170,6 +170,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__getContentElement() {
+		if (!this.shadowRoot) return undefined;
 		return this.shadowRoot.querySelector('slot:not([name])').assignedNodes()
 			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
 	}

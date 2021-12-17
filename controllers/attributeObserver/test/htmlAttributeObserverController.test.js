@@ -39,7 +39,7 @@ const testHost = listeningAttributes => defineCE(
 			return this._controller.values.get(attr);
 		}
 		getRenderedVal(attr) {
-			const elem = this.shadowRoot.querySelector(`#${attr}`);
+			const elem = this.shadowRoot ? this.shadowRoot.querySelector(`#${attr}`) : undefined;
 			return (elem && elem.textContent) || undefined;
 		}
 		_hasChanged() {

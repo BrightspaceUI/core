@@ -132,7 +132,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._dispatchEvent();
 		if (!this.noClear && this.value.length > 0) {
 			this.updateComplete.then(() => {
-				this.shadowRoot.querySelector('d2l-button-icon').focus();
+				if (this.shadowRoot) this.shadowRoot.querySelector('d2l-button-icon').focus();
 			});
 		}
 	}
@@ -158,7 +158,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this._setLastSearchValue('');
 			this._dispatchEvent();
 		}
-		this.shadowRoot.querySelector('d2l-input-text').focus();
+		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
 	_handleInput(e) {
