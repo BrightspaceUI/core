@@ -36,7 +36,7 @@ class CodeView extends LitElement {
 			const path = `/node_modules/prismjs/components/prism-${language}.min.js`;
 			this._dependenciesPromise = import(path);
 		}
-		this._updateCode(this.shadowRoot.querySelector('slot'));
+		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
@@ -56,7 +56,8 @@ class CodeView extends LitElement {
 	}
 
 	get _codeTemplate() {
-		return html`<pre class="language-${this.language}"><code class="language-${this.language}">${unsafeHTML(this._code)}</code></pre>`;
+		const code = this._code !== undefined ? unsafeHTML(this._code) : '';
+		return html`<pre class="language-${this.language}"><code class="language-${this.language}">${code}</code></pre>`;
 	}
 
 	_formatCode(text) {
