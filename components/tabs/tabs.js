@@ -374,34 +374,37 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	getTabListRect() {
+		if (!this.shadowRoot) return undefined;
 		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
 
 	_animateTabAddition(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+		const tab = this.shadowRoot
+			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				tab.removeEventListener('transitionend', handleTransitionEnd);
+				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
 				resolve();
 			};
-			tab.addEventListener('transitionend', handleTransitionEnd);
+			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
 			tabInfo.state = '';
 			this.requestUpdate();
 		});
 	}
 
 	_animateTabRemoval(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+		const tab = this.shadowRoot &&
+			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				tab.removeEventListener('transitionend', handleTransitionEnd);
+				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
 				this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
 				this.requestUpdate();
 				resolve();
 			};
-			tab.addEventListener('transitionend', handleTransitionEnd);
+			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
 		});
 	}
 
@@ -488,7 +491,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	async _focusSelected() {
-		const selectedTab = this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
+		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
 
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
@@ -517,6 +520,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_getPanel(id) {
+		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
 		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
 		const panels = this._getPanels(slot);
@@ -702,7 +706,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		await this._scrollToPosition(newTranslationValue);
 		await this._updateScrollVisibility(newMeasures);
 
-		if (!isOverflowingNext) {
+		if (!isOverflowingNext && this.shadowRoot) {
 			this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
 		}
 
@@ -735,7 +739,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		await this._scrollToPosition(newTranslationValue);
 		await this._updateScrollVisibility(newMeasures);
 
-		if (!isOverflowingPrevious) {
+		if (!isOverflowingPrevious && this.shadowRoot) {
 			this.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').focus();
 		}
 
@@ -777,7 +781,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		}
 
 		this._translationValue = translationValue;
-		if (reduceMotion) return this.updateComplete;
+		if (!this.shadowRoot || reduceMotion) return this.updateComplete;
 
 		return new Promise((resolve) => {
 			const tabList = this.shadowRoot.querySelector('.d2l-tabs-container-list');
@@ -805,13 +809,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			expandedPromise = this.updateComplete;
 		} else {
 			expandedPromise = new Promise((resolve) => {
-				const tabsContainer = this.shadowRoot.querySelector('.d2l-tabs-container');
+				const tabsContainer = this.shadowRoot && this.shadowRoot.querySelector('.d2l-tabs-container');
 				const handleTransitionEnd = (e) => {
 					if (e.propertyName !== 'max-width') return;
-					tabsContainer.removeEventListener('transitionend', handleTransitionEnd);
+					if (tabsContainer) tabsContainer.removeEventListener('transitionend', handleTransitionEnd);
 					resolve();
 				};
-				tabsContainer.addEventListener('transitionend', handleTransitionEnd);
+				if (tabsContainer) tabsContainer.addEventListener('transitionend', handleTransitionEnd);
 				this._scrollCollapsed = false;
 				this._maxWidth = measures.totalTabsWidth + 50;
 			});
@@ -828,7 +832,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			if (!this._allowScrollPrevious) {
 				this._focusSelected();
 			} else {
-				this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
+				if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
 			}
 		}
 
@@ -838,6 +842,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 
 	_updateMeasures() {
 		let totalTabsWidth = 0;
+		if (!this.shadowRoot) return;
 		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
 
 		const tabRects = tabs.map((tab) => {
@@ -894,7 +899,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			// don't animate the tabs list visibility if it's the inital render
 			if (reduceMotion || !this._initialized) {
 				this._state = 'hidden';
-			} else {
+			} else if (this.shadowRoot) {
 				const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
 				const handleTransitionEnd = (e) => {
 					if (e.propertyName !== 'max-height') return;

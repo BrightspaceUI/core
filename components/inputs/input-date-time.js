@@ -296,11 +296,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-date');
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date');
 		if (elem) elem.focus();
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
 		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
 		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
@@ -319,7 +320,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		if (!newDate) {
 			this.value = '';
 		} else {
-			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
+			const inputTime = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-time');
 			let time;
 			if (e.detail && e.detail.setToNow) time = _getFormattedDefaultTime('now');
 			else time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
@@ -346,12 +347,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	_handleInputTimeBlur() {
-		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+		const tooltip = this.shadowRoot && this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.hide();
 	}
 
 	_handleInputTimeFocus() {
-		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+		const tooltip = this.shadowRoot && this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.show();
 	}
 
@@ -360,7 +361,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	async _handleTimeChange(e) {
-		const date = this.shadowRoot.querySelector('d2l-input-date').value;
+		const date = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date').value;
 		const time = e.target.value;
 		this.value = this.localized ? _formatLocalDateTimeInISO(date, time) : getUTCDateTimeFromLocalDateTime(date, time);
 		this._dispatchChangeEvent();

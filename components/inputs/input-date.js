@@ -336,6 +336,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const textInput = this.shadowRoot.querySelector('d2l-input-text');
 		const errors = await Promise.all([textInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1]];
@@ -407,6 +408,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 	}
 
 	_handleDropdownOpen() {
+		if (!this.shadowRoot) return;
 		const calendarOffset = this.shadowRoot.querySelector('d2l-calendar').getBoundingClientRect();
 		const fullCalendarVisible = calendarOffset.y + calendarOffset.height < window.innerHeight;
 		if (this._dropdown && !this._dropdown.openedAbove && !fullCalendarVisible) {
@@ -432,6 +434,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 	async _handleFirstDropdownOpen() {
 		this._dropdownFirstOpened = true;
 		await this.updateComplete;
+		if (!this.shadowRoot) return;
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		await this._calendar.updateComplete;

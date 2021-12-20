@@ -171,7 +171,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusCellItem(num, itemNum) {
-		const cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
+		const cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);
@@ -197,7 +197,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		let focusable = null;
 		let num = 1;
 		do {
-			cell = this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
+			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
 			if (cell) {
 				focusable = getLastFocusableDescendant(cell) || focusable;
 			}
@@ -220,7 +220,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		let focusable = null;
 
 		do {
-			cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
+			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 			if (cell) {
 				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
 			}
@@ -381,7 +381,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_getThisCell() {
-		return this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
+		return this.shadowRoot &&
+			this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
 	_onKeydown(event) {

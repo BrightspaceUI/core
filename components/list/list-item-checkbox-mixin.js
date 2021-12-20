@@ -119,7 +119,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		event.preventDefault();
 		if (this.disabled) return;
 		this.setSelected(!this.selected);
-		const checkbox = this.shadowRoot.querySelector(`#${this._checkboxId}`);
+		const checkbox = this.shadowRoot && this.shadowRoot.querySelector(`#${this._checkboxId}`);
 		if (checkbox) checkbox.focus();
 	}
 

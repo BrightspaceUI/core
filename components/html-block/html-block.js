@@ -217,6 +217,7 @@ class HtmlBlock extends LitElement {
 	}
 
 	_findSlottedElement(tagName, slot) {
+		if (!this.shadowRoot) return;
 		if (!slot) slot = this.shadowRoot.querySelector('slot');
 		return slot.assignedNodes({ flatten: true })
 			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === tagName.toUpperCase()));

@@ -101,6 +101,7 @@ class List extends SelectionMixin(LitElement) {
 	}
 
 	getItems() {
+		if (!this.shadowRoot) return;
 		const slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
@@ -157,6 +158,7 @@ class List extends SelectionMixin(LitElement) {
 	_handleKeyDown(e) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
+		if (!this.shadowRoot) return;
 		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
 			: getNextFocusable(this, false, true, true));
 		if (focusable) focusable.focus();

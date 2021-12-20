@@ -715,7 +715,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_getContent() {
-		return this.shadowRoot.querySelector('.d2l-tooltip-content');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-tooltip-content');
 	}
 
 	_isAboveOrBelow() {

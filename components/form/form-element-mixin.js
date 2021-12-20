@@ -136,9 +136,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		/** @ignore */
 		this.childErrors = new Map();
 		this._errors = [];
-
-		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
 	/** @ignore */
@@ -158,6 +155,18 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	/** @ignore */
 	get validity() {
 		return this._validity;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.shadowRoot.removeEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.shadowRoot.removeEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
 	updated(changedProperties) {

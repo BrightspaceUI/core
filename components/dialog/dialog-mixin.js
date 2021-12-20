@@ -129,7 +129,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
-		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
+		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
 	_close(action) {
@@ -139,6 +139,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
 
+		if (!this.shadowRoot) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
 		const doClose = () => {
@@ -161,6 +162,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_focusFirst() {
+		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const firstFocusable = getNextFocusable(content);
@@ -187,6 +189,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getHeight() {
+		if (!this.shadowRoot) return;
 
 		const availableHeight = this._ifrauContextInfo
 			? this._ifrauContextInfo.availableHeight - this._margin.top - this._margin.bottom
@@ -303,6 +306,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._action = undefined;
 		this._addHandlers();
 
+		if (!this.shadowRoot) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
 		const animPromise = new Promise((resolve) => {
@@ -357,7 +361,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_removeHandlers() {
 		window.removeEventListener('resize', this._updateSize);
-		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
+		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
 	_render(inner, info, iframeTopOverride) {
@@ -423,6 +427,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_updateOverflow() {
+		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		this._overflowTop = (content.scrollTop > 0);
 		this._overflowBottom = (content.scrollHeight > content.scrollTop + content.clientHeight);

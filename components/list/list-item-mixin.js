@@ -303,6 +303,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	}
 
 	_getNestedList() {
+		if (!this.shadowRoot) return;
 		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
 		let nestedNodes = nestedSlot.assignedNodes();
 		if (nestedNodes.length === 0) {

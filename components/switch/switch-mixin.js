@@ -213,7 +213,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('.d2l-switch-container');
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-switch-container');
 		if (elem) elem.focus();
 	}
 

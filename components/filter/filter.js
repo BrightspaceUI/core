@@ -213,7 +213,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const opener = this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		const opener = this.shadowRoot && this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		if (opener) opener.focus();
 	}
 
@@ -523,7 +523,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionHide() {
-		this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
+		if (this.shadowRoot) this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 	}
 
 	_handleDimensionHideKeyPress(e) {
@@ -538,8 +538,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const returnButton = this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
-		returnButton.focus();
+		const returnButton = this.shadowRoot
+			&& this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
+		if (returnButton) returnButton.focus();
 	}
 
 	_handleDimensionShowStart(e) {

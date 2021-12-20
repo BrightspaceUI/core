@@ -20,11 +20,11 @@ class FocusTestElem extends LitElement {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('#first').focus();
+		if (this.shadowRoot) this.shadowRoot.querySelector('#first').focus();
 	}
 
 	forceFocusVisible() {
-		forceFocusVisible(this.shadowRoot.querySelector('#first'));
+		if (this.shadowRoot) forceFocusVisible(this.shadowRoot.querySelector('#first'));
 	}
 
 	_dispatchEvent() {
