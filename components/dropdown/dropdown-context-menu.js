@@ -55,7 +55,7 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 	 * @return {HTMLElement}
 	 */
 	getOpenerElement() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('d2l-button-icon') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('d2l-button-icon');
 	}
 
 }

@@ -30,7 +30,7 @@ class FormElement extends FormElementMixin(LitElement) {
 	}
 
 	get validity() {
-		const input = this.shadowRoot ? this.shadowRoot.querySelector('input') : undefined;
+		const input = this.shadowRoot && this.shadowRoot.querySelector('input');
 		if (!input.validity.valid) {
 			return input.validity;
 		}

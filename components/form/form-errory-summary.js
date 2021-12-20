@@ -104,7 +104,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			focusEleSelector = 'd2l-button-icon';
 		}
-		const focusEle = this.shadowRoot ? this.shadowRoot.querySelector(focusEleSelector) : undefined;
+		const focusEle = this.shadowRoot && this.shadowRoot.querySelector(focusEleSelector);
 		if (focusEle) focusEle.focus();
 	}
 

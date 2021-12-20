@@ -271,13 +271,13 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 	/** @ignore */
 	get selectionEnd() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		return elem ? elem.selectionEnd : 0;
 	}
 
 	/** @ignore */
 	get selectionStart() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		return elem ? elem.selectionStart : 0;
 	}
 
@@ -301,7 +301,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 	/** @ignore */
 	get validity() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		if (!elem.validity.valid) {
 			return elem.validity;
 		}
@@ -318,7 +318,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
-		const container = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-text-container') : undefined;
+		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
 		container.removeEventListener('blur', this._handleBlur, true);
 		container.removeEventListener('focus', this._handleFocus, true);
@@ -331,7 +331,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 		this._setValue(this.value, true);
 
-		const container = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-text-container') : undefined;
+		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
 		container.addEventListener('blur', this._handleBlur, true);
 		container.addEventListener('focus', this._handleFocus, true);
@@ -464,7 +464,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	}
 
 	async focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		if (elem) {
 			elem.focus();
 		} else {
@@ -572,7 +572,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 		this._prevValue = (oldVal === undefined) ? '' : oldVal;
 		this._value = val;
 
-		const input = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const input = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		if (!input) return;
 
 		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });

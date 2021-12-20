@@ -100,7 +100,7 @@ class Form extends FormMixin(LitElement) {
 		const flattenedErrorMap = flattenMap(errorMap);
 		this._errors = errorMap;
 		if (errorMap.size > 0) {
-			const errorSummary = this.shadowRoot ? this.shadowRoot.querySelector('d2l-form-error-summary') : undefined;
+			const errorSummary = this.shadowRoot && this.shadowRoot.querySelector('d2l-form-error-summary');
 			if (errorSummary) {
 				this.updateComplete.then(() => errorSummary.focus());
 			}

@@ -163,8 +163,8 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	}
 
 	render() {
-		const startDateInput = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-date-range-start') : undefined;
-		const endDateInput = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input-date-range-end') : undefined;
+		const startDateInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-range-start');
+		const endDateInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-range-end');
 		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
@@ -252,7 +252,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	}
 
 	focus() {
-		const input = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date') : undefined;
+		const input = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date');
 		if (input) input.focus();
 	}
 

@@ -557,7 +557,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			await this.updateComplete;
 			this._focusDateAddFocus();
 		} else {
-			const button = this.shadowRoot ? this.shadowRoot.querySelector('d2l-button-icon') : undefined;
+			const button = this.shadowRoot && this.shadowRoot.querySelector('d2l-button-icon');
 			if (button) button.focus();
 		}
 	}
@@ -582,9 +582,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	async _getDateElement(date) {
 		await this.updateComplete;
-		return this.shadowRoot ?
-			this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`)
-			: undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
 	_getInitialFocusDate() {
@@ -717,7 +715,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				if (!canUpdateFocusDate) this._focusDate = undefined;
 				if (this._focusDate) this._focusDateAddFocus();
 				else {
-					const buttons = this.shadowRoot ? this.shadowRoot.querySelectorAll('d2l-button-icon') : undefined;
+					const buttons = this.shadowRoot && this.shadowRoot.querySelectorAll('d2l-button-icon');
 					if (buttons && buttons.length > 0) buttons[0].focus();
 				}
 				preventDefault = true;
@@ -744,7 +742,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				if (!canUpdateFocusDate) this._focusDate = undefined;
 				if (this._focusDate) this._focusDateAddFocus();
 				else {
-					const buttons = this.shadowRoot ? this.shadowRoot.querySelectorAll('d2l-button-icon') : undefined;
+					const buttons = this.shadowRoot && this.shadowRoot.querySelectorAll('d2l-button-icon');
 					if (buttons && buttons.length > 1) buttons[1].focus();
 				}
 				preventDefault = true;

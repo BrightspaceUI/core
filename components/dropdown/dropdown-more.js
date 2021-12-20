@@ -55,7 +55,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 	 * @return {HTMLElement}
 	 */
 	getOpenerElement() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('d2l-button-icon') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('d2l-button-icon');
 	}
 
 }

@@ -221,11 +221,11 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(FocusVisiblePolyfillMixin(Li
 	}
 
 	_getMenuItemReturn() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('d2l-menu-item-return') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('d2l-menu-item-return');
 	}
 
 	_getMenuItems() {
-		const slot = this.shadowRoot ? this.shadowRoot.querySelector('slot') : undefined;
+		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
 		const items = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 

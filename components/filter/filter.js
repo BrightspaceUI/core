@@ -213,7 +213,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const opener = this.shadowRoot ? this.shadowRoot.querySelector('d2l-dropdown-button-subtle') : undefined;
+		const opener = this.shadowRoot && this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		if (opener) opener.focus();
 	}
 
@@ -538,9 +538,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const returnButton = this.shadowRoot ?
-			this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')
-			: undefined;
+		const returnButton = this.shadowRoot
+			&& this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
 		if (returnButton) returnButton.focus();
 	}
 

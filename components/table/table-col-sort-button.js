@@ -71,7 +71,7 @@ export class TableColSortButton extends LitElement {
 	}
 
 	focus() {
-		const button = this.shadowRoot ? this.shadowRoot.querySelector('button') : undefined;
+		const button = this.shadowRoot && this.shadowRoot.querySelector('button');
 		if (button) button.focus();
 	}
 

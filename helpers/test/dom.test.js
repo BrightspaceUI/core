@@ -18,7 +18,7 @@ const testElemTag = defineCE(
 			return html`<div id="container"><slot id="slot1"></slot></div>`;
 		}
 		getContainer() {
-			return this.shadowRoot ? this.shadowRoot.querySelector('#container') : undefined;
+			return this.shadowRoot && this.shadowRoot.querySelector('#container');
 		}
 	},
 );

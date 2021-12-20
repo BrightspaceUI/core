@@ -296,7 +296,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date');
 		if (elem) elem.focus();
 	}
 
@@ -320,7 +320,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		if (!newDate) {
 			this.value = '';
 		} else {
-			const inputTime = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-time') : undefined;
+			const inputTime = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-time');
 			let time;
 			if (e.detail && e.detail.setToNow) time = _getFormattedDefaultTime('now');
 			else time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
@@ -347,12 +347,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	_handleInputTimeBlur() {
-		const tooltip = this.shadowRoot ? this.shadowRoot.querySelector('d2l-tooltip') : undefined;
+		const tooltip = this.shadowRoot && this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.hide();
 	}
 
 	_handleInputTimeFocus() {
-		const tooltip = this.shadowRoot ? this.shadowRoot.querySelector('d2l-tooltip') : undefined;
+		const tooltip = this.shadowRoot && this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.show();
 	}
 
@@ -361,7 +361,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	async _handleTimeChange(e) {
-		const date = this.shadowRoot ? this.shadowRoot.querySelector('d2l-input-date').value : undefined;
+		const date = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date').value;
 		const time = e.target.value;
 		this.value = this.localized ? _formatLocalDateTimeInISO(date, time) : getUTCDateTimeFromLocalDateTime(date, time);
 		this._dispatchChangeEvent();

@@ -307,7 +307,7 @@ class Card extends RtlMixin(LitElement) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('a') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('a');
 		if (!elem) return;
 		elem.focus();
 	}

@@ -350,7 +350,7 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 		if (elem) elem.focus();
 	}
 

@@ -41,7 +41,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 	 * @return {HTMLElement}
 	 */
 	getOpenerElement() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('d2l-button-subtle') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('d2l-button-subtle');
 	}
 
 }

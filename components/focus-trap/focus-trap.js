@@ -56,20 +56,19 @@ class FocusTrap extends LitElement {
 	}
 
 	focus() {
-		const focusable = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-focus-trap-start') : undefined;
+		const focusable = this.shadowRoot && this.shadowRoot.querySelector('.d2l-focus-trap-start');
 		if (focusable) focusable.focus();
 	}
 
 	_focusFirst() {
-		const focusable = this.shadowRoot ?
-			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'))
-			: undefined;
+		const focusable = this.shadowRoot &&
+			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 		if (focusable) forceFocusVisible(focusable);
 		this.dispatchEvent(new CustomEvent('d2l-focus-trap-enter', { bubbles: true, composed: true }));
 	}
 
 	_getContainer() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-focus-trap-start').parentNode : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-focus-trap-start').parentNode;
 	}
 
 	_handleBodyFocus(e) {

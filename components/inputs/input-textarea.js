@@ -165,7 +165,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 	/** @ignore */
 	get textarea() {
 		// temporary until consumers are updated
-		return this.shadowRoot ? this.shadowRoot.querySelector('textarea') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('textarea');
 	}
 
 	/** @ignore */
@@ -178,7 +178,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 
 	/** @ignore */
 	get validity() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('textarea') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('textarea');
 		if (elem && !elem.validity.valid) {
 			return elem.validity;
 		}
@@ -264,7 +264,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 	}
 
 	async focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('textarea') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('textarea');
 		if (elem) {
 			elem.focus();
 		} else {
@@ -274,7 +274,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 	}
 
 	async select() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('textarea') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('textarea');
 		if (elem) {
 			elem.select();
 		} else {

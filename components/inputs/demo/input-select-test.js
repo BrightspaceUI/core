@@ -53,7 +53,7 @@ class TestInputSelect extends SkeletonMixin(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('select') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('select');
 		if (elem) elem.focus();
 	}
 

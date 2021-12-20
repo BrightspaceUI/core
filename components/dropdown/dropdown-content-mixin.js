@@ -399,15 +399,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__getContentBottom() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-dropdown-content-bottom') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
 	__getContentContainer() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-dropdown-content-container') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
 	}
 
 	__getContentTop() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-dropdown-content-top') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-top');
 	}
 
 	__getOpener() {
@@ -420,11 +420,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__getPositionContainer() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-dropdown-content-position') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-position');
 	}
 
 	__getWidthContainer() {
-		return this.shadowRoot ? this.shadowRoot.querySelector('.d2l-dropdown-content-width') : undefined;
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-width');
 	}
 
 	__handleFooterSlotChange(e) {

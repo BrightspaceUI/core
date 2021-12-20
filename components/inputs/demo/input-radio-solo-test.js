@@ -38,7 +38,7 @@ class TestInputRadioSolo extends LitElement {
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('input') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('input');
 		if (elem) elem.focus();
 	}
 

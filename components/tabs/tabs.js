@@ -379,9 +379,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_animateTabAddition(tabInfo) {
-		const tab = this.shadowRoot ?
-			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`)
-			: undefined;
+		const tab = this.shadowRoot
+			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
@@ -395,9 +394,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_animateTabRemoval(tabInfo) {
-		const tab = this.shadowRoot ?
-			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`)
-			: undefined;
+		const tab = this.shadowRoot &&
+			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
@@ -493,9 +491,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	async _focusSelected() {
-		const selectedTab = this.shadowRoot ?
-			this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]')
-			: undefined;
+		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
 
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
@@ -813,7 +809,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			expandedPromise = this.updateComplete;
 		} else {
 			expandedPromise = new Promise((resolve) => {
-				const tabsContainer = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-tabs-container') : undefined;
+				const tabsContainer = this.shadowRoot && this.shadowRoot.querySelector('.d2l-tabs-container');
 				const handleTransitionEnd = (e) => {
 					if (e.propertyName !== 'max-width') return;
 					if (tabsContainer) tabsContainer.removeEventListener('transitionend', handleTransitionEnd);

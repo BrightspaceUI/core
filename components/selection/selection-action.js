@@ -79,7 +79,7 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 	}
 
 	focus() {
-		const elem = this.shadowRoot ? this.shadowRoot.querySelector('d2l-button-subtle') : undefined;
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-button-subtle');
 		if (elem) elem.focus();
 	}
 

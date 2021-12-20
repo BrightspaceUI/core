@@ -118,7 +118,7 @@ class Link extends LitElement {
 	}
 
 	focus() {
-		const link = this.shadowRoot ? this.shadowRoot.querySelector('.d2l-link') : undefined;
+		const link = this.shadowRoot && this.shadowRoot.querySelector('.d2l-link');
 		if (link) link.focus();
 	}
 }

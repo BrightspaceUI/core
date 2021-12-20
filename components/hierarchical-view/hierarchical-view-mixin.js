@@ -496,9 +496,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			/* deep link scenario */
 			this.show(e.detail.data, e.detail.sourceView);
 		}
-		const content = this.shadowRoot ?
-			this.shadowRoot.querySelector('.d2l-hierarchical-view-content')
-			: undefined;
+		const content = this.shadowRoot && this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 		if (this.shadowRoot && reduceMotion) {
 
