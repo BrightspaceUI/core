@@ -389,7 +389,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					<d2l-list-item
 						?hidden="${item.hidden}"
 						key="${item.key}"
-						label="${item.text ? item.text : 'placeholder'}"
+						label="${item.text}"
 						selectable
 						?selected="${item.selected}"
 						slim>

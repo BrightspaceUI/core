@@ -549,6 +549,7 @@ describe('d2l-filter', () => {
 	describe('filter counts', () => {
 		it('single set dimension is counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
+			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
 			elem._dimensions = [{
 				key: 'dim',
 				type: 'd2l-filter-dimension-set',
@@ -564,6 +565,7 @@ describe('d2l-filter', () => {
 
 		it('multiple dimensions are counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
+			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
 			elem._dimensions = [{
 				key: '1',
 				type: 'd2l-filter-dimension-set',
