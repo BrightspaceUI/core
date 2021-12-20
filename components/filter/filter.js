@@ -753,7 +753,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					dimension.values.forEach(value => {
 						if (value.selected) {
 							const keyObject = { dimension: dimension.key, value: value.key };
-							const text = dimension.valueOnlyActiveFilterText ? value.text : this.localize('components.filter.activeFilterText', { filterName: dimension.text, activeFilter: value.text });
+							const text = dimension.valueOnlyActiveFilterText ? value.text : `${dimension.text}: ${value.text}`;
 							activeFilters.push({ keyObject: keyObject, text: text });
 						}
 					});

@@ -9,7 +9,6 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Stäng dialogrutan",
 	"components.dropdown.close": "Stäng",
-	"components.filter.activeFilterText": "{filterName}: {activeFilter}",
 	"components.filter.clear": "Rensa",
 	"components.filter.clearAll": "Rensa alla",
 	"components.filter.clearAllAnnounce": "Rensar alla filter",

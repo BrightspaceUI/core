@@ -9,7 +9,6 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Luk denne dialogboks",
 	"components.dropdown.close": "Luk",
-	"components.filter.activeFilterText": "{filterName}: {activeFilter}",
 	"components.filter.clear": "Ryd",
 	"components.filter.clearAll": "Ryd alle",
 	"components.filter.clearAllAnnounce": "Rydder alle filtre",

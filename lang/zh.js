@@ -9,7 +9,6 @@ export default {
 	"components.count-badge.plus" : "{number} +",
 	"components.dialog.close": "关闭此对话框",
 	"components.dropdown.close": "关闭",
-	"components.filter.activeFilterText": "{filterName}: {activeFilter}",
 	"components.filter.clear": "清除",
 	"components.filter.clearAll": "全部清除",
 	"components.filter.clearAllAnnounce": "清除所有筛选器",
