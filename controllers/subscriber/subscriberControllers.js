@@ -90,7 +90,7 @@ export class EventSubscriberController {
 	}
 
 	hostDisconnected() {
-		if (this._registry) this._registry.getController(this._controllerId).unsubscribe(this._host);
+		if (this._registry) this._registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
 	}
 
 }
@@ -114,7 +114,7 @@ export class IdSubscriberController {
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._timeouts.forEach(timeoutId => clearTimeout(timeoutId));
 		this._registries.forEach(registry => {
-			registry.getController(this._controllerId).unsubscribe(this._host);
+			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
 		});
 	}
 
@@ -123,7 +123,7 @@ export class IdSubscriberController {
 
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registries.forEach(registry => {
-			registry.getController(this._controllerId).unsubscribe(this._host);
+			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
 			if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(registry.id);
 		});
 		this._registries = new Map();
@@ -168,7 +168,7 @@ export class IdSubscriberController {
 		if (this._registries.get(registryId) === registryComponent) return;
 
 		if (registryComponent) {
-			registryComponent.getController(this._controllerId).subscribe(this._host);
+			registryComponent.getSubscriberController(this._controllerId).subscribe(this._host);
 			this._registries.set(registryId, registryComponent);
 			if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(registryComponent);
 		} else {

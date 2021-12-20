@@ -27,7 +27,7 @@ class CableSubscription extends LitElement {
 			{ onSubscribe: this._unlockKidsChannels.bind(this) }, {});
 	}
 
-	getController(controllerId) {
+	getSubscriberController(controllerId) {
 		if (controllerId === 'sports') {
 			return this._sportsSubscribers;
 		} else if (controllerId === 'movies') {
@@ -51,7 +51,7 @@ class CableSubscription extends LitElement {
 
 When creating the controller, you can pass in callbacks to run whenever a subscriber is added, removed, or `updateSubscribers` is called (which handles request debouncing for you).
 
-The `*subscriberController`s will use a `getController` method that needs to be exposed on the registry component. If you only have one `SubscriberRegistryController` you can simple return that.  If you have multiple, you will return the proper controller depending on the id the subscriber component passed to you.
+The `*subscriberController`s will use a `getSubscriberController` method that needs to be exposed on the registry component. If you only have one `SubscriberRegistryController` you can simple return that.  If you have multiple, you will return the proper controller depending on the id the subscriber component passed to you.
 
 Once this has been set up, components can subscribe to particular registries two different ways:
 1. Using a matching event name with `EventSubscriberController`. The component will need to be a child of the registry component for this to work.

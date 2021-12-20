@@ -234,7 +234,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (opener) opener.focus();
 	}
 
-	getController() {
+	getSubscriberController() {
 		return this._activeFiltersSubscribers;
 	}
 
