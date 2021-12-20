@@ -743,7 +743,7 @@ describe('d2l-filter', () => {
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(elem._dimensions[1].text).to.equal('Test');
 			expect(elem._dimensions[1].loading).to.be.true;
-			expect(updateStub).to.be.called;
+			expect(updateStub).to.be.calledOnce;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
 		});
@@ -755,7 +755,7 @@ describe('d2l-filter', () => {
 
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(elem._dimensions[1].values[0].text).to.equal('Test');
-			expect(updateStub).to.be.called;
+			expect(updateStub).to.be.calledOnce;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
 		});
@@ -805,7 +805,7 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[1].values[0].selected).to.be.true;
 			expect(elem._dimensions[1].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(3);
-			expect(updateStub).to.be.calledOnce;
+			expect(updateStub).to.be.called;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
 		});
@@ -825,7 +825,7 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[1].values[1].selected).to.be.true;
 			expect(elem._dimensions[1].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(3);
-			expect(updateStub).to.be.calledOnce;
+			expect(updateStub).to.be.called;
 			expect(recountSpy).to.be.calledOnce;
 			expect(recountSpy).to.have.been.calledWith(elem._dimensions[1]);
 			expect(searchSpy).to.be.not.be.called;
