@@ -4,19 +4,13 @@ let mathJaxLoaded;
 
 export class HtmlBlockMathRenderer {
 
-	get canRenderInline() {
-		// The custom MathJax ShadowAdaptor creates a new document and renders
-		// its contents to the DOM.
-		return false;
-	}
-
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
 	}
 
-	async render(elem, contextValues) {
-		if (!contextValues) return elem;
-		const contextVal = contextValues.get(mathjaxContextAttribute);
+	async render(elem, options) {
+		if (!options.contextValues) return elem;
+		const contextVal = options.contextValues.get(mathjaxContextAttribute);
 		if (contextVal === undefined) return elem;
 
 		const context = JSON.parse(contextVal) || {};
@@ -30,6 +24,10 @@ export class HtmlBlockMathRenderer {
 		};
 
 		await loadMathJax(mathJaxConfig);
+
+		// If we're opting out of deferred rendering, we need to rely
+		// on the global MathJax install for rendering.
+		if (options.noDeferredRendering) return elem;
 
 		const temp = document.createElement('div');
 		temp.style.display = 'none';
