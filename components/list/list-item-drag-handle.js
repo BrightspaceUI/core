@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -36,6 +37,8 @@ export const dragActions = Object.freeze({
 	up: 'up'
 });
 
+let hasDisplayedKeyboardTooltip = false;
+
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
  */
@@ -58,6 +61,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			text: { type: String },
+			_displayKeyboardTooltip: { type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
 	}
@@ -109,6 +113,12 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				cursor: default;
 				opacity: 0.5;
 			}
+			d2l-tooltip > div {
+				font-weight: 700;
+			}
+			d2l-tooltip > ul {
+				padding-inline-start: 1rem;
+			}
 		`];
 	}
 
@@ -117,6 +127,8 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		this.disabled = false;
 
+		this._buttonId = getUniqueId();
+		this._displayKeyboardTooltip = false;
 		this._keyboardActive = false;
 		this._movingElement = false;
 	}
@@ -219,7 +231,14 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._movingElement = false;
 	}
 
-	_onFocusOut(e) {
+	_onFocusInKeyboardButton() {
+		if (hasDisplayedKeyboardTooltip) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
+	}
+
+	_onFocusOutKeyboardButton(e) {
+		this._displayKeyboardTooltip = false;
 		if (this._movingElement) {
 			this._movingElement = false;
 			e.stopPropagation();
@@ -266,17 +285,32 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_renderKeyboardDragging() {
 		return html`
 			<button
-				class="d2l-list-item-drag-handle-keyboard-button"
-				@focusout="${this._onFocusOut}"
-				@keyup="${this._onActiveKeyboard}"
-				@keydown="${this._onPreventDefault}"
+				aria-label="${this._defaultLabel}"
 				aria-live="assertive"
-				aria-label="${this._defaultLabel}">
+				class="d2l-list-item-drag-handle-keyboard-button"
+				@focusin="${this._onFocusInKeyboardButton}"
+				@focusout="${this._onFocusOutKeyboardButton}"
+				id="${this._buttonId}"
+				@keydown="${this._onPreventDefault}"
+				@keyup="${this._onActiveKeyboard}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
 			</button>
+			${this._displayKeyboardTooltip ? html`<d2l-tooltip align="start" for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 	}
+
+	_renderTooltipContent() {
+		return html`
+			<div>${this.localize('components.list-item-drag-handle-tooltip.title')}</div>
+			${this.localize('components.list-item-drag-handle-tooltip.enter')}
+			<ul>
+				<li>${this.localize('components.list-item-drag-handle-tooltip.up-down')}</li>
+				<li>${this.localize('components.list-item-drag-handle-tooltip.left-right')}</li>
+			</ul>
+		`;
+	}
+
 }
 
 customElements.define('d2l-list-item-drag-handle', ListItemDragHandle);

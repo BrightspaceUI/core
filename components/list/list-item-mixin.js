@@ -11,6 +11,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -25,7 +26,7 @@ document.addEventListener('keyup', e => {
 	tabPressed = false;
 });
 
-let hasDisplayedKeyboardFocusTooltip = false;
+let hasDisplayedKeyboardTooltip = false;
 
 const ro = new ResizeObserver(entries => {
 	entries.forEach(entry => {
@@ -38,7 +39,7 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
-export const ListItemMixin = superclass => class extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass)))) {
+export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass))))) {
 
 	static get properties() {
 		return {
@@ -53,7 +54,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 */
 			slim: { type: Boolean },
 			_breakpoint: { type: Number },
-			_displayKeyboardFocusTooltip: { type: Boolean },
+			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
@@ -269,7 +270,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this.slim = false;
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
-		this._displayKeyboardFocusTooltip = false;
+		this._displayKeyboardTooltip = false;
 	}
 
 	get breakpoints() {
@@ -371,9 +372,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusIn() {
 		this._focusing = true;
-		if (this.role !== 'rowgroup' || !tabPressed || hasDisplayedKeyboardFocusTooltip) return;
-		this._displayKeyboardFocusTooltip = true;
-		hasDisplayedKeyboardFocusTooltip = true;
+		if (this.role !== 'rowgroup' || !tabPressed || hasDisplayedKeyboardTooltip) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_onFocusInPrimaryAction() {
@@ -382,7 +383,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusOut() {
 		this._focusing = false;
-		this._displayKeyboardFocusTooltip = false;
+		this._displayKeyboardTooltip = false;
 	}
 
 	_onFocusOutPrimaryAction() {
@@ -471,7 +472,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				<div class="d2l-list-item-active-border"></div>
 			</div>
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._displayKeyboardFocusTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
+			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
 	}
@@ -486,12 +487,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_renderTooltipContent() {
 		return html`
-			<div>Keyboard Navigation for Lists:</div>
+			<div>${this.localize('components.list-item-tooltip.title')}</div>
 			<ul>
-				<li>Up and Down Arrows to move through the list.</li>
-				<li>Left and Right Arrows to move through options in each item.</li>
-				<li>Page Up and Page Down to jump between parent items.</li>
-				<li>Use Enter to activate the highlighted option.</li>
+				<li>${this.localize('components.list-item-tooltip.up-down')}</li>
+				<li>${this.localize('components.list-item-tooltip.left-right')}</li>
+				<li>${this.localize('components.list-item-tooltip.enter')}</li>
+				<li>${this.localize('components.list-item-tooltip.page-up-down')}</li>
 			</ul>
 		`;
 	}
