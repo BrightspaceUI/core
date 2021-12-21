@@ -1,6 +1,6 @@
 # Subscriber Controllers
 
-The `SubscriberRegistryController` and the corresponding `*SubscriberController`s can be used to create a subscription system within your app. Components can setup a subscriber registry instance to keep track of all components subscribed to them with the `SubscriberRegistryController`. Whenever it makes sense to do so, they can iterate over their subscribers to perform some action, update them with new data, etc.  Components can subscribe themselves to different registries using the `IdSubscriberController` or the `EventSubscriberController`. This system supports a many-to-many relationship - registry components can contain multiple registry instances with multiple subscribers in each, and subscriber components can subscribe to multiple different registries.
+The `SubscriberRegistryController` and the corresponding `*SubscriberController`s can be used to create a subscription system within your app. Components can set up a subscriber registry instance to keep track of all components subscribed to them with the `SubscriberRegistryController`. Whenever it makes sense to do so, they can iterate over their subscribers to perform some action, update them with new data, etc.  Components can subscribe themselves to different registries using the `IdSubscriberController` or the `EventSubscriberController`. This system supports a many-to-many relationship - registry components can contain multiple registry instances with multiple subscribers in each, and subscriber components can subscribe to multiple different registries.
 
 ## Usage
 
