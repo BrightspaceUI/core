@@ -4,10 +4,6 @@ import { provideInstance } from '../../../mixins/provider-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 class TestRenderer {
-	get canRenderInline() {
-		return true;
-	}
-
 	async render(elem) {
 		const elemsToReplace = elem.querySelectorAll('[data-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
@@ -28,10 +24,6 @@ class TestRenderer {
 }
 
 class TestAsyncRenderer {
-	get canRenderInline() {
-		return true;
-	}
-
 	async render(elem) {
 		const elemsToReplace = elem.querySelectorAll('[data-async-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
@@ -59,11 +51,9 @@ class TestAsyncRenderer {
 }
 
 class TestNoInlineRenderer {
-	get canRenderInline() {
-		return false;
-	}
-
-	async render(elem) {
+	async render(elem, options) {
+		if (options.noDeferredRendering) return;
+		
 		const elemsToReplace = elem.querySelectorAll('[data-no-inline-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
 
