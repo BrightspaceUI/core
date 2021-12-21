@@ -549,6 +549,7 @@ describe('d2l-filter', () => {
 	describe('filter counts', () => {
 		it('single set dimension is counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
+			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
 			elem._dimensions = [{
 				key: 'dim',
 				type: 'd2l-filter-dimension-set',
@@ -564,6 +565,7 @@ describe('d2l-filter', () => {
 
 		it('multiple dimensions are counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
+			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
 			elem._dimensions = [{
 				key: '1',
 				type: 'd2l-filter-dimension-set',
@@ -772,7 +774,7 @@ describe('d2l-filter', () => {
 			});
 			expect(elem._dimensions[1].values[0].text).to.equal('Test');
 			expect(elem._dimensions[1].values[0].selected).to.be.true;
-			expect(updateStub).to.be.calledOnce;
+			expect(updateStub).to.be.called;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
 		});
@@ -805,7 +807,7 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[1].values[0].selected).to.be.true;
 			expect(elem._dimensions[1].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(3);
-			expect(updateStub).to.be.calledOnce;
+			expect(updateStub).to.be.called;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
 		});
@@ -825,7 +827,7 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[1].values[1].selected).to.be.true;
 			expect(elem._dimensions[1].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(3);
-			expect(updateStub).to.be.calledOnce;
+			expect(updateStub).to.be.called;
 			expect(recountSpy).to.be.calledOnce;
 			expect(recountSpy).to.have.been.calledWith(elem._dimensions[1]);
 			expect(searchSpy).to.be.not.be.called;

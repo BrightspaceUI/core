@@ -56,7 +56,8 @@ class CodeView extends LitElement {
 	}
 
 	get _codeTemplate() {
-		return html`<pre class="language-${this.language}"><code class="language-${this.language}">${unsafeHTML(this._code)}</code></pre>`;
+		const code = this._code !== undefined ? unsafeHTML(this._code) : '';
+		return html`<pre class="language-${this.language}"><code class="language-${this.language}">${code}</code></pre>`;
 	}
 
 	_formatCode(text) {

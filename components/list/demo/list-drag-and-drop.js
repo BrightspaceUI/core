@@ -163,7 +163,8 @@ class ListDemoDragAndDrop extends LitElement {
 			targetItems.splice(targetIndex, 0, dataToMove[i]);
 		}
 
-		await this.requestUpdate();
+		this.requestUpdate();
+		await this.updateComplete;
 
 		if (e.detail.keyboardActive) {
 			requestAnimationFrame(() => {
