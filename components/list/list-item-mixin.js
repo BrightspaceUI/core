@@ -258,6 +258,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			d2l-tooltip > ul {
 				padding-inline-start: 1rem;
 			}
+			.d2l-list-item-tooltip-key {
+				font-weight: 700;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -489,10 +492,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		return html`
 			<div>${this.localize('components.list-item-tooltip.title')}</div>
 			<ul>
-				<li>${this.localize('components.list-item-tooltip.up-down')}</li>
-				<li>${this.localize('components.list-item-tooltip.left-right')}</li>
-				<li>${this.localize('components.list-item-tooltip.enter')}</li>
-				<li>${this.localize('components.list-item-tooltip.page-up-down')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.enter-key')}</span> - ${this.localize('components.list-item-tooltip.enter-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.up-down-key')}</span> - ${this.localize('components.list-item-tooltip.up-down-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.left-right-key')}</span> - ${this.localize('components.list-item-tooltip.left-right-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
 			</ul>
 		`;
 	}

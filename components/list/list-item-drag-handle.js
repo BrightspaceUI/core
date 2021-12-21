@@ -119,6 +119,9 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			d2l-tooltip > ul {
 				padding-inline-start: 1rem;
 			}
+			.d2l-list-item-drag-handle-tooltip-key {
+				font-weight: 700;
+			}
 		`];
 	}
 
@@ -303,10 +306,10 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_renderTooltipContent() {
 		return html`
 			<div>${this.localize('components.list-item-drag-handle-tooltip.title')}</div>
-			${this.localize('components.list-item-drag-handle-tooltip.enter')}
 			<ul>
-				<li>${this.localize('components.list-item-drag-handle-tooltip.up-down')}</li>
-				<li>${this.localize('components.list-item-drag-handle-tooltip.left-right')}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.enter-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.enter-desc')}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.up-down-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.up-down-desc')}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.left-right-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.left-right-desc')}</li>
 			</ul>
 		`;
 	}
