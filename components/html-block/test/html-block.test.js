@@ -53,7 +53,7 @@ class TestAsyncRenderer {
 class TestNoInlineRenderer {
 	async render(elem, options) {
 		if (options.noDeferredRendering) return;
-		
+
 		const elemsToReplace = elem.querySelectorAll('[data-no-inline-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
 
