@@ -1,6 +1,6 @@
 # Subscriber Controllers
 
-The `SubscriberRegistryController` and the corresponding `*SubscriberController`s can be used to create a subscription system within your app. Components can setup a subscriber registry instance to keep track of all components subscribed to them with the `SubscriberRegistryController`. Whenever it makes sense to do so, they can iterate over their subscribers to perform some action, update them with new data, etc.  Components can subscribe themselves to different registries using the `IdSubscriberController` or the `EventSubscriberController`. This system supports a many-to-many relationship - registry components can contain multiple registry instances with multiple subscribers in each, and subscriber components can subscribe to multiple different registries.
+The `SubscriberRegistryController` and the corresponding `*SubscriberController`s can be used to create a subscription system within your app. Components can set up a subscriber registry instance to keep track of all components subscribed to them with the `SubscriberRegistryController`. Whenever it makes sense to do so, they can iterate over their subscribers to perform some action, update them with new data, etc.  Components can subscribe themselves to different registries using the `IdSubscriberController` or the `EventSubscriberController`. This system supports a many-to-many relationship - registry components can contain multiple registry instances with multiple subscribers in each, and subscriber components can subscribe to multiple different registries.
 
 ## Usage
 
@@ -27,7 +27,7 @@ class CableSubscription extends LitElement {
 			{ onSubscribe: this._unlockKidsChannels.bind(this) }, {});
 	}
 
-	getController(controllerId) {
+	getSubscriberController(controllerId) {
 		if (controllerId === 'sports') {
 			return this._sportsSubscribers;
 		} else if (controllerId === 'movies') {
@@ -51,7 +51,7 @@ class CableSubscription extends LitElement {
 
 When creating the controller, you can pass in callbacks to run whenever a subscriber is added, removed, or `updateSubscribers` is called (which handles request debouncing for you).
 
-The `*subscriberController`s will use a `getController` method that needs to be exposed on the registry component. If you only have one `SubscriberRegistryController` you can simple return that.  If you have multiple, you will return the proper controller depending on the id the subscriber component passed to you.
+The `*subscriberController`s will use a `getSubscriberController` method that needs to be exposed on the registry component. If you only have one `SubscriberRegistryController` you can simple return that.  If you have multiple, you will return the proper controller depending on the id the subscriber component passed to you.
 
 Once this has been set up, components can subscribe to particular registries two different ways:
 1. Using a matching event name with `EventSubscriberController`. The component will need to be a child of the registry component for this to work.
