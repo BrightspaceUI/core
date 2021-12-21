@@ -19,7 +19,7 @@ class TestInputRadioSpacer extends LitElement {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('input');
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('input');
 		if (elem) elem.focus();
 	}
 

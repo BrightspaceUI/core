@@ -72,7 +72,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 	 * @return {HTMLElement}
 	 */
 	getOpenerElement() {
-		return this.shadowRoot.querySelector('d2l-button');
+		return this.shadowRoot && this.shadowRoot.querySelector('d2l-button');
 	}
 
 }

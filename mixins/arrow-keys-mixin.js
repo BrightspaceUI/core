@@ -37,7 +37,9 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return [...this.shadowRoot.querySelectorAll('.d2l-arrowkeys-focusable')];
+		return this.shadowRoot ?
+			[...this.shadowRoot.querySelectorAll('.d2l-arrowkeys-focusable')]
+			: [];
 	}
 
 	async _focus(elem) {

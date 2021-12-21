@@ -210,9 +210,8 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-time-range.startTime');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
 
-		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
-		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
-
+		const startTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-time-range-start');
+		const endTimeInput =  this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-time-range-end');
 		/**
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
@@ -304,11 +303,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-time');
+		const input = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-time');
 		if (input) input.focus();
 	}
 
 	async validate() {
+		if (!this.shadowRoot) return;
 		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
 		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
 		const errors = await Promise.all([startTimeInput.validate(), endTimeInput.validate(), super.validate()]);

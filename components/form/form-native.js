@@ -133,7 +133,7 @@ class FormNative extends FormMixin(LitElement) {
 			}
 		}
 		this._errors = errorMap;
-		if (errorMap.size > 0) {
+		if (this.shadowRoot && errorMap.size > 0) {
 			const errorSummary = this.shadowRoot.querySelector('d2l-form-error-summary');
 			this.updateComplete.then(() => errorSummary.focus());
 		}

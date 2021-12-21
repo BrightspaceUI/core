@@ -149,11 +149,11 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	}
 
 	_onBlur() {
-		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = false;
+		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = false;
 	}
 
 	_onFocus() {
-		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = true;
+		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = true;
 	}
 
 }

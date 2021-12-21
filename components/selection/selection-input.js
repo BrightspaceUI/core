@@ -142,7 +142,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.firstElementChild;
+		const elem = this.shadowRoot && this.shadowRoot.firstElementChild;
 		if (elem) elem.focus();
 	}
 

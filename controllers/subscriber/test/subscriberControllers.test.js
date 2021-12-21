@@ -31,7 +31,7 @@ const separateRegistries = defineCE(
 			this._eventSubscribers.hostDisconnected();
 			this._idSubscribers.hostDisconnected();
 		}
-		getController(controllerId) {
+		getSubscriberController(controllerId) {
 			if (controllerId === 'event') {
 				return this._eventSubscribers;
 			} else if (controllerId === 'id') {
@@ -70,7 +70,7 @@ const combinedRegistry = defineCE(
 			super.disconnectedCallback();
 			this._subscribers.hostDisconnected();
 		}
-		getController() {
+		getSubscriberController() {
 			return this._subscribers;
 		}
 		_onSubscribe(target) {
@@ -422,9 +422,9 @@ describe('IdSubscriberController', () => {
 			expect(multipleSubscriber._onSubscribeRegistries[2]).to.equal(newNode);
 			expect(multipleSubscriber._subscriberController.registries.length).to.equal(3);
 			expect(multipleSubscriber._subscriberController.registries[2]).to.equal(newNode);
-			expect(newNode.getController().subscribers.size).to.equal(2);
-			expect(newNode.getController().subscribers.has(errorSubscriber)).to.be.true;
-			expect(newNode.getController().subscribers.has(multipleSubscriber)).to.be.true;
+			expect(newNode.getSubscriberController().subscribers.size).to.equal(2);
+			expect(newNode.getSubscriberController().subscribers.has(errorSubscriber)).to.be.true;
+			expect(newNode.getSubscriberController().subscribers.has(multipleSubscriber)).to.be.true;
 		});
 
 		it('If the list of registry ids changes, the registry and subscriber maps are updated', async() => {
@@ -434,8 +434,8 @@ describe('IdSubscriberController', () => {
 			expect(singleSubscriber._onUnsubscribeRegistryIds.length).to.equal(0);
 			expect(singleSubscriber._subscriberController.registries.length).to.equal(1);
 			expect(singleSubscriber._subscriberController.registries[0]).to.equal(registry1);
-			expect(registry1.getController('id').subscribers.has(singleSubscriber)).to.be.true;
-			expect(registry2.getController('id').subscribers.has(singleSubscriber)).to.be.false;
+			expect(registry1.getSubscriberController('id').subscribers.has(singleSubscriber)).to.be.true;
+			expect(registry2.getSubscriberController('id').subscribers.has(singleSubscriber)).to.be.false;
 
 			singleSubscriber.for = 'registry-2';
 			await singleSubscriber.updateComplete;
@@ -446,8 +446,8 @@ describe('IdSubscriberController', () => {
 			expect(singleSubscriber._onUnsubscribeRegistryIds[0]).to.equal('registry-1');
 			expect(singleSubscriber._subscriberController.registries.length).to.equal(1);
 			expect(singleSubscriber._subscriberController.registries[0]).to.equal(registry2);
-			expect(registry1.getController('id').subscribers.has(singleSubscriber)).to.be.false;
-			expect(registry2.getController('id').subscribers.has(singleSubscriber)).to.be.true;
+			expect(registry1.getSubscriberController('id').subscribers.has(singleSubscriber)).to.be.false;
+			expect(registry2.getSubscriberController('id').subscribers.has(singleSubscriber)).to.be.true;
 		});
 	});
 

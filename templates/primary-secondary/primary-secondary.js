@@ -1014,6 +1014,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 	}
 
 	_computeContentBounds(contentRect) {
+		if (!this.shadowRoot) return;
 		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 		const desktopDividerSize = divider.offsetWidth;
 		const mobileDividerSize = divider.offsetHeight;
@@ -1057,7 +1058,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			} else {
 				if (this._isMobile) {
 					this._size = this._contentBounds.minHeight;
-				} else {
+				} else if (this.shadowRoot) {
 					const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 					const desktopDividerSize = contentRect.width - divider.offsetWidth;
 					this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));

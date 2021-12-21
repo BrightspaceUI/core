@@ -48,7 +48,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('.d2l-custom-view-back-container > a').focus();
+		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-custom-view-back-container > a').focus();
 	}
 
 	_handleHide(e) {

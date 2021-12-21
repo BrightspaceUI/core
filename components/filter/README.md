@@ -189,6 +189,7 @@ Set dimension on mobile:
 | `select-all` | Boolean | Whether to show a select all checkbox and selection summary for this dimension  |
 | `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |
 | `text` | String, required | Text for the dimension in the menu |
+| `value-only-active-filter-text` | Boolean | Whether to hide the dimension in the text sent to active filter subscribers |
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Set Value [d2l-filter-dimension-set-value]

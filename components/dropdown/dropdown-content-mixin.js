@@ -338,7 +338,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		};
 
 		if (!reduceMotion && this._useMobileStyling && this.mobileTray && isVisible(this)) {
-			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
+			if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dropdown-content-width')
 				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
 			this._showBackdrop = false;
@@ -399,15 +399,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__getContentBottom() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
 	__getContentContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
 	}
 
 	__getContentTop() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-top');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-top');
 	}
 
 	__getOpener() {
@@ -420,11 +420,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__getPositionContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-position');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-position');
 	}
 
 	__getWidthContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-width');
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-width');
 	}
 
 	__handleFooterSlotChange(e) {

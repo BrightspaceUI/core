@@ -23,13 +23,13 @@ const testElemTag = defineCE(
 			`;
 		}
 		getContent() {
-			return this.shadowRoot.querySelector('#content');
+			return this.shadowRoot && this.shadowRoot.querySelector('#content');
 		}
 		getShadow1() {
-			return this.shadowRoot.querySelector('#shadow1');
+			return this.shadowRoot && this.shadowRoot.querySelector('#shadow1');
 		}
 		getShadow2() {
-			return this.shadowRoot.querySelector('#shadow2');
+			return this.shadowRoot && this.shadowRoot.querySelector('#shadow2');
 		}
 	},
 );

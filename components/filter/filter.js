@@ -23,6 +23,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
@@ -143,6 +144,22 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
+
+		this._activeFilters = null;
+		this._activeFiltersSubscribers = new SubscriberRegistryController(this,
+			{ onSubscribe: this._updateActiveFiltersSubscriber.bind(this), updateSubscribers: this._updateActiveFiltersSubscribers.bind(this) },
+			{}
+		);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this._activeFiltersSubscribers.hostConnected();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this._activeFiltersSubscribers.hostDisconnected();
 	}
 
 	firstUpdated(changedProperties) {
@@ -213,8 +230,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	focus() {
-		const opener = this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		const opener = this.shadowRoot && this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		if (opener) opener.focus();
+	}
+
+	getSubscriberController() {
+		return this._activeFiltersSubscribers;
 	}
 
 	requestFilterClearAll() {
@@ -423,6 +444,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}));
 		this._changeEventsToDispatch = new Map();
 		this._changeEventTimeout = null;
+
+		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -511,9 +534,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					dimension.appliedCount--;
 					this._totalAppliedCount--;
 				}
+				this._activeFiltersSubscribers.updateSubscribers();
 			} else if (prop === 'values') {
 				if (dimension.searchValue) shouldSearch = true;
 				shouldRecount = true;
+				this._activeFiltersSubscribers.updateSubscribers();
 			}
 		});
 
@@ -523,7 +548,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionHide() {
-		this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
+		if (this.shadowRoot) this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 	}
 
 	_handleDimensionHideKeyPress(e) {
@@ -538,8 +563,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const returnButton = this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
-		returnButton.focus();
+		const returnButton = this.shadowRoot
+			&& this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
+		if (returnButton) returnButton.focus();
 	}
 
 	_handleDimensionShowStart(e) {
@@ -608,6 +634,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.valueOnlyActiveFilterText = dimension.valueOnlyActiveFilterText;
 					const values = dimension._getValues();
 					info.values = values;
 					break;
@@ -618,6 +645,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._setFilterCounts();
+		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
 	_isDimensionEmpty(dimension) {
@@ -714,6 +742,37 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_stopPropagation(e) {
 		e.stopPropagation();
+	}
+
+	_updateActiveFilters() {
+		const activeFilters = [];
+
+		this._dimensions.forEach(dimension => {
+			switch (dimension.type) {
+				case 'd2l-filter-dimension-set': {
+					dimension.values.forEach(value => {
+						if (value.selected) {
+							const keyObject = { dimension: dimension.key, value: value.key };
+							const text = dimension.valueOnlyActiveFilterText ? value.text : `${dimension.text}: ${value.text}`;
+							activeFilters.push({ keyObject: keyObject, text: text });
+						}
+					});
+					break;
+				}
+			}
+		});
+
+		this._activeFilters = activeFilters;
+	}
+
+	_updateActiveFiltersSubscriber(subscriber) {
+		if (!this._activeFilters) this._updateActiveFilters();
+		subscriber.updateActiveFilters(this.id, this._activeFilters);
+	}
+
+	_updateActiveFiltersSubscribers(subscribers) {
+		this._updateActiveFilters();
+		subscribers.forEach(subscriber => subscriber.updateActiveFilters(this.id, this._activeFilters));
 	}
 
 }
