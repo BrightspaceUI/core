@@ -981,8 +981,15 @@ describe('d2l-filter', () => {
 	});
 
 	describe('Active filter subscribers', () => {
+		let elem;
+		const waitExtra = async(element, eventName) => {
+			if (eventName) await oneEvent(element, eventName);
+			await elem.updateComplete;
+			await new Promise(resolve => setTimeout(resolve, 0));
+		};
+
 		it('If there are no subscribers, active filters are not calculated', async() => {
-			const elem = await fixture(multiDimensionFixture);
+			elem = await fixture(multiDimensionFixture);
 			const updateSpy = spy(elem, '_updateActiveFilters');
 
 			expect(elem._activeFilters).to.be.null;
@@ -997,7 +1004,7 @@ describe('d2l-filter', () => {
 		});
 
 		it('If there are subscribers, active filters are calculated properly', async() => {
-			const elem = await fixture(multiDimensionFixture);
+			elem = await fixture(multiDimensionFixture);
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
@@ -1010,9 +1017,10 @@ describe('d2l-filter', () => {
 			setTimeout(() => {
 				elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]').setSelected(false);
 				elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]').setSelected(true);
-				elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="1"]').setSelected(true);
-			});
-			await oneEvent(elem, 'd2l-filter-change');
+				// Safari needs this delay to avoid getting confused by the single selection state
+				setTimeout(() => elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="1"]').setSelected(true), 0);
+			}, 0);
+			await waitExtra(elem, 'd2l-filter-change');
 
 			expect(updateSpy).to.be.calledOnce;
 			expect(elem._activeFilters).to.deep.equal([
@@ -1022,7 +1030,7 @@ describe('d2l-filter', () => {
 		});
 
 		it('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
-			const elem = await fixture(multiDimensionFixture);
+			elem = await fixture(multiDimensionFixture);
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
@@ -1036,12 +1044,7 @@ describe('d2l-filter', () => {
 		});
 
 		describe('Active filters are recalculated and subscribers are updated when', () => {
-			let elem, subscriberUpdated, updateSpy;
-			const waitExtra = async(element, eventName) => {
-				if (eventName) await oneEvent(element, eventName);
-				await elem.updateComplete;
-				await new Promise(resolve => setTimeout(resolve, 10));
-			};
+			let subscriberUpdated, updateSpy;
 
 			beforeEach(async() => {
 				elem = await fixture(multiDimensionFixture);
@@ -1094,7 +1097,7 @@ describe('d2l-filter', () => {
 
 			it('a value is selected (by the user)', async() => {
 				setTimeout(() => elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]').setSelected(true));
-				await oneEvent(elem, 'd2l-filter-change');
+				await waitExtra(elem, 'd2l-filter-change');
 
 				expect(updateSpy).to.be.calledOnce;
 				expect(subscriberUpdated).to.be.true;
@@ -1102,7 +1105,7 @@ describe('d2l-filter', () => {
 
 			it('a value is unselected (by the user)', async() => {
 				setTimeout(() => elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]').setSelected(false));
-				await oneEvent(elem, 'd2l-filter-change');
+				await waitExtra(elem, 'd2l-filter-change');
 
 				expect(updateSpy).to.be.calledOnce;
 				expect(subscriberUpdated).to.be.true;
@@ -1110,7 +1113,7 @@ describe('d2l-filter', () => {
 
 			it('a value is cleared using requestFilterValueClear', async() => {
 				elem.requestFilterValueClear({ dimension: '1', value: '1' });
-				await oneEvent(elem, 'd2l-filter-change');
+				await waitExtra(elem, 'd2l-filter-change');
 
 				expect(updateSpy).to.be.calledOnce;
 				expect(subscriberUpdated).to.be.true;

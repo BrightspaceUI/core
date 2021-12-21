@@ -444,6 +444,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}));
 		this._changeEventsToDispatch = new Map();
 		this._changeEventTimeout = null;
+
+		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -485,7 +487,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
 
-		this._activeFiltersSubscribers.updateSubscribers();
 		if (!this._activeDimensionKey) {
 			announce(this.localize('components.filter.clearAnnounceSingle'));
 		} else {
@@ -505,7 +506,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._dispatchChangeEventNow(true);
 		this.requestUpdate();
 
-		this._activeFiltersSubscribers.updateSubscribers();
 		announce(this.localize('components.filter.clearAllAnnounce'));
 	}
 
@@ -670,7 +670,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
-		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
 	_performDimensionClear(dimension) {
