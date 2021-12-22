@@ -71,7 +71,7 @@ export default {
 	"components.list-item-tooltip.up-down-desc": "Move focus between list items.",
 	"components.list-item-tooltip.left-right-key": "Left/Right",
 	"components.list-item-tooltip.left-right-desc": "Move focus within current item.",
-	"components.list-item-tooltip.page-up-down-key": "Page Up/Page Down",
+	"components.list-item-tooltip.page-up-down-key": "Page Up/Down",
 	"components.list-item-tooltip.page-up-down-desc": "Move focus 5 items at a time.",
 	"components.list-item-drag-handle-tooltip.title": "Keyboard Controls for Reordering:",
 	"components.list-item-drag-handle-tooltip.enter-key": "Enter",

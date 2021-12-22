@@ -17,14 +17,19 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 let tabPressed = false;
-document.addEventListener('keydown', e => {
-	if (e.keyCode !== 9) return;
-	tabPressed = true;
-});
-document.addEventListener('keyup', e => {
-	if (e.keyCode !== 9) return;
-	tabPressed = false;
-});
+let tabListenerAdded = false;
+function addTabListener() {
+	if (tabListenerAdded) return;
+	tabListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = false;
+	});
+}
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -290,6 +295,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	connectedCallback() {
 		super.connectedCallback();
 		ro.observe(this);
+		if (this.role === 'rowgroup') {
+			addTabListener();
+		}
 	}
 
 	disconnectedCallback() {
