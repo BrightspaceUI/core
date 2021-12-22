@@ -1019,15 +1019,13 @@ describe('d2l-filter', () => {
 			setTimeout(() => {
 				elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]').setSelected(false);
 				elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]').setSelected(true);
-				// Safari needs this delay to avoid getting confused by the single selection state
-				setTimeout(() => elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="1"]').setSelected(true), 0);
+				elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="2"]').setSelected(false);
 			}, 0);
 			await waitExtra(elem, 'd2l-filter-change');
 
 			expect(updateSpy).to.be.calledOnce;
 			expect(elem._activeFilters).to.deep.equal([
-				{ keyObject: { dimension: '2', value: '1' }, text: 'Dim 2: Value 1' },
-				{ keyObject: { dimension: '3', value: '1' }, text: 'Value 1' }
+				{ keyObject: { dimension: '2', value: '1' }, text: 'Dim 2: Value 1' }
 			]);
 		});
 
