@@ -30,7 +30,7 @@ describe('d2l-input-number', () => {
 	it('after-slot', async() => {
 		const element =
 			html`<d2l-input-number label="Help Text">
-				<span>Some text</span>
+				<span slot="after">Some text</span>
 			</d2l-input-number>`;
 		const result = await testRenderTime(element, { iterations: 1000 });
 		expect(result.duration).to.be.below(2000);

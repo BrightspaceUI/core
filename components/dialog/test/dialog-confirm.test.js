@@ -1,3 +1,4 @@
+import '../../button/button.js';
 import '../dialog-confirm.js';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
@@ -19,8 +20,8 @@ describe('d2l-dialog-confirm', () => {
 		it('should focus on first non-primary button', async() => {
 			const el = await fixture(html`
 				<d2l-dialog-confirm opened>
-					<button slot="footer" primary>Yes</button>
-					<button slot="footer">No</button>
+					<d2l-button slot="footer" primary>Yes</d2l-button>
+					<d2l-button slot="footer">No</d2l-button>
 				</d2l-dialog-confirm>
 			`);
 			await oneEvent(el, 'd2l-dialog-open');
@@ -30,7 +31,7 @@ describe('d2l-dialog-confirm', () => {
 		it('should focus on primary button if no others', async() => {
 			const el = await fixture(html`
 				<d2l-dialog-confirm opened>
-					<button slot="footer" primary>Yes</button>
+					<d2l-button slot="footer" primary>Yes</d2l-button>
 				</d2l-dialog-confirm>
 			`);
 			await oneEvent(el, 'd2l-dialog-open');

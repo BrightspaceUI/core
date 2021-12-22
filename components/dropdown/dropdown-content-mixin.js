@@ -159,7 +159,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-pointer'
 			},
 			/**
-			 * @ignore
+			 * Whether the dropdown is open or not
+			 * @type {boolean}
 			 */
 			opened: {
 				type: Boolean,

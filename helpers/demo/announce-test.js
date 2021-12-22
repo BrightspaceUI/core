@@ -21,7 +21,7 @@ class AnnounceTest extends LitElement {
 		return html`
 			<d2l-input-text id="msg1" type="text" value="I like cookies but I also like donuts and many other really yummy things." aria-label="first message to announce"></d2l-input-text>
 			<d2l-input-text id="msg2" type="text" value="I also like cake." aria-label="second message to announce"></d2l-input-text>
-			<d2l-button @click=${this._handleAnnounce} type="button">Announce</d2l-button>`;
+			<d2l-button @click=${this._handleAnnounce}>Announce</d2l-button>`;
 	}
 
 	_handleAnnounce() {

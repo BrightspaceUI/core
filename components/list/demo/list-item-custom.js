@@ -1,3 +1,4 @@
+import '../list.js';
 import '../list-item-content.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemMixin } from '../list-item-mixin.js';
