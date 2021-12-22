@@ -47,14 +47,14 @@
 	</head>
 	<body unresolved>
 
-		<d2l-demo-page page-title="d2l-html-block">
+		<d2l-demo-page page-title="d2l-html-block - templates">
 
 			<h2>HTML Block</h2>
 
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block>
-						<div>
+						<template>
 							<h1>heading 1</h1>
 							<h2>heading 2</h2>
 							<h3>heading 3</h3>
@@ -75,7 +75,7 @@
 								<li>ordered item 2</li>
 							</ol>
 							<div><a href="https://d2l.com">anchor</a></div>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -85,7 +85,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block compact>
-						<div>
+						<template>
 							<h1>heading 1</h1>
 							<h2>heading 2</h2>
 							<h3>heading 3</h3>
@@ -106,7 +106,7 @@
 								<li>ordered item 2</li>
 							</ol>
 							<div><a href="https://d2l.com">anchor</a></div>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -116,7 +116,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block>
-						<div>
+						<template>
 							<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 								<mi>x</mi>
 								<mo>=</mo>
@@ -218,7 +218,7 @@
 									<mo>)</mo>
 								</mrow>
 							</math>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -341,7 +341,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block>
-						<div>
+						<template>
 							<div>An equation...
 								<math xmlns="http://www.w3.org/1998/Math/MathML">
 									<msqrt>
@@ -434,7 +434,7 @@
 									</mrow>
 								</math> and other symbols.
 							</div>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -444,9 +444,9 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block>
-						<div>
+						<template>
 							<div>$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</div>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -456,12 +456,12 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-html-block>
-						<div>
+						<template>
 							<div>An equation rendered using LaTeX...
 								\( f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x \)
 								... and some text!
 							</div>
-						</div>
+						</template>
 					</d2l-html-block>
 				</template>
 			</d2l-demo-snippet>
@@ -483,7 +483,7 @@
 					render() {
 						return html`
 							&lt;d2l-html-block&gt;
-								&lt;div&gt;${unsafeHTML(this._someHTML)}&lt;/div&gt;
+								&lt;template&gt;${unsafeHTML(this._someHTML)}&lt;/template&gt;
 							&lt;/d2l-html-block&gt;
 							&lt;button ...&gt;update content&lt;/button&gt;`;
 						`;
@@ -617,7 +617,7 @@
 				render() {
 					return html`
 						<d2l-html-block>
-							<div>${unsafeHTML(this._htmlSnippets[this._updateCount])}</div>
+							<template>${unsafeHTML(this._htmlSnippets[this._updateCount])}</template>
 						</d2l-html-block>
 						<button @click="${this._updateTemplateContent}" ?disabled="${this._updateCount === 6}">update content</button>`;
 				}

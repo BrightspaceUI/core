@@ -178,16 +178,21 @@ class HtmlBlock extends LitElement {
 		super.connectedCallback();
 		if (this._contextObserverController) this._contextObserverController.hostConnected();
 
-		if (!this._templateObserver || this.noDeferredRendering) return;
+		if (!this._contentObserver || this.noDeferredRendering) return;
 
 		const template = this._findSlottedElement('TEMPLATE');
-		if (template) this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		if (template) {
+			this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		} else {
+			const container = this._findSlottedElement('DIV');
+			if (container) this._contentObserver.observe(container, { attributes: true, childList: true, subtree: true });
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
-		if (this._templateObserver) this._templateObserver.disconnect();
+		if (this._contentObserver) this._contentObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -254,7 +259,14 @@ class HtmlBlock extends LitElement {
 	}
 
 	_stamp(slot) {
-		const stampHTML = async template => {
+		const stampHTML = async (container, isTemplate) => {
+			let template;
+			if (isTemplate) template = container;
+			else if (container) {
+				template = document.createElement('template');
+				template.innerHTML = container.innerHTML;
+			}
+			
 			const fragment = template ? document.importNode(template.content, true) : null;
 			if (fragment) {
 
@@ -271,15 +283,23 @@ class HtmlBlock extends LitElement {
 			}
 		};
 
-		const template = this._findSlottedElement('TEMPLATE', slot);
+		if (this._contentObserver) this._contentObserver.disconnect();
 
-		if (this._templateObserver) this._templateObserver.disconnect();
+		const template = this._findSlottedElement('TEMPLATE', slot);
 		if (template) {
-			this._templateObserver = new MutationObserver(() => stampHTML(template));
-			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			this._contentObserver = new MutationObserver(() => stampHTML(template, true));
+			this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			stampHTML(template, true);
+			return;
 		}
 
-		stampHTML(template);
+		const container = this._findSlottedElement('DIV', slot);
+		if (container) {
+			this._contentObserver = new MutationObserver(() => stampHTML(container));
+			this._contentObserver.observe(container, { attributes: true, childList: true, subtree: true });
+		}
+
+		stampHTML(container);
 	}
 
 }
