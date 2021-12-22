@@ -88,7 +88,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			 */
 			invalid: { type: Boolean, reflect: true },
 			/**
-			 * @ignore
 			 * Name of the form control. Submitted with the form as part of a name/value pair.
 			 * @type {string}
 			 */
