@@ -19,8 +19,9 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 
 		const separators = parent.getAttribute('separators');
 
-		this.role = parent.grid ? 'rowgroup' : 'listitem';
+		this.role = parent.hasAttribute('grid') ? 'rowgroup' : 'listitem';
 		this._separators = separators || undefined;
 		this._extendSeparators = parent.hasAttribute('extend-separators');
 	}
+
 };

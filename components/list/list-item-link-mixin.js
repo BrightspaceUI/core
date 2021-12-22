@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
@@ -42,6 +43,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	constructor() {
 		super();
 		this.actionHref = null;
+		this._primaryActionId = getUniqueId();
 	}
 
 	_handleLinkClick() {
@@ -51,7 +53,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	_renderPrimaryAction(labelledBy) {
 		if (!this.actionHref) return;
-		return html`<a aria-labelledby="${labelledBy}" href="${this.actionHref}" @click="${this._handleLinkClick}"></a>`;
+		return html`<a id="${this._primaryActionId}" aria-labelledby="${labelledBy}" href="${this.actionHref}" @click="${this._handleLinkClick}"></a>`;
 	}
 
 };

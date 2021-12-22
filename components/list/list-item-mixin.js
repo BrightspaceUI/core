@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
+import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -10,9 +11,27 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+let tabPressed = false;
+let tabListenerAdded = false;
+function addTabListener() {
+	if (tabListenerAdded) return;
+	tabListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = false;
+	});
+}
+
+let hasDisplayedKeyboardTooltip = false;
 
 const ro = new ResizeObserver(entries => {
 	entries.forEach(entry => {
@@ -25,7 +44,7 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
-export const ListItemMixin = superclass => class extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass)))) {
+export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass))))) {
 
 	static get properties() {
 		return {
@@ -40,6 +59,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 */
 			slim: { type: Boolean },
 			_breakpoint: { type: Number },
+			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
@@ -237,6 +257,15 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host([draggable][selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
 				transform: rotate(1deg);
 			}
+			d2l-tooltip > div {
+				font-weight: 700;
+			}
+			d2l-tooltip > ul {
+				padding-inline-start: 1rem;
+			}
+			.d2l-list-item-tooltip-key {
+				font-weight: 700;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -249,6 +278,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this.slim = false;
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
+		this._displayKeyboardTooltip = false;
 	}
 
 	get breakpoints() {
@@ -265,6 +295,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	connectedCallback() {
 		super.connectedCallback();
 		ro.observe(this);
+		if (this.role === 'rowgroup') {
+			addTabListener();
+		}
 	}
 
 	disconnectedCallback() {
@@ -351,6 +384,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusIn() {
 		this._focusing = true;
+		if (this.role !== 'rowgroup' || !tabPressed || hasDisplayedKeyboardTooltip) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_onFocusInPrimaryAction() {
@@ -359,6 +395,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusOut() {
 		this._focusing = false;
+		this._displayKeyboardTooltip = false;
 	}
 
 	_onFocusOutPrimaryAction() {
@@ -398,6 +435,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
+		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -413,11 +451,11 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					${this._renderDragHandle(this._renderOutsideControl)}
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
-					<div slot="control">${ this._renderCheckbox() }</div>
+					<div slot="control">${this._renderCheckbox()}</div>
 					<div slot="control-action"
 						@mouseenter="${this._onMouseEnter}"
 						@mouseleave="${this._onMouseLeave}">
-							${ this._renderCheckboxAction('') }
+							${this._renderCheckboxAction('')}
 					</div>` : nothing }
 					${primaryAction ? html`
 					<div slot="content-action"
@@ -446,6 +484,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				<div class="d2l-list-item-active-border"></div>
 			</div>
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
 	}
@@ -456,6 +495,18 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_renderOutsideControlAction(dragTarget) {
 		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+	}
+
+	_renderTooltipContent() {
+		return html`
+			<div>${this.localize('components.list-item-tooltip.title')}</div>
+			<ul>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.enter-key')}</span> - ${this.localize('components.list-item-tooltip.enter-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.up-down-key')}</span> - ${this.localize('components.list-item-tooltip.up-down-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.left-right-key')}</span> - ${this.localize('components.list-item-tooltip.left-right-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
+			</ul>
+		`;
 	}
 
 };

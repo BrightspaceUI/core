@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
@@ -34,13 +35,18 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		return styles;
 	}
 
+	constructor() {
+		super();
+		this._primaryActionId = getUniqueId();
+	}
+
 	_onButtonClick() {
 		/** Dispatched when the item's primary button action is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
 	}
 
 	_renderPrimaryAction(labelledBy) {
-		return html`<button aria-labelledby="${labelledBy}" @click="${this._onButtonClick}"></button>`;
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}"></button>`;
 	}
 
 };

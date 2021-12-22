@@ -38,6 +38,8 @@ describe('d2l-list-item-drag-handle', () => {
 			await focusMethod('d2l-list-item-drag-handle');
 			await page.$eval('d2l-list-item-drag-handle', (item) => { item._keyboardActive = true; });
 			const rect = await visualDiff.getRect(page, '#drag-handle');
+			rect.width = 320;
+			rect.height = 200;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
