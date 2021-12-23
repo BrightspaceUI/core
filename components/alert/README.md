@@ -116,11 +116,27 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 <!-- docs: demo live name:d2l-alert-toast autoSize:false -->
 ```html
 <script type="module">
-	import '@brightspace-ui/core/components/alert/alert-toast.js';
+  import '@brightspace-ui/core/components/alert/alert-toast.js';
+  import '@brightspace-ui/core/components/button/button.js';
 </script>
+<!-- docs: start hidden content -->
+<script type="module">
+  var alertToast = document.querySelector('d2l-alert-toast');
+  var button = document.querySelector('#open');
 
+  alertToast.addEventListener('d2l-alert-toast-close', function() {
+    button.style.display = 'block';
+  });
+
+  button.addEventListener('click', () => {
+    alertToast.open = true;
+    button.style.display = 'none';
+  });
+</script>
+<d2l-button id="open" style="align-self:center;display:none;">Show Alert</d2l-button>
+<!-- docs: end hidden content -->
 <d2l-alert-toast type="default" no-auto-close open>
-	A default toast alert.
+  A default toast alert.
 </d2l-alert-toast>
 ```
 
