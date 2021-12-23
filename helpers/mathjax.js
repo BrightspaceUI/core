@@ -29,6 +29,7 @@ export class HtmlBlockMathRenderer {
 		// If we're opting out of deferred rendering, we need to rely
 		// on the global MathJax install for rendering.
 		if (options.noDeferredRendering) {
+			await window.MathJax.startup.promise;
 			window.MathJax.typeset([elem]);
 			return elem;
 		}
@@ -39,6 +40,7 @@ export class HtmlBlockMathRenderer {
 		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
 
 		elem.appendChild(temp);
+		await window.MathJax.startup.promise;
 		window.MathJax.typesetShadow(temp.shadowRoot);
 		return temp.shadowRoot.firstChild;
 	}
