@@ -62,7 +62,7 @@ The `d2l-button` element can be used just like the native button element, but al
 To make your `d2l-button` accessible, use the following properties when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
@@ -104,7 +104,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 To make your `d2l-button-subtle` accessible, use the following properties when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
@@ -143,7 +143,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 To make your `d2l-button-icon` accessible, use the following properties when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `text` | **REQUIRED**. Acts as a primary label and tooltip. |
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |

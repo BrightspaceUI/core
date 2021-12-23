@@ -138,7 +138,7 @@ To make your usage of `d2l-input-text` accessible, use the following properties 
 | `description` | Use when label on input does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | String | Use when another visible element should act as the label |
+| `labelled-by` | Use when another visible element should act as the label |
 | `unit` | Use to render the unit (offscreen) as part of the label. |
 | `title` | Text for additional screen reader and mouseover context |
 
@@ -247,7 +247,7 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 | `description` | Use when label on `textarea` does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the `textarea`](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | String | Use when another visible element should act as the label |
+| `labelled-by` | Use when another visible element should act as the label |
 
 ### Methods
 
