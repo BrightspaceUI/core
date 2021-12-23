@@ -23,12 +23,10 @@ describe('d2l-html-block', () => {
 
 	[
 		{ name: 'empty', selector: '#empty' },
-		{ name: 'empty-template', selector: '#empty-template' },
 		{ name: 'no-template', selector: '#no-template' },
 		{ name: 'typography-print', selector: '#typography', action: () => page.emulateMediaType('print') },
 		{ name: 'typography-screen', selector: '#typography' },
-		{ name: 'update-template', selector: '#update-template', action: selector => page.$eval(selector, elem => elem.innerHTML = '<template>after update</template>') },
-		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.querySelector('template').content.textContent = 'after update') },
+		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
 		//{ name: 'math (block)', selector: '#math-block' },
 		//{ name: 'math (inline)', selector: '#math-inline' }
 	].forEach((info) => {

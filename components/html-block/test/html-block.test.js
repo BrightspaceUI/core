@@ -77,18 +77,16 @@ provideInstance(document, 'html-block-renderers', [
 describe('d2l-html-block', () => {
 
 	const emptyReplacementFixture = html`
-		<d2l-html-block>
-			<template></template>
-		</d2l-html-block>
+		<d2l-html-block></d2l-html-block>
 	`;
 	const replacementFixture = html`
 		<d2l-html-block>
-			<template><span data-replace-id="1">first</span><span data-replace-id="2">second</span></template>
+			<span data-replace-id="1">first</span><span data-replace-id="2">second</span>
 		</d2l-html-block>
 	`;
 	const asyncReplacementFixture = html`
 		<d2l-html-block>
-			<template><span data-async-replace-id="1">first</span><span data-async-replace-id="2">second</span></template>
+			<span data-async-replace-id="1">first</span><span data-async-replace-id="2">second</span>
 		</d2l-html-block>
 	`;
 	const noDeferredRenderingReplacementFixture = html`
