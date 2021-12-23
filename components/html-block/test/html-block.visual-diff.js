@@ -23,7 +23,6 @@ describe('d2l-html-block', () => {
 
 	[
 		{ name: 'empty', selector: '#empty' },
-		{ name: 'no-template', selector: '#no-template' },
 		{ name: 'typography-print', selector: '#typography', action: () => page.emulateMediaType('print') },
 		{ name: 'typography-screen', selector: '#typography' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
