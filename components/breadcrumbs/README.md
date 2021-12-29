@@ -141,7 +141,7 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 To make your usage of `d2l-breadcrumb` (child) accessible, use the following attribute when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `aria-label` | Acts as a primary label. Use if `text` does not provide enough context. |
 
 ## Current Page [d2l-breadcrumb-current-page]

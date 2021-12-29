@@ -189,7 +189,7 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | String | Use when another visible element should act as the label |
+| `labelled-by` | Use when another visible element should act as the label |
 
 ## Time Range Input [d2l-input-time-range]
 
