@@ -40,7 +40,7 @@ export const radioStyles = css`
 	.d2l-input-radio-label > input[type="radio"]:focus {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
-		outline-width: 0;
+		outline: none;
 	}
 	.d2l-input-radio[aria-invalid="true"],
 	.d2l-input-radio-label > input[type="radio"][aria-invalid="true"] {
