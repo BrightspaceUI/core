@@ -118,7 +118,7 @@ const getRenderers = () => {
 
 /**
  * A component for displaying user-authored HTML.
- * @slot - Provide an html template that contains your user-authored HTML
+ * @slot - Provide your user-authored HTML
  */
 class HtmlBlock extends LitElement {
 
@@ -154,9 +154,6 @@ class HtmlBlock extends LitElement {
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
 			}
-			:host(:not([no-deferred-rendering])) ::slotted(*) {
-				display: none;
-			}
 		`];
 	}
 
@@ -178,24 +175,31 @@ class HtmlBlock extends LitElement {
 		super.connectedCallback();
 		if (this._contextObserverController) this._contextObserverController.hostConnected();
 
-		if (!this._templateObserver || this.noDeferredRendering) return;
+		if (!this._contentObserver || this.noDeferredRendering) return;
 
 		const template = this._findSlottedElement('TEMPLATE');
-		if (template) this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		if (template) this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		else {
+			const slot = this.shadowRoot.querySelector('slot');
+			if (slot) {
+				slot.assignedNodes({ flatten: true }).forEach(
+					node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
+				);
+			}
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
-		if (this._templateObserver) this._templateObserver.disconnect();
+		if (this._contentObserver) this._contentObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		if (this._renderContainer) return;
-
-		this.shadowRoot.innerHTML += `<div class="d2l-html-block-rendered${this.compact ? ' d2l-html-block-compact' : ''}"></div><slot></slot>`;
+		this.shadowRoot.innerHTML += `<div class="d2l-html-block-rendered${this.compact ? ' d2l-html-block-compact' : ''}"></div><slot ${!this.noDeferredRendering ? 'style="display: none"' : ''}></slot>`;
 
 		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
@@ -255,8 +259,15 @@ class HtmlBlock extends LitElement {
 
 	_stamp(slot) {
 		const stampHTML = async template => {
-			const fragment = template ? document.importNode(template.content, true) : null;
-			if (fragment) {
+			let fragment;
+			if (template) fragment = document.importNode(template.content, true);
+			else {
+				fragment = document.createDocumentFragment();
+				this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true })
+					.forEach(node => fragment.appendChild(node.cloneNode(true)));
+			}
+
+			if (fragment.hasChildNodes()) {
 
 				let temp = document.createElement('div');
 				temp.style.display = 'none';
@@ -271,12 +282,17 @@ class HtmlBlock extends LitElement {
 			}
 		};
 
-		const template = this._findSlottedElement('TEMPLATE', slot);
+		if (this._contentObserver) this._contentObserver.disconnect();
 
-		if (this._templateObserver) this._templateObserver.disconnect();
+		const template = this._findSlottedElement('TEMPLATE', slot);
 		if (template) {
-			this._templateObserver = new MutationObserver(() => stampHTML(template));
-			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			this._contentObserver = new MutationObserver(() => stampHTML(template));
+			this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		} else {
+			this._contentObserver = new MutationObserver(() => stampHTML());
+			this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).forEach(
+				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
+			);
 		}
 
 		stampHTML(template);

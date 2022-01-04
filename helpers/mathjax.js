@@ -19,6 +19,7 @@ export class HtmlBlockMathRenderer {
 		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
 		const mathJaxConfig = {
+			deferTypeset: true,
 			renderLatex: isLatexSupported,
 			outputScale: context.outputScale || 1
 		};
@@ -27,7 +28,11 @@ export class HtmlBlockMathRenderer {
 
 		// If we're opting out of deferred rendering, we need to rely
 		// on the global MathJax install for rendering.
-		if (options.noDeferredRendering) return elem;
+		if (options.noDeferredRendering) {
+			await window.MathJax.startup.promise;
+			window.MathJax.typeset([elem]);
+			return elem;
+		}
 
 		const temp = document.createElement('div');
 		temp.style.display = 'none';
@@ -35,6 +40,7 @@ export class HtmlBlockMathRenderer {
 		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
 
 		elem.appendChild(temp);
+		await window.MathJax.startup.promise;
 		window.MathJax.typesetShadow(temp.shadowRoot);
 		return temp.shadowRoot.firstChild;
 	}
@@ -138,7 +144,7 @@ export function loadMathJax(mathJaxConfig) {
 					const InputJax = startup.getInputJax();
 					const OutputJax = startup.getOutputJax();
 					const html = mathjax.document(root, { InputJax, OutputJax });
-					html.render();
+					html.render().typeset();
 					return html;
 				};
 
@@ -146,7 +152,9 @@ export function loadMathJax(mathJaxConfig) {
 				//  Now do the usual startup now that the extensions are in place
 				//
 				window.MathJax.startup.defaultReady();
-			}
+			},
+			// Defer typesetting if the config is present and deferring is set
+			typeset: !(mathJaxConfig && mathJaxConfig.deferTypeset)
 		}
 	};
 
