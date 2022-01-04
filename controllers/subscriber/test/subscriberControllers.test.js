@@ -315,6 +315,7 @@ describe('SubscriberRegistryController', () => {
 			registry._subscribers.updateSubscribers();
 			registry._subscribers.updateSubscribers();
 			await nextFrame();
+			await nextFrame();
 			expect(registry._updateSubscribersCalledWith.length).to.equal(1);
 			expect(registry._updateSubscribersCalledWith[0]).to.equal(registry._subscribers.subscribers);
 		});
