@@ -199,8 +199,9 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
-					.value="${this.value}"></span><span class="${classMap(textClasses)}">${offscreenContainer}<slot></slot></span>
+					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
+			${offscreenContainer}
 		`;
 	}
 
