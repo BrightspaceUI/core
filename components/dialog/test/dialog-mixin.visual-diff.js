@@ -63,7 +63,7 @@ describe('d2l-dialog-mixin', () => {
 					invoked when using puppeteer's keyboard api for the escape key for the
 					custom dialog impl even though it gets dispatched. use custom event instead. */
 					page.$eval('#dialog', (dialog) => {
-						const event = new CustomEvent('keyup', {
+						const event = new CustomEvent('keydown', {
 							bubbles: true,
 							cancelable: true,
 							composed: true

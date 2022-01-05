@@ -895,7 +895,7 @@ describe('d2l-filter', () => {
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			expect(dropdownContent.opened).to.be.true;
 
-			const event = new CustomEvent('keyup', {
+			const event = new CustomEvent('keydown', {
 				detail: 0,
 				bubbles: true,
 				cancelable: true,
@@ -927,7 +927,7 @@ describe('d2l-filter', () => {
 				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 				expect(elem._activeDimensionKey).to.not.be.null;
 
-				const event = new CustomEvent('keyup', {
+				const event = new CustomEvent('keydown', {
 					detail: 0,
 					bubbles: true,
 					cancelable: true,
@@ -960,7 +960,7 @@ describe('d2l-filter', () => {
 				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 				expect(elem._activeDimensionKey).to.not.be.null;
 
-				const event = new CustomEvent('keyup', {
+				const event = new CustomEvent('keydown', {
 					detail: 0,
 					bubbles: true,
 					cancelable: true,

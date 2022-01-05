@@ -282,9 +282,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_handleKeyDown(e) {
 		if (!this.opened) return;
 		if (e.keyCode === 27) {
-			// escape (note: prevent native dialog close so we can: animate it; use setDismissible)
+			// escape (note: prevent native dialog close so we can: animate it;)
 			e.stopPropagation();
 			e.preventDefault();
+			if (!this.opened) return;
+			this._close(abortAction);
 		}
 	}
 

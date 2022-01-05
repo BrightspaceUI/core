@@ -207,7 +207,7 @@ describe('d2l-menu', () => {
 			setTimeout(() => elem.querySelector('#b1').click());
 			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keyup', true, true);
+			eventObj.initEvent('keydown', true, true);
 			eventObj.keyCode = 27;
 			setTimeout(() => elem.querySelector('#b2').dispatchEvent(eventObj));
 			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');

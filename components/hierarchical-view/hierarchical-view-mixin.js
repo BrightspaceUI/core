@@ -154,7 +154,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('keyup', this.__onKeyUp);
+		this.addEventListener('keydown', this.__onKeyDown);
 		this.addEventListener('d2l-hierarchical-view-hide-start', this.__onHideStart);
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
 		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
@@ -477,7 +477,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	}
 
-	__onKeyUp(e) {
+	__onKeyDown(e) {
 		if (this.childView && e.keyCode === escapeKeyCode) {
 			e.stopPropagation();
 			this.hide();
