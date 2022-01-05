@@ -4,7 +4,7 @@ const stack = [];
 
 function cleanup() {
 	if (eventListener && stack.length === 0) {
-		document.removeEventListener('keyup', eventListener);
+		document.removeEventListener('keydown', eventListener);
 		eventListener = null;
 	}
 }
@@ -23,7 +23,7 @@ function init() {
 		}
 		cleanup();
 	};
-	document.addEventListener('keyup', eventListener);
+	document.addEventListener('keydown', eventListener);
 }
 
 export function clearDismissible(id) {

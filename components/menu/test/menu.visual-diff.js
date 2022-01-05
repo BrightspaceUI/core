@@ -148,7 +148,7 @@ describe('d2l-menu', () => {
 				return new Promise((resolve) => {
 					item.addEventListener('d2l-hierarchical-view-hide-complete', resolve, { once: true });
 					const eventObj = document.createEvent('Events');
-					eventObj.initEvent('keyup', true, true);
+					eventObj.initEvent('keydown', true, true);
 					eventObj.keyCode = 27;
 					item.querySelector('#b2').dispatchEvent(eventObj);
 				});

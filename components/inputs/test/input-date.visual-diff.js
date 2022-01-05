@@ -498,7 +498,7 @@ describe('d2l-input-date', () => {
 				await openKey(page, '#value');
 				await page.$eval('#value', (elem) => {
 					const eventObj = document.createEvent('Events');
-					eventObj.initEvent('keyup', true, true);
+					eventObj.initEvent('keydown', true, true);
 					eventObj.keyCode = 27;
 					elem.dispatchEvent(eventObj);
 				});

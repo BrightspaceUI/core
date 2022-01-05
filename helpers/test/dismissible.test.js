@@ -3,7 +3,7 @@ import { clearDismissible, setDismissible } from '../dismissible.js';
 import { spy } from 'sinon';
 
 function pressEscape() {
-	const event = new CustomEvent('keyup', {
+	const event = new CustomEvent('keydown', {
 		detail: 0,
 		bubbles: true,
 		cancelable: true,

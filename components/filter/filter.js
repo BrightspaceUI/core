@@ -268,7 +268,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@d2l-hierarchical-view-hide-start="${this._handleDimensionHideStart}"
 				@d2l-hierarchical-view-show-complete="${this._handleDimensionShowComplete}"
 				@d2l-hierarchical-view-show-start="${this._handleDimensionShowStart}"
-				@keyup="${this._handleDimensionHideKeyPress}"
+				@keydown="${this._handleDimensionHideKeyDown}"
 				data-key="${dimension.key}">
 				${dimensionHTML}
 			</d2l-hierarchical-view>
@@ -357,7 +357,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 
 		return html`
-			<div slot="header" @keyup="${this._handleDimensionHideKeyPress}">
+			<div slot="header" @keydown="${this._handleDimensionHideKeyDown}">
 				${header}
 				${actions}
 			</div>
@@ -551,7 +551,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 	}
 
-	_handleDimensionHideKeyPress(e) {
+	_handleDimensionHideKeyDown(e) {
 		if (this._activeDimensionKey && (e.keyCode === ARROWLEFT_KEY_CODE || e.keyCode === ESCAPE_KEY_CODE)) {
 			e.stopPropagation();
 			this._handleDimensionHide();

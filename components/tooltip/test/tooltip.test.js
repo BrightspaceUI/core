@@ -169,7 +169,7 @@ describe('d2l-tooltip', () => {
 				await aTimeout();
 
 				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keyup', true, true);
+				eventObj.initEvent('keydown', true, true);
 				eventObj.keyCode = 27;
 
 				setTimeout(() => document.dispatchEvent(eventObj));
@@ -244,7 +244,7 @@ describe('d2l-tooltip', () => {
 		it('should not hide when ESC key is pressed ', async() => {
 
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keyup', true, true);
+			eventObj.initEvent('keydown', true, true);
 			eventObj.keyCode = 27;
 			document.dispatchEvent(eventObj);
 			await aTimeout(100);

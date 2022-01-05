@@ -228,7 +228,7 @@ describe('d2l-dropdown', () => {
 			await aTimeout(0);
 
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keyup', true, true);
+			eventObj.initEvent('keydown', true, true);
 			eventObj.keyCode = 27;
 
 			setTimeout(() => document.dispatchEvent(eventObj));
@@ -642,7 +642,7 @@ describe('d2l-dropdown', () => {
 				await aTimeout(0);
 
 				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keyup', true, true);
+				eventObj.initEvent('keydown', true, true);
 				eventObj.keyCode = 27;
 
 				setTimeout(() => document.dispatchEvent(eventObj));

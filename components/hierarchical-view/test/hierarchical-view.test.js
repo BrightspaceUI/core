@@ -114,7 +114,7 @@ describe('d2l-hierarchical-view', () => {
 		await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
 		const view2_content = document.getElementById('view2_content');
 		const eventObj = document.createEvent('Events');
-		eventObj.initEvent('keyup', true, true);
+		eventObj.initEvent('keydown', true, true);
 		eventObj.keyCode = 27;
 		setTimeout(() => view2_content.dispatchEvent(eventObj));
 		await oneEvent(view1, 'd2l-hierarchical-view-hide-complete');
