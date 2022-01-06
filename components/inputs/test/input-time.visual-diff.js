@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 650, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 650, height: 1100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 
@@ -165,10 +165,11 @@ describe('d2l-input-time', () => {
 		});
 
 		it('mobile layout', async function() {
-			await page.setViewport({ width: 300, height: 800, deviceScaleFactor: 2 });
+			await page.setViewport({ width: 300, height: 1100, deviceScaleFactor: 2 });
 			await open(page, '#dropdown-mobile');
+			page.waitForTimeout(10);
 			const rect = await getRect(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 			await reset(page, '#dropdown-mobile');
 		});
 
