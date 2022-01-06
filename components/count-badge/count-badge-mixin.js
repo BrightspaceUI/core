@@ -9,6 +9,8 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const maxBadgeDigits = 5;
+
 export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(SkeletonMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -159,18 +161,18 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		super.connectedCallback();
 		if (!this.maxDigits) {
 			// default to two digits for notification type, 5 for count
-			this.maxDigits = this.type === 'notification' ? 2 : 5;
-		} else if (this.maxDigits > 5) {
+			this.maxDigits = this.type === 'notification' ? 2 : maxBadgeDigits;
+		} else if (this.maxDigits > maxBadgeDigits) {
 			// limit all badges to 5 digits
-			this.maxDigits = 5;
+			this.maxDigits = maxBadgeDigits;
 		}
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.get('maxDigits') && this.maxDigits > 5) {
+		if (changedProperties.get('maxDigits') && this.maxDigits > maxBadgeDigits) {
 			// impose a 5 digit maximum to prevent overflows
-			this.maxDigits = 5;
+			this.maxDigits = maxBadgeDigits;
 		}
 	}
 
