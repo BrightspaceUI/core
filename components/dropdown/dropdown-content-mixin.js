@@ -15,7 +15,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 const outerMarginTopBottom = 18;
-const defaultVerticalOffset = 20;
+const defaultVerticalOffset = 16;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 

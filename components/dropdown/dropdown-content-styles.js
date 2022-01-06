@@ -16,7 +16,7 @@ export const dropdownContentStyles = css`
 		left: 0;
 		position: absolute;
 		text-align: left;
-		top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+		top: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		width: 100%;
 		z-index: 1000; /* position on top of floating buttons */
 	}
@@ -38,7 +38,7 @@ export const dropdownContentStyles = css`
 
 	:host([opened-above]) {
 		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
 	}
 
@@ -49,7 +49,7 @@ export const dropdownContentStyles = css`
 
 	:host([data-mobile][opened-above]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
 	}
 
