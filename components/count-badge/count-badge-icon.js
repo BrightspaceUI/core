@@ -30,6 +30,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		}
 
 		:host {
+			/* for long numbers, center the number on the icon */
 			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
 			padding-left: 0.5rem;
