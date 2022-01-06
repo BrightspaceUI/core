@@ -177,15 +177,11 @@ class HtmlBlock extends LitElement {
 
 		if (!this._contentObserver || this.noDeferredRendering) return;
 
-		const template = this._findSlottedElement('TEMPLATE');
-		if (template) this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
-		else {
-			const slot = this.shadowRoot.querySelector('slot');
-			if (slot) {
-				slot.assignedNodes({ flatten: true }).forEach(
-					node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
-				);
-			}
+		const slot = this.shadowRoot.querySelector('slot');
+		if (slot) {
+			slot.assignedNodes({ flatten: true }).forEach(
+				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
+			);
 		}
 	}
 
@@ -220,13 +216,6 @@ class HtmlBlock extends LitElement {
 		return false;
 	}
 
-	_findSlottedElement(tagName, slot) {
-		if (!this.shadowRoot) return;
-		if (!slot) slot = this.shadowRoot.querySelector('slot');
-		return slot.assignedNodes({ flatten: true })
-			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === tagName.toUpperCase()));
-	}
-
 	async _processRenderers(elem) {
 		for (const renderer of getRenderers()) {
 			if (this._contextObserverController && renderer.contextAttributes) {
@@ -252,26 +241,23 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _renderInline(slot) {
-		const noDeferredRenderingContainer = this._findSlottedElement('DIV', slot);
+		if (!this.shadowRoot) return;
+		if (!slot) slot = this.shadowRoot.querySelector('slot');
+
+		const noDeferredRenderingContainer = slot.assignedNodes({ flatten: true })
+			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV'));
+
 		if (!noDeferredRenderingContainer) return;
 		await this._processRenderers(noDeferredRenderingContainer);
 	}
 
 	_stamp(slot) {
-		const stampHTML = async template => {
-			let fragment;
-			if (template) fragment = document.importNode(template.content, true);
-			else {
-				fragment = document.createDocumentFragment();
-				this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true })
-					.forEach(node => fragment.appendChild(node.cloneNode(true)));
-			}
-
-			if (fragment.hasChildNodes()) {
+		const stampHTML = async nodes => {
+			if (nodes && nodes.length > 0) {
 
 				let temp = document.createElement('div');
 				temp.style.display = 'none';
-				temp.appendChild(fragment);
+				nodes.forEach(node => temp.appendChild(node.cloneNode(true)));
 
 				this._renderContainer.appendChild(temp);
 				temp = await this._processRenderers(temp);
@@ -284,18 +270,15 @@ class HtmlBlock extends LitElement {
 
 		if (this._contentObserver) this._contentObserver.disconnect();
 
-		const template = this._findSlottedElement('TEMPLATE', slot);
-		if (template) {
-			this._contentObserver = new MutationObserver(() => stampHTML(template));
-			this._contentObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
-		} else {
-			this._contentObserver = new MutationObserver(() => stampHTML());
-			this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).forEach(
-				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
-			);
-		}
+		if (!slot) slot = this.shadowRoot.querySelector('slot');
+		const slottedNodes = slot.assignedNodes({ flatten: true });
 
-		stampHTML(template);
+		this._contentObserver = new MutationObserver(() => stampHTML(slottedNodes));
+		slottedNodes.forEach(
+			node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
+		);
+
+		stampHTML(slottedNodes);
 	}
 
 }
