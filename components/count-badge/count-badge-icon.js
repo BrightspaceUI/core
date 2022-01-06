@@ -30,6 +30,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		}
 
 		:host {
+			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
 			padding-bottom: 0.2rem;
 			padding-left: 0.5rem;
@@ -49,25 +50,12 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 
 		:host([icon*="tier1:"]) {
 			--d2l-count-badge-icon-height: 18px;
-			--d2l-count-badge-icon-padding: calc(-50% + 11px);
 		}
 		:host([icon*="tier2:"]) {
 			--d2l-count-badge-icon-height: 24px;
-			--d2l-count-badge-icon-padding: calc(-50% + 14px);
 		}
 		:host([icon*="tier3:"]) {
 			--d2l-count-badge-icon-height: 30px;
-			--d2l-count-badge-icon-padding: calc(-50% + 17px);
-		}
-		:host([icon*="tier1:"][dir="rtl"]) {
-			--d2l-count-badge-icon-padding: calc(50% - 11px);
-		}
-		:host([icon*="tier2:"][dir="rtl"]) {
-			--d2l-count-badge-icon-padding: calc(50% - 14px);
-		}
-		:host([icon*="tier3:"][dir="rtl"]) {
-			--d2l-count-badge-icon-height: 30px;
-			--d2l-count-badge-icon-padding: calc(50% - 17px);
 		}
 
 		d2l-tooltip[_open-dir="top"] {
@@ -99,11 +87,14 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		const centerNumber = this.getNumberString().length >= 4;
 
 		if (centerNumber) {
+			const xPadding = 'var(--d2l-count-badge-icon-padding)';
 			numberStyles = {
 				... numberStyles,
 				left: '',
 				right: '',
-				transform: 'translateY(-50%) translateX(var(--d2l-count-badge-icon-padding))'
+				transform: this.dir === 'rtl'
+					? `translateY(-50%) translateX(calc(0px - ${xPadding}))`
+					: `translateY(-50%) translateX(${xPadding})`
 			};
 		} else {
 			numberStyles = {
