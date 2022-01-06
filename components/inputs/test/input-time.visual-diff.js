@@ -164,10 +164,11 @@ describe('d2l-input-time', () => {
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 
-		it('mobile layout', async function() {
-			await page.setViewport({ width: 300, height: 600 });
+		it.only('mobile layout', async function() {
+			await page.setViewport({ width: 300, height: 800, deviceScaleFactor: 2 });
 			await open(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			const rect = await getRect(page, '#dropdown-mobile');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			await reset(page, '#dropdown-mobile');
 		});
 
