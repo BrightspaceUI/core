@@ -14,6 +14,7 @@ import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.j
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
+const outerMarginTopBottom = 18;
 const defaultVerticalOffset = 20;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
@@ -619,9 +620,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (bounded) {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
-					above: targetRect.top - boundingContainerRect.top - this._verticalOffset - 18,
+					above: targetRect.top - boundingContainerRect.top - this._verticalOffset - outerMarginTopBottom,
 					// allow for target offset + outer margin
-					below: boundingContainerRect.bottom - targetRect.bottom - this._verticalOffset - 18,
+					below: boundingContainerRect.bottom - targetRect.bottom - this._verticalOffset - outerMarginTopBottom,
 					// allow for outer margin
 					left: targetRect.left - boundingContainerRect.left - 20,
 					// allow for outer margin
@@ -634,9 +635,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
-					above: targetRect.top - this._verticalOffset - 18,
+					above: targetRect.top - this._verticalOffset - outerMarginTopBottom,
 					// allow for target offset + outer margin
-					below: window.innerHeight - targetRect.bottom - this._verticalOffset - 18,
+					below: window.innerHeight - targetRect.bottom - this._verticalOffset - outerMarginTopBottom,
 					// allow for outer margin
 					left: targetRect.left - 20,
 					// allow for outer margin
