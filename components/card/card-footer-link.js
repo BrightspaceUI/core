@@ -99,6 +99,10 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			d2l-count-badge-icon {
 				text-align: initial;
 			}
+
+			::slotted(d2l-tooltip[_open-dir="bottom"]) {
+				margin-top: -0.3rem;
+			}
 		`];
 	}
 

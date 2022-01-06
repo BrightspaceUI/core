@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-count-badge-icon', () => {
 
-	const visualDiff = new VisualDiff('count-badge-icon', __dirname);
+	const visualDiff = new VisualDiff('count-badge-icon', import.meta.url);
 
 	let browser, page;
 
@@ -37,7 +37,7 @@ describe('d2l-count-badge-icon', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await visualDiff.getRect(page, selector, 15);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
