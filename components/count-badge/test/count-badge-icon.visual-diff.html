@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		import '../count-badge-icon.js';
 		import '../../typography/typography.js';
@@ -10,6 +11,7 @@
 	</script>
 	<title>d2l-count-badge-icon</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
 	<style>
 		#tooltip {
@@ -21,6 +23,9 @@
 <body class="d2l-typography">
 	<div class="visual-diff">
 		<d2l-count-badge-icon id="large-count-icon" icon="tier3:gear" size="large" type="count" number="1"></d2l-count-badge-icon>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge-icon id="large-number-centered" icon="tier3:gear" size="large" type="count" number="1000000"></d2l-count-badge-icon>
 	</div>
 	<div class="visual-diff">
 		<d2l-count-badge-icon id="large-count-icon-rtl" dir="rtl" icon="tier3:gear" size="large" type="count" number="1"></d2l-count-badge-icon>

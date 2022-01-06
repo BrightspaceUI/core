@@ -29,41 +29,49 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			outline: none;
 		}
 
-		.d2l-count-badge-wrapper {
-			display: inline-block;
-		}
-
 		:host {
-			padding-right: var(--d2l-count-badge-icon-padding);
-		}
-
-		:host([dir="rtl"]) {
-			padding-left: var(--d2l-count-badge-icon-padding);
-			padding-right: 0;
+			display: inline-block;
+			padding-bottom: 0.2rem;
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
+			position: relative;
 		}
 
 		:host([size="large"]) {
-			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.7rem);
-			margin-top: -0.7rem;
+			--d2l-count-badge-icon-padding-top: 14px;
+			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
 		:host([size="small"]) {
-			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.55rem);
-			margin-top: -0.55rem;
+			--d2l-count-badge-icon-padding-top: 11px;
+			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
 		:host([icon*="tier1:"]) {
 			--d2l-count-badge-icon-height: 18px;
+			--d2l-count-badge-icon-padding: calc(-50% + 11px);
 		}
 		:host([icon*="tier2:"]) {
 			--d2l-count-badge-icon-height: 24px;
+			--d2l-count-badge-icon-padding: calc(-50% + 14px);
 		}
 		:host([icon*="tier3:"]) {
 			--d2l-count-badge-icon-height: 30px;
+			--d2l-count-badge-icon-padding: calc(-50% + 17px);
+		}
+		:host([icon*="tier1:"][dir="rtl"]) {
+			--d2l-count-badge-icon-padding: calc(50% - 11px);
+		}
+		:host([icon*="tier2:"][dir="rtl"]) {
+			--d2l-count-badge-icon-padding: calc(50% - 14px);
+		}
+		:host([icon*="tier3:"][dir="rtl"]) {
+			--d2l-count-badge-icon-height: 30px;
+			--d2l-count-badge-icon-padding: calc(50% - 17px);
 		}
 
 		d2l-tooltip[_open-dir="top"] {
-			margin-top: -0.6rem;
+			margin-top: calc(0px - var(--d2l-count-badge-icon-padding-top));
 		}
 
 		d2l-icon {
@@ -79,15 +87,32 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	}
 
 	render() {
-		const numberPadding = this.size === 'small' ? '0.55rem' : '0.7rem';
-		const numberStyles = {
+		let numberStyles = {
 			border: '2px solid white',
-			position: 'relative',
-			left: this.dir === 'rtl' ? 0 : 'var(--d2l-count-badge-icon-padding)',
-			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,
-			top: numberPadding,
-			visibility: this.skeleton ? 'hidden' : undefined
+			visibility: this.skeleton ? 'hidden' : undefined,
+			display: 'inline-block',
+			position: 'absolute',
+			width: 'max-content'
 		};
+
+		// center long number strings to prevent overflow
+		const centerNumber = this.getNumberString().length >= 4;
+
+		if (centerNumber) {
+			numberStyles = {
+				... numberStyles,
+				left: '',
+				right: '',
+				transform: 'translateY(-50%) translateX(var(--d2l-count-badge-icon-padding))'
+			};
+		} else {
+			numberStyles = {
+				... numberStyles,
+				left: this.dir === 'rtl' ? '-0.1rem' : '',
+				right: this.dir === 'rtl' ? '' : '-0.1rem',
+				transform: 'translateY(-50%)'
+			};
+		}
 		const tabbable = (this.tabStop || this.hasTooltip) && !this.skeleton;
 		const innerHtml = html`
 			${this.renderCount(numberStyles)}

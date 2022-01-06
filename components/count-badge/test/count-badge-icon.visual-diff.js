@@ -4,7 +4,7 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-count-badge-icon', () => {
 
-	const visualDiff = new VisualDiff('count-badge-icon', import.meta.url);
+	const visualDiff = new VisualDiff('count-badge-icon', __dirname);
 
 	let browser, page;
 
@@ -15,14 +15,14 @@ describe('d2l-count-badge-icon', () => {
 		await page.bringToFront();
 	});
 
-	async function getRect(page, selector) {
+	async function getRectWithTooltip(page, selector) {
 		return page.$eval(selector, (elem) => {
 			const rect = elem.getBoundingClientRect();
 			return {
 				x: rect.x - 30,
 				y: rect.y - 10,
-				width: rect.width + 150,
-				height: rect.height + 70
+				width: rect.width + 120,
+				height: rect.height + 60
 			};
 		});
 	}
@@ -32,7 +32,8 @@ describe('d2l-count-badge-icon', () => {
 	[
 		'large-count-icon',
 		'large-count-icon-rtl',
-		'icon-skeleton'
+		'icon-skeleton',
+		'large-number-centered'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
@@ -61,7 +62,7 @@ describe('d2l-count-badge-icon', () => {
 		it('tooltip appears on focus-visible', async function() {
 			await page.$eval('#tooltip-icon', (elem) => forceFocusVisible(elem));
 			await page.waitForTimeout(50);
-			const rect = await getRect(page, '#tooltip-icon');
+			const rect = await getRectWithTooltip(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
