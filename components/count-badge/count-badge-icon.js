@@ -76,10 +76,8 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	render() {
 		let numberStyles = {
 			border: '2px solid white',
-			visibility: this.skeleton ? 'hidden' : undefined,
-			display: 'inline-block',
 			position: 'absolute',
-			width: 'max-content'
+			visibility: this.skeleton ? 'hidden' : undefined,
 		};
 
 		// center long number strings to prevent overflow
@@ -89,8 +87,6 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			const xPadding = 'var(--d2l-count-badge-icon-padding)';
 			numberStyles = {
 				... numberStyles,
-				left: '',
-				right: '',
 				transform: this.dir === 'rtl'
 					? `translateY(-50%) translateX(calc(0px - ${xPadding}))`
 					: `translateY(-50%) translateX(${xPadding})`
@@ -98,8 +94,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		} else {
 			numberStyles = {
 				... numberStyles,
-				left: this.dir === 'rtl' ? '-0.1rem' : '',
-				right: this.dir === 'rtl' ? '' : '-0.1rem',
+				[this.dir === 'rtl' ? 'left' : 'right'] : '-0.1rem',
 				transform: 'translateY(-50%)'
 			};
 		}
