@@ -33,18 +33,19 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			/* for long numbers, center the number on the icon */
 			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
+			/* symmetrical padding to prevent overflows for most numbers */
 			padding-left: 0.5rem;
 			padding-right: 0.5rem;
 			position: relative;
 		}
 
 		:host([size="large"]) {
-			--d2l-count-badge-icon-padding-top: 14px;
+			--d2l-count-badge-icon-padding-top: 0.7rem;
 			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
 		:host([size="small"]) {
-			--d2l-count-badge-icon-padding-top: 11px;
+			--d2l-count-badge-icon-padding-top: 0.55rem;
 			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
