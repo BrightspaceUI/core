@@ -47,7 +47,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'hide-zero'
 			},
 			/**
-			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
+			 * Optionally specify a digit limit, after which numbers are truncated.
+			 * Defaults to two for "notification" type and five for "count" type.
 			 * @type {number}
 			 */
 			maxDigits: {
@@ -156,9 +157,20 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (!this.maxDigits && this.type === 'notification') {
-			// default to two digits for notification type
-			this.maxDigits = 2;
+		if (!this.maxDigits) {
+			// default to two digits for notification type, 5 for count
+			this.maxDigits = this.type === 'notification' ? 2 : 5;
+		} else if (this.maxDigits > 5) {
+			// limit all badges to 5 digits
+			this.maxDigits = 5;
+		}
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.get('maxDigits') && this.maxDigits > 5) {
+			// impose a 5 digit maximum to prevent overflows
+			this.maxDigits = 5;
 		}
 	}
 
@@ -166,15 +178,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		return this.hasTooltip ? undefined : this._labelId;
 	}
 
-	renderCount(numberStyles) {
+	getNumberString() {
 		let numberString = `${this.number}`;
-		const hideNumber = this.hideZero && this.number === 0;
-		if (!numberStyles || numberStyles.visibility !== 'hidden') {
-			numberStyles = {
-				...numberStyles,
-				visibility: hideNumber ? 'hidden' : 'visible'
-			};
-		}
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = formatNumber(parseInt(numberString));
@@ -183,9 +188,20 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			numberString = formatNumber(numberString);
 		}
 
+		return numberString;
+	}
+
+	renderCount(numberStyles) {
+		const hideNumber = this.hideZero && this.number === 0;
+		if (!numberStyles || numberStyles.visibility !== 'hidden') {
+			numberStyles = {
+				...numberStyles,
+				visibility: hideNumber ? 'hidden' : 'visible'
+			};
+		}
 		return html`
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
-					<div aria-hidden="true">${numberString}</div>		
+					<div aria-hidden="true">${this.getNumberString()}</div>		
 			</div>
 		`;
 	}
