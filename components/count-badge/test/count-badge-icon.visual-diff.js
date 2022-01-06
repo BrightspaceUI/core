@@ -15,14 +15,14 @@ describe('d2l-count-badge-icon', () => {
 		await page.bringToFront();
 	});
 
-	async function getRectWithTooltip(page, selector) {
+	async function getRect(page, selector) {
 		return page.$eval(selector, (elem) => {
 			const rect = elem.getBoundingClientRect();
 			return {
 				x: rect.x - 30,
 				y: rect.y - 10,
-				width: rect.width + 120,
-				height: rect.height + 60
+				width: rect.width + 150,
+				height: rect.height + 70
 			};
 		});
 	}
@@ -62,7 +62,7 @@ describe('d2l-count-badge-icon', () => {
 		it('tooltip appears on focus-visible', async function() {
 			await page.$eval('#tooltip-icon', (elem) => forceFocusVisible(elem));
 			await page.waitForTimeout(50);
-			const rect = await getRectWithTooltip(page, '#tooltip-icon');
+			const rect = await getRect(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
