@@ -32,7 +32,6 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		:host {
 			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
-			padding-bottom: 0.2rem;
 			padding-left: 0.5rem;
 			padding-right: 0.5rem;
 			position: relative;
