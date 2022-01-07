@@ -19,10 +19,10 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 			description: { type: String },
 
 			/**
-			 * Aligns the leading edge of text if value is set to "text"
-			 * @type {'text'|''}
-			 */
-			 hAlign: { type: String, reflect: true, attribute: 'h-align' },
+			* Aligns the leading edge of text if value is set to "text"
+			* @type {'text'|''}
+			*/
+			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
 			 * REQUIRED: Text for the button
