@@ -39,6 +39,13 @@ describe('d2l-input-time', () => {
 		});
 	});
 
+	it('focus', async function() {
+		await page.$eval('#basic', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await reset(page, '#basic');
+	});
+
 	describe('opened behavior', () => {
 
 		before(async() => {
@@ -163,23 +170,21 @@ describe('d2l-input-time', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
+	});
 
-		it('mobile layout', async function() {
+	describe('mobile', () => {
+		before(async() => {
 			await page.setViewport({ width: 300, height: 1100, deviceScaleFactor: 2 });
-			await open(page, '#dropdown-mobile');
-			page.waitForTimeout(10);
-			const rect = await getRect(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
+
+		afterEach(async() => {
 			await reset(page, '#dropdown-mobile');
 		});
 
-	});
-
-	it('focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await reset(page, '#basic');
+		it('open behavior', async function() {
+			await open(page, '#dropdown-mobile');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+		});
 	});
 
 });
