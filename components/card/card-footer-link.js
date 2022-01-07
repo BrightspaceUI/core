@@ -76,18 +76,10 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		return [offscreenStyles, css`
 			:host {
 				display: inline-block;
-				left: 0.15rem;
-				margin-right: 0.3rem;
 				position: relative;
 			}
 			:host[hidden] {
 				display: none;
-			}
-			:host([dir="rtl"]) {
-				left: auto;
-				margin-left: 0.3rem;
-				margin-right: 0;
-				right: 0.15rem;
 			}
 			a {
 				box-sizing: border-box;
