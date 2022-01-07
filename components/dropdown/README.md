@@ -126,6 +126,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from automatically on click or on key press |
 | `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
+| `h-align` | String | Possible values are undefined (default) or text. If text, aligns the button content to the leading edge of text |
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
