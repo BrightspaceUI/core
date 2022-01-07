@@ -17,6 +17,13 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 			 * @type {string}
 			 */
 			description: { type: String },
+
+			/**
+			 * Aligns the leading edge of text if value is set to "text"
+			 * @type {'text'|''}
+			 */
+			 hAlign: { type: String, reflect: true, attribute: 'h-align' },
+
 			/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
@@ -31,7 +38,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-button-subtle description="${ifDefined(this.description)}" text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
+			<d2l-button-subtle description="${ifDefined(this.description)}" h-align="${ifDefined(this.hAlign)}" text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
 			<slot></slot>
 		`;
 	}
