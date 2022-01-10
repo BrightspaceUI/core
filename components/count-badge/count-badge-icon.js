@@ -29,27 +29,24 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			outline: none;
 		}
 
-		.d2l-count-badge-wrapper {
-			display: inline-block;
-		}
-
 		:host {
-			padding-right: var(--d2l-count-badge-icon-padding);
-		}
-
-		:host([dir="rtl"]) {
-			padding-left: var(--d2l-count-badge-icon-padding);
-			padding-right: 0;
+			/* for long numbers, center the number on the icon */
+			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
+			display: inline-block;
+			/* symmetrical padding to prevent overflows for most numbers */
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
+			position: relative;
 		}
 
 		:host([size="large"]) {
-			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.7rem);
-			margin-top: -0.7rem;
+			--d2l-count-badge-icon-padding-top: 0.7rem;
+			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
 		:host([size="small"]) {
-			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.55rem);
-			margin-top: -0.55rem;
+			--d2l-count-badge-icon-padding-top: 0.55rem;
+			padding-top: var(--d2l-count-badge-icon-padding-top);
 		}
 
 		:host([icon*="tier1:"]) {
@@ -63,7 +60,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		}
 
 		d2l-tooltip[_open-dir="top"] {
-			margin-top: -0.6rem;
+			margin-top: calc(0px - var(--d2l-count-badge-icon-padding-top));
 		}
 
 		d2l-icon {
@@ -79,15 +76,30 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	}
 
 	render() {
-		const numberPadding = this.size === 'small' ? '0.55rem' : '0.7rem';
-		const numberStyles = {
+		let numberStyles = {
 			border: '2px solid white',
-			position: 'relative',
-			left: this.dir === 'rtl' ? 0 : 'var(--d2l-count-badge-icon-padding)',
-			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,
-			top: numberPadding,
-			visibility: this.skeleton ? 'hidden' : undefined
+			position: 'absolute',
+			visibility: this.skeleton ? 'hidden' : undefined,
 		};
+
+		// center long number strings to prevent overflow
+		const centerNumber = this.getNumberString().length >= 4;
+
+		if (centerNumber) {
+			const xPadding = 'var(--d2l-count-badge-icon-padding)';
+			numberStyles = {
+				... numberStyles,
+				transform: this.dir === 'rtl'
+					? `translateY(-50%) translateX(calc(0px - ${xPadding}))`
+					: `translateY(-50%) translateX(${xPadding})`
+			};
+		} else {
+			numberStyles = {
+				... numberStyles,
+				[this.dir === 'rtl' ? 'left' : 'right'] : '-0.1rem',
+				transform: 'translateY(-50%)'
+			};
+		}
 		const tabbable = (this.tabStop || this.hasTooltip) && !this.skeleton;
 		const innerHtml = html`
 			${this.renderCount(numberStyles)}

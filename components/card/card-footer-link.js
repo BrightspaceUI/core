@@ -76,18 +76,10 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		return [offscreenStyles, css`
 			:host {
 				display: inline-block;
-				left: 0.15rem;
-				margin-right: 0.3rem;
 				position: relative;
 			}
 			:host[hidden] {
 				display: none;
-			}
-			:host([dir="rtl"]) {
-				left: auto;
-				margin-left: 0.3rem;
-				margin-right: 0;
-				right: 0.15rem;
 			}
 			a {
 				box-sizing: border-box;
@@ -98,13 +90,6 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			}
 			d2l-count-badge-icon {
 				text-align: initial;
-			}
-			::slotted(d2l-tooltip) {
-				left: calc(-50% + 11px) !important;
-			}
-			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
-				left: 0;
-				right: calc(-50% + 11px) !important;
 			}
 		`];
 	}
