@@ -29,6 +29,8 @@ describe('d2l-dropdown-content', () => {
 		'no-padding-no-pointer',
 		'scroll-bottom-shadow',
 		'vertical-offset',
+		'vertical-offset-edge',
+		'vertical-offset-negative',
 		'boundary-left-below',
 		'boundary-right-above',
 		'top-left',

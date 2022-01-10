@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 650, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 650, height: 1100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 
@@ -37,6 +37,13 @@ describe('d2l-input-time', () => {
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+	});
+
+	it('focus', async function() {
+		await page.$eval('#basic', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await reset(page, '#basic');
 	});
 
 	describe('opened behavior', () => {
@@ -163,21 +170,21 @@ describe('d2l-input-time', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
+	});
 
-		it('mobile layout', async function() {
-			await page.setViewport({ width: 300, height: 600 });
-			await open(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+	describe('mobile', () => {
+		before(async() => {
+			await page.setViewport({ width: 300, height: 1100, deviceScaleFactor: 2 });
+		});
+
+		afterEach(async() => {
 			await reset(page, '#dropdown-mobile');
 		});
 
-	});
-
-	it('focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await reset(page, '#basic');
+		it('open behavior', async function() {
+			await open(page, '#dropdown-mobile');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+		});
 	});
 
 });
