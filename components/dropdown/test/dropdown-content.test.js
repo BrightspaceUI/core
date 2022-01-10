@@ -378,18 +378,18 @@ describe('d2l-dropdown', () => {
 			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('50px');
 		});
 
-		it('vertical offset should default to 20 if removed', async() => {
+		it('vertical offset should default to 16 if removed', async() => {
 			content.setAttribute('vertical-offset', 100);
 			await nextFrame();
 			content.removeAttribute('vertical-offset');
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('20px');
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('16px');
 		});
 
-		it('vertical offset should default to 20 if set to an invalid number', async() => {
+		it('vertical offset should default to 16 if set to an invalid number', async() => {
 			content.setAttribute('vertical-offset', 'thisisnotasize');
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('20px');
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('16px');
 		});
 
 	});

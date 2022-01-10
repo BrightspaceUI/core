@@ -134,7 +134,7 @@ describe('d2l-input-time', () => {
 		it('dropdown open top', async function() {
 			await open(page, '#dropdown');
 			const rect = await getRect(page, '#dropdown');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('dropdown open keydown top', async function() {
@@ -146,7 +146,7 @@ describe('d2l-input-time', () => {
 				input.dispatchEvent(eventObj);
 			});
 			const rect = await getRect(page, '#dropdown');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('dropdown open click', async function() {
@@ -160,14 +160,14 @@ describe('d2l-input-time', () => {
 				input.dispatchEvent(e);
 			});
 			const rect = await getRect(page, '#dropdown');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('dropdown open enforce-time-intervals', async function() {
 			await page.$eval('#enforce', (elem) => elem.skeleton = false);
 			await open(page, '#enforce');
 			const rect = await getRect(page, '#enforce');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 	});
