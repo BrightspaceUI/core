@@ -56,12 +56,11 @@ Linear meters show a horizontal progress bar.
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
 * `percent` Boolean: Shows a percentage instead of `value/max`.
-* `text-inline` Boolean: Keeps the meter to a single line.
-* `text` String: Context information about what the meter is about.
-	* `\{\%\}` in the string will be replaced with percentage value
-	* `{x/y}` in the string will be replaced with fraction with the proper language support
-	* **DEPRECATED** `{x}` in the string will be replaced with `value`
-	* **DEPRECATED** `{y}` in the string will be replaced with `max`
+* `text-inline` Boolean: Keeps the meter to a single line. Adding one of the following between `{}` (e.g., `{x/y}`) causes replacements:
+	* `%` in the string will be replaced with percentage value
+	* `x/y` in the string will be replaced with fraction with the proper language support
+	* **DEPRECATED** `x` in the string will be replaced with `value`
+	* **DEPRECATED** `y` in the string will be replaced with `max`
 <!-- docs: end hidden content -->
 
 ## Radial meter [d2l-meter-radial]
@@ -89,9 +88,9 @@ Radial meters appear as a half circle. They have more visual weight than a line
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
 * `percent` (Boolean): Shows a percentage instead of `value/max`.
-* `text` (String): Context information about what the meter is about.
-	* `{%}` in the string will be replaced with percentage value
-	* `{x/y}` in the string will be replaced with fraction with the proper language support
+* `text` (String): Context information about what the meter is about. Adding one of the following between `{}` (e.g., `{x/y}`) causes replacements:
+	* `%` in the string will be replaced with percentage value
+	* `x/y` in the string will be replaced with fraction with the proper language support
 <!-- docs: end hidden content -->
 
 
@@ -134,7 +133,7 @@ All `meter` components have a `foreground-light` style that ensures accessibl
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
 * `percent` (Boolean): Shows a percentage instead of `value/max`.
-* `text` (String): Context information about what the meter is about.
-	* `\{\%\}` in the string will be replaced with percentage value
-	* `{x/y}` in the string will be replaced with fraction with the proper language support
+* `text` (String): Context information about what the meter is about. Adding one of the following between `{}` (e.g., `{x/y}`) causes replacements:
+	* `%` in the string will be replaced with percentage value
+	* `x/y` in the string will be replaced with fraction with the proper language support
 <!-- docs: end hidden content -->
