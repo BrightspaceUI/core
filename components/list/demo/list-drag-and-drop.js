@@ -90,7 +90,7 @@ class ListDemoDragAndDrop extends LitElement {
 	render() {
 		const renderList = (items, nested) => {
 			return html`
-				<d2l-list grid slot="${ifDefined(nested ? 'nested' : undefined)}">
+				<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
 					${repeat(items, item => item.key, item => html`
 						<d2l-list-item
 							action-href="http://www.d2l.com"

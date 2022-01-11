@@ -1,3 +1,4 @@
+import './list-item-drag-image.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
@@ -332,7 +333,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					opacity: 1;
 				}
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;
@@ -550,15 +551,23 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		if (this.shadowRoot) {
-			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
-			e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		const rootList = this._getRootList(this);
+		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
+
+		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
+			const dragImage = document.createElement('d2l-list-item-drag-image');
+			dragImage.count = selectionInfo.keys.length;
+			this.shadowRoot.appendChild(dragImage);
+			e.dataTransfer.setDragImage(dragImage, 24, 26);
+		} else {
+			if (this.shadowRoot) {
+				const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+				e.dataTransfer.setDragImage(nodeImage, 50, 50);
+			}
 		}
 
-		const rootList = this._getRootList(this);
-
 		// getSelectionInfo(false) is fast so we can quickly check the state
-		if (!rootList.dragMultiple || rootList.getSelectionInfo(false).state === SelectionInfo.states.none) {
+		if (!rootList.dragMultiple || selectionInfo.state === SelectionInfo.states.none) {
 			createDragState([this]);
 		} else {
 
