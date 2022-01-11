@@ -19,9 +19,8 @@ class List extends SelectionMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Not publicly available yet. Whether the user can drag multiple items
+			 * Whether the user can drag multiple items
 			 * @type {boolean}
- 			 * @ignore
  			 */
 			dragMultiple: { type: Boolean, reflect: true, attribute: 'drag-multiple' },
 			/**
