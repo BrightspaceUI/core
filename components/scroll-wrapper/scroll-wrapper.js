@@ -184,7 +184,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	scrollDistance(distance, smooth) {
 		if (!this._container) return;
-		if (this.dir === 'rtl') distance = distance * RTL_MULTIPLIER;
+		if (this._dir === 'rtl') distance = distance * RTL_MULTIPLIER;
 		if (this._container.scrollBy) {
 			this._container.scrollBy({ left: distance, behavior: smooth ? 'smooth' : 'auto' });
 		} else {
