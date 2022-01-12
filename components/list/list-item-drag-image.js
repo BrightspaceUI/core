@@ -86,7 +86,7 @@ class ListItemDragImage extends SkeletonMixin(RtlMixin(LitElement)) {
 				position: absolute;
 				text-align: center;
 				top: 30px;
-				z-index: 1000;
+				z-index: 1000; /* must be higher than the skeleton z-index (999) */
 			}
 			:host([dir="rtl"]) .count {
 				left: 14px;
