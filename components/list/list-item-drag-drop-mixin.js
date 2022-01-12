@@ -556,13 +556,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
-			if (dragImage) {
-				dragImage.count = selectionInfo.keys.length;
-			} else {
+			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
-				dragImage.count = selectionInfo.keys.length;
 				this.shadowRoot.appendChild(dragImage);
 			}
+			dragImage.count = selectionInfo.keys.length;
 			e.dataTransfer.setDragImage(dragImage, 24, 26);
 		} else {
 			if (this.shadowRoot) {
