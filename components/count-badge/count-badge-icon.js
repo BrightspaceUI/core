@@ -89,14 +89,14 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			const xPadding = 'var(--d2l-count-badge-icon-padding)';
 			numberStyles = {
 				... numberStyles,
-				transform: this.dir === 'rtl'
+				transform: this._dir === 'rtl'
 					? `translateY(-50%) translateX(calc(0px - ${xPadding}))`
 					: `translateY(-50%) translateX(${xPadding})`
 			};
 		} else {
 			numberStyles = {
 				... numberStyles,
-				[this.dir === 'rtl' ? 'left' : 'right'] : '-0.1rem',
+				[this._dir === 'rtl' ? 'left' : 'right'] : '-0.1rem',
 				transform: 'translateY(-50%)'
 			};
 		}
