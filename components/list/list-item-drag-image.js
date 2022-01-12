@@ -1,12 +1,12 @@
 import '../colors/colors.js';
-import '../icons/icon.js';
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class ListItemDragImage extends RtlMixin(LitElement) {
+class ListItemDragImage extends SkeletonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -18,7 +18,7 @@ class ListItemDragImage extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ bodySmallStyles, css`
+		return [ super.styles, bodySmallStyles, css`
 			:host {
 				display: block;
 				height: 70px;
@@ -62,15 +62,11 @@ class ListItemDragImage extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 			.line-1 {
-				background-color: var(--d2l-color-sylvite);
-				border-radius: 0.2rem;
 				height: 24px;
 				margin-bottom: 4px;
 				width: 100%;
 			}
 			.line-2 {
-				background-color: var(--d2l-color-sylvite);
-				border-radius: 0.2rem;
 				height: 16px;
 				width: 25%;
 			}
@@ -101,6 +97,7 @@ class ListItemDragImage extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.count = 0;
+		this.skeleton = true;
 	}
 
 	render() {
@@ -108,12 +105,12 @@ class ListItemDragImage extends RtlMixin(LitElement) {
 			<div class="first">
 				<div class="count d2l-body-small">${formatNumber(this.count)}</div>
 				<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-			  	<path fill="#494c4e" d="M8 16v1c0 .5-.4 1-1 1H6c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 16v1c0 .5-.4 1-1 1h-1c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 11v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 11v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 6v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 6v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 1v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1M13 1v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1"/>
+					<path fill="#494c4e" d="M8 16v1c0 .5-.4 1-1 1H6c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 16v1c0 .5-.4 1-1 1h-1c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 11v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 11v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 6v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 6v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 1v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1M13 1v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1"/>
 				</svg>
 				<d2l-input-checkbox disabled skeleton></d2l-input-checkbox>
 				<div class="text">
-					<div class="line-1"></div>
-					<div class="line-2"></div>
+					<div class="line-1 d2l-skeletize"></div>
+					<div class="line-2 d2l-skeletize"></div>
 				</div>
 			</div>
 			<div class="second"></div>
