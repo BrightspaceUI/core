@@ -75,6 +75,26 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		this._badgeId = getUniqueId();
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		const self = this;
+		this._mutationObserver = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (mutation.type === 'attributes'
+					&& mutation.attributeName === 'dir') {
+					// re-render when dir attribute is added to reposition for RTL
+					self.requestUpdate();
+				}
+			});
+		});
+		this._mutationObserver.observe(this, { attributes: true });
+	}
+
+	disconnectedCallback() {
+		this._mutationObserver.disconnect();
+		super.disconnectedCallback();
+	}
+
 	render() {
 		let numberStyles = {
 			border: '2px solid white',
