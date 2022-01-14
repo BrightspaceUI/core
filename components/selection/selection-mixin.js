@@ -138,13 +138,13 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (currentIndex === -1) currentIndex = 0;
 		let newIndex;
 
-		if ((this._dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
-			|| (this._dir === 'rtl' && e.keyCode === keyCodes.LEFT)
+		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
+			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| e.keyCode === keyCodes.DOWN) {
 			if (currentIndex === selectables.length - 1) newIndex = 0;
 			else newIndex = currentIndex + 1;
-		} else if ((this._dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
-			|| (this._dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
+		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
+			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| e.keyCode === keyCodes.UP) {
 			if (currentIndex === 0) newIndex = selectables.length - 1;
 			else newIndex = currentIndex - 1;

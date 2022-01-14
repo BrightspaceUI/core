@@ -4,7 +4,7 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			_dir: { type: String, reflect: true, attribute: 'dir' }
+			dir: { type: String, reflect: true }
 		};
 	}
 
@@ -13,7 +13,7 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 		const dir = document.documentElement.getAttribute('dir');
 		// avoid reflecting "ltr" for better performance
 		if (dir && dir !== 'ltr') {
-			this._dir = dir;
+			this.dir = dir;
 		}
 	}
 
