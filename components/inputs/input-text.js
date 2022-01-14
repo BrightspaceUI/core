@@ -605,12 +605,14 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 			|| (this.unit && this.dir !== 'rtl');
 
 		if (firstSlotHasNodes) {
-			requestAnimationFrame(() => this._firstSlotWidth = firstContainer.getBoundingClientRect().width);
+			// Firefox can have trouble rendering the cursor if the padding is a decimal
+			requestAnimationFrame(() => this._firstSlotWidth = Math.ceil(firstContainer.getBoundingClientRect().width));
 		} else {
 			this._firstSlotWidth = 0;
 		}
 		if (lastSlotHasNodes) {
-			requestAnimationFrame(() => this._lastSlotWidth = lastContainer.getBoundingClientRect().width);
+			// Firefox can have trouble rendering the cursor if the padding is a decimal
+			requestAnimationFrame(() => this._lastSlotWidth = Math.ceil(lastContainer.getBoundingClientRect().width));
 		} else {
 			this._lastSlotWidth = 0;
 		}
