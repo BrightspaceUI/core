@@ -4,6 +4,9 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			dir: { type: String, reflect: true }
 		};
 	}
