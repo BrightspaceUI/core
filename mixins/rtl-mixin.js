@@ -4,6 +4,10 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * The directionality of the text of the document
+			 * @type {'ltr'|'rtl'}
+			 */
 			dir: { type: String, reflect: true }
 		};
 	}
