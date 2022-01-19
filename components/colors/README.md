@@ -1,6 +1,6 @@
 # Colors
 
-Importing `colors` will add the color palette [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) to the document and polyfill for IE11 using [shadyCSS](https://github.com/webcomponents/shadycss).
+Importing `colors` will add the color palette [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) to the document.
 
 Run the demo page to see the full palette. See [colors.js](colors.js) for the variable names (i.e. `--d2l-color-*`).
 
