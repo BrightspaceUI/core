@@ -58,6 +58,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
+			/**
+			 * Whether to allow the drag target to be the handle only rather than the entire cell
+			 * @type {boolean}
+			 */
+			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -106,6 +111,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
 			}
+			:host([no-padding]) d2l-list-item-generic-layout {
+				border-top: 0px;
+				border-bottom: 0px;
+			}
 			d2l-list-item-generic-layout[data-separators="none"] {
 				border-bottom: 1px solid transparent;
 				border-top: 1px solid transparent;
@@ -146,6 +155,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host([slim]) [slot="content"] {
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
+			}
+			:host([no-padding]) [slot="content"] {
+				padding-bottom: 0rem;
+				padding-top: 0rem;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
@@ -449,7 +462,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					?grid-active="${this.role === 'rowgroup'}">
 					${this._renderDropTarget()}
 					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDragTarget(this._renderOutsideControlAction)}
+					${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${this._renderCheckbox()}</div>
 					<div slot="control-action"
@@ -495,6 +508,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 	_renderOutsideControlAction(dragTarget) {
 		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+	}
+
+	_renderOutsideControlHandleOnly(dragHandle) {
+		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
 	}
 
 	_renderTooltipContent() {
