@@ -112,8 +112,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-top: 1px solid var(--d2l-color-mica);
 			}
 			:host([no-padding]) d2l-list-item-generic-layout {
-				border-top: 0px;
-				border-bottom: 0px;
+				border-bottom: 0;
+				border-top: 0;
 			}
 			d2l-list-item-generic-layout[data-separators="none"] {
 				border-bottom: 1px solid transparent;
@@ -157,8 +157,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-top: 0.4rem;
 			}
 			:host([no-padding]) [slot="content"] {
-				padding-bottom: 0rem;
-				padding-top: 0rem;
+				padding-bottom: 0;
+				padding-top: 0;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
