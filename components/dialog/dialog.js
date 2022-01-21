@@ -23,6 +23,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	static get properties() {
 		return {
 			/**
+			 * Whether to read the contents of the dialog on open
+			 */
+			ariaDescribeContent: { type: Boolean, attribute: 'aria-describe-content' },
+			/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
@@ -32,6 +36,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 */
 			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false }
+
 		};
 	}
 
@@ -151,9 +156,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			'd2l-footer-no-content': !this._hasFooterContent
 		};
 
+		if (!this._textId) this._textId = getUniqueId();
+
 		const content = html`
 			${loading}
-			<div style=${styleMap(slotStyles)}><slot></slot></div>
+			<div id="${this._textId}" aria-describe-content="${this.ariaDescribeContent}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
 		if (!this._titleId) this._titleId = getUniqueId();
@@ -171,9 +178,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				</div>
 			</div>
 		`;
+
+		const descId = (this.ariaDescribeContent) ? this._textId : undefined;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' },
+			{ labelId: this._titleId, descId: descId, role: 'dialog' },
 			topOverride
 		);
 	}
