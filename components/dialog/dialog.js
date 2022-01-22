@@ -160,7 +160,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 		const content = html`
 			${loading}
-			<div id="${this._textId}" aria-describe-content="${this.ariaDescribeContent}" style=${styleMap(slotStyles)}><slot></slot></div>
+			<div id="${this._textId}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
 		if (!this._titleId) this._titleId = getUniqueId();
