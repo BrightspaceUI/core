@@ -332,7 +332,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		requestAnimationFrame(async() => {
 
-			this.shadowRoot.querySelector('.d2l-dialog-content').scrollTop = 0;
+			if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').scrollTop = 0;
 			// scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash
 			setTimeout(() => {
 				this._scroll = true;
