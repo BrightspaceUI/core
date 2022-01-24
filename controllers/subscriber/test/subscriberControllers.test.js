@@ -21,16 +21,6 @@ const separateRegistries = defineCE(
 			this._onUnsubscribeTargets = [];
 			this._updateSubscribersCalledWith = [];
 		}
-		connectedCallback() {
-			super.connectedCallback();
-			this._eventSubscribers.hostConnected();
-			this._idSubscribers.hostConnected();
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._eventSubscribers.hostDisconnected();
-			this._idSubscribers.hostDisconnected();
-		}
 		getSubscriberController(controllerId) {
 			if (controllerId === 'event') {
 				return this._eventSubscribers;

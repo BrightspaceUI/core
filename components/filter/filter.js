@@ -152,16 +152,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		);
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._activeFiltersSubscribers.hostConnected();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this._activeFiltersSubscribers.hostDisconnected();
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
