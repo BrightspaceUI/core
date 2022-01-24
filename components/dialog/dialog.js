@@ -8,6 +8,7 @@ import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -25,7 +26,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			/**
 			 * Whether to read the contents of the dialog on open
 			 */
-			ariaDescribeContent: { type: Boolean, attribute: 'aria-describe-content' },
+			describeContent: { type: Boolean, attribute: 'describe-content' },
 			/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
@@ -36,7 +37,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 */
 			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false }
-
 		};
 	}
 
@@ -108,6 +108,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this.width = 600;
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
+		this.describeContent = false;
 	}
 
 	get asyncContainerCustom() {
@@ -156,11 +157,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			'd2l-footer-no-content': !this._hasFooterContent
 		};
 
-		if (!this._textId) this._textId = getUniqueId();
-
+		if (!this._textId && this.describeContent) this._textId = getUniqueId();
 		const content = html`
 			${loading}
-			<div id="${this._textId}" style=${styleMap(slotStyles)}><slot></slot></div>
+			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
 		if (!this._titleId) this._titleId = getUniqueId();
@@ -179,7 +179,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			</div>
 		`;
 
-		const descId = (this.ariaDescribeContent) ? this._textId : undefined;
+		const descId = (this.describeContent) ? this._textId : undefined;
 		return this._render(
 			inner,
 			{ labelId: this._titleId, descId: descId, role: 'dialog' },

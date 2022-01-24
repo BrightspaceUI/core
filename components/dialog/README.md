@@ -83,6 +83,12 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
 <!-- docs: end hidden content -->
 
+### Accessibility Properties
+
+| Attribute | Description |
+|--|--|
+| `describe-content` | When set to 'true' reads the dialog content on open. |
+
 ### Methods
 
 - `resize`: resizes the dialog based on specified `width` and measured content height
