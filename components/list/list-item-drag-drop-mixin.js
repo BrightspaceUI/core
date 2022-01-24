@@ -555,7 +555,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
 
 		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
-			let dragImage = this.shadowRoot && this.shadowRoot.querySelector('d2l-list-item-drag-image');
+			let dragImage = this.shadowRoot
+				? this.shadowRoot.querySelector('d2l-list-item-drag-image')
+				: undefined;
 			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
 				this.shadowRoot.appendChild(dragImage);
