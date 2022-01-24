@@ -173,7 +173,6 @@ class HtmlBlock extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this._contextObserverController) this._contextObserverController.hostConnected();
 
 		if (!this._contentObserver || this.noDeferredRendering) return;
 
@@ -187,7 +186,6 @@ class HtmlBlock extends LitElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._contextObserverController) this._contextObserverController.hostDisconnected();
 		if (this._contentObserver) this._contentObserver.disconnect();
 	}
 

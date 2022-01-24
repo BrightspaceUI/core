@@ -4,6 +4,7 @@ export class SubscriberRegistryController {
 
 	constructor(host, callbacks, options) {
 		this._host = host;
+		host.addController(this);
 		this._callbacks = callbacks || {};
 		this._eventName = options && options.eventName;
 		this._subscribers = new Map();
@@ -60,6 +61,7 @@ export class EventSubscriberController {
 
 	constructor(host, callbacks, options) {
 		this._host = host;
+		host.addController(this);
 		this._callbacks = callbacks || {};
 		this._eventName = options && options.eventName;
 		this._controllerId = options && options.controllerId;
@@ -99,6 +101,7 @@ export class IdSubscriberController {
 
 	constructor(host, callbacks, options) {
 		this._host = host;
+		host.addController(this);
 		this._callbacks = callbacks || {};
 		this._idPropertyName = options && options.idPropertyName;
 		this._controllerId = options && options.controllerId;

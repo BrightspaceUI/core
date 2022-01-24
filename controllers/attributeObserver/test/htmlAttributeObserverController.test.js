@@ -17,12 +17,7 @@ const testHost = listeningAttributes => defineCE(
 		}
 		connectedCallback() {
 			super.connectedCallback();
-			this._controller.hostConnected();
 			this._initialControllerVal = { ...this._controller.values };
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._controller.hostDisconnected();
 		}
 		render() {
 			const htmlSegments = [];

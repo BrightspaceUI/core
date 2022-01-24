@@ -136,24 +136,6 @@ An example of what this could look like altogether:
 <younger-viewer for="rogers"></younger-viewer>
 ```
 
-NOTE: Until we are on Lit 2, the controller lifecycle events will need to be manually called:
-```js
-	connectedCallback() {
-		super.connectedCallback();
-		if (this._subscriptionController) this._subscriptionController.hostConnected();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (this._subscriptionController) this._subscriptionController.hostDisconnected();
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (this._subscriptionController) this._subscriptionController.hostUpdated(changedProperties);
-	}
-```
-
 ## Available Callbacks
 
 ### SubscriberRegistryController
