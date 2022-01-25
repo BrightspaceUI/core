@@ -35,7 +35,8 @@ describe('d2l-dialog-fullscreen', () => {
 
 			[
 				{ category: 'wide', viewport: { width: 800, height: 500 } },
-				{ category: 'narrow', viewport: { width: 600, height: 500 } }
+				{ category: 'narrow', viewport: { width: 600, height: 500 } },
+				{ category: 'landscape', viewport: { width: 600, height: 320 } },
 			].forEach((info) => {
 
 				describe(info.category, () => {
