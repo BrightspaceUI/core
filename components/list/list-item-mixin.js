@@ -55,9 +55,16 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			breakpoints: { type: Array },
 			/**
 			 * Whether to render the list-item with reduced whitespace.
+			 * TODO: Remove in favor of padding="none"
 			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
+			/**
+			 * How much padding to render list items with
+			 * One of 'normal'|'slim'|'none', defaults to 'normal'
+			 * @type {string}
+			 */
+			padding: { type: String },
 			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
@@ -111,7 +118,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
 			}
-			:host([no-padding]) d2l-list-item-generic-layout {
+			:host([padding="none"]) d2l-list-item-generic-layout {
 				border-bottom: 0;
 				border-top: 0;
 			}
@@ -152,11 +159,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				justify-content: stretch;
 				padding: 0.55rem 0;
 			}
-			:host([slim]) [slot="content"] {
+			:host([slim]) [slot="content"] { /* TODO, change to padding="slim" */
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
 			}
-			:host([no-padding]) [slot="content"] {
+			:host([padding="none"]) [slot="content"] {
 				padding-bottom: 0;
 				padding-top: 0;
 			}
@@ -232,7 +239,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-input {
+			:host([slim]) d2l-selection-input { /* TODO, change to padding="slim" */
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
@@ -289,6 +296,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		super();
 		this.breakpoints = defaultBreakpoints;
 		this.slim = false;
+		this.padding = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;

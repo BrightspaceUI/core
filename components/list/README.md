@@ -364,8 +364,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
-| `slim` | Boolean | Whether to render the list-item with reduced whitespace|
-| `no-padding` | Boolean | Whether to render the list-item with no whitespace|
+| `padding` | String | List item whitespace (`normal` (default), `slim`, `none`)|
 
 ### Events
 
