@@ -55,7 +55,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			breakpoints: { type: Array },
 			/**
 			 * Whether to render the list-item with reduced whitespace.
-			 * TODO: Remove in favor of padding="none"
+			 * TODO: Remove in favor of padding="slim"
 			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
@@ -159,7 +159,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				justify-content: stretch;
 				padding: 0.55rem 0;
 			}
-			:host([slim]) [slot="content"] { /* TODO, change to padding="slim" */
+			:host([slim]) [slot="content"] { /* TODO, remove */
+				padding-bottom: 0.35rem;
+				padding-top: 0.4rem;
+			}
+			:host([padding="slim"]) [slot="content"] {
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
 			}
@@ -239,7 +243,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-input { /* TODO, change to padding="slim" */
+			:host([slim]) d2l-selection-input { /* TODO, remove */
+				margin-bottom: 0.55rem;
+				margin-top: 0.55rem;
+			}
+			:host([padding="slim"]) d2l-selection-input {
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
