@@ -8,6 +8,7 @@ import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -26,6 +27,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
+
+			/**
+			 * Whether to read the contents of the dialog on open
+			 */
+			describeContent: { type: Boolean, attribute: 'describe-content' },
 
 			/**
 			 * The preferred width (unit-less) for the dialog
@@ -100,6 +106,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	constructor() {
 		super();
 		this.async = false;
+		this.describeContent = false;
 		this.width = 600;
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
@@ -151,9 +158,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			'd2l-footer-no-content': !this._hasFooterContent
 		};
 
+		if (!this._textId && this.describeContent) this._textId = getUniqueId();
 		const content = html`
 			${loading}
-			<div style=${styleMap(slotStyles)}><slot></slot></div>
+			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
 		if (!this._titleId) this._titleId = getUniqueId();
@@ -171,9 +179,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				</div>
 			</div>
 		`;
+
+		const descId = (this.describeContent) ? this._textId : undefined;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' },
+			{ labelId: this._titleId, descId: descId, role: 'dialog' },
 			topOverride
 		);
 	}
