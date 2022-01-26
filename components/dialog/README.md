@@ -87,7 +87,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 
 | Attribute | Description |
 |--|--|
-| `describe-content` | When set to 'true' reads the dialog content on open. |
+| `describe-content` | When set, screen readers will announce the contents when opened. |
 
 ### Methods
 

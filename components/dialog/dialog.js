@@ -24,13 +24,14 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	static get properties() {
 		return {
 			/**
-			 * Whether to read the contents of the dialog on open
-			 */
-			describeContent: { type: Boolean, attribute: 'describe-content' },
-			/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
+
+			/**
+			 * Whether to read the contents of the dialog on open
+			 */
+			describeContent: { type: Boolean, attribute: 'describe-content' },
 
 			/**
 			 * The preferred width (unit-less) for the dialog
@@ -105,10 +106,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	constructor() {
 		super();
 		this.async = false;
+		this.describeContent = false;
 		this.width = 600;
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
-		this.describeContent = false;
 	}
 
 	get asyncContainerCustom() {
