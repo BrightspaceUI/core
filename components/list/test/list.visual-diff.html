@@ -41,6 +41,14 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="noPadding">
+				<d2l-list>
+					<d2l-list-item padding-type="no-padding">Item 1</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="actions">
 				<d2l-list>
 					<d2l-list-item>
@@ -138,6 +146,20 @@
 			<div class="visual-diff" id="itemContentSlim">
 				<d2l-list>
 					<d2l-list-item padding-type="slim">
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="secondary">Secondary Info for item 1</div>
+							<div slot="supporting-info">Supporting info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentNoPadding">
+				<d2l-list>
+					<d2l-list-item padding-type="none">
 						<d2l-list-item-content>
 							<div>Item 1</div>
 							<div slot="secondary">Secondary Info for item 1</div>
