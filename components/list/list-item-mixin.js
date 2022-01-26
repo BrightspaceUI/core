@@ -55,7 +55,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			breakpoints: { type: Array },
 			/**
 			 * Whether to render the list-item with reduced whitespace.
-			 * TODO: Remove in favor of padding="slim"
+			 * TODO: Remove in favor of padding-type="slim"
 			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
@@ -64,7 +64,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 * One of 'normal'|'slim'|'none', defaults to 'normal'
 			 * @type {string}
 			 */
-			padding: { type: String },
+			paddingType: { type: String, attribute: 'padding-type' },
 			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
@@ -118,7 +118,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
 			}
-			:host([padding="none"]) d2l-list-item-generic-layout {
+			:host([padding-type="none"]) d2l-list-item-generic-layout {
 				border-bottom: 0;
 				border-top: 0;
 			}
@@ -163,11 +163,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
 			}
-			:host([padding="slim"]) [slot="content"] {
+			:host([padding-type="slim"]) [slot="content"] {
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
 			}
-			:host([padding="none"]) [slot="content"] {
+			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
 				padding-top: 0;
 			}
@@ -247,7 +247,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
-			:host([padding="slim"]) d2l-selection-input {
+			:host([padding-type="slim"]) d2l-selection-input {
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
@@ -304,7 +304,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		super();
 		this.breakpoints = defaultBreakpoints;
 		this.slim = false;
-		this.padding = 'normal';
+		this.paddingType = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;

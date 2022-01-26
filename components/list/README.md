@@ -311,7 +311,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 
 | Property | Type | Description |
 |---|---|---|
-| `slim` | Boolean | Whether to render a header with reduced whitespace |
+| `padding-type` | String | Header whitespace (`normal` (default), `slim`)|
 <!-- docs: end hidden content -->
 
 ## List Item [d2l-list-item]
@@ -364,7 +364,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
-| `padding` | String | List item whitespace (`normal` (default), `slim`, `none`)|
+| `padding-type` | String | List item whitespace (`normal` (default), `slim`, `none`)|
 
 ### Events
 
