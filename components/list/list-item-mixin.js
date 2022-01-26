@@ -54,11 +54,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * Whether to render the list-item with reduced whitespace.
-			 * TODO: Remove in favor of padding-type="slim"
+			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
 			 */
-			slim: { type: Boolean },
+			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
 			 * How much padding to render list items with
 			 * One of 'normal'|'slim'|'none', defaults to 'normal'
@@ -66,10 +65,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
 			/**
-			 * Whether to allow the drag target to be the handle only rather than the entire cell
+			 * Whether to render the list-item with reduced whitespace.
+			 * TODO: Remove in favor of padding-type="slim"
 			 * @type {boolean}
 			 */
-			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
+			slim: { type: Boolean },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },

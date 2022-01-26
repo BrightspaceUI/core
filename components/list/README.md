@@ -361,10 +361,10 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
+| `padding-type` | String | List item whitespace (`normal` (default), `slim`, `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
-| `padding-type` | String | List item whitespace (`normal` (default), `slim`, `none`)|
 
 ### Events
 
