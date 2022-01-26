@@ -70,6 +70,7 @@ describe('d2l-list', () => {
 		{ category: 'general', tests: [
 			{ name: 'simple', selector: '#simple' },
 			{ name: 'slim', selector: '#slim' },
+			{ name: 'no padding', selector: '#noPadding' },
 			{ name: 'actions', selector: '#actions' },
 			{ name: 'rtl', selector: '#rtl' },
 		] },
@@ -85,7 +86,8 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
-			{ name: 'slim', selector: '#itemContentSlim' }
+			{ name: 'slim', selector: '#itemContentSlim' },
+			{ name: 'no padding', selector: '#itemContentNoPadding' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },

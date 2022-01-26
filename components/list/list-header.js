@@ -15,9 +15,16 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return {
 			/**
 			 * Whether to render a header with reduced whitespace
+			 * TODO: Remove
 			 * @type {boolean}
 			 */
-			slim: { reflect: true, type: Boolean }
+			slim: { reflect: true, type: Boolean },
+			/**
+			 * How much padding to render list items with
+			 * One of 'normal'|'slim', defaults to 'normal'
+			 * @type {string}
+			 */
+			paddingType: { type: String, attribute: 'padding-type' },
 		};
 	}
 
@@ -36,7 +43,10 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-top: 6px;
 				min-height: 58px;
 			}
-			:host([slim]) .d2l-list-header-container {
+			:host([slim]) .d2l-list-header-container { /* TODO: Remove */
+				min-height: 36px;
+			}
+			:host([padding-type="slim"]) .d2l-list-header-container {
 				min-height: 36px;
 			}
 			d2l-selection-select-all {
@@ -64,6 +74,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	constructor() {
 		super();
 		this.slim = false;
+		this.paddingType = 'normal';
 	}
 
 	render() {
