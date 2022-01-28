@@ -14,6 +14,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
 			 * Whether to render a header with reduced whitespace
 			 * TODO: Remove
 			 * @type {boolean}
@@ -21,8 +22,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			slim: { reflect: true, type: Boolean },
 			/**
 			 * How much padding to render list items with
-			 * One of 'normal'|'slim', defaults to 'normal'
-			 * @type {string}
+			 * @type {'normal'|'slim'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
 		};
