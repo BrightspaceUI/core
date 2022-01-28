@@ -60,11 +60,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
 			 * How much padding to render list items with
-			 * One of 'normal'|'slim'|'none', defaults to 'normal'
-			 * @type {string}
+			 * @type {'normal'|'slim'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
 			/**
+			 * @ignore
 			 * Whether to render the list-item with reduced whitespace.
 			 * TODO: Remove in favor of padding-type="slim"
 			 * @type {boolean}
