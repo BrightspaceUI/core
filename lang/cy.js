@@ -75,7 +75,7 @@ export default {
 	"components.list-item-tooltip.page-up-down-desc": "Symud y ffocws 5 eitem ar y tro.",
 	"components.list-item-drag-handle-tooltip.title": "Rheolaethau bysellfwrdd ar gyfer aildrefnu:",
 	"components.list-item-drag-handle-tooltip.enter-key": "Nodi",
-	"components.list-item-drag-handle-tooltip.enter-desc": "Toglo’r modd aildrefnu bysellfwrdd.",
+	"components.list-item-drag-handle-tooltip.enter-desc": "Toglo'r modd aildrefnu bysellfwrdd.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "I Fyny/I Lawr",
 	"components.list-item-drag-handle-tooltip.up-down-desc": "Symud yr eitem i fyny neu i lawr yn y rhestr.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Chwith/De",
