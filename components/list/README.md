@@ -311,7 +311,8 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 
 | Property | Type | Description |
 |---|---|---|
-| `padding-type` | String | Header whitespace (`normal` (default), `slim`)|
+| `padding-type` | String | Header whitespace (`normal` (default), `slim`) |
+| `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
 ## List Item [d2l-list-item]
