@@ -1,4 +1,6 @@
+import '../../menu/menu.js';
 import '../selection-action.js';
+import '../selection-action-menu-item.js';
 import './selection-component.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
@@ -39,6 +41,37 @@ describe('d2l-selection-action', () => {
 		let dispatched = false;
 		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
 		el.shadowRoot.querySelector('d2l-button-subtle').click();
+		expect(dispatched).to.be.false;
+	});
+
+});
+
+describe('d2l-selection-action-menu-item', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-selection-action-menu-item');
+	});
+
+	it('dispatches d2l-selection-action-click event when clicked', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action"></d2l-selection-action-menu-item></d2l-menu>`);
+		setTimeout(() => el.querySelector('d2l-selection-action-menu-item').click());
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('dispatches d2l-selection-action-click event if requires selection and has selected', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" requires-selection></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		item.selectionInfo = { state: 'some', keys: [] };
+		setTimeout(() => item.click());
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('does not dispatch d2l-selection-action-click event if requires selection and none selected', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" requires-selection></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		let dispatched = false;
+		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		item.click();
 		expect(dispatched).to.be.false;
 	});
 

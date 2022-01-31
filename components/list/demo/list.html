@@ -7,11 +7,13 @@
 		<script type="module">
 			import '../../button/button-icon.js';
 			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown-more.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../selection/selection-action.js';
+			import '../../selection/selection-action-menu-item.js';
 			import '../../tooltip/tooltip.js';
 			import '../list-header.js';
 			import '../list-item-button.js';
@@ -67,8 +69,15 @@
 					<d2l-list id="allFeatures" item-count="50">
 						<d2l-list-header slot="header" select-all-pages-allowed>
 							<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
-							<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+							<d2l-dropdown-button-subtle text="Actions">
+								<d2l-dropdown-menu>
+									<d2l-menu label="Actions">
+										<d2l-selection-action-menu-item text="Bookmark (requires selection)" requires-selection></d2l-selection-action-menu-item>
+										<d2l-selection-action-menu-item text="Advanced"></d2l-selection-action-menu-item>
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-button-subtle>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
