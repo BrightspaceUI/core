@@ -59,7 +59,7 @@
     "eslint-plugin-sort-class-members": "^1",
     "lit-analyzer": "^1",
     "node-sass": "^7",
-    "sinon": "^12",
+    "sinon": "^13",
     "stylelint": "^14",
     "web-test-runner-performance": "^0.1"
   },
