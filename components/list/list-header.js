@@ -60,11 +60,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}
 			d2l-selection-summary {
 				flex: none;
-				margin-inline-start: 0.9rem;
+				margin-left: 0.9rem;
 			}
-			d2l-selection-select-all-pages {
-				flex: none;
-				margin-inline-start: 0.45rem;
+			:host([dir="rtl"]) d2l-selection-summary {
+				margin-left: 0;
+				margin-right: 0.9rem;
 			}
 			d2l-selection-select-all-pages {
 				flex: none;
