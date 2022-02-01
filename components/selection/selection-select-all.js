@@ -48,7 +48,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 			<d2l-input-checkbox
 				aria-label="${this.localize('components.selection.select-all')}"
 				@change="${this._handleCheckboxChange}"
-				?checked="${this.selectionInfo.state === SelectionInfo.states.all}"
+				?checked="${this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages}"
 				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
 				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
@@ -62,7 +62,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	_handleCheckboxChange(e) {
-		if (this._provider) this._provider.setSelectionForAll(e.target.checked);
+		if (this._provider) this._provider.setSelectionForAll(e.target.checked, false);
 	}
 
 }

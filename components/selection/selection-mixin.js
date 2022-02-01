@@ -28,7 +28,8 @@ export class SelectionInfo {
 		return {
 			none: 'none',
 			some: 'some',
-			all: 'all'
+			all: 'all',
+			allPages: 'all-pages'
 		};
 	}
 
@@ -39,6 +40,11 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			/**
+			 * Total number of items. Required when selecting all pages is allowed.
+			 * @type {number}
+			 */
+			itemCount: { type: Number, attribute: 'item-count' },
+			/**
 			 * Whether to render with single selection behaviour. If `selection-single` is specified, the nested `d2l-selection-input` elements will render radios instead of checkboxes, and the selection component will maintain a single selected item.
 			 * @type {boolean}
 			 */
@@ -48,7 +54,9 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
+		this.itemCount = 0;
 		this.selectionSingle = false;
+		this._selectAllPages = false;
 		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
 	}
@@ -80,21 +88,27 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		let state = SelectionInfo.states.none;
 		const keys = [];
 
-		this._selectionSelectables.forEach(selectable => {
-			if (selectable.selected) keys.push(selectable.key);
-			if (selectable._indeterminate) state = SelectionInfo.states.some;
-		});
+		if (this._selectAllPages) {
+			state = SelectionInfo.states.allPages;
+		} else {
+			this._selectionSelectables.forEach(selectable => {
+				if (selectable.selected) keys.push(selectable.key);
+				if (selectable._indeterminate) state = SelectionInfo.states.some;
+			});
 
-		if (keys.length > 0) {
-			if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
-			else state = SelectionInfo.states.some;
+			if (keys.length > 0) {
+				if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
+				else state = SelectionInfo.states.some;
+			}
 		}
 
 		return new SelectionInfo(keys, state);
 	}
 
-	setSelectionForAll(selected) {
+	setSelectionForAll(selected, selectAllPages) {
 		if (this.selectionSingle && selected) return;
+
+		this._selectAllPages = (selected && selectAllPages);
 
 		this._selectionSelectables.forEach(selectable => {
 			if (!!selectable.selected !== selected) {
@@ -154,6 +168,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleSelectionChange(e) {
+		if (!e.detail.selected) this._selectAllPages = false;
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
 			this._selectionSelectables.forEach(selectable => {

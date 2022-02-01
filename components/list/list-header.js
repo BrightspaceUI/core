@@ -1,5 +1,6 @@
 import '../overflow-group/overflow-group.js';
 import '../selection/selection-select-all.js';
+import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -25,6 +26,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {'normal'|'slim'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
+			/**
+			 * Whether all pages can be selected
+			 * @type {boolean}
+			 */
+			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
 		};
 	}
 
@@ -60,6 +66,14 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-left: 0;
 				margin-right: 0.9rem;
 			}
+			d2l-selection-select-all-pages {
+				flex: none;
+				margin-left: 0.45rem;
+			}
+			:host([dir="rtl"]) d2l-selection-select-all-pages {
+				margin-left: 0;
+				margin-right: 0.45rem;
+			}
 			.d2l-list-header-actions {
 				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
@@ -75,6 +89,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this.slim = false;
 		this.paddingType = 'normal';
+		this.selectAllPagesAllowed = false;
 	}
 
 	render() {
@@ -86,6 +101,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					class="d2l-list-header-summary"
 					no-selection-text="${this.localize('components.selection.select-all')}">
 				</d2l-selection-summary>
+				${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
 				<div class="d2l-list-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>

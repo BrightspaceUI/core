@@ -74,6 +74,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			});
 			this.dispatchEvent(evt);
 			this._provider = evt.detail.provider;
+			if (this._provider && this._provider._selectAllPages) this.selected = true;
 		});
 	}
 

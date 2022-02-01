@@ -2,6 +2,7 @@ import '../selection-action.js';
 import './selection-component.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
+import '../selection-select-all-pages.js';
 import '../selection-summary.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
@@ -67,6 +68,17 @@ describe('d2l-selection-select-all', () => {
 	it('disabled', async() => {
 		const elem = await fixture(html`<d2l-selection-select-all disabled></d2l-selection-select-all>`);
 		await expect(elem).to.be.accessible();
+	});
+
+});
+
+describe('d2l-selection-select-all-pages', () => {
+
+	it('default', async() => {
+		const elem = await fixture(html`<d2l-test-selection item-count="50"><d2l-selection-select-all-pages></d2l-selection-select-all-pages><d2l-selection-input label="Input" key="key1" selected></d2l-selection-input></d2l-test-selection>`);
+		await elem.querySelector('d2l-selection-select-all-pages').updateComplete;
+		await new Promise(resolve => setTimeout(resolve, 0));
+		await expect(elem.querySelector('d2l-selection-select-all-pages')).to.be.accessible();
 	});
 
 });

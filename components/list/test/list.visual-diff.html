@@ -245,6 +245,16 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="selectableAllSelectedHeaderPages">
+				<d2l-list item-count="50">
+					<d2l-list-header slot="header" select-all-pages-allowed></d2l-list-header>
+					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
+					<d2l-list-item label="Item 1" disabled selectable key="2" selected>Item 1</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="selectableSlim">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1" padding-type="slim">Item 1</d2l-list-item>

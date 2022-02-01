@@ -109,6 +109,7 @@ describe('d2l-list', () => {
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
 			{ name: 'some selected header', selector: '#selectableSomeSelectedHeader' },
 			{ name: 'all selected header', selector: '#selectableAllSelectedHeader' },
+			{ name: 'all selected header pages allowed', selector: '#selectableAllSelectedHeaderPages' },
 			{ name: 'slim', selector: '#selectableSlim' },
 			{ name: 'item-content', selector: '#selectableItemContent' },
 			{ name: 'item-content slim', selector: '#selectableItemContentSlim' },

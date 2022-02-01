@@ -2,6 +2,7 @@ import '../selection-action.js';
 import './selection-component.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
+import '../selection-select-all-pages.js';
 import '../selection-summary.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -78,6 +79,14 @@ describe('d2l-selection-select-all', () => {
 
 	it('should construct', () => {
 		runConstructor('d2l-selection-select-all');
+	});
+
+});
+
+describe('d2l-selection-select-all-pages', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-selection-select-all-pages');
 	});
 
 });
