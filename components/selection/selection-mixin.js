@@ -54,6 +54,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
+		this.itemCount = 0;
 		this.selectionSingle = false;
 		this._selectAllPages = false;
 		this._selectionObservers = new Map();
