@@ -98,6 +98,7 @@ function convertToDropdownItem(node) {
 		case 'd2l-dropdown-more':
 			return createMenuItemMenu(node);
 		case 'd2l-menu-item':
+		case 'd2l-selection-action-menu-item':
 			// if the menu item has children treat it as a menu item menu
 			if (node.children.length > 0) {
 				return createMenuItemMenu(node);
