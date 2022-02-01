@@ -104,6 +104,7 @@ export class IdSubscriberController {
 		host.addController(this);
 		this._callbacks = callbacks || {};
 		this._idPropertyName = options && options.idPropertyName;
+		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._controllerId = options && options.controllerId;
 		this._registries = new Map();
 		this._timeouts = new Set();
@@ -121,8 +122,11 @@ export class IdSubscriberController {
 		});
 	}
 
-	hostPropertiesChanged(changedProperties) {
-		if (!changedProperties.has(this._idPropertyName)) return;
+	hostUpdated() {
+		const propertyValue = this._host[this._idPropertyName];
+		if (propertyValue === this._idPropertyValue) return;
+
+		this._idPropertyValue = propertyValue;
 
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registries.forEach(registry => {

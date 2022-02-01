@@ -135,14 +135,6 @@ An example of what this could look like altogether:
 </cable-subscription>
 <younger-viewer for="rogers"></younger-viewer>
 ```
-NOTE: If wanting to use IdSubscriberController, you must call its `hostPropertiesChanged` function in the `updated` function, passing along the `changedProperties` parameter:
-
-```
-updated(changedProperties) {
-	super.updated(changedProperties);
-	if (this._subscriptionController) this._subscriptionController.hostPropertiesChanged(changedProperties);
-}
-```
 
 As of the Lit 2 upgrade, the lifecycle methods `hostConnected`, `hostDisconnected`, and `hostUpdated` will be called automatically.
 ## Available Callbacks

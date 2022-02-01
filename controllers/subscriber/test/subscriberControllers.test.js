@@ -104,10 +104,6 @@ const idSubscriber = defineCE(
 			this._onSubscribeRegistries = [];
 			this._onUnsubscribeRegistryIds = [];
 		}
-		updated(changedProperties) {
-			super.updated(changedProperties);
-			this._subscriberController.hostPropertiesChanged(changedProperties);
-		}
 		_onError(registryId) {
 			this._onErrorRegistryIds.push(registryId);
 		}
