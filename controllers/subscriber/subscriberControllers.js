@@ -121,9 +121,7 @@ export class IdSubscriberController {
 		});
 	}
 
-	hostUpdated(changedProperties) {
-		if (!changedProperties.has(this._idPropertyName)) return;
-
+	hostUpdated() {
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registries.forEach(registry => {
 			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
