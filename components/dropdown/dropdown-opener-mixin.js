@@ -110,11 +110,12 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!this.openOnHover || !changedProperties.has('_isFading')) return;
-
+		const element = this.__getContentElement();
+		if (!element) return;
 		if (this._isFading) {
-			this.__getContentElement()?.classList.add('d2l-dropdown-content-fading');
+			element.classList.add('d2l-dropdown-content-fading');
 		} else {
-			this.__getContentElement()?.classList.remove('d2l-dropdown-content-fading');
+			element.classList.remove('d2l-dropdown-content-fading');
 		}
 	}
 
@@ -254,7 +255,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (this.noAutoOpen) return;
 		if (this.openOnHover) {
 			// prevent propogation to window and triggering _onOutsideClick
-			e?.stopPropagation();
+			if (e) {
+				e.stopPropagation();
+			}
 			this._closeTimerStop();
 			if (this._isOpen && !this._isHovering) {
 				this.closeDropdown();

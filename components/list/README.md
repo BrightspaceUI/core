@@ -311,7 +311,8 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 
 | Property | Type | Description |
 |---|---|---|
-| `slim` | Boolean | Whether to render a header with reduced whitespace |
+| `padding-type` | String | Header whitespace (`normal` (default), `slim`) |
+| `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
 ## List Item [d2l-list-item]
@@ -354,16 +355,17 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `disabled` | Boolean | Disables the input |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
+| `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
 | `href` | String | Address of item link if navigable |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
+| `padding-type` | String | List item whitespace (`normal` (default), `slim`, `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
-| `slim` | Boolean | Whether to render the list-item with reduced whitespace|
 
 ### Events
 

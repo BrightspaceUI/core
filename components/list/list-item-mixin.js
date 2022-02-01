@@ -54,7 +54,19 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 */
 			breakpoints: { type: Array },
 			/**
+			 * Whether to allow the drag target to be the handle only rather than the entire cell
+			 * @type {boolean}
+			 */
+			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
+			/**
+			 * How much padding to render list items with
+			 * @type {'normal'|'slim'|'none'}
+			 */
+			paddingType: { type: String, attribute: 'padding-type' },
+			/**
+			 * @ignore
 			 * Whether to render the list-item with reduced whitespace.
+			 * TODO: Remove in favor of padding-type="slim"
 			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
@@ -106,6 +118,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
 			}
+			:host([padding-type="none"]) d2l-list-item-generic-layout {
+				border-bottom: 0;
+				border-top: 0;
+			}
 			d2l-list-item-generic-layout[data-separators="none"] {
 				border-bottom: 1px solid transparent;
 				border-top: 1px solid transparent;
@@ -143,9 +159,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				justify-content: stretch;
 				padding: 0.55rem 0;
 			}
-			:host([slim]) [slot="content"] {
+			:host([slim]) [slot="content"] { /* TODO, remove */
 				padding-bottom: 0.35rem;
 				padding-top: 0.4rem;
+			}
+			:host([padding-type="slim"]) [slot="content"] {
+				padding-bottom: 0.35rem;
+				padding-top: 0.4rem;
+			}
+			:host([padding-type="none"]) [slot="content"] {
+				padding-bottom: 0;
+				padding-top: 0;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
@@ -219,7 +243,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-input {
+			:host([slim]) d2l-selection-input { /* TODO, remove */
+				margin-bottom: 0.55rem;
+				margin-top: 0.55rem;
+			}
+			:host([padding-type="slim"]) d2l-selection-input {
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
@@ -276,6 +304,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		super();
 		this.breakpoints = defaultBreakpoints;
 		this.slim = false;
+		this.paddingType = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
@@ -449,7 +478,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					?grid-active="${this.role === 'rowgroup'}">
 					${this._renderDropTarget()}
 					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDragTarget(this._renderOutsideControlAction)}
+					${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${this._renderCheckbox()}</div>
 					<div slot="control-action"
@@ -495,6 +524,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 	_renderOutsideControlAction(dragTarget) {
 		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+	}
+
+	_renderOutsideControlHandleOnly(dragHandle) {
+		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
 	}
 
 	_renderTooltipContent() {

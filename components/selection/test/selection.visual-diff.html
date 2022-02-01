@@ -8,6 +8,7 @@
 		import './selection-component.js';
 		import '../selection-input.js';
 		import '../selection-select-all.js';
+		import '../selection-select-all-pages.js';
 		import '../selection-summary.js';
 	</script>
 	<title>d2l-selection</title>
@@ -367,6 +368,42 @@
 				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
 				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
 				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="select-all-pages-none-selected" item-count="50">
+			<d2l-selection-summary></d2l-selection-summary>
+			<d2l-selection-select-all-pages></d2l-selection-select-all-pages>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="select-all-pages-some-selected" item-count="50">
+			<d2l-selection-summary></d2l-selection-summary>
+			<d2l-selection-select-all-pages></d2l-selection-select-all-pages>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="select-all-pages-all-selected" item-count="50">
+			<d2l-selection-summary></d2l-selection-summary>
+			<d2l-selection-select-all-pages></d2l-selection-select-all-pages>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3" selected></d2l-selection-input>Item 3</li>
 			</ul>
 		</d2l-test-selection>
 	</div>

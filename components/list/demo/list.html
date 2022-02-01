@@ -64,11 +64,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list>
-						<d2l-list-header slot="header">
-							<d2l-selection-action icon="tier1:tag-hollow" text="Tag" requires-selection></d2l-selection-action>
+					<d2l-list id="allFeatures" item-count="50">
+						<d2l-list-header slot="header" select-all-pages-allowed>
+							<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 							<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
-							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-header>
@@ -130,6 +129,23 @@
 							</div>
 						</d2l-list-item>
 					</d2l-list>
+					<script>
+						let newItemCount = 0;
+						document.querySelector('d2l-selection-action[text="Add"]').addEventListener('d2l-selection-action-click', () => {
+							const item = document.createElement('d2l-list-item');
+							item.selectable = true;
+							item.key = `${++newItemCount}`;
+							item.label = 'New Item';
+							item.innerHTML = `
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+								<d2l-list-item-content>
+									<div>New Item ${newItemCount}</div>
+									<div slot="supporting-info">Supporting Info</div>
+								</d2l-list-item-content>
+							`;
+							document.querySelector('#allFeatures').appendChild(item);
+						});
+					</script>
 				</template>
 			</d2l-demo-snippet>
 

@@ -88,6 +88,25 @@ describe('d2l-selection', () => {
 		].forEach(runTest);
 	});
 
+	describe('select-all-pages', () => {
+		[
+			{ name: 'none-selected', selector: '#select-all-pages-none-selected' },
+			{ name: 'some-selected', selector: '#select-all-pages-some-selected' },
+			{ name: 'all-selected', selector: '#select-all-pages-all-selected' },
+			{ name: 'select-all-pages', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all-pages').shadowRoot.querySelector('d2l-button-subtle').shadowRoot.querySelector('button').click()) },
+			{ name: 'add-item', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => {
+				const item = document.createElement('li');
+				const input = document.createElement('d2l-selection-input');
+				input.key = 'key4';
+				input.label = 'Item 4';
+				item.appendChild(input);
+				item.appendChild(document.createTextNode('Item 4'));
+				elem.querySelector('ul').appendChild(item);
+			}) },
+			{ name: 'unselect-item', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
+		].forEach(runTest);
+	});
+
 	describe('summary', () => {
 		[
 			{ name: 'none-selected', selector: '#summary' },
