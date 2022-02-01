@@ -6,15 +6,15 @@ import { ButtonMixin } from '../button/button-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SelectionActionMixin } from './selection-action-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * An action associated with a selection component.
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected.
  * @fires d2l-selection-observer-subscribe - Internal event
  */
-class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlMixin(LitElement)))) {
+class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -23,11 +23,6 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
-			/**
-			 * Whether the action requires one or more selected items
-			 * @type {boolean}
-			 */
-			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
 			/**
 			 * REQUIRED: The text for the action
 			 * @type {string}
@@ -45,15 +40,6 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 				display: none;
 			}
 		`;
-	}
-
-	get selectionInfo() {
-		return super.selectionInfo;
-	}
-
-	set selectionInfo(value) {
-		super.selectionInfo = value;
-		this.disabled = (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none);
 	}
 
 	connectedCallback() {
