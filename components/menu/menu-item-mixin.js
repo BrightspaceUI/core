@@ -1,6 +1,4 @@
-
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
-export const MenuItemMixin = superclass => class extends FocusVisiblePolyfillMixin(superclass) {
+export const MenuItemMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
