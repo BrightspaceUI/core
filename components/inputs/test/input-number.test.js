@@ -622,7 +622,7 @@ describe('d2l-input-number', () => {
 			expect(elem._formattedValue).to.equal('2001,00');
 		});
 
-		it('should handle 7 decimals (which in JavaScript uses scientific notation)', async() => {
+		it('should handle 7 decimals (which in JS use scientific notation)', async() => {
 			const elem = await fixture(html`<d2l-input-number label="label" trailing-zeroes value-trailing-zeroes="0.0000005" max-fraction-digits="7"></d2l-input-number>`);
 			expect(elem.value).to.equal(0.0000005);
 			expect(elem.valueTrailingZeroes).to.equal('0.0000005');
