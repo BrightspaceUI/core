@@ -27,7 +27,7 @@ class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(RtlMix
 			 * Indicates that the icon should be rendered on right
 			 * @type {boolean}
 			 */
-			 iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
+			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 			/**
 			 * REQUIRED: The text for the action
 			 * @type {string}
