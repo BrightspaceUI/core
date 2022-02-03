@@ -24,6 +24,11 @@ class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(RtlMix
 			 */
 			icon: { type: String, reflect: true },
 			/**
+			 * Indicates that the icon should be rendered on right
+			 * @type {boolean}
+			 */
+			 iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
+			/**
 			 * REQUIRED: The text for the action
 			 * @type {string}
 			 */
@@ -59,7 +64,8 @@ class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(RtlMix
 				?disabled="${this.disabled}"
 				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"
 				icon="${ifDefined(this.icon)}"
-				text="${this.text}">
+				text="${this.text}"
+				?icon-right="${this.iconRight}">
 			</d2l-button-subtle>
 		`;
 	}
