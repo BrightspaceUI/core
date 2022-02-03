@@ -264,13 +264,14 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			countDecimalDigits(this._valueTrailingZeroes, false),
 			this.maxFractionDigits
 		);
-		const valueTrailingZeroes = new Intl.NumberFormat(
-			'en-US',
-			{
-				minimumFractionDigits: numDecimals,
-				useGrouping: false
+		let valueTrailingZeroes = this.value.toString();
+		const decimalDiff = (numDecimals - countDecimalDigits(valueTrailingZeroes, false));
+		if (decimalDiff > 0) {
+			if (decimalDiff === numDecimals) {
+				valueTrailingZeroes += '.';
 			}
-		).format(this.value);
+			valueTrailingZeroes = valueTrailingZeroes.padEnd(valueTrailingZeroes.length + decimalDiff, '0');
+		}
 		return valueTrailingZeroes;
 	}
 	set valueTrailingZeroes(val) {
