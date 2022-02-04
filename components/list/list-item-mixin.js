@@ -105,14 +105,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				filter: grayscale(75%);
 				opacity: 0.4;
 			}
-			:host([draggable]) .d2l-list-item-drag-image {
-				transform: rotate(-1deg);
-			}
 			:host([dragging]) .d2l-list-item-drag-image {
 				background: white;
-			}
-			:host([draggable]) d2l-list-item-generic-layout {
-				transform: rotate(1deg);
 			}
 			d2l-list-item-generic-layout {
 				border-bottom: 1px solid var(--d2l-color-mica);
@@ -280,10 +274,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				position: absolute;
 				width: 100%;
 				z-index: 5;
-			}
-			:host([draggable][selected]:not([disabled])) .d2l-list-item-active-border,
-			:host([draggable][selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
-				transform: rotate(1deg);
 			}
 			d2l-tooltip > div {
 				font-weight: 700;
