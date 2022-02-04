@@ -456,52 +456,54 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 
+		const innerView = html`
+			<d2l-list-item-generic-layout
+				@focusin="${this._onFocusIn}"
+				@focusout="${this._onFocusOut}"
+				class="${classMap(classes)}"
+				data-breakpoint="${this._breakpoint}"
+				data-separators="${ifDefined(this._separators)}"
+				?grid-active="${this.role === 'rowgroup'}">
+				${this._renderDropTarget()}
+				${this._renderDragHandle(this._renderOutsideControl)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				${this.selectable ? html`
+				<div slot="control">${this._renderCheckbox()}</div>
+				<div slot="control-action"
+					@mouseenter="${this._onMouseEnter}"
+					@mouseleave="${this._onMouseLeave}">
+						${this._renderCheckboxAction('')}
+				</div>` : nothing }
+				${primaryAction ? html`
+				<div slot="content-action"
+					@focusin="${this._onFocusInPrimaryAction}"
+					@focusout="${this._onFocusOutPrimaryAction}"
+					@mouseenter="${this._onMouseEnterPrimaryAction}"
+					@mouseleave="${this._onMouseLeavePrimaryAction}">
+						${primaryAction}
+				</div>` : nothing}
+				<div slot="content"
+					class="${classMap(contentClasses)}"
+					id="${this._contentId}">
+					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+					<slot>${content}</slot>
+				</div>
+				<div slot="actions"
+					@mouseenter="${this._onMouseEnter}"
+					@mouseleave="${this._onMouseLeave}"
+					class="d2l-list-item-actions-container">
+					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
+				</div>
+				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
+				</div>
+			</d2l-list-item-generic-layout>
+			<div class="d2l-list-item-active-border"></div>
+		`;
+
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			<div class="d2l-list-item-drag-image">
-				<d2l-list-item-generic-layout
-					@focusin="${this._onFocusIn}"
-					@focusout="${this._onFocusOut}"
-					class="${classMap(classes)}"
-					data-breakpoint="${this._breakpoint}"
-					data-separators="${ifDefined(this._separators)}"
-					?grid-active="${this.role === 'rowgroup'}">
-					${this._renderDropTarget()}
-					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
-					${this.selectable ? html`
-					<div slot="control">${this._renderCheckbox()}</div>
-					<div slot="control-action"
-						@mouseenter="${this._onMouseEnter}"
-						@mouseleave="${this._onMouseLeave}">
-							${this._renderCheckboxAction('')}
-					</div>` : nothing }
-					${primaryAction ? html`
-					<div slot="content-action"
-						@focusin="${this._onFocusInPrimaryAction}"
-						@focusout="${this._onFocusOutPrimaryAction}"
-						@mouseenter="${this._onMouseEnterPrimaryAction}"
-						@mouseleave="${this._onMouseLeavePrimaryAction}">
-							${primaryAction}
-					</div>` : nothing}
-					<div slot="content"
-						class="${classMap(contentClasses)}"
-						id="${this._contentId}">
-						<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-						<slot>${content}</slot>
-					</div>
-					<div slot="actions"
-						@mouseenter="${this._onMouseEnter}"
-						@mouseleave="${this._onMouseLeave}"
-						class="d2l-list-item-actions-container">
-						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
-					</div>
-					<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-						<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-					</div>
-				</d2l-list-item-generic-layout>
-				<div class="d2l-list-item-active-border"></div>
-			</div>
+			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
