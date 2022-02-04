@@ -273,6 +273,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
 		this._handleMobileResize = this._handleMobileResize.bind(this);
+		this.__position = this.__position.bind(this);
+		this.__startObservingContent = this.__startObservingContent.bind(this);
 	}
 
 	get opened() {
@@ -312,6 +314,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
+
+		if (this.__mutationObserver) this.__mutationObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -320,6 +324,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__content = this.__getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
+
+		this.__getContentSlot().addEventListener('slotchange', this.__startObservingContent);
 	}
 
 	updated(changedProperties) {
@@ -409,6 +415,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	__getContentContainer() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
+	}
+
+	__getContentSlot() {
+		const slot = this.shadowRoot.querySelector('.d2l-dropdown-content-slot');
+		return slot;
+	}
+
+	__getContentSlottedNodes() {
+		return this.__getContentSlot().assignedNodes({ flatten: true });
 	}
 
 	__getContentTop() {
@@ -685,6 +700,18 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await this.updateComplete;
 
 		await adjustPosition();
+	}
+
+	__startObservingContent() {
+		if (this.__mutationObserver) this.__mutationObserver.disconnect();
+		this.__mutationObserver = new MutationObserver(this.__position);
+		const slottedNodes = this.__getContentSlottedNodes();
+		for (let i = 0; i < slottedNodes.length; ++i) {
+			this.__mutationObserver.observe(slottedNodes[i], {
+				subtree: true,
+				attributes: true
+			});
+		}
 	}
 
 	__toggleOverflowY(isOverflowing) {
