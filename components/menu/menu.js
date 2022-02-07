@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
@@ -21,7 +20,7 @@ const keyCodes = {
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
  */
-class Menu extends ThemeMixin(HierarchicalViewMixin(FocusVisiblePolyfillMixin(LitElement))) {
+class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	static get properties() {
 		return {
