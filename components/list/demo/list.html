@@ -10,7 +10,6 @@
 			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown-more.js';
-			import '../../scroll-wrapper/scroll-wrapper.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../selection/selection-action.js';
@@ -67,7 +66,6 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-scroll-wrapper>
 					<d2l-list id="allFeatures" item-count="50">
 						<d2l-list-header slot="header" select-all-pages-allowed>
 							<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
@@ -140,7 +138,6 @@
 							</div>
 						</d2l-list-item>
 					</d2l-list>
-				</d2l-scroll-wrapper>
 					<script>
 						let newItemCount = 0;
 						document.querySelector('d2l-selection-action[text="Add"]').addEventListener('d2l-selection-action-click', () => {

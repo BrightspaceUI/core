@@ -274,6 +274,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
 		this._handleMobileResize = this._handleMobileResize.bind(this);
 		this.__position = this.__position.bind(this);
+		this.__disconnectResizeObserver = this.__disconnectResizeObserver.bind(this);
 	}
 
 	get opened() {
@@ -314,7 +315,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
 
-		if (this.__mutationObserver) this.__mutationObserver.disconnect();
+		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -377,6 +378,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 	}
 
+	renderOnResize(elem) {
+		if (this.__resizeObserver) this.__resizeObserver.disconnect();
+		this.__resizeObserver = new ResizeObserver(this.__disconnectResizeObserver);
+		this.el = elem;
+		this.__resizeObserver.observe(elem);
+	}
+
 	async resize() {
 		if (!this.opened) {
 			return;
@@ -406,21 +414,20 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
+	__disconnectResizeObserver() {
+		this.renderCount++;
+		if (this.el.offsetHeight !== 0 && this.__resizeObserver) {
+			this.__resizeObserver.disconnect();
+		}
+		this.__position();
+	}
+
 	__getContentBottom() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
 	__getContentContainer() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
-	}
-
-	__getContentSlot() {
-		const slot = this.shadowRoot.querySelector('.d2l-dropdown-content-slot');
-		return slot;
-	}
-
-	__getContentSlottedNodes() {
-		return this.__getContentSlot().assignedNodes({ flatten: true });
 	}
 
 	__getContentTop() {
@@ -697,22 +704,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await this.updateComplete;
 
 		await adjustPosition();
-	}
-
-	forceReRender() {
-		if (this.__mutationObserver) this.__mutationObserver.disconnect();
-		this.__mutationObserver = new MutationObserver(this.__position);
-		const slottedNodes = this.__getContentSlottedNodes();
-		for (let i = 0; i < slottedNodes.length; ++i) {
-			this.__mutationObserver.observe(slottedNodes[i], {
-				subtree: true,
-				attributes: true
-			});
-		}
-	}
-
-	disconnectListener() {
-		if (this.__mutationObserver) this.__mutationObserver.disconnect();
 	}
 
 	__toggleOverflowY(isOverflowing) {
@@ -1115,7 +1106,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				class="d2l-dropdown-content-container"
 				style=${styleMap(contentStyle)}
 				@scroll=${this.__toggleScrollStyles}>
-					<slot class="d2l-dropdown-content-slot"  @slotchange="${this.__handleContentSlotChange}"></slot>
+					<slot class="d2l-dropdown-content-slot"></slot>
 				</div>
 				<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
 					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>

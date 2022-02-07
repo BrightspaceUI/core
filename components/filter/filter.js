@@ -256,7 +256,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		let dimensionHTML;
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				dimensionHTML = html`<div aria-live="polite">${this._createSetDimension(dimension)}</div>`;
+				dimensionHTML = html`<div aria-live="polite" id="d2l-filter-container">${this._createSetDimension(dimension)}</div>`;
 				break;
 		}
 
@@ -551,14 +551,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			if (singleDimension && !this._waitingforRender) {
 				this._waitingforRender = true;
 				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-				dropdown.forceReRender();
+				dropdown.renderOnResize(this.shadowRoot.querySelector('#d2l-filter-container'));
 				dropdown.requestUpdate();
-				await dropdown.updateComplete;
-				requestAnimationFrame(async() => {
-					this._waitingforRender = false;
-					const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-					dropdown.disconnectListener();
-				});
 			}
 		}
 	}
