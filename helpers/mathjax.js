@@ -1,3 +1,8 @@
+/* When updating MathJax, update mathjaxBaseUrl to use the new version
+ * and verify that the font mappings included in mathjaxFontMappings
+ * match what's present in the MathJax-src repo.
+ */
+
 const mathjaxContextAttribute = 'data-mathjax-context';
 const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.1.2';
 
