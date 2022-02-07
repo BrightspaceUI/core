@@ -548,11 +548,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this.requestUpdate();
 
 			const singleDimension = this._dimensions.length === 1;
-			if (singleDimension && !this._waitingforRender) {
-				this._waitingforRender = true;
+			if (singleDimension && !this._waitingForResize) {
+				this._waitingForResize = true;
 				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 				dropdown.renderOnResize(this.shadowRoot.querySelector('#d2l-filter-container'));
-				dropdown.requestUpdate();
 			}
 		}
 	}
