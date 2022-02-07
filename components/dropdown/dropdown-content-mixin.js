@@ -274,7 +274,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
 		this._handleMobileResize = this._handleMobileResize.bind(this);
 		this.__position = this.__position.bind(this);
-		this.__startObservingContent = this.__startObservingContent.bind(this);
 	}
 
 	get opened() {
@@ -324,8 +323,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__content = this.__getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
-
-		this.__getContentSlot().addEventListener('slotchange', this.__startObservingContent);
 	}
 
 	updated(changedProperties) {
@@ -702,7 +699,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await adjustPosition();
 	}
 
-	__startObservingContent() {
+	forceReRender() {
 		if (this.__mutationObserver) this.__mutationObserver.disconnect();
 		this.__mutationObserver = new MutationObserver(this.__position);
 		const slottedNodes = this.__getContentSlottedNodes();
@@ -712,6 +709,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attributes: true
 			});
 		}
+	}
+
+	disconnectListener() {
+		if (this.__mutationObserver) this.__mutationObserver.disconnect();
 	}
 
 	__toggleOverflowY(isOverflowing) {
@@ -1114,7 +1115,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				class="d2l-dropdown-content-container"
 				style=${styleMap(contentStyle)}
 				@scroll=${this.__toggleScrollStyles}>
-					<slot class="d2l-dropdown-content-slot"></slot>
+					<slot class="d2l-dropdown-content-slot"  @slotchange="${this.__handleContentSlotChange}"></slot>
 				</div>
 				<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
 					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>

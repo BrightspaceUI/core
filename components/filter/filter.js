@@ -509,7 +509,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		announce(this.localize('components.filter.clearAllAnnounce'));
 	}
 
-	_handleDimensionDataChange(e) {
+	async _handleDimensionDataChange(e) {
 		const changes = e.detail.changes;
 		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
 		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
@@ -544,7 +544,23 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (shouldSearch) this._performDimensionSearch(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
-		if (shouldUpdate) this.requestUpdate();
+		if (shouldUpdate)  {
+			this.requestUpdate();
+
+			const singleDimension = this._dimensions.length === 1;
+			if (singleDimension && !this._waitingforRender) {
+				this._waitingforRender = true;
+				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+				dropdown.forceReRender();
+				dropdown.requestUpdate();
+				await dropdown.updateComplete;
+				requestAnimationFrame(async() => {
+					this._waitingforRender = false;
+					const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+					dropdown.disconnectListener();
+				});
+			}
+		}
 	}
 
 	_handleDimensionHide() {
