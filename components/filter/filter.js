@@ -19,7 +19,6 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -143,7 +142,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
-		this._filterContainerId = getUniqueId();
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
 
