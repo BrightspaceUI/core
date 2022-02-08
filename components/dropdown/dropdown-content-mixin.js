@@ -378,10 +378,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 	}
 
+	/**
+	 * Forces a resize of the dropdown when elem is resized vertically
+	 * to a height > 0px.
+	*/
 	renderOnResize(elem) {
+		if (!elem) return;
 		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 		this.__resizeObserver = new ResizeObserver(this.__disconnectResizeObserver);
-		this.el = elem;
+		this._resizeElement = elem;
 		this.__resizeObserver.observe(elem);
 	}
 
@@ -415,8 +420,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__disconnectResizeObserver() {
-		this.renderCount++;
-		if (this.el.offsetHeight !== 0 && this.__resizeObserver) {
+		if (this._resizeElement.offsetHeight !== 0 && this.__resizeObserver) {
 			this.__resizeObserver.disconnect();
 		}
 		this.__position();

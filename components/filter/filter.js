@@ -259,7 +259,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimensionHTML = html`
-				<div aria-live="polite" id="${ifDefined(singleDimension ? this._filterContainerId : undefined)}">
+				<div aria-live="polite" class="d2l-filter-container">
 					${this._createSetDimension(dimension)}
 				</div>`;
 				break;
@@ -524,7 +524,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		let shouldUpdate = false,
 			shouldSearch = false,
-			shouldRecount = false;
+			shouldRecount = false,
+			shouldResizeDropdown = false;
 		changes.forEach((newValue, prop) => {
 			if (toUpdate[prop] === newValue) return;
 
@@ -543,20 +544,21 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			} else if (prop === 'values') {
 				if (dimension.searchValue) shouldSearch = true;
 				shouldRecount = true;
+				shouldResizeDropdown = true;
 				this._activeFiltersSubscribers.updateSubscribers();
+			} else if (prop === 'loading') {
+				shouldResizeDropdown = true;
 			}
 		});
 
 		if (shouldSearch) this._performDimensionSearch(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
-		if (shouldUpdate)  {
-			this.requestUpdate();
-
+		if (shouldUpdate)  this.requestUpdate();
+		if (shouldResizeDropdown) {
 			const singleDimension = this._dimensions.length === 1;
-			if (singleDimension && !this._waitingForResize) {
-				this._waitingForResize = true;
+			if (singleDimension && this.opened) {
 				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-				dropdown.renderOnResize(this.shadowRoot.querySelector('#d2l-filter-container'));
+				dropdown.renderOnResize(this.shadowRoot.querySelector('.d2l-filter-container'));
 			}
 		}
 	}
