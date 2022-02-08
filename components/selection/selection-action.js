@@ -1,11 +1,8 @@
 import '../button/button-subtle.js';
-import '../icons/icon.js';
-import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from '../button/button-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
 
@@ -14,7 +11,7 @@ import { SelectionInfo } from './selection-mixin.js';
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected.
  * @fires d2l-selection-observer-subscribe - Internal event
  */
-class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(RtlMixin(LitElement)))) {
+class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(LitElement))) {
 
 	static get properties() {
 		return {

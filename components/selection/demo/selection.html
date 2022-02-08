@@ -6,10 +6,10 @@
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../demo/demo-page.js';
-			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-menu.js';
 			import '../../menu/menu.js';
 			import '../selection-action.js';
+			import '../selection-action-dropdown.js';
 			import '../selection-action-menu-item.js';
 			import '../selection-input.js';
 			import '../selection-select-all.js';
@@ -61,14 +61,14 @@
 								<d2l-selection-select-all></d2l-selection-select-all>
 								<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 								<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-								<d2l-dropdown-button-subtle text="Actions">
+								<d2l-selection-action-dropdown text="Actions 1" requires-selection>
 									<d2l-dropdown-menu>
 										<d2l-menu label="Actions">
-											<d2l-selection-action-menu-item text="Action 1 (requires selection)" requires-selection></d2l-selection-action-menu-item>
+											<d2l-selection-action-menu-item text="Action 1"></d2l-selection-action-menu-item>
 											<d2l-selection-action-menu-item text="Action 2"></d2l-selection-action-menu-item>
 										</d2l-menu>
 									</d2l-dropdown-menu>
-								</d2l-dropdown-button-subtle>
+								</d2l-selection-action-dropdown>
 							</div>
 							<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 						</div>

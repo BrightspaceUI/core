@@ -52,6 +52,18 @@ describe('d2l-selection', () => {
 		].forEach(runTest);
 	});
 
+	describe('dropdown', () => {
+		[
+			{ name: 'text', selector: '#dropdown-text' },
+			{ name: 'text-focus', selector: '#dropdown-text', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'disabled', selector: '#dropdown-disabled' },
+			{ name: 'disabled-focus', selector: '#dropdown-disabled', action: selector => page.$eval(selector, elem => elem.focus()), rectSelector: '#dropdown-disabled-container' },
+			{ name: 'requires-selection-none', selector: '#dropdown-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'none', keys: [] }) },
+			{ name: 'requires-selection-some', selector: '#dropdown-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'some', keys: [] }) },
+			{ name: 'requires-selection-all', selector: '#dropdown-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'all', keys: [] }) }
+		].forEach(runTest);
+	});
+
 	describe('checkbox', () => {
 		[
 			{ name: 'default', selector: '#checkbox' },

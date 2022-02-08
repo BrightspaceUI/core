@@ -67,11 +67,14 @@ function createMenuItemMenu(node) {
 		||  node.querySelector('d2l-dropdown-button-subtle');
 
 	const openerText = node.text || menuOpener.text;
+	const disabled = node.disabled;
 	const subMenu = node.querySelector('d2l-menu');
 
 	const subItems = Array.from(subMenu.children).map((node) => convertToDropdownItem(node));
 
-	return html`<d2l-menu-item text="${openerText}">
+	return html`<d2l-menu-item
+		?disabled=${disabled}
+		text="${openerText}">
 		<d2l-menu>
 			${subItems}
 		</d2l-menu>
@@ -96,6 +99,7 @@ function convertToDropdownItem(node) {
 		case 'd2l-dropdown-button-subtle':
 		case 'd2l-dropdown-context-menu':
 		case 'd2l-dropdown-more':
+		case 'd2l-selection-action-dropdown':
 			return createMenuItemMenu(node);
 		case 'd2l-menu-item':
 		case 'd2l-selection-action-menu-item':
