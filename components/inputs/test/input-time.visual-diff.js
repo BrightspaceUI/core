@@ -171,20 +171,4 @@ describe('d2l-input-time', () => {
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 	});
-
-	describe('mobile', () => {
-		before(async() => {
-			await page.setViewport({ width: 300, height: 1100, deviceScaleFactor: 2 });
-		});
-
-		afterEach(async() => {
-			await reset(page, '#dropdown-mobile');
-		});
-
-		it('open behavior', async function() {
-			await open(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
-		});
-	});
-
 });
