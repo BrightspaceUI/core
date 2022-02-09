@@ -32,7 +32,7 @@ const OPENER_STYLE = {
 
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
-	const disabled = node.disabled;
+	const disabled = !!node.disabled;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
 		node.click();
@@ -67,7 +67,7 @@ function createMenuItemMenu(node) {
 		||  node.querySelector('d2l-dropdown-button-subtle');
 
 	const openerText = node.text || menuOpener.text;
-	const disabled = node.disabled;
+	const disabled = !!node.disabled;
 	const subMenu = node.querySelector('d2l-menu');
 
 	const subItems = Array.from(subMenu.children).map((node) => convertToDropdownItem(node));
@@ -203,7 +203,9 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			.d2l-overflow-group-container ::slotted(d2l-dropdown-button),
 			.d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
 			.d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
+			.d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu),
+			.d2l-overflow-group-container ::slotted(d2l-selection-action),
+			.d2l-overflow-group-container ::slotted(d2l-selection-action-dropdown) {
 				margin-right: 0.6rem;
 			}
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button),
@@ -214,7 +216,9 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-selection-action),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-selection-action-dropdown) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}

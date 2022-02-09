@@ -7,7 +7,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 
 /**
- * A "d2l-button-subtle" opener for dropdown content.
+ * A dropdown opener associated with a selection component.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  */
 class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOpenerMixin(LitElement))) {
