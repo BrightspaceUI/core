@@ -1,4 +1,4 @@
-import '../colors/colors.js';
+import '../../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { HierarchicalViewMixin } from '../../hierarchical-view/hierarchical-view-mixin.js';
 
