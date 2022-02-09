@@ -13,10 +13,10 @@
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../selection/selection-action.js';
+			import '../../selection/selection-action-dropdown.js';
 			import '../../selection/selection-action-menu-item.js';
 			import '../../tooltip/tooltip.js';
 			import '../list-header.js';
-			import '../list-item-button.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
@@ -69,7 +69,20 @@
 					<d2l-list id="allFeatures" item-count="50">
 						<d2l-list-header slot="header" select-all-pages-allowed>
 							<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
-							<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+							<d2l-selection-action-dropdown text="Move To" requires-selection>
+								<d2l-dropdown-menu>
+									<d2l-menu label="Move To Options">
+										<d2l-menu-item text="Top of Quiz"></d2l-menu-item>
+										<d2l-menu-item text="Bottom of Quiz"></d2l-menu-item>
+										<d2l-menu-item text="Section">
+											<d2l-menu>
+												<d2l-menu-item text="Option 1"></d2l-menu-item>
+												<d2l-menu-item text="Option 2"></d2l-menu-item>
+											</d2l-menu-item>
+										</d2l-menu-item>
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-selection-action-dropdown>
 							<d2l-dropdown-button-subtle text="Actions">
 								<d2l-dropdown-menu>
 									<d2l-menu label="Actions">
@@ -78,7 +91,7 @@
 									</d2l-menu>
 								</d2l-dropdown-menu>
 							</d2l-dropdown-button-subtle>
-							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
 						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -225,12 +238,6 @@
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
-
-		<script>
-			document.body.addEventListener('d2l-list-item-button-click', (e) => {
-				console.log('d2l-list-item-button clicked!', e);
-			});
-		</script>
 
 	</body>
 </html>

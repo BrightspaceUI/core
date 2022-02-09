@@ -1,5 +1,6 @@
 import '../../menu/menu.js';
 import '../selection-action.js';
+import '../selection-action-dropdown.js';
 import '../selection-action-menu-item.js';
 import './selection-component.js';
 import '../selection-input.js';
@@ -42,6 +43,14 @@ describe('d2l-selection-action', () => {
 		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
 		el.shadowRoot.querySelector('d2l-button-subtle').click();
 		expect(dispatched).to.be.false;
+	});
+
+});
+
+describe('d2l-selection-action-dropdown', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-selection-action-dropdown');
 	});
 
 });

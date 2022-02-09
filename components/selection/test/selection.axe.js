@@ -1,5 +1,6 @@
 import '../../menu/menu.js';
 import '../selection-action.js';
+import '../selection-action-dropdown.js';
 import '../selection-action-menu-item.js';
 import './selection-component.js';
 import '../selection-input.js';
@@ -22,6 +23,25 @@ describe('d2l-selection-action', () => {
 
 	it('disabled', async() => {
 		const elem = await fixture(html`<d2l-selection-action text="Action" disabled></d2l-selection-action>`);
+		await expect(elem).to.be.accessible();
+	});
+
+});
+
+describe('d2l-selection-action-dropdown', () => {
+
+	it('no selection required', async() => {
+		const elem = await fixture(html`<d2l-selection-action-dropdown text="Action"></d2l-selection-action-dropdown>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('selection required', async() => {
+		const elem = await fixture(html`<d2l-selection-action-dropdown text="Action" requires-selection></d2l-selection-action-dropdown>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('disabled', async() => {
+		const elem = await fixture(html`<d2l-selection-action-dropdown text="Action" disabled></d2l-selection-action-dropdown>`);
 		await expect(elem).to.be.accessible();
 	});
 
