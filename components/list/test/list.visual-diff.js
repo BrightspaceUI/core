@@ -149,6 +149,9 @@ describe('d2l-list', () => {
 					if (info.action) {
 						await info.action();
 					}
+					await page.evaluate(() => {
+						return new Promise(resolve => setTimeout(resolve, 0));
+					});
 					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					if (info.after) {
