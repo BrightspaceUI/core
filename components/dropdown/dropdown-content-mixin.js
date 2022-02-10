@@ -378,10 +378,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	/**
-	 * Forces a resize of the dropdown when elem is resized vertically
-	 * to a height > 0px.
+	 * Waits for the next resize when elem has a height > 0px,
+	 * then calls the __position function.
 	*/
-	renderOnResize(elem) {
+	requestRepositionNextResize(elem) {
 		if (!elem) return;
 		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 		this.__resizeObserver = new ResizeObserver(this.__disconnectResizeObserver);
@@ -424,7 +424,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				this.__resizeObserver.disconnect();
 				// wrap in rAF for Firefox
 				requestAnimationFrame(() => {
-					this.__position();
+					if (this.opened) this.__position();
 				});
 				break;
 			}

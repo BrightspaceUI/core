@@ -556,7 +556,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const singleDimension = this._dimensions.length === 1;
 			if (singleDimension && this.opened) {
 				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-				dropdown.renderOnResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+				dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
 			}
 		}
 	}
