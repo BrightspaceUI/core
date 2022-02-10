@@ -273,7 +273,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
 		this._handleMobileResize = this._handleMobileResize.bind(this);
-		this.__position = this.__position.bind(this);
 		this.__disconnectResizeObserver = this.__disconnectResizeObserver.bind(this);
 	}
 
@@ -386,7 +385,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (!elem) return;
 		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 		this.__resizeObserver = new ResizeObserver(this.__disconnectResizeObserver);
-		this._resizeElement = elem;
 		this.__resizeObserver.observe(elem);
 	}
 
@@ -419,11 +417,18 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
-	__disconnectResizeObserver() {
-		if (this._resizeElement.offsetHeight !== 0 && this.__resizeObserver) {
-			this.__resizeObserver.disconnect();
+	__disconnectResizeObserver(entries) {
+		for (let i = 0; i < entries.length; i++) {
+			const entry = entries[i];
+			if (this.__resizeObserver && entry.contentRect.height !== 0) {
+				this.__resizeObserver.disconnect();
+				// wrap in rAF for Firefox
+				requestAnimationFrame(() => {
+					this.__position();
+				});
+				break;
+			}
 		}
-		this.__position();
 	}
 
 	__getContentBottom() {
