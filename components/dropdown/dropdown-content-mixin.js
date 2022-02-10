@@ -273,6 +273,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
 		this._handleMobileResize = this._handleMobileResize.bind(this);
+		this.__disconnectResizeObserver = this.__disconnectResizeObserver.bind(this);
 	}
 
 	get opened() {
@@ -312,6 +313,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
+
+		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -374,6 +377,17 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 	}
 
+	/**
+	 * Waits for the next resize when elem has a height > 0px,
+	 * then calls the __position function.
+	*/
+	requestRepositionNextResize(elem) {
+		if (!elem) return;
+		if (this.__resizeObserver) this.__resizeObserver.disconnect();
+		this.__resizeObserver = new ResizeObserver(this.__disconnectResizeObserver);
+		this.__resizeObserver.observe(elem);
+	}
+
 	async resize() {
 		if (!this.opened) {
 			return;
@@ -400,6 +414,20 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.close();
 		} else {
 			this.open(!this.noAutoFocus && applyFocus);
+		}
+	}
+
+	__disconnectResizeObserver(entries) {
+		for (let i = 0; i < entries.length; i++) {
+			const entry = entries[i];
+			if (this.__resizeObserver && entry.contentRect.height !== 0) {
+				this.__resizeObserver.disconnect();
+				// wrap in rAF for Firefox
+				requestAnimationFrame(() => {
+					if (this.opened) this.__position();
+				});
+				break;
+			}
 		}
 	}
 
