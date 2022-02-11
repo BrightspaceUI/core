@@ -99,6 +99,9 @@ describe('d2l-list', () => {
 			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
 			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
 		] },
+		{ category: 'not selectable', tests: [
+			{ name: 'header', selector: '#noSelectableHeader' }
+		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
