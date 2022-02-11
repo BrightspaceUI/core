@@ -116,9 +116,9 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 
 | Property | Type | Description |
 |---|---|---|
-| `no-column-border` | Boolean, default: `false` | Hides the column borders on "default" table type |
-| `sticky-headers` | Boolean, default: `false` | Whether to make the header row sticky |
-| `type` | String, default: `'default'` | Type of the table style. Can be one of  `default`, `light`. |
+| `no-column-border` | boolean | Hides the column borders on "default" table type | false |
+| `sticky-headers` | boolean | Whether to make the header row sticky | false |
+| `type` | string | Type of the table style. Can be one of  `default`, `light`. | 'default' |
 
 ## Light Type
 
@@ -241,10 +241,10 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 
 ### Properties
 
-| Property | Type | Description |
+| Property | Type | Description | Default Value |
 |---|---|---|
-| `desc` | Boolean, default: `false` | Whether sort direction is descending |
-| `nosort` | Booealn, default: `false` | Column is not currently sorted. Hides the ascending/descending sort icon. |
+| `desc` | boolean | Whether sort direction is descending | false |
+| `nosort` | boolean | Column is not currently sorted. Hides the ascending/descending sort icon. | false |
 
 ## Selection
 
