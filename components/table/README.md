@@ -114,7 +114,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 <!-- docs: start hidden content -->
 ### Properties
 
-| Property | Type | Description |
+| Property | Type | Description | Default Value |
 |---|---|---|---|
 | `no-column-border` | boolean | Hides the column borders on "default" table type | false |
 | `sticky-headers` | boolean | Whether to make the header row sticky | false |
