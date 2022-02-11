@@ -80,7 +80,7 @@ search.addEventListener('d2l-input-search-searched', (e) => {
 When the input is cleared, the same event will be fired with an empty value.
 <!-- docs: end hidden content -->
 
-### Accessibility
+### Accessibility Properties
 
 To make your usage of `d2l-input-search` accessible, use the following property when applicable:
 
