@@ -37,6 +37,26 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Confirm Dialog (Multi Paragraph)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openConfirmMultiParagraph">Show Confirm</d2l-button>
+					<d2l-dialog-confirm id="confirmMultiParagraph" title-text="Confirm Title" text="Are you sure you want more cookies?&#10;Are you sure you want more donuts?">
+						<d2l-button slot="footer" primary data-dialog-action="ok">Yes</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>No</d2l-button>
+					</d2l-dialog-confirm>
+					<script>
+						document.querySelector('#openConfirmMultiParagraph').addEventListener('click', () => {
+							document.querySelector('#confirmMultiParagraph').opened = true;
+						});
+						document.querySelector('#confirmMultiParagraph').addEventListener('d2l-dialog-close', (e) => {
+							console.log('confirm action:', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 			<h2>Confirm Dialog (No Title)</h2>
 
 			<d2l-demo-snippet>
