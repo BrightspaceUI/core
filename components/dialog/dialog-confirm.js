@@ -14,7 +14,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will result in multiple paragraphs.
+			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
 			 * @type {string}
 			 */
 			text: { type: String }
