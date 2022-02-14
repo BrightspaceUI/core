@@ -92,9 +92,10 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	constructor() {
 		super();
-		this.slim = false;
+		this.noSelection = false;
 		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
+		this.slim = false;
 	}
 
 	render() {
