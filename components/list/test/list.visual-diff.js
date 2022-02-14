@@ -55,7 +55,7 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 5000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -98,6 +98,9 @@ describe('d2l-list', () => {
 			{ name: 'default', selector: '#button' },
 			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
 			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
+		] },
+		{ category: 'not selectable', tests: [
+			{ name: 'header', selector: '#noSelectableHeader' }
 		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },

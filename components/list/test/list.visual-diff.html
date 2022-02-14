@@ -200,7 +200,7 @@
 			<div class="visual-diff" id="selectable">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -210,7 +210,19 @@
 				<d2l-list>
 					<d2l-list-header slot="header"></d2l-list-header>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="noSelectableHeader">
+				<d2l-list>
+					<d2l-list-header slot="header" no-selection>
+						<d2l-button-subtle text="Action"></d2l-button-subtle>
+					</d2l-list-header>
+					<d2l-list-item label="Item 1">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -219,7 +231,7 @@
 			<div class="visual-diff" id="selectableSelected">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2" selected>Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -229,7 +241,7 @@
 				<d2l-list>
 					<d2l-list-header slot="header"></d2l-list-header>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -239,7 +251,7 @@
 				<d2l-list>
 					<d2l-list-header slot="header"></d2l-list-header>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2" selected>Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -249,7 +261,7 @@
 				<d2l-list item-count="50">
 					<d2l-list-header slot="header" select-all-pages-allowed></d2l-list-header>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 1" disabled selectable key="2" selected>Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>

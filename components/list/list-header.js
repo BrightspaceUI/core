@@ -15,12 +15,10 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * @ignore
-			 * Whether to render a header with reduced whitespace
-			 * TODO: Remove
+			 * Whether to render select-all and selection summary
 			 * @type {boolean}
 			 */
-			slim: { reflect: true, type: Boolean },
+			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
 			 * How much padding to render list items with
 			 * @type {'normal'|'slim'}
@@ -31,6 +29,13 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
+			/**
+			 * @ignore
+			 * Whether to render a header with reduced whitespace
+			 * TODO: Remove
+			 * @type {boolean}
+			 */
+			slim: { reflect: true, type: Boolean }
 		};
 	}
 
@@ -87,21 +92,24 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	constructor() {
 		super();
-		this.slim = false;
+		this.noSelection = false;
 		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
+		this.slim = false;
 	}
 
 	render() {
 		return html`
 			<div class="d2l-list-header-container">
-				<d2l-selection-select-all></d2l-selection-select-all>
-				<d2l-selection-summary
-					aria-hidden="true"
-					class="d2l-list-header-summary"
-					no-selection-text="${this.localize('components.selection.select-all')}">
-				</d2l-selection-summary>
-				${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
+				${this.noSelection ? null : html`
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-summary
+						aria-hidden="true"
+						class="d2l-list-header-summary"
+						no-selection-text="${this.localize('components.selection.select-all')}">
+					</d2l-selection-summary>
+					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
+				`}
 				<div class="d2l-list-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>
