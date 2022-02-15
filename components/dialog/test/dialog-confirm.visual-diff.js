@@ -31,6 +31,7 @@ describe('d2l-dialog-confirm', () => {
 				await reset(page, '#confirmNoTitle');
 				await reset(page, '#confirmLongText');
 				await reset(page, '#confirmRtl');
+				await reset(page, '#confirmMultiParagraph');
 			});
 
 			[
@@ -69,7 +70,8 @@ describe('d2l-dialog-confirm', () => {
 					{ name: 'long title', selector: '#confirmLongTitle' },
 					{ name: 'no title', selector: '#confirmNoTitle' },
 					{ name: 'long text', selector: '#confirmLongText' },
-					{ name: 'long buttons', selector: '#confirmLongButtons' }
+					{ name: 'long buttons', selector: '#confirmLongButtons' },
+					{ name: 'multiple paragraphs', selector: '#confirmMultiParagraph' }
 				].forEach((info) => {
 
 					it(info.name, async function() {
