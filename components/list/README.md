@@ -368,6 +368,12 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
+### Methods
+
+- `highlight()`: highlights the item
+- `scrollTo()`: scrolls to the item
+- `scrollToAndHighlight()`: scrolls to the item and then highlights it
+
 ### Events
 
 - `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked

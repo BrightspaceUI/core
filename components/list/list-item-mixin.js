@@ -76,6 +76,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
 			_focusingPrimaryAction: { type: Boolean },
+			_highlight: { type: Boolean },
+			_highlighting: { type: Boolean },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
@@ -275,6 +277,22 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				width: 100%;
 				z-index: 5;
 			}
+			d2l-list-item-generic-layout.d2l-list-item-highlight {
+				transition: background-color 750ms linear, border-color 750ms linear;
+			}
+			:host([selected]:not([disabled])) .d2l-list-item-highlight + .d2l-list-item-active-border {
+				transition: background 750ms linear;
+			}
+			d2l-list-item-generic-layout.d2l-list-item-highlighting {
+				background-color: var(--d2l-color-sylvite);
+			}
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting {
+				background-color: var(--d2l-color-sylvite);
+				border-color: var(--d2l-color-celestine-minus-1);
+			}
+			:host([selected]:not([disabled])) .d2l-list-item-highlighting + .d2l-list-item-active-border {
+				background: var(--d2l-color-celestine-minus-1);
+			}
 			d2l-tooltip > div {
 				font-weight: 700;
 			}
@@ -344,6 +362,20 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		if (node) node.focus();
 	}
 
+	async highlight() {
+		const elem = this.shadowRoot.querySelector('d2l-list-item-generic-layout');
+		this._highlight = true;
+		await this.updateComplete;
+		elem.addEventListener('transitionend', () => {
+			// more than one property is being animated so this rAF waits before wiring up the return phase listener
+			requestAnimationFrame(() => {
+				elem.addEventListener('transitionend', () => this._highlight = false, { once: true });
+			});
+			this._highlighting = false;
+		}, { once: true });
+		this._highlighting = true;
+	}
+
 	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
@@ -352,6 +384,19 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				return true;
 			}
 		});
+	}
+
+	scrollTo() {
+		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduceMotion) this.scrollIntoView();
+		else this.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	scrollToAndHighlight() {
+		this.scrollTo();
+		setTimeout(() => {
+			this.highlight();
+		}, 1000);
 	}
 
 	_getNestedList() {
@@ -443,6 +488,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
+			'd2l-list-item-highlight': this._highlight,
+			'd2l-list-item-highlighting': this._highlighting,
 			'd2l-focusing': this._focusing,
 			'd2l-hovering': this._hovering,
 			'd2l-dragging-over': this._draggingOver
