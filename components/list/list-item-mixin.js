@@ -74,7 +74,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
-			_fullscreenWithinCount: { type: Number },
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
 			_focusingPrimaryAction: { type: Boolean },
@@ -305,6 +304,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
 	}
 
