@@ -542,7 +542,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 			main {
 				flex: 2 0 0;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				transition: none;
 			}
@@ -570,7 +569,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			aside {
 				height: 100%;
 				min-width: ${desktopMinSize}px;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				overflow-y: scroll;
 			}
