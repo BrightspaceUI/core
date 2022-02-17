@@ -2,21 +2,11 @@
 
 Use date and time inputs to set dates and times in forms. They are available as separate inputs (date or time) or as a combined date & time input, and each of them is also available as a range.
 
-<!-- docs: demo align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo align:flex-start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
   import '@brightspace-ui/core/components/inputs/input-time.js';
-
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-
-    setTimeout(function() {
-      var input = document.querySelector('d2l-input-date');
-      input.opened = true;
-    }, 1000);
-  });
 </script>
 <d2l-input-date label="Date Input"></d2l-input-date>
 <d2l-input-time label="Time Input"></d2l-input-time>
@@ -45,7 +35,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ![example screenshot of date input](../screenshots/date.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date align:flex-start autoOpen:true autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
@@ -95,7 +85,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ![example screenshot of date range input](../screenshots/date-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-range align:flex-start autoOpen:true autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-range align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
@@ -151,7 +141,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 ![example screenshot of time input](../screenshots/time.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-time align:flex-start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo live name:d2l-input-time align:flex-start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time.js';
@@ -201,7 +191,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 ![example screenshot of time range input](../screenshots/time-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-time-range align:flex-start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo live name:d2l-input-time-range align:flex-start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time-range.js';
@@ -253,7 +243,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ![example screenshot of date input](../screenshots/date-time.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-time align:flex-start autoOpen:true autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-time align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
@@ -304,7 +294,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ![example screenshot of date-time range input](../screenshots/date-time-range.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoOpen:true autoSize:false size:xlarge -->
+<!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time-range.js';
