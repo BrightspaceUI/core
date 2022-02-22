@@ -269,30 +269,40 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-color: #79b5df;
 			}
 			:host([selected]:not([disabled])) .d2l-list-item-active-border,
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
-				background: #79b5df;
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border,
+			:host(:not([disabled])) .d2l-list-item-highlight + .d2l-list-item-active-border {
+				background-color: #79b5df;
 				bottom: 0;
 				height: 1px;
 				position: absolute;
 				width: 100%;
 				z-index: 5;
 			}
-			d2l-list-item-generic-layout.d2l-list-item-highlight {
-				transition: background-color 750ms linear, border-color 750ms linear;
+
+			.d2l-list-item-highlight {
+				transition: background-color 400ms linear, border-color 400ms linear;
 			}
-			:host([selected]:not([disabled])) .d2l-list-item-highlight + .d2l-list-item-active-border {
-				transition: background 750ms linear;
+			.d2l-list-item-highlight + .d2l-list-item-active-border {
+				transition: background-color 400ms linear;
 			}
-			d2l-list-item-generic-layout.d2l-list-item-highlighting {
-				background-color: var(--d2l-color-sylvite);
+			d2l-list-item-generic-layout.d2l-list-item-highlighting,
+			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-focusing,
+			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-hovering {
+				background-color: var(--d2l-color-celestine-plus-2);
+				border-color: var(--d2l-color-celestine);
+			}
+			:host(:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting + .d2l-list-item-active-border {
+				background-color: var(--d2l-color-celestine);
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting {
-				background-color: var(--d2l-color-sylvite);
-				border-color: var(--d2l-color-celestine-minus-1);
+				background-color: var(--d2l-color-celestine-plus-2);
+				border-color: var(--d2l-color-celestine);
 			}
-			:host([selected]:not([disabled])) .d2l-list-item-highlighting + .d2l-list-item-active-border {
-				background: var(--d2l-color-celestine-minus-1);
+			:host([selected]:not([disabled])) .d2l-list-item-highlighting + .d2l-list-item-active-border,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-focusing + .d2l-list-item-active-border {
+				background-color: var(--d2l-color-celestine);
 			}
+
 			d2l-tooltip > div {
 				font-weight: 700;
 			}
@@ -363,15 +373,16 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	async highlight() {
+		if (this._highlight) return;
 		const elem = this.shadowRoot.querySelector('d2l-list-item-generic-layout');
 		this._highlight = true;
 		await this.updateComplete;
 		elem.addEventListener('transitionend', () => {
 			// more than one property is being animated so this rAF waits before wiring up the return phase listener
-			requestAnimationFrame(() => {
+			setTimeout(() => {
 				elem.addEventListener('transitionend', () => this._highlight = false, { once: true });
-			});
-			this._highlighting = false;
+				this._highlighting = false;
+			}, 1000);
 		}, { once: true });
 		this._highlighting = true;
 	}
