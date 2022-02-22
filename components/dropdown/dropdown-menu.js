@@ -37,6 +37,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		this.addEventListener('d2l-dropdown-close', this._onClose);
 		this.addEventListener('d2l-menu-resize', this._onMenuResize);
 		this.addEventListener('d2l-menu-item-select', this._onSelect);
+		this.addEventListener('d2l-selection-action-click', this._onSelect);
 		this.addEventListener('d2l-menu-item-change', this._onChange);
 		this.addEventListener('focus', this._onFocus);
 	}
@@ -117,7 +118,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	_onSelect(e) {
-		if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK'].indexOf(e.target.tagName) < 0) {
+		if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM'].indexOf(e.target.tagName) < 0) {
 			return;
 		}
 		this.close();

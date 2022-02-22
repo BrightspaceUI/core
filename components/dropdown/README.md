@@ -1,20 +1,11 @@
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
 
-<!-- docs: demo align:flex-start autoSize:false size:medium -->
+<!-- docs: demo align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
-
-  window.addEventListener('load', function () {
-    var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return;
-    setTimeout(() => {
-      var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
-    }, 1000);
-  });
 </script>
 <d2l-dropdown-button text="Open!">
   <d2l-dropdown-content>

@@ -73,6 +73,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
 			_focusingPrimaryAction: { type: Boolean },
@@ -94,7 +95,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				display: none;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
+			:host([_dropdown-open]),
+			:host([_fullscreen-within]) {
 				z-index: 10;
 			}
 			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
@@ -303,6 +305,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				background-color: var(--d2l-color-celestine);
 			}
 
+			:host([_fullscreen-within]) .d2l-list-item-active-border,
+			:host([_fullscreen-within]) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
+				display: none;
+			}
 			d2l-tooltip > div {
 				font-weight: 700;
 			}
@@ -326,6 +332,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._fullscreenWithin = false;
+		this._fullscreenWithinCount = 0;
 	}
 
 	get breakpoints() {
@@ -477,6 +485,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._focusingPrimaryAction = false;
 	}
 
+	_onFullscreenWithin(e) {
+		if (e.detail.state) this._fullscreenWithinCount += 1;
+		else this._fullscreenWithinCount -= 1;
+		this._fullscreenWithin = (this._fullscreenWithinCount > 0);
+	}
+
 	_onMouseEnter() {
 		this._hovering = true;
 	}
@@ -518,6 +532,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			<d2l-list-item-generic-layout
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
+				@d2l-fullscreen-within="${this._onFullscreenWithin}"
 				class="${classMap(classes)}"
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
