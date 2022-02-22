@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.selection.action-hint": "이 작업을 수행할 항목을 선택하십시오.",
 	"components.selection.select-all": "모두 선택",
+	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",
 	"components.selection.selected": "{count}개 선택됨",
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",

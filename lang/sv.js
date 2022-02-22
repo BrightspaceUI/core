@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "Fler åtgärder",
 	"components.selection.action-hint": "Välj ett objekt för att utföra åtgärden.",
 	"components.selection.select-all": "Välj alla",
+	"components.selection.select-all-items": "Välj alla {count} objekt",
 	"components.selection.selected": "{count} valda",
 	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",

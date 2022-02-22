@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "其他動作",
 	"components.selection.action-hint": "選取項目以執行此動作。",
 	"components.selection.select-all": "全選",
+	"components.selection.select-all-items": "選取所有 {count} 個項目",
 	"components.selection.selected": "已選取 {count} 個",
 	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
