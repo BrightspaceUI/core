@@ -12,19 +12,27 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
  */
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
+	static get properties() {
+		return {
+			_noAutoFocus: { type: Boolean }
+		};
+	}
+
 	static get styles() {
 		return dropdownContentStyles;
 	}
 
 	constructor() {
 		super();
-		this.noAutoFocus = true;
 		this.noPadding = true;
 		this._maxHeightNonTray = this.maxHeight;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		if (this.noAutoFocus) this._noAutoFocus = true;
+		this.noAutoFocus = true;
 
 		this._maxHeightNonTray = this.maxHeight;
 		if (this._useMobileStyling && this.mobileTray) {
@@ -114,7 +122,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		menu.resize();
 
-		menu.focus();
+		if (!this._noAutoFocus) menu.focus();
 	}
 
 	_onSelect(e) {
