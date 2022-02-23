@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "更多操作",
 	"components.selection.action-hint": "选择一个项目后才能执行此操作。",
 	"components.selection.select-all": "全选",
+	"components.selection.select-all-items": "选择全部 {count} 个项目",
 	"components.selection.selected": "已选 {count}",
 	"components.switch.visibility": "可见性",
 	"components.tabs.next": "向前滚动",

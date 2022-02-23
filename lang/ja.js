@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.selection.action-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",
+	"components.selection.select-all-items": "{count} 個の項目をすべて選択",
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
