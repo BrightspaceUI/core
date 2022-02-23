@@ -93,9 +93,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				display: none;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]),
-			:host([_fullscreen-within]) {
+			:host([_dropdown-open]) {
 				z-index: 10;
+			}
+			:host([_fullscreen-within]) {
+				z-index: 1000; /* must be greater than floating workflow buttons */
 			}
 			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
 				border-top: 1px solid transparent;
