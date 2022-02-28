@@ -35,14 +35,22 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * TODO: Remove
 			 * @type {boolean}
 			 */
-			slim: { reflect: true, type: Boolean }
+			slim: { reflect: true, type: Boolean },
+			_sticking: { type: Boolean, reflect: true }
 		};
 	}
 
 	static get styles() {
 		return css`
 			:host {
+				background-color: var(--d2l-list-header-background-color, white);
 				display: block;
+				position: sticky;
+				top: 0;
+				z-index: 6; /* must be greater than d2l-list-item-active-border */
+			}
+			:host([_sticking]) {
+				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([hidden]) {
 				display: none;
