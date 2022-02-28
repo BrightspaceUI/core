@@ -1,6 +1,8 @@
-# Off-screen Content [d2l-offscreen]
+# Off-screen Content
 
 Positioning content off-screen is a valuable accessibility technique that allows us to include content that is only visible to screen reader users. For more information on this approach, read [WebAIM's article on Invisible Content](http://webaim.org/techniques/css/invisiblecontent/).
+
+## Offscreen Component [d2l-offscreen]
 
 Import the `<d2l-offscreen>` web component and place your content within the default slot to position it off-screen. The content will be hidden in the UI but still discoverable by screen reader users.
 
