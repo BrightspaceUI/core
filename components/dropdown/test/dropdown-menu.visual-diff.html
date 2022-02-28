@@ -82,7 +82,19 @@
 		</d2l-dropdown>
 	</div>
 	<div class="visual-diff">
-		<d2l-dropdown id="dropdown-menu-header-footer-mobile">
+		<d2l-dropdown id="dropdown-menu-initially-opened">
+			<button class="d2l-dropdown-opener">Open it!</button>
+			<d2l-dropdown-menu id="dropdown" opened>
+				<d2l-menu label="Astronomy">
+					<d2l-menu-item text="Introduction"></d2l-menu-item>
+					<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+					<d2l-menu-item text="The Universe"></d2l-menu-item>
+				</d2l-menu>
+			</d2l-dropdown-menu>
+		</d2l-dropdown>
+	</div>
+	<div class="visual-diff">
+		<d2l-dropdown id="dropdown-menu-header-footer-mobile" style="padding-top: 200px;">
 			<button class="d2l-dropdown-opener">Open it!</button>
 			<d2l-dropdown-menu id="dropdown" mobile-tray="right">
 				<div slot="header">Topics</div>

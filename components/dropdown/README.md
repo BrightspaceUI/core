@@ -280,7 +280,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-menu](./screenshots/dropdown-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-menu align:flex-start autoOpen:true autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-dropdown-menu align:flex-start autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
@@ -291,7 +291,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 <d2l-dropdown-button text="Open!" primary>
-  <d2l-dropdown-menu>
+  <d2l-dropdown-menu opened>
     <d2l-menu label="Astronomy">
       <d2l-menu-item text="Introduction"></d2l-menu-item>
       <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
