@@ -37,7 +37,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
+			 * ADVANCED: Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
 			 * @type {string}
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },

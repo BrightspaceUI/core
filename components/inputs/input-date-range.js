@@ -35,7 +35,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	static get properties() {
 		return {
 			/**
-			 * Automatically shifts end date when start date changes to keep same range
+			 * ADVANCED: Automatically shifts end date when start date changes to keep same range
 			 * @type {boolean}
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
@@ -56,7 +56,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
-			 * Indicates if the end calendar dropdown is open
+			 * ADVANCED: Indicates if the end calendar dropdown is open
 			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
@@ -102,7 +102,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Indicates if the start calendar dropdown is open
+			 * ADVANCED: Indicates if the start calendar dropdown is open
 			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },

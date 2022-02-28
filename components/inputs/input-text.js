@@ -27,17 +27,17 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	static get properties() {
 		return {
 			/**
-			 * Indicates that the input has a popup menu
+			 * ADVANCED: Indicates that the input has a popup menu
 			 * @type {string}
 			 */
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
 			/**
-			 * Indicates that the input value is invalid
+			 * ADVANCED: Indicates that the input value is invalid
 			 * @type {string}
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * Specifies whether or not the screen reader should always present changes to the live region as a whole.
+			 * ADVANCED: Specifies whether or not the screen reader should always present changes to the live region as a whole.
 			 * This only applies if live is set to polite or assertive.
 			 * @type {string}
 			 */
@@ -63,7 +63,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Hide the alert icon when input is invalid
+			 * ADVANCED: Hide the alert icon when input is invalid
 			 * @type {boolean}
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
@@ -78,7 +78,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Set the priority with which screen readers should treat updates to the input's live text region
+			 * ADVANCED: Set the priority with which screen readers should treat updates to the input's live text region
 			 * @type {string}
 			 */
 			live: { type: String },
