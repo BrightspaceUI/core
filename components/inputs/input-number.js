@@ -78,7 +78,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			autocomplete: { type: String },
 			/**
-			 * When set, will automatically place focus on the input
+			 * ADVANCED: When set, will automatically place focus on the input
 			 * @type {boolean}
 			 */
 			autofocus: { type: Boolean },
@@ -88,7 +88,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Hide the alert icon when input is invalid
+			 * ADVANCED: Hide the alert icon when input is invalid
 			 * @type {boolean}
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },

@@ -22,7 +22,7 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 	static get properties() {
 		return {
 			/**
-			 * Indicates that the input value is invalid
+			 * ADVANCED: Indicates that the input value is invalid
 			 * @type {string}
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },

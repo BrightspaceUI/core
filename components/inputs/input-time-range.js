@@ -43,7 +43,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	static get properties() {
 		return {
 			/**
-			 * Automatically shifts end time when start time changes to keep same range
+			 * ADVANCED: Automatically shifts end time when start time changes to keep same range
 			 * @type {boolean}
 			 */
 			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
@@ -64,7 +64,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
-			 * Indicates if the end dropdown is open
+			 * ADVANCED: Indicates if the end dropdown is open
 			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
@@ -105,7 +105,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Indicates if the start dropdown is open
+			 * ADVANCED: Indicates if the start dropdown is open
 			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
