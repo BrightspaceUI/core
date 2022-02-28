@@ -23,6 +23,11 @@ describe('d2l-dropdown-menu', () => {
 
 	after(async() => await browser.close());
 
+	it('initially opened', async function() {
+		const rect = await getRect(page, '#dropdown-menu-initially-opened');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	it('first-page', async function() {
 		await open(page, '#dropdown-menu');
 		const rect = await getRect(page, '#dropdown-menu');
@@ -60,11 +65,6 @@ describe('d2l-dropdown-menu', () => {
 	it('dark theme', async function() {
 		await open(page, '#dark');
 		const rect = await getRect(page, '#dark');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('initially opened', async function() {
-		const rect = await getRect(page, '#dropdown-menu-initially-opened');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 });
