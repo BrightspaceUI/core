@@ -50,12 +50,12 @@ export const menuItemStyles = css`
 		border-top-color: transparent;
 	}
 
-	:host([last]:focus-visible),
 	:host([last]:hover) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
 
-	:host([last]:hover) {
+	/** separated because safari is having trouble parsing these */
+	:host([last]:focus-visible) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
 
