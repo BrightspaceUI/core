@@ -1,3 +1,5 @@
+>  Are you a D2L employee? Use our  🎉 [Daylight Design System site](https://daylight.d2l.dev/)!
+
 # @brightspace-ui/core
 
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui/core.svg)](https://www.npmjs.org/package/@brightspace-ui/core)
