@@ -51,8 +51,16 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				top: 0;
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
-			:host([_sticking]) {
+			.d2l-list-header-shadow {
+				transition: box-shadow 200ms ease-out;
+			}
+			:host([_sticking]) .d2l-list-header-shadow {
+				background-color: var(--d2l-list-header-background-color, white);
+				bottom: -5px;
 				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.15);
+				height: 5px;
+				position: absolute;
+				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -140,6 +148,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>
 			</div>
+			<div class="d2l-list-header-shadow"></div>
 		`;
 	}
 
