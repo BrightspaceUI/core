@@ -3,6 +3,8 @@ import '../selection/selection-select-all.js';
 import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -68,6 +70,9 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([padding-type="slim"]) .d2l-list-header-container {
 				min-height: 36px;
 			}
+			.d2l-list-header-extend-separator {
+				padding: 0 0.9rem;
+			}
 			d2l-selection-select-all {
 				flex: none;
 			}
@@ -106,9 +111,22 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this.slim = false;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+
+		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
+		if (!parent) return;
+
+		this._extendSeparator = parent.hasAttribute('extend-separators');
+	}
+
 	render() {
+		const classes = {
+			'd2l-list-header-container': true,
+			'd2l-list-header-extend-separator': this._extendSeparator
+		};
 		return html`
-			<div class="d2l-list-header-container">
+			<div class="${classMap(classes)}">
 				${this.noSelection ? null : html`
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
