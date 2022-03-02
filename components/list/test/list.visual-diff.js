@@ -57,7 +57,7 @@ describe('d2l-list', () => {
 		return page.$eval(selector, (container, y) => {
 			return new Promise(resolve => {
 				container.scrollTo(0, y);
-				setTimeout(resolve, 100);
+				setTimeout(resolve, 400);
 			});
 		}, y);
 	};
