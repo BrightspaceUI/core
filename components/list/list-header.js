@@ -129,6 +129,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
 		this.slim = false;
+		this._extendSeparator = false;
 	}
 
 	connectedCallback() {
