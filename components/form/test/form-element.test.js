@@ -42,12 +42,12 @@ describe('form-element', () => {
 	beforeEach(async() => {
 		form = await fixture(formFixture);
 		formElement = form.shadowRoot.querySelector('#my-ele');
+		await formElement.updateComplete;
 	});
 
 	describe('events', () => {
 
 		it('should fire invalid-change when validation fails', async() => {
-			await formElement.updateComplete;
 			formElement.requestValidate();
 			await oneEvent(formElement, 'invalid-change');
 			expect(formElement.invalid).to.be.true;
