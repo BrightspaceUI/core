@@ -1,5 +1,5 @@
 import '../button/button-subtle.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -24,7 +24,11 @@ class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOp
 	}
 
 	static get styles() {
-		return dropdownOpenerStyles;
+		return [dropdownOpenerStyles, css`
+			:host([hidden]) {
+				display: none;
+			}
+		`];
 	}
 
 	render() {
