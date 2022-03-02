@@ -152,7 +152,7 @@ The `d2l-selection-action` is an optional component that provides a button for a
 
 The `d2l-selection-action-dropdown` is an optional component that provides a button opener for dropdown content associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the opener should be non-interactive if nothing is selected.
 
-<!-- docs: demo live name:d2l-selection-action-dropdown autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-selection-action-dropdown autoSize:false size:medium align:baseline -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
@@ -184,7 +184,7 @@ The `d2l-selection-action-dropdown` is an optional component that provides a but
 
 The `d2l-selection-action-menu-item` is an optional component that is a menu item for actions associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the menu item should be non-interactive if nothing is selected. This component enables the app to define an opener that is enabled regardless of the selection state, while having a menu containing one or more menu items that `requires-selection`.
 
-<!-- docs: demo live name:d2l-selection-action-menu-item autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-selection-action-menu-item autoSize:false size:medium align:baseline -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
