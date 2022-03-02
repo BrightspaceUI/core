@@ -24,11 +24,7 @@ class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOp
 	}
 
 	static get styles() {
-		return [dropdownOpenerStyles, css`
-			:host([hidden]) {
-				display: none;
-			}
-		`];
+		return dropdownOpenerStyles;
 	}
 
 	render() {
