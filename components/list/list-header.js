@@ -22,7 +22,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
-			 * Whether to enable sticky positioning for the header
+			 * Disables sticky positioning for the header
 			 * @type {boolean}
 			 */
 			noSticky: { type: Boolean, attribute: 'no-sticky' },
