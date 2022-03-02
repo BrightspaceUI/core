@@ -53,9 +53,18 @@ describe('d2l-list', () => {
 		return show(page, selector);
 	};
 
+	const scrollTo = (selector, y) => {
+		return page.$eval(selector, (container, y) => {
+			return new Promise(resolve => {
+				container.scrollTo(0, y);
+				setTimeout(resolve, 400);
+			});
+		}, y);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -99,25 +108,27 @@ describe('d2l-list', () => {
 			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
 			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
 		] },
-		{ category: 'not selectable', tests: [
-			{ name: 'header', selector: '#noSelectableHeader' }
-		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
 			{ name: 'not selected hover', selector: '#selectable', action: () => hover('#selectable [selectable]') },
-			{ name: 'not selected header', selector: '#selectableHeader' },
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
-			{ name: 'some selected header', selector: '#selectableSomeSelectedHeader' },
-			{ name: 'all selected header', selector: '#selectableAllSelectedHeader' },
-			{ name: 'all selected header pages allowed', selector: '#selectableAllSelectedHeaderPages' },
 			{ name: 'slim', selector: '#selectableSlim' },
 			{ name: 'item-content', selector: '#selectableItemContent' },
 			{ name: 'item-content slim', selector: '#selectableItemContentSlim' },
 			{ name: 'skeleton', selector: '#selectableSkeleton' },
 			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
+		] },
+		{ category: 'header', tests: [
+			{ name: 'not selectable', selector: '#noSelectableHeader' },
+			{ name: 'none selected', selector: '#selectableHeader' },
+			{ name: 'some selected', selector: '#selectableSomeSelectedHeader' },
+			{ name: 'all selected', selector: '#selectableAllSelectedHeader' },
+			{ name: 'all selected pages', selector: '#selectableAllSelectedHeaderPages' },
+			{ name: 'sticky top', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 0) },
+			{ name: 'sticky scrolled', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 45) }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
@@ -130,8 +141,7 @@ describe('d2l-list', () => {
 			{ name: '636', selector: '#breakpoint-636' },
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' }
-		] }
-		,
+		] },
 		{ category: 'dropdown', tests: [
 			{ name: 'open down', selector: '#dropdown-tooltips', action: () => openDropdown('#open-down'), after: () => closeDropdown('#open-down') }
 		] },
