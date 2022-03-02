@@ -393,8 +393,8 @@ describe('d2l-input-number', () => {
 			expect(event.defaultPrevented).to.be.false;
 		});
 
-		it('should not suppress negative symbol at the end for "ar-SA"', async() => {
-			documentLocaleSettings.language = 'ar-SA';
+		it('should not suppress negative symbol at the end for "ar"', async() => {
+			documentLocaleSettings.language = 'ar';
 			const elem = await fixtureInit(defaultValueFixture);
 			await setCursorPosition(elem, 3);
 			const event = dispatchKeypressEvent(elem, '-');
@@ -465,7 +465,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should suppress incorrect decimal symbol "."', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixtureInit(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
 			const event = dispatchKeypressEvent(elem, '.');
 			expect(event.defaultPrevented).to.be.true;
@@ -473,7 +473,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should not suppress correct decimal symbol ","', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixtureInit(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
 			const event = dispatchKeypressEvent(elem, ',');
 			expect(event.defaultPrevented).to.be.false;
@@ -615,7 +615,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should handle different locales', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixture(trailingZeroesFixture);
 			expect(elem.value).to.equal(2001);
 			expect(elem.valueTrailingZeroes).to.equal('2001.00');
