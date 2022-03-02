@@ -102,7 +102,7 @@ class List extends SelectionMixin(LitElement) {
 				});
 				if (!header) return;
 				const entry = entries[0];
-				header._sticking = !entry.isIntersecting;
+				header._scrolled = !entry.isIntersecting;
 			});
 			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-list-top-sentinel'));
 		}

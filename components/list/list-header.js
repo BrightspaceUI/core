@@ -22,6 +22,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
+			 * Whether to enable sticky positioning for the header
+			 * @type {boolean}
+			 */
+			noSticky: { type: Boolean, attribute: 'no-sticky' },
+			/**
 			 * How much padding to render list items with
 			 * @type {'normal'|'slim'}
 			 */
@@ -38,7 +43,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			slim: { reflect: true, type: Boolean },
-			_sticking: { type: Boolean, reflect: true }
+			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -51,10 +56,15 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				top: 0;
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
+			:host([no-sticky]) {
+				background-color: transparent;
+				position: static;
+				z-index: auto;
+			}
 			.d2l-list-header-shadow {
 				transition: box-shadow 200ms ease-out;
 			}
-			:host([_sticking]) .d2l-list-header-shadow {
+			:host([_scrolled]) .d2l-list-header-shadow {
 				background-color: var(--d2l-list-header-background-color, white);
 				bottom: -5px;
 				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.15);
@@ -114,6 +124,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	constructor() {
 		super();
 		this.noSelection = false;
+		this.noSticky = false;
 		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
 		this.slim = false;
@@ -148,7 +159,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>
 			</div>
-			<div class="d2l-list-header-shadow"></div>
+			${!this.noSticky ? html`<div class="d2l-list-header-shadow"></div>` : null}
 		`;
 	}
 
