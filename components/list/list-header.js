@@ -66,9 +66,10 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}
 			:host([_scrolled]) .d2l-list-header-shadow {
 				background-color: var(--d2l-list-header-background-color, white);
-				bottom: -5px;
-				box-shadow: 0 3px 3px -1px rgba(0, 0, 0, 0.15);
-				height: 5px;
+				bottom: -4px;
+				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
+				clip: rect(30px, auto, 200px, auto);
+				height: 40px;
 				position: absolute;
 				width: 100%;
 			}
