@@ -33,10 +33,10 @@ Alerts communicate critical information relating to the state of the system and 
 
 <d2l-button id="open" style="align-self:center;display:none;">Show Alerts</d2l-button>
 <d2l-alert id="alert" type="default" button-text="Undo" has-close-button>
-	A message.
+	An inline alert message.
 </d2l-alert>
 <d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
-	A message.
+	A toast alert message.
 </d2l-alert-toast>
 ```
 
