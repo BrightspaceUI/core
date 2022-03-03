@@ -71,7 +71,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-switch-visibility autoSize:false size:medium align:baseline -->
+<!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
