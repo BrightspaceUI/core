@@ -114,6 +114,7 @@ function convertToDropdownItem(node) {
 		return createMenuItemSeparator();
 	}
 }
+
 /**
  *
  * A component that can be used to display a set of buttons, links or menus that will be put into a dropdown menu when they no longer fit on the first line of their container
@@ -178,8 +179,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	static get styles() {
-		return [offscreenStyles,
-			css`
+		return [offscreenStyles, css`
 			:host {
 				display: block;
 			}
@@ -195,44 +195,44 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				flex-wrap: wrap;
 				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
-			.d2l-overflow-group-container ::slotted(d2l-button),
-			.d2l-overflow-group-container ::slotted(d2l-button-icon),
-			.d2l-overflow-group-container ::slotted(d2l-link),
-			.d2l-overflow-group-container ::slotted(span),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu),
-			.d2l-overflow-group-container ::slotted(d2l-selection-action),
-			.d2l-overflow-group-container ::slotted(d2l-selection-action-dropdown) {
+			::slotted(d2l-button),
+			::slotted(d2l-link),
+			::slotted(span),
+			::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			::slotted(d2l-dropdown-button) {
 				margin-right: 0.6rem;
 			}
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-icon),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-link),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(span),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-selection-action),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-selection-action-dropdown) {
+			:host([dir="rtl"]) ::slotted(d2l-button),
+			:host([dir="rtl"]) ::slotted(d2l-link),
+			:host([dir="rtl"]) ::slotted(span),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-button) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host([opener-style="subtle"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+			::slotted(d2l-button-subtle),
+			::slotted(d2l-button-icon),
+			::slotted(d2l-dropdown-button-subtle),
+			::slotted(d2l-dropdown-more),
+			::slotted(d2l-dropdown-context-menu),
+			::slotted(d2l-selection-action),
+			::slotted(d2l-selection-action-dropdown) {
 				margin-right: 0.2rem;
 			}
-			:host([opener-style="subtle"][dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+			:host([dir="rtl"]) ::slotted(d2l-button-subtle),
+			:host([dir="rtl"]) ::slotted(d2l-button-icon),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-button-subtle),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-more),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-context-menu),
+			:host([dir="rtl"]) ::slotted(d2l-selection-action),
+			:host([dir="rtl"]) ::slotted(d2l-selection-action-dropdown) {
 				margin-left: 0.2rem;
 				margin-right: 0;
 			}
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
 				display: none !important;
-			}`
-		];
+			}
+		`];
 	}
 
 	constructor() {
