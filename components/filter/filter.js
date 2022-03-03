@@ -19,6 +19,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -37,7 +38,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
-class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -136,6 +137,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`];
 	}
 
+	static focusElementSelector = 'd2l-dropdown-button-subtle';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -227,11 +230,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			</d2l-dropdown-button-subtle>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
-	}
-
-	focus() {
-		const opener = this.shadowRoot && this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-		if (opener) opener.focus();
 	}
 
 	getSubscriberController() {

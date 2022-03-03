@@ -1,6 +1,5 @@
 import '../link.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-link href="https://www.d2l.com">Link Test</d2l-link>`;
@@ -89,17 +88,6 @@ describe('d2l-link', () => {
 			setTimeout(() => getAnchor(elem).click());
 			const { target } = await oneEvent(elem, 'click');
 			expect(target).to.equal(elem);
-		});
-
-	});
-
-	describe('focus management', () => {
-
-		it('should delegate focus to underlying anchor', async() => {
-			const elem = await fixture(normalFixture);
-			elem.focus();
-			const activeElement = getComposedActiveElement();
-			expect(activeElement).to.equal(getAnchor(elem));
 		});
 
 	});

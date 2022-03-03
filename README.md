@@ -66,6 +66,7 @@ npm install @brightspace-ui/core
 * Mixins
   * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
   * [AsyncContainerMixin](mixins/async-container/): manage collective async state
+  * [FocusMixin](mixins/focus-mixin.md): delegate focus to a nested element when `focus()` is called
   * [FocusVisiblePolyfillMixin](mixins/focus-visible-polyfill-mixin.md): components can use the `:focus-visible` pseudo-class polyfill
   * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
   * [LabelledMixin](mixins/labelled-mixin.md): label custom elements by referencing elements across DOM scopes

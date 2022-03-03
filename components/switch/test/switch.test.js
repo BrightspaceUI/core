@@ -29,7 +29,8 @@ describe('d2l-switch', () => {
 
 	it('delegates focus to underlying focusable', async() => {
 		const elem = await fixture(html`<d2l-switch text="some text"></d2l-switch>`);
-		elem.focus();
+		setTimeout(() => elem.focus());
+		await oneEvent(elem, 'focus');
 		const activeElement = getComposedActiveElement();
 		expect(activeElement).to.equal(elem.shadowRoot.querySelector('[role="switch"]'));
 	});
