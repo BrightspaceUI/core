@@ -32,7 +32,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 ![Switch](./screenshots/switch.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-switch autoSize:false size:medium align:baseline -->
+<!-- docs: demo live name:d2l-switch autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
