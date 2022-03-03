@@ -69,7 +69,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		}
 
 		const ready = this.__resources !== undefined;
-		//console.log('ready', ready);
 		if (!ready) {
 			changedProperties.forEach((oldValue, propName) => {
 				this.__updatedProperties.set(propName, oldValue);
@@ -84,7 +83,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		});
 		this.__updatedProperties.clear();
 
-		//console.log('super', super.shouldUpdate(changedProperties));
 		return super.shouldUpdate(changedProperties);
 
 	}
