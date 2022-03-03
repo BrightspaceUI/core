@@ -77,40 +77,11 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="actions">
-				<d2l-list>
-					<d2l-list-item>
-						<div>Item 1</div>
-						<div slot="actions">
-							<d2l-link href="http://www.d2l.com">Action 1</d2l-link>
-							<d2l-button-icon text="Action 2" icon="tier1:preview"></d2l-button-icon>
-						</div>
-					</d2l-list-item>
-				</d2l-list>
-			</div>
-		</div>
-
-		<div style="width: 400px;">
 			<div class="visual-diff" id="illustration">
 				<d2l-list>
 					<d2l-list-item>
 						<div>Item 1</div>
 						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
-					</d2l-list-item>
-				</d2l-list>
-			</div>
-		</div>
-
-		<div style="width: 400px;">
-			<div class="visual-diff" id="rtl" dir="rtl">
-				<d2l-list dir="rtl">
-					<d2l-list-item dir="rtl">
-						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
-						<div>Item 1</div>
-						<div slot="actions">
-							<d2l-button-icon text="Action 1" icon="tier1:preview"></d2l-button-icon>
-							<d2l-button-icon text="Action 2" icon="tier1:more"></d2l-button-icon>
-						</div>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -152,6 +123,49 @@
 					<d2l-list-item>Item 1</d2l-list-item>
 					<d2l-list-item>Item 2</d2l-list-item>
 					<d2l-list-item>Item 3</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="actions">
+				<d2l-list>
+					<d2l-list-item>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-link href="http://www.d2l.com">Action 1</d2l-link>
+							<d2l-button-icon text="Action 2" icon="tier1:preview"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="actionsSeparatorsExtended">
+				<d2l-list extend-separators>
+					<d2l-list-item>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-link href="http://www.d2l.com">Action 1</d2l-link>
+							<d2l-button-icon text="Action 2" icon="tier1:preview"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="actionsRtl" dir="rtl">
+				<d2l-list dir="rtl">
+					<d2l-list-item dir="rtl">
+						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-button-icon text="Action 1" icon="tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="tier1:more"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>

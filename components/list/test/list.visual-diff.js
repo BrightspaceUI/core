@@ -79,12 +79,10 @@ describe('d2l-list', () => {
 		{ category: 'general', tests: [
 			{ name: 'simple', selector: '#simple' },
 			{ name: 'slim', selector: '#slim' },
-			{ name: 'no padding', selector: '#noPadding' },
-			{ name: 'actions', selector: '#actions' },
-			{ name: 'rtl', selector: '#rtl' },
+			{ name: 'no padding', selector: '#noPadding' }
 		] },
 		{ category: 'illustration', tests: [
-			{ name: 'default', selector: '#illustration' },
+			{ name: 'default', selector: '#illustration' }
 		] },
 		{ category: 'separators', tests: [
 			{ name: 'default', selector: '#simple' },
@@ -92,6 +90,11 @@ describe('d2l-list', () => {
 			{ name: 'all', selector: '#separatorsAll' },
 			{ name: 'between', selector: '#separatorsBetween' },
 			{ name: 'extended', selector: '#separatorsExtended' }
+		] },
+		{ category: 'actions', tests: [
+			{ name: 'default', selector: '#actions' },
+			{ name: 'extended separators', selector: '#actionsSeparatorsExtended' },
+			{ name: 'rtl', selector: '#actionsRtl' }
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
