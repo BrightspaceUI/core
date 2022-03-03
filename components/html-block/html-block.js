@@ -3,6 +3,7 @@ import { css, LitElement } from 'lit-element/lit-element.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-compact {
@@ -120,7 +121,7 @@ const getRenderers = () => {
  * A component for displaying user-authored HTML.
  * @slot - Provide your user-authored HTML
  */
-class HtmlBlock extends LitElement {
+class HtmlBlock extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
