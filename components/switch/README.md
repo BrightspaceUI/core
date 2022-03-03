@@ -32,7 +32,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 ![Switch](./screenshots/switch.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-switch -->
+<!-- docs: demo live name:d2l-switch autoSize:false size:medium align:baseline -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
@@ -71,7 +71,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-switch-visibility -->
+<!-- docs: demo live name:d2l-switch-visibility autoSize:false size:medium align:baseline -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
