@@ -4,6 +4,7 @@ import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateTimeInISO, getDateFromISODate, parseISODateTime } from '../../helpers/dateTime.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -30,7 +31,7 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
  * @fires change - Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
-class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
+class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -127,6 +128,8 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			}
 		`];
 	}
+
+	static focusElementSelector = 'd2l-input-date';
 
 	constructor() {
 		super();
@@ -249,11 +252,6 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				this.requestValidate(true);
 			}
 		});
-	}
-
-	focus() {
-		const input = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date');
-		if (input) input.focus();
 	}
 
 	async validate() {

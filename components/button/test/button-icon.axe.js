@@ -20,7 +20,7 @@ describe('d2l-button-icon', () => {
 
 	it('focused', async() => {
 		const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
-		setTimeout(() => el.shadowRoot.querySelector('button').focus());
+		setTimeout(() => el.focus());
 		await oneEvent(el, 'focus');
 		await expect(el).to.be.accessible();
 	});

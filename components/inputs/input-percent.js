@@ -1,5 +1,6 @@
 import './input-number.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
@@ -12,7 +13,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
+class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -85,6 +86,8 @@ class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(Localize
 		];
 	}
 
+	static focusElementSelector = 'd2l-input-number';
+
 	constructor() {
 		super();
 		this.autofocus = false;
@@ -129,11 +132,6 @@ class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(Localize
 					<slot slot="after" name="after"></slot>
 			</d2l-input-number>
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-number');
-		if (elem) elem.focus();
 	}
 
 	async validate() {

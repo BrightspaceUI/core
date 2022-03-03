@@ -23,7 +23,7 @@ describe('d2l-button', () => {
 
 	it('normal + focused', async() => {
 		const el = await fixture(normalFixture);
-		setTimeout(() => el.shadowRoot.querySelector('button').focus());
+		setTimeout(() => el.focus());
 		await oneEvent(el, 'focus');
 		await expect(el).to.be.accessible();
 	});
@@ -40,7 +40,7 @@ describe('d2l-button', () => {
 
 	it('primary + focused', async() => {
 		const el = await fixture(primaryFixture);
-		setTimeout(() => el.shadowRoot.querySelector('button').focus());
+		setTimeout(() => el.focus());
 		await oneEvent(el, 'focus');
 		await expect(el).to.be.accessible();
 	});

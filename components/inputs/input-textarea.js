@@ -1,5 +1,6 @@
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -17,7 +18,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -149,6 +150,8 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 		`];
 	}
 
+	static focusElementSelector = 'textarea';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -261,16 +264,6 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 				}
 			}
 		});
-	}
-
-	async focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('textarea');
-		if (elem) {
-			elem.focus();
-		} else {
-			await this.updateComplete;
-			this.focus();
-		}
 	}
 
 	async select() {

@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
@@ -11,7 +12,7 @@ import { SelectionActionMixin } from './selection-action-mixin.js';
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  * @fires d2l-selection-observer-subscribe - Internal event
  */
-class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOpenerMixin(LitElement))) {
+class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(DropdownOpenerMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -27,6 +28,8 @@ class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOp
 		return dropdownOpenerStyles;
 	}
 
+	static focusElementSelector = 'd2l-button-subtle';
+
 	render() {
 		return html`
 			<d2l-button-subtle
@@ -37,11 +40,6 @@ class ActionDropdown extends LocalizeCoreElement(SelectionActionMixin(DropdownOp
 				text=${this.text}></d2l-button-subtle>
 			<slot></slot>
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-button-subtle');
-		if (elem) elem.focus();
 	}
 
 	/**

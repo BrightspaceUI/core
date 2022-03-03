@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
@@ -7,7 +8,7 @@ import { isComposedAncestor } from '../../helpers/dom.js';
  * A generic container component to trap user focus.
  * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
  */
-class FocusTrap extends LitElement {
+class FocusTrap extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -29,6 +30,8 @@ class FocusTrap extends LitElement {
 			}
 		`;
 	}
+
+	static focusElementSelector = '.d2l-focus-trap-start';
 
 	constructor() {
 		super();
@@ -53,11 +56,6 @@ class FocusTrap extends LitElement {
 			<slot></slot>
 			<span class="d2l-focus-trap-end" @focusin="${this._handleEndFocusIn}" tabindex="${ifDefined(tabindex)}"></span>
 		`;
-	}
-
-	focus() {
-		const focusable = this.shadowRoot && this.shadowRoot.querySelector('.d2l-focus-trap-start');
-		if (focusable) focusable.focus();
 	}
 
 	_focusFirst() {

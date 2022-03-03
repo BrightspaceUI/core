@@ -1,6 +1,7 @@
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -22,7 +23,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -233,6 +234,8 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 			`
 		];
 	}
+
+	static focusElementSelector = '.d2l-input';
 
 	constructor() {
 		super();
@@ -461,16 +464,6 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 				}
 			}
 		});
-	}
-
-	async focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
-		if (elem) {
-			elem.focus();
-		} else {
-			await this.updateComplete;
-			this.focus();
-		}
 	}
 
 	_getAriaLabel() {

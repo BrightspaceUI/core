@@ -1,6 +1,5 @@
 import '../input-text.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-text label="label"></d2l-input-text>`;
@@ -94,27 +93,6 @@ describe('d2l-input-text', () => {
 		it('should default unrecognized "type" to "text"', () => {
 			elem.setAttribute('type', 'silly');
 			expect(getInput(elem).type).to.equal('text');
-		});
-
-	});
-
-	describe('focus management', () => {
-
-		it('should delegate focus to underlying input', async() => {
-			const elem = await fixture(normalFixture);
-			elem.focus();
-			const activeElement = getComposedActiveElement();
-			expect(activeElement).to.equal(getInput(elem));
-		});
-
-		it('should focus even if component has not rendered', async() => {
-			const container = await fixture(html`<div></div>`);
-			const newInput = document.createElement('d2l-input-text');
-			newInput.setAttribute('label', 'label');
-			container.appendChild(newInput);
-			await newInput.focus();
-			const activeElement = getComposedActiveElement();
-			expect(activeElement).to.equal(getInput(newInput));
 		});
 
 	});
