@@ -193,6 +193,13 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
 			}
+			.d2l-list-item-content-extend-separators .d2l-list-item-actions-container {
+				padding-right: 0.7rem;
+			}
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions-container {
+				padding-left: 0.7rem;
+				padding-right: 0;
+			}
 			::slotted([slot="actions"]),
 			.d2l-list-item-actions * {
 				display: grid;
