@@ -193,13 +193,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
 			}
-			.d2l-list-item-content-extend-separators .d2l-list-item-actions-container {
-				padding-right: 0.7rem;
-			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions-container {
-				padding-left: 0.7rem;
-				padding-right: 0;
-			}
+
 			::slotted([slot="actions"]),
 			.d2l-list-item-actions * {
 				display: grid;
@@ -207,6 +201,16 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				grid-auto-columns: 1fr;
 				grid-auto-flow: column;
 				margin: 0.15rem 0;
+			}
+
+			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
+			.d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+				margin-right: 0.9rem;
+			}
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+				margin-left: 0.9rem;
+				margin-right: 0;
 			}
 
 			[data-breakpoint="1"] ::slotted([slot="illustration"]),
