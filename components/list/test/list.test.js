@@ -2,7 +2,7 @@ import '../list.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const selectionInputRendering = async item => {
@@ -97,6 +97,7 @@ describe('d2l-list', () => {
 			await elem.querySelector('[slot="nested"]').updateComplete;
 			await elem.querySelector('[key="L2-1"]').updateComplete;
 			await elem.querySelector('[key="L2-2"]').updateComplete;
+			await waitUntil(() => elem.getItems().length === 3);
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable leaf item is clicked', async() => {
