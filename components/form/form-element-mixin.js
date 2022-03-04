@@ -118,6 +118,10 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 		this._onFormElementErrorsChange = this._onFormElementErrorsChange.bind(this);
 
+		this._firstUpdateResolve = null;
+		this._firstUpdatePromise = new Promise((resolve) => {
+			this._firstUpdateResolve = resolve;
+		});
 		this._validationCustoms = new Set();
 		this._validity = new FormElementValidityState({});
 		/** @ignore */
@@ -168,6 +172,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.shadowRoot.removeEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._firstUpdateResolve();
+	}
+
 	updated(changedProperties) {
 		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
 			let errors = this._errors;
@@ -195,6 +204,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (this.noValidate) {
 			return [];
 		}
+
+		// validation can be requested before first update, which can cause issues
+		// if validation logic depends on rendered DOM
+		await this._firstUpdatePromise;
+
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
