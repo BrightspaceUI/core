@@ -31,9 +31,13 @@ describe('d2l-input-date', () => {
 		});
 
 		it('should not set description when no empty-text', async() => {
+			console.log(1);
 			const elem = await fixture(basicFixture);
+			console.log(2);
 			const input = getChildElem(elem, 'd2l-input-text');
+			console.log('getChildElem', input);
 			expect(input.hasAttribute('description')).to.be.false;
+			console.log(4);
 		});
 	});
 
