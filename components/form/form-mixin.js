@@ -26,9 +26,13 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 
 		this.trackChanges = false;
+		this._errors = new Map();
+		this._firstUpdateResolve = null;
+		this._firstUpdatePromise = new Promise((resolve) => {
+			this._firstUpdateResolve = resolve;
+		});
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
-		this._errors = new Map();
 
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
@@ -50,6 +54,7 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this.addEventListener('change', this._onFormElementChange);
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
+		this._firstUpdateResolve();
 	}
 
 	// eslint-disable-next-line no-unused-vars
@@ -150,6 +155,9 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 	}
 
 	async _validateFormElement(ele, showNewErrors) {
+		// if validation occurs before we've rendered,
+		// localization may not have loaded yet
+		await this._firstUpdatePromise;
 		ele.id = ele.id || getUniqueId();
 		if (isCustomFormElement(ele)) {
 			return ele.validate(showNewErrors);
