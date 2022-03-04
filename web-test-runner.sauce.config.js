@@ -27,19 +27,19 @@ config.browsers = [
 	sauceLabsLauncher({
 		browserName: 'chrome',
 		browserVersion: 'latest',
-		platformName: 'macOS 12',
+		platformName: 'macOS 11.00',
 		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
 		browserName: 'firefox',
 		browserVersion: 'latest',
-		platformName: 'macOS 12',
+		platformName: 'macOS 11.00',
 		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
 		browserName: 'safari',
 		browserVersion: 'latest',
-		platformName: 'macOS 12',
+		platformName: 'macOS 11.00',
 		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
