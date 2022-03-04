@@ -5,7 +5,7 @@ function getPattern(type) {
 }
 
 export default {
-	files: /*getPattern('test')*/'components/inputs/test/input-date.test.js',
+	files: getPattern('test'),
 	nodeResolve: true,
 	groups: [
 		{
