@@ -152,6 +152,7 @@ class List extends SelectionMixin(LitElement) {
 	getSelectedListItems(includeNested) {
 		let selectedItems = [];
 		this.getItems().forEach(item => {
+			console.log('getSelectedListItems', item.key, item.selected);
 			if (item.selected) selectedItems.push(item);
 			if (includeNested && item._selectionProvider) {
 				selectedItems = [...selectedItems, ...item._selectionProvider.getSelectedListItems(includeNested)];
