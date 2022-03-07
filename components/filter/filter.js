@@ -477,6 +477,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
+
 		this._performChangeSetDimension(dimension, valueKey, selected);
 	}
 

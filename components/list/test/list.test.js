@@ -2,7 +2,7 @@ import '../list.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const selectionInputRendering = async item => {
@@ -82,21 +82,21 @@ describe('d2l-list', () => {
 
 		let elem;
 		beforeEach(async() => {
-			let numObservers = 0;
-			function observerSubscribe() {
-				numObservers++;
-			}
 			elem = await fixture(html`
-				<d2l-list @d2l-selection-input-subscribe="${observerSubscribe}">
+				<d2l-list>
 					<d2l-list-item selectable key="L1-1" label="L1-1">
-						<d2l-list slot="nested" @d2l-selection-input-subscribe="${observerSubscribe}">
+						<d2l-list slot="nested">
 							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
 							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
 						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await waitUntil(() => numObservers === 3);
+			await elem.updateComplete;
+			await elem.querySelector('[key="L1-1"]').updateComplete;
+			await elem.querySelector('[slot="nested"]').updateComplete;
+			await elem.querySelector('[key="L2-1"]').updateComplete;
+			await elem.querySelector('[key="L2-2"]').updateComplete;
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable leaf item is clicked', async() => {

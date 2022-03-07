@@ -186,6 +186,12 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		return super.validationMessage;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
+		if (this._hiddenCalendarResizeObserver) this._hiddenCalendarResizeObserver.disconnect();
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 

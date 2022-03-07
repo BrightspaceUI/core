@@ -903,6 +903,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			resizer.disconnect();
 		}
 		this._hasConnectedResizers = false;
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {

@@ -116,14 +116,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-
 		this._disconnectObservers();
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this._startObserving();
 	}
 
 	render() {
@@ -179,11 +172,14 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	}
 
 	_startObserving() {
-		if (!this.shadowRoot || !this._parentNode) return;
+		if (!this.shadowRoot || !this._parentNode || !this.displayTo) return;
 
+		const container = this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container');
 		const leftElem = this.shadowRoot.querySelector('.d2l-input-date-time-range-start-container');
+		let leftElemHeight = 0;
+
 		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(() => {
-			this._leftElemHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
+			leftElemHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
 		});
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
@@ -191,8 +187,8 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(async() => {
 			this._blockDisplay = false;
 			await this.updateComplete;
-			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container')).getPropertyValue('height')));
-			if (height >= (this._leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
+			const height = Math.ceil(parseFloat(getComputedStyle(container).getPropertyValue('height')));
+			if (height >= (leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._blockDisplay = false;
 		});
 		this._parentElemResizeObserver.disconnect();
