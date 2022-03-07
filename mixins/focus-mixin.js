@@ -12,6 +12,7 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this._focusOnFirstRender) {
+			console.log(`focus ${this.tagName}: firstUpdated, focusing...`);
 			this._focusOnFirstRender = false;
 			this.focus();
 		}
@@ -25,6 +26,7 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 		}
 
 		if (!this.hasUpdated) {
+			console.log(`focus ${this.tagName}: not rendered yet`);
 			this._focusOnFirstRender = true;
 			return;
 		}
