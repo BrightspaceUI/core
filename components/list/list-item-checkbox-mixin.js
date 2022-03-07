@@ -99,6 +99,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	setSelected(selected, suppressEvent = false) {
 		//if (this.selected === selected) return;
 		if (this.selected === selected || (this.selected === undefined && !selected)) return;
+		console.log('setSelected', {key: this.key, prevVal: this.selected, newVal: selected, suppress: suppressEvent});
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
@@ -106,8 +107,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	async _dispatchSelected(value) {
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
+		 console.log('dispatchEvent.beforeUpdateComplete', this.key, value);
 		await this.updateComplete;
 		/** Dispatched when the component item is selected */
+		console.log('dispatchEvent.afterUpdateComplete', this.key, value);
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
 			composed: true,

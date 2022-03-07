@@ -438,6 +438,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			dimension.changes = Array.from(dimension.changes.values());
 		});
 
+		console.log('dispatchEvent', JSON.stringify(dimensions));
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
 			bubbles: true,
 			composed: false,
@@ -477,7 +478,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
-
+		console.log('_handleChangeSetDimension', dimensionKey, valueKey, selected);
 		this._performChangeSetDimension(dimension, valueKey, selected);
 	}
 
@@ -672,6 +673,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_performChangeSetDimension(dimension, valueKey, selected) {
 		const value = dimension.values.find(value => value.key === valueKey);
 		if (value.selected === selected) return;
+		console.log('_performChangeSetDimension', dimension.key, valueKey, selected);
 		value.selected = selected;
 
 		if (selected) {

@@ -24,7 +24,7 @@ const extraOptions = {
 };
 
 config.browsers = [
-	sauceLabsLauncher({
+	/*sauceLabsLauncher({
 		browserName: 'chrome',
 		browserVersion: 'latest',
 		platformName: 'macOS 11.00',
@@ -35,19 +35,19 @@ config.browsers = [
 		browserVersion: 'latest',
 		platformName: 'macOS 11.00',
 		'sauce:options': extraOptions
-	}),
+	}),*/
 	sauceLabsLauncher({
 		browserName: 'safari',
 		browserVersion: 'latest',
 		platformName: 'macOS 11.00',
 		'sauce:options': extraOptions
 	}),
-	sauceLabsLauncher({
+	/*sauceLabsLauncher({
 		browserName: 'microsoftedge',
 		browserVersion: 'latest',
 		platformName: 'Windows 10',
 		'sauce:options': extraOptions
-	}),
+	}),*/
 ];
 // how long a browser can take to start up before failing
 // defaults to 30000 (30 sec)

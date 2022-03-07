@@ -1,7 +1,7 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { spy, stub } from 'sinon';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -35,7 +35,7 @@ const multiDimensionFixture = html`
 
 describe('d2l-filter', () => {
 
-	it('should construct', () => {
+	/*it('should construct', () => {
 		runConstructor('d2l-filter');
 	});
 
@@ -980,7 +980,7 @@ describe('d2l-filter', () => {
 				expect(elem.opened).to.be.true;
 			});
 		});
-	});
+	});*/
 
 	describe('Active filter subscribers', () => {
 		let elem;
@@ -990,7 +990,7 @@ describe('d2l-filter', () => {
 			await new Promise(resolve => setTimeout(resolve, 0));
 		};
 
-		it('If there are no subscribers, active filters are not calculated', async() => {
+		/*it('If there are no subscribers, active filters are not calculated', async() => {
 			elem = await fixture(multiDimensionFixture);
 			const updateSpy = spy(elem, '_updateActiveFilters');
 
@@ -1003,14 +1003,14 @@ describe('d2l-filter', () => {
 
 			expect(updateSpy).to.not.have.been.called;
 			expect(elem._activeFilters).to.be.null;
-		});
+		});*/
 
 		it('If there are subscribers, active filters are calculated properly', async() => {
 			elem = await fixture(multiDimensionFixture);
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
-			console.log(1);
+			console.log('assert 1');
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '1', value: '1' }, text: 'Dim 1: Value 1' },
 				{ keyObject: { dimension: '3', value: '2' }, text: 'Value 2' }
@@ -1018,20 +1018,24 @@ describe('d2l-filter', () => {
 
 			const updateSpy = spy(elem, '_updateActiveFilters');
 			setTimeout(() => {
+				console.log('setting values');
 				elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]').setSelected(false);
 				elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]').setSelected(true);
 				elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="2"]').setSelected(false);
+				console.log('values set');
 			}, 0);
 			await waitExtra(elem, 'd2l-filter-change');
+			await aTimeout(2000);
 
-			console.log(2);
+			console.log('assert 2');
 			expect(updateSpy).to.be.calledOnce;
+			console.log('assert 3');
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '2', value: '1' }, text: 'Dim 2: Value 1' }
 			]);
 		});
 
-		it('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
+		/*it('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
 			elem = await fixture(multiDimensionFixture);
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
@@ -1136,6 +1140,6 @@ describe('d2l-filter', () => {
 				expect(updateSpy).to.be.calledOnce;
 				expect(subscriberUpdated).to.be.true;
 			});
-		});
+		});*/
 	});
 });
