@@ -5,7 +5,7 @@ function getPattern(type) {
 }
 
 export default {
-	files: /*getPattern('test')*/'components/filter/test/filter.test.js',
+	files: getPattern('test'),
 	nodeResolve: true,
 	groups: [
 		{
