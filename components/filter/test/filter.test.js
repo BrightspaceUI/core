@@ -1010,6 +1010,7 @@ describe('d2l-filter', () => {
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
+			console.log(1);
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '1', value: '1' }, text: 'Dim 1: Value 1' },
 				{ keyObject: { dimension: '3', value: '2' }, text: 'Value 2' }
@@ -1023,6 +1024,7 @@ describe('d2l-filter', () => {
 			}, 0);
 			await waitExtra(elem, 'd2l-filter-change');
 
+			console.log(2);
 			expect(updateSpy).to.be.calledOnce;
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '2', value: '1' }, text: 'Dim 2: Value 1' }
