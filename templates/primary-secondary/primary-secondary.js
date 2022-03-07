@@ -679,7 +679,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
 			}
 			header {
-				z-index: 2; /* ensures the header box-shadow is over main areas with background colours set */
+				z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
 			}
 
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
