@@ -94,7 +94,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
-				z-index: 10;
+				z-index: 10; /* must be greater than adjacent selected items */
 			}
 			:host([_fullscreen-within]) {
 				z-index: 1000; /* must be greater than floating workflow buttons */
