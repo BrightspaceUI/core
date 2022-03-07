@@ -5,7 +5,7 @@ function getPattern(type) {
 }
 
 export default {
-	files: getPattern('test'),
+	files: /*getPattern('test')*/'components/inputs/test/input-time.test.js',
 	nodeResolve: true,
 	groups: [
 		{
