@@ -188,15 +188,16 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
 
-		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(async() => {
+		/*this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(() => {
 			this._blockDisplay = false;
-			await this.updateComplete;
-			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container')).getPropertyValue('height')));
-			if (height >= (this._leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
-			else this._blockDisplay = false;
+			this.updateComplete.then(() => {
+				const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container')).getPropertyValue('height')));
+				if (height >= (this._leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
+				else this._blockDisplay = false;
+			});
 		});
 		this._parentElemResizeObserver.disconnect();
-		this._parentElemResizeObserver.observe(this._parentNode);
+		this._parentElemResizeObserver.observe(this._parentNode);*/
 	}
 
 }

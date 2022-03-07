@@ -266,6 +266,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
