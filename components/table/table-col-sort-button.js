@@ -1,11 +1,12 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
  * @slot - Text of the sort button
  */
-export class TableColSortButton extends LitElement {
+export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -57,6 +58,8 @@ export class TableColSortButton extends LitElement {
 		`;
 	}
 
+	static focusElementSelector = 'button';
+
 	constructor() {
 		super();
 		this.nosort = false;
@@ -68,11 +71,6 @@ export class TableColSortButton extends LitElement {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		return html`<button type="button"><slot></slot>${iconView}</button>`;
-	}
-
-	focus() {
-		const button = this.shadowRoot && this.shadowRoot.querySelector('button');
-		if (button) button.focus();
 	}
 
 }

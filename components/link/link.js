@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export const linkStyles = css`
@@ -41,7 +42,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends LitElement {
+class Link extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -96,6 +97,8 @@ class Link extends LitElement {
 		];
 	}
 
+	static focusElementSelector = '.d2l-link';
+
 	constructor() {
 		super();
 		this.download = false;
@@ -117,9 +120,5 @@ class Link extends LitElement {
 				target="${ifDefined(this.target)}"><slot></slot></a>`;
 	}
 
-	focus() {
-		const link = this.shadowRoot && this.shadowRoot.querySelector('.d2l-link');
-		if (link) link.focus();
-	}
 }
 customElements.define('d2l-link', Link);

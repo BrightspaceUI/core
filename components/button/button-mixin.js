@@ -1,6 +1,7 @@
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
-export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin(superclass) {
+export const ButtonMixin = superclass => class extends FocusMixin(FocusVisiblePolyfillMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -65,6 +66,8 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 		};
 	}
 
+	static focusElementSelector = 'button';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -105,11 +108,6 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick, true);
-	}
-
-	focus() {
-		const button = this.shadowRoot && this.shadowRoot.querySelector('button');
-		if (button) button.focus();
 	}
 
 	/** @internal */

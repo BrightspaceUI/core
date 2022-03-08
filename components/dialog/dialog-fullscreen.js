@@ -84,6 +84,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					width: auto;
 				}
 
+				dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
+				div.d2l-dialog-outer.d2l-dialog-fullscreen-within {
+					/* no margins when there is a fullscreen element within */
+					margin: 0;
+				}
+
 				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
 				:host(:not([in-iframe])) div.d2l-dialog-outer {
 					height: calc(100% - 3rem);

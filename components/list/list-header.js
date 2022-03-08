@@ -3,6 +3,8 @@ import '../selection/selection-select-all.js';
 import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -20,6 +22,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
+			 * Disables sticky positioning for the header
+			 * @type {boolean}
+			 */
+			noSticky: { type: Boolean, attribute: 'no-sticky' },
+			/**
 			 * How much padding to render list items with
 			 * @type {'normal'|'slim'}
 			 */
@@ -35,14 +42,36 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * TODO: Remove
 			 * @type {boolean}
 			 */
-			slim: { reflect: true, type: Boolean }
+			slim: { reflect: true, type: Boolean },
+			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
 
 	static get styles() {
 		return css`
 			:host {
+				background-color: var(--d2l-list-header-background-color, white);
 				display: block;
+				position: sticky;
+				top: 0;
+				z-index: 6; /* must be greater than d2l-list-item-active-border */
+			}
+			:host([no-sticky]) {
+				background-color: transparent;
+				position: static;
+				z-index: auto;
+			}
+			.d2l-list-header-shadow {
+				transition: box-shadow 200ms ease-out;
+			}
+			:host([_scrolled]) .d2l-list-header-shadow {
+				background-color: var(--d2l-list-header-background-color, white);
+				bottom: -4px;
+				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
+				clip: rect(30px, auto, 200px, auto);
+				height: 40px;
+				position: absolute;
+				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -59,6 +88,9 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}
 			:host([padding-type="slim"]) .d2l-list-header-container {
 				min-height: 36px;
+			}
+			.d2l-list-header-extend-separator {
+				padding: 0 0.9rem;
 			}
 			d2l-selection-select-all {
 				flex: none;
@@ -93,14 +125,29 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	constructor() {
 		super();
 		this.noSelection = false;
+		this.noSticky = false;
 		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
 		this.slim = false;
+		this._extendSeparator = false;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
+		if (!parent) return;
+
+		this._extendSeparator = parent.hasAttribute('extend-separators');
 	}
 
 	render() {
+		const classes = {
+			'd2l-list-header-container': true,
+			'd2l-list-header-extend-separator': this._extendSeparator
+		};
 		return html`
-			<div class="d2l-list-header-container">
+			<div class="${classMap(classes)}">
 				${this.noSelection ? null : html`
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
@@ -114,6 +161,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>
 			</div>
+			${!this.noSticky ? html`<div class="d2l-list-header-shadow"></div>` : null}
 		`;
 	}
 

@@ -1,12 +1,13 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePolyfillMixin(superclass)) {
+export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(FocusVisiblePolyfillMixin(superclass))) {
 
 	static get properties() {
 		return {
@@ -165,6 +166,8 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 		`;
 	}
 
+	static focusElementSelector = '.d2l-switch-container';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -210,11 +213,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			${tooltip}
 			${textPosition === 'end' ? text : ''}
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-switch-container');
-		if (elem) elem.focus();
 	}
 
 	_handleClick() {

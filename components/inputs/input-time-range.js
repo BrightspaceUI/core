@@ -4,6 +4,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISOTime, formatTimeInISO, getAdjustedTime, getDateFromISOTime, isValidTime, parseISOTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -38,12 +39,12 @@ function getValidISOTimeAtInterval(val, timeInterval) {
  * @fires change - Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`).
  */
 
-class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
+class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Automatically shifts end time when start time changes to keep same range
+			 * ADVANCED: Automatically shifts end time when start time changes to keep same range
 			 * @type {boolean}
 			 */
 			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
@@ -64,7 +65,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
-			 * Indicates if the end dropdown is open
+			 * ADVANCED: Indicates if the end dropdown is open
 			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
@@ -105,7 +106,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Indicates if the start dropdown is open
+			 * ADVANCED: Indicates if the start dropdown is open
 			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
@@ -135,6 +136,8 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			}
 		`];
 	}
+
+	static focusElementSelector = 'd2l-input-time';
 
 	constructor() {
 		super();
@@ -300,11 +303,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				this.requestValidate(true);
 			}
 		});
-	}
-
-	focus() {
-		const input = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-time');
-		if (input) input.focus();
 	}
 
 	async validate() {

@@ -5,6 +5,7 @@ import '../tooltip/tooltip.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateTimeInISO, getAdjustedTime, getDateFromISODateTime, getDateNoConversion, parseISODateTime } from '../../helpers/dateTime.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -63,12 +64,12 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  * @slot end - Optional content that would appear below the end input-date-time
  * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
-class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
+class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
+			 * ADVANCED: Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
 			 * @type {boolean}
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
@@ -89,7 +90,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
-			 * Indicates if the end date or time dropdown is open
+			 * ADVANCED: Indicates if the end date or time dropdown is open
 			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
@@ -140,7 +141,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Indicates if the start date or time dropdown is open
+			 * ADVANCED: Indicates if the start date or time dropdown is open
 			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
@@ -170,6 +171,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		`];
 	}
+
+	static focusElementSelector = 'd2l-input-date-time';
 
 	constructor() {
 		super();
@@ -305,11 +308,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				this.requestValidate(true);
 			}
 		});
-	}
-
-	focus() {
-		const input = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date-time');
-		if (input) input.focus();
 	}
 
 	async validate() {

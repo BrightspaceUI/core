@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -56,7 +57,7 @@ export const checkboxStyles = css`
  * @slot - Checkbox information (e.g., text)
  * @fires change - Dispatched when the checkbox's state changes
  */
-class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
+class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -163,6 +164,8 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 		];
 	}
 
+	static focusElementSelector = 'input.d2l-input-checkbox';
+
 	constructor() {
 		super();
 		this.checked = false;
@@ -203,11 +206,6 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 			</label>
 			${offscreenContainer}
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('input.d2l-input-checkbox');
-		if (elem) elem.focus();
 	}
 
 	simulateClick() {

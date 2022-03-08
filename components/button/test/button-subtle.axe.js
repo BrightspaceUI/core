@@ -20,7 +20,7 @@ describe('d2l-button-subtle', () => {
 
 	it('normal + focused', async() => {
 		const el = await fixture(html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>`);
-		setTimeout(() => el.shadowRoot.querySelector('button').focus());
+		setTimeout(() => el.focus());
 		await oneEvent(el, 'focus');
 		await expect(el).to.be.accessible();
 	});
@@ -37,7 +37,7 @@ describe('d2l-button-subtle', () => {
 
 	it('icon + focused', async() => {
 		const el = await fixture(html`<d2l-button-subtle text="Subtle Button with Icon" icon="tier1:gear"></d2l-button-subtle>`);
-		setTimeout(() => el.shadowRoot.querySelector('button').focus());
+		setTimeout(() => el.focus());
 		await oneEvent(el, 'focus');
 		await expect(el).to.be.accessible();
 	});

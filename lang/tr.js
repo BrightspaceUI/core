@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.selection.action-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin.",
 	"components.selection.select-all": "Tümünü Seç",
+	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
