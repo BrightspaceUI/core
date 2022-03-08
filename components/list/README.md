@@ -372,7 +372,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ### Methods
 
 - `highlight()`: highlights the item
-- `scrollTo()`: scrolls to the item
+- `scrollToItem()`: scrolls to the item
 - `scrollToAndHighlight()`: scrolls to the item and then highlights it
 
 ### Events
