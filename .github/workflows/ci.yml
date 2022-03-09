@@ -37,6 +37,8 @@ jobs:
           npx playwright install-deps
       - name: Build
         run: npm run build
+      - name: Validate Translations
+        run: npm run test:translations
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests

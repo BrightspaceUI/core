@@ -2,7 +2,7 @@ import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 

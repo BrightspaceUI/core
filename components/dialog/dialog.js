@@ -9,7 +9,7 @@ import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');

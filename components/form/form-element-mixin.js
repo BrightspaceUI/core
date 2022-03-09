@@ -1,5 +1,5 @@
 import { isCustomFormElement } from './form-helper.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 export class FormElementValidityState {
 

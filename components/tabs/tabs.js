@@ -9,7 +9,7 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

@@ -4,7 +4,7 @@ import '../link/link.js';
 import { isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
 
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {

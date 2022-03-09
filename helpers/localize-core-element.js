@@ -4,7 +4,7 @@ export const LocalizeCoreElement = superclass => class extends LocalizeDynamicMi
 
 	static get localizeConfig() {
 		return {
-			importFunc: async lang => (await import(`./${lang}.js`)).default
+			importFunc: async lang => (await import(`../lang/${lang}.js`)).default
 		};
 	}
 

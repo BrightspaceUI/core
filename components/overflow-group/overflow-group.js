@@ -12,7 +12,7 @@ import '../menu/menu-item-separator.js';
 import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

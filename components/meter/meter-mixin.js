@@ -1,5 +1,5 @@
 import { formatPercent } from '@brightspace-ui/intl/lib/number.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 export const MeterMixin = superclass => class extends LocalizeCoreElement(superclass) {
 

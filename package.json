@@ -17,10 +17,11 @@
     "lint:lit": "lit-analyzer \"{components,controllers,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict --rules.no-unknown-tag-name off",
     "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --node-resolve --watch --open",
-    "test": "npm run lint && npm run test:headless && npm run test:axe",
+    "test": "npm run lint && npm run test:translations && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group default",
-    "test:headless:watch": "web-test-runner --group default --watch"
+    "test:headless:watch": "web-test-runner --group default --watch",
+    "test:translations": "mfv -e -s en -p ./lang/"
   },
   "files": [
     "custom-elements.json",
@@ -57,6 +58,7 @@
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
     "lit-analyzer": "^1",
+    "messageformat-validator": "^2",
     "node-sass": "^7",
     "sinon": "^13",
     "stylelint": "^14"
