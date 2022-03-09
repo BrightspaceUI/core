@@ -30,8 +30,7 @@ describe('d2l-button-icon', () => {
 		await expect(el).to.be.accessible();
 
 		const btnElem = el.shadowRoot.querySelector('button');
-		const description = el.shadowRoot.querySelector('.d2l-offscreen');
-		expect(btnElem.getAttribute('aria-describedby')).to.equal(description.id);
+		const description = el.shadowRoot.querySelector(`#${btnElem.getAttribute('aria-describedby')}`);
 		expect(description.innerText).to.equal('secondary');
 	});
 
