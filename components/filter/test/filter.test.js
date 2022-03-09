@@ -68,7 +68,7 @@ describe('d2l-filter', () => {
 			await elem.updateComplete;
 
 			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-			expect(infoMessage.textContent).to.include('0 search results');
+			expect(infoMessage.textContent).to.include('No search results');
 			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.false;
 		});
 
@@ -652,12 +652,12 @@ describe('d2l-filter', () => {
 
 		describe('Opener Count Format', () => {
 			[
-				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', description: 'Filter by: Role. 0 filters applied.' },
+				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', description: 'Filter by: Role. No filters applied.' },
 				{ name: 'Single Dim - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (1)', description: 'Filter by: Role. 1 filter applied.' },
 				{ name: 'Single Dim - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (5)', description: 'Filter by: Role. 5 filters applied.' },
 				{ name: 'Single Dim - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (99)', description: 'Filter by: Role. 99 filters applied.' },
 				{ name: 'Single Dim - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (99+)', description: 'Filter by: Role. 100 filters applied.' },
-				{ name: 'Multiple Dims - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', description: 'Filters. 0 filters applied.' },
+				{ name: 'Multiple Dims - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', description: 'Filters. No filters applied.' },
 				{ name: 'Multiple Dims - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (1)', description: 'Filters. 1 filter applied.' },
 				{ name: 'Multiple Dims - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (5)', description: 'Filters. 5 filters applied.' },
 				{ name: 'Multiple Dims - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (99)', description: 'Filters. 99 filters applied.' },
@@ -678,7 +678,7 @@ describe('d2l-filter', () => {
 
 		describe('Menu Item Format', () => {
 			[
-				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '0', description: '0 filters applied.' },
+				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '0', description: 'No filters applied.' },
 				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1 }, { key: 2 }], text: '1', description: '1 filter applied.' },
 				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5 }, { key: 2 }], text: '5', description: '5 filters applied.' },
 				{ name: '99 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 99 }, { key: 2 }], text: '99', description: '99 filters applied.' },
