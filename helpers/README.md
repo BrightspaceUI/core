@@ -76,6 +76,12 @@ DOM helper functions to make your life easier.
 ```js
 import { ... } from '@brightspace-ui/core/helpers/dom.js';
 
+// adds a value to an id-list attribute (e.g. aria-labelledby)
+elemIdListAdd(node, attrName, value);
+
+// removes a value from an id-list attribute (e.g. aria-labelledby)
+elemIdListRemoves(node, attrName, value);
+
 // returns null or the closest ancestor that fulfills the specified predicate fxn
 findComposedAncestor(node, predicate);
 
