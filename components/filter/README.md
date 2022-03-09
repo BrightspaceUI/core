@@ -208,9 +208,9 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 **Coming Soon!**
 
-## Filter Dimension: Tags [d2l-filter-dimension-tags]
+## Tags for Applied Filters [d2l-filter-tags]
 
-**Coming Soon!**
+**This is in progress now! Stable API expected by May. **
 
 <!-- docs: start hidden content -->
 ## Future Improvements
