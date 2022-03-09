@@ -221,7 +221,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			const startTop = mediaQueryList.matches ? 42 : 0;
 			topOverride = iframeTop + startTop;
 		} else if (window.innerWidth <= 615 || (window.innerWidth <= 900 && window.innerHeight <= 420)) {
-			heightOverride.height = `${window.innerHeight - 42 - 2}px`;
+			heightOverride.height = `${window.innerHeight - 42 - 2}px`; // render full window height - 42px top padding - 2px border
 			heightOverride.minHeight = heightOverride.height;
 		}
 
