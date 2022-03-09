@@ -51,7 +51,7 @@ The `d2l-button` element can be used just like the native button element, but al
 
 | Property | Type | Description |
 |--|--|--|
-| `description` | String | A description to be added to the `button` for accessibility |
+| `description` | String | A description to be added to the `button` for accessibility for additional context |
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
 | `primary` | Boolean | Styles the button as a primary button |
@@ -130,6 +130,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 | Property | Type | Description |
 |--|--|--|
+| `description` | String | A description to be added to the `button` for accessibility for additional context |
 | `icon` | String, required | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `text` | String, required | Accessible text for the buton |
 | `disabled` | Boolean | Disables the button |
@@ -148,6 +149,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
+| `description` | Use when text on button does not provide enough context. |
 
 ## Floating Buttons [d2l-floating-buttons]
 

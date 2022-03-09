@@ -42,4 +42,14 @@ describe('d2l-button-subtle', () => {
 		await expect(el).to.be.accessible();
 	});
 
+	it('description', async() => {
+		const el = await fixture(html`<d2l-button-subtle text="primary" description="secondary"></d2l-button-subtle>`);
+		await expect(el).to.be.accessible();
+
+		const btnElem = el.shadowRoot.querySelector('button');
+		const description = el.shadowRoot.querySelector('.d2l-offscreen');
+		expect(btnElem.getAttribute('aria-describedby')).to.equal(description.id);
+		expect(description.innerText).to.equal('secondary');
+	});
+
 });
