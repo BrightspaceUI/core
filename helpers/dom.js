@@ -45,10 +45,10 @@ export function elemIdListRemove(elem, attrName, value) {
 	const index = parts.indexOf(value);
 	if (index === -1) return;
 
-	parts.splice(index, 1);
-	if (parts.length === 0) {
+	if (parts.length === 1) {
 		elem.removeAttribute(attrName);
 	} else {
+		parts.splice(index, 1);
 		elem.setAttribute(attrName, parts.join(' '));
 	}
 
