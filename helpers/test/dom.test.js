@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import {
 	cssEscape,
+	elemIdListAdd,
+	elemIdListRemove,
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
@@ -118,6 +120,108 @@ describe('dom', () => {
 		it('should escape $ using polyfill', () => {
 			const val = cssEscape('foo$bar$blah');
 			expect(val).to.equal('foo\\$bar\\$blah');
+		});
+
+	});
+
+	describe('elemIdList', () => {
+
+		describe('add', () => {
+
+			[
+				undefined,
+				null,
+				{}
+			].forEach((input) => {
+				it(`should throw TypeError for "${input}" elem`, () => {
+					expect(() => {
+						elemIdListAdd(input, 'foo', 'bar');
+					}).to.throw(TypeError, 'elemIdListAdd: "elem" must be a valid DOM Element');
+				});
+				it(`should throw TypeError for "${input}" attrName`, async() => {
+					const elem = await fixture(html`<div></div>`);
+					expect(() => {
+						elemIdListAdd(elem, input, 'bar');
+					}).to.throw(TypeError, 'elemIdListAdd: "attrName" must be a valid string');
+				});
+				it(`should throw TypeError for "${input}" value`, async() => {
+					const elem = await fixture(html`<div></div>`);
+					expect(() => {
+						elemIdListAdd(elem, 'foo', input);
+					}).to.throw(TypeError, 'elemIdListAdd: "value" must be a valid ID string');
+				});
+			});
+
+			it('should add to an empty attribute', async() => {
+				const elem = await fixture(html`<div></div>`);
+				elemIdListAdd(elem, 'aria-labelledby', 'one');
+				expect(elem.getAttribute('aria-labelledby')).to.equal('one');
+			});
+
+			it('should add to an existing attribute', async() => {
+				const elem = await fixture(html`<div aria-labelledby="one"></div>`);
+				elemIdListAdd(elem, 'aria-labelledby', 'two');
+				expect(elem.getAttribute('aria-labelledby')).to.equal('one two');
+			});
+
+			it('should do nothing if value already exists', async() => {
+				const elem = await fixture(html`<div aria-labelledby="one"></div>`);
+				elemIdListAdd(elem, 'aria-labelledby', 'one');
+				expect(elem.getAttribute('aria-labelledby')).to.equal('one');
+			});
+
+		});
+
+		describe('remove', () => {
+
+			[
+				undefined,
+				null,
+				{}
+			].forEach((input) => {
+				it(`should throw TypeError for "${input}" elem`, () => {
+					expect(() => {
+						elemIdListRemove(input, 'foo', 'bar');
+					}).to.throw(TypeError, 'elemIdListRemove: "elem" must be a valid DOM Element');
+				});
+				it(`should throw TypeError for "${input}" attrName`, async() => {
+					const elem = await fixture(html`<div></div>`);
+					expect(() => {
+						elemIdListRemove(elem, input, 'bar');
+					}).to.throw(TypeError, 'elemIdListRemove: "attrName" must be a valid string');
+				});
+				it(`should throw TypeError for "${input}" value`, async() => {
+					const elem = await fixture(html`<div></div>`);
+					expect(() => {
+						elemIdListRemove(elem, 'foo', input);
+					}).to.throw(TypeError, 'elemIdListRemove: "value" must be a valid ID string');
+				});
+			});
+
+			it('should do nothing to an empty attribute', async() => {
+				const elem = await fixture(html`<div></div>`);
+				elemIdListRemove(elem, 'aria-labelledby', 'one');
+				expect(elem.hasAttribute('aria-labelledby')).to.be.false;
+			});
+
+			it('should remove from an existing attribute with multiple values', async() => {
+				const elem = await fixture(html`<div aria-labelledby="one two"></div>`);
+				elemIdListRemove(elem, 'aria-labelledby', 'two');
+				expect(elem.getAttribute('aria-labelledby')).to.equal('one');
+			});
+
+			it('should remove attribute if last value', async() => {
+				const elem = await fixture(html`<div aria-labelledby="one"></div>`);
+				elemIdListRemove(elem, 'aria-labelledby', 'one');
+				expect(elem.hasAttribute('aria-labelledby')).to.be.false;
+			});
+
+			it('should do nothing if value does not exist', async() => {
+				const elem = await fixture(html`<div aria-labelledby="one"></div>`);
+				elemIdListRemove(elem, 'aria-labelledby', 'two');
+				expect(elem.getAttribute('aria-labelledby')).to.equal('one');
+			});
+
 		});
 
 	});
