@@ -90,15 +90,18 @@ class Button extends ButtonMixin(LitElement) {
 
 		/** @internal */
 		this._buttonId = getUniqueId();
+		/** @internal */
+		this._describedById = getUniqueId();
 	}
 
 	render() {
 		return html`
 			<button
+				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-				aria-label="${ifDefined(this.description || this.ariaLabel)}"
+				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled && !this.disabledTooltip}"
@@ -113,6 +116,7 @@ class Button extends ButtonMixin(LitElement) {
 				type="${this._getType()}">
 				<slot></slot>
 			</button>
+			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
