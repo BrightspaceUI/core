@@ -97,6 +97,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				z-index: 10;
 			}
 			:host([_fullscreen-within]) {
+				position: fixed; /* required for Safari */
 				z-index: 1000; /* must be greater than floating workflow buttons */
 			}
 			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
