@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.selection.action-hint": "Vælg et element for at udføre denne handling.",
 	"components.selection.select-all": "Vælg alle",
+	"components.selection.select-all-items": "Vælg alle {count} elementer",
 	"components.selection.selected": "{count} valgt",
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",

@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.selection.action-hint": "Dewiswch eitem i gyflawni'r weithred hon.",
 	"components.selection.select-all": "Dewis y Cyfan",
+	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.switch.visibility": "Gwelededd",
 	"components.tabs.next": "Sgrolio Ymlaen",

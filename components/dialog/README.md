@@ -184,7 +184,7 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 
 | Property | Type | Description |
 |--|--|--|
-| `text` | String, required | The required text content for the confirmation dialog |
+| `text` | String, required | The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs. |
 | `opened` | Boolean | Whether or not the dialog is open |
 | `title-text` | String | The optional title for the confirmation dialog |
 

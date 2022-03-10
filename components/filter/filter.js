@@ -19,6 +19,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -37,7 +38,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
-class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -136,6 +137,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`];
 	}
 
+	static focusElementSelector = 'd2l-dropdown-button-subtle';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -219,11 +222,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	focus() {
-		const opener = this.shadowRoot && this.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-		if (opener) opener.focus();
-	}
-
 	getSubscriberController() {
 		return this._activeFiltersSubscribers;
 	}
@@ -246,7 +244,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		let dimensionHTML;
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				dimensionHTML = html`<div aria-live="polite">${this._createSetDimension(dimension)}</div>`;
+				dimensionHTML = html`
+				<div aria-live="polite" class="d2l-filter-container">
+					${this._createSetDimension(dimension)}
+				</div>`;
 				break;
 		}
 
@@ -509,7 +510,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		let shouldUpdate = false,
 			shouldSearch = false,
-			shouldRecount = false;
+			shouldRecount = false,
+			shouldResizeDropdown = false;
 		changes.forEach((newValue, prop) => {
 			if (toUpdate[prop] === newValue) return;
 
@@ -528,13 +530,23 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			} else if (prop === 'values') {
 				if (dimension.searchValue) shouldSearch = true;
 				shouldRecount = true;
+				shouldResizeDropdown = true;
 				this._activeFiltersSubscribers.updateSubscribers();
+			} else if (prop === 'loading') {
+				shouldResizeDropdown = true;
 			}
 		});
 
 		if (shouldSearch) this._performDimensionSearch(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
-		if (shouldUpdate) this.requestUpdate();
+		if (shouldUpdate)  this.requestUpdate();
+		if (shouldResizeDropdown) {
+			const singleDimension = this._dimensions.length === 1;
+			if (singleDimension && this.opened) {
+				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+				dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+			}
+		}
 	}
 
 	_handleDimensionHide() {

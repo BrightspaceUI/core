@@ -311,6 +311,8 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 
 | Property | Type | Description |
 |---|---|---|
+| `no-selection` | Boolean | Whether to render select-all and selection summary |
+| `no-sticky` | Boolean | Disables sticky positioning for the header |
 | `padding-type` | String | Header whitespace (`normal` (default), `slim`) |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
@@ -366,6 +368,12 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
+
+### Methods
+
+- `highlight()`: highlights the item
+- `scrollToItem()`: scrolls to the item
+- `scrollToAndHighlight()`: scrolls to the item and then highlights it
 
 ### Events
 

@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.229.0",
+  "version": "1.237.3",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -20,8 +20,7 @@
     "test": "npm run lint && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group default",
-    "test:headless:watch": "web-test-runner --group default --watch",
-    "test:perf": "web-test-runner --group perf"
+    "test:headless:watch": "web-test-runner --group default --watch"
   },
   "files": [
     "custom-elements.json",
@@ -44,7 +43,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@brightspace-ui/stylelint-config": "^0.3",
+    "@brightspace-ui/stylelint-config": "^0.4",
     "@open-wc/testing": "^3",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
@@ -60,8 +59,7 @@
     "lit-analyzer": "^1",
     "node-sass": "^7",
     "sinon": "^13",
-    "stylelint": "^14",
-    "web-test-runner-performance": "^0.1"
+    "stylelint": "^14"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",

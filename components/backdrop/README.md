@@ -1,6 +1,8 @@
-# Backdrop [d2l-backdrop]
+# Backdrops
 
 The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
+
+## Backdrop [d2l-backdrop]
 
 <!-- docs: demo live name:d2l-backdrop size:small -->
 ```html

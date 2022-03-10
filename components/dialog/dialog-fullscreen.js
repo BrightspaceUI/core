@@ -84,6 +84,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					width: auto;
 				}
 
+				dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
+				div.d2l-dialog-outer.d2l-dialog-fullscreen-within {
+					/* no margins when there is a fullscreen element within */
+					margin: 0;
+				}
+
 				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
 				:host(:not([in-iframe])) div.d2l-dialog-outer {
 					height: calc(100% - 3rem);
@@ -170,12 +176,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
 				}
-
-				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
-				:host(:not([in-iframe])) div.d2l-dialog-outer {
-					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-				}
 			}
 		`];
 	}
@@ -220,6 +220,9 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				: 0;
 			const startTop = mediaQueryList.matches ? 42 : 0;
 			topOverride = iframeTop + startTop;
+		} else if (window.innerWidth <= 615 || (window.innerWidth <= 900 && window.innerHeight <= 420)) {
+			heightOverride.height = `${window.innerHeight - 42 - 2}px`; // render full window height - 42px top padding - 2px border
+			heightOverride.minHeight = heightOverride.height;
 		}
 
 		let loading = null;

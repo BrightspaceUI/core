@@ -7,6 +7,53 @@ export function cssEscape(val) {
 	return val;
 }
 
+export function elemIdListAdd(elem, attrName, value) {
+
+	if (elem === undefined || elem === null || !elem.getAttribute || !elem.setAttribute) {
+		throw new TypeError('elemIdListAdd: "elem" must be a valid DOM Element');
+	}
+	if (typeof(attrName) !== 'string') {
+		throw new TypeError('elemIdListAdd: "attrName" must be a valid string');
+	}
+	if (typeof(value) !== 'string') {
+		throw new TypeError('elemIdListAdd: "value" must be a valid ID string');
+	}
+
+	const parts = elem.hasAttribute(attrName) ? elem.getAttribute(attrName).split(' ') : [];
+	if (parts.indexOf(value) > -1) return;
+
+	parts.push(value);
+	elem.setAttribute(attrName, parts.join(' '));
+
+}
+
+export function elemIdListRemove(elem, attrName, value) {
+
+	if (elem === undefined || elem === null || !elem.getAttribute || !elem.setAttribute) {
+		throw new TypeError('elemIdListRemove: "elem" must be a valid DOM Element');
+	}
+	if (typeof(attrName) !== 'string') {
+		throw new TypeError('elemIdListRemove: "attrName" must be a valid string');
+	}
+	if (typeof(value) !== 'string') {
+		throw new TypeError('elemIdListRemove: "value" must be a valid ID string');
+	}
+
+	const existingValue = elem.getAttribute(attrName) || '';
+
+	const parts = existingValue.split(' ');
+	const index = parts.indexOf(value);
+	if (index === -1) return;
+
+	if (parts.length === 1) {
+		elem.removeAttribute(attrName);
+	} else {
+		parts.splice(index, 1);
+		elem.setAttribute(attrName, parts.join(' '));
+	}
+
+}
+
 export function findComposedAncestor(node, predicate) {
 	while (node) {
 		if (predicate(node) === true) {

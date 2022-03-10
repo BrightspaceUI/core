@@ -542,7 +542,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 			main {
 				flex: 2 0 0;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				transition: none;
 			}
@@ -570,7 +569,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			aside {
 				height: 100%;
 				min-width: ${desktopMinSize}px;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				overflow-y: scroll;
 			}
@@ -681,7 +679,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
 			}
 			header {
-				z-index: 2; /* ensures the header box-shadow is over main areas with background colours set */
+				z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
 			}
 
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,

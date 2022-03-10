@@ -1,6 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { cssEscape, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { cssEscape, elemIdListAdd, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -105,7 +105,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			align: { type: String, reflect: true },
 			/**
-			 * Announce the tooltip innerText when applicable (for use with custom elements)
+			 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
 			 * @type {boolean}
 			 */
 			announced: { type: Boolean },
@@ -114,7 +114,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			boundary: { type: Object },
 			/**
-			 * Causes the tooltip to close when its target is clicked
+			 * ADVANCED: Causes the tooltip to close when its target is clicked
 			 * @type {boolean}
 			 */
 			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
@@ -124,7 +124,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			delay: { type: Number },
 			/**
-			 * Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
+			 * ADVANCED: Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
 			 * @type {boolean}
 			 */
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
@@ -134,12 +134,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			for: { type: String },
 			/**
-			 * Force the tooltip to stay open as long as it remains "true"
+			 * ADVANCED: Force the tooltip to stay open as long as it remains "true"
 			 * @type {boolean}
 			 */
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			/**
-			 * Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
+			 * ADVANCED: Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
 			 * @type {'label'|'descriptor'}
 			 */
 			forType: { type: String, attribute: 'for-type' },
@@ -149,7 +149,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
-			 * Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
 			 */
 			position: { type: String },
@@ -844,9 +844,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
-				this._target.setAttribute('aria-labelledby', this.id);
+				elemIdListAdd(this._target, 'aria-labelledby', this.id);
 			} else if (!this.announced || isInteractive) {
-				this._target.setAttribute('aria-describedby', this.id);
+				elemIdListAdd(this._target, 'aria-describedby', this.id);
 			}
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
 				console.warn(

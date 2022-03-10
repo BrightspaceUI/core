@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -15,7 +16,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
  */
-class Card extends RtlMixin(LitElement) {
+class Card extends FocusMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -234,6 +235,8 @@ class Card extends RtlMixin(LitElement) {
 		`];
 	}
 
+	static focusElementSelector = 'a';
+
 	constructor() {
 		super();
 		this.alignCenter = false;
@@ -304,12 +307,6 @@ class Card extends RtlMixin(LitElement) {
 				<div class="${classMap(footerClass)}"><slot name="footer"></slot></div>
 			</div>
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('a');
-		if (!elem) return;
-		elem.focus();
 	}
 
 	_onBadgeResize(entries) {

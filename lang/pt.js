@@ -90,6 +90,7 @@ export default {
 	"components.overflow-group.moreActions": "Mais ações",
 	"components.selection.action-hint": "Selecione um item para realizar esta ação.",
 	"components.selection.select-all": "Selecionar tudo",
+	"components.selection.select-all-items": "Selecione todos os {count} itens",
 	"components.selection.selected": "{count} selecionados",
 	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
