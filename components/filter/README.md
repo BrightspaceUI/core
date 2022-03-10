@@ -210,7 +210,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 ## Tags for Applied Filters [d2l-filter-tags]
 
-**This is in progress now! Stable API expected by May. **
+**This is in progress now! Stable API expected by May.**
 
 <!-- docs: start hidden content -->
 ## Future Improvements
