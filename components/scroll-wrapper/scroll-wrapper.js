@@ -53,11 +53,11 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
 				outline: none;
 				overflow-x: auto;
+				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
 			.d2l-scroll-wrapper-container.focus-visible {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
