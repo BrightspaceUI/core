@@ -172,8 +172,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	checkScrollbar() {
 		if (!this._container) return;
-		const hScrollbar = Math.abs(this._container.offsetWidth - this._container.scrollWidth);
-		this._hScrollbar = (hScrollbar > 0);
+		this._hScrollbar = this._container.offsetWidth !== this._container.scrollWidth;
 		this._checkScrollThresholds();
 	}
 
