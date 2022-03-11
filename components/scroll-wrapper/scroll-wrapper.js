@@ -26,14 +26,6 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				attribute: 'hide-actions',
 				type: Boolean
 			},
-			/**
-			 * Set the vertical scrolling behavior of the wrapper
-			 * @type {String}
-			 */
-			overflowY: {
-				attribute: 'overflow-y',
-				type: String
-			},
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
 				reflect: true,
@@ -61,23 +53,11 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
 				outline: none;
 				overflow-x: auto;
-			}
-			:host([overflow-y="hidden"]) .d2l-scroll-wrapper-container {
-				overflow-y: hidden;
-			}
-			:host([overflow-y="clip"]) .d2l-scroll-wrapper-container {
-				overflow-y: clip;
-			}
-			:host([overflow-y="scroll"]) .d2l-scroll-wrapper-container {
-				overflow-y: scroll;
-			}
-			:host([overflow-y="auto"]) .d2l-scroll-wrapper-container {
-				overflow-y: auto;
+				overflow-y: var(--d2l-scroll-wrapper-overflow-y, auto);
 			}
 			.d2l-scroll-wrapper-container.focus-visible {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
@@ -161,7 +141,6 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.hideActions = false;
-		this.overflowY = 'visible';
 		this._container = null;
 		this._hScrollbar = true;
 		this._scrollbarLeft = false;
