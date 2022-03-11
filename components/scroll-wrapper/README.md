@@ -42,6 +42,6 @@ The `d2l-scroll-wrapper` element can be used to wrap content which may overflow 
 
 | Variable | Type | Description |
 |---|---|---|
-| `--d2l-scroll-wrapper-overflow-y` | [Any valid overflow-y setting](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y), defaults to `auto` | Set the `overflow-y` property of the inner scroll wrapper |
+| `--d2l-scroll-wrapper-overflow-y` | [Any valid overflow-y setting](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y), defaults to `visible` | Set the `overflow-y` property of the inner scroll wrapper |
 
 <!-- docs: end hidden content -->
