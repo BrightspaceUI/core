@@ -37,5 +37,11 @@ The `d2l-scroll-wrapper` element can be used to wrap content which may overflow 
 | Property | Type | Description |
 |---|---|---|
 | `hide-actions` | Boolean, default: `false` | Whether to hide left/right scroll buttons |
-| `overflow-y` | One of `visible`, `hidden`, `clip`, `scroll`, `auto`. default: `visible` | Set the `overflow-y` property on the inner scroll wrapper |
+
+### Variables
+
+| Variable | Type | Description |
+|---|---|---|
+| `--d2l-scroll-wrapper-overflow-y` | [Any valid overflow-y setting](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y), defaults to `auto` | Set the `overflow-y` property of the inner scroll wrapper |
+
 <!-- docs: end hidden content -->
