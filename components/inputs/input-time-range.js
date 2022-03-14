@@ -137,8 +137,6 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-time';
-
 	constructor() {
 		super();
 
@@ -176,6 +174,10 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		if (isValidTime(val)) this._startValue = (this.enforceTimeIntervals && !this._initialValues) ? getValidISOTimeAtInterval(val, this.timeInterval) : val;
 		else this._startValue = formatDateInISOTime(getDefaultTime(undefined, this.enforceTimeIntervals, this.timeInterval));
 		this.requestUpdate('startValue', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-time';
 	}
 
 	/** @ignore */

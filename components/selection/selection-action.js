@@ -40,7 +40,9 @@ class Action extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(ButtonM
 		`;
 	}
 
-	static focusElementSelector = 'd2l-button-subtle';
+	static get focusElementSelector() {
+		return 'd2l-button-subtle';
+	}
 
 	connectedCallback() {
 		super.connectedCallback();

@@ -74,8 +74,6 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		];
 	}
 
-	static focusElementSelector = 'd2l-input-text';
-
 	constructor() {
 		super();
 		this._lastSearchValue = '';
@@ -87,6 +85,10 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	/** @ignore */
 	get lastSearchValue() { return this._lastSearchValue; }
 	set lastSearchValue(val) {}
+
+	static get focusElementSelector() {
+		return 'd2l-input-text';
+	}
 
 	connectedCallback() {
 		super.connectedCallback();

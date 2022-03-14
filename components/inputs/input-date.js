@@ -138,8 +138,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-text';
-
 	constructor() {
 		super();
 
@@ -168,6 +166,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._shownValue = '';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-text';
 	}
 
 	/** @ignore */

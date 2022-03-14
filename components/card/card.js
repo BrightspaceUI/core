@@ -235,8 +235,6 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static focusElementSelector = 'a';
-
 	constructor() {
 		super();
 		this.alignCenter = false;
@@ -249,6 +247,10 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 		this._tooltipShowing = false;
 		this._onBadgeResize = this._onBadgeResize.bind(this);
 		this._onFooterResize = this._onFooterResize.bind(this);
+	}
+
+	static get focusElementSelector() {
+		return 'a';
 	}
 
 	firstUpdated(changedProperties) {

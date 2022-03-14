@@ -192,8 +192,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		];
 	}
 
-	static focusElementSelector = 'd2l-input-text';
-
 	constructor() {
 		super();
 		this.autofocus = false;
@@ -286,6 +284,10 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		this.value = parseFloat(val);
 		this._valueTrailingZeroes = this.value === undefined ? '' : val;
 		this._updateFormattedValue();
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-text';
 	}
 
 	/** @ignore */
