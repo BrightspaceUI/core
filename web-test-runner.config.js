@@ -5,12 +5,12 @@ function getPattern(type) {
 }
 
 export default {
-	files: /*getPattern('test')*/'components/list/test/list-item-generic-layout.test.js',
+	files: getPattern('test'),
 	nodeResolve: true,
 	groups: [
 		{
 			name: 'aXe',
-			files: /*getPattern('axe')*/'components/inputs/test/input-time-range.axe.js',
+			files: getPattern('axe'),
 			browsers: [
 				playwrightLauncher({
 					async createPage({ context }) {
