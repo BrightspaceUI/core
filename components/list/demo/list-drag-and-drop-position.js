@@ -13,7 +13,8 @@ class ListDemoDragAndDropPosition extends LitElement {
 			// below are for demonstration only
 			grid: { type: Boolean },
 			hrefs: { type: Boolean },
-			selectable: { type: Boolean }
+			selectable: { type: Boolean },
+			dragGroupId: { type: String, attribute: 'drag-group-id' }
 		};
 	}
 
@@ -67,7 +68,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 
 	render() {
 		return html`
-			<d2l-list ?grid="${this.grid}" @d2l-list-item-position-change="${this._moveItems}">
+			<d2l-list ?grid="${this.grid}" drag-group-id="${ifDefined(this.dragGroupId)}" @d2l-list-item-position-change="${this._moveItems}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"

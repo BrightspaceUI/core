@@ -765,7 +765,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_renderBottomPlacementMarker(renderTemplate) {
-		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
+		const dragState = getDragState();
+		const sourceGroupId = dragState.dragTargets[0]?._getRootList().attributes['drag-group-id']?.nodeValue;
+		const targetGroupId = this._getRootList().attributes['drag-group-id']?.nodeValue;
+		const shouldRenderMarker = sourceGroupId === targetGroupId && this._dropLocation === dropLocation.below;
+		return shouldRenderMarker ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
 	_renderDragHandle(templateMethod) {
@@ -821,6 +825,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_renderTopPlacementMarker(renderTemplate) {
-		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
+		const dragState = getDragState();
+		const sourceGroupId = dragState.dragTargets[0]?._getRootList().attributes['drag-group-id']?.nodeValue;
+		const targetGroupId = this._getRootList().attributes['drag-group-id']?.nodeValue;
+		const shouldRenderMarker = sourceGroupId === targetGroupId && this._dropLocation === dropLocation.above;
+		return shouldRenderMarker ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
 };
