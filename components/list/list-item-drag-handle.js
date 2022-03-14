@@ -6,7 +6,7 @@ import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = Object.freeze({

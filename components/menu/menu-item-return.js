@@ -1,6 +1,6 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
