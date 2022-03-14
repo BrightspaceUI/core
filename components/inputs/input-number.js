@@ -17,7 +17,8 @@ const HINT_TYPES = {
 	INTEGER: 4
 };
 
-const numberType = {
+// US137000 - prevent Lit default converter from converting undefined to 0
+const numberConverter = {
 	fromAttribute: (attr) => { return Number(attr); },
 	toAttribute:  (prop) => { return String(prop); }
 };
@@ -166,7 +167,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: numberType },
+			value: { type: numberConverter },
 			/**
 			 * @ignore
 			 */
