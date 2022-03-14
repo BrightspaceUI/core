@@ -1,6 +1,7 @@
 import '../input-number.js';
-import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, defineCE, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { LitElement } from 'lit-element/lit-element.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
@@ -32,6 +33,27 @@ function dispatchKeypressEvent(elem, key) {
 	elem.shadowRoot.querySelector('d2l-input-text').dispatchEvent(event);
 	return event;
 }
+
+const inputWrapperTag = defineCE(
+	class extends LitElement {
+		static get properties() {
+			return {
+				number: { type: Number }
+			};
+		}
+		constructor() {
+			super();
+			this.number = 1;
+
+		}
+		render() {
+			return html`<d2l-input-number
+			value="${this.number}"
+			label="label"
+			></d2l-input-number>`;
+		}
+	}
+);
 
 async function fixtureInit(f) {
 	const elem = await fixture(f);
@@ -365,6 +387,33 @@ describe('d2l-input-number', () => {
 			await aTimeout(1);
 
 			expect(fired).to.be.false;
+		});
+	});
+
+	describe('value attribute binding', () => {
+
+		[0, 1].forEach((number) => {
+			it(`setting wrapper to ${number} should set input-number value to ${number}`, async() => {
+				const inputWrapper = `<${inputWrapperTag}></${inputWrapperTag}>`;
+				const elem = await fixture(inputWrapper);
+				elem.number = number;
+				await elem.updateComplete;
+				const inputVal = elem.shadowRoot.querySelector('d2l-input-number').value;
+
+				expect(inputVal).to.equal(number);
+			});
+		});
+
+		[undefined, null].forEach((number) => {
+			it(`setting wrapper to ${number} should set input-number value to undefined`, async() => {
+				const inputWrapper = `<${inputWrapperTag}></${inputWrapperTag}>`;
+				const elem = await fixture(inputWrapper);
+				elem.number = number;
+				await elem.updateComplete;
+				const inputVal = elem.shadowRoot.querySelector('d2l-input-number').value;
+
+				expect(inputVal).to.equal(undefined);
+			});
 		});
 	});
 

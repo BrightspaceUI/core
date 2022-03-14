@@ -17,6 +17,12 @@ const HINT_TYPES = {
 	INTEGER: 4
 };
 
+// US137000 - prevent Lit default converter from converting undefined to 0
+const numberConverter = {
+	fromAttribute: (attr) => { return !attr ? undefined : Number(attr); },
+	toAttribute:  (prop) => { return String(prop); }
+};
+
 function formatValue(value, options, numDecimalDigits) {
 	if (value === undefined) return '';
 	if (numDecimalDigits > 0) {
@@ -161,7 +167,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: Number },
+			value: { type: Number, converter: numberConverter },
 			/**
 			 * @ignore
 			 */
