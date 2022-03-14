@@ -7,6 +7,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -116,7 +117,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
-class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement))) {
+class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -214,6 +215,8 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 		];
 	}
 
+	static focusElementSelector = '.d2l-input';
+
 	constructor() {
 		super();
 		this.disabled = false;
@@ -249,6 +252,11 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -347,11 +355,6 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') this.setFormValue(this.value);
 		});
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
-		if (elem) elem.focus();
 	}
 
 	getTime() {

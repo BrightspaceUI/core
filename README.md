@@ -1,3 +1,5 @@
+>  Are you a D2L employee? Use our  🎉 [Daylight Design System site](https://daylight.d2l.dev/)!
+
 # @brightspace-ui/core
 
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui/core.svg)](https://www.npmjs.org/package/@brightspace-ui/core)
@@ -64,6 +66,7 @@ npm install @brightspace-ui/core
 * Mixins
   * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
   * [AsyncContainerMixin](mixins/async-container/): manage collective async state
+  * [FocusMixin](mixins/focus-mixin.md): delegate focus to a nested element when `focus()` is called
   * [FocusVisiblePolyfillMixin](mixins/focus-visible-polyfill-mixin.md): components can use the `:focus-visible` pseudo-class polyfill
   * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
   * [LabelledMixin](mixins/labelled-mixin.md): label custom elements by referencing elements across DOM scopes

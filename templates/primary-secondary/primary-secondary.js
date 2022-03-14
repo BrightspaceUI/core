@@ -7,7 +7,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -542,7 +542,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 			main {
 				flex: 2 0 0;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				transition: none;
 			}
@@ -570,7 +569,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			aside {
 				height: 100%;
 				min-width: ${desktopMinSize}px;
-				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				overflow-y: scroll;
 			}
@@ -681,7 +679,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
 			}
 			header {
-				z-index: 2; /* ensures the header box-shadow is over main areas with background colours set */
+				z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
 			}
 
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
@@ -905,6 +903,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			resizer.disconnect();
 		}
 		this._hasConnectedResizers = false;
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {

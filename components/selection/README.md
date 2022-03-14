@@ -148,6 +148,76 @@ The `d2l-selection-action` is an optional component that provides a button for a
 | `d2l-selection-action-click` | Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected. |
 <!-- docs: end hidden content -->
 
+## Selection Action Dropdown [d2l-selection-action-dropdown]
+
+The `d2l-selection-action-dropdown` is an optional component that provides a button opener for dropdown content associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the opener should be non-interactive if nothing is selected.
+
+<!-- docs: demo live name:d2l-selection-action-dropdown autoSize:false size:medium align:baseline -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/selection/selection-action-dropdown.js';
+</script>
+<d2l-selection-action-dropdown text="Actions" requires-selection>
+  <d2l-dropdown-menu>
+    <d2l-menu label="Actions">
+      <d2l-menu-item text="Action 1"></d2l-menu-item>
+      <d2l-menu-item text="Action 2"></d2l-menu-item>
+    </d2l-menu>
+  </d2l-dropdown-menu>
+</d2l-selection-action-dropdown>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `requires-selection` | Boolean | Whether the action dropdown opener requires one or more selected items. If no items are selected, the opener will be focusable and a hint displayed in a tooltip. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
+| `text` | String, required | Text for the dropdown opener button. |
+<!-- docs: end hidden content -->
+
+## Selection Action Menu Item [d2l-selection-action-menu-item]
+
+The `d2l-selection-action-menu-item` is an optional component that is a menu item for actions associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the menu item should be non-interactive if nothing is selected. This component enables the app to define an opener that is enabled regardless of the selection state, while having a menu containing one or more menu items that `requires-selection`.
+
+<!-- docs: demo live name:d2l-selection-action-menu-item autoSize:false size:medium align:baseline -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/selection/selection-action-menu-item.js';
+</script>
+<d2l-dropdown-button-subtle text="Actions">
+	<d2l-dropdown-menu>
+		<d2l-menu label="Actions">
+			<d2l-selection-action-menu-item text="Action 1" requires-selection></d2l-selection-action-menu-item>
+			<d2l-selection-action-menu-item text="Action 2"></d2l-selection-action-menu-item>
+		</d2l-menu>
+	</d2l-dropdown-menu>
+</d2l-dropdown-button-subtle>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `requires-selection` | Boolean | Whether the action menu-item requires one or more selected items. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
+| `text` | String, required | Text to be shown for the action menu-item. |
+
+### Events
+
+| Event | Description |
+|---|---|
+| `d2l-selection-action-click` | Dispatched when the user clicks the action menu-item. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected. |
+<!-- docs: end hidden content -->
+
 ## Selection Input [d2l-selection-input]
 
 The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! Note: `d2l-list-item` already provides a selection input for selectable list items. If `d2l-selection-input` is placed within a selection control that specifies `selection-single`, then radios will be rendered instead of checkboxes.

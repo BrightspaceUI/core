@@ -18,6 +18,12 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	static get properties() {
 		return {
 			/**
+			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 * @type {string}
+			 */
+			description: { type: String },
+
+			/**
 			 * Aligns the leading edge of text if value is set to "text"
 			 * @type {'text'|''}
 			 */
@@ -146,11 +152,14 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 
 		/** @internal */
 		this._buttonId = getUniqueId();
+		/** @internal */
+		this._describedById = getUniqueId();
 	}
 
 	render() {
 		return html`
 			<button
+				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
@@ -170,6 +179,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
 		</button>
+		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}

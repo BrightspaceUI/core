@@ -1,6 +1,7 @@
 import '../input-number.js';
-import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, defineCE, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { LitElement } from 'lit-element/lit-element.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
@@ -32,6 +33,27 @@ function dispatchKeypressEvent(elem, key) {
 	elem.shadowRoot.querySelector('d2l-input-text').dispatchEvent(event);
 	return event;
 }
+
+const inputWrapperTag = defineCE(
+	class extends LitElement {
+		static get properties() {
+			return {
+				number: { type: Number }
+			};
+		}
+		constructor() {
+			super();
+			this.number = 1;
+
+		}
+		render() {
+			return html`<d2l-input-number
+			value="${this.number}"
+			label="label"
+			></d2l-input-number>`;
+		}
+	}
+);
 
 async function fixtureInit(f) {
 	const elem = await fixture(f);
@@ -368,6 +390,33 @@ describe('d2l-input-number', () => {
 		});
 	});
 
+	describe('value attribute binding', () => {
+
+		[0, 1].forEach((number) => {
+			it(`setting wrapper to ${number} should set input-number value to ${number}`, async() => {
+				const inputWrapper = `<${inputWrapperTag}></${inputWrapperTag}>`;
+				const elem = await fixture(inputWrapper);
+				elem.number = number;
+				await elem.updateComplete;
+				const inputVal = elem.shadowRoot.querySelector('d2l-input-number').value;
+
+				expect(inputVal).to.equal(number);
+			});
+		});
+
+		[undefined, null].forEach((number) => {
+			it(`setting wrapper to ${number} should set input-number value to undefined`, async() => {
+				const inputWrapper = `<${inputWrapperTag}></${inputWrapperTag}>`;
+				const elem = await fixture(inputWrapper);
+				elem.number = number;
+				await elem.updateComplete;
+				const inputVal = elem.shadowRoot.querySelector('d2l-input-number').value;
+
+				expect(inputVal).to.equal(undefined);
+			});
+		});
+	});
+
 	describe('input correction', () => {
 
 		['a', ' ', '+', '(', ')', '?'].forEach((key) => {
@@ -393,8 +442,8 @@ describe('d2l-input-number', () => {
 			expect(event.defaultPrevented).to.be.false;
 		});
 
-		it('should not suppress negative symbol at the end for "ar-SA"', async() => {
-			documentLocaleSettings.language = 'ar-SA';
+		it('should not suppress negative symbol at the end for "ar"', async() => {
+			documentLocaleSettings.language = 'ar';
 			const elem = await fixtureInit(defaultValueFixture);
 			await setCursorPosition(elem, 3);
 			const event = dispatchKeypressEvent(elem, '-');
@@ -465,7 +514,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should suppress incorrect decimal symbol "."', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixtureInit(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
 			const event = dispatchKeypressEvent(elem, '.');
 			expect(event.defaultPrevented).to.be.true;
@@ -473,7 +522,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should not suppress correct decimal symbol ","', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixtureInit(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
 			const event = dispatchKeypressEvent(elem, ',');
 			expect(event.defaultPrevented).to.be.false;
@@ -615,11 +664,18 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should handle different locales', async() => {
-			documentLocaleSettings.language = 'fr-CA';
+			documentLocaleSettings.language = 'fr';
 			const elem = await fixture(trailingZeroesFixture);
 			expect(elem.value).to.equal(2001);
 			expect(elem.valueTrailingZeroes).to.equal('2001.00');
 			expect(elem._formattedValue).to.equal('2001,00');
+		});
+
+		it('should handle 7 decimals (which in JS use scientific notation)', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" trailing-zeroes value-trailing-zeroes="0.0000005" max-fraction-digits="7"></d2l-input-number>`);
+			expect(elem.value).to.equal(0.0000005);
+			expect(elem.valueTrailingZeroes).to.equal('0.0000005');
+			expect(elem._formattedValue).to.equal('0.0000005');
 		});
 
 		[

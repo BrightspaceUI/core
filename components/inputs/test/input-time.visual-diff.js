@@ -133,6 +133,7 @@ describe('d2l-input-time', () => {
 
 		it('dropdown open top', async function() {
 			await open(page, '#dropdown');
+			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#dropdown');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
@@ -166,25 +167,10 @@ describe('d2l-input-time', () => {
 		it('dropdown open enforce-time-intervals', async function() {
 			await page.$eval('#enforce', (elem) => elem.skeleton = false);
 			await open(page, '#enforce');
+			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#enforce');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 	});
-
-	describe('mobile', () => {
-		before(async() => {
-			await page.setViewport({ width: 300, height: 1100, deviceScaleFactor: 2 });
-		});
-
-		afterEach(async() => {
-			await reset(page, '#dropdown-mobile');
-		});
-
-		it('open behavior', async function() {
-			await open(page, '#dropdown-mobile');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
-		});
-	});
-
 });

@@ -2,16 +2,17 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
-class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -73,6 +74,8 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		];
 	}
 
+	static focusElementSelector = 'd2l-input-text';
+
 	constructor() {
 		super();
 		this._lastSearchValue = '';
@@ -120,11 +123,6 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				${search}
 			</d2l-input-text>
 		`;
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-text');
-		if (elem) elem.focus();
 	}
 
 	search() {

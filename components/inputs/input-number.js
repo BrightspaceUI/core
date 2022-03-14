@@ -1,11 +1,12 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/intl/lib/number.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const HINT_TYPES = {
@@ -14,6 +15,12 @@ const HINT_TYPES = {
 	DECIMAL_INCORRECT_COMMA: 2,
 	DECIMAL_INCORRECT_PERIOD: 3,
 	INTEGER: 4
+};
+
+// US137000 - prevent Lit default converter from converting undefined to 0
+const numberConverter = {
+	fromAttribute: (attr) => { return !attr ? undefined : Number(attr); },
+	toAttribute:  (prop) => { return String(prop); }
 };
 
 function formatValue(value, options, numDecimalDigits) {
@@ -68,7 +75,7 @@ function roundPrecisely(val, maxFractionDigits) {
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
+class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -78,7 +85,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			autocomplete: { type: String },
 			/**
-			 * When set, will automatically place focus on the input
+			 * ADVANCED: When set, will automatically place focus on the input
 			 * @type {boolean}
 			 */
 			autofocus: { type: Boolean },
@@ -88,7 +95,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Hide the alert icon when input is invalid
+			 * ADVANCED: Hide the alert icon when input is invalid
 			 * @type {boolean}
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
@@ -160,7 +167,7 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: Number },
+			value: { type: Number, converter: numberConverter },
 			/**
 			 * @ignore
 			 */
@@ -184,6 +191,8 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			`
 		];
 	}
+
+	static focusElementSelector = 'd2l-input-text';
 
 	constructor() {
 		super();
@@ -264,14 +273,13 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			countDecimalDigits(this._valueTrailingZeroes, false),
 			this.maxFractionDigits
 		);
-		let valueTrailingZeroes = this.value.toString();
-		const decimalDiff = (numDecimals - countDecimalDigits(valueTrailingZeroes, false));
-		if (decimalDiff > 0) {
-			if (decimalDiff === numDecimals) {
-				valueTrailingZeroes += '.';
+		const valueTrailingZeroes = new Intl.NumberFormat(
+			'en-US',
+			{
+				minimumFractionDigits: numDecimals,
+				useGrouping: false
 			}
-			valueTrailingZeroes = valueTrailingZeroes.padEnd(valueTrailingZeroes.length + decimalDiff, '0');
-		}
+		).format(this.value);
 		return valueTrailingZeroes;
 	}
 	set valueTrailingZeroes(val) {
@@ -363,16 +371,6 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 				this.requestValidate(true);
 			}
 		});
-	}
-
-	async focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-text');
-		if (elem) {
-			elem.focus();
-		} else {
-			await this.updateComplete;
-			this.focus();
-		}
 	}
 
 	async validate() {

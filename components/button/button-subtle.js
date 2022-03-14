@@ -155,6 +155,8 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 		/** @internal */
 		this._buttonId = getUniqueId();
+		/** @internal */
+		this._describedById = getUniqueId();
 	}
 
 	render() {
@@ -162,10 +164,11 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : '';
 		return html`
 			<button
+				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-				aria-label="${ifDefined(this.description || this.ariaLabel)}"
+				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled && !this.disabledTooltip}"
@@ -182,6 +185,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 			</button>
+			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}

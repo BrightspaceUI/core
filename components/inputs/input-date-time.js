@@ -13,13 +13,14 @@ import { formatDateInISO,
 	parseISODate,
 	parseISODateTime,
 	parseISOTime } from '../../helpers/dateTime.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -40,7 +41,7 @@ function _getFormattedDefaultTime(defaultValue) {
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
  * @fires change - Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
-class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
+class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -111,6 +112,8 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			}
 		`];
 	}
+
+	static focusElementSelector = 'd2l-input-date';
 
 	constructor() {
 		super();
@@ -293,11 +296,6 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 				this._preventDefaultValidation = true;
 			}
 		});
-	}
-
-	focus() {
-		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-date');
-		if (elem) elem.focus();
 	}
 
 	async validate() {

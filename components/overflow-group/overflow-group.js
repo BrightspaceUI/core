@@ -12,7 +12,7 @@ import '../menu/menu-item-separator.js';
 import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -32,7 +32,7 @@ const OPENER_STYLE = {
 
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
-	const disabled = node.disabled;
+	const disabled = !!node.disabled;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
 		node.click();
@@ -67,11 +67,14 @@ function createMenuItemMenu(node) {
 		||  node.querySelector('d2l-dropdown-button-subtle');
 
 	const openerText = node.text || menuOpener.text;
+	const disabled = !!node.disabled;
 	const subMenu = node.querySelector('d2l-menu');
 
 	const subItems = Array.from(subMenu.children).map((node) => convertToDropdownItem(node));
 
-	return html`<d2l-menu-item text="${openerText}">
+	return html`<d2l-menu-item
+		?disabled=${disabled}
+		text="${openerText}">
 		<d2l-menu>
 			${subItems}
 		</d2l-menu>
@@ -96,8 +99,10 @@ function convertToDropdownItem(node) {
 		case 'd2l-dropdown-button-subtle':
 		case 'd2l-dropdown-context-menu':
 		case 'd2l-dropdown-more':
+		case 'd2l-selection-action-dropdown':
 			return createMenuItemMenu(node);
 		case 'd2l-menu-item':
+		case 'd2l-selection-action-menu-item':
 			// if the menu item has children treat it as a menu item menu
 			if (node.children.length > 0) {
 				return createMenuItemMenu(node);
@@ -109,6 +114,7 @@ function convertToDropdownItem(node) {
 		return createMenuItemSeparator();
 	}
 }
+
 /**
  *
  * A component that can be used to display a set of buttons, links or menus that will be put into a dropdown menu when they no longer fit on the first line of their container
@@ -173,8 +179,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	static get styles() {
-		return [offscreenStyles,
-			css`
+		return [offscreenStyles, css`
 			:host {
 				display: block;
 			}
@@ -190,40 +195,44 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				flex-wrap: wrap;
 				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
-			.d2l-overflow-group-container ::slotted(d2l-button),
-			.d2l-overflow-group-container ::slotted(d2l-button-icon),
-			.d2l-overflow-group-container ::slotted(d2l-link),
-			.d2l-overflow-group-container ::slotted(span),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
+			::slotted(d2l-button),
+			::slotted(d2l-link),
+			::slotted(span),
+			::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			::slotted(d2l-dropdown-button) {
 				margin-right: 0.6rem;
 			}
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-icon),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-link),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(span),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-more),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
+			:host([dir="rtl"]) ::slotted(d2l-button),
+			:host([dir="rtl"]) ::slotted(d2l-link),
+			:host([dir="rtl"]) ::slotted(span),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-button) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host([opener-style="subtle"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+			::slotted(d2l-button-subtle),
+			::slotted(d2l-button-icon),
+			::slotted(d2l-dropdown-button-subtle),
+			::slotted(d2l-dropdown-more),
+			::slotted(d2l-dropdown-context-menu),
+			::slotted(d2l-selection-action),
+			::slotted(d2l-selection-action-dropdown) {
 				margin-right: 0.2rem;
 			}
-			:host([opener-style="subtle"][dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+			:host([dir="rtl"]) ::slotted(d2l-button-subtle),
+			:host([dir="rtl"]) ::slotted(d2l-button-icon),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-button-subtle),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-more),
+			:host([dir="rtl"]) ::slotted(d2l-dropdown-context-menu),
+			:host([dir="rtl"]) ::slotted(d2l-selection-action),
+			:host([dir="rtl"]) ::slotted(d2l-selection-action-dropdown) {
 				margin-left: 0.2rem;
 				margin-right: 0;
 			}
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
 				display: none !important;
-			}`
-		];
+			}
+		`];
 	}
 
 	constructor() {
@@ -240,8 +249,13 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this.openerStyle = OPENER_STYLE.DEFAULT;
 		this.openerType = OPENER_TYPE.DEFAULT;
 		this._mini = this.openerType === OPENER_TYPE.ICON;
-
+		this._resizeObserver = null;
 		this._slotItems = [];
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	async firstUpdated() {
@@ -252,8 +266,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
 
-		const resizeObserver = new ResizeObserver(this._throttledResize);
-		resizeObserver.observe(this._container);
+		this._resizeObserver = new ResizeObserver(this._throttledResize);
+		this._resizeObserver.observe(this._container);
 	}
 
 	render() {

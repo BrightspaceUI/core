@@ -5,6 +5,7 @@
 	<script type="module">
 		import '../../typography/typography.js';
 		import '../selection-action.js';
+		import '../selection-action-dropdown.js';
 		import './selection-component.js';
 		import '../selection-input.js';
 		import '../selection-select-all.js';
@@ -48,6 +49,18 @@
 
 	<div class="visual-diff">
 		<d2l-selection-action id="action-requires-selection" text="action" requires-selection></d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-action-dropdown id="dropdown-text" text="action"></d2l-test-selection-dropdown>
+	</div>
+
+	<div class="visual-diff" id="dropdown-disabled-container" style="height: 100px;">
+		<d2l-selection-action-dropdown id="dropdown-disabled" text="action" disabled></d2l-test-selection-dropdown>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-action-dropdown id="dropdown-requires-selection" text="action" requires-selection></d2l-test-selection-dropdown>
 	</div>
 
 	<div class="visual-diff">
@@ -112,13 +125,15 @@
 		<d2l-selection-summary id="summary-no-selection-text" no-selection-text="custom no selection text"></d2l-selection-summary>
 	</div>
 
-	<div class="visual-diff">
+	<div class="visual-diff" style="width: 600px;">
 		<d2l-test-selection id="mixin-multiple-none-selected">
 			<div style="align-items: center; display: flex;">
 				<div style="flex: auto;">
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Dropdown 1" requires-selection></d2l-selection-action-dropdown>
+					<d2l-selection-action-dropdown text="Dropdown 2"></d2l-selection-action-dropdown>
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>
@@ -130,13 +145,15 @@
 		</d2l-test-selection>
 	</div>
 
-	<div class="visual-diff">
+	<div class="visual-diff" style="width: 600px;">
 		<d2l-test-selection id="mixin-multiple-some-selected">
 			<div style="align-items: center; display: flex;">
 				<div style="flex: auto;">
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Dropdown 1" requires-selection></d2l-selection-action-dropdown>
+					<d2l-selection-action-dropdown text="Dropdown 2"></d2l-selection-action-dropdown>
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>
@@ -148,13 +165,15 @@
 		</d2l-test-selection>
 	</div>
 
-	<div class="visual-diff">
+	<div class="visual-diff" style="width: 600px;">
 		<d2l-test-selection id="mixin-multiple-all-selected">
 			<div style="align-items: center; display: flex;">
 				<div style="flex: auto;">
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Dropdown 1" requires-selection></d2l-selection-action-dropdown>
+					<d2l-selection-action-dropdown text="Dropdown 2"></d2l-selection-action-dropdown>
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>
@@ -166,13 +185,15 @@
 		</d2l-test-selection>
 	</div>
 
-	<div class="visual-diff">
+	<div class="visual-diff" style="width: 600px;">
 		<d2l-test-selection id="mixin-single-none-selected" selection-single>
 			<div style="align-items: center; display: flex;">
 				<div style="flex: auto;">
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Dropdown 1" requires-selection></d2l-selection-action-dropdown>
+					<d2l-selection-action-dropdown text="Dropdown 2"></d2l-selection-action-dropdown>
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>
@@ -184,13 +205,15 @@
 		</d2l-test-selection>
 	</div>
 
-	<div class="visual-diff">
+	<div class="visual-diff" style="width: 600px;">
 		<d2l-test-selection id="mixin-single-one-selected" selection-single>
 			<div style="align-items: center; display: flex;">
 				<div style="flex: auto;">
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Dropdown 1" requires-selection></d2l-selection-action-dropdown>
+					<d2l-selection-action-dropdown text="Dropdown 2"></d2l-selection-action-dropdown>
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>

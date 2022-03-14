@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.229.0",
+  "version": "1.242.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -17,11 +17,11 @@
     "lint:lit": "lit-analyzer \"{components,controllers,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict --rules.no-unknown-tag-name off",
     "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --node-resolve --watch --open",
-    "test": "npm run lint && npm run test:headless && npm run test:axe",
+    "test": "npm run lint && npm run test:translations && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group default",
     "test:headless:watch": "web-test-runner --group default --watch",
-    "test:perf": "web-test-runner --group perf"
+    "test:translations": "mfv -e -s en -p ./lang/"
   },
   "files": [
     "custom-elements.json",
@@ -44,7 +44,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@brightspace-ui/stylelint-config": "^0.3",
+    "@brightspace-ui/stylelint-config": "^0.4",
     "@open-wc/testing": "^3",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
@@ -58,10 +58,10 @@
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
     "lit-analyzer": "^1",
+    "messageformat-validator": "^2",
     "node-sass": "^7",
     "sinon": "^13",
-    "stylelint": "^14",
-    "web-test-runner-performance": "^0.1"
+    "stylelint": "^14"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",

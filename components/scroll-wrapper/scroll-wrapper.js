@@ -53,11 +53,11 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
 				outline: none;
 				overflow-x: auto;
+				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
 			.d2l-scroll-wrapper-container.focus-visible {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
@@ -143,14 +143,21 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 		this.hideActions = false;
 		this._container = null;
 		this._hScrollbar = true;
+		this._resizeObserver = null;
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._container = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar())).observe(this._container);
+		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
+		this._resizeObserver.observe(this._container);
 	}
 
 	render() {
@@ -172,8 +179,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	checkScrollbar() {
 		if (!this._container) return;
-		const hScrollbar = Math.abs(this._container.offsetWidth - this._container.scrollWidth);
-		this._hScrollbar = (hScrollbar > 0);
+		this._hScrollbar = this._container.offsetWidth !== this._container.scrollWidth;
 		this._checkScrollThresholds();
 	}
 

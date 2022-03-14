@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from '../button-mixin.js';
 
@@ -46,17 +46,6 @@ describe('ButtonMixin', () => {
 		it('should stop propagation of click events if button is disabled with disabled-tooltip', async() => {
 			const el = await fixture(`<${tagName} disabled disabled-tooltip="tooltip text"></${tagName}`);
 			expect(() => el.click()).to.not.throw();
-		});
-
-	});
-
-	describe('focus management', () => {
-
-		it('should delegate focus to button', async() => {
-			const el = await fixture(`<${tagName}></${tagName}`);
-			const buttonEl = el.shadowRoot.querySelector('button');
-			setTimeout(() => el.focus());
-			await oneEvent(buttonEl, 'focus');
 		});
 
 	});

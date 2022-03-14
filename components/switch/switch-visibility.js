@@ -1,6 +1,6 @@
 import '../icons/icon.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 
 /**

@@ -8,11 +8,12 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -27,7 +28,7 @@ export function formatISODateInUserCalDescriptor(val) {
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
  * @fires change - Dispatched when there is a change to selected date. `value` corresponds to the selected value and is formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
-class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
+class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -37,7 +38,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
+			 * ADVANCED: Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
 			 * @type {string}
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
@@ -137,6 +138,8 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		`];
 	}
 
+	static focusElementSelector = 'd2l-input-text';
+
 	constructor() {
 		super();
 
@@ -181,6 +184,12 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			}
 		}
 		return super.validationMessage;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
+		if (this._hiddenCalendarResizeObserver) this._hiddenCalendarResizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -329,10 +338,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 				if (this.opened) this._open();
 			}
 		});
-	}
-
-	focus() {
-		if (this._textInput) this._textInput.focus();
 	}
 
 	async validate() {

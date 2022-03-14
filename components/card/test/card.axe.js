@@ -1,5 +1,5 @@
 import '../card.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 describe('d2l-card', () => {
 
@@ -20,7 +20,8 @@ describe('d2l-card', () => {
 
 	it('default link + focused', async() => {
 		const elem = await fixture(html`<d2l-card text="Link Text" href="https://d2l.com"><div slot="content">Content</div></d2l-card>`);
-		elem.focus();
+		setTimeout(() => elem.focus());
+		await oneEvent(elem, 'focus');
 		await expect(elem).to.be.accessible();
 	});
 
@@ -31,7 +32,8 @@ describe('d2l-card', () => {
 
 	it('subtle link + focused', async() => {
 		const elem = await fixture(html`<d2l-card subtle text="Link Text" href="https://d2l.com"><div slot="content">Content</div></d2l-card>`);
-		elem.focus();
+		setTimeout(() => elem.focus());
+		await oneEvent(elem, 'focus');
 		await expect(elem).to.be.accessible();
 	});
 

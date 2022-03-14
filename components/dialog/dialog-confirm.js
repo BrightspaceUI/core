@@ -14,7 +14,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * REQUIRED: The text content for the confirmation dialog
+			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
 			 * @type {string}
 			 */
 			text: { type: String }
@@ -34,6 +34,18 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 			.d2l-dialog-header + .d2l-dialog-content > div {
 				padding-top: 0;
+			}
+
+			.d2l-dialog-content p {
+				margin: 1rem 0;
+			}
+
+			.d2l-dialog-content p:first-child {
+				margin-top: 0;
+			}
+
+			.d2l-dialog-content p:last-child {
+				margin-bottom: 0;
 			}
 
 			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
@@ -65,7 +77,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content">
-					<div>${this.text}</div>
+					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>

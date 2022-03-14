@@ -23,6 +23,11 @@ describe('d2l-dropdown-menu', () => {
 
 	after(async() => await browser.close());
 
+	it('initially opened', async function() {
+		const rect = await getRect(page, '#dropdown-menu-initially-opened');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	it('first-page', async function() {
 		await open(page, '#dropdown-menu');
 		const rect = await getRect(page, '#dropdown-menu');
