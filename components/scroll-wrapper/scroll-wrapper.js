@@ -143,14 +143,21 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 		this.hideActions = false;
 		this._container = null;
 		this._hScrollbar = true;
+		this._resizeObserver = null;
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._container = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar())).observe(this._container);
+		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
+		this._resizeObserver.observe(this._container);
 	}
 
 	render() {

@@ -1010,20 +1010,24 @@ describe('d2l-filter', () => {
 			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
+			const item1 = elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]');
+			const item2 = elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]');
+			const item3 = elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="2"]');
+
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '1', value: '1' }, text: 'Dim 1: Value 1' },
 				{ keyObject: { dimension: '3', value: '2' }, text: 'Value 2' }
 			]);
 
-			const updateSpy = spy(elem, '_updateActiveFilters');
-			setTimeout(() => {
-				elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]').setSelected(false);
-				elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]').setSelected(true);
-				elem.shadowRoot.querySelector('[data-key="3"] d2l-list-item[key="2"]').setSelected(false);
-			}, 0);
+			setTimeout(() => item1.setSelected(false));
+			await oneEvent(item1, 'd2l-list-item-selected');
+			setTimeout(() => item2.setSelected(true));
+			await oneEvent(item2, 'd2l-list-item-selected');
+			setTimeout(() => item3.setSelected(false));
+			await oneEvent(item3, 'd2l-list-item-selected');
+
 			await waitExtra(elem, 'd2l-filter-change');
 
-			expect(updateSpy).to.be.calledOnce;
 			expect(elem._activeFilters).to.deep.equal([
 				{ keyObject: { dimension: '2', value: '1' }, text: 'Dim 2: Value 1' }
 			]);

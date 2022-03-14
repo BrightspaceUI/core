@@ -149,6 +149,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			this.__intersectionObserver.disconnect();
 			this.__isAutoSized = false;
 		}
+		if (this.__resizeObserver) this.__resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
