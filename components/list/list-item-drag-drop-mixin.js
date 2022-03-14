@@ -679,7 +679,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
 			return isComposedAncestor(dragTarget, this);
 		});
+
 		if (invalidDropTarget) return;
+
+		// assert that both the source and target are from the same list - may allow this in the future
+		if (this._getRootList() !== dragState.dragTargets[0]?._getRootList()) return;
 
 		dragState.addDropTarget(this);
 		this._draggingOver = true;
