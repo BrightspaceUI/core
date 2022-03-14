@@ -172,7 +172,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	}
 
 	_startObserving() {
-		if (!this.shadowRoot || !this._parentNode || !this.displayTo) return;
+		if (!this.shadowRoot || !this._parentNode) return;
 
 		const container = this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container');
 		const leftElem = this.shadowRoot.querySelector('.d2l-input-date-time-range-start-container');
