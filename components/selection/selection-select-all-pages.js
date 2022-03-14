@@ -22,7 +22,9 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 		`;
 	}
 
-	static focusElementSelector = 'd2l-button-subtle';
+	static get focusElementSelector() {
+		return 'd2l-button-subtle';
+	}
 
 	render() {
 		if (!this._provider) return;

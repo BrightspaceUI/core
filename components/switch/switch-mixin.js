@@ -166,8 +166,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		`;
 	}
 
-	static focusElementSelector = '.d2l-switch-container';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -176,6 +174,10 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		this.textPosition = 'end';
 		this._switchId = getUniqueId();
 		this._textId = getUniqueId();
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-switch-container';
 	}
 
 	firstUpdated(changedProperties) {

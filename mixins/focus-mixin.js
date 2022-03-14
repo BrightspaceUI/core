@@ -2,11 +2,13 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 
-	static focusElementSelector = null;
-
 	constructor() {
 		super();
 		this._focusOnFirstRender = false;
+	}
+
+	static get focusElementSelector() {
+		return null;
 	}
 
 	firstUpdated(changedProperties) {

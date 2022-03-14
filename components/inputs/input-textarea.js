@@ -150,8 +150,6 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		`];
 	}
 
-	static focusElementSelector = 'textarea';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -163,6 +161,10 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 
 		this._descriptionId = getUniqueId();
 		this._textareaId = getUniqueId();
+	}
+
+	static get focusElementSelector() {
+		return 'textarea';
 	}
 
 	/** @ignore */

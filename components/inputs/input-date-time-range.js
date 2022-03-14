@@ -172,8 +172,6 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-date-time';
-
 	constructor() {
 		super();
 
@@ -191,6 +189,10 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 		this._endInputId = getUniqueId();
 
 		this._slotOccupied = false;
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-date-time';
 	}
 
 	/** @ignore */
