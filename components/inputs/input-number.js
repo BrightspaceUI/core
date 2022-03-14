@@ -17,6 +17,11 @@ const HINT_TYPES = {
 	INTEGER: 4
 };
 
+const numberType = {
+	fromAttribute: (attr) => { return Number(attr); },
+	toAttribute:  (prop) => { return String(prop); }
+};
+
 function formatValue(value, options, numDecimalDigits) {
 	if (value === undefined) return '';
 	if (numDecimalDigits > 0) {
@@ -161,7 +166,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: Number },
+			value: { type: numberType },
 			/**
 			 * @ignore
 			 */

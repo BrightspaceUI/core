@@ -5,6 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
 const defaultValueFixture = html`<d2l-input-number label="label" value="1.1"></d2l-input-number>`;
+const defaultPlaceholderFixture = html`<d2l-input-number label="label" value="1.1"></d2l-input-number>`;
 const requiredFixture = html`<d2l-input-number label="label" required></d2l-input-number>`;
 const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2l-input-number>`;
 const minMaxExclusiveFixture = html`<d2l-input-number label="label" min="5" max="10" min-exclusive max-exclusive></d2l-input-number>`;
@@ -365,6 +366,20 @@ describe('d2l-input-number', () => {
 			await aTimeout(1);
 
 			expect(fired).to.be.false;
+		});
+
+		it('should set value to undefined', async() => {
+			const elem = await fixture(defaultValueFixture); // value = 1.1
+
+			elem.removeAttribute('value');
+
+			expect(elem.value).to.equal(undefined);
+
+			// once change event happens, reset attribute to undefined
+			elem.addEventListener('change', () => { elem.removeAttribute('value'); });
+			await elem.updateComplete;
+
+			//expect(elem.value).to.equal(undefined);
 		});
 	});
 
