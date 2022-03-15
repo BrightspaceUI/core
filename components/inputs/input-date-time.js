@@ -84,7 +84,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 * Suppresses the screenreader term "group" on the contained fieldset
 			 * @type {boolean}
 			 */
-			 suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean },
+			suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean },
 			/**
 			 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
 			 * @type {string}
