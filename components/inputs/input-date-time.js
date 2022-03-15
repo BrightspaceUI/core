@@ -81,6 +81,11 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
+			 * Suppresses the screenreader term "group" on the contained fieldset
+			 * @type {boolean}
+			 */
+			 suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean },
+			/**
 			 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
 			 * @type {string}
 			 */
@@ -257,7 +262,8 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden || this.labelledBy}"
 				?required="${this.required}"
-				?skeleton="${this.skeleton}">
+				?skeleton="${this.skeleton}"
+				?suppress-group="${this.suppressGroup}">
 				<div class="d2l-input-date-time-container">
 					<d2l-input-date
 						?novalidate="${this.noValidate}"
