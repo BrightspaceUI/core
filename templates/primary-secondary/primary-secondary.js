@@ -7,7 +7,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -903,6 +903,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			resizer.disconnect();
 		}
 		this._hasConnectedResizers = false;
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {

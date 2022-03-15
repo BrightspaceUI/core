@@ -9,7 +9,7 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -172,8 +172,6 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-date-time';
-
 	constructor() {
 		super();
 
@@ -191,6 +189,10 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 		this._endInputId = getUniqueId();
 
 		this._slotOccupied = false;
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-date-time';
 	}
 
 	/** @ignore */

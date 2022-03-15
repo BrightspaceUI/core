@@ -215,8 +215,6 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		];
 	}
 
-	static focusElementSelector = '.d2l-input';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -252,6 +250,15 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-input';
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {

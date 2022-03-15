@@ -13,7 +13,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -138,8 +138,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-text';
-
 	constructor() {
 		super();
 
@@ -170,6 +168,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
+	static get focusElementSelector() {
+		return 'd2l-input-text';
+	}
+
 	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
@@ -184,6 +186,12 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			}
 		}
 		return super.validationMessage;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
+		if (this._hiddenCalendarResizeObserver) this._hiddenCalendarResizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {

@@ -6,7 +6,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const HINT_TYPES = {
@@ -15,6 +15,12 @@ const HINT_TYPES = {
 	DECIMAL_INCORRECT_COMMA: 2,
 	DECIMAL_INCORRECT_PERIOD: 3,
 	INTEGER: 4
+};
+
+// US137000 - prevent Lit default converter from converting undefined to 0
+const numberConverter = {
+	fromAttribute: (attr) => { return !attr ? undefined : Number(attr); },
+	toAttribute:  (prop) => { return String(prop); }
 };
 
 function formatValue(value, options, numDecimalDigits) {
@@ -161,7 +167,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: Number },
+			value: { type: Number, converter: numberConverter },
 			/**
 			 * @ignore
 			 */
@@ -185,8 +191,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			`
 		];
 	}
-
-	static focusElementSelector = 'd2l-input-text';
 
 	constructor() {
 		super();
@@ -280,6 +284,10 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		this.value = parseFloat(val);
 		this._valueTrailingZeroes = this.value === undefined ? '' : val;
 		this._updateFormattedValue();
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-text';
 	}
 
 	/** @ignore */

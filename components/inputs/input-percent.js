@@ -4,7 +4,7 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -86,8 +86,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		];
 	}
 
-	static focusElementSelector = 'd2l-input-number';
-
 	constructor() {
 		super();
 		this.autofocus = false;
@@ -103,6 +101,10 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		else if (val > 100) val = 100;
 		this._value = val;
 		this.requestUpdate('value', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-number';
 	}
 
 	render() {

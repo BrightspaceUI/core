@@ -29,7 +29,7 @@ export default {
 		}
 	},
 	testRunnerHtml: testFramework =>
-		`<html>
+		`<html lang="en">
 			<body>
 				<script src="./tools/resize-observer-test-error-handler.js"></script>
 				<script type="module" src="${testFramework}"></script>

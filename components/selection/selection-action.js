@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from '../button/button-mixin.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
 
@@ -40,7 +40,9 @@ class Action extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(ButtonM
 		`;
 	}
 
-	static focusElementSelector = 'd2l-button-subtle';
+	static get focusElementSelector() {
+		return 'd2l-button-subtle';
+	}
 
 	connectedCallback() {
 		super.connectedCallback();

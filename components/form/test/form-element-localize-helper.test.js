@@ -3,7 +3,7 @@ import './form-element.js';
 
 import { defineCE, expect, fixture } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { LocalizeCoreElement } from '../../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { localizeFormElement } from '../form-element-localize-helper.js';
 
 const formTag = defineCE(

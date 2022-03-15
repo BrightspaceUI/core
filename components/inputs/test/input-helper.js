@@ -2,14 +2,12 @@
 export async function open(page, selector) {
 	const openEvent = page.$eval(selector, (elem) => {
 		return new Promise((resolve) => {
-			elem.shadowRoot.querySelector('d2l-dropdown').addEventListener('d2l-dropdown-open', resolve, { once: true });
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+			dropdown.addEventListener('d2l-dropdown-open', resolve, { once: true });
+			dropdown.toggleOpen();
 		});
 	});
 
-	await page.$eval(selector, (elem) => {
-		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
-		dropdown.toggleOpen();
-	});
 	return openEvent;
 }
 

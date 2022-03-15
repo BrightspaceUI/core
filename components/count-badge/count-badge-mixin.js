@@ -3,7 +3,7 @@ import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';

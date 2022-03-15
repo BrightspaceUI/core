@@ -14,7 +14,8 @@ import { FocusMixin } from '@brightspace-ui/core/mixins/focus-mixin.js';
 class MyComponent extends FocusMixin(LitElement) {
   
   // delegate focus to the underlying input
-  static focusElementSelector = 'input';
+  static get focusElementSelector() {
+		return 'input';
 
   render() {
 	  return html`<input type="text">`;

@@ -31,12 +31,14 @@ class FocusTrap extends FocusMixin(LitElement) {
 		`;
 	}
 
-	static focusElementSelector = '.d2l-focus-trap-start';
-
 	constructor() {
 		super();
 		this.trap = false;
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-focus-trap-start';
 	}
 
 	connectedCallback() {

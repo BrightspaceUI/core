@@ -5,7 +5,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -74,8 +74,6 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		];
 	}
 
-	static focusElementSelector = 'd2l-input-text';
-
 	constructor() {
 		super();
 		this._lastSearchValue = '';
@@ -87,6 +85,10 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	/** @ignore */
 	get lastSearchValue() { return this._lastSearchValue; }
 	set lastSearchValue(val) {}
+
+	static get focusElementSelector() {
+		return 'd2l-input-text';
+	}
 
 	connectedCallback() {
 		super.connectedCallback();
