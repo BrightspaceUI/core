@@ -345,6 +345,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 			await this._updateSize();
 			this._state = 'showing';
+			await this._updateComplete;
 
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();
