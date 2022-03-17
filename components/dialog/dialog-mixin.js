@@ -124,7 +124,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	resize() {
-		return this._updateSize();
+		return new Promise(resolve => {
+			setTimeout(async() => {
+				await this._updateSize();
+				resolve();
+			})
+		});
 	}
 
 	_addHandlers() {
@@ -330,7 +335,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// focus first focusable child prior to auto resize (fixes screen reader hiccups)
 		this._focusInitial();
 
-		requestAnimationFrame(async() => {
+		setTimeout(async() => {
 
 			this.shadowRoot.querySelector('.d2l-dialog-content').scrollTop = 0;
 			// scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash
@@ -354,7 +359,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
 			));
-		});
+		}, 0);
 
 	}
 
