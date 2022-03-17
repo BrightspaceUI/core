@@ -69,7 +69,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: nested-start / nested-end;
 			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				z-index: 6;
+				z-index: 6; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
 			}
 
 			::slotted([slot="drop-target"]) {

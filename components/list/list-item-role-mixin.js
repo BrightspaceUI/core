@@ -7,7 +7,8 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			role: { type: String, reflect: true }
+			role: { type: String, reflect: true },
+			_separators: { type: String, reflect: true }
 		};
 	}
 
