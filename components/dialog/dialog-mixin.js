@@ -128,7 +128,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			setTimeout(async() => {
 				await this._updateSize();
 				resolve();
-			});
+			}, 0);
 		});
 	}
 
