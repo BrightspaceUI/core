@@ -21,16 +21,6 @@ const separateRegistries = defineCE(
 			this._onUnsubscribeTargets = [];
 			this._updateSubscribersCalledWith = [];
 		}
-		connectedCallback() {
-			super.connectedCallback();
-			this._eventSubscribers.hostConnected();
-			this._idSubscribers.hostConnected();
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._eventSubscribers.hostDisconnected();
-			this._idSubscribers.hostDisconnected();
-		}
 		getSubscriberController(controllerId) {
 			if (controllerId === 'event') {
 				return this._eventSubscribers;
@@ -62,14 +52,6 @@ const combinedRegistry = defineCE(
 			this._onUnsubscribeTargets = [];
 			this._updateSubscribersCalledWith = [];
 		}
-		connectedCallback() {
-			super.connectedCallback();
-			this._subscribers.hostConnected();
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._subscribers.hostDisconnected();
-		}
 		getSubscriberController() {
 			return this._subscribers;
 		}
@@ -96,14 +78,6 @@ const eventSubscriber = defineCE(
 			this._onSubscribeRegistry = null;
 			this._onError = false;
 		}
-		connectedCallback() {
-			super.connectedCallback();
-			this._subscriberController.hostConnected();
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._subscriberController.hostDisconnected();
-		}
 		_onError() {
 			this._onError = true;
 		}
@@ -129,14 +103,6 @@ const idSubscriber = defineCE(
 			this._onErrorRegistryIds = [];
 			this._onSubscribeRegistries = [];
 			this._onUnsubscribeRegistryIds = [];
-		}
-		disconnectedCallback() {
-			super.disconnectedCallback();
-			this._subscriberController.hostDisconnected();
-		}
-		updated(changedProperties) {
-			super.updated(changedProperties);
-			this._subscriberController.hostUpdated(changedProperties);
 		}
 		_onError(registryId) {
 			this._onErrorRegistryIds.push(registryId);
