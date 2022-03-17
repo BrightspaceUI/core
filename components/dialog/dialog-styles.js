@@ -11,6 +11,11 @@ export const dialogStyles = css`
 		display: block;
 	}
 
+	:host([opened][_state="showing"]),
+	:host([opened][_state="hiding"]) {
+		visibility: visible
+	}
+
 	.d2l-dialog-outer {
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
