@@ -236,6 +236,8 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 		const dateOpened = this.opened && !this._timeOpened && !this.disabled && !this.skeleton;
 		const parsedValue = this.value ? (this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value)) : '';
 		const tooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const dateLabel = this.localize('components.input-date-time.date');
+		const timeLabel = this.localize('components.input-date-time.time');
 		const inputTime = !timeHidden ? html`<d2l-input-time
 				?novalidate="${this.noValidate}"
 				@blur="${this._handleInputTimeBlur}"
@@ -247,7 +249,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				.forceInvalid=${this.invalid}
 				@mouseout="${this._handleInputTimeBlur}"
 				@mouseover="${this._handleInputTimeFocus}"
-				label="${this.localize('components.input-date-time.time')}"
+				label="${ifDefined(this.suppressGroup && this.label ? `${this.label}, ${timeLabel}` : timeLabel)}"
 				label-hidden
 				.labelRequired="${false}"
 				max-height="430"
@@ -274,7 +276,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}
 						id="${this._inputId}"
-						label="${ifDefined(this.suppressGroup ? this.label : this.localize('components.input-date-time.date'))}"
+						label="${ifDefined(this.suppressGroup && this.label ? `${this.label}, ${dateLabel}` : dateLabel)}"
 						label-hidden
 						.labelRequired="${false}"
 						max-value="${ifDefined(this._maxValueLocalized)}"
