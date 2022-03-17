@@ -86,8 +86,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		];
 	}
 
-	static focusElementSelector = 'd2l-input-number';
-
 	constructor() {
 		super();
 		this.autofocus = false;
@@ -103,6 +101,10 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		else if (val > 100) val = 100;
 		this._value = val;
 		this.requestUpdate('value', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-number';
 	}
 
 	render() {

@@ -137,8 +137,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		`];
 	}
 
-	static focusElementSelector = 'd2l-dropdown-button-subtle';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -153,6 +151,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			{ onSubscribe: this._updateActiveFiltersSubscriber.bind(this), updateSubscribers: this._updateActiveFiltersSubscribers.bind(this) },
 			{}
 		);
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-dropdown-button-subtle';
 	}
 
 	firstUpdated(changedProperties) {

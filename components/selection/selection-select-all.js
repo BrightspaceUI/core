@@ -34,11 +34,13 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		`;
 	}
 
-	static focusElementSelector = 'd2l-input-checkbox';
-
 	constructor() {
 		super();
 		this.disabled = false;
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-checkbox';
 	}
 
 	render() {

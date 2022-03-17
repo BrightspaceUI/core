@@ -6,7 +6,9 @@ import { LitElement } from 'lit-element/lit-element.js';
 
 const mixinTag = defineCE(
 	class extends FocusMixin(LitElement) {
-		static focusElementSelector = 'input';
+		static get focusElementSelector() {
+			return 'input';
+		}
 		render() {
 			return html`<input type="text">`;
 		}
@@ -19,7 +21,9 @@ const mixinNoSelectorTag = defineCE(
 
 const mixinNoElemTag = defineCE(
 	class extends FocusMixin(LitElement) {
-		static focusElementSelector = 'div';
+		static get focusElementSelector() {
+			return 'div';
+		}
 		render() {
 			return html`<input type="text">`;
 		}

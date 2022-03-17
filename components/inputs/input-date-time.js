@@ -113,8 +113,6 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 		`];
 	}
 
-	static focusElementSelector = 'd2l-input-date';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -177,6 +175,10 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			}
 		}
 		this.requestUpdate('value', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-input-date';
 	}
 
 	/** @ignore */

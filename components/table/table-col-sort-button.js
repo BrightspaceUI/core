@@ -58,12 +58,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		`;
 	}
 
-	static focusElementSelector = 'button';
-
 	constructor() {
 		super();
 		this.nosort = false;
 		this.desc = false;
+	}
+
+	static get focusElementSelector() {
+		return 'button';
 	}
 
 	render() {

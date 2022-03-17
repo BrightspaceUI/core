@@ -235,8 +235,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		];
 	}
 
-	static focusElementSelector = '.d2l-input';
-
 	constructor() {
 		super();
 		this.autofocus = false;
@@ -270,6 +268,10 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	get value() { return this._value; }
 	set value(val) {
 		this._setValue(val, true);
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-input';
 	}
 
 	/** @ignore */

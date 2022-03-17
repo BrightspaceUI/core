@@ -28,7 +28,9 @@ class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin
 		return dropdownOpenerStyles;
 	}
 
-	static focusElementSelector = 'd2l-button-subtle';
+	static get focusElementSelector() {
+		return 'd2l-button-subtle';
+	}
 
 	render() {
 		return html`

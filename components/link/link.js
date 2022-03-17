@@ -97,13 +97,15 @@ class Link extends FocusMixin(LitElement) {
 		];
 	}
 
-	static focusElementSelector = '.d2l-link';
-
 	constructor() {
 		super();
 		this.download = false;
 		this.main = false;
 		this.small = false;
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-link';
 	}
 
 	render() {

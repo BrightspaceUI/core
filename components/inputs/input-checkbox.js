@@ -164,8 +164,6 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		];
 	}
 
-	static focusElementSelector = 'input.d2l-input-checkbox';
-
 	constructor() {
 		super();
 		this.checked = false;
@@ -175,6 +173,10 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.notTabbable = false;
 		this.value = 'on';
 		this._descriptionId = getUniqueId();
+	}
+
+	static get focusElementSelector() {
+		return 'input.d2l-input-checkbox';
 	}
 
 	render() {

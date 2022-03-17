@@ -1,9 +1,10 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { ListItemMixin } from '../list-item-mixin.js';
 
 const tag = defineCE(
-	class extends ListItemDragDropMixin(LitElement) {
+	class extends ListItemMixin(ListItemDragDropMixin(LitElement)) {
 		render() {
 			return html`
 				${this._renderTopPlacementMarker(html`<div id="top-placement-marker">----</div>`)}

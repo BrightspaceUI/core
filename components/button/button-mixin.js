@@ -66,8 +66,6 @@ export const ButtonMixin = superclass => class extends FocusMixin(FocusVisiblePo
 		};
 	}
 
-	static focusElementSelector = 'button';
-
 	constructor() {
 		super();
 		this.disabled = false;
@@ -98,6 +96,10 @@ export const ButtonMixin = superclass => class extends FocusMixin(FocusVisiblePo
 		const oldValue = this._disabledTooltip;
 		this._disabledTooltip = value;
 		this.requestUpdate('disabledTooltip', oldValue);
+	}
+
+	static get focusElementSelector() {
+		return 'button';
 	}
 
 	connectedCallback() {
