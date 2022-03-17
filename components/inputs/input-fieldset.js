@@ -32,7 +32,7 @@ class InputFieldset extends SkeletonMixin(RtlMixin(LitElement)) {
 			 * Suppresses the screenreader term "group" on the contained fieldset
 			 * @type {boolean}
 			 */
-			suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean }
+			 suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean }
 		};
 	}
 
@@ -61,22 +61,14 @@ class InputFieldset extends SkeletonMixin(RtlMixin(LitElement)) {
 			'd2l-offscreen': this.labelHidden,
 			'd2l-skeletize': true
 		};
-		return this.suppressGroup ?
-			html`
-				<fieldset
-					class="d2l-input-label-fieldset"
-					aria-description="${this.label}"
-					role="label">
-					<p class="${classMap(legendClasses)}">${this.label}</p>
-					<slot></slot>
-				</fieldset>
-			` :
-			html`
-				<fieldset class="d2l-input-label-fieldset">
-					<legend class="${classMap(legendClasses)}">${this.label}</legend>
-					<slot></slot>
-				</fieldset>
-			`;
+		return html`
+			<fieldset
+				class="d2l-input-label-fieldset"
+				role="${this.suppressGroup ? 'presentation' : 'group'}">
+				<legend class="${classMap(legendClasses)}">${this.label}</legend>
+				<slot></slot>
+			</fieldset>
+		`;
 	}
 
 }

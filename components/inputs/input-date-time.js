@@ -274,7 +274,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}
 						id="${this._inputId}"
-						label="${this.localize('components.input-date-time.date')}"
+						label="${ifDefined(this.suppressGroup ? this.label : this.localize('components.input-date-time.date'))}"
 						label-hidden
 						.labelRequired="${false}"
 						max-value="${ifDefined(this._maxValueLocalized)}"
