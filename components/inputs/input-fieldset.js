@@ -32,7 +32,7 @@ class InputFieldset extends SkeletonMixin(RtlMixin(LitElement)) {
 			 * Suppresses the screenreader term "group" on the contained fieldset
 			 * @type {boolean}
 			 */
-			 suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean }
+			suppressGroup: { attribute: 'suppress-group', reflect: true, type: Boolean }
 		};
 	}
 
