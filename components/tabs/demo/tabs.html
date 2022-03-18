@@ -19,20 +19,26 @@
 
 			<div style="margin-bottom: 30px;">
 				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
+				<d2l-button-subtle id="add-selected" text="Add Selected"></d2l-button-subtle>
 				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
 			</div>
 			<script>
 				let newPanelId = 0;
-				document.querySelector('#add').addEventListener('click', () => {
+				const addPanel = selected => {
 					newPanelId += 1;
 					const panel = document.createElement('d2l-tab-panel');
+					panel.selected = selected;
 					panel.text = `New Panel ${newPanelId}`;
 					panel.textContent = `Content for new panel ${newPanelId}`;
 					const tabs = document.querySelector('d2l-tabs');
 					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
 					if (panels.length < 2) tabs.appendChild(panel);
 					else tabs.insertBefore(panel, panels[1]);
-				});
+				}
+				
+				document.querySelector('#add').addEventListener('click', () => addPanel(false));
+				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true));
+
 				document.querySelector('#remove').addEventListener('click', () => {
 					const tabs = document.querySelector('d2l-tabs');
 					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
