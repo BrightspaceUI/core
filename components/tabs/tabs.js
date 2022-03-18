@@ -783,13 +783,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		this.requestUpdate();
 	}
 
-	_setFocusable(tabInfo) {
-		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
-		if (currentFocusable) currentFocusable.activeFocusable = false;
-
-		tabInfo.activeFocusable = true;
-	}
-
 	_scrollToPosition(translationValue) {
 		if (translationValue === this._translationValue) {
 			return Promise.resolve();
@@ -809,6 +802,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			};
 			tabList.addEventListener('transitionend', handleTransitionEnd);
 		});
+	}
+
+	_setFocusable(tabInfo) {
+		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
+		if (currentFocusable) currentFocusable.activeFocusable = false;
+
+		tabInfo.activeFocusable = true;
 	}
 
 	async _tryExpandTabsContainer(measures) {
