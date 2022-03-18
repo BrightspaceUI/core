@@ -12,14 +12,14 @@ If the elements are known up-front and are in the element's local DOM scope, sim
 import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
 class MyElement extends ArrowKeysMixin(LitElement) {
   render() {
-    return html`
+    return this.arrowKeysContainer(html`
       <div>
         ...
         <a href="..." class="d2l-arrowkeys-focusable">link 1</a>
         <a href="..." class="d2l-arrowkeys-focusable">link 2</a>
         ...
       </div>
-    `;
+    `);
   }
 }
 customElements.define('my-element', MyElement);
@@ -31,14 +31,14 @@ If the elements are not known up front, or the elements cannot be simply queried
 import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
 class MyElement extends ArrowKeysMixin(LitElement) {
   render() {
-    return html`
+    return this.arrowKeysContainer(html`
       <div>
         ...
         <a href="...">link 1</a>
         <a href="...">link 2</a>
         ...
       </div>
-    `;
+    `);
   }
   async arrowKeysFocusablesProvider() {
     return [ /* array containing focusable elements */]
@@ -51,4 +51,8 @@ customElements.define('my-element', MyElement);
 
 - `arrowKeysDirection` (String): Indicates which arrow keys are allowed (default is leftright)
 - `arrowKeysNoWrap` (Boolean): Whether focus should wrap from end-to-start and start-to-end
-- `arrowKeysBeforeFocus` (Function): Async callback invoked before focus us applied
+
+**Methods:**
+- `arrowKeysContainer(innerHtmlTemplate)`: Hooks up the event listener, to be used in your `render` function to wrap the focusable elements
+- `async arrowKeysFocusablesProvider()` (Array): Optional - Override to provide the focusable elements if necessary (see above)
+- `async arrowKeysOnBeforeFocus(elemToBeFocused)`: Optional - Override to provide an async callback invoked before focus is applied
