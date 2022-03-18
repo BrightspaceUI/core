@@ -34,7 +34,7 @@
 					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
 					if (panels.length < 2) tabs.appendChild(panel);
 					else tabs.insertBefore(panel, panels[1]);
-				}
+				};
 				
 				document.querySelector('#add').addEventListener('click', () => addPanel(false));
 				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true));
