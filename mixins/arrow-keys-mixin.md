@@ -52,7 +52,7 @@ customElements.define('my-element', MyElement);
 - `arrowKeysDirection` (String): Indicates which arrow keys are allowed (default is leftright)
 - `arrowKeysNoWrap` (Boolean): Whether focus should wrap from end-to-start and start-to-end
 
-**Functions:**
-- `arrowKeysContainer`: Hooks up the event listener, to be used in your `render` function to wrap the focusable elements
-- `arrowKeysFocusablesProvider`: Override to provide the focusable elements if necessary (see above)
-- `arrowKeysOnBeforeFocus`: Override to provide an async callback invoked before focus is applied
+**Methods:**
+- `arrowKeysContainer(innerHtmlTemplate)`: Hooks up the event listener, to be used in your `render` function to wrap the focusable elements
+- `async arrowKeysFocusablesProvider()` (Array): Optional - Override to provide the focusable elements if necessary (see above)
+- `async arrowKeysOnBeforeFocus(elemToBeFocused)`: Optional - Override to provide an async callback invoked before focus is applied
