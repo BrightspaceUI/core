@@ -124,11 +124,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
 			}
-			.d2l-tabs-focus-start,
-			.d2l-tabs-focus-end {
-				left: 0;
-				position: absolute;
-			}
 			.d2l-tabs-scroll-previous-container,
 			.d2l-tabs-scroll-next-container {
 				background-color: var(--d2l-tabs-background-color);
