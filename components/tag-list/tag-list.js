@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const ITEM_SPACING = 6;
 
@@ -22,7 +21,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ offscreenStyles, css`
+		return css`
 			:host {
 				display: block;
 			}
@@ -39,7 +38,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			::slotted(*) {
 				margin: ${ITEM_SPACING}px ${ITEM_SPACING}px 0 0;
 			}
-		`];
+		`;
 	}
 
 	constructor() {
@@ -61,7 +60,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 	}
 
 	render() {
-		const description = this.description ? html`<div id="d2l-tag-list-description" class="d2l-offscreen">${this.description}</div>` : null;
+		const description = this.description ? html`<div id="d2l-tag-list-description" hidden>${this.description}</div>` : null;
 		const list = html`
 			<div role="list" class="tag-list-container" aria-describedby="${ifDefined(this.description && 'd2l-tag-list-description')}">
 				<slot></slot>
