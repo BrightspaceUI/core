@@ -95,6 +95,7 @@ class Tab extends RtlMixin(LitElement) {
 		super();
 		this.ariaSelected = 'false';
 		this.role = 'tab';
+		this.tabIndex = -1;
 	}
 
 	firstUpdated(changedProperties) {
