@@ -9,11 +9,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			role: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			tabindex: { type: Number, reflect: true }
+			role: { type: String, reflect: true }
 		};
 	}
 
@@ -45,8 +41,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 				min-height: 30px;
 				min-width: 0;
 				padding: 0.25rem 0.6rem;
-				transition-duration: 0.2s;
-				transition-timing-function: ease-out;
+				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 			}
 			:host(:hover) .tag-list-item-container,
 			:host(:focus) .tag-list-item-container {
@@ -72,7 +67,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.role = 'listitem';
 		/** @ignore */
-		this.tabindex = -1;
+		this.tabIndex = -1;
 	}
 
 	_renderTag(tagContent) {

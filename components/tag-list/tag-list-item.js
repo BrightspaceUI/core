@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit-element/lit-element.js';
 import { TagListItemMixin } from './tag-list-item-mixin.js';
 
 class TagListItem extends TagListItemMixin(LitElement) {
@@ -14,11 +14,7 @@ class TagListItem extends TagListItemMixin(LitElement) {
 	}
 
 	render() {
-		const tag = this._renderTag(this.text);
-
-		return html`
-			${tag}
-		`;
+		return this._renderTag(this.text);
 	}
 }
 
