@@ -273,13 +273,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		};
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
-			const prevFocusable = this._tabInfos.find(info => info.activeFocusable);
-			if (prevFocusable) prevFocusable.activeFocusable = false;
-
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
-			tabInfo.activeFocusable = true;
+			this._setFocusable(tabInfo);
 
 			this.requestUpdate();
+			await this.updateComplete;
 
 			if (!this._scrollCollapsed) {
 				return this._updateScrollPosition(tabInfo);
@@ -301,8 +299,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				}
 			}
 		};
-
-		if (this._tabInfos.length > 0) this._tabInfos[0].activeFocusable = true;
 
 		this._handleResize = this._handleResize.bind(this);
 		this._resizeObserver = new ResizeObserver(this._handleResize);
@@ -556,7 +552,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_handleFocusOut(e) {
-		if (!e.relatedTarget || e.relatedTarget.role === 'tab') return;
+		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
 		this._resetFocusables();
 	}
 
@@ -564,6 +560,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
 		if (!tabInfo) return;
+
+		this._setFocusable(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
 	}
@@ -595,7 +593,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			};
 			if (tabInfo.selected) {
 				selectedTabInfo = tabInfo;
-				tabInfo.activeFocusable = true;
+				this._setFocusable(tabInfo);
 			}
 			return tabInfo;
 		});
@@ -780,12 +778,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_resetFocusables() {
-		const activeTab = this._tabInfos.find(ti => ti.activeFocusable);
-		if (activeTab) activeTab.activeFocusable = false;
-
 		const selectedTab = this._tabInfos.find(ti => ti.selected);
-		if (selectedTab) selectedTab.activeFocusable = true;
+		if (selectedTab) this._setFocusable(selectedTab);
 		this.requestUpdate();
+	}
+
+	_setFocusable(tabInfo) {
+		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
+		if (currentFocusable) currentFocusable.activeFocusable = false;
+
+		tabInfo.activeFocusable = true;
 	}
 
 	_scrollToPosition(translationValue) {
