@@ -157,16 +157,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return 'd2l-dropdown-button-subtle';
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._activeFiltersSubscribers.hostConnected();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this._activeFiltersSubscribers.hostDisconnected();
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
