@@ -4,7 +4,6 @@ import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
-import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -124,11 +123,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
-			}
-			.d2l-tabs-focus-start,
-			.d2l-tabs-focus-end {
-				left: 0;
-				position: absolute;
 			}
 			.d2l-tabs-scroll-previous-container,
 			.d2l-tabs-scroll-next-container {
@@ -280,6 +274,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
+			this._setFocusable(tabInfo);
+
+			this.requestUpdate();
+			await this.updateComplete;
+
 			if (!this._scrollCollapsed) {
 				return this._updateScrollPosition(tabInfo);
 			} else {
@@ -340,22 +339,22 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 							<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 						</button>
 					</div>
-					<span class="d2l-tabs-focus-start" @focus="${this._handleFocusStart}" tabindex="0"></span>
 					${this.arrowKeysContainer(html`
 						<div class="d2l-tabs-container-list"
 							@d2l-tab-selected="${this._handleTabSelected}"
+							@focusout="${this._handleFocusOut}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									data-state="${tabInfo.state}"
+									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
 							`)}
 						</div>
 					`)}
-					<span class="d2l-tabs-focus-end" @focus="${this._handleFocusEnd}" tabindex="0"></span>
 					<div class="d2l-tabs-scroll-next-container">
 						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollNext}"
@@ -552,28 +551,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		}
 	}
 
-	_handleFocusEnd(e) {
-		if (e.relatedTarget && e.relatedTarget.role !== 'tab') {
-			this._focusSelected();
-		} else {
-			const nextFocusable = getNextFocusable(e.target, false);
-			if (nextFocusable) nextFocusable.focus();
-		}
-	}
-
-	_handleFocusStart(e) {
-		if (e.relatedTarget && e.relatedTarget.role === 'tab') {
-			const previousFocusable = getPreviousFocusable(e.target, false);
-			if (previousFocusable) previousFocusable.focus();
-		} else {
-			this._focusSelected();
-		}
+	_handleFocusOut(e) {
+		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
+		this._resetFocusables();
 	}
 
 	_handlePanelSelected(e) {
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
 		if (!tabInfo) return;
+
+		this._setFocusable(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
 	}
@@ -603,7 +591,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				selected: panel.selected,
 				state: state
 			};
-			if (tabInfo.selected) selectedTabInfo = tabInfo;
+			if (tabInfo.selected) {
+				selectedTabInfo = tabInfo;
+				this._setFocusable(tabInfo);
+			}
 			return tabInfo;
 		});
 
@@ -619,6 +610,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		this._tabInfos = newTabInfos;
 
 		if (this._tabInfos.length > 0 && !selectedTabInfo) {
+			this._tabInfos[0].activeFocusable = true;
 			this._tabInfos[0].selected = true;
 			selectedTabInfo = this._tabInfos[0];
 		}
@@ -756,19 +748,24 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		const selectedTab = e.target;
 		const selectedPanel = this._getPanel(selectedTab.controlsPanel);
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
+		selectedTabInfo.activeFocusable = true;
 
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTabInfo);
 
 		selectedPanel.selected = true;
 		this._tabInfos.forEach((tabInfo) => {
-			if (tabInfo.selected && tabInfo.id !== selectedTab.controlsPanel) {
-				tabInfo.selected = false;
-				const panel = this._getPanel(tabInfo.id);
-				// panel may not exist if it's being removed
-				if (panel) panel.selected = false;
+			if (tabInfo.id !== selectedTab.controlsPanel) {
+				if (tabInfo.selected) {
+					tabInfo.selected = false;
+					const panel = this._getPanel(tabInfo.id);
+					// panel may not exist if it's being removed
+					if (panel) panel.selected = false;
+				}
+				if (tabInfo.activeFocusable) tabInfo.activeFocusable = false;
 			}
 		});
+
 		this.requestUpdate();
 	}
 
@@ -778,6 +775,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 
 	_isPositionInRightScrollArea(position, measures) {
 		return (position > measures.tabsContainerRect.width - scrollButtonWidth) && (position < measures.tabsContainerRect.width);
+	}
+
+	_resetFocusables() {
+		const selectedTab = this._tabInfos.find(ti => ti.selected);
+		if (selectedTab) this._setFocusable(selectedTab);
+		this.requestUpdate();
 	}
 
 	_scrollToPosition(translationValue) {
@@ -799,6 +802,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			};
 			tabList.addEventListener('transitionend', handleTransitionEnd);
 		});
+	}
+
+	_setFocusable(tabInfo) {
+		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
+		if (currentFocusable) currentFocusable.activeFocusable = false;
+
+		tabInfo.activeFocusable = true;
 	}
 
 	async _tryExpandTabsContainer(measures) {
