@@ -2,6 +2,7 @@ import { getLocalizeOverrideResources } from '../helpers/getLocalizeResources.js
 import { LocalizeMixin } from './localize-mixin.js';
 
 const fallbackLang = 'en';
+const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'es', 'es-es', 'fi', 'fr', 'fr-fr', 'fr-on', 'hi', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-cn', 'zh-tw'];
 
 export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(superclass) {
 
@@ -9,7 +10,6 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 
 		// in dev, don't request unsupported langpacks
 		if (!importFunc.toString().includes('switch')) {
-			const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'es-es', 'es', 'fi', 'fr-fr', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh-cn'];
 			langs = langs.filter(lang => supportedLangpacks.includes(lang));
 		}
 
