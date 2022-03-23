@@ -38,7 +38,6 @@ export const TagListItemMixin = superclass => class extends superclass {
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
-				min-height: 30px;
 				min-width: 0;
 				padding: 0.25rem 0.6rem;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
