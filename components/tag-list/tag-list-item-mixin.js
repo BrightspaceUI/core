@@ -66,8 +66,6 @@ export const TagListItemMixin = superclass => class extends superclass {
 		super();
 		/** @ignore */
 		this.role = 'listitem';
-		/** @ignore */
-		this.tabIndex = -1;
 	}
 
 	_renderTag(tagContent) {

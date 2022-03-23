@@ -46,7 +46,9 @@ class TagList extends ArrowKeysMixin(LitElement) {
 
 		requestAnimationFrame(() => {
 			this._items = this._getTagListItems();
-			if (this._items.length > 0) this._items[0].setAttribute('tabIndex', 0);
+			this._items.forEach((item, index) => {
+				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
+			});
 		});
 	}
 
