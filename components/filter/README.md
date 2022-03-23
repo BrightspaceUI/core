@@ -149,6 +149,24 @@ The filter will announce changes to filter selections, search results, and when 
 
 <!-- docs: end hidden content -->
 
+### Troubleshooting
+
+If your use-case requires that dimensions or dimension values be added or removed after initial load, you may need to use the [Lit `repeat` directive with a `KeyFnc` set](https://lit.dev/docs/templates/directives/#repeat) to tell Lit not to reuse a DOM node if the `key` has changed:
+```html
+import { repeat } from 'lit-html/directives/repeat.js';
+...
+return html`<d2l-filter>
+	${repeat(this._dimensions, (dim) => dim.key, dim => html`
+		<d2l-filter-dimension-set key="${dim.key}" text=${dim.text}>
+			${repeat(dim._values, (value) => value.key, value => html`
+				<d2l-filter-dimension-set-value key="${value.kay}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+			`)}
+		</d2l-filter-dimension-set>
+	`)}
+</d2l-filter>`;
+```
+If your list of dimensions/values is static after first load and you only need to update properties (like `text`, `selected`, etc) you likely don't need to use `repeat`.
+
 ## Filter Dimension: Set [d2l-filter-dimension-set]
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
