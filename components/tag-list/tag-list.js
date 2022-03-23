@@ -1,9 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 
-//const ITEM_SPACING = '6';
-const CSS_ITEM_SPACING = css`6`;
-
 class TagList extends ArrowKeysMixin(LitElement) {
 
 	static get properties() {
@@ -27,12 +24,12 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			.tag-list-container {
 				display: flex;
 				flex-wrap: wrap;
-				margin: -${CSS_ITEM_SPACING}px -${CSS_ITEM_SPACING}px 0 0;
+				margin: -6px -6px 0 0;
 				padding: 0;
 				position: relative;
 			}
 			::slotted(*) {
-				margin: ${CSS_ITEM_SPACING}px ${CSS_ITEM_SPACING}px 0 0;
+				margin: 6px 6px 0 0;
 			}
 		`;
 	}
