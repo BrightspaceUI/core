@@ -71,6 +71,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 				}
 			} else if (prop === 'text') {
 				this.setAttribute('aria-label', this.text);
+				/** Dispatched when the text attribute is changed */
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 				));
