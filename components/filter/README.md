@@ -131,6 +131,25 @@ Filter with a single dimension:
 </div>
 ```
 
+### Iterating Over Dimensions and Values
+
+Lit tries to reuse DOM nodes when it can to help with performance, but in this case we don't want unique dimensions and values to be reused - otherwise we can't detect additions/removals properly.
+
+If you are going to be constructing your dimensions and/or dimension values by iterating over an array or object (using `forEach,` , `map`, etc.), you'll want to use the [Lit `repeat` directive with a `KeyFn` set](https://lit.dev/docs/templates/directives/#repeat) instead to tell Lit not to reuse a DOM node if the `key` has changed:
+```js
+import { repeat } from 'lit-html/directives/repeat.js';
+...
+return html`<d2l-filter>
+	${repeat(this._dimensions, (dim) => dim.key, dim => html`
+		<d2l-filter-dimension-set key="${dim.key}" text=${dim.text}>
+			${repeat(dim._values, (value) => value.key, value => html`
+				<d2l-filter-dimension-set-value key="${value.kay}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+			`)}
+		</d2l-filter-dimension-set>
+	`)}
+</d2l-filter>`;
+```
+
 ### Accessibility
 The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propagated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
 
