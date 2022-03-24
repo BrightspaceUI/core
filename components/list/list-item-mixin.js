@@ -307,7 +307,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
 			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
-				border-color: rgba(0, 111, 191, 0.3); /* celestine */
+				border-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
 			:host([selectable]:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
