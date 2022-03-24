@@ -135,7 +135,7 @@ Filter with a single dimension:
 
 Lit tries to reuse DOM nodes when it can to help with performance, but in this case we don't want unique dimensions and values to be reused - otherwise we can't detect additions/removals properly.
 
-If you are going to be constructing your dimensions and/or dimension values by iterating over an array or object (using `forEach,` , `map`, etc.), you'll want to use the [Lit `repeat` directive with a `KeyFnc` set](https://lit.dev/docs/templates/directives/#repeat) instead to tell Lit not to reuse a DOM node if the `key` has changed:
+If you are going to be constructing your dimensions and/or dimension values by iterating over an array or object (using `forEach,` , `map`, etc.), you'll want to use the [Lit `repeat` directive with a `KeyFn` set](https://lit.dev/docs/templates/directives/#repeat) instead to tell Lit not to reuse a DOM node if the `key` has changed:
 ```js
 import { repeat } from 'lit-html/directives/repeat.js';
 ...
