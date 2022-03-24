@@ -89,12 +89,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const styles = [ css`
 			:host {
 				display: block;
-				margin-top: -1px;
 				position: relative;
 			}
 			:host[hidden] {
 				display: none;
 			}
+
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
 				z-index: 10; /* must be greater than adjacent selected items */
@@ -112,21 +112,33 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				background: white;
 			}
 
-			.d2l-list-item-inner-container {
-				border-bottom: 1px solid var(--d2l-color-mica);
-				border-top: 1px solid transparent;
+			[slot="control-container"] {
+				position: relative;
 			}
-			:host(:first-of-type) .d2l-list-item-inner-container {
-				border-top-color: var(--d2l-color-mica);
+			:host(:first-of-type) [slot="control-container"]::before,
+			[slot="control-container"]::after {
+				border-top: 1px solid var(--d2l-color-mica);
+				content: "";
+				left: 4px;
+				position: absolute;
+				width: calc(100% - 8px);
 			}
-			:host(:first-of-type[_separators="between"]) .d2l-list-item-inner-container {
-				border-top-color: transparent;
+			:host(:first-of-type) [slot="control-container"]::before {
+				top: 0;
 			}
-			:host(:last-of-type[_separators="between"]) .d2l-list-item-inner-container {
-				border-bottom-color: transparent;
+			[slot="control-container"]::after {
+				bottom: -2px;
 			}
-			:host([_separators="none"]) .d2l-list-item-inner-container {
-				border-bottom-color: transparent;
+
+			:host(:first-of-type[_separators="between"]) [slot="control-container"]::before,
+			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
+			:host([_separators="none"]) [slot="control-container"]::before,
+			:host([_separators="none"]) [slot="control-container"]::after,
+			:host([selected]) [slot="control-container"]::before,
+			:host([selected]) [slot="control-container"]::after,
+			:host([_hovering]) [slot="control-container"]::before,
+			:host([_hovering]) [slot="control-container"]::after,
+			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
 
@@ -281,34 +293,50 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-right: 0.9rem;
 			}
-			:host([selectable]:not([disabled]):not([skeleton])[_focusing]) d2l-list-item-generic-layout,
-			:host([selectable]:not([disabled]):not([skeleton])[_hovering]) d2l-list-item-generic-layout {
+
+			[slot="outside-control-container"] {
+				border: 1px solid transparent;
+				border-radius: 6px;
+			}
+			:host([selectable]) [slot="outside-control-container"] {
+				margin: 0 -12px;
+			}
+			:host([draggable]) [slot="outside-control-container"],
+			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				margin: 0;
+			}
+			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
+				border-color: rgba(0, 111, 191, 0.3); /* celestine */
+			}
+			:host([selectable]:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
 			}
-
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
+			:host([selected]:not([disabled])) [slot="outside-control-container"] {
 				background-color: #f3fbff;
 			}
-			:host([selected]:not([disabled])) .d2l-list-item-inner-container {
-				border-color: #79b5df;
+			:host(:not([disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
+				border-color: transparent;
+				margin: 0;
 			}
 
-			:host([_highlight]) d2l-list-item-generic-layout {
-				transition: background-color 400ms linear;
+			:host([_highlight]) [slot="outside-control-container"] {
+				transition: background-color 400ms linear, border-color 400ms linear;
 			}
-			:host([_highlight]) .d2l-list-item-inner-container {
+			:host([_highlight]:first-of-type) [slot="control-container"]::before,
+			:host([_highlight]) [slot="control-container"]::after {
 				transition: border-color 400ms linear;
 			}
-			:host([_highlighting]) d2l-list-item-generic-layout,
-			:host([_highlighting][selectable]:not([disabled]):not([skeleton])[_focusing]) d2l-list-item-generic-layout,
-			:host([_highlighting][selectable]:not([disabled]):not([skeleton])[_hovering]) d2l-list-item-generic-layout,
-			:host([_highlighting][selected]:not([disabled])) d2l-list-item-generic-layout {
+			:host([_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[_hovering][_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-celestine-plus-2);
-			}
-			:host([_highlighting]:not([disabled])) .d2l-list-item-inner-container,
-			:host([_highlighting][selected]:not([disabled])) .d2l-list-item-inner-container,
-			:host([_highlighting][selected]:not([disabled])[_focusing]) .d2l-list-item-inner-container {
 				border-color: var(--d2l-color-celestine);
+			}
+			:host([_highlighting]:first-of-type) [slot="control-container"]::before,
+			:host([_highlighting]) [slot="control-container"]::after {
+				border-color: transparent;
 			}
 
 			d2l-tooltip > div {
@@ -384,7 +412,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 	async highlight() {
 		if (this._highlight) return;
-		const elem = this.shadowRoot.querySelector('d2l-list-item-generic-layout');
+		const elem = this.shadowRoot.querySelector('[slot="outside-control-container"]');
 		this._highlight = true;
 		await this.updateComplete;
 		elem.addEventListener('transitionend', () => {
@@ -527,50 +555,51 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 
 		const innerView = html`
-			<div class="d2l-list-item-inner-container">
-				<d2l-list-item-generic-layout
-					@focusin="${this._onFocusIn}"
-					@focusout="${this._onFocusOut}"
-					@d2l-fullscreen-within="${this._onFullscreenWithin}"
-					class="${classMap(classes)}"
-					data-breakpoint="${this._breakpoint}"
-					data-separators="${ifDefined(this._separators)}"
-					?grid-active="${this.role === 'rowgroup'}">
-					${this._renderDropTarget()}
-					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
-					${this.selectable ? html`
-					<div slot="control">${this._renderCheckbox()}</div>
-					<div slot="control-action"
-						@mouseenter="${this._onMouseEnter}"
-						@mouseleave="${this._onMouseLeave}">
-							${this._renderCheckboxAction('')}
-					</div>` : nothing }
-					${primaryAction ? html`
-					<div slot="content-action"
-						@focusin="${this._onFocusInPrimaryAction}"
-						@focusout="${this._onFocusOutPrimaryAction}"
-						@mouseenter="${this._onMouseEnterPrimaryAction}"
-						@mouseleave="${this._onMouseLeavePrimaryAction}">
-							${primaryAction}
-					</div>` : nothing}
-					<div slot="content"
-						class="${classMap(contentClasses)}"
-						id="${this._contentId}">
-						<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-						<slot>${content}</slot>
-					</div>
-					<div slot="actions"
-						@mouseenter="${this._onMouseEnter}"
-						@mouseleave="${this._onMouseLeave}"
-						class="d2l-list-item-actions-container">
-						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
-					</div>
-					<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-						<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-					</div>
-				</d2l-list-item-generic-layout>
-			</div>
+			<d2l-list-item-generic-layout
+				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
+				@focusin="${this._onFocusIn}"
+				@focusout="${this._onFocusOut}"
+				@d2l-fullscreen-within="${this._onFullscreenWithin}"
+				class="${classMap(classes)}"
+				data-breakpoint="${this._breakpoint}"
+				data-separators="${ifDefined(this._separators)}"
+				?grid-active="${this.role === 'rowgroup'}">
+				<div slot="outside-control-container"></div>
+				${this._renderDropTarget()}
+				${this._renderDragHandle(this._renderOutsideControl)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				<div slot="control-container"></div>
+				${this.selectable ? html`
+				<div slot="control">${this._renderCheckbox()}</div>
+				<div slot="control-action"
+					@mouseenter="${this._onMouseEnter}"
+					@mouseleave="${this._onMouseLeave}">
+						${this._renderCheckboxAction('')}
+				</div>` : nothing }
+				${primaryAction ? html`
+				<div slot="content-action"
+					@focusin="${this._onFocusInPrimaryAction}"
+					@focusout="${this._onFocusOutPrimaryAction}"
+					@mouseenter="${this._onMouseEnterPrimaryAction}"
+					@mouseleave="${this._onMouseLeavePrimaryAction}">
+						${primaryAction}
+				</div>` : nothing}
+				<div slot="content"
+					class="${classMap(contentClasses)}"
+					id="${this._contentId}">
+					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+					<slot>${content}</slot>
+				</div>
+				<div slot="actions"
+					@mouseenter="${this._onMouseEnter}"
+					@mouseleave="${this._onMouseLeave}"
+					class="d2l-list-item-actions-container">
+					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
+				</div>
+				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
+				</div>
+			</d2l-list-item-generic-layout>
 		`;
 
 		return html`
