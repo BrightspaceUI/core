@@ -506,7 +506,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const changes = e.detail.changes;
 		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
 		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
-		const toUpdate = value ? value : dimension;
+		const toUpdate = e.detail.valueKey ? value : dimension;
 
 		if (!toUpdate) return;
 
