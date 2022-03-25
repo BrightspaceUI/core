@@ -95,11 +95,11 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				}
 
 				:host([h-align="text"]) button {
-					left: calc(var(--d2l-button-subtle-padding-left)*-1);
+					left: calc(var(--d2l-button-subtle-padding-left) * -1);
 				}
 				:host([dir="rtl"][h-align="text"]) button {
 					left: 0;
-					right: calc(var(--d2l-button-subtle-padding-left)*-1);
+					right: calc(var(--d2l-button-subtle-padding-left) * -1);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
