@@ -41,6 +41,12 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 
 			/**
+			 * Whether to render the slimmer version of the button
+			 * @type {boolean}
+			 */
+			slim: { type: Boolean, reflect: true },
+
+			/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
@@ -59,19 +65,41 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				}
 
 				button {
+					--d2l-button-subtle-padding-left: 0.6rem;
+					--d2l-button-subtle-padding-right: 0.6rem;
 					background-color: transparent;
 					border-color: transparent;
 					font-family: inherit;
-					padding: 0.55rem 0.6rem;
+					padding: 0 var(--d2l-button-subtle-padding-right) 0 var(--d2l-button-subtle-padding-left);
 					position: relative;
 				}
 
+				:host([dir="rtl"]) button {
+					padding: 0 var(--d2l-button-subtle-padding-left) 0 var(--d2l-button-subtle-padding-right);
+				}
+
+				:host([slim]) button {
+					--d2l-button-subtle-padding-left: 0.5rem;
+					--d2l-button-subtle-padding-right: 0.5rem;
+					min-height: 1.5rem;
+				}
+
+				:host([slim][icon]) button {
+					--d2l-button-subtle-padding-left: 0.4rem;
+					--d2l-button-subtle-padding-right: 0.5rem;
+				}
+
+				:host([slim][icon][icon-right]) button {
+					--d2l-button-subtle-padding-left: 0.5rem;
+					--d2l-button-subtle-padding-right: 0.4rem;
+				}
+
 				:host([h-align="text"]) button {
-					left: -0.6rem;
+					left: calc(var(--d2l-button-subtle-padding-left)*-1);
 				}
 				:host([dir="rtl"][h-align="text"]) button {
 					left: 0;
-					right: -0.6rem;
+					right: calc(var(--d2l-button-subtle-padding-left)*-1);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -98,22 +126,15 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
 					color: var(--d2l-color-celestine-minus-1);
 				}
-				:host([icon]) .d2l-button-subtle-content {
-					padding-left: 1.2rem;
-				}
-				:host([icon][icon-right]) .d2l-button-subtle-content {
-					padding-left: 0;
-					padding-right: 1.2rem;
-				}
-
-				:host([dir="rtl"][icon]) .d2l-button-subtle-content {
-					padding-left: 0;
-					padding-right: 1.2rem;
-				}
-
+				:host([icon]) .d2l-button-subtle-content,
 				:host([dir="rtl"][icon][icon-right]) .d2l-button-subtle-content {
 					padding-left: 1.2rem;
 					padding-right: 0;
+				}
+				:host([dir="rtl"][icon]) .d2l-button-subtle-content,
+				:host([icon][icon-right]) .d2l-button-subtle-content {
+					padding-left: 0;
+					padding-right: 1.2rem;
 				}
 
 				d2l-icon.d2l-button-subtle-icon {
@@ -125,19 +146,21 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					transform: translateY(-50%);
 					width: 0.9rem;
 				}
+
 				button:hover:not([disabled]) d2l-icon.d2l-button-subtle-icon,
 				button:focus:not([disabled]) d2l-icon.d2l-button-subtle-icon,
 				:host([active]:not([disabled])) button d2l-icon.d2l-button-subtle-icon {
 					color: var(--d2l-color-celestine-minus-1);
 				}
+
 				:host([icon]) d2l-icon.d2l-button-subtle-icon {
 					display: inline-block;
 				}
 				:host([icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
-					right: 0.6rem;
+					right: var(--d2l-button-subtle-padding-right);
 				}
 				:host([dir="rtl"][icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
-					left: 0.6rem;
+					left: var(--d2l-button-subtle-padding-right);
 					right: auto;
 				}
 
@@ -152,6 +175,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.iconRight = false;
+		this.slim = false;
 
 		/** @internal */
 		this._buttonId = getUniqueId();
