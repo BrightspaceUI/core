@@ -3,12 +3,12 @@ import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { forceFocusVisible, getComposedActiveElement, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { html } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 window.D2L = window.D2L || {};

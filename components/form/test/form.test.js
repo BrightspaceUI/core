@@ -3,7 +3,7 @@ import '../form.js';
 import './form-element.js';
 import './nested-form.js';
 import { expect, fixture } from '@open-wc/testing';
-import { html } from 'lit-element/lit-element.js';
+import { html } from 'lit';
 
 describe('d2l-form', () => {
 

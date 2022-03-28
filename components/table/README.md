@@ -51,7 +51,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 <!-- docs: demo live name:d2l-test-table display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
   const fruits = ['Apples', 'Oranges', 'Bananas'];
@@ -157,7 +157,7 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
   class MySortableTableElem extends LitElement {
@@ -257,7 +257,7 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 <!-- docs: demo -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
   class MySelectableTableElem extends LitElement {

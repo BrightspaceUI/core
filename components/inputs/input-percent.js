@@ -1,8 +1,8 @@
 import './input-number.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

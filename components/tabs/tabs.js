@@ -2,17 +2,17 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

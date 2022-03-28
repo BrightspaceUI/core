@@ -48,8 +48,8 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
-  import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+  import { html, LitElement } from 'lit';
+  import { unsafeHTML } from 'lit/directives/unsafe-html.js';
   import '@brightspace-ui/core/components/icons/icon.js';
 
   class SomeComponent extends LitElement {

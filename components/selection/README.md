@@ -15,7 +15,7 @@ The selection components below work with a component that extends the `Selection
 <!-- docs: demo live name:d2l-demo-selection display:block -->
 ```html
 <script type="module">
-  import { css, html, LitElement } from 'lit-element/lit-element.js';
+  import { css, html, LitElement } from 'lit';
   import { SelectionMixin } from '@brightspace-ui/core/components/selection/selection-mixin.js';
 
   class CustomSelection extends SelectionMixin(LitElement) {

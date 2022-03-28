@@ -70,8 +70,7 @@
     "focus-visible": "^5",
     "ifrau": "^0.39",
     "intl-messageformat": "^7",
-    "lit-element": "^3",
-    "lit-html": "^2",
+    "lit": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }

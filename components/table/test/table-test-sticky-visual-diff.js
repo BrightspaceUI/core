@@ -1,6 +1,6 @@
 import '../../../components/inputs/input-number.js';
 import '../../../components/inputs/input-text.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
 const url = new URL(window.location.href);

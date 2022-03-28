@@ -137,7 +137,7 @@ Lit tries to reuse DOM nodes when it can to help with performance, but in this c
 
 If you are going to be constructing your dimensions and/or dimension values by iterating over an array or object (using `forEach,` , `map`, etc.), you'll want to use the [Lit `repeat` directive with a `KeyFn` set](https://lit.dev/docs/templates/directives/#repeat) instead to tell Lit not to reuse a DOM node if the `key` has changed:
 ```js
-import { repeat } from 'lit-html/directives/repeat.js';
+import { repeat } from 'lit/directives/repeat.js';
 ...
 return html`<d2l-filter>
 	${repeat(this._dimensions, (dim) => dim.key, dim => html`

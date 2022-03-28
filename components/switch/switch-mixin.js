@@ -1,10 +1,10 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(FocusVisiblePolyfillMixin(superclass))) {

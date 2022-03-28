@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
 
 class LocalizeTest extends LocalizeMixin(LitElement) {

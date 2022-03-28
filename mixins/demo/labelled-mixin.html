@@ -5,9 +5,9 @@
 		<script type="module">
 			import '../../components/demo/demo-page.js';
 			import '../../components/inputs/input-checkbox.js';
-			import { css, html, LitElement } from 'lit-element/lit-element.js';
+			import { css, html, LitElement } from 'lit';
 			import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
-			import { ifDefined } from 'lit-html/directives/if-defined.js';
+			import { ifDefined } from 'lit/directives/if-defined.js';
 
 			class DemoInput extends LabelledMixin(LitElement) {
 				static get styles() {

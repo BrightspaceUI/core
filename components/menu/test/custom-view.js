@@ -1,5 +1,5 @@
 import '../../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { HierarchicalViewMixin } from '../../hierarchical-view/hierarchical-view-mixin.js';
 
 class CustomView extends HierarchicalViewMixin(LitElement) {

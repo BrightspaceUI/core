@@ -1,5 +1,5 @@
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 
 /**

@@ -1,5 +1,5 @@
 import { defineCE, expect, fixture } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import { MenuItemSelectableMixin } from '../menu-item-selectable-mixin.js';
 
 const tag = defineCE(

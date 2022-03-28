@@ -1,6 +1,6 @@
 import '../../components/colors/colors.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 class DismissibleTest extends LitElement {
 

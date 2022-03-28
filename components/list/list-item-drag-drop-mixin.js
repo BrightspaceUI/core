@@ -1,12 +1,11 @@
 import './list-item-drag-image.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html, nothing } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { nothing } from 'lit-html';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 
 export const moveLocations = Object.freeze({

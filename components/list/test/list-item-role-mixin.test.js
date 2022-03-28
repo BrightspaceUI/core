@@ -1,7 +1,7 @@
 import '../list.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 import { ListItemRoleMixin } from '../list-item-role-mixin.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 const tag = defineCE(
 	class extends ListItemRoleMixin(LitElement) {

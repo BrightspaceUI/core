@@ -2,7 +2,7 @@ import './demo-snippet.js';
 import './code-view.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { heading2Styles } from '../typography/styles.js';
 
 document.body.classList.add('d2l-typography');

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { forceFocusVisible } from '../../helpers/focus.js';

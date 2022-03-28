@@ -1,7 +1,7 @@
 
 import { defineCE, expect, fixture, nextFrame } from '@open-wc/testing';
 import { EventSubscriberController, IdSubscriberController, SubscriberRegistryController } from '../subscriberControllers.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import sinon from 'sinon';
 
 const separateRegistries = defineCE(

@@ -1,5 +1,5 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { css, html, LitElement } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

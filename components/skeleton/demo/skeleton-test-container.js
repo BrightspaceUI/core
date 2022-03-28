@@ -1,6 +1,6 @@
 import '../../colors/colors.js';
 import '../../inputs/input-checkbox.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../../typography/styles.js';
 import { SkeletonMixin } from '../skeleton-mixin.js';
 

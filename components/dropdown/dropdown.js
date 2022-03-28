@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 

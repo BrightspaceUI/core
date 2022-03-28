@@ -5,7 +5,7 @@ import '../../expand-collapse/expand-collapse-content.js';
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../form.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { heading3Styles } from '../../typography/styles.js';
 import { inputStyles } from '../../inputs/input-styles.js';
 

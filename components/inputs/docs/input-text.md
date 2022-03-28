@@ -149,7 +149,7 @@ As an alternative to using the `<d2l-input-text>` custom element, you can style 
 <!-- docs: demo code -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 
   class MyTextInputElem extends LitElement {
@@ -265,7 +265,7 @@ Native `<textarea>` elements can be styled by importing `input-styles.js` into y
 <!-- docs: demo code -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 
   class MyTextareaInputElem extends LitElement {

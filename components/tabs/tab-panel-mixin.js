@@ -1,4 +1,4 @@
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
 export const TabPanelMixin = superclass => class extends superclass {

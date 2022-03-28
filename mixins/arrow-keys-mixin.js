@@ -1,4 +1,4 @@
-import { html } from 'lit-element/lit-element.js';
+import { html } from 'lit';
 
 const keyCodes = Object.freeze({
 	END: 35,
