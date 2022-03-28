@@ -75,9 +75,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hovering: { type: Boolean, reflect: true },
-			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean, reflect: true },
-			_focusingPrimaryAction: { type: Boolean },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
@@ -134,10 +132,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
 			:host([_separators="none"]) [slot="control-container"]::before,
 			:host([_separators="none"]) [slot="control-container"]::after,
+			:host([selectable][_hovering]) [slot="control-container"]::before,
+			:host([selectable][_hovering]) [slot="control-container"]::after,
+			:host([selectable][_focusing]) [slot="control-container"]::before,
+			:host([selectable][_focusing]) [slot="control-container"]::after,
 			:host([selected]) [slot="control-container"]::before,
 			:host([selected]) [slot="control-container"]::after,
-			:host([_hovering]) [slot="control-container"]::before,
-			:host([_hovering]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -164,8 +164,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
 			}
-			.d2l-list-item-content.d2l-hovering,
-			.d2l-list-item-content.d2l-focusing {
+			:host([_hovering]) .d2l-list-item-content,
+			:host([_focusing]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 				--d2l-list-item-content-text-decoration: underline;
 			}
@@ -297,24 +297,24 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="outside-control-container"] {
 				border: 1px solid transparent;
 				border-radius: 6px;
-			}
-			:host([selectable]) [slot="outside-control-container"] {
 				margin: 0 -12px;
 			}
 			:host([draggable]) [slot="outside-control-container"],
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				margin: 0;
 			}
-			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
+
+			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
+				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
-			:host([selectable]:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
-				background-color: var(--d2l-color-regolith);
-			}
-			:host([selected]:not([disabled])) [slot="outside-control-container"] {
+			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
 			}
+
 			:host(:not([disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
 				border-color: transparent;
 				margin: 0;
@@ -502,17 +502,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		hasDisplayedKeyboardTooltip = true;
 	}
 
-	_onFocusInPrimaryAction() {
-		this._focusingPrimaryAction = true;
-	}
-
 	_onFocusOut() {
 		this._focusing = false;
 		this._displayKeyboardTooltip = false;
-	}
-
-	_onFocusOutPrimaryAction() {
-		this._focusingPrimaryAction = false;
 	}
 
 	_onFullscreenWithin(e) {
@@ -526,7 +518,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseEnterPrimaryAction() {
-		this._hoveringPrimaryAction = true;
 		this._hovering = true;
 	}
 
@@ -535,7 +526,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseLeavePrimaryAction() {
-		this._hoveringPrimaryAction = false;
 		this._hovering = false;
 	}
 
@@ -544,11 +534,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-dragging-over': this._draggingOver
-		};
-		const contentClasses = {
-			'd2l-list-item-content': true,
-			'd2l-hovering': this._hoveringPrimaryAction,
-			'd2l-focusing': this._focusingPrimaryAction
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
@@ -578,14 +563,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
-					@focusin="${this._onFocusInPrimaryAction}"
-					@focusout="${this._onFocusOutPrimaryAction}"
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
 				</div>` : nothing}
 				<div slot="content"
-					class="${classMap(contentClasses)}"
+					class="d2l-list-item-content"
 					id="${this._contentId}">
 					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
 					<slot>${content}</slot>
