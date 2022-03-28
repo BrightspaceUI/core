@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent representing the current page.

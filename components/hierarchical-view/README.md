@@ -9,7 +9,7 @@ The `d2l-hierarchical-view` component uses the `d2l-hierarchical-view-mixin` for
 <!-- docs: demo code autoSize:false display:block size:medium -->
 ```html
 <script type="module">
-  import { css, html,LitElement } from 'lit-element/lit-element.js';
+  import { css, html,LitElement } from 'lit';
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/hierarchical-view/hierarchical-view.js';
 

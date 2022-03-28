@@ -5,7 +5,7 @@ A Select List allows the user to select a single option out of a relatively larg
 <!-- docs: demo -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
 
   class MySelectElem extends LitElement {
@@ -59,7 +59,7 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 <!-- docs: demo live name:d2l-test-input-select -->
 ```html
 <script type="module">
-  import { css, html, LitElement } from 'lit-element/lit-element.js';
+  import { css, html, LitElement } from 'lit';
   import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
   import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
   import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';

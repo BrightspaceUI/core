@@ -1,13 +1,13 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const maxBadgeDigits = 5;
 

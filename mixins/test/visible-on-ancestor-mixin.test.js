@@ -1,7 +1,7 @@
 
 import '../../components/button/button-icon.js';
 import { defineCE, expect, fixture, html, nextFrame } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 const targetTag = defineCE(
 	class extends LitElement {

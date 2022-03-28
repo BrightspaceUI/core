@@ -1,8 +1,8 @@
 import 'prismjs/prism.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { styles } from './code-view-styles.js';
 import { themeStyles } from './code-dark-plus-styles.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 class CodeView extends LitElement {
 

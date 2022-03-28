@@ -2,7 +2,7 @@ import './input-date.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { formatDateInISO,
 	formatDateInISOTime,
 	formatDateTimeInISO,
@@ -18,12 +18,12 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 export function _formatLocalDateTimeInISO(date, time) {
 	const dateObj = parseISODate(date);

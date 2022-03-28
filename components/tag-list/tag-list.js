@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 
 class TagList extends ArrowKeysMixin(LitElement) {

@@ -3,7 +3,7 @@ import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
 

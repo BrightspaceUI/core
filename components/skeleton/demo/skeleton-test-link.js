@@ -1,5 +1,5 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { linkStyles } from '../../link/link.js';
 import { SkeletonMixin } from '../skeleton-mixin.js';
 

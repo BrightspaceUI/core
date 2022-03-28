@@ -42,7 +42,7 @@ For disabled items, add the `d2l-input-radio-label-disabled` class on the label 
 <!-- docs: demo code display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
   import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
 
@@ -82,7 +82,7 @@ If you'd like to manually link the radio input with a label, or use an ARIA labe
 <!-- docs: demo live name:d2l-test-input-radio-solo display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
 
   class MyRadioElem extends LitElement {
@@ -126,7 +126,7 @@ To align related content below radio buttons, the `d2l-input-radio-spacer` eleme
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
 
   class MyRadioElem extends LitElement {

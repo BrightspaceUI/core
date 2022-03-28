@@ -1,6 +1,6 @@
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { HtmlAttributeObserverController } from '../htmlAttributeObserverController.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 const testAttr = 'test-attr';
 const testAttrVal = 'test';

@@ -1,6 +1,6 @@
 import './alert.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

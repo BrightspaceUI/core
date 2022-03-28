@@ -1,4 +1,4 @@
-import { css, LitElement } from 'lit-element/lit-element.js';
+import { css, LitElement } from 'lit';
 
 /**
  * A component for displaying a more distinct separator between menu items.

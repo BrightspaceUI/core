@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 /**
  * A component for communicating the status of an item. It is non-interactive and used to assert prominence on state.

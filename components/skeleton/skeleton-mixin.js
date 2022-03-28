@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 

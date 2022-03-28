@@ -1,9 +1,9 @@
 import '../button/button-subtle.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 

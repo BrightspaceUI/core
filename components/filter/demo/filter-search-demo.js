@@ -1,7 +1,7 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 const initialData = [
 	{ key: 'admin', text: 'Admin', selected: false },

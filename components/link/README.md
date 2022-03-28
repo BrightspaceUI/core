@@ -76,7 +76,7 @@ Alternately, you can apply link styles to a native `<a>` element by importing th
 <!-- docs: demo code -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 
   class MyLinkElem extends LitElement {

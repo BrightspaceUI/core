@@ -465,8 +465,8 @@
 			</d2l-demo-snippet>
 
 			<d2l-code-view language="javascript">
-				import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-				import { html, LitElement } from 'lit-element/lit-element.js';
+				import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+				import { html, LitElement } from 'lit';
 
 				class SomeComponent extends LitElement {
 
@@ -486,8 +486,8 @@
 		</d2l-demo-page>
 
 		<script type="module">
-			import { html, LitElement } from 'lit-element/lit-element.js';
-			import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+			import { html, LitElement } from 'lit';
+			import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 			class SomeComponent extends LitElement {
 

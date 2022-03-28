@@ -1,6 +1,6 @@
 import '../button/button.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

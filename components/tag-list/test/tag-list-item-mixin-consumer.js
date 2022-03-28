@@ -1,6 +1,6 @@
 import '../../dropdown/dropdown.js';
 import '../../dropdown/dropdown-content.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { TagListItemMixin } from '../tag-list-item-mixin.js';
 
 class TagListItemMixinConsumer extends TagListItemMixin(LitElement) {

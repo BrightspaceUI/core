@@ -2,8 +2,8 @@ import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 

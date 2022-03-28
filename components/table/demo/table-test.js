@@ -1,5 +1,5 @@
 import '../table-col-sort-button.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { tableStyles } from '../table-wrapper.js';
 
