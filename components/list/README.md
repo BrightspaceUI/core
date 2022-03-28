@@ -221,7 +221,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
-  import { css, html, LitElement } from 'lit-element/lit-element.js';
+  import { css, html, LitElement } from 'lit';
 
   class ListDemoDragAndDropUsage extends LitElement {
     static get properties() {

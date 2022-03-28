@@ -1,5 +1,5 @@
 
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import { ValidationCustomMixin } from './validation-custom-mixin.js';
 
 class ValidationCustom extends ValidationCustomMixin(LitElement) {

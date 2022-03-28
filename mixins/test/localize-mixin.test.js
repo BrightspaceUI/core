@@ -1,7 +1,7 @@
 import '../demo/localize-test.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import { LocalizeMixin } from '../localize-mixin.js';
 import { LocalizeStaticMixin } from '../localize-static-mixin.js';
 import { stub } from 'sinon';

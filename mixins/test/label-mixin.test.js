@@ -1,8 +1,8 @@
 
 import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LitElement } from 'lit';
 
 const labelledTag = defineCE(
 	class extends LabelledMixin(LitElement) {

@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../icons/icon-custom.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { SwitchMixin } from './switch-mixin.js';
 
 /**

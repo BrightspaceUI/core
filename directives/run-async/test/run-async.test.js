@@ -1,6 +1,6 @@
 import { expect, fixture } from '@open-wc/testing';
 import { InitialStateError, runAsync } from '../run-async.js';
-import { html } from 'lit-element/lit-element.js';
+import { html } from 'lit';
 
 describe('run-async directive', () => {
 

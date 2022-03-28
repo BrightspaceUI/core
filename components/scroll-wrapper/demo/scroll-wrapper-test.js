@@ -1,8 +1,8 @@
 import '../scroll-wrapper.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { forceFocusVisible } from '../../../helpers/focus.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 class TestScrollWrapper extends RtlMixin(LitElement) {
 

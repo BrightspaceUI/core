@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../../typography/styles.js';
 import { SkeletonMixin } from '../skeleton-mixin.js';
 

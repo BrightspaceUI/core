@@ -5,7 +5,7 @@ import '../../inputs/input-date-time-range.js';
 import '../../inputs/input-text.js';
 import '../../validation/validation-custom.js';
 import '../form-native.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { inputStyles } from '../../inputs/input-styles.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 

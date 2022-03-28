@@ -2,7 +2,7 @@ import '../../validation/validation-custom.js';
 import './form-element.js';
 
 import { defineCE, expect, fixture } from '@open-wc/testing';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { localizeFormElement } from '../form-element-localize-helper.js';
 

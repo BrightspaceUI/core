@@ -1,7 +1,7 @@
 import '../dialog.js';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { html } from 'lit-element/lit-element.js';
+import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-dialog', () => {

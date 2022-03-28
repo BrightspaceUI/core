@@ -1,5 +1,5 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { cssEscape, elemIdListAdd, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
@@ -7,7 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 let logAccessibilityWarning = true;
 

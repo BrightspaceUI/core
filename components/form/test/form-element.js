@@ -1,5 +1,5 @@
 import '../../validation/validation-custom.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { FormElementMixin } from '../form-element-mixin.js';
 
 class FormElement extends FormElementMixin(LitElement) {

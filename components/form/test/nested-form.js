@@ -1,7 +1,7 @@
 import '../../validation/validation-custom.js';
 import '../form.js';
 import './form-element.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 class NestedForm extends LitElement {
 

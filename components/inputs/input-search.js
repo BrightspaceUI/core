@@ -1,9 +1,9 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import './input-text.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

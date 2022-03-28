@@ -1,4 +1,4 @@
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 
 export const bodyStandardStyles = css`
 	.d2l-body-standard {

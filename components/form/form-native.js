@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { FormMixin } from './form-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';

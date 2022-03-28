@@ -1,7 +1,7 @@
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 

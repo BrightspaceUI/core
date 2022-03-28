@@ -1,7 +1,7 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
 /**

@@ -1,6 +1,6 @@
 
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import { RtlMixin } from '../rtl-mixin.js';
 
 const rtlMixinTag = defineCE(

@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 /**
  * A helper for providing layout/style for meta data within the `content` slot.

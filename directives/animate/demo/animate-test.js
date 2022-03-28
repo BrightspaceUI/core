@@ -2,7 +2,7 @@ import '../../../components/button/button.js';
 import '../../../components/inputs/input-checkbox.js';
 import '../../../components/list/list.js';
 import '../../../components/list/list-item.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { hide, show } from '../animate.js';
 
 export class AnimateTest extends LitElement {

@@ -1,7 +1,7 @@
 import '../../button/button.js';
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 class DropdownComponent extends LitElement {
 

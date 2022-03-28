@@ -1,5 +1,5 @@
 import '../menu.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 class CustomSlots extends LitElement {
 
