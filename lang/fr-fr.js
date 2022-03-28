@@ -21,7 +21,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, =0 {Aucun filtre appliqué.} one {1 filtre appliqué.} other {{number} filtres appliqués.}}",
 	"components.filter.filters": "Filtres",
 	"components.filter.noFilters": "Aucun filtre disponible",
-	"components.filter.searchResults": "{number, plural, =0 {aucun résultat de recherche} one {1 résultat de recherche} other {{number} résultats de recherche}}",
+	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {1 résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
 	"components.form-element.defaultError": "{label} n'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",

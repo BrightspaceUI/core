@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.clearDescriptionSingle": "Filters wissen",
 	"components.filter.loading": "Laden van filters",
-	"components.filter.filterCountDescription": "{number, plural, =0 {No filters applied.} one {1 filter applied.} other {{number} filters applied.}}",
+	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {1 filter toegepast.} other {{number} filters toegepast.}}",
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {1 zoekresultaat} other {{number} zoekresultaten}}",
