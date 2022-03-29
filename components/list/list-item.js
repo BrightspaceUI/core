@@ -1,5 +1,5 @@
 import { ListItemLinkMixin } from './list-item-link-mixin.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 /**
  * A component for a "listitem" child within a list. It provides semantics, basic layout, breakpoints for responsiveness, a link for navigation, and selection.

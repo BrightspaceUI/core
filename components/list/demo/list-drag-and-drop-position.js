@@ -1,9 +1,9 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoDragAndDropPosition extends LitElement {
 

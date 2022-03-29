@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';

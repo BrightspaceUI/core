@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
 

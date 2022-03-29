@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 /**
  * A component to represent a possible value that can be selected for a dimension set (the main filter dimension type).

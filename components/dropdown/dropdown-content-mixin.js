@@ -4,11 +4,11 @@ import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { html } from 'lit-element/lit-element.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;

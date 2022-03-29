@@ -1,5 +1,5 @@
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

@@ -9,7 +9,7 @@ import {
 	isFocusable,
 	tryApplyFocus
 } from '../focus.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 const testElemTag = defineCE(
 	class extends LitElement {

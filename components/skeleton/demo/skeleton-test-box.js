@@ -1,5 +1,5 @@
 import '../../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { SkeletonMixin } from '../skeleton-mixin.js';
 
 export class SkeletonTestBox extends SkeletonMixin(LitElement) {

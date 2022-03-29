@@ -1,5 +1,5 @@
 import '../icons/icon.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { MenuItemSelectableMixin } from './menu-item-selectable-mixin.js';
 import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';

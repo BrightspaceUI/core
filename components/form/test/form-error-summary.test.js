@@ -1,6 +1,6 @@
 import '../form-errory-summary.js';
 import { expect, fixture } from '@open-wc/testing';
-import { html } from 'lit-element/lit-element.js';
+import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const errorSummaryFixture = html`<d2l-form-error-summary></d2l-form-error-summary>`;

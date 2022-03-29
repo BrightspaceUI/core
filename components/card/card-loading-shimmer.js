@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 /**
  * A card layout component for when the card header is loading.

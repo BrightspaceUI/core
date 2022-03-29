@@ -1,7 +1,7 @@
 import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { forceFocusVisible, getComposedActiveElement } from '../../../helpers/focus.js';
 import { hide, show } from '../animate.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 class FocusTestElem extends LitElement {
 

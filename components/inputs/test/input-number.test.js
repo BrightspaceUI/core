@@ -1,7 +1,7 @@
 import '../input-number.js';
 import { aTimeout, defineCE, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;

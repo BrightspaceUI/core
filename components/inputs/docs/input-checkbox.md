@@ -121,7 +121,7 @@ As an alternative to using the `<d2l-input-checkbox>` custom element, you can st
 <!-- docs: demo code display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { html, LitElement } from 'lit';
   import { checkboxStyles } from '@brightspace-ui/core/components/inputs/input-checkbox.js';
 
   class MyCheckboxElem extends LitElement {

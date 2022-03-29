@@ -1,6 +1,6 @@
 import { findComposedAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;

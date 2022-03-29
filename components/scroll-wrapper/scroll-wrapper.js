@@ -1,8 +1,8 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 

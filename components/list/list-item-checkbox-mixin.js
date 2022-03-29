@@ -1,9 +1,8 @@
 import '../selection/selection-input.js';
-import { css, html } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
-import { nothing } from 'lit-html';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 

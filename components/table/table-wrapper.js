@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const tableStyles = css`

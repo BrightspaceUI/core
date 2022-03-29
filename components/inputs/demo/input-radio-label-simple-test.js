@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { radioStyles } from '../input-radio-styles.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 

@@ -16,10 +16,10 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { AsyncDirective } from 'lit-html/async-directive.js';
+import { AsyncDirective } from 'lit/async-directive.js';
 import { AsyncStateEvent } from '../../helpers/asyncStateEvent.js';
-import { directive } from 'lit-html/directive.js';
-import { noChange } from 'lit-html';
+import { directive } from 'lit/directive.js';
+import { noChange } from 'lit';
 
 const hasAbortController = typeof AbortController === 'function';
 
@@ -119,7 +119,7 @@ class RunAsync extends AsyncDirective {
 
 /**
  * Runs an async function whenever the key changes, and calls one of several
- * lit-html template functions depending on the state of the async call:
+ * Lit template functions depending on the state of the async call:
  *
  *  - success() is called when the result of the function resolves.
  *  - pending() is called immediately

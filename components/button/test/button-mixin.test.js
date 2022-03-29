@@ -1,5 +1,5 @@
 import { defineCE, expect, fixture } from '@open-wc/testing';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { ButtonMixin } from '../button-mixin.js';
 
 const tagName = defineCE(

@@ -1,12 +1,12 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A container element that provides specific layout using several slots.

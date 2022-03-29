@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { offscreenStyles } from '../offscreen.js';
 
 class OffscreenDemo extends LitElement {

@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css } from 'lit-element/lit-element.js';
+import { css } from 'lit';
 
 export const selectStyles = css`
 	.d2l-input-select {

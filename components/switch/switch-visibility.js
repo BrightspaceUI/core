@@ -1,5 +1,5 @@
 import '../icons/icon.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 

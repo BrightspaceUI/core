@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 

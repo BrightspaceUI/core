@@ -3,14 +3,14 @@ import '../dropdown/dropdown-menu.js';
 import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';

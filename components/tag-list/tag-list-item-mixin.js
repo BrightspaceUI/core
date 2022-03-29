@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { labelStyles } from '../typography/styles.js';
 
 export const TagListItemMixin = superclass => class extends superclass {

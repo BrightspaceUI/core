@@ -1,5 +1,5 @@
 import '../button/button-icon.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';

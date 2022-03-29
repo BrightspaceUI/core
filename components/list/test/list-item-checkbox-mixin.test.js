@@ -1,5 +1,5 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 
 const tag = defineCE(

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 /**
  * A helper for providing layout/style for a title within the `content` slot.

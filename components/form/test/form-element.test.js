@@ -1,7 +1,7 @@
 import '../../validation/validation-custom.js';
 import './form-element.js';
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit';
 
 const formTag = defineCE(
 	class extends LitElement {

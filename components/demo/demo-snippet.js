@@ -1,7 +1,7 @@
 import './code-view.js';
 import '../button/button-icon.js';
 import '../switch/switch.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit';
 
 class DemoSnippet extends LitElement {
 
