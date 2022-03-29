@@ -149,6 +149,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
+			 * ADVANCED: Only show the tooltip if we detect the element of the id passed is truncating
+			 * If no id is set, the tooltip target element is used
+			 * @type {string}
+			 */
+			onlyShowIfTruncating: { type: String, attribute: 'only-show-if-truncating' },
+			/**
 			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
 			 */
@@ -650,6 +656,28 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaceAround;
 	}
 
+	async _determineIfTruncating() {
+		let target = this._target;
+		if (this.onlyShowIfTruncating) {
+			target = target.querySelector(`#${cssEscape(this.onlyShowIfTruncating)}`);
+		}
+		const clone = target.cloneNode(true);
+		clone.removeAttribute('id');
+		clone.style.position = 'absolute';
+		if (this.getAttribute('dir') === 'rtl') {
+			clone.style.right = '-10000px';
+		} else {
+			clone.style.left = '-10000px';
+		}
+
+		target.appendChild(clone);
+		await this.updateComplete;
+		const truncating = clone.offsetWidth > target.offsetWidth;
+		target.removeChild(clone);
+
+		return truncating;
+	}
+
 	_findTarget() {
 		const ownerRoot = this.getRootNode();
 
@@ -749,7 +777,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	_onTargetFocus() {
+	async _onTargetFocus() {
+		if (this.onlyShowIfTruncating !== undefined) {
+			const truncating = await this._determineIfTruncating();
+			if (!truncating) return;
+		}
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
@@ -759,7 +791,11 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetMouseEnter() {
-		this._hoverTimeout = setTimeout(() => {
+		this._hoverTimeout = setTimeout(async() => {
+			if (this.onlyShowIfTruncating !== undefined) {
+				const truncating = await this._determineIfTruncating();
+				if (!truncating) return;
+			}
 			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();

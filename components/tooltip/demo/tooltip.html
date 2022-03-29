@@ -32,6 +32,26 @@
 			padding: 20px;
 			width: 200px;
 		}
+
+		.truncated {
+			border: 1px solid #cdd5dc;
+			border-radius: 6px;
+			height: 200px;
+			padding: 20px;
+			width: 200px;
+		}
+
+		.truncated d2l-button {
+			margin-bottom: 20px;
+			max-width: 100%;
+		}
+
+		.truncated d2l-button span {
+			display: block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	</style>
 </head>
 
@@ -109,6 +129,22 @@
 					<d2l-button id="tooltip-bounded">Bounded Tooltip</d2l-button>
 					<d2l-tooltip for="tooltip-bounded">
 						A bounded tooltip message that will wrap to more than one line.
+					</d2l-tooltip>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (only show if truncating)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="truncated">
+					<d2l-button id="tooltip-short"><span>Short Tooltip</span></d2l-button>
+					<d2l-tooltip for="tooltip-short" only-show-if-truncating>
+						This tooltip will not show.
+					</d2l-tooltip>
+					<d2l-button id="tooltip-long"><span>Very Very Very Very Long Tooltip</span></d2l-button>
+					<d2l-tooltip for="tooltip-long" only-show-if-truncating>
+						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
 				</div>
 			</template>
