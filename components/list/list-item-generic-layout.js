@@ -121,6 +121,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
+				height: 100%;
+				width: 100%;
 				z-index: 2;
 			}
 			::slotted([slot="content-action"]) {
