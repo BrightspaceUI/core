@@ -177,7 +177,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="content"] {
 				display: flex;
 				justify-content: stretch;
-				padding: 0.55rem 0;
+				padding: 0.55rem 0.55rem 0.55rem 0;
+			}
+			:host([dir="rtl"]) [slot="content"] {
+				padding-right: 0;
+				padding-left: 0.55rem;
 			}
 			:host([slim]) [slot="content"] { /* TODO, remove */
 				padding-bottom: 0.35rem;
