@@ -135,7 +135,7 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
-			{ name: 'focus', selector: '#draggable', action: () => focusLink('#draggable [key="1"]') },
+			{ name: 'focus', selector: '#draggable', action: () => focusMethod('#draggable [key="1"]') },
 			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
 			{ name: 'selectable', selector: '#draggableSelectable' },
 			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
