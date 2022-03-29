@@ -24,7 +24,9 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host(:not([disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);;
+			}
+			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			button {
 				background-color: transparent;

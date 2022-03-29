@@ -192,6 +192,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-bottom: 0;
 				padding-top: 0;
 			}
+
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
 				border-radius: 6px;
@@ -309,6 +310,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host(:not([disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
+			}
+			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
