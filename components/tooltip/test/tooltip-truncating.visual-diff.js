@@ -30,7 +30,7 @@ describe('d2l-tooltip truncating', () => {
 		{ name: 'list-item-truncating', focus: '' }
 	].forEach((testCase) => {
 
-		it(testCase, async function() {
+		it(testCase.name, async function() {
 			const selector = `#${testCase.name}`;
 			await page.$eval(`${selector}${testCase.focus}`, (content) => {
 				content.focus();
