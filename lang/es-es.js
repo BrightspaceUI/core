@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Borrar filtros para: {filterName}",
 	"components.filter.clearDescriptionSingle": "Borrar filtros",
 	"components.filter.loading": "Cargando filtros",
-	"components.filter.filterCountDescription": "{number, plural,= 0 {Sin filtros aplicados.} one {1 filtro aplicado.} other {{number} filtros aplicados.}}",
+	"components.filter.filterCountDescription": "{number, plural, =0 {Sin filtros aplicados.} one {1 filtro aplicado.} other {{number} filtros aplicados.}}",
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "No hay filtros disponibles",
 	"components.filter.searchResults": "{number, plural, =0 {No hay resultados de búsqueda} one {1 resultado de búsqueda} other {{number} resultados de búsqueda}}",
