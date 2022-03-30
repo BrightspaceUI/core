@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const LARGE_SIZE = 970;
 const MEDIUM_SIZE = 600;
@@ -20,7 +21,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			 * @type {string}
 			 */
 			description: { type: String },
-			_showHiddenTags: { type: Boolean, reflect: true },
+			_showHiddenTags: { type: Boolean },
 			_chompIndex: { type: Number }
 		};
 	}
@@ -35,6 +36,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			}
 			.tag-list-container {
 				display: flex;
+				flex-wrap: wrap;
 				margin: -6px -6px 0 0;
 				padding: 0;
 				position: relative;
@@ -49,9 +51,6 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			.d2l-tag-list-hidden-button {
 				position: absolute;
 				visibility: hidden;
-			}
-			:host([_showHiddenTags]) .tag-list-container {
-				flex-wrap: wrap;
 			}
 		`;
 	}
@@ -79,14 +78,6 @@ class TagList extends ArrowKeysMixin(LitElement) {
 
 	}
 
-	_getButton(hiddenCount) {
-		return this._showHiddenTags ? html`
-		 	<d2l-button-subtle slim text="Show Less" @click="${this._toggleHiddenTagVisibility}"></d2l-button-subtle>
-		` : html`
-			<d2l-button-subtle slim text="+ ${hiddenCount} more" @click="${this._toggleHiddenTagVisibility}"></d2l-button-subtle>
-		`;
-	}
-
 	render() {
 		let hiddenCount = 0;
 		let hasHiddenTags = false;
@@ -100,7 +91,14 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			}
 		});
 
-		const button = hasHiddenTags ? this._getButton(hiddenCount) : null;
+		let button = null;
+		if (hasHiddenTags) {
+			button = this._showHiddenTags ? html`
+				<d2l-button-subtle slim text="Show Less" @click="${this._toggleHiddenTagVisibility}" class="d2l-tag-list-button"></d2l-button-subtle>
+			` : html`
+				<d2l-button-subtle slim text="+ ${hiddenCount} more" @click="${this._toggleHiddenTagVisibility}" class="d2l-tag-list-button"></d2l-button-subtle>
+			`;
+		}
 
 		const list = html`
 			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
@@ -108,11 +106,14 @@ class TagList extends ArrowKeysMixin(LitElement) {
 				${button}
 			</div>
 		`;
-		const hiddenButton = html`<d2l-button-subtle aria-hidden="true" slim text="+ ## more" class="d2l-tag-list-hidden-button"></d2l-button-subtle>`;
+
+		const outerContainerStyles = {
+			maxHeight: this._showHiddenTags ? 'unset' : `${36 * this._lines}px`
+		};
 
 		return html`
-			<div role="application" class="tag-list-outer-container">
-				${hiddenButton}
+			<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
+				<d2l-button-subtle aria-hidden="true" slim text="+ ## more" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 				${this.arrowKeysContainer(list)}
 				<div id="d2l-tag-list-description" hidden>${this.description}</div>
 			</div>
@@ -138,24 +139,37 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			width: 0
 		};
 
+		/**
+		 * _lines is determined by page width in _handleResize function
+		 * For each line we calculate the max items that can fit in that width, then go to the next line
+		 * If on the last line there is/are item(s) that won't fit in the width, we mark them as soft-hide and set isOverflowing
+		 */
 		let isOverflowing = false;
-		for (let i = 0; i < this._itemLayouts.length; i++) {
-			const itemLayout = this._itemLayouts[i];
+		let overflowingIndex = 0;
+		for (let k = 1; k <= this._lines; k++) {
+			showing.width = 0;
 
-			// chomp or unchomp based on space available
-			if (!isOverflowing && showing.width + itemLayout.width < this._availableWidth) {
-				showing.width += itemLayout.width;
-				showing.count += 1;
-				itemLayout.isChomped = false;
-				itemLayout.trigger = 'soft-show';
-			} else {
-				isOverflowing = true;
-				itemLayout.isChomped = true;
-				itemLayout.trigger = 'soft-hide';
+			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
+				const itemLayout = this._itemLayouts[i];
+
+				if (!isOverflowing && showing.width + itemLayout.width < this._availableWidth) {
+					showing.width += itemLayout.width;
+					showing.count += 1;
+					itemLayout.isChomped = false;
+					itemLayout.trigger = 'soft-show';
+				} else if (k < this._lines) {
+					overflowingIndex = i;
+					break;
+				} else {
+					isOverflowing = true;
+					itemLayout.isChomped = true;
+					itemLayout.trigger = 'soft-hide';
+				}
 			}
+
 		}
 
-		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
+		// calculate if additional item(s) should be hidden due to subtle button needing space
 		if (isOverflowing) {
 			for (let j = this._itemLayouts.length; j--;) {
 				if ((showing.width + subtleButtonWidth) < this._availableWidth) {
@@ -167,8 +181,6 @@ class TagList extends ArrowKeysMixin(LitElement) {
 				}
 				showing.width -= itemLayoutOverflowing.width;
 				showing.count -= 1;
-				itemLayoutOverflowing.trigger = 'soft-hide';
-				itemLayoutOverflowing.isChomped = true;
 			}
 		}
 		this._chompIndex = showing.count;
