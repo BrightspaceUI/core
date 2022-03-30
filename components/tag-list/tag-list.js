@@ -4,13 +4,16 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const LARGE_SIZE = 970;
-const MEDIUM_SIZE = 600;
+const PAGE_SIZE = {
+	medium: 600,
+	large: 970
+};
 const PAGE_SIZE_LINES = {
 	large: 1,
 	medium: 2,
 	small: 3
 };
+const MARGIN_TOP_HEIGHT = 6;
 
 class TagList extends ArrowKeysMixin(LitElement) {
 
@@ -21,8 +24,8 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			 * @type {string}
 			 */
 			description: { type: String },
-			_showHiddenTags: { type: Boolean },
-			_chompIndex: { type: Number }
+			_chompIndex: { type: Number },
+			_showHiddenTags: { type: Boolean }
 		};
 	}
 
@@ -37,13 +40,13 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			.tag-list-container {
 				display: flex;
 				flex-wrap: wrap;
-				margin: -6px -6px 0 0;
+				margin: -${MARGIN_TOP_HEIGHT}px -6px 0 0;
 				padding: 0;
 				position: relative;
 			}
 			::slotted(*),
 			d2l-button-subtle {
-				margin: 6px 6px 0 0;
+				margin: ${MARGIN_TOP_HEIGHT}px 6px 0 0;
 			}
 			::slotted([data-is-chomped]) {
 				display: none !important;
@@ -75,7 +78,6 @@ class TagList extends ArrowKeysMixin(LitElement) {
 		this._container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(this._container);
-
 	}
 
 	render() {
@@ -108,7 +110,7 @@ class TagList extends ArrowKeysMixin(LitElement) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: this._showHiddenTags ? 'unset' : `${36 * this._lines}px`
+			maxHeight: this._showHiddenTags ? 'unset' : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
 		};
 
 		return html`
@@ -169,19 +171,22 @@ class TagList extends ArrowKeysMixin(LitElement) {
 
 		}
 
+		if (!isOverflowing) {
+			this._chompIndex = showing.count;
+			return;
+		}
+
 		// calculate if additional item(s) should be hidden due to subtle button needing space
-		if (isOverflowing) {
-			for (let j = this._itemLayouts.length; j--;) {
-				if ((showing.width + subtleButtonWidth) < this._availableWidth) {
-					break;
-				}
-				const itemLayoutOverflowing = this._itemLayouts[j];
-				if (itemLayoutOverflowing.trigger !== 'soft-show') {
-					continue;
-				}
-				showing.width -= itemLayoutOverflowing.width;
-				showing.count -= 1;
+		for (let j = this._itemLayouts.length; j--;) {
+			if ((showing.width + subtleButtonWidth) < this._availableWidth) {
+				break;
 			}
+			const itemLayoutOverflowing = this._itemLayouts[j];
+			if (itemLayoutOverflowing.trigger !== 'soft-show') {
+				continue;
+			}
+			showing.width -= itemLayoutOverflowing.width;
+			showing.count -= 1;
 		}
 		this._chompIndex = showing.count;
 	}
@@ -221,8 +226,8 @@ class TagList extends ArrowKeysMixin(LitElement) {
 
 	_handleResize(entries) {
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-		if (this._availableWidth >= LARGE_SIZE) this._lines = PAGE_SIZE_LINES.large;
-		else if (this._availableWidth < LARGE_SIZE && this._availableWidth >= MEDIUM_SIZE) this._lines = PAGE_SIZE_LINES.medium;
+		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
+		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
 		this._chomp();
 	}
@@ -230,6 +235,8 @@ class TagList extends ArrowKeysMixin(LitElement) {
 	_handleSlotChange() {
 		requestAnimationFrame(() => {
 			this._getItems();
+			if (this._items.length === 0) return;
+			this._itemHeight = this._items[0].offsetHeight;
 			this._items.forEach((item, index) => {
 				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
 			});
