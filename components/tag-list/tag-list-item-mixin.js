@@ -26,8 +26,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 				height: 1rem;
 				margin: auto;
 				min-width: 0;
-				overflow: hidden;
-				text-overflow: ellipsis;
+				/* text-overflow: ellipsis; */ /* TODO: deal with this */
 				white-space: nowrap;
 			}
 			.tag-list-item-container {
@@ -38,7 +37,6 @@ export const TagListItemMixin = superclass => class extends superclass {
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
-				min-width: 0;
 				padding: 0.25rem 0.6rem;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 			}

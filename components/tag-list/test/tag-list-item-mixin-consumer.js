@@ -36,9 +36,6 @@ class TagListItemMixinConsumer extends TagListItemMixin(LitElement) {
 				padding-left: 0;
 				padding-right: calc(1.55rem - 0.6rem);
 			}
-			d2l-dropdown {
-				min-width: 0;
-			}
 		`];
 	}
 
