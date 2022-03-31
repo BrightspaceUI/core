@@ -1,6 +1,7 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -15,7 +16,7 @@ const PAGE_SIZE_LINES = {
 };
 const MARGIN_TOP_HEIGHT = 6;
 
-class TagList extends ArrowKeysMixin(LitElement) {
+class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -96,9 +97,21 @@ class TagList extends ArrowKeysMixin(LitElement) {
 		let button = null;
 		if (hasHiddenTags) {
 			button = this._showHiddenTags ? html`
-				<d2l-button-subtle slim text="Show Less" @click="${this._toggleHiddenTagVisibility}" class="d2l-tag-list-button"></d2l-button-subtle>
+				<d2l-button-subtle
+					class="d2l-tag-list-button"
+					@click="${this._toggleHiddenTagVisibility}"
+					@keydown="${this._handleButtonKeydown}"
+					slim
+					text="${this.localize('components.tag-list.show-less')}">
+				</d2l-button-subtle>
 			` : html`
-				<d2l-button-subtle slim text="+ ${hiddenCount} more" @click="${this._toggleHiddenTagVisibility}" class="d2l-tag-list-button"></d2l-button-subtle>
+				<d2l-button-subtle
+					class="d2l-tag-list-button"
+					@click="${this._toggleHiddenTagVisibility}"
+					@keydown="${this._handleButtonKeydown}"
+					slim
+					text="${this.localize('components.tag-list.num-hidden', { count: hiddenCount })}">
+				</d2l-button-subtle>
 			`;
 		}
 
@@ -110,12 +123,12 @@ class TagList extends ArrowKeysMixin(LitElement) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: this._showHiddenTags ? 'unset' : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
+			maxHeight: this._showHiddenTags ? undefined : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
 		};
 
 		return html`
 			<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
-				<d2l-button-subtle aria-hidden="true" slim text="+ ## more" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
+				<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 				${this.arrowKeysContainer(list)}
 				<div id="d2l-tag-list-description" hidden>${this.description}</div>
 			</div>
@@ -157,14 +170,12 @@ class TagList extends ArrowKeysMixin(LitElement) {
 				if (!isOverflowing && showing.width + itemLayout.width < this._availableWidth) {
 					showing.width += itemLayout.width;
 					showing.count += 1;
-					itemLayout.isChomped = false;
 					itemLayout.trigger = 'soft-show';
 				} else if (k < this._lines) {
 					overflowingIndex = i;
 					break;
 				} else {
 					isOverflowing = true;
-					itemLayout.isChomped = true;
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
@@ -196,22 +207,14 @@ class TagList extends ArrowKeysMixin(LitElement) {
 			const computedStyles = window.getComputedStyle(node);
 
 			return {
-				type: node.tagName.toLowerCase(),
-				isChomped: false,
 				isHidden: computedStyles.display === 'none',
 				width: Math.ceil(parseFloat(computedStyles.width) || 0)
 					+ parseInt(computedStyles.marginRight) || 0
-					+ parseInt(computedStyles.marginLeft) || 0,
-				node: node
+					+ parseInt(computedStyles.marginLeft) || 0
 			};
 		});
 
 		return items.filter(({ isHidden }) => !isHidden);
-	}
-
-	_getItems() {
-		this._items = this._getTagListItems();
-		this._itemLayouts = this._getItemLayouts(this._items);
 	}
 
 	_getTagListItems() {
@@ -224,6 +227,20 @@ class TagList extends ArrowKeysMixin(LitElement) {
 		});
 	}
 
+	async _handleButtonKeydown(e) {
+		if (e.keyCode !== 13 && e.keyCode !== 32) return; // enter or space
+
+		this._toggleHiddenTagVisibility();
+
+		if (!this.shadowRoot) return;
+
+		e.preventDefault();
+
+		await this.updateComplete;
+		const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
+		if (button) button.focus();
+	}
+
 	_handleResize(entries) {
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
@@ -234,7 +251,9 @@ class TagList extends ArrowKeysMixin(LitElement) {
 
 	_handleSlotChange() {
 		requestAnimationFrame(() => {
-			this._getItems();
+			this._items = this._getTagListItems();
+			this._itemLayouts = this._getItemLayouts(this._items);
+
 			if (this._items.length === 0) return;
 			this._itemHeight = this._items[0].offsetHeight;
 			this._items.forEach((item, index) => {
