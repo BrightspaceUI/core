@@ -39,6 +39,14 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				type: Boolean,
 				attribute: 'open-on-hover'
 			},
+			/**
+			 * Optionally enclose opener in a slot with name "opener"
+			 * @type {boolean}
+			 */
+			slottedOpener: {
+				type: Boolean,
+				attribute: 'slotted-opener'
+			},
 			_isHovering: { type: Boolean },
 			_isOpen: { type: Boolean },
 			_isOpenedViaClick: { type: Boolean },
@@ -52,6 +60,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.noAutoOpen = false;
 		this.openOnHover = false;
 		this.disabled = false;
+		this.slottedOpener = false;
 
 		// hover option
 		this._dismissTimerId = getUniqueId();
