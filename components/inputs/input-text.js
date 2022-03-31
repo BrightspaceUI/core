@@ -469,11 +469,12 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_getAriaLabel() {
-		if (this.label && (this.labelHidden || this.labelledBy)) {
-			return this.label;
-		}
-		if (this.hasAttribute('aria-label')) {
-			return this.getAttribute('aria-label');
+		let label;
+		if (this.label && (this.labelHidden || this.labelledBy)) label = this.label;
+		if (this.hasAttribute('aria-label')) label = this.getAttribute('aria-label');
+		if (label) {
+			const unitLabel = this.unit ? ` ${this.unit}` : '';
+			return `${label}${unitLabel}`;
 		}
 		return undefined;
 	}
