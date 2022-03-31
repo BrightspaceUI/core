@@ -22,13 +22,11 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	 */
 	getOpenerElement() {
 		if (!this.shadowRoot) return undefined;
-		if (this.slottedOpener)  {
-			return this.querySelector('slot[name="opener"]')
-				.assignedNodes({ flatten: true })
-				.filter(node => node.classList && node.classList.contains('d2l-dropdown-opener'))[0];
-		}
 		return this.shadowRoot.querySelector('slot')
 			.assignedNodes()
+			.filter(node => node.classList && node.classList.contains('d2l-dropdown-opener'))[0]
+		|| this.querySelector('slot[name="opener"]')
+			.assignedNodes({ flatten: true })
 			.filter(node => node.classList && node.classList.contains('d2l-dropdown-opener'))[0];
 	}
 
