@@ -41,13 +41,13 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			.tag-list-container {
 				display: flex;
 				flex-wrap: wrap;
-				margin: -${MARGIN_TOP_HEIGHT}px -6px 0 0;
+				margin: -6px -6px 0 0;
 				padding: 0;
 				position: relative;
 			}
 			::slotted(*),
 			d2l-button-subtle {
-				margin: ${MARGIN_TOP_HEIGHT}px 6px 0 0;
+				margin: 6px 6px 0 0;
 			}
 			::slotted([data-is-chomped]) {
 				display: none !important;
