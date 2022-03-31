@@ -26,7 +26,7 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 			.assignedNodes()
 			.filter(node => node.classList && node.classList.contains('d2l-dropdown-opener'))[0]
 		|| this.querySelector('slot[name="opener"]')
-			.assignedNodes({ flatten: true })
+			?.assignedNodes({ flatten: true })
 			.filter(node => node.classList && node.classList.contains('d2l-dropdown-opener'))[0];
 	}
 
