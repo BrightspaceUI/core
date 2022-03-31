@@ -1,7 +1,7 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -47,7 +47,7 @@ describe('d2l-tag-list', () => {
 		].forEach(testcase => {
 			it(testcase.name, async() => {
 				const list = await fixture(basicFixture);
-				await new Promise(resolve => requestAnimationFrame(resolve));
+				await aTimeout(100);
 				list._items[testcase.start].focus();
 				dispatchKeydownEvent(list._items[testcase.start], testcase.key);
 				await new Promise(resolve => requestAnimationFrame(resolve));

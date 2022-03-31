@@ -25,7 +25,7 @@ describe('d2l-tag-list', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	[1000, 969, 601, 599, 400, 320].forEach((width) => {
+	[980, 969, 601, 599, 400, 320].forEach((width) => {
 		afterEach(async() => {
 			await page.$eval('#default', (elem) => {
 				const button = elem.shadowRoot.querySelector('.d2l-tag-list-button[text="Show Less"]');
@@ -38,7 +38,7 @@ describe('d2l-tag-list', () => {
 				elem.parentNode.style.width = `${width}px`;
 				await elem.updateComplete;
 			}, width);
-			await page.waitForTimeout(1000);
+			await page.waitForTimeout(2000);
 			const rect = await visualDiff.getRect(page, '#default');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -48,7 +48,7 @@ describe('d2l-tag-list', () => {
 				const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
 				if (button) button.click();
 			});
-			await page.waitForTimeout(1000);
+			await page.waitForTimeout(2000);
 			const rect = await visualDiff.getRect(page, '#default');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
