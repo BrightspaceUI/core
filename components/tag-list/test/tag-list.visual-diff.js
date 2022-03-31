@@ -20,7 +20,7 @@ describe('d2l-tag-list', () => {
 
 	after(async() => await browser.close());
 
-	it(`is correct at 1200px width`, async function() {
+	it('is correct at 1200px width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -38,7 +38,7 @@ describe('d2l-tag-list', () => {
 				elem.parentNode.style.width = `${width}px`;
 				await elem.updateComplete;
 			}, width);
-			await page.waitForTimeout(100);
+			await page.waitForTimeout(1000);
 			const rect = await visualDiff.getRect(page, '#default');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -48,7 +48,7 @@ describe('d2l-tag-list', () => {
 				const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
 				if (button) button.click();
 			});
-			await page.waitForTimeout(100);
+			await page.waitForTimeout(1000);
 			const rect = await visualDiff.getRect(page, '#default');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});

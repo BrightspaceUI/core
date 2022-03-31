@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "दृश्यता",
 	"components.tabs.next": "आगे स्क्रॉल करें",
 	"components.tabs.previous": "पीछे स्क्रॉल करें",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "समायोजन योग्य विभाजन दृश्य",
 	"templates.primary-secondary.keyboardHorizontal": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर बाएँ या दाएँ करें",
 	"templates.primary-secondary.keyboardVertical": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर ऊपर या नीचे करें"

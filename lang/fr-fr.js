@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Visibilité",
 	"components.tabs.next": "Faire défiler vers l'avant",
 	"components.tabs.previous": "Faire défiler vers l'arrière",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Vue fractionnée réglable",
 	"templates.primary-secondary.keyboardHorizontal": "Flèche vers la gauche ou vers la droite pour régler la taille des panneaux d’affichage",
 	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des panneaux d’affichage"

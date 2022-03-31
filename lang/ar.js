@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "إمكانية الرؤية",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "تقسيم العرض القابل للضبط",
 	"templates.primary-secondary.keyboardHorizontal": "السهم المتّجه إلى اليسار أو إلى اليمين لضبط حجم لوحات العرض",
 	"templates.primary-secondary.keyboardVertical": "السهم المتّجه إلى الأعلى أو إلى الأسفل لضبط حجم لوحات العرض"

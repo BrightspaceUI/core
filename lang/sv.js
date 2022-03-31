@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delad vy",
 	"templates.primary-secondary.keyboardHorizontal": "Pil vänster eller höger för att justera storleken på vypaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil upp eller ned för att justera storleken på vypaneler"

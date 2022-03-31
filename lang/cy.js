@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Gwelededd",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Gwedd Hollt Addasadwy",
 	"templates.primary-secondary.keyboardHorizontal": "Saeth i'r chwith neu'r dde i addasu maint y paneli gweld",
 	"templates.primary-secondary.keyboardVertical": "Saeth i fyny neu i lawr i addasu maint y paneli gweld"
