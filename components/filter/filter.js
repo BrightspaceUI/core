@@ -398,7 +398,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
-				?selection-single="${dimension.selectionSingle}">
+				?selection-single="${dimension.selectionSingle}"
+				separators="between">
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						?hidden="${item.hidden}"
