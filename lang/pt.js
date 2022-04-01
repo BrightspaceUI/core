@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Limpar filtros para: {filterName}",
 	"components.filter.clearDescriptionSingle": "Limpar filtros",
 	"components.filter.loading": "Carregar filtros",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Nenhum filtro aplicado.} one {Um filtro aplicado.} other {{number} filtros aplicados.}}",
+	"components.filter.filterCountDescription": "{number, plural, =0 {Nenhum filtro aplicado.} one {1 filtro aplicado.} other {{number} filtros aplicados.}}",
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "Não há filtros disponíveis",
 	"components.filter.searchResults": "{number, plural, =0 {Sem resultados para a pesquisa} one {1 resultado para a pesquisa} other {{number} resultados para a pesquisa}}",
@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",
 	"templates.primary-secondary.keyboardHorizontal": "Use a seta para a esquerda ou para a direita para ajustar o tamanho dos painéis de exibição",
 	"templates.primary-secondary.keyboardVertical": "Use a seta para cima ou para baixo para ajustar o tamanho dos painéis de exibição"

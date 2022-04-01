@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Ayarlanabilir Bölünmüş Görüntü",
 	"templates.primary-secondary.keyboardHorizontal": "Görüntü panellerinin boyutunu ayarlamak için sol veya sağ okları kullanın",
 	"templates.primary-secondary.keyboardVertical": "Görüntü panellerinin boyutunu ayarlamak için yukarı veya aşağı okları kullanın"

@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Visibilité",
 	"components.tabs.next": "Défilement avant",
 	"components.tabs.previous": "Défilement arrière",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Vue partagée réglable",
 	"templates.primary-secondary.keyboardHorizontal": "Utiliser la flèche vers la gauche ou vers la droite pour régler la taille des volets d'affichage",
 	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des volets d'affichage"

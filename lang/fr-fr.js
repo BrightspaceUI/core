@@ -21,7 +21,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, =0 {Aucun filtre appliqué.} one {1 filtre appliqué.} other {{number} filtres appliqués.}}",
 	"components.filter.filters": "Filtres",
 	"components.filter.noFilters": "Aucun filtre disponible",
-	"components.filter.searchResults": "{number, plural, =0 {aucun résultat de recherche} one {1 résultat de recherche} other {{number} résultats de recherche}}",
+	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {1 résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
 	"components.form-element.defaultError": "{label} n'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Visibilité",
 	"components.tabs.next": "Faire défiler vers l'avant",
 	"components.tabs.previous": "Faire défiler vers l'arrière",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Vue fractionnée réglable",
 	"templates.primary-secondary.keyboardHorizontal": "Flèche vers la gauche ou vers la droite pour régler la taille des panneaux d’affichage",
 	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des panneaux d’affichage"

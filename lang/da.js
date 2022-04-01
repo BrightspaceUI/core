@@ -21,7 +21,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, =0 {Ingen filtre anvendt.} one {1 filter anvendt.} other {{number} filtre anvendt.}}",
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",
-	"components.filter.searchResults": "{number, plural, =0 {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, =0 {Ingen søgeresultater} one {1 søgeresultat} other {{number} søgeresultater}}",
 	"components.filter.singleDimensionDescription": "Filtrer efter: {filterName}",
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delt visning",
 	"templates.primary-secondary.keyboardHorizontal": "Pil til venstre eller højre for at justere størrelsen på visningspaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil op eller ned for at justere størrelsen på visningspaneler"

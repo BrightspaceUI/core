@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "{filterName}에 대한 필터를 지웁니다.",
 	"components.filter.clearDescriptionSingle": "필터 지우기",
 	"components.filter.loading": "필터 로드 중",
-	"components.filter.filterCountDescription": "{number, plural, =0 {적용된 필터 없음.} other {{number}개 필터 적용.}}",
+	"components.filter.filterCountDescription": "{number, plural, =0 {적용된 필터 없음.} other {{number}개 필터 적용됨.}}",
 	"components.filter.filters": "개 필터",
 	"components.filter.noFilters": "사용 가능한 필터가 없습니다",
 	"components.filter.searchResults": "{number, plural, =0 {검색 결과 없음} other {{number}개 검색 결과}}",
@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",
 	"templates.primary-secondary.keyboardHorizontal": "왼쪽 또는 오른쪽 화살표로 보기 패널의 크기 조정",
 	"templates.primary-secondary.keyboardVertical": "위 또는 아래 화살표로 보기 패널의 크기 조정"

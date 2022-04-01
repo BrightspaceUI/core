@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "調整可能な分割ビュー",
 	"templates.primary-secondary.keyboardHorizontal": "左矢印または右矢印を使用して、ビューパネルのサイズを調整します",
 	"templates.primary-secondary.keyboardVertical": "上矢印または下矢印を使用して、ビューパネルのサイズを調整します"
