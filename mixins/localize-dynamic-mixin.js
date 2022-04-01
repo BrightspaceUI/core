@@ -9,9 +9,11 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 	static async getLocalizeResources(langs, { importFunc, osloCollection }) {
 
 		// in dev, don't request unsupported langpacks
-		if (!importFunc.toString().includes('switch')) {
-			langs = langs.filter(lang => supportedLangpacks.includes(lang));
-		}
+		try {
+			if (!importFunc.toString().includes('switch')) {
+				langs = langs.filter(lang => supportedLangpacks.includes(lang));
+			}
+		} catch (err) {} // eslint-disable-line no-empty
 
 		for (const lang of [...langs, fallbackLang]) {
 
