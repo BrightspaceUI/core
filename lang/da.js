@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delt visning",
 	"templates.primary-secondary.keyboardHorizontal": "Pil til venstre eller højre for at justere størrelsen på visningspaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil op eller ned for at justere størrelsen på visningspaneler"

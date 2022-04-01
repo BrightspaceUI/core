@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "可见性",
 	"components.tabs.next": "向前滚动",
 	"components.tabs.previous": "向后滚动",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",
 	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭头可调整视图面板的大小",
 	"templates.primary-secondary.keyboardVertical": "向上或向下箭头可调整视图面板的大小"

@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Zichtbaarheid",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
 	"templates.primary-secondary.keyboardHorizontal": "Pijl naar links of rechts om de grootte van de weergavevensters aan te passen",
 	"templates.primary-secondary.keyboardVertical": "Pijl omhoog of omlaag om de grootte van de weergavevensters aan te passen"

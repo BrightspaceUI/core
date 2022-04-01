@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",
 	"templates.primary-secondary.keyboardHorizontal": "Use a seta para a esquerda ou para a direita para ajustar o tamanho dos painéis de exibição",
 	"templates.primary-secondary.keyboardVertical": "Use a seta para cima ou para baixo para ajustar o tamanho dos painéis de exibição"

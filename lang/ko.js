@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",
+	"components.tag-list.num-hidden": "+ {count} more",
+	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",
 	"templates.primary-secondary.keyboardHorizontal": "왼쪽 또는 오른쪽 화살표로 보기 패널의 크기 조정",
 	"templates.primary-secondary.keyboardVertical": "위 또는 아래 화살표로 보기 패널의 크기 조정"
