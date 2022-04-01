@@ -62,6 +62,12 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
+	const wait = (milliseconds) => {
+		return page.evaluate((milliseconds) => {
+			return new Promise(resolve => setTimeout(resolve, milliseconds));
+		}, milliseconds);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6500 } });
@@ -163,7 +169,7 @@ describe('d2l-list', () => {
 		{ category: 'nested', tests: [
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
-			{ name: 'all-selected', selector: '#nested-all-selected' }
+			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait(100) }
 		] }
 	].forEach((info) => {
 
