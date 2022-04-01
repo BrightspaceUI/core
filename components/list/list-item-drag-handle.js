@@ -262,23 +262,12 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_onInactiveKeyDown(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
-			e.preventDefault();
-		}
-	}
-
-	_onPreventDefault(e) {
-		e.preventDefault();
-	}
-
 	_renderDragger() {
 		return html`
 			<button
 				class="d2l-list-item-drag-handle-dragger-button"
 				@click="${this._onInactiveKeyboard}"
-				@keyup="${this._onInactiveKeyboard}"
-				@keydown="${this._onInactiveKeyDown}"
+				@keydown="${this._onInactiveKeyboard}"
 				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
@@ -295,8 +284,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@focusin="${this._onFocusInKeyboardButton}"
 				@focusout="${this._onFocusOutKeyboardButton}"
 				id="${this._buttonId}"
-				@keydown="${this._onPreventDefault}"
-				@keyup="${this._onActiveKeyboard}">
+				@keydown="${this._onActiveKeyboard}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
 			</button>
