@@ -63,6 +63,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		super();
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
+		this._chompIndex = 10000;
 		this._items = [];
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
@@ -76,9 +77,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._container = this.shadowRoot.querySelector('.tag-list-outer-container');
+		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(this._container);
+		this._resizeObserver.observe(container);
 	}
 
 	render() {
@@ -100,7 +101,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				<d2l-button-subtle
 					class="d2l-tag-list-button"
 					@click="${this._toggleHiddenTagVisibility}"
-					@keydown="${this._handleButtonKeydown}"
 					slim
 					text="${this.localize('components.tag-list.show-less')}">
 				</d2l-button-subtle>
@@ -108,7 +108,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				<d2l-button-subtle
 					class="d2l-tag-list-button"
 					@click="${this._toggleHiddenTagVisibility}"
-					@keydown="${this._handleButtonKeydown}"
 					slim
 					text="${this.localize('components.tag-list.num-hidden', { count: hiddenCount })}">
 				</d2l-button-subtle>
@@ -136,7 +135,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this._items.slice(0, this._chompIndex);
+		return this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
 	}
 
 	focus() {
@@ -144,7 +143,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	_chomp() {
-		if (!this.shadowRoot) return;
+		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
 
 		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
 		const subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
@@ -227,20 +226,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		});
 	}
 
-	async _handleButtonKeydown(e) {
-		if (e.keyCode !== 13 && e.keyCode !== 32) return; // enter or space
-
-		this._toggleHiddenTagVisibility();
-
-		if (!this.shadowRoot) return;
-
-		e.preventDefault();
-
-		await this.updateComplete;
-		const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
-		if (button) button.focus();
-	}
-
 	_handleResize(entries) {
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
@@ -263,8 +248,14 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		});
 	}
 
-	_toggleHiddenTagVisibility() {
+	async _toggleHiddenTagVisibility(e) {
 		this._showHiddenTags = !this._showHiddenTags;
+
+		if (!this.shadowRoot) return;
+
+		await this.updateComplete;
+		const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
+		if (button) button.focus();
 	}
 
 }

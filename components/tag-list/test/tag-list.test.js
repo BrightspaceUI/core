@@ -47,9 +47,15 @@ describe('d2l-tag-list', () => {
 		].forEach(testcase => {
 			it(testcase.name, async() => {
 				const list = await fixture(basicFixture);
-				await aTimeout(100);
-				list._items[testcase.start].focus();
-				dispatchKeydownEvent(list._items[testcase.start], testcase.key);
+				await list.updateComplete;
+				await new Promise(resolve => requestAnimationFrame(resolve));
+
+				const startItem = list._items[testcase.start];
+				await startItem.updateComplete;
+
+				startItem.focus();
+				dispatchKeydownEvent(startItem, testcase.key);
+
 				await new Promise(resolve => requestAnimationFrame(resolve));
 				expect(getComposedActiveElement()).to.equal(list._items[testcase.result]);
 			});
