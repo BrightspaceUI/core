@@ -180,8 +180,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding: 0.55rem 0.55rem 0.55rem 0;
 			}
 			:host([dir="rtl"]) [slot="content"] {
-				padding-right: 0;
 				padding-left: 0.55rem;
+				padding-right: 0;
 			}
 			:host([slim]) [slot="content"] { /* TODO, remove */
 				padding-bottom: 0.35rem;
