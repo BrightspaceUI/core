@@ -248,7 +248,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		});
 	}
 
-	async _toggleHiddenTagVisibility(e) {
+	async _toggleHiddenTagVisibility() {
 		this._showHiddenTags = !this._showHiddenTags;
 
 		if (!this.shadowRoot) return;
