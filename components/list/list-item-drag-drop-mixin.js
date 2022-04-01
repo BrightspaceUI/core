@@ -318,10 +318,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
 			}
-			:host([_drop-location="7"]) d2l-list-item-generic-layout {
-				border-radius: 6px;
-				outline: 2px solid var(--d2l-color-celestine);
+			:host([_drop-location="7"]) {
+				z-index: 1; /* drop target border must render on top of next adjacent border */
 			}
+			:host([_drop-location="7"]) [slot="outside-control-container"] {
+				border: 2px solid var(--d2l-color-celestine);
+				border-radius: 6px;
+			}
+			:host([_drop-location="7"]) [slot="control-container"]::after {
+				border-color: transparent;
+			}
+
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
 					opacity: 0;

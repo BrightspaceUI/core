@@ -11,9 +11,22 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host d2l-list-item-generic-layout.d2l-focusing,
-			:host d2l-list-item-generic-layout.d2l-hovering {
-				background-color: var(--d2l-color-regolith);
+			[slot="outside-control-container"] {
+				margin: 0 -12px;
+			}
+			:host([_hovering]) [slot="control-container"]::before,
+			:host([_hovering]) [slot="control-container"]::after,
+			:host([_focusing]) [slot="control-container"]::before,
+			:host([_focusing]) [slot="control-container"]::after {
+				border-top-color: transparent;
+			}
+			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
+				background-color: white;
+				border-color: #b6cbe8; /* celestine alpha 0.3 */
+			}
+			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			button {
 				background-color: transparent;

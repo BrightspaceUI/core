@@ -73,11 +73,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
-			_hoveringPrimaryAction: { type: Boolean },
-			_focusing: { type: Boolean },
-			_focusingPrimaryAction: { type: Boolean },
-			_highlight: { type: Boolean },
-			_highlighting: { type: Boolean },
+			_hovering: { type: Boolean, reflect: true },
+			_focusing: { type: Boolean, reflect: true },
+			_highlight: { type: Boolean, reflect: true },
+			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
@@ -87,12 +86,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const styles = [ css`
 			:host {
 				display: block;
-				margin-top: -1px;
 				position: relative;
 			}
 			:host[hidden] {
 				display: none;
 			}
+
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
 				z-index: 10; /* must be greater than adjacent selected items */
@@ -101,12 +100,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				position: fixed; /* required for Safari */
 				z-index: 1000; /* must be greater than floating workflow buttons */
 			}
-			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
-				border-top: 1px solid transparent;
-			}
-			:host(:last-child) d2l-list-item-generic-layout[data-separators="between"] {
-				border-bottom: 1px solid transparent;
-			}
+
 			:host([dragging]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
@@ -114,18 +108,44 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host([dragging]) .d2l-list-item-drag-image {
 				background: white;
 			}
-			d2l-list-item-generic-layout {
-				border-bottom: 1px solid var(--d2l-color-mica);
-				border-top: 1px solid var(--d2l-color-mica);
+
+			[slot="control-container"] {
+				position: relative;
 			}
+			:host(:first-of-type) [slot="control-container"]::before,
+			[slot="control-container"]::after {
+				border-top: 1px solid var(--d2l-color-mica);
+				content: "";
+				left: 4px;
+				position: absolute;
+				width: calc(100% - 8px);
+			}
+			:host(:first-of-type) [slot="control-container"]::before {
+				top: 0;
+			}
+			[slot="control-container"]::after {
+				bottom: -2px;
+			}
+
+			:host(:first-of-type[_separators="between"]) [slot="control-container"]::before,
+			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
+			:host([_separators="none"]) [slot="control-container"]::before,
+			:host([_separators="none"]) [slot="control-container"]::after,
+			:host([selectable][_hovering]) [slot="control-container"]::before,
+			:host([selectable][_hovering]) [slot="control-container"]::after,
+			:host([selectable][_focusing]) [slot="control-container"]::before,
+			:host([selectable][_focusing]) [slot="control-container"]::after,
+			:host([selected]) [slot="control-container"]::before,
+			:host([selected]) [slot="control-container"]::after,
+			:host(:first-of-type[_nested]) [slot="control-container"]::before {
+				border-top-color: transparent;
+			}
+
 			:host([padding-type="none"]) d2l-list-item-generic-layout {
 				border-bottom: 0;
 				border-top: 0;
 			}
-			d2l-list-item-generic-layout[data-separators="none"] {
-				border-bottom: 1px solid transparent;
-				border-top: 1px solid transparent;
-			}
+
 			.d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
@@ -143,8 +163,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
 			}
-			.d2l-list-item-content.d2l-hovering,
-			.d2l-list-item-content.d2l-focusing {
+			:host([_hovering]) .d2l-list-item-content,
+			:host([_focusing]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 				--d2l-list-item-content-text-decoration: underline;
 			}
@@ -157,7 +177,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="content"] {
 				display: flex;
 				justify-content: stretch;
-				padding: 0.55rem 0;
+				padding: 0.55rem 0.55rem 0.55rem 0;
+			}
+			:host([dir="rtl"]) [slot="content"] {
+				padding-left: 0.55rem;
+				padding-right: 0;
 			}
 			:host([slim]) [slot="content"] { /* TODO, remove */
 				padding-bottom: 0.35rem;
@@ -171,6 +195,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-bottom: 0;
 				padding-top: 0;
 			}
+
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
 				border-radius: 6px;
@@ -272,56 +297,57 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-right: 0.9rem;
 			}
-			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
-			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
-				background-color: var(--d2l-color-regolith);
+
+			[slot="outside-control-container"] {
+				border: 1px solid transparent;
+				border-radius: 6px;
+				margin: 0 -12px;
 			}
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
+			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				border-radius: 0;
+			}
+			:host([draggable]) [slot="outside-control-container"],
+			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				margin: 0;
+			}
+
+			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
+				background-color: white;
+				border-color: #b6cbe8; /* celestine alpha 0.3 */
+			}
+			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"] {
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
 			}
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout,
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing {
-				border-color: #79b5df;
-			}
-			:host([selected]:not([disabled])) .d2l-list-item-active-border,
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border,
-			:host(:not([disabled])) .d2l-list-item-highlight + .d2l-list-item-active-border {
-				background-color: #79b5df;
-				bottom: 0;
-				height: 1px;
-				position: absolute;
-				width: 100%;
-				z-index: 5;
+
+			:host(:not([disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
+				border-color: transparent;
+				margin: 0;
 			}
 
-			.d2l-list-item-highlight {
+			:host([_highlight]) [slot="outside-control-container"] {
 				transition: background-color 400ms linear, border-color 400ms linear;
 			}
-			.d2l-list-item-highlight + .d2l-list-item-active-border {
-				transition: background-color 400ms linear;
+			:host([_highlight]:first-of-type) [slot="control-container"]::before,
+			:host([_highlight]) [slot="control-container"]::after {
+				transition: border-color 400ms linear;
 			}
-			d2l-list-item-generic-layout.d2l-list-item-highlighting,
-			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-focusing,
-			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-hovering {
+			:host([_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[_hovering][_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
+			:host(:not([disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border-color: var(--d2l-color-celestine);
 			}
-			:host(:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting + .d2l-list-item-active-border {
-				background-color: var(--d2l-color-celestine);
-			}
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting {
-				background-color: var(--d2l-color-celestine-plus-2);
-				border-color: var(--d2l-color-celestine);
-			}
-			:host([selected]:not([disabled])) .d2l-list-item-highlighting + .d2l-list-item-active-border,
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-list-item-highlighting.d2l-focusing + .d2l-list-item-active-border {
-				background-color: var(--d2l-color-celestine);
+			:host([_highlighting]:first-of-type) [slot="control-container"]::before,
+			:host([_highlighting]) [slot="control-container"]::after {
+				border-color: transparent;
 			}
 
-			:host([_fullscreen-within]) .d2l-list-item-active-border,
-			:host([_fullscreen-within]) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
-				display: none;
-			}
 			d2l-tooltip > div {
 				font-weight: 700;
 			}
@@ -395,7 +421,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 	async highlight() {
 		if (this._highlight) return;
-		const elem = this.shadowRoot.querySelector('d2l-list-item-generic-layout');
+		const elem = this.shadowRoot.querySelector('[slot="outside-control-container"]');
 		this._highlight = true;
 		await this.updateComplete;
 		elem.addEventListener('transitionend', () => {
@@ -485,17 +511,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		hasDisplayedKeyboardTooltip = true;
 	}
 
-	_onFocusInPrimaryAction() {
-		this._focusingPrimaryAction = true;
-	}
-
 	_onFocusOut() {
 		this._focusing = false;
 		this._displayKeyboardTooltip = false;
-	}
-
-	_onFocusOutPrimaryAction() {
-		this._focusingPrimaryAction = false;
 	}
 
 	_onFullscreenWithin(e) {
@@ -509,7 +527,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseEnterPrimaryAction() {
-		this._hoveringPrimaryAction = true;
 		this._hovering = true;
 	}
 
@@ -518,7 +535,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseLeavePrimaryAction() {
-		this._hoveringPrimaryAction = false;
 		this._hovering = false;
 	}
 
@@ -526,16 +542,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
-			'd2l-list-item-highlight': this._highlight,
-			'd2l-list-item-highlighting': this._highlighting,
-			'd2l-focusing': this._focusing,
-			'd2l-hovering': this._hovering,
 			'd2l-dragging-over': this._draggingOver
-		};
-		const contentClasses = {
-			'd2l-list-item-content': true,
-			'd2l-hovering': this._hoveringPrimaryAction,
-			'd2l-focusing': this._focusingPrimaryAction
 		};
 
 		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
@@ -543,6 +550,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 		const innerView = html`
 			<d2l-list-item-generic-layout
+				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				@d2l-fullscreen-within="${this._onFullscreenWithin}"
@@ -550,9 +558,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
 				?grid-active="${this.role === 'rowgroup'}">
+				<div slot="outside-control-container"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				<div slot="control-container"></div>
 				${this.selectable ? html`
 				<div slot="control">${this._renderCheckbox()}</div>
 				<div slot="control-action"
@@ -562,14 +572,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
-					@focusin="${this._onFocusInPrimaryAction}"
-					@focusout="${this._onFocusOutPrimaryAction}"
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
 				</div>` : nothing}
 				<div slot="content"
-					class="${classMap(contentClasses)}"
+					class="d2l-list-item-content"
 					id="${this._contentId}">
 					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
 					<slot>${content}</slot>
@@ -584,7 +592,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
 				</div>
 			</d2l-list-item-generic-layout>
-			<div class="d2l-list-item-active-border"></div>
 		`;
 
 		return html`

@@ -7,8 +7,15 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			role: { type: String, reflect: true }
+			role: { type: String, reflect: true },
+			_nested: { type: Boolean, reflect: true },
+			_separators: { type: String, reflect: true }
 		};
+	}
+
+	constructor() {
+		super();
+		this._nested = false;
 	}
 
 	connectedCallback() {
@@ -20,6 +27,7 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 		const separators = parent.getAttribute('separators');
 
 		this.role = parent.hasAttribute('grid') ? 'rowgroup' : 'listitem';
+		this._nested = (parent.slot === 'nested');
 		this._separators = separators || undefined;
 		this._extendSeparators = parent.hasAttribute('extend-separators');
 	}

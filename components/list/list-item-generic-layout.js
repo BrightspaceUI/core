@@ -38,6 +38,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * How to align content in the nested slot
+			 * @type {'content'|'control'}
+			 */
+			alignNested: { type: String, reflect: true, attribute: 'align-nested' },
+			/**
 			 * @ignore
 			 */
 			role: { type: String, reflect: true },
@@ -68,8 +73,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				grid-row: nested-start / nested-end;
 			}
+			:host([align-nested="control"]) ::slotted([slot="nested"]) {
+				grid-column: control-start / end;
+			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				z-index: 6;
+				z-index: 6; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
 			}
 
 			::slotted([slot="drop-target"]) {
@@ -129,12 +137,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				z-index: 3;
 			}
+
+			::slotted([slot="outside-control-container"]) {
+				grid-column: start / end;
+				grid-row: 1 / 2;
+			}
+			::slotted([slot="control-container"]) {
+				grid-column: control-start / end;
+				grid-row: 1 / 2;
+			}
 		`;
 	}
 
 	constructor() {
 		super();
-
+		this.alignNested = 'content';
 		this._preventFocus = {
 			handleEvent(event) {
 				// target content slot only for now - can add others later
@@ -161,6 +178,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<slot name="control-container"></slot>
+			<slot name="outside-control-container"></slot>
 			<slot name="drop-target"></slot>
 			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
