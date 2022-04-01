@@ -25,9 +25,7 @@ describe('d2l-tooltip truncating', () => {
 		{ name: 'button-not-truncating', focus: ' :first-child' },
 		{ name: 'button-truncating', focus: ' :first-child' },
 		{ name: 'link-not-truncating', focus: ' :first-child' },
-		{ name: 'link-truncating', focus: ' :first-child' },
-		{ name: 'list-item-not-truncating', focus: '' },
-		{ name: 'list-item-truncating', focus: '' }
+		{ name: 'link-truncating', focus: ' :first-child' }
 	].forEach((testCase) => {
 
 		it(testCase.name, async function() {

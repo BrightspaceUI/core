@@ -149,11 +149,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
-			 * ADVANCED: Only show the tooltip if we detect the element of the id passed is truncating
-			 * If no id is set, the tooltip target element is used
-			 * @type {string}
+			 * ADVANCED: Only show the tooltip if we detect the target element is truncated
+			 * @type {boolean}
 			 */
-			onlyShowIfTruncating: { type: String, attribute: 'only-show-if-truncating' },
+			onlyShowIfTruncating: { type: Boolean, attribute: 'only-show-if-truncating' },
 			/**
 			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
@@ -396,11 +395,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.forceShow = false;
 		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
+		this.onlyShowIfTruncating = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
 		this._isFocusing = false;
 		this._isHovering = false;
+		this._resizeRunSinceTruncationCheck = false;
 		this._viewportMargin = defaultViewportMargin;
 	}
 
@@ -657,10 +658,10 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async _determineIfTruncating() {
+		// if no resize has happened since truncation was previously calculated the result will not have changed
+		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
+
 		let target = this._target;
-		if (this.onlyShowIfTruncating) {
-			target = target.querySelector(`#${cssEscape(this.onlyShowIfTruncating)}`);
-		}
 		const clone = target.cloneNode(true);
 		clone.removeAttribute('id');
 		clone.style.position = 'absolute';
@@ -672,10 +673,9 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		target.appendChild(clone);
 		await this.updateComplete;
-		const truncating = clone.offsetWidth > target.offsetWidth;
+		this._truncating = clone.offsetWidth > target.offsetWidth;
+		this._resizeRunSinceTruncationCheck = false;
 		target.removeChild(clone);
-
-		return truncating;
 	}
 
 	_findTarget() {
@@ -778,10 +778,11 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async _onTargetFocus() {
-		if (this.onlyShowIfTruncating !== undefined) {
-			const truncating = await this._determineIfTruncating();
-			if (!truncating) return;
+		if (this.onlyShowIfTruncating) {
+			await this._determineIfTruncating();
+			if (!this._truncating) return;
 		}
+
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
@@ -792,10 +793,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_onTargetMouseEnter() {
 		this._hoverTimeout = setTimeout(async() => {
-			if (this.onlyShowIfTruncating !== undefined) {
-				const truncating = await this._determineIfTruncating();
-				if (!truncating) return;
+			if (this.onlyShowIfTruncating) {
+				await this._determineIfTruncating();
+				if (!this._truncating) return;
 			}
+
 			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
@@ -809,6 +811,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetResize() {
+		this._resizeRunSinceTruncationCheck = true;
 		if (!this.showing) {
 			return;
 		}
