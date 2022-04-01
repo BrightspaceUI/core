@@ -149,7 +149,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-
+		this.alignNested = 'content';
 		this._preventFocus = {
 			handleEvent(event) {
 				// target content slot only for now - can add others later
