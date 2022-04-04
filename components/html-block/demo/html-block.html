@@ -7,6 +7,7 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../html-block.js';
+
 			import { provideInstance } from '../../../mixins/provider-mixin.js';
 
 			class DemoReplacementRenderer {
@@ -41,8 +42,8 @@
 			provideInstance(document, 'html-block-renderers', [ new DemoReplacementRenderer() ]);
 
 		</script>
-		<script>
-			document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ outputScale: 1.1, renderLatex: window.location.search.indexOf('latex=true') !== -1 });
+		<script type="module">
+			import '../../../tools/mathjax-test-context.js';
 		</script>
 	</head>
 	<body unresolved>
