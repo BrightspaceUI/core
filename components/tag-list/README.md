@@ -1,6 +1,5 @@
-
 # Tag List
-*This component is in progress and the api is not yet stable.*
+*This component is in progress. The API is generally stable but the ability to clear tags is currently a WIP.*
 
 Tag lists are used to present a list of compact, discrete pieces of information.
 
@@ -12,9 +11,14 @@ Tag lists are used to present a list of compact, discrete pieces of information.
 </script>
 
 <d2l-tag-list description="Example Tags">
-  <d2l-tag-list-item text="Tag"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Another Tag"></d2l-tag-list-item>
-  <d2l-tag-list-item text="A Third Very Very Very Long Tag"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Duis aute irure"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Excepteur sint"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Cillum"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Saunt in culpa"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Laboris nisi"></d2l-tag-list-item>
 </d2l-tag-list>
 ```
 
@@ -30,9 +34,10 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
 </script>
 
 <d2l-tag-list description="Example Tags">
-  <d2l-tag-list-item text="Tag"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Another Tag"></d2l-tag-list-item>
-  <d2l-tag-list-item text="A Third Very Very Very Long Tag"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Duis aute irure"></d2l-tag-list-item>
 </d2l-tag-list>
 ```
 

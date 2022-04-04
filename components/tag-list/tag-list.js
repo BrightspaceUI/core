@@ -26,6 +26,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			 */
 			description: { type: String },
 			_chompIndex: { type: Number },
+			_lines: { type: Number },
 			_showHiddenTags: { type: Boolean }
 		};
 	}
@@ -122,7 +123,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: this._showHiddenTags ? undefined : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
 		};
 
 		return html`
