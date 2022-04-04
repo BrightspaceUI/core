@@ -167,7 +167,7 @@ class ListDemoDragAndDrop extends LitElement {
 		await this.updateComplete;
 
 		if (e.detail.keyboardActive) {
-			requestAnimationFrame(() => {
+			setTimeout(() => {
 				if (!this.shadowRoot) return;
 				const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
 				newItem.activateDragHandle();
