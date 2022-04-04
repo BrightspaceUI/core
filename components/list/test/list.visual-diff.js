@@ -62,6 +62,12 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
+	const wait = (milliseconds) => {
+		return page.evaluate((milliseconds) => {
+			return new Promise(resolve => setTimeout(resolve, milliseconds));
+		}, milliseconds);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6500 } });
@@ -133,6 +139,15 @@ describe('d2l-list', () => {
 			{ name: 'sticky top', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 0) },
 			{ name: 'sticky scrolled', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 45) }
 		] },
+		{ category: 'draggable', tests: [
+			{ name: 'default', selector: '#draggable' },
+			{ name: 'focus', selector: '#draggable', action: () => focusMethod('#draggable [key="1"]') },
+			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
+			{ name: 'selectable', selector: '#draggableSelectable' },
+			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
+			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
+			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
+		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
 			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
@@ -154,7 +169,7 @@ describe('d2l-list', () => {
 		{ category: 'nested', tests: [
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
-			{ name: 'all-selected', selector: '#nested-all-selected' }
+			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait(100) }
 		] }
 	].forEach((info) => {
 
@@ -168,7 +183,7 @@ describe('d2l-list', () => {
 					await page.evaluate(() => {
 						return new Promise(resolve => setTimeout(resolve, 0));
 					});
-					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector));
+					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector, 24));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					if (info.after) {
 						await info.after();

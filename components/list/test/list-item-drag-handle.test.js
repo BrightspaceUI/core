@@ -49,7 +49,7 @@ describe('ListItemDragHandle', () => {
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
 				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress.code));
-				await oneEvent(actionArea, 'keyup');
+				await oneEvent(actionArea, 'keydown');
 
 				expect(action).to.equal(dragActions.active);
 			});
@@ -86,7 +86,7 @@ describe('ListItemDragHandle', () => {
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
 				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress.code, !!testCase.shift));
-				await oneEvent(actionArea, 'keyup');
+				await oneEvent(actionArea, 'keydown');
 
 				expect(action).to.equal(testCase.result);
 			});
@@ -107,7 +107,7 @@ describe('ListItemDragHandle', () => {
 
 	function dispatchKeyEvent(el, key, shiftKey = false) {
 		const eventObj = document.createEvent('Events');
-		eventObj.initEvent('keyup', true, true);
+		eventObj.initEvent('keydown', true, true);
 		eventObj.which = key;
 		eventObj.keyCode = key;
 		eventObj.shiftKey = shiftKey;
