@@ -661,7 +661,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// if no resize has happened since truncation was previously calculated the result will not have changed
 		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
 
-		let target = this._target;
+		const target = this._target;
 		const clone = target.cloneNode(true);
 		clone.removeAttribute('id');
 		clone.style.position = 'absolute';
