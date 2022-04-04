@@ -100,7 +100,7 @@ Examples are provided to display how user-authored math can be embedded within y
 </d2l-html-block>
 ```
 
-**LaTeX:** Rendering LaTeX requires the `mathjax` context to be set correctly. For testing and or demo pages you can do the following.
+**LaTeX:** Rendering LaTeX requires the `mathjax` context to be set correctly. For testing and/or demo pages you can do the following.
 
 <!-- docs: demo code -->
 ```html
@@ -117,7 +117,7 @@ Examples are provided to display how user-authored math can be embedded within y
 
 ### Add Context Automatically to Demos and Tests
 
-You can automatically set-up the `mathjax` context for demo pages and unit tests when using `@web/dev-server` and `@web/test-runner` by adding the following plugin to your configuration
+You can automatically set-up the `mathjax` context for demo pages and unit tests when using `@web/dev-server` and `@web/test-runner` by adding the following plugin to your configuration.
 
 ```javascript
 export default {
