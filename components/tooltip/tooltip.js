@@ -657,27 +657,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaceAround;
 	}
 
-	async _determineIfTruncating() {
-		// if no resize has happened since truncation was previously calculated the result will not have changed
-		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
-
-		const target = this._target;
-		const clone = target.cloneNode(true);
-		clone.removeAttribute('id');
-		clone.style.position = 'absolute';
-		if (this.getAttribute('dir') === 'rtl') {
-			clone.style.right = '-10000px';
-		} else {
-			clone.style.left = '-10000px';
-		}
-
-		target.appendChild(clone);
-		await this.updateComplete;
-		this._truncating = clone.offsetWidth > target.offsetWidth;
-		this._resizeRunSinceTruncationCheck = false;
-		target.removeChild(clone);
-	}
-
 	_findTarget() {
 		const ownerRoot = this.getRootNode();
 
@@ -779,7 +758,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async _onTargetFocus() {
 		if (this.onlyShowIfTruncating) {
-			await this._determineIfTruncating();
+			await this._updateTruncating();
 			if (!this._truncating) return;
 		}
 
@@ -794,7 +773,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseEnter() {
 		this._hoverTimeout = setTimeout(async() => {
 			if (this.onlyShowIfTruncating) {
-				await this._determineIfTruncating();
+				await this._updateTruncating();
 				if (!this._truncating) return;
 			}
 
@@ -901,6 +880,32 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 		this._addListeners();
+	}
+
+	async _updateTruncating() {
+		// if no resize has happened since truncation was previously calculated the result will not have changed
+		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
+
+		const target = this._target;
+
+		const clone = target.cloneNode(true);
+		clone.removeAttribute('id');
+		clone.style.position = 'absolute';
+		clone.style.overflow = 'hidden';
+		clone.style.whiteSpace = 'nowrap';
+		clone.style.width = '1px';
+
+		if (this.getAttribute('dir') === 'rtl') {
+			clone.style.right = '-10000px';
+		} else {
+			clone.style.left = '-10000px';
+		}
+
+		document.body.appendChild(clone);
+		await this.updateComplete;
+		this._truncating = clone.scrollWidth > target.scrollWidth;
+		this._resizeRunSinceTruncationCheck = false;
+		document.body.removeChild(clone);
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
