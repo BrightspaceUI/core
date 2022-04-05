@@ -21,6 +21,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer {
+		animation: d2l-dialog-open 200ms ease-in;
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
@@ -28,8 +29,21 @@ export const dialogStyles = css`
 		box-sizing: content-box;
 		position: fixed; /* also required for native to override position: absolute */
 		top: 100px;
-		transform: translateY(-50px);
-		transition: transform 200ms ease-in;
+	}
+
+	:host([_state="showing"]) > .d2l-dialog-outer {
+		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
+		animation: d2l-dialog-close 200ms ease-in;
+	}
+
+	@keyframes d2l-dialog-open {
+		0% { transform: translateY(0); }
+		100% { transform: translateY(-50px); }
+	}
+
+	@keyframes d2l-dialog-close {
+		0% { transform: translateY(-50px); }
+		100% { transform: translateY(0); }
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
@@ -45,10 +59,6 @@ export const dialogStyles = css`
 		z-index: 1000;
 	}
 
-	.d2l-dialog-outer.d2l-dialog-outer-nested {
-		top: 0;
-	}
-
 	dialog.d2l-dialog-outer {
 		color: var(--d2l-color-ferrite);
 		margin-bottom: 0; /* required to override Chrome native positioning */
@@ -61,11 +71,6 @@ export const dialogStyles = css`
 		background-color: #f9fbff;
 		opacity: 0;
 		transition: opacity 200ms ease-in;
-	}
-
-	:host([_state="showing"]) > .d2l-dialog-outer {
-		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
-		transform: translateY(0);
 	}
 
 	:host([_state="showing"]) dialog::backdrop {
@@ -158,8 +163,9 @@ export const dialogStyles = css`
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.d2l-dialog-outer {
-			transition: none;
+		.d2l-dialog-outer,
+		:host([_state="showing"]) > .d2l-dialog-outer {
+			animation: none;
 		}
 		dialog::backdrop {
 			transition: none;

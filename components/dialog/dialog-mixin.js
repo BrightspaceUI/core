@@ -154,11 +154,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._scroll = false;
 		if (!reduceMotion) {
-			const transitionEnd = () => {
-				dialog.removeEventListener('transitionend', transitionEnd);
+			const animationEnd = () => {
+				dialog.removeEventListener('animationend', animationEnd);
 				doClose();
 			};
-			dialog.addEventListener('transitionend', transitionEnd);
+			dialog.addEventListener('animationend', animationEnd);
 			this._state = 'hiding';
 		} else {
 			this._state = 'hiding';
@@ -314,11 +314,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
 		const animPromise = new Promise((resolve) => {
-			const transitionEnd = () => {
-				dialog.removeEventListener('transitionend', transitionEnd);
+			const animationEnd = () => {
+				dialog.removeEventListener('animationend', animationEnd);
 				resolve();
 			};
-			dialog.addEventListener('transitionend', transitionEnd);
+			dialog.addEventListener('animationend', animationEnd);
 		});
 
 		if (this._useNative) {

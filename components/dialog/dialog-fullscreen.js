@@ -79,8 +79,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					max-width: 1170px;
 					opacity: 0;
 					top: 0;
-					transform: translateY(-50px) scale(0.97);
-					transition: transform 200ms ease-out, opacity 200ms ease-out;
+					transition: opacity 200ms ease-out;
 					width: auto;
 				}
 
