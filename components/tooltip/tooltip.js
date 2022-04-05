@@ -903,7 +903,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		document.body.appendChild(clone);
 		await this.updateComplete;
-		this._truncating = clone.scrollWidth > target.scrollWidth;
+		this._truncating = clone.scrollWidth > target.offsetWidth;
 		this._resizeRunSinceTruncationCheck = false;
 		document.body.removeChild(clone);
 	}
