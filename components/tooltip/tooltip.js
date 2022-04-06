@@ -882,30 +882,40 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._addListeners();
 	}
 
+	/**
+	 * This solution appends a clone of the target to the target in order to retain target styles.
+	 * A possible consequence of this is unexpected behaviours for web components that have slots.
+	 * If this becomes an issue, it would also likely be possible to append the clone to document.body
+	 * and get the expected styles through getComputedStyle.
+	 */
 	async _updateTruncating() {
 		// if no resize has happened since truncation was previously calculated the result will not have changed
 		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
 
 		const target = this._target;
+		const divElem = document.createElement('div');
+		divElem.style.position = 'absolute';
+		divElem.style.overflow = 'hidden';
+		divElem.style.whiteSpace = 'nowrap';
+		divElem.style.width = '1px';
+
+		if (this.getAttribute('dir') === 'rtl') {
+			divElem.style.right = '-10000px';
+		} else {
+			divElem.style.left = '-10000px';
+		}
 
 		const clone = target.cloneNode(true);
 		clone.removeAttribute('id');
-		clone.style.position = 'absolute';
-		clone.style.overflow = 'hidden';
-		clone.style.whiteSpace = 'nowrap';
-		clone.style.width = '1px';
+		clone.style.maxWidth = 'none';
 
-		if (this.getAttribute('dir') === 'rtl') {
-			clone.style.right = '-10000px';
-		} else {
-			clone.style.left = '-10000px';
-		}
-
-		document.body.appendChild(clone);
+		divElem.appendChild(clone);
+		target.appendChild(divElem);
 		await this.updateComplete;
+
 		this._truncating = clone.scrollWidth > target.offsetWidth;
 		this._resizeRunSinceTruncationCheck = false;
-		document.body.removeChild(clone);
+		target.removeChild(divElem);
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
