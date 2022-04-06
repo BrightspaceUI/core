@@ -893,29 +893,29 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
 
 		const target = this._target;
-		const divElem = document.createElement('div');
-		divElem.style.position = 'absolute';
-		divElem.style.overflow = 'hidden';
-		divElem.style.whiteSpace = 'nowrap';
-		divElem.style.width = '1px';
+		const cloneContainer = document.createElement('div');
+		cloneContainer.style.position = 'absolute';
+		cloneContainer.style.overflow = 'hidden';
+		cloneContainer.style.whiteSpace = 'nowrap';
+		cloneContainer.style.width = '1px';
 
 		if (this.getAttribute('dir') === 'rtl') {
-			divElem.style.right = '-10000px';
+			cloneContainer.style.right = '-10000px';
 		} else {
-			divElem.style.left = '-10000px';
+			cloneContainer.style.left = '-10000px';
 		}
 
 		const clone = target.cloneNode(true);
 		clone.removeAttribute('id');
 		clone.style.maxWidth = 'none';
 
-		divElem.appendChild(clone);
-		target.appendChild(divElem);
+		cloneContainer.appendChild(clone);
+		target.appendChild(cloneContainer);
 		await this.updateComplete;
 
 		this._truncating = clone.scrollWidth > target.offsetWidth;
 		this._resizeRunSinceTruncationCheck = false;
-		target.removeChild(divElem);
+		target.removeChild(cloneContainer);
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
