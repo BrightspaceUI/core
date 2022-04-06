@@ -21,7 +21,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer {
-		animation: d2l-dialog-open 200ms ease-in;
+		animation: d2l-dialog-close 200ms ease-in;
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
@@ -33,15 +33,15 @@ export const dialogStyles = css`
 
 	:host([_state="showing"]) > .d2l-dialog-outer {
 		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
-		animation: d2l-dialog-close 200ms ease-in;
+		animation: d2l-dialog-open 200ms ease-in;
 	}
 
-	@keyframes d2l-dialog-open {
+	@keyframes d2l-dialog-close {
 		0% { transform: translateY(0); }
 		100% { transform: translateY(-50px); }
 	}
 
-	@keyframes d2l-dialog-close {
+	@keyframes d2l-dialog-open {
 		0% { transform: translateY(-50px); }
 		100% { transform: translateY(0); }
 	}
