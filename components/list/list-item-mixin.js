@@ -74,7 +74,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hovering: { type: Boolean, reflect: true },
+			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
+			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
@@ -163,8 +165,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
 			}
-			:host([_hovering]) .d2l-list-item-content,
-			:host([_focusing]) .d2l-list-item-content {
+			:host([_hovering-primary-action]) .d2l-list-item-content,
+			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 				--d2l-list-item-content-text-decoration: underline;
 			}
@@ -511,9 +513,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		hasDisplayedKeyboardTooltip = true;
 	}
 
+	_onFocusInPrimaryAction() {
+		this._focusingPrimaryAction = true;
+	}
+
 	_onFocusOut() {
 		this._focusing = false;
 		this._displayKeyboardTooltip = false;
+	}
+
+	_onFocusOutPrimaryAction() {
+		this._focusingPrimaryAction = false;
 	}
 
 	_onFullscreenWithin(e) {
@@ -527,6 +537,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseEnterPrimaryAction() {
+		this._hoveringPrimaryAction = true;
 		this._hovering = true;
 	}
 
@@ -535,6 +546,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseLeavePrimaryAction() {
+		this._hoveringPrimaryAction = false;
 		this._hovering = false;
 	}
 
@@ -572,6 +584,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
+					@focusin="${this._onFocusInPrimaryAction}"
+					@focusout="${this._onFocusOutPrimaryAction}"
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
