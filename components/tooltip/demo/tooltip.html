@@ -139,11 +139,11 @@
 			<template>
 				<div class="truncated">
 					<d2l-button id="tooltip-short"><span>Short Tooltip</span></d2l-button>
-					<d2l-tooltip for="tooltip-short" only-show-if-truncating>
+					<d2l-tooltip for="tooltip-short" show-truncated-only>
 						This tooltip will not show.
 					</d2l-tooltip>
 					<d2l-button id="tooltip-long"><span>Very Very Very Very Long Tooltip</span></d2l-button>
-					<d2l-tooltip for="tooltip-long" only-show-if-truncating>
+					<d2l-tooltip for="tooltip-long" show-truncated-only>
 						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
 				</div>

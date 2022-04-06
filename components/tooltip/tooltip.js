@@ -152,7 +152,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 * ADVANCED: Only show the tooltip if we detect the target element is truncated
 			 * @type {boolean}
 			 */
-			onlyShowIfTruncating: { type: Boolean, attribute: 'only-show-if-truncating' },
+			showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' },
 			/**
 			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
@@ -395,7 +395,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.forceShow = false;
 		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
-		this.onlyShowIfTruncating = false;
+		this.showTruncatedOnly = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
@@ -757,7 +757,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async _onTargetFocus() {
-		if (this.onlyShowIfTruncating) {
+		if (this.showTruncatedOnly) {
 			await this._updateTruncating();
 			if (!this._truncating) return;
 		}
@@ -772,7 +772,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_onTargetMouseEnter() {
 		this._hoverTimeout = setTimeout(async() => {
-			if (this.onlyShowIfTruncating) {
+			if (this.showTruncatedOnly) {
 				await this._updateTruncating();
 				if (!this._truncating) return;
 			}
@@ -890,7 +890,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	 */
 	async _updateTruncating() {
 		// if no resize has happened since truncation was previously calculated the result will not have changed
-		if (!this._resizeRunSinceTruncationCheck || !this.onlyShowIfTruncating) return;
+		if (!this._resizeRunSinceTruncationCheck || !this.showTruncatedOnly) return;
 
 		const target = this._target;
 		const cloneContainer = document.createElement('div');
