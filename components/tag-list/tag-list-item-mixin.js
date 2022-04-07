@@ -82,7 +82,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 			` : null;
 		return html`
 			${tooltip}
-			<div class="tag-list-item-container d2l-label-text" id="${this._id}" tabindex="0">
+			<div class="tag-list-item-container d2l-label-text" id="${this._id}" tabindex="-1">
 				${tagContent}
 			</div>
 		`;
