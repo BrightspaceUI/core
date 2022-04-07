@@ -25,16 +25,20 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text-secondary {
 				color: var(--d2l-list-item-content-text-secondary-color, var(--d2l-color-tungsten));
 				margin: 0;
-				margin-top: 0.15rem;
 				overflow: hidden;
 			}
 
 			.d2l-list-item-content-text-supporting-info {
 				color: var(--d2l-color-ferrite);
 				margin: 0;
-				margin-top: 0.15rem;
 				overflow: hidden;
 			}
+
+			.d2l-list-item-content-text-secondary ::slotted(*),
+			.d2l-list-item-content-text-supporting-info ::slotted(*) {
+				margin-top: 0.15rem;
+			}
+
 
 		`];
 	}

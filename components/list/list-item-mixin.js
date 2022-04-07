@@ -118,9 +118,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
-				left: 4px;
 				position: absolute;
-				width: calc(100% - 8px);
+				width: 100%;
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
@@ -162,9 +161,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-left: 0.9rem;
 				padding-right: 0;
 			}
-			.d2l-list-item-content ::slotted(*) {
-				margin-top: 0.05rem;
-			}
+
 			:host([_hovering-primary-action]) .d2l-list-item-content,
 			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
@@ -186,11 +183,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-right: 0;
 			}
 			:host([slim]) [slot="content"] { /* TODO, remove */
-				padding-bottom: 0.35rem;
+				padding-bottom: 0.4rem;
 				padding-top: 0.4rem;
 			}
 			:host([padding-type="slim"]) [slot="content"] {
-				padding-bottom: 0.35rem;
+				padding-bottom: 0.4rem;
 				padding-top: 0.4rem;
 			}
 			:host([padding-type="none"]) [slot="content"] {
@@ -203,7 +200,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin: 0.15rem 0.9rem 0.15rem 0;
+				margin-right: 0.9rem;
 				max-height: 2.6rem;
 				max-width: 4.5rem;
 				overflow: hidden;
@@ -229,7 +226,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				gap: 0.3rem;
 				grid-auto-columns: 1fr;
 				grid-auto-flow: column;
-				margin: 0.15rem 0;
 			}
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
@@ -276,21 +272,21 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin-right: 0;
 			}
 			d2l-selection-input {
-				margin: 1.15rem 0.9rem 1.15rem 0;
+				margin: 0.55rem 0.9rem 0.55rem 0;
 			}
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
 			:host([slim]) d2l-selection-input { /* TODO, remove */
-				margin-bottom: 0.55rem;
-				margin-top: 0.55rem;
+				margin-bottom: 0.4rem;
+				margin-top: 0.4rem;
 			}
 			:host([padding-type="slim"]) d2l-selection-input {
-				margin-bottom: 0.55rem;
-				margin-top: 0.55rem;
+				margin-bottom: 0.4rem;
+				margin-top: 0.4rem;
 			}
 			d2l-list-item-drag-handle {
-				margin: 0.8rem 0 0.8rem 0.4rem;
+				margin: 0.25rem 0 0.25rem 0.4rem;
 			}
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
@@ -306,7 +302,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin: 0 -12px;
 			}
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				border-left: none;
 				border-radius: 0;
+				border-right: none;
 			}
 			:host([draggable]) [slot="outside-control-container"],
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
