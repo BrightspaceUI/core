@@ -169,7 +169,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				const itemLayout = this._itemLayouts[i];
 				const itemWidth = Math.min(itemLayout.width, this._availableWidth);
 
-				if (!isOverflowing && (((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT)))) {
+				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT))) {
 					showing.width += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
