@@ -313,7 +313,6 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
-| `padding-type` | String | Header whitespace (`normal` (default), `slim`) |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
