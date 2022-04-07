@@ -66,7 +66,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this.arrowKeysDirection = 'leftrightupdown';
 		this._chompIndex = 10000;
 		this._hasResized = false;
-		this._items = [];
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
 	}
@@ -87,15 +86,18 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	render() {
 		let hiddenCount = 0;
 		let hasHiddenTags = false;
-		this._items.forEach((element, index) => {
-			if (index >= this._chompIndex) hasHiddenTags = true;
-			if (!this._showHiddenTags && index >= this._chompIndex) {
-				hiddenCount++;
-				element.setAttribute('data-is-chomped', '');
-			} else {
-				element.removeAttribute('data-is-chomped');
-			}
-		});
+		if (this._items) {
+			this._items.forEach((element, index) => {
+				if (index >= this._chompIndex) hasHiddenTags = true;
+				if (!this._showHiddenTags && index >= this._chompIndex) {
+					hiddenCount++;
+					element.setAttribute('data-is-chomped', '');
+				} else {
+					element.removeAttribute('data-is-chomped');
+				}
+			});
+
+		}
 
 		let button = null;
 		if (hasHiddenTags) {
