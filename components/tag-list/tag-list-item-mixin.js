@@ -20,6 +20,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 			:host {
 				display: grid;
 				max-width: 100%;
+				outline: none;
 			}
 			:host([hidden]) {
 				display: none;
@@ -69,9 +70,12 @@ export const TagListItemMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const container = this.shadowRoot.querySelector('.tag-list-item-container');
-		this.addEventListener('focus', () => container.focus());
-		this.addEventListener('blur', () => container.blur());
+		this._container = this.shadowRoot.querySelector('.tag-list-item-container');
+	}
+
+	focus() {
+		super.focus();
+		if (this._container) this._container.focus();
 	}
 
 	_renderTag(tagContent, hasTruncationTooltip) {

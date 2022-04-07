@@ -142,7 +142,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	focus() {
-		if (this._items.length > 0) this._items[0].focus();
+		if (this._items && this._items.length > 0) this._items[0].focus();
 	}
 
 	_chomp() {
