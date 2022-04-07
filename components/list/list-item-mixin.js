@@ -59,16 +59,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
 			 * How much padding to render list items with
-			 * @type {'normal'|'slim'|'none'}
+			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			/**
-			 * @ignore
-			 * Whether to render the list-item with reduced whitespace.
-			 * TODO: Remove in favor of padding-type="slim"
-			 * @type {boolean}
-			 */
-			slim: { type: Boolean },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -182,14 +175,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-left: 0.55rem;
 				padding-right: 0;
 			}
-			:host([slim]) [slot="content"] { /* TODO, remove */
-				padding-bottom: 0.4rem;
-				padding-top: 0.4rem;
-			}
-			:host([padding-type="slim"]) [slot="content"] {
-				padding-bottom: 0.4rem;
-				padding-top: 0.4rem;
-			}
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
 				padding-top: 0;
@@ -277,14 +262,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-input { /* TODO, remove */
-				margin-bottom: 0.4rem;
-				margin-top: 0.4rem;
-			}
-			:host([padding-type="slim"]) d2l-selection-input {
-				margin-bottom: 0.4rem;
-				margin-top: 0.4rem;
-			}
 			d2l-list-item-drag-handle {
 				margin: 0.25rem 0 0.25rem 0.4rem;
 			}
@@ -366,7 +343,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	constructor() {
 		super();
 		this.breakpoints = defaultBreakpoints;
-		this.slim = false;
 		this.paddingType = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
