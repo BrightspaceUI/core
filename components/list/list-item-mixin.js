@@ -305,6 +305,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin: 0 -12px;
 			}
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				border-left: none;
+				border-right: none;
 				border-radius: 0;
 			}
 			:host([draggable]) [slot="outside-control-container"],
