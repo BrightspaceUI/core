@@ -61,7 +61,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				background-color: #ffffff;
 				background-color: rgba(255, 255, 255, 0.88);
 				border-top-color: var(--d2l-color-mica);
-				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* ferrite */
+				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* tungsten */
 			}
 
 			:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
