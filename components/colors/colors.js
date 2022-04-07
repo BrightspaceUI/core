@@ -12,7 +12,7 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-chromite: #9ea5a9;
 			--d2l-color-galena: #868c8f;
 			--d2l-color-tungsten: #6e7376;
-			--d2l-color-ferrite: #494c4e;
+			--d2l-color-ferrite: #202122;
 
 			/* zircon */
 			--d2l-color-zircon-plus-2: #e0feff;
