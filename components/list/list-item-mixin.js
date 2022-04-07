@@ -118,9 +118,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
-				left: 4px;
 				position: absolute;
-				width: calc(100% - 8px);
+				width: 100%;
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
