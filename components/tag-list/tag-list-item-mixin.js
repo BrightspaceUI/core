@@ -18,7 +18,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 	static get styles() {
 		return [labelStyles, css`
 			:host {
-				display: inline-block;
+				display: grid;
 				max-width: 100%;
 			}
 			:host([hidden]) {

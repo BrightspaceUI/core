@@ -44,7 +44,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				flex-wrap: wrap;
 				margin: -6px -6px 0 0;
 				padding: 0;
-				position: relative;
 			}
 			::slotted(*),
 			d2l-button-subtle {
