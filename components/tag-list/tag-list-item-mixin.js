@@ -1,11 +1,18 @@
+import '../button/button-icon.js';
 import '../colors/colors.js';
 import { css, html } from 'lit';
 import { labelStyles } from '../typography/styles.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export const TagListItemMixin = superclass => class extends superclass {
+// TODO: focus management in tag-list, keyboard behaviour
+export const TagListItemMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
+			/**
+			 * Enables the option to clear a tag list item. The `d2l-tag-list-item-cleared` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
+			 */
+			clearable: { type: Boolean },
 			/**
 			 * @ignore
 			 */
@@ -58,19 +65,49 @@ export const TagListItemMixin = superclass => class extends superclass {
 					transition: none;
 				}
 			}
+			.tag-list-item-content + d2l-button-icon {
+				padding-left: 3px;
+			}
+			:host([dir="rtl"]) .tag-list-item-content + d2l-button-icon {
+				padding-left: 0;
+				padding-right: 3px;
+			}
+			d2l-button-icon {
+				--d2l-button-icon-min-height: 1.1rem;
+				--d2l-button-icon-min-width: 1.1rem;
+				--d2l-button-icon-fill-color: var(--d2l-color-chromite);
+				margin-right: -7px;
+			}
+			:host([dir="rtl"]) d2l-button-icon {
+				margin-right: 0;
+				margin-left: -7px;
+			}
+			d2l-button-icon:hover {
+				--d2l-button-icon-fill-color: var(--d2l-color-tungsten);
+			}
 		`];
 	}
 
 	constructor() {
 		super();
+		this.clearable = false;
 		/** @ignore */
 		this.role = 'listitem';
 	}
 
+	handleClearItem(e) {
+		const handleFocus = e && e.composedPath()[0].tagName === 'D2L-BUTTON-ICON';
+		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tag-list-item-cleared',
+			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
+		));
+	}
 	_renderTag(tagContent) {
 		return html`
 			<div class="tag-list-item-container d2l-label-text">
 				<div class="tag-list-item-content">${tagContent}</div>
+				${this.clearable ? html`<d2l-button-icon icon="tier1:close-small" @click="${this.handleClearItem}" tabindex="-1"></d2l-button-icon>` : null}
 			</div>
 		`;
 	}
