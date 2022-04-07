@@ -1,5 +1,7 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css, html } from 'lit';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { labelStyles } from '../typography/styles.js';
 
 export const TagListItemMixin = superclass => class extends superclass {
@@ -16,19 +18,11 @@ export const TagListItemMixin = superclass => class extends superclass {
 	static get styles() {
 		return [labelStyles, css`
 			:host {
-				display: grid;
-				outline: none;
+				display: inline-block;
+				max-width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
-			}
-			.tag-list-item-content {
-				height: 1rem;
-				margin: auto;
-				min-width: 0;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
 			}
 			.tag-list-item-container {
 				background-color: var(--d2l-color-regolith);
@@ -37,10 +31,14 @@ export const TagListItemMixin = superclass => class extends superclass {
 				box-sizing: border-box;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
-				display: flex;
+				max-width: 320px;
 				min-width: 0;
+				outline: none;
+				overflow: hidden;
 				padding: 0.25rem 0.6rem;
+				text-overflow: ellipsis;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
+				white-space: nowrap;
 			}
 			:host(:hover) .tag-list-item-container,
 			:host(:focus) .tag-list-item-container {
@@ -65,12 +63,27 @@ export const TagListItemMixin = superclass => class extends superclass {
 		super();
 		/** @ignore */
 		this.role = 'listitem';
+		this._id = getUniqueId();
 	}
 
-	_renderTag(tagContent) {
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		const container = this.shadowRoot.querySelector('.tag-list-item-container');
+		this.addEventListener('focus', () => container.focus());
+		this.addEventListener('blur', () => container.blur());
+	}
+
+	_renderTag(tagContent, hasTruncationTooltip) {
+		const tooltip = hasTruncationTooltip ? html`
+				<d2l-tooltip for="${this._id}" show-truncated-only>
+					${tagContent}
+				</d2l-tooltip>
+			` : null;
 		return html`
-			<div class="tag-list-item-container d2l-label-text">
-				<div class="tag-list-item-content">${tagContent}</div>
+			${tooltip}
+			<div class="tag-list-item-container d2l-label-text" id="${this._id}" tabindex="0">
+				${tagContent}
 			</div>
 		`;
 	}

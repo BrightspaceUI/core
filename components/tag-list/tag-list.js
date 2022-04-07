@@ -14,7 +14,7 @@ const PAGE_SIZE_LINES = {
 	medium: 2,
 	small: 3
 };
-const MARGIN_TOP_HEIGHT = 6;
+const MARGIN_TOP_RIGHT = 6;
 
 class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
@@ -65,6 +65,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
 		this._chompIndex = 10000;
+		this._hasResized = false;
 		this._items = [];
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
@@ -123,7 +124,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
 		};
 
 		return html`
@@ -166,9 +167,10 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
+				const itemWidth = Math.min(itemLayout.width, this._availableWidth);
 
-				if (!isOverflowing && showing.width + itemLayout.width < this._availableWidth) {
-					showing.width += itemLayout.width;
+				if (!isOverflowing && (((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT)))) {
+					showing.width += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
 				} else if (k < this._lines) {
@@ -179,7 +181,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
-
 		}
 
 		if (!isOverflowing) {
@@ -232,10 +233,16 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
+		if (!this._hasResized) {
+			this._hasResized = true;
+			this._handleSlotChange();
+		}
 		this._chomp();
 	}
 
 	_handleSlotChange() {
+		if (!this._hasResized) return;
+
 		requestAnimationFrame(() => {
 			this._items = this._getTagListItems();
 			this._itemLayouts = this._getItemLayouts(this._items);
