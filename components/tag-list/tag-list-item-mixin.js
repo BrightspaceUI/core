@@ -20,6 +20,7 @@ export const TagListItemMixin = superclass => class extends superclass {
 			:host {
 				display: grid;
 				max-width: 100%;
+				outline: none;
 			}
 			:host([hidden]) {
 				display: none;
@@ -40,15 +41,15 @@ export const TagListItemMixin = superclass => class extends superclass {
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
+			.tag-list-item-container:focus {
+				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
+			}
 			:host(:hover) .tag-list-item-container,
-			:host(:focus) .tag-list-item-container {
+			.tag-list-item-container:focus {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 1px var(--d2l-color-mica), 0 2px 4px rgba(0, 0, 0, 0.03);
-			}
-			:host(:focus) .tag-list-item-container {
-				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 
 			@media (prefers-reduced-motion: reduce) {
