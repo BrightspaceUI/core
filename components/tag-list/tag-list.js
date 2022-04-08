@@ -230,7 +230,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	_handleResize(entries) {
-		this._availableWidth = Math.ceil(entries[0].contentRect.width);
+		this._availableWidth = Math.floor(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
@@ -244,11 +244,20 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	_handleSlotChange() {
 		if (!this._hasResized) return;
 
-		requestAnimationFrame(() => {
+		requestAnimationFrame(async() => {
 			this._items = this._getTagListItems();
-			this._itemLayouts = this._getItemLayouts(this._items);
+			if (!this._items || this._items.length === 0) return;
 
-			if (this._items.length === 0) return;
+			const numItems = this._items.length;
+			const updateItems = new Promise((resolve) => {
+				this._items.forEach(async(item, index) => {
+					await item.updateComplete;
+					if (index === numItems - 1) resolve();
+				});
+			});
+			await updateItems;
+
+			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
 			this._items.forEach((item, index) => {
 				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
