@@ -75,7 +75,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
-					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
+					--d2l-button-icon-background-color-hover: rgba(7, 8, 9, 0.9); /* ferrite @70% @90% */
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
 					--d2l-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);

@@ -24,7 +24,7 @@ export const dropdownContentStyles = css`
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
-		--d2l-dropdown-background-color: #202122b3; /* ferrite @ 70% */
+		--d2l-dropdown-background-color: #070809; /* ferrite @ 70% */
 		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
 		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);
 		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
