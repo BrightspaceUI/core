@@ -41,7 +41,8 @@ export const TagListItemMixin = superclass => class extends superclass {
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
-			.tag-list-item-container:focus {
+			.tag-list-item-container:focus,
+			:host(:hover) .tag-list-item-container:focus {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
