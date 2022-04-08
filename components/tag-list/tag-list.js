@@ -72,10 +72,17 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
+		if (this._subtleButtonResizeObserver) this._subtleButtonResizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
+		this._subtleButtonResizeObserver = new ResizeObserver(() => {
+			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
+		});
+		this._subtleButtonResizeObserver.observe(subtleButton);
 
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
@@ -147,9 +154,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
 
-		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
-		const subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
-
 		const showing = {
 			count: 0,
 			width: 0
@@ -190,7 +194,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		// calculate if additional item(s) should be hidden due to subtle button needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((showing.width + subtleButtonWidth) < this._availableWidth) {
+			if ((showing.width + this._subtleButtonWidth) < this._availableWidth) {
 				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];

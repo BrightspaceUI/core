@@ -1,8 +1,7 @@
 import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
-
-describe.only('d2l-tag-list', () => {
+describe('d2l-tag-list', () => {
 	const visualDiff = new VisualDiff('tag-list', import.meta.url);
 
 	let browser, page;
@@ -36,12 +35,12 @@ describe.only('d2l-tag-list', () => {
 				await page.waitForTimeout(2000);
 			});
 
-			it(`is correct`, async function() {
+			it('is correct', async function() {
 				const rect = await visualDiff.getRect(page, '#default');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it(`is correct after adding items`, async function() {
+			it('is correct after adding items', async function() {
 				await page.$eval('#default', (elem) => {
 					for (let i = 0; i < 2; i++) {
 						const tag = document.createElement('d2l-tag-list-item');
@@ -54,7 +53,7 @@ describe.only('d2l-tag-list', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it(`is correct when show more button clicked if applicable`, async function() {
+			it('is correct when show more button clicked if applicable', async function() {
 				await page.$eval('#default', async(elem) => {
 					for (let i = 0; i < 2; i++) {
 						if (elem.children[0].text === 'Added New Item') elem.removeChild(elem.children[0]);
