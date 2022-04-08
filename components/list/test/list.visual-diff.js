@@ -84,7 +84,6 @@ describe('d2l-list', () => {
 	[
 		{ category: 'general', tests: [
 			{ name: 'simple', selector: '#simple' },
-			{ name: 'slim', selector: '#slim' },
 			{ name: 'no padding', selector: '#noPadding' }
 		] },
 		{ category: 'illustration', tests: [
@@ -104,7 +103,6 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
-			{ name: 'slim', selector: '#itemContentSlim' },
 			{ name: 'no padding', selector: '#itemContentNoPadding' }
 		] },
 		{ category: 'href', tests: [
@@ -124,9 +122,7 @@ describe('d2l-list', () => {
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
-			{ name: 'slim', selector: '#selectableSlim' },
 			{ name: 'item-content', selector: '#selectableItemContent' },
-			{ name: 'item-content slim', selector: '#selectableItemContentSlim' },
 			{ name: 'skeleton', selector: '#selectableSkeleton' },
 			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
 		] },

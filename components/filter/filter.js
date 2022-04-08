@@ -406,8 +406,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						key="${item.key}"
 						label="${item.text}"
 						selectable
-						?selected="${item.selected}"
-						slim>
+						?selected="${item.selected}">
 						<div class="d2l-filter-dimension-set-value-text d2l-body-compact">${item.text}</div>
 					</d2l-list-item>
 				`)}
