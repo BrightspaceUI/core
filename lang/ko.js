@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",
+	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",

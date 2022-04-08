@@ -2,10 +2,11 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { css, html } from 'lit';
 import { labelStyles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 // TODO: focus management in tag-list, keyboard behaviour
-export const TagListItemMixin = superclass => class extends RtlMixin(superclass) {
+export const TagListItemMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -95,19 +96,32 @@ export const TagListItemMixin = superclass => class extends RtlMixin(superclass)
 		this.role = 'listitem';
 	}
 
+	deleteItem() {
+		this.parentNode.removeChild(this);
+	}
+
 	handleClearItem(e) {
-		const handleFocus = e && e.composedPath()[0].tagName === 'D2L-BUTTON-ICON';
+		const handleFocus = e && (e.composedPath()[0].tagName === 'D2L-BUTTON-ICON' || e.composedPath()[0].tagName === 'D2L-ICON');
 		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-cleared',
-			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
+			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus: handleFocus || false } }
 		));
 	}
 	_renderTag(tagContent) {
+		const buttonText = typeof tagContent === 'object'
+			? this.localize('components.tag-list.clear', { value: '' })
+			: this.localize('components.tag-list.clear', { value: tagContent });
 		return html`
 			<div class="tag-list-item-container d2l-label-text">
 				<div class="tag-list-item-content">${tagContent}</div>
-				${this.clearable ? html`<d2l-button-icon icon="tier1:close-small" @click="${this.handleClearItem}" tabindex="-1"></d2l-button-icon>` : null}
+				${this.clearable ? html`
+					<d2l-button-icon
+						@click="${this.handleClearItem}"
+						icon="tier1:close-small"
+						tabindex="-1"
+						text="${buttonText}">
+					</d2l-button-icon>` : null}
 			</div>
 		`;
 	}

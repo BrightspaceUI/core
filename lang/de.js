@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "Sichtbarkeit",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",
+	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Anpassbare geteilte Ansicht",

@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動",
+	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "可調整的分割檢視",

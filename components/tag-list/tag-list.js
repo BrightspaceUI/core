@@ -132,7 +132,7 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 				class="d2l-tag-list-clear-button"
 				@click="${this._handleClearAll}"
 				slim
-				text="Clear all"
+				text="${this.localize('components.tag-list.clear-all')}"
 			>
 			</d2l-button-subtle>
 		` : null;
@@ -204,18 +204,24 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
+		}
 
+		if (!isOverflowing && !this.clearable) {
+			this._chompIndex = showing.count;
+			return;
 		}
 
 		// calculate if additional item(s) should be hidden due to subtle buttons needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((showing.width + subtleButtonWidth + clearButtonWidth) < this._availableWidth) {
-				break;
+			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
+				|| ((showing.width + subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
+					break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
 			if (itemLayoutOverflowing.trigger !== 'soft-show') {
 				continue;
 			}
+			isOverflowing = true;
 			showing.width -= itemLayoutOverflowing.width;
 			showing.count -= 1;
 		}
@@ -252,8 +258,13 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			const role = node.getAttribute('role');
 			if (role === 'listitem' && this.clearable) node.setAttribute('clearable', 'clearable');
+			node.addEventListener('d2l-tag-list-item-cleared', this._handleItemDeleted);
 			return (role === 'listitem');
 		});
+	}
+
+	_handleItemDeleted() {
+		console.log('here')
 	}
 
 	_handleClearAll() {

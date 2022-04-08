@@ -95,6 +95,8 @@ export default {
 	"components.switch.visibility": "दृश्यता",
 	"components.tabs.next": "आगे स्क्रॉल करें",
 	"components.tabs.previous": "पीछे स्क्रॉल करें",
+	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "समायोजन योग्य विभाजन दृश्य",
