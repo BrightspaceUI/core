@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
-describe('d2l-tag-list', () => {
 
+describe.only('d2l-tag-list', () => {
 	const visualDiff = new VisualDiff('tag-list', import.meta.url);
 
 	let browser, page;
@@ -26,31 +26,48 @@ describe('d2l-tag-list', () => {
 	});
 
 	[980, 969, 601, 599, 400, 320].forEach((width) => {
-		afterEach(async() => {
-			await page.$eval('#default', (elem) => {
-				const button = elem.shadowRoot.querySelector('.d2l-tag-list-button[text="Show Less"]');
-				if (button) button.click();
+		describe(`at width ${width}`, () => {
+			before(async() => {
+				await page.$eval('#default', async(elem, width) => {
+					elem.parentNode.style.width = `${width}px`;
+					elem._showHiddenTags = false;
+					await elem.updateComplete;
+				}, width);
+				await page.waitForTimeout(2000);
 			});
-		});
 
-		it(`is correct at ${width}px width`, async function() {
-			await page.$eval('#default', async(elem, width) => {
-				elem.parentNode.style.width = `${width}px`;
-				await elem.updateComplete;
-			}, width);
-			await page.waitForTimeout(2000);
-			const rect = await visualDiff.getRect(page, '#default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it(`is correct when show more button clicked at ${width}px width if applicable`, async function() {
-			await page.$eval('#default', (elem) => {
-				const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
-				if (button) button.click();
+			it(`is correct`, async function() {
+				const rect = await visualDiff.getRect(page, '#default');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
-			await page.waitForTimeout(2000);
-			const rect = await visualDiff.getRect(page, '#default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+
+			it(`is correct after adding items`, async function() {
+				await page.$eval('#default', (elem) => {
+					for (let i = 0; i < 2; i++) {
+						const tag = document.createElement('d2l-tag-list-item');
+						tag.text = 'Added New Item';
+						document.querySelector('d2l-tag-list').insertBefore(tag, elem.children[0]);
+					}
+				});
+				await page.waitForTimeout(2000);
+				const rect = await visualDiff.getRect(page, '#default');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it(`is correct when show more button clicked if applicable`, async function() {
+				await page.$eval('#default', async(elem) => {
+					for (let i = 0; i < 2; i++) {
+						if (elem.children[0].text === 'Added New Item') elem.removeChild(elem.children[0]);
+					}
+					await elem.updateComplete;
+					const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
+					if (button) button.click();
+				});
+				await page.waitForTimeout(2000);
+				const rect = await visualDiff.getRect(page, '#default');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
 		});
 	});
 

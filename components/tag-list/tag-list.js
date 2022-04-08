@@ -95,7 +95,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 					element.removeAttribute('data-is-chomped');
 				}
 			});
-
 		}
 
 		let button = null;
@@ -225,6 +224,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			const role = node.getAttribute('role');
+			node.removeAttribute('data-is-chomped');
 			return (role === 'listitem');
 		});
 	}
@@ -248,14 +248,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			this._items = this._getTagListItems();
 			if (!this._items || this._items.length === 0) return;
 
-			const numItems = this._items.length;
-			const updateItems = new Promise((resolve) => {
-				this._items.forEach(async(item, index) => {
-					await item.updateComplete;
-					if (index === numItems - 1) resolve();
-				});
-			});
-			await updateItems;
+			await Promise.all(this._items.map(item => item.updateComplete));
 
 			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
@@ -263,6 +256,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
 			});
 			this._chomp();
+			this.requestUpdate();
 		});
 	}
 
