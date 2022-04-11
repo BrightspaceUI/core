@@ -131,7 +131,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.handleClearItem(e);
 	}
 
-	_renderTag(tagContent) {
+	_renderTag(tagContent, hasTruncationTooltip) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
@@ -142,8 +142,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			` : null;
 		return html`
 			${tooltip}
-			<div class="tag-list-item-container d2l-label-text">
-				<div class="tag-list-item-content">${tagContent}</div>
+			<div class="tag-list-item-container d2l-label-text" id="${this._id}" tabindex="-1">
+				${tagContent}
 				${this.clearable ? html`
 					<d2l-button-icon
 						@click="${this.handleClearItem}"
