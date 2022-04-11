@@ -5,7 +5,7 @@ import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-// TODO: focus management in tag-list, keyboard behaviour
+// TODO: focus management in tag-list
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -96,18 +96,37 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.role = 'listitem';
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('keydown', this._handleKeydown);
+	}
+
 	deleteItem() {
 		this.parentNode.removeChild(this);
 	}
 
 	handleClearItem(e) {
-		const handleFocus = e && (e.composedPath()[0].tagName === 'D2L-BUTTON-ICON' || e.composedPath()[0].tagName === 'D2L-ICON');
+		if (!this.clearable) return;
+
+		let handleFocus = false;
+		if (e) {
+			const tagName = e.composedPath()[0].tagName;
+			handleFocus = (tagName === 'D2L-BUTTON-ICON' || tagName === 'D2L-ICON' || tagName === 'D2L-TAG-LIST-ITEM');
+		}
 		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-cleared',
 			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus: handleFocus || false } }
 		));
 	}
+
+	_handleKeydown(e) {
+		const expectedKey = e.keyCode === 8 || e.keyCode === 46; // backspace or delete
+		if (!this.clearable || !expectedKey) return;
+		this.handleClearItem(e);
+	}
+
 	_renderTag(tagContent) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })

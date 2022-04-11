@@ -3,7 +3,6 @@ import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const PAGE_SIZE = {
@@ -17,7 +16,7 @@ const PAGE_SIZE_LINES = {
 };
 const MARGIN_TOP_HEIGHT = 6;
 
-class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) {
+class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -61,13 +60,6 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 			.d2l-tag-list-hidden-button {
 				position: absolute;
 				visibility: hidden;
-			}
-			d2l-button-subtle + d2l-button-subtle {
-				margin-left: -6px;
-			}
-			:host([dir="rtl"]) d2l-button-subtle + d2l-button-subtle {
-				margin-left: 0;
-				margin-right: -6px;
 			}
 		`;
 	}
@@ -215,7 +207,7 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 		for (let j = this._itemLayouts.length; j--;) {
 			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
 				|| ((showing.width + subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
-					break;
+				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
 			if (itemLayoutOverflowing.trigger !== 'soft-show') {
@@ -226,13 +218,6 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 			showing.count -= 1;
 		}
 		this._chompIndex = showing.count;
-	}
-
-	_getWidth(elem) {
-		const computedStyles = window.getComputedStyle(elem);
-		return Math.ceil(parseFloat(computedStyles.width) || 0)
-			+ parseInt(computedStyles.marginRight) || 0
-			+ parseInt(computedStyles.marginLeft) || 0;
 	}
 
 	_getItemLayouts(filteredNodes) {
@@ -263,8 +248,11 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 		});
 	}
 
-	_handleItemDeleted() {
-		console.log('here')
+	_getWidth(elem) {
+		const computedStyles = window.getComputedStyle(elem);
+		return Math.ceil(parseFloat(computedStyles.width) || 0)
+			+ parseInt(computedStyles.marginRight) || 0
+			+ parseInt(computedStyles.marginLeft) || 0;
 	}
 
 	_handleClearAll() {
@@ -273,6 +261,15 @@ class TagList extends RtlMixin(LocalizeCoreElement(ArrowKeysMixin(LitElement))) 
 		this._items.forEach((item) => {
 			item.handleClearItem();
 		});
+	}
+
+	_handleItemDeleted(e) {
+		if (!this.clearable) return;
+
+		if (e && e.detail && e.detail.handleFocus) {
+			// if there is a next one then focus on that else focus on previous
+			// should it have to be visible?
+		}
 	}
 
 	_handleResize(entries) {

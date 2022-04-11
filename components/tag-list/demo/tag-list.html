@@ -10,7 +10,7 @@
 			import '../tag-list-item.js';
 			import '../test/tag-list-item-mixin-consumer.js';
 
-			window.addEventListener('DOMContentLoaded', function() {
+			window.addEventListener('DOMContentLoaded', () => {
 				setTimeout(() => {
 					const clearableItems = document.querySelectorAll('[clearable="clearable"]');
 					clearableItems.forEach((item) => {
