@@ -279,7 +279,6 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return html`
 			<button
 				aria-label="${this._defaultLabel}"
-				aria-live="assertive"
 				class="d2l-list-item-drag-handle-keyboard-button"
 				@focusin="${this._onFocusInKeyboardButton}"
 				@focusout="${this._onFocusOutKeyboardButton}"
