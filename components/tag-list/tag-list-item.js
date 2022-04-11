@@ -14,7 +14,7 @@ class TagListItem extends TagListItemMixin(LitElement) {
 	}
 
 	render() {
-		return this._renderTag(this.text);
+		return this._renderTag(this.text, true);
 	}
 }
 

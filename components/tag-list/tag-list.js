@@ -14,7 +14,7 @@ const PAGE_SIZE_LINES = {
 	medium: 2,
 	small: 3
 };
-const MARGIN_TOP_HEIGHT = 6;
+const MARGIN_TOP_RIGHT = 6;
 
 class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
@@ -44,7 +44,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				flex-wrap: wrap;
 				margin: -6px -6px 0 0;
 				padding: 0;
-				position: relative;
 			}
 			::slotted(*),
 			d2l-button-subtle {
@@ -65,7 +64,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
 		this._chompIndex = 10000;
-		this._items = [];
+		this._hasResized = false;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
 	}
@@ -73,10 +72,17 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
+		if (this._subtleButtonResizeObserver) this._subtleButtonResizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
+		this._subtleButtonResizeObserver = new ResizeObserver(() => {
+			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
+		});
+		this._subtleButtonResizeObserver.observe(subtleButton);
 
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
@@ -86,15 +92,17 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	render() {
 		let hiddenCount = 0;
 		let hasHiddenTags = false;
-		this._items.forEach((element, index) => {
-			if (index >= this._chompIndex) hasHiddenTags = true;
-			if (!this._showHiddenTags && index >= this._chompIndex) {
-				hiddenCount++;
-				element.setAttribute('data-is-chomped', '');
-			} else {
-				element.removeAttribute('data-is-chomped');
-			}
-		});
+		if (this._items) {
+			this._items.forEach((element, index) => {
+				if (index >= this._chompIndex) hasHiddenTags = true;
+				if (!this._showHiddenTags && index >= this._chompIndex) {
+					hiddenCount++;
+					element.setAttribute('data-is-chomped', '');
+				} else {
+					element.removeAttribute('data-is-chomped');
+				}
+			});
+		}
 
 		let button = null;
 		if (hasHiddenTags) {
@@ -123,7 +131,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_HEIGHT) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
 		};
 
 		return html`
@@ -140,14 +148,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	focus() {
-		if (this._items.length > 0) this._items[0].focus();
+		if (this._items && this._items.length > 0) this._items[0].focus();
 	}
 
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
-
-		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
-		const subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
 
 		const showing = {
 			count: 0,
@@ -166,9 +171,10 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
+				const itemWidth = Math.min(itemLayout.width, this._availableWidth);
 
-				if (!isOverflowing && showing.width + itemLayout.width < this._availableWidth) {
-					showing.width += itemLayout.width;
+				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT))) {
+					showing.width += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
 				} else if (k < this._lines) {
@@ -179,7 +185,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
-
 		}
 
 		if (!isOverflowing) {
@@ -189,7 +194,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		// calculate if additional item(s) should be hidden due to subtle button needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((showing.width + subtleButtonWidth) < this._availableWidth) {
+			if ((showing.width + this._subtleButtonWidth) < this._availableWidth) {
 				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
@@ -223,29 +228,39 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			const role = node.getAttribute('role');
+			node.removeAttribute('data-is-chomped');
 			return (role === 'listitem');
 		});
 	}
 
 	_handleResize(entries) {
-		this._availableWidth = Math.ceil(entries[0].contentRect.width);
+		this._availableWidth = Math.floor(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
+		if (!this._hasResized) {
+			this._hasResized = true;
+			this._handleSlotChange();
+		}
 		this._chomp();
 	}
 
 	_handleSlotChange() {
-		requestAnimationFrame(() => {
-			this._items = this._getTagListItems();
-			this._itemLayouts = this._getItemLayouts(this._items);
+		if (!this._hasResized) return;
 
-			if (this._items.length === 0) return;
+		requestAnimationFrame(async() => {
+			this._items = this._getTagListItems();
+			if (!this._items || this._items.length === 0) return;
+
+			await Promise.all(this._items.map(item => item.updateComplete));
+
+			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
 			this._items.forEach((item, index) => {
 				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
 			});
 			this._chomp();
+			this.requestUpdate();
 		});
 	}
 
