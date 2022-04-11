@@ -72,7 +72,10 @@ export const TagListItemMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 
 		const container = this.shadowRoot.querySelector('.tag-list-item-container');
-		this.addEventListener('focus', () => container.focus());
+		this.addEventListener('focus', (e) => {
+			// ignore focus events coming from inside the tag content
+			if (e.composedPath()[0] === this) container.focus();
+		});
 		this.addEventListener('blur', () => container.blur());
 	}
 
