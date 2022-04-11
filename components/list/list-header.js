@@ -27,22 +27,10 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			noSticky: { type: Boolean, attribute: 'no-sticky' },
 			/**
-			 * How much padding to render list items with
-			 * @type {'normal'|'slim'}
-			 */
-			paddingType: { type: String, attribute: 'padding-type' },
-			/**
 			 * Whether all pages can be selected
 			 * @type {boolean}
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
-			/**
-			 * @ignore
-			 * Whether to render a header with reduced whitespace
-			 * TODO: Remove
-			 * @type {boolean}
-			 */
-			slim: { reflect: true, type: Boolean },
 			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
@@ -81,12 +69,6 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				display: flex;
 				margin-bottom: 6px;
 				margin-top: 6px;
-				min-height: 58px;
-			}
-			:host([slim]) .d2l-list-header-container { /* TODO: Remove */
-				min-height: 36px;
-			}
-			:host([padding-type="slim"]) .d2l-list-header-container {
 				min-height: 36px;
 			}
 			.d2l-list-header-extend-separator {
@@ -126,9 +108,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this.noSelection = false;
 		this.noSticky = false;
-		this.paddingType = 'normal';
 		this.selectAllPagesAllowed = false;
-		this.slim = false;
 		this._extendSeparator = false;
 	}
 

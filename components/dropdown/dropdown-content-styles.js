@@ -24,8 +24,8 @@ export const dropdownContentStyles = css`
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
-		--d2l-dropdown-background-color: #333536; /* ferrite @ 70% */
-		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
+		--d2l-dropdown-background-color: #333536; /* tungsten @ 70% */
+		--d2l-dropdown-border-color: var(--d2l-color-tungsten);
 		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);
 		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
 		opacity: 0.9;
@@ -66,7 +66,7 @@ export const dropdownContentStyles = css`
 		background-color: var(--d2l-dropdown-background-color);
 		border: 1px solid var(--d2l-dropdown-border-color);
 		border-radius: 0.1rem;
-		box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
+		box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
 		height: 16px;
 		-webkit-transform: rotate(45deg);
 		transform: rotate(45deg);
@@ -80,7 +80,7 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer > div {
-		box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
+		box-shadow: 4px 4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
 	}
 
 	:host([no-pointer]) .d2l-dropdown-content-pointer {
