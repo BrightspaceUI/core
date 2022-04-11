@@ -110,8 +110,9 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 		const container = this.shadowRoot.querySelector('.tag-list-item-content');
 		this.addEventListener('focus', () => {
+			// ignore focus events coming from inside the tag content
+			if (e.composedPath()[0] === this) container.focus();
 			this.classList.add('focus');
-			container.focus();
 		});
 		this.addEventListener('blur', () => {
 			this.classList.remove('focus');
