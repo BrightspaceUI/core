@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -34,27 +35,39 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				display: none;
 			}
 			.tag-list-item-container {
+				align-items: center;
 				background-color: var(--d2l-color-regolith);
 				border-radius: 6px;
 				box-shadow: inset 0 0 0 1px var(--d2l-color-gypsum), 0 2px 4px rgba(0, 0, 0, 0.03);
 				box-sizing: border-box;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
+				display: flex;
 				max-width: 320px;
 				min-width: 0;
 				outline: none;
-				overflow: hidden;
 				padding: 0.25rem 0.6rem;
-				text-overflow: ellipsis;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
-			.tag-list-item-container:focus,
-			:host(:hover) .tag-list-item-container:focus {
+			.tag-list-item-container-clearable {
+				padding-right: 0.25rem;
+			}
+			:host([dir="rtl"]) .tag-list-item-container-clearable {
+				padding-left: 0.25rem;
+				padding-right: 0.6rem;
+			}
+			.tag-list-item-content {
+				outline: none;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			:host(.focus) .tag-list-item-container,
+			:host(.focus:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			.tag-list-item-container:focus {
+			:host(.focus) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
@@ -77,11 +90,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				--d2l-button-icon-min-height: 1.1rem;
 				--d2l-button-icon-min-width: 1.1rem;
 				--d2l-button-icon-fill-color: var(--d2l-color-chromite);
-				margin-right: -7px;
-			}
-			:host([dir="rtl"]) d2l-button-icon {
-				margin-right: 0;
-				margin-left: -7px;
 			}
 			d2l-button-icon:hover {
 				--d2l-button-icon-fill-color: var(--d2l-color-tungsten);
@@ -100,9 +108,15 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const container = this.shadowRoot.querySelector('.tag-list-item-container');
-		this.addEventListener('focus', () => container.focus());
-		this.addEventListener('blur', () => container.blur());
+		const container = this.shadowRoot.querySelector('.tag-list-item-content');
+		this.addEventListener('focus', () => {
+			this.classList.add('focus');
+			container.focus();
+		});
+		this.addEventListener('blur', () => {
+			this.classList.remove('focus');
+			container.blur();
+		});
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
@@ -116,7 +130,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		let handleFocus = false;
 		if (e) {
 			const tagName = e.composedPath()[0].tagName;
-			handleFocus = (tagName === 'D2L-BUTTON-ICON' || tagName === 'D2L-ICON' || tagName === 'D2L-TAG-LIST-ITEM');
+			const classList = e.composedPath()[0].classList;
+			handleFocus = (tagName === 'D2L-BUTTON-ICON'
+				|| tagName === 'D2L-ICON'
+				|| (tagName === 'DIV' && classList.contains('tag-list-item-content'))
+			);
 		}
 		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
 		this.dispatchEvent(new CustomEvent(
@@ -136,14 +154,19 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 		const tooltip = hasTruncationTooltip ? html`
-				<d2l-tooltip for="${this._id}" show-truncated-only>
+				<d2l-tooltip for="${this._id}" offset="20" show-truncated-only>
 					${tagContent}
 				</d2l-tooltip>
 			` : null;
+		const containerClasses = {
+			'd2l-label-text': true,
+			'tag-list-item-container': true,
+			'tag-list-item-container-clearable': this.clearable
+		};
 		return html`
 			${tooltip}
-			<div class="tag-list-item-container d2l-label-text" id="${this._id}" tabindex="-1">
-				${tagContent}
+			<div class="${classMap(containerClasses)}">
+				<div class="tag-list-item-content" id="${this._id}" tabindex="-1">${tagContent}</div>
 				${this.clearable ? html`
 					<d2l-button-icon
 						@click="${this.handleClearItem}"
