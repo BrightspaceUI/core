@@ -313,7 +313,6 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
-| `padding-type` | String | Header whitespace (`normal` (default), `slim`) |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
@@ -364,7 +363,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
-| `padding-type` | String | List item whitespace (`normal` (default), `slim`, `none`)|
+| `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
@@ -436,10 +435,10 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
+| `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
-| `slim` | Boolean | Whether to render the list-item with reduced whitespace|
 
 ### Events
 
