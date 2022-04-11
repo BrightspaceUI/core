@@ -243,9 +243,19 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			const role = node.getAttribute('role');
 			if (role === 'listitem' && this.clearable) node.setAttribute('clearable', 'clearable');
-			node.addEventListener('d2l-tag-list-item-cleared', this._handleItemDeleted);
+			node.addEventListener('d2l-tag-list-item-cleared', this._handleItemDeleted.bind(this));
 			return (role === 'listitem');
 		});
+	}
+
+	_getVisibleEffectiveChildren() {
+		if (!this.shadowRoot) {
+			return [];
+		}
+
+		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
+		const clearButton = this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || [];
+		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
 	}
 
 	_getWidth(elem) {
@@ -265,10 +275,14 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	_handleItemDeleted(e) {
 		if (!this.clearable) return;
+		if (!e || !e.detail || !e.detail.handleFocus) return;
 
-		if (e && e.detail && e.detail.handleFocus) {
-			// if there is a next one then focus on that else focus on previous
-			// should it have to be visible?
+		const rootTarget = event.composedPath()[0];
+		const children = this._getVisibleEffectiveChildren();
+		const itemIndex = children.indexOf(rootTarget);
+		if (children.length > 1) {
+			if (children[itemIndex - 1]) children[itemIndex - 1].focus();
+			else children[itemIndex + 1].focus();
 		}
 	}
 

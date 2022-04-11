@@ -15,6 +15,7 @@
 					const clearableItems = document.querySelectorAll('[clearable="clearable"]');
 					clearableItems.forEach((item) => {
 						item.addEventListener('d2l-tag-list-item-cleared', (e) => {
+							item.deleteItem();
 							console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
 						});
 					});
