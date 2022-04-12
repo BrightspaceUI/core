@@ -69,6 +69,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
 		this._chompIndex = 10000;
+		this._clearButtonWidth = 0;
 		this._hasResized = false;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
@@ -83,11 +84,19 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
+		const subtleButton = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
 		this._subtleButtonResizeObserver = new ResizeObserver(() => {
 			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
 		});
 		this._subtleButtonResizeObserver.observe(subtleButton);
+
+		if (this.clearable) {
+			const clearButton = this.clearable ? this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button') : null;
+			this._clearButtonResizeObserver = new ResizeObserver(() => {
+				this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+			});
+			this._clearButtonResizeObserver.observe(clearButton);
+		}
 
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
@@ -169,9 +178,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
 
-		const clearButton = this.clearable ? this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button') : null;
-		const clearButtonWidth = this.clearable ? this._getWidth(clearButton) : 0;
-
 		const showing = {
 			count: 0,
 			width: 0
@@ -212,8 +218,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		// calculate if additional item(s) should be hidden due to subtle buttons needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
-				|| ((showing.width + this._subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
+			if ((this.clearable && !isOverflowing && ((showing.width + this._clearButtonWidth) < this._availableWidth))
+				|| ((showing.width + this._subtleButtonWidth + this._clearButtonWidth) < this._availableWidth)) {
 				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
@@ -275,13 +281,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
 		const clearButton = this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || [];
 		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
-	}
-
-	_getWidth(elem) {
-		const computedStyles = window.getComputedStyle(elem);
-		return Math.ceil(parseFloat(computedStyles.width) || 0)
-			+ parseInt(computedStyles.marginRight) || 0
-			+ parseInt(computedStyles.marginLeft) || 0;
 	}
 
 	_handleClearAll() {
