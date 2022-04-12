@@ -227,6 +227,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this._chompIndex = showing.count;
 	}
 
+	async _filterAsync(arr, callback) {
+		const fail = Symbol();
+		return (await Promise.all(arr.map(async item => (await callback(item)) ? item : fail))).filter(i=>i!==fail);
+	}
+
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
@@ -242,18 +247,24 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		return items.filter(({ isHidden }) => !isHidden);
 	}
 
-	_getTagListItems() {
+	async _getTagListItems() {
 		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
-		// also should add listener and handle focus
-		return slot.assignedNodes({ flatten: true }).filter((node) => {
+
+		const results = await this._filterAsync(slot.assignedNodes({ flatten: true }), async node => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+			await node.updateComplete;
+
 			const role = node.getAttribute('role');
-			if (role === 'listitem' && this.clearable) node.setAttribute('clearable', 'clearable');
+			if (role !== 'listitem') return false;
+
+			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.addEventListener('d2l-tag-list-item-cleared', this._handleItemDeleted.bind(this));
 			node.removeAttribute('data-is-chomped');
-			return (role === 'listitem');
+
+			return true;
 		});
+		return results;
 	}
 
 	_getVisibleEffectiveChildren() {
@@ -310,10 +321,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		if (!this._hasResized) return;
 
 		requestAnimationFrame(async() => {
-			this._items = this._getTagListItems();
+			this._items = await this._getTagListItems();
 			if (!this._items || this._items.length === 0) return;
-
-			await Promise.all(this._items.map(item => item.updateComplete));
 
 			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
