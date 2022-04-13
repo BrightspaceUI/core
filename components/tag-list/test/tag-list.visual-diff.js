@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
-describe.only('d2l-tag-list', () => {
+describe('d2l-tag-list', () => {
 	const visualDiff = new VisualDiff('tag-list', import.meta.url);
 
 	let browser, page;
@@ -89,12 +89,18 @@ describe.only('d2l-tag-list', () => {
 		});
 
 		it('is correct when deleting first item', async function() {
-			await page.$eval(selector, (elem) => {
+			const openEvent = page.$eval(selector, (elem) => {
+				return new Promise((resolve) => {
+					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
+					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
+				});
+			});
+			await page.$eval(selector, async(elem) => {
 				const firstItem = elem.children[0];
 				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
 				deleteButton.click();
 			});
-			await page.waitForTimeout(2500);
+			await openEvent;
 			const rect = await visualDiff.getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});

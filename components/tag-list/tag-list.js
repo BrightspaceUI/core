@@ -235,7 +235,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	async _filterAsync(arr, callback) {
 		const fail = Symbol();
-		return (await Promise.all(arr.map(async item => (await callback(item)) ? item : fail))).filter(i=>i!==fail);
+		const results = await Promise.all(arr.map(async item => {
+			const callbackResult = await callback(item);
+			return callbackResult ? item : fail;
+		}));
+		return results.filter(i => i !== fail);
 	}
 
 	_getItemLayouts(filteredNodes) {
@@ -283,11 +287,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
 	}
 
-	_handleClearAll() {
+	_handleClearAll(e) {
 		if (!this._items) return;
 
 		this._items.forEach((item) => {
-			item.handleClearItem();
+			item.handleClearItem(e);
 		});
 	}
 

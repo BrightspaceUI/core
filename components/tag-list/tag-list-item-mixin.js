@@ -3,6 +3,7 @@ import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -130,17 +131,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 		let handleFocus = false;
 		if (e) {
-			const tagName = e.composedPath()[0].tagName;
-			const classList = e.composedPath()[0].classList;
-			handleFocus = (tagName === 'D2L-BUTTON-ICON'
-				|| tagName === 'D2L-ICON'
-				|| (tagName === 'DIV' && classList.contains('tag-list-item-content'))
-			);
+			const listItemParent = findComposedAncestor(e.composedPath()[0], (node) => node.role === 'listitem');
+			handleFocus = listItemParent ? true : false;
 		}
 		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-cleared',
-			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus: handleFocus || false } }
+			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
 		));
 	}
 
