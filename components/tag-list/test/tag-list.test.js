@@ -65,7 +65,7 @@ describe('d2l-tag-list', () => {
 				dispatchKeydownEvent(startItem, testcase.key);
 
 				await nextFrame();
-				expect(getComposedActiveElement().getRootNode().host).to.equal(list._items[testcase.result]);
+				expect(getComposedActiveElement()).to.equal(list._items[testcase.result]);
 			});
 		});
 	});

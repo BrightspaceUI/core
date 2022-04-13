@@ -95,7 +95,7 @@ export default {
 	"components.switch.visibility": "Visibility",
 	"components.tabs.next": "Scroll Forward",
 	"components.tabs.previous": "Scroll Backward",
-	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.clear": "Click, press backspace, or press delete key to remove item {value}",
 	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",

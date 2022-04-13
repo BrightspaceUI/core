@@ -9,7 +9,6 @@ import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-// TODO: focus management in tag-list
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -63,12 +62,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
-			:host(.focus) .tag-list-item-container,
-			:host(.focus:hover) .tag-list-item-container {
+			:host(:focus) .tag-list-item-container,
+			:host(:focus:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			:host(.focus) .tag-list-item-container {
+			:host(:focus) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
@@ -112,12 +111,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const container = this.shadowRoot.querySelector('.tag-list-item-content');
 		this.addEventListener('focus', (e) => {
 			// ignore focus events coming from inside the tag content
-			if (e.composedPath()[0] === this) container.focus();
-			if (!this.classList.contains('focus')) this.classList.add('focus');
+			if (e.composedPath()[0] !== this) return;
+			const event = new FocusEvent('focus', { bubbles: true, cancelable: true });
+			container.dispatchEvent(event);
 		});
 		this.addEventListener('blur', () => {
-			this.classList.remove('focus');
-			container.blur();
+			const event = new FocusEvent('blur', { bubbles: true, cancelable: true });
+			container.dispatchEvent(event);
 		});
 		this.addEventListener('keydown', this._handleKeydown);
 	}
@@ -144,6 +144,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	_handleKeydown(e) {
 		const expectedKey = e.keyCode === 8 || e.keyCode === 46; // backspace or delete
 		if (!this.clearable || !expectedKey) return;
+		e.preventDefault();
 		this.handleClearItem(e);
 	}
 
