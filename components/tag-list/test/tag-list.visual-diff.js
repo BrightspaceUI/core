@@ -88,6 +88,17 @@ describe('d2l-tag-list', () => {
 			await page.waitForTimeout(2000);
 		});
 
+		it('is correct when deleting the last item', async function() {
+			await page.$eval(selector, (elem) => {
+				const firstItem = elem.children[4];
+				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
+				deleteButton.click();
+			});
+			await page.waitForTimeout(500);
+			const rect = await visualDiff.getRect(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('is correct when deleting first item', async function() {
 			const openEvent = page.$eval(selector, (elem) => {
 				return new Promise((resolve) => {
@@ -101,17 +112,6 @@ describe('d2l-tag-list', () => {
 				deleteButton.click();
 			});
 			await openEvent;
-			const rect = await visualDiff.getRect(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('is correct when deleting the last item', async function() {
-			await page.$eval(selector, (elem) => {
-				const firstItem = elem.children[4];
-				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
-				deleteButton.click();
-			});
-			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});

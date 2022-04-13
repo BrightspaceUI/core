@@ -77,6 +77,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this._clearButtonResizeObserver) this._clearButtonResizeObserver.disconnect();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 		if (this._subtleButtonResizeObserver) this._subtleButtonResizeObserver.disconnect();
 	}
@@ -89,14 +90,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
 		});
 		this._subtleButtonResizeObserver.observe(subtleButton);
-
-		if (this.clearable) {
-			const clearButton = this.clearable ? this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button') : null;
-			this._clearButtonResizeObserver = new ResizeObserver(() => {
-				this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
-			});
-			this._clearButtonResizeObserver.observe(clearButton);
-		}
 
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
@@ -118,9 +111,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			});
 		}
 
-		let button = null;
+		let overflowButton = null;
 		if (hasHiddenTags) {
-			button = this._showHiddenTags ? html`
+			overflowButton = this._showHiddenTags ? html`
 				<d2l-button-subtle
 					class="d2l-tag-list-button"
 					@click="${this._toggleHiddenTagVisibility}"
@@ -149,7 +142,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const list = html`
 			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
-				${button}
+				${overflowButton}
 				${clearButton}
 			</div>
 		`;
@@ -165,6 +158,23 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				<div id="d2l-tag-list-description" hidden>${this.description}</div>
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('clearable')) {
+			if (this.clearable) {
+				const clearButton = this.clearable ? this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button') : null;
+				this._clearButtonResizeObserver = new ResizeObserver(() => {
+					this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+				});
+				this._clearButtonResizeObserver.observe(clearButton);
+			} else {
+				if (this._clearButtonResizeObserver) this._clearButtonResizeObserver.disconnect();
+				this._clearButtonWidth = 0;
+			}
+		}
 	}
 
 	async arrowKeysFocusablesProvider() {
@@ -216,7 +226,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			return;
 		}
 
-		// calculate if additional item(s) should be hidden due to subtle buttons needing space
+		// calculate if additional item(s) should be hidden due to subtle button(s) needing space
 		for (let j = this._itemLayouts.length; j--;) {
 			if ((this.clearable && !isOverflowing && ((showing.width + this._clearButtonWidth) < this._availableWidth))
 				|| ((showing.width + this._subtleButtonWidth + this._clearButtonWidth) < this._availableWidth)) {
