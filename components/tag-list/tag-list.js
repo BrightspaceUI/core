@@ -129,7 +129,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				</d2l-button-subtle>
 			`;
 		}
-		const clearButton = this.clearable ? html`
+		const clearButton = (this.clearable && this._items && this._items.length > 0) ? html`
 			<d2l-button-subtle
 				class="d2l-tag-list-clear-button"
 				@click="${this._handleClearAll}"
@@ -335,7 +335,10 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		requestAnimationFrame(async() => {
 			this._items = await this._getTagListItems();
-			if (!this._items || this._items.length === 0) return;
+			if (!this._items || this._items.length === 0) {
+				this._chompIndex = 10000;
+				return;
+			}
 
 			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
