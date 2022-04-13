@@ -94,6 +94,12 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(container);
+
+		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
+		this._clearButtonResizeObserver = new ResizeObserver(() => {
+			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+		});
+		this._clearButtonResizeObserver.observe(clearButton);
 	}
 
 	render() {
@@ -129,21 +135,19 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				</d2l-button-subtle>
 			`;
 		}
-		const clearButton = (this.clearable && this._items && this._items.length > 0) ? html`
-			<d2l-button-subtle
-				class="d2l-tag-list-clear-button"
-				@click="${this._handleClearAll}"
-				slim
-				text="${this.localize('components.tag-list.clear-all')}"
-			>
-			</d2l-button-subtle>
-		` : null;
 
 		const list = html`
 			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
-				${clearButton}
+				<d2l-button-subtle
+					class="d2l-tag-list-clear-button"
+					@click="${this._handleClearAll}"
+					?hidden="${!(this.clearable && this._items && this._items.length > 0)}"
+					slim
+					text="${this.localize('components.tag-list.clear-all')}"
+				>
+				</d2l-button-subtle>
 			</div>
 		`;
 
@@ -158,23 +162,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				<div id="d2l-tag-list-description" hidden>${this.description}</div>
 			</div>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		if (changedProperties.has('clearable')) {
-			if (this.clearable) {
-				const clearButton = this.clearable ? this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button') : null;
-				this._clearButtonResizeObserver = new ResizeObserver(() => {
-					this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
-				});
-				this._clearButtonResizeObserver.observe(clearButton);
-			} else {
-				if (this._clearButtonResizeObserver) this._clearButtonResizeObserver.disconnect();
-				this._clearButtonWidth = 0;
-			}
-		}
 	}
 
 	async arrowKeysFocusablesProvider() {
