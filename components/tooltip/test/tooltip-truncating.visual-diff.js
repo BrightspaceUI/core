@@ -32,7 +32,7 @@ describe('d2l-tooltip truncating', () => {
 			const selector = `#${testCase.name}`;
 			const delay = await page.$eval(`${selector}${testCase.focus}`, (content) => {
 				content.focus();
-				return content.delay;
+				return content.nextElementSibling.delay;
 			});
 			waitForTimeout(delay);
 			const rect = await getRect(page, selector);
