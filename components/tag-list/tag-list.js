@@ -1,6 +1,7 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -59,6 +60,12 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			.d2l-tag-list-hidden-button {
 				position: absolute;
 				visibility: hidden;
+			}
+			.d2l-tag-list-clear-button {
+				visibility: hidden;
+			}
+			.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
+				visibility: visible;
 			}
 		`;
 	}
@@ -135,15 +142,18 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				</d2l-button-subtle>
 			`;
 		}
+		const clearableClasses = {
+			'd2l-tag-list-clear-button': true,
+			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
+		};
 
 		const list = html`
 			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
-					class="d2l-tag-list-clear-button"
+					class="${classMap(clearableClasses)}"
 					@click="${this._handleClearAll}"
-					?hidden="${!(this.clearable && this._items && this._items.length > 0)}"
 					slim
 					text="${this.localize('components.tag-list.clear-all')}"
 				>
@@ -174,6 +184,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
+
+		const clearButtonWidth = this.clearable ? this._clearButtonWidth : 0;
 
 		const showing = {
 			count: 0,
@@ -215,8 +227,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		// calculate if additional item(s) should be hidden due to subtle button(s) needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((this.clearable && !isOverflowing && ((showing.width + this._clearButtonWidth) < this._availableWidth))
-				|| ((showing.width + this._subtleButtonWidth + this._clearButtonWidth) < this._availableWidth)) {
+			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
+				|| ((showing.width + this._subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
 				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
@@ -313,8 +325,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		if (!this._hasResized) {
 			this._hasResized = true;
 			this._handleSlotChange();
+		} else {
+			this._chomp();
 		}
-		this._chomp();
 	}
 
 	_handleSlotChange() {

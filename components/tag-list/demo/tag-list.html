@@ -9,18 +9,6 @@
 			import '../tag-list.js';
 			import '../tag-list-item.js';
 			import '../test/tag-list-item-mixin-consumer.js';
-
-			window.addEventListener('load', () => {
-				setTimeout(() => {
-					const clearableItems = document.querySelectorAll('[clearable="clearable"]');
-					clearableItems.forEach((item) => {
-						item.addEventListener('d2l-tag-list-item-cleared', (e) => {
-							item.deleteItem();
-							console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
-						});
-					});
-				}, 1000);
-			});
 		</script>
 		<style>
 			.actions {
@@ -79,4 +67,12 @@
 
 		</d2l-demo-page>
 	</body>
+	<script type="module">
+		window.requestAnimationFrame(() => {
+			document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+				e.target.deleteItem();
+				console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+			});
+		});
+	</script>
 </html>

@@ -6,17 +6,6 @@
 			import '../tag-list.js';
 			import '../tag-list-item.js';
 			import './tag-list-item-mixin-consumer.js';
-
-			window.addEventListener('load', () => {
-				setTimeout(() => {
-					const clearableItems = document.querySelectorAll('[clearable="clearable"]');
-					clearableItems.forEach((item) => {
-						item.addEventListener('d2l-tag-list-item-cleared', () => {
-							item.deleteItem();
-						});
-					});
-				}, 1000);
-			});
 		</script>
 		<title>tag-list visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,4 +41,12 @@
 			</d2l-tag-list>
 		</div>
 	</body>
+	<script type="module">
+		window.requestAnimationFrame(() => {
+			document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+				e.target.deleteItem();
+				console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+			});
+		});
+	</script>
 </html>

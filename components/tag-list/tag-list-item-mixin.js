@@ -50,10 +50,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
-			.tag-list-item-container-clearable {
+			.tag-list-item-container.tag-list-item-container-clearable {
 				padding-right: 0.25rem;
 			}
-			:host([dir="rtl"]) .tag-list-item-container-clearable {
+			:host([dir="rtl"]) .tag-list-item-container.tag-list-item-container-clearable {
 				padding-left: 0.25rem;
 				padding-right: 0.6rem;
 			}
@@ -79,10 +79,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 					transition: none;
 				}
 			}
-			.tag-list-item-content + d2l-button-icon {
+			.d2l-tag-list-item-clear-button {
 				padding-left: 3px;
 			}
-			:host([dir="rtl"]) .tag-list-item-content + d2l-button-icon {
+			:host([dir="rtl"]) .d2l-tag-list-item-clear-button {
 				padding-left: 0;
 				padding-right: 3px;
 			}
@@ -168,6 +168,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				<div class="tag-list-item-content" id="${this._id}" tabindex="-1">${tagContent}</div>
 				${this.clearable ? html`
 					<d2l-button-icon
+						class="d2l-tag-list-item-clear-button"
 						@click="${this.handleClearItem}"
 						icon="tier1:close-small"
 						tabindex="-1"
