@@ -11,6 +11,12 @@ export const htmlBlockContentStyles = css`
 		font-weight: 400;
 		line-height: 1.2rem;
 	}
+	.d2l-html-block-no-vertical-margins > *:first-child {
+		margin-top: 0;
+	}
+	.d2l-html-block-no-vertical-margins > *:last-child {
+		margin-bottom: 0;
+	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
 	}
@@ -135,7 +141,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
 			 */
-			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' }
+			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' },
+			/**
+			 *  Whether to remove top/bottom margins from first and last rendered elements, respectively.
+			 * @type {Boolean}
+			 */
+			noVerticalMargins: { type: Boolean, attribute: 'no-vertical-margins' }
 		};
 	}
 
@@ -162,6 +173,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super();
 		this.compact = false;
 		this.noDeferredRendering = false;
+		this.noVerticalMargins = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
@@ -194,7 +206,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this._renderContainer) return;
-		this.shadowRoot.innerHTML += `<div class="d2l-html-block-rendered${this.compact ? ' d2l-html-block-compact' : ''}"></div><slot ${!this.noDeferredRendering ? 'style="display: none"' : ''}></slot>`;
+		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
+			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
+			+ `${this.noVerticalMargins ? ' d2l-html-block-no-vertical-margins' : ''}`
+			+ '"></div><slot'
+			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
+			+ '></slot>';
 
 		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
