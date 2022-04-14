@@ -40,12 +40,10 @@
 				<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
 			</d2l-tag-list>
 		</div>
-	</body>
-	<script type="module">
-		window.requestAnimationFrame(() => {
+		<script>
 			document.addEventListener('d2l-tag-list-item-cleared', (e) => {
 				e.target.deleteItem();
 			});
-		});
-	</script>
+		</script>
+	</body>
 </html>

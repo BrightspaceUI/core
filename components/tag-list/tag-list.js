@@ -17,6 +17,15 @@ const PAGE_SIZE_LINES = {
 };
 const MARGIN_TOP_RIGHT = 6;
 
+async function filterAsync(arr, callback) {
+	const fail = Symbol();
+	const results = await Promise.all(arr.map(async item => {
+		const callbackResult = await callback(item);
+		return callbackResult ? item : fail;
+	}));
+	return results.filter(i => i !== fail);
+}
+
 class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	static get properties() {
@@ -242,15 +251,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this._chompIndex = showing.count;
 	}
 
-	async _filterAsync(arr, callback) {
-		const fail = Symbol();
-		const results = await Promise.all(arr.map(async item => {
-			const callbackResult = await callback(item);
-			return callbackResult ? item : fail;
-		}));
-		return results.filter(i => i !== fail);
-	}
-
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
@@ -270,7 +270,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
 
-		const results = await this._filterAsync(slot.assignedNodes({ flatten: true }), async node => {
+		const results = await filterAsync(slot.assignedNodes({ flatten: true }), async node => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			await node.updateComplete;
 

@@ -63,16 +63,14 @@
 					<d2l-tag-list-item text="Example Tag 6"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
 				</d2l-tag-list>
+				<script>
+					document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+						e.target.deleteItem();
+						console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+					});
+				</script>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
 	</body>
-	<script type="module">
-		window.requestAnimationFrame(() => {
-			document.addEventListener('d2l-tag-list-item-cleared', (e) => {
-				e.target.deleteItem();
-				console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
-			});
-		});
-	</script>
 </html>
