@@ -9,7 +9,7 @@ export const htmlBlockContentStyles = css`
 	.d2l-html-block-compact {
 		font-size: 0.8rem;
 		font-weight: 400;
-		line-height: 1.2rem;
+		line-height: 1.2;
 	}
 	.d2l-html-block-no-vertical-margins > *:first-child {
 		margin-top: 0;
