@@ -42,7 +42,7 @@
 		</div>
 		<script>
 			document.addEventListener('d2l-tag-list-item-cleared', (e) => {
-				e.target.deleteItem();
+				e.target.parentNode.removeChild(e.target);
 			});
 		</script>
 	</body>

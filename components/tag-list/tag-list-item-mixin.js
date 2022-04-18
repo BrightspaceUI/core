@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit';
+import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -122,11 +123,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
-	deleteItem() {
-		this.parentNode.removeChild(this);
-	}
-
-	handleClearItem(e) {
+	handleClearItem(e, clearAll) {
 		if (!this.clearable) return;
 
 		let handleFocus = false;
@@ -134,7 +131,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			const listItemParent = findComposedAncestor(e.composedPath()[0], (node) => node.role === 'listitem');
 			handleFocus = listItemParent ? true : false;
 		}
-		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion. */
+
+		if (!clearAll) announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
+
+		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-cleared',
 			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }

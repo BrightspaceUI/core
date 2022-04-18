@@ -97,6 +97,8 @@ export default {
 	"components.tabs.previous": "向后滚动",
 	"components.tag-list.clear": "Click to remove item {value}",
 	"components.tag-list.clear-all": "Clear All",
+	"components.tag-list.cleared-all": "Removed all tag list items",
+	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",

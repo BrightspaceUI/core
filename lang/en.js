@@ -97,6 +97,8 @@ export default {
 	"components.tabs.previous": "Scroll Backward",
 	"components.tag-list.clear": "Click, press backspace, or press delete key to remove item {value}",
 	"components.tag-list.clear-all": "Clear All",
+	"components.tag-list.cleared-all": "Removed all tag list items",
+	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",

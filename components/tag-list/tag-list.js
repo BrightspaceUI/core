@@ -1,5 +1,6 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
+import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -157,7 +158,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		};
 
 		const list = html`
-			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
+			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-cleared="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -278,7 +279,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			if (role !== 'listitem') return false;
 
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
-			node.addEventListener('d2l-tag-list-item-cleared', this._handleItemDeleted.bind(this));
 			node.removeAttribute('data-is-chomped');
 
 			return true;
@@ -299,8 +299,10 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	_handleClearAll(e) {
 		if (!this._items) return;
 
+		announce(this.localize('components.tag-list.cleared-all'));
+
 		this._items.forEach((item) => {
-			item.handleClearItem(e);
+			item.handleClearItem(e, true);
 		});
 	}
 

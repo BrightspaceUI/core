@@ -96,6 +96,8 @@ export default {
 	"components.tabs.next": "Desplazarse hacia adelante",
 	"components.tabs.previous": "Desplazarse hacia atrás",
 	"components.tag-list.clear": "Click to remove item {value}",
+	"components.tag-list.cleared-all": "Removed all tag list items",
+	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.clear-all": "Clear All",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
