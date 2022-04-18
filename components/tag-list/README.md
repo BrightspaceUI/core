@@ -1,5 +1,5 @@
 # Tag List
-*This component is in progress. The API is generally stable but the ability to clear tags is currently a WIP.*
+*This component is in progress. The API is generally stable but there could be some appearance or minor behavior churn in the short-term.*
 
 Tag lists are used to present a list of compact, discrete pieces of information.
 
@@ -31,8 +31,12 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
 <script type="module">
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
-</script>
 
+  document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+    e.target.parentNode.removeChild(e.target);
+    console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+  });
+</script>
 <d2l-tag-list description="Example Tags">
   <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
   <d2l-tag-list-item text="Reprehenderit in voluptate velit esse"></d2l-tag-list-item>
@@ -49,6 +53,11 @@ The `d2l-tag-list-item` provides the appropriate `listitem` semantics and stylin
 <script type="module">
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
+
+  document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+    e.target.parentNode.removeChild(e.target);
+    console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+  });
 </script>
 
 <d2l-tag-list description="Example Tags">
