@@ -116,7 +116,7 @@ describe('d2l-tag-list', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('is correct after clicking "Clear All"', async function() {
+		it('is correct after clicking Clear All', async function() {
 			await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click());
 			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
