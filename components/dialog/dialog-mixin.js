@@ -21,6 +21,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
+const forceCloseAction = 'force-close';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
 
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
@@ -139,10 +140,15 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_close(action) {
 		if (!this._state) return;
-		this._action = action;
+		this._action = action ?? abortAction;
 
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
+
+		if (this._isCloseAborted()) {
+			this._dismissibleId = setDismissible(() => this._close(abortAction));
+			return;
+		}
 
 		if (!this.shadowRoot) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
@@ -238,6 +244,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// handle "dialog-action" for backwards-compatibility
 		if (!e.target.hasAttribute('data-dialog-action') && !e.target.hasAttribute('dialog-action')) return;
 		const action = e.target.getAttribute('data-dialog-action') || e.target.getAttribute('dialog-action');
+		this._interceptDialogClosing = e.target.hasAttribute('data-intercept-dialog-closing');
 		e.stopPropagation();
 		this._close(action);
 	}
@@ -296,6 +303,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
 		// so we need to opt out of native dialogs if a non-native nested dialog is launched
 		this._useNative = false;
+	}
+
+	_isCloseAborted() {
+
+		if (this._action === forceCloseAction) {
+			return false;
+		}
+		else if (this._action === abortAction || this._interceptDialogClosing) {
+			const abortEvent = new CustomEvent('d2l-dialog-abort-close', {
+				cancelable: true,
+				detail: {
+					forceCloseDialog: this._close.bind(this, forceCloseAction),
+					action: this._action
+				}
+			});
+			this.dispatchEvent(abortEvent);
+
+			this._interceptDialogClosing = false;
+			return abortEvent.defaultPrevented;
+		}
+
+		return false;
 	}
 
 	_open() {
