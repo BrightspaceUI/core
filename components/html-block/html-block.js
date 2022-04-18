@@ -11,10 +11,10 @@ export const htmlBlockContentStyles = css`
 		font-weight: 400;
 		line-height: 1.2;
 	}
-	.d2l-html-block-no-vertical-margins > *:first-child {
+	.d2l-html-block-no-vertical-margins > :first-child {
 		margin-top: 0;
 	}
-	.d2l-html-block-no-vertical-margins > *:last-child {
+	.d2l-html-block-no-vertical-margins > :last-child {
 		margin-bottom: 0;
 	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
