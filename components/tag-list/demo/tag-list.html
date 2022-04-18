@@ -10,13 +10,51 @@
 			import '../tag-list-item.js';
 			import '../test/tag-list-item-mixin-consumer.js';
 		</script>
+		<style>
+			.actions {
+				margin-bottom: 1rem;
+			}
+		</style>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-tag-list">
 
 			<h2>Basic Tag List</h2>
+
+			<div class="actions">
+				<button id="add">add tag (first)</button>
+				<button id="remove">remove tag (first)</button>
+			</div>
+			<script>
+				let addIndex = 0;
+				document.querySelector('#add').addEventListener('click', () => {
+					const tag = document.createElement('d2l-tag-list-item');
+					tag.text = `Added Tag ${++addIndex}`;
+					document.querySelector('d2l-tag-list').insertBefore(tag, document.querySelector('d2l-tag-list').children[0]);
+				});
+
+				document.querySelector('#remove').addEventListener('click', () => {
+					const children = document.querySelector('d2l-tag-list').children;
+					if (children.length === 0) return;
+					document.querySelector('d2l-tag-list').removeChild(children[0]);
+				});
+
+			</script>
 			<d2l-demo-snippet fullscreen>
 				<d2l-tag-list description="A bunch of example tags">
+					<d2l-tag-list-item text="Example Tag"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+					<d2l-tag-list-item-mixin-consumer name="Custom Tag List Item"></d2l-tag-list-item-mixin-consumer>
+					<d2l-tag-list-item text="Example Tag 5"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example Tag 6"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
+				</d2l-tag-list>
+			</d2l-demo-snippet>
+
+			<h2>Clearable Tag List</h2>
+			<d2l-demo-snippet fullscreen>
+				<d2l-tag-list description="A bunch of example tags" clearable>
 					<d2l-tag-list-item text="Example Tag"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Longer Example Tag - much much much much much longer"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
@@ -24,7 +62,13 @@
 					<d2l-tag-list-item text="Example Tag 5"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example Tag 6"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
-				</d2l-tag-list>		
+				</d2l-tag-list>
+				<script>
+					document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+						e.target.parentNode.removeChild(e.target);
+						console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+					});
+				</script>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

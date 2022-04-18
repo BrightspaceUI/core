@@ -67,6 +67,7 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 ```
 
 ### Rendering MathML and LaTeX
+
 Examples are provided to display how user-authored math can be embedded within your webpage.
 
 **MathML:**
@@ -99,29 +100,41 @@ Examples are provided to display how user-authored math can be embedded within y
 </d2l-html-block>
 ```
 
-**LaTeX:** Rendering LaTeX requires the `us125413-mathjax-render-latex` feature flag to be enabled.
+**LaTeX:** Rendering LaTeX requires the `mathjax` context to be set correctly. For testing and/or demo pages you can do the following.
 
 <!-- docs: demo code -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';
-
-  window.D2L = {};
-  D2L.LP = {};
-  D2L.LP.Web = {};
-  D2L.LP.Web.UI = {};
-  D2L.LP.Web.UI.Flags = {
-    Flag: (feature, defaultValue) => {
-      if (feature === 'us125413-mathjax-render-latex') return true;
-      else return defaultValue;
-    }
-  };
-  <!-- docs: start hidden content -->
-  document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: true });<!-- docs: end hidden content -->
+  import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
 <d2l-html-block>
   <div class="latex-container">
     $$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
   </div>
 </d2l-html-block>
+```
+
+### Add Context Automatically to Demos and Tests
+
+You can automatically set-up the `mathjax` context for demo pages and unit tests when using `@web/dev-server` and `@web/test-runner` by adding the following plugin to your configuration.
+
+```javascript
+export default {
+  ...
+  plugins: [{
+    name: 'setup-mathjax-context',
+    transform(context) {
+      if (context.response.is('html')) {
+        const newBody = context.body.replace(
+          /<head>/,
+          '<head><script src="/node_modules/@brightspace-ui/core/tools/mathjax-test-context.js"></script>'
+        );
+
+        return { body: newBody };
+      }
+    }
+  }],
+  ...
+}
 ```

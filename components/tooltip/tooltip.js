@@ -149,6 +149,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
+			 * ADVANCED: Only show the tooltip if we detect the target element is truncated
+			 * @type {boolean}
+			 */
+			showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' },
+			/**
 			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
 			 */
@@ -390,11 +395,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.forceShow = false;
 		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
+		this.showTruncatedOnly = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
 		this._isFocusing = false;
 		this._isHovering = false;
+		this._resizeRunSinceTruncationCheck = false;
 		this._viewportMargin = defaultViewportMargin;
 	}
 
@@ -749,7 +756,12 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	_onTargetFocus() {
+	async _onTargetFocus() {
+		if (this.showTruncatedOnly) {
+			await this._updateTruncating();
+			if (!this._truncating) return;
+		}
+
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
@@ -759,7 +771,12 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetMouseEnter() {
-		this._hoverTimeout = setTimeout(() => {
+		this._hoverTimeout = setTimeout(async() => {
+			if (this.showTruncatedOnly) {
+				await this._updateTruncating();
+				if (!this._truncating) return;
+			}
+
 			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
@@ -773,6 +790,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetResize() {
+		this._resizeRunSinceTruncationCheck = true;
 		if (!this.showing) {
 			return;
 		}
@@ -862,6 +880,42 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 		this._addListeners();
+	}
+
+	/**
+	 * This solution appends a clone of the target to the target in order to retain target styles.
+	 * A possible consequence of this is unexpected behaviours for web components that have slots.
+	 * If this becomes an issue, it would also likely be possible to append the clone to document.body
+	 * and get the expected styles through getComputedStyle.
+	 */
+	async _updateTruncating() {
+		// if no resize has happened since truncation was previously calculated the result will not have changed
+		if (!this._resizeRunSinceTruncationCheck || !this.showTruncatedOnly) return;
+
+		const target = this._target;
+		const cloneContainer = document.createElement('div');
+		cloneContainer.style.position = 'absolute';
+		cloneContainer.style.overflow = 'hidden';
+		cloneContainer.style.whiteSpace = 'nowrap';
+		cloneContainer.style.width = '1px';
+
+		if (this.getAttribute('dir') === 'rtl') {
+			cloneContainer.style.right = '-10000px';
+		} else {
+			cloneContainer.style.left = '-10000px';
+		}
+
+		const clone = target.cloneNode(true);
+		clone.removeAttribute('id');
+		clone.style.maxWidth = 'none';
+
+		cloneContainer.appendChild(clone);
+		target.appendChild(cloneContainer);
+		await this.updateComplete;
+
+		this._truncating = clone.scrollWidth > target.offsetWidth;
+		this._resizeRunSinceTruncationCheck = false;
+		target.removeChild(cloneContainer);
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);

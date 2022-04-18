@@ -184,9 +184,6 @@ describe('d2l-input-time-range', () => {
 						else expectedEndTime = defaultEndValue;
 					}
 
-					// Issue #1751: the order of enforce-time-intervals and time-interval matters.
-					// If they're specified after start-value or end-value, their default values will be used
-					// for the calculation
 					const caseFixture = html`<d2l-input-time-range
 						?enforce-time-intervals="${testCase.enforceTimeIntervals}"
 						label="label text"
@@ -196,6 +193,28 @@ describe('d2l-input-time-range', () => {
 					const elem = await fixture(caseFixture);
 					expect(elem.startValue).to.equal(expectedStartTime);
 					expect(elem.endValue).to.equal(expectedEndTime);
+
+					// Issue #1751: This test case is to test ordering start-value > time-interval > enforce-time-intervals
+					const caseFixture2 = html`<d2l-input-time-range
+						label="label text"
+						start-value="${startDate}"
+						end-value="${endDate}"
+						time-interval="ten"
+						?enforce-time-intervals="${testCase.enforceTimeIntervals}"></d2l-input-time-range>`;
+					const elem2 = await fixture(caseFixture2);
+					expect(elem2.startValue).to.equal(expectedStartTime);
+					expect(elem2.endValue).to.equal(expectedEndTime);
+
+					// Issue #1751: This test case is to test ordering enforce-time-intervals > start-value > time-interval
+					const caseFixture3 = html`<d2l-input-time-range
+						?enforce-time-intervals="${testCase.enforceTimeIntervals}"
+						label="label text"
+						start-value="${startDate}"
+						end-value="${endDate}"
+						time-interval="ten"></d2l-input-time-range>`;
+					const elem3 = await fixture(caseFixture3);
+					expect(elem3.startValue).to.equal(expectedStartTime);
+					expect(elem3.endValue).to.equal(expectedEndTime);
 				});
 			});
 		});

@@ -96,7 +96,7 @@ export const htmlBlockContentStyles = css`
 		a:visited,
 		a:link,
 		a:active {
-			color: var(--d2l-color-ferrite, #494c4e);
+			color: var(--d2l-color-ferrite, #202122);
 		}
 	}
 	mjx-assistive-mml math {

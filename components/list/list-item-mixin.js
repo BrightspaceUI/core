@@ -59,22 +59,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
 			 * How much padding to render list items with
-			 * @type {'normal'|'slim'|'none'}
+			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			/**
-			 * @ignore
-			 * Whether to render the list-item with reduced whitespace.
-			 * TODO: Remove in favor of padding-type="slim"
-			 * @type {boolean}
-			 */
-			slim: { type: Boolean },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hovering: { type: Boolean, reflect: true },
+			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
+			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
@@ -116,9 +111,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
-				left: 4px;
 				position: absolute;
-				width: calc(100% - 8px);
+				width: 100%;
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
@@ -160,11 +154,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-left: 0.9rem;
 				padding-right: 0;
 			}
-			.d2l-list-item-content ::slotted(*) {
-				margin-top: 0.05rem;
-			}
-			:host([_hovering]) .d2l-list-item-content,
-			:host([_focusing]) .d2l-list-item-content {
+
+			:host([_hovering-primary-action]) .d2l-list-item-content,
+			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 				--d2l-list-item-content-text-decoration: underline;
 			}
@@ -183,14 +175,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				padding-left: 0.55rem;
 				padding-right: 0;
 			}
-			:host([slim]) [slot="content"] { /* TODO, remove */
-				padding-bottom: 0.35rem;
-				padding-top: 0.4rem;
-			}
-			:host([padding-type="slim"]) [slot="content"] {
-				padding-bottom: 0.35rem;
-				padding-top: 0.4rem;
-			}
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
 				padding-top: 0;
@@ -201,7 +185,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin: 0.15rem 0.9rem 0.15rem 0;
+				margin-right: 0.9rem;
 				max-height: 2.6rem;
 				max-width: 4.5rem;
 				overflow: hidden;
@@ -227,7 +211,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				gap: 0.3rem;
 				grid-auto-columns: 1fr;
 				grid-auto-flow: column;
-				margin: 0.15rem 0;
 			}
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
@@ -274,21 +257,13 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin-right: 0;
 			}
 			d2l-selection-input {
-				margin: 1.15rem 0.9rem 1.15rem 0;
+				margin: 0.55rem 0.9rem 0.55rem 0;
 			}
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-input { /* TODO, remove */
-				margin-bottom: 0.55rem;
-				margin-top: 0.55rem;
-			}
-			:host([padding-type="slim"]) d2l-selection-input {
-				margin-bottom: 0.55rem;
-				margin-top: 0.55rem;
-			}
 			d2l-list-item-drag-handle {
-				margin: 0.8rem 0 0.8rem 0.4rem;
+				margin: 0.25rem 0 0.25rem 0.4rem;
 			}
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
@@ -304,7 +279,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin: 0 -12px;
 			}
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				border-left: none;
 				border-radius: 0;
+				border-right: none;
 			}
 			:host([draggable]) [slot="outside-control-container"],
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
@@ -366,7 +343,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	constructor() {
 		super();
 		this.breakpoints = defaultBreakpoints;
-		this.slim = false;
 		this.paddingType = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
@@ -511,9 +487,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		hasDisplayedKeyboardTooltip = true;
 	}
 
+	_onFocusInPrimaryAction() {
+		this._focusingPrimaryAction = true;
+	}
+
 	_onFocusOut() {
 		this._focusing = false;
 		this._displayKeyboardTooltip = false;
+	}
+
+	_onFocusOutPrimaryAction() {
+		this._focusingPrimaryAction = false;
 	}
 
 	_onFullscreenWithin(e) {
@@ -527,6 +511,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseEnterPrimaryAction() {
+		this._hoveringPrimaryAction = true;
 		this._hovering = true;
 	}
 
@@ -535,6 +520,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onMouseLeavePrimaryAction() {
+		this._hoveringPrimaryAction = false;
 		this._hovering = false;
 	}
 
@@ -572,6 +558,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
+					@focusin="${this._onFocusInPrimaryAction}"
+					@focusout="${this._onFocusOutPrimaryAction}"
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
