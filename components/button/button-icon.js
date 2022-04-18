@@ -60,7 +60,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-ferrite));
+					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					display: inline-block;
 				}
 				:host([hidden]) {
@@ -75,7 +75,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
-					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* ferrite @70% @90% */
+					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
 					--d2l-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
@@ -112,7 +112,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-ferrite));
+					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
 				button.focus-visible {

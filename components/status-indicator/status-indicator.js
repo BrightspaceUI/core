@@ -68,8 +68,8 @@ class StatusIndicator extends LitElement {
 			}
 			:host([state="none"]),
 			:host([state="null"]) {
-				border-color: var(--d2l-color-ferrite);
-				color: var(--d2l-color-ferrite);
+				border-color: var(--d2l-color-tungsten);
+				color: var(--d2l-color-tungsten);
 			}
 
 			:host([bold]) {
@@ -84,7 +84,7 @@ class StatusIndicator extends LitElement {
 			}
 			:host([bold][state="none"]),
 			:host([bold][state="null"]) {
-				background-color: var(--d2l-color-ferrite);
+				background-color: var(--d2l-color-tungsten);
 			}
 		`;
 	}
