@@ -113,12 +113,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('focus', (e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
-			const event = new FocusEvent('focus', { bubbles: true, cancelable: true });
-			container.dispatchEvent(event);
+			/** @ignore */
+			container.dispatchEvent(new FocusEvent('focus', { bubbles: true, cancelable: true }));
 		});
 		this.addEventListener('blur', () => {
-			const event = new FocusEvent('blur', { bubbles: true, cancelable: true });
-			container.dispatchEvent(event);
+			/** @ignore */
+			container.dispatchEvent(new FocusEvent('blur', { bubbles: true, cancelable: true }));
 		});
 		this.addEventListener('keydown', this._handleKeydown);
 	}
