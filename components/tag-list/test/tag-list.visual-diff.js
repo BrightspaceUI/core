@@ -19,7 +19,7 @@ describe('d2l-tag-list', () => {
 
 	after(async() => await browser.close());
 
-	it('is correct at 1200px width', async function() {
+	it.skip('is correct at 1200px width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
