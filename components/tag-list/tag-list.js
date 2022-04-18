@@ -310,7 +310,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		if (!this.clearable) return;
 		if (!e || !e.detail || !e.detail.handleFocus) return;
 
-		const rootTarget = event.composedPath()[0];
+		const rootTarget = e.composedPath()[0];
 		const children = this._getVisibleEffectiveChildren();
 		const itemIndex = children.indexOf(rootTarget);
 		if (children.length > 1) {
