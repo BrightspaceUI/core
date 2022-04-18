@@ -1,6 +1,8 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
+import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -16,10 +18,23 @@ const PAGE_SIZE_LINES = {
 };
 const MARGIN_TOP_RIGHT = 6;
 
+async function filterAsync(arr, callback) {
+	const fail = Symbol();
+	const results = await Promise.all(arr.map(async item => {
+		const callbackResult = await callback(item);
+		return callbackResult ? item : fail;
+	}));
+	return results.filter(i => i !== fail);
+}
+
 class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-cleared` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
+			 */
+			clearable: { type: Boolean },
 			/**
 			 * REQUIRED: A description of the tag list for additional accessibility context
 			 * @type {string}
@@ -56,6 +71,12 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				position: absolute;
 				visibility: hidden;
 			}
+			.d2l-tag-list-clear-button {
+				visibility: hidden;
+			}
+			.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
+				visibility: visible;
+			}
 		`;
 	}
 
@@ -63,7 +84,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		super();
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
+		this.clearable = false;
 		this._chompIndex = 10000;
+		this._clearButtonWidth = 0;
 		this._hasResized = false;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
@@ -71,6 +94,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this._clearButtonResizeObserver) this._clearButtonResizeObserver.disconnect();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 		if (this._subtleButtonResizeObserver) this._subtleButtonResizeObserver.disconnect();
 	}
@@ -78,7 +102,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const subtleButton  = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
+		const subtleButton = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
 		this._subtleButtonResizeObserver = new ResizeObserver(() => {
 			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
 		});
@@ -87,6 +111,12 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(container);
+
+		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
+		this._clearButtonResizeObserver = new ResizeObserver(() => {
+			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+		});
+		this._clearButtonResizeObserver.observe(clearButton);
 	}
 
 	render() {
@@ -104,9 +134,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			});
 		}
 
-		let button = null;
+		let overflowButton = null;
 		if (hasHiddenTags) {
-			button = this._showHiddenTags ? html`
+			overflowButton = this._showHiddenTags ? html`
 				<d2l-button-subtle
 					class="d2l-tag-list-button"
 					@click="${this._toggleHiddenTagVisibility}"
@@ -122,11 +152,22 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				</d2l-button-subtle>
 			`;
 		}
+		const clearableClasses = {
+			'd2l-tag-list-clear-button': true,
+			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
+		};
 
 		const list = html`
-			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description">
+			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-cleared="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
-				${button}
+				${overflowButton}
+				<d2l-button-subtle
+					class="${classMap(clearableClasses)}"
+					@click="${this._handleClearAll}"
+					slim
+					text="${this.localize('components.tag-list.clear-all')}"
+				>
+				</d2l-button-subtle>
 			</div>
 		`;
 
@@ -153,6 +194,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
+
+		const clearButtonWidth = this.clearable ? this._clearButtonWidth : 0;
 
 		const showing = {
 			count: 0,
@@ -187,20 +230,22 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			}
 		}
 
-		if (!isOverflowing) {
+		if (!isOverflowing && !this.clearable) {
 			this._chompIndex = showing.count;
 			return;
 		}
 
-		// calculate if additional item(s) should be hidden due to subtle button needing space
+		// calculate if additional item(s) should be hidden due to subtle button(s) needing space
 		for (let j = this._itemLayouts.length; j--;) {
-			if ((showing.width + this._subtleButtonWidth) < this._availableWidth) {
+			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
+				|| ((showing.width + this._subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
 				break;
 			}
 			const itemLayoutOverflowing = this._itemLayouts[j];
 			if (itemLayoutOverflowing.trigger !== 'soft-show') {
 				continue;
 			}
+			isOverflowing = true;
 			showing.width -= itemLayoutOverflowing.width;
 			showing.count -= 1;
 		}
@@ -222,15 +267,56 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		return items.filter(({ isHidden }) => !isHidden);
 	}
 
-	_getTagListItems() {
+	async _getTagListItems() {
 		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
-		return slot.assignedNodes({ flatten: true }).filter((node) => {
+
+		const results = await filterAsync(slot.assignedNodes({ flatten: true }), async node => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+			await node.updateComplete;
+
 			const role = node.getAttribute('role');
+			if (role !== 'listitem') return false;
+
+			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.removeAttribute('data-is-chomped');
-			return (role === 'listitem');
+
+			return true;
 		});
+		return results;
+	}
+
+	_getVisibleEffectiveChildren() {
+		if (!this.shadowRoot) {
+			return [];
+		}
+
+		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
+		const clearButton = this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || [];
+		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
+	}
+
+	_handleClearAll(e) {
+		if (!this._items) return;
+
+		announce(this.localize('components.tag-list.cleared-all'));
+
+		this._items.forEach((item) => {
+			item.handleClearItem(e, true);
+		});
+	}
+
+	_handleItemDeleted(e) {
+		if (!this.clearable) return;
+		if (!e || !e.detail || !e.detail.handleFocus) return;
+
+		const rootTarget = e.composedPath()[0];
+		const children = this._getVisibleEffectiveChildren();
+		const itemIndex = children.indexOf(rootTarget);
+		if (children.length > 1) {
+			if (children[itemIndex - 1]) children[itemIndex - 1].focus();
+			else children[itemIndex + 1].focus();
+		}
 	}
 
 	_handleResize(entries) {
@@ -241,18 +327,20 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		if (!this._hasResized) {
 			this._hasResized = true;
 			this._handleSlotChange();
+		} else {
+			this._chomp();
 		}
-		this._chomp();
 	}
 
 	_handleSlotChange() {
 		if (!this._hasResized) return;
 
 		requestAnimationFrame(async() => {
-			this._items = this._getTagListItems();
-			if (!this._items || this._items.length === 0) return;
-
-			await Promise.all(this._items.map(item => item.updateComplete));
+			this._items = await this._getTagListItems();
+			if (!this._items || this._items.length === 0) {
+				this._chompIndex = 10000;
+				return;
+			}
 
 			this._itemLayouts = this._getItemLayouts(this._items);
 			this._itemHeight = this._items[0].offsetHeight;
