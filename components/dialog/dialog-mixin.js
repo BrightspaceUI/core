@@ -309,8 +309,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		if (this._action === forceCloseAction) {
 			return false;
-		}
-		else if (this._action === abortAction || this._interceptDialogClosing) {
+		} else if (this._action === abortAction || this._interceptDialogClosing) {
 			const abortEvent = new CustomEvent('d2l-dialog-abort-close', {
 				cancelable: true,
 				detail: {
