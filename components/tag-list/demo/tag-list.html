@@ -64,9 +64,9 @@
 					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
 				</d2l-tag-list>
 				<script>
-					document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+					document.addEventListener('d2l-tag-list-item-clear', (e) => {
 						e.target.parentNode.removeChild(e.target);
-						console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
 					});
 				</script>
 			</d2l-demo-snippet>

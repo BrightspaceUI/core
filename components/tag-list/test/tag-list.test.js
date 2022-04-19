@@ -80,7 +80,7 @@ describe('d2l-tag-list', () => {
 
 			const details = [];
 			await Promise.all(elem._items.map(async(item) => {
-				const { detail } = await oneEvent(item, 'd2l-tag-list-item-cleared');
+				const { detail } = await oneEvent(item, 'd2l-tag-list-item-clear');
 				detail.expectedValue = item.text;
 				details.push(detail);
 			}));
@@ -110,7 +110,7 @@ describe('d2l-tag-list-item', () => {
 			const child = elem.children[0];
 			const childButtonIcon = child.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => childButtonIcon.click());
-			const { detail } = await oneEvent(child, 'd2l-tag-list-item-cleared');
+			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.equal('Tag');
 			expect(detail.handleFocus).to.be.true;
 		});
@@ -122,7 +122,7 @@ describe('d2l-tag-list-item', () => {
 			const child = elem._items[1];
 			child.focus();
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.BACKSPACE));
-			const { detail } = await oneEvent(child, 'd2l-tag-list-item-cleared');
+			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.equal('Another Tag');
 			expect(detail.handleFocus).to.be.true;
 		});
@@ -134,7 +134,7 @@ describe('d2l-tag-list-item', () => {
 			const child = elem._items[3];
 			child.focus();
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.DELETE));
-			const { detail } = await oneEvent(child, 'd2l-tag-list-item-cleared');
+			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.be.undefined;
 			expect(detail.handleFocus).to.be.true;
 

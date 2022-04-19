@@ -15,7 +15,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	static get properties() {
 		return {
 			/**
-			 * Enables the option to clear a tag list item. The `d2l-tag-list-item-cleared` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
+			 * Enables the option to clear a tag list item. The `d2l-tag-list-item-clear` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
 			 */
 			clearable: { type: Boolean },
 			/**
@@ -136,7 +136,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-tag-list-item-cleared',
+			'd2l-tag-list-item-clear',
 			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
 		));
 	}

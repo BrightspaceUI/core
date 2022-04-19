@@ -32,9 +32,9 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
 
-  document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+  document.addEventListener('d2l-tag-list-item-clear', (e) => {
     e.target.parentNode.removeChild(e.target);
-    console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
   });
 </script>
 <d2l-tag-list description="Example Tags">
@@ -54,9 +54,9 @@ The `d2l-tag-list-item` provides the appropriate `listitem` semantics and stylin
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
 
-  document.addEventListener('d2l-tag-list-item-cleared', (e) => {
+  document.addEventListener('d2l-tag-list-item-clear', (e) => {
     e.target.parentNode.removeChild(e.target);
-    console.log(`d2l-tag-list-item-cleared event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
   });
 </script>
 

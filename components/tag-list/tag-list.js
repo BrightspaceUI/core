@@ -32,7 +32,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-cleared` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
+			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-clear` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
 			 */
 			clearable: { type: Boolean },
 			/**
@@ -158,7 +158,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		};
 
 		const list = html`
-			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-cleared="${this._handleItemDeleted}">
+			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
