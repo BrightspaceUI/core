@@ -68,7 +68,7 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 ### Rendering MathML and LaTeX
 
-Examples are provided to display how user-authored math can be embedded within your webpage. Note that rendering math requires the `mathjax` context to be set correctly. For testing and/or demo pages, you can import `@brightspace-ui/core/tools/mathjax-test-context.js` to set this context for you.
+Examples are provided to display how user-authored math can be embedded within your webpage. Note that rendering math requires the `mathjax` context to be set correctly. For testing and/or demo pages **ONLY**, you can import `@brightspace-ui/core/tools/mathjax-test-context.js` to set this context for you.
 
 **MathML:**
 <!-- docs: demo code -->
