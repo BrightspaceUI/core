@@ -8,7 +8,7 @@ describe('d2l-tag-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1200, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tag-list/test/tag-list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -19,7 +19,7 @@ describe('d2l-tag-list', () => {
 
 	after(async() => await browser.close());
 
-	it.skip('is correct at 1200px width', async function() {
+	it('is correct at 1400px page width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -101,15 +101,13 @@ describe('d2l-tag-list', () => {
 
 		it('is correct when deleting first item', async function() {
 			const openEvent = page.$eval(selector, (elem) => {
+				const firstItem = elem.children[0];
+				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
 				return new Promise((resolve) => {
 					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
 					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
+					deleteButton.click();
 				});
-			});
-			await page.$eval(selector, async(elem) => {
-				const firstItem = elem.children[0];
-				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
-				deleteButton.click();
 			});
 			await openEvent;
 			const rect = await visualDiff.getRect(page, selector);
