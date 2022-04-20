@@ -24,6 +24,48 @@ describe('d2l-tag-list', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('tag list item style behaviour', () => {
+
+		it('is correct on focus on tag list item', async function() {
+			await page.focus('d2l-tag-list-item');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on hover on tag list item', async function() {
+			await page.hover('d2l-tag-list-item');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on focus and hover tag list item', async function() {
+			await page.focus('d2l-tag-list-item');
+			await page.hover('d2l-tag-list-item');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on focus on tag list item with hide-focus-style', async function() {
+			await page.focus('d2l-tag-list-item[hide-focus-style]');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on hover on tag list item with hide-focus-style', async function() {
+			await page.hover('d2l-tag-list-item[hide-focus-style]');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on focus and hover on tag list item with hide-focus-style', async function() {
+			await page.focus('d2l-tag-list-item[hide-focus-style]');
+			await page.hover('d2l-tag-list-item[hide-focus-style]');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 	[980, 969, 601, 599, 400, 320].forEach((width) => {
 		['default', 'clearable'].forEach((state) => {
 			describe(`${state} at width ${width}`, () => {
