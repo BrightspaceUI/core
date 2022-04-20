@@ -35,7 +35,7 @@ export async function open(page, selector) {
 export async function openDropdown(page, selector) {
 	await page.$eval(selector, (dropdown) => {
 		return new Promise((resolve) => {
-			dropdown.addEventListener('d2l-dropdown-open', () => requestAnimationFrame(resolve), { once: true });
+			dropdown.addEventListener('d2l-dropdown-open', () => setTimeout(resolve, 50), { once: true });
 			dropdown.toggleOpen();
 		});
 	});
@@ -44,7 +44,7 @@ export async function openDropdown(page, selector) {
 export async function openFilter(page, selector) {
 	await page.$eval(selector, (filter) => {
 		return new Promise((resolve) => {
-			filter.shadowRoot.querySelector('d2l-dropdown-button-subtle').addEventListener('d2l-dropdown-open', () => requestAnimationFrame(resolve), { once: true });
+			filter.shadowRoot.querySelector('d2l-dropdown-button-subtle').addEventListener('d2l-dropdown-open', () => setTimeout(resolve, 50), { once: true });
 			filter.opened = true;
 		});
 	});
