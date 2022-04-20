@@ -32,7 +32,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} कम से कम {minlength} वर्णों का होना चाहिए",
 	"components.form-element.input.url.typeMismatch": "URL मान्य नहीं है",
 	"components.form-element.valueMissing": "{label} आवश्यक है।",
-	"components.form-error-summary.errorSummary": "{count, plural, one {आपके द्वारा सबमिट की गई जानकारी में  1 त्रुटि मिली थी} other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ मिली थी}}",
+	"components.form-error-summary.errorSummary": "{count, plural, one {आपके द्वारा सबमिट की गई जानकारी में 1 त्रुटि मिली थी} other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ मिली थी}}",
 	"components.input-date-range.endDate": "समाप्ति तारीख़",
 	"components.input-date-range.errorBadInput": "{startLabel} {endLabel} से पहले का होना चाहिए",
 	"components.input-date-range.startDate": "प्रारंभ तारीख़",
