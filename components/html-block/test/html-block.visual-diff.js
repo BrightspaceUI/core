@@ -26,7 +26,6 @@ describe('d2l-html-block', () => {
 		{ name: 'typography-print', selector: '#typography', action: () => page.emulateMediaType('print') },
 		{ name: 'typography-screen', selector: '#typography' },
 		{ name: 'compact', selector: '#compact' },
-		{ name: 'no-vertical-margins', selector: '#no-vertical-margins' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
 		//{ name: 'math (block)', selector: '#math-block' },
 		//{ name: 'math (inline)', selector: '#math-inline' }
