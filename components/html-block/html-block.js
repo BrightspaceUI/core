@@ -141,12 +141,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
 			 */
-			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' },
-			/**
-			 *  Whether to remove top/bottom margins from first and last rendered elements, respectively.
-			 * @type {Boolean}
-			 */
-			noVerticalMargins: { type: Boolean, attribute: 'no-vertical-margins' }
+			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' }
 		};
 	}
 
@@ -173,7 +168,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super();
 		this.compact = false;
 		this.noDeferredRendering = false;
-		this.noVerticalMargins = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
