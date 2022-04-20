@@ -68,7 +68,7 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 ### Rendering MathML and LaTeX
 
-Examples are provided to display how user-authored math can be embedded within your webpage.
+Examples are provided to display how user-authored math can be embedded within your webpage. Note that rendering math requires the `mathjax` context to be set correctly. For testing and/or demo pages **ONLY**, you can import `@brightspace-ui/core/tools/mathjax-test-context.js` to set this context for you.
 
 **MathML:**
 <!-- docs: demo code -->
@@ -76,6 +76,7 @@ Examples are provided to display how user-authored math can be embedded within y
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';
   import '@brightspace-ui/core/components/icons/icon.js';
+  import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
 <d2l-html-block>
   <div class="mathml-container">
@@ -100,7 +101,7 @@ Examples are provided to display how user-authored math can be embedded within y
 </d2l-html-block>
 ```
 
-**LaTeX:** Rendering LaTeX requires the `mathjax` context to be set correctly. For testing and/or demo pages you can do the following.
+**LaTeX:**
 
 <!-- docs: demo code -->
 ```html
