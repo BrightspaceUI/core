@@ -101,6 +101,7 @@ export default {
 	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "可調整的分割檢視",
 	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭頭可調整檢視面板的大小",
 	"templates.primary-secondary.keyboardVertical": "向上或向下箭頭可調整檢視面板的大小"

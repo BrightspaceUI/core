@@ -101,6 +101,7 @@ export default {
 	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
 	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
 	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
