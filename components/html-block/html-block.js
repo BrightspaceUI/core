@@ -12,7 +12,7 @@ export const htmlBlockContentStyles = css`
 		line-height: 1.5;
 	}
 	.d2l-html-block-rendered {
-		line-height: 1.4;
+		line-height: 1.47;
 	}
 	.d2l-html-block-rendered > :first-child {
 		margin-top: 0;
