@@ -131,6 +131,57 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Dialog (intercept closing)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openInterceptClosing">Show Dialog</d2l-button>
+					<d2l-dialog id="dialogInterceptClosing" title-text="Dialog Prevent Closing">
+						<div>
+							<p>This dialog is prevented from closing by listening "d2l-dialog-before-close" event.</p>
+							<d2l-dialog id="dialogConfirmClose" title-text="Comfirm close">
+								<div>
+									<p>Do you really want to close the previous dialog?</p>
+								</div>
+								<d2l-button slot="footer" primary data-dialog-action="confirm">Yes</d2l-button>
+								<d2l-button slot="footer" data-dialog-action="deny">No</d2l-button>
+							</d2l-dialog>
+						</div>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Close Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action="close">Close without confirmation</d2l-button>
+						<d2l-button slot="footer" data-dialog-action="cancel">Cancel</d2l-button>
+					</d2l-dialog>
+					<script>
+						let canBeClosed = false;
+						document.querySelector('#openInterceptClosing').addEventListener('click', () => {
+							document.querySelector('#dialogInterceptClosing').opened = true;
+						});
+						document.querySelector('#dialogInterceptClosing').addEventListener('d2l-dialog-open', () => {
+							canBeClosed = false;
+						});
+						document.querySelector('#dialogInterceptClosing').addEventListener('d2l-dialog-close', (e) => {
+							console.log('dialog action:', e.detail.action);
+						});
+						document.querySelector('#dialogConfirmClose').addEventListener('d2l-dialog-close', (e) => {
+							e.stopPropagation();
+						});
+						document.querySelector('#dialogInterceptClosing').addEventListener('d2l-dialog-before-close', async(e) => {
+
+							if (e.detail.action === 'close' || canBeClosed) return;
+
+							e.preventDefault();
+							const action = await document.querySelector('#dialogConfirmClose').open();
+
+							console.log('dialog action:', e.detail.action, ', confirm dialog action:', action);
+							if (action === 'confirm') {
+								canBeClosed = true;
+								e.detail.closeDialog();
+							}
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>

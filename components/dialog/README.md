@@ -81,6 +81,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+- `d2l-dialog-before-close`: dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -192,6 +193,7 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+- `d2l-dialog-before-close`: dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
 <!-- docs: end hidden content -->
 
 ### Usage
@@ -249,6 +251,7 @@ The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+- `d2l-dialog-before-close`: dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
 <!-- docs: end hidden content -->
 
 ### Usage
