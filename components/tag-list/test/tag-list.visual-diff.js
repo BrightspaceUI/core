@@ -127,7 +127,7 @@ describe('d2l-tag-list', () => {
 			await page.keyboard.press('Tab');
 			const openEvent = page.$eval(selector, (elem) => {
 				const firstItem = elem.children[0];
-				return new Promise(async(resolve) => {
+				return new Promise((resolve) => {
 					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
 					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
 					const eventObj = document.createEvent('Events');
