@@ -57,12 +57,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			.tag-list-container {
 				display: flex;
 				flex-wrap: wrap;
-				margin: -6px -6px 0 0;
+				gap: 6px;
 				padding: 0;
-			}
-			::slotted(*),
-			d2l-button-subtle {
-				margin: 6px 6px 0 0;
 			}
 			::slotted([data-is-chomped]) {
 				display: none !important;
@@ -214,7 +210,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
-				const itemWidth = Math.min(itemLayout.width, this._availableWidth);
+				const itemWidth = Math.min(itemLayout.width + MARGIN_TOP_RIGHT, this._availableWidth);
 
 				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT))) {
 					showing.width += itemWidth;
@@ -259,8 +255,6 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			return {
 				isHidden: computedStyles.display === 'none',
 				width: Math.ceil(parseFloat(computedStyles.width) || 0)
-					+ parseInt(computedStyles.marginRight) || 0
-					+ parseInt(computedStyles.marginLeft) || 0
 			};
 		});
 
@@ -335,7 +329,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	_handleSlotChange() {
 		if (!this._hasResized) return;
 
-		requestAnimationFrame(async() => {
+		setTimeout(async() => {
 			this._items = await this._getTagListItems();
 			if (!this._items || this._items.length === 0) {
 				this._chompIndex = 10000;
@@ -349,7 +343,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			});
 			this._chomp();
 			this.requestUpdate();
-		});
+		}, 40);
 	}
 
 	async _toggleHiddenTagVisibility() {
