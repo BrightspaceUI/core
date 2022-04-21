@@ -84,11 +84,17 @@ export const InteractiveMixin = superclass => class extends superclass {
 		}
 	}
 
-	_renderInteractiveContainer(inner) {
+	_renderInteractiveContainer(inner, label) {
+		if (!label) {
+			throw new Error(`InteractiveMixin: no label provided for "${this.tagName}"`);
+		}
 		if (!this._hasInteractiveAncestor) return inner;
 		return html`
 			<div class="interactive-container"
+				aria-label="${label}"
+				aria-description="${this.localize('components.interactive.instructions')}"
 				@keydown="${this._handleInteractiveKeyDown}"
+				role="button"
 				tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : undefined)}">
 					<span class="interactive-trap-start" @focus="${this._handleInteractiveStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
 					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>

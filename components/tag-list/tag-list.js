@@ -184,7 +184,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 					${this.arrowKeysContainer(list)}
 					<div id="d2l-tag-list-description" hidden>${this.description}</div>
 				</div>
-			`
+			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0})
 		);
 	}
 
