@@ -182,7 +182,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 		const outerContainerStyles = {
 			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`,
-			minHeight: `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
+			minHeight: `${this._itemHeight * this._lines}px`
 		};
 
 		return html`
