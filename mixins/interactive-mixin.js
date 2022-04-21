@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { getNextFocusable } from '../../helpers/focus.js';
+import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
+import { getNextFocusable } from '../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const keyCodes = {
