@@ -145,8 +145,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				</d2l-button-subtle>
 			` : html`
 				<d2l-button-subtle
-					class="d2l-tag-list-button"
+					class="d2l-tag-list-button d2l-tag-list-button-show-more"
 					@click="${this._toggleHiddenTagVisibility}"
+					description="${this.localize('components.tag-list.show-more-description')}"
 					slim
 					text="${this.localize('components.tag-list.num-hidden', { count: hiddenCount })}">
 				</d2l-button-subtle>
@@ -158,7 +159,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		};
 
 		const list = html`
-			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
+			<div role="list" class="tag-list-container" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -179,13 +180,12 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
 				<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 				${this.arrowKeysContainer(list)}
-				<div id="d2l-tag-list-description" hidden>${this.description}</div>
 			</div>
 		`;
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
+		return this._getVisibleEffectiveChildren();
 	}
 
 	focus() {
@@ -292,8 +292,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		}
 
 		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
-		const clearButton = this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || [];
-		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
+		const clearButton = !this.clearable ? [] : (this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || []);
+		const items = this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
+		return items.concat(showMoreButton).concat(clearButton);
 	}
 
 	_handleClearAll(e) {
@@ -352,14 +353,17 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		});
 	}
 
-	async _toggleHiddenTagVisibility() {
+	async _toggleHiddenTagVisibility(e) {
 		this._showHiddenTags = !this._showHiddenTags;
 
 		if (!this.shadowRoot) return;
 
 		await this.updateComplete;
-		const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
-		if (button) button.focus();
+		if (e.target.classList.contains('d2l-tag-list-button-show-more')) this._items[this._chompIndex].focus();
+		else {
+			const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
+			if (button) button.focus();
+		}
 	}
 
 }

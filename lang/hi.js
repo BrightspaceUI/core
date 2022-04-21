@@ -101,6 +101,7 @@ export default {
 	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "समायोजन योग्य विभाजन दृश्य",
 	"templates.primary-secondary.keyboardHorizontal": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर बाएँ या दाएँ करें",
 	"templates.primary-secondary.keyboardVertical": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर ऊपर या नीचे करें"

@@ -101,6 +101,7 @@ export default {
 	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delad vy",
 	"templates.primary-secondary.keyboardHorizontal": "Pil vänster eller höger för att justera storleken på vypaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil upp eller ned för att justera storleken på vypaneler"

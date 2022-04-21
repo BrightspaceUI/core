@@ -101,6 +101,7 @@ export default {
 	"components.tag-list.cleared-item": "Removed tag list item {value}",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",
 	"templates.primary-secondary.keyboardHorizontal": "Use a seta para a esquerda ou para a direita para ajustar o tamanho dos painéis de exibição",
 	"templates.primary-secondary.keyboardVertical": "Use a seta para cima ou para baixo para ajustar o tamanho dos painéis de exibição"
