@@ -343,7 +343,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			});
 			this._chomp();
 			this.requestUpdate();
-		}, 60);
+		}, 40);
 	}
 
 	async _toggleHiddenTagVisibility() {
