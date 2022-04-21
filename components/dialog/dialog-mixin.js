@@ -305,6 +305,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_isCloseAborted() {
 
+		/** Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing */
 		const abortEvent = new CustomEvent('d2l-dialog-before-close', {
 			cancelable: true,
 			detail: {
