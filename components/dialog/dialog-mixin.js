@@ -144,6 +144,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
 
+		if (this._isCloseAborted()) {
+			this._dismissibleId = setDismissible(() => this._close(abortAction));
+			return;
+		}
+
 		if (!this.shadowRoot) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
@@ -154,11 +159,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._scroll = false;
 		if (!reduceMotion) {
-			const transitionEnd = () => {
-				dialog.removeEventListener('transitionend', transitionEnd);
+			const animationEnd = () => {
+				dialog.removeEventListener('animationend', animationEnd);
 				doClose();
 			};
-			dialog.addEventListener('transitionend', transitionEnd);
+			dialog.addEventListener('animationend', animationEnd);
 			this._state = 'hiding';
 		} else {
 			this._state = 'hiding';
@@ -298,6 +303,21 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._useNative = false;
 	}
 
+	_isCloseAborted() {
+
+		/** Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing */
+		const abortEvent = new CustomEvent('d2l-dialog-before-close', {
+			cancelable: true,
+			detail: {
+				action: this._action,
+				closeDialog: this._close.bind(this, this._action)
+			}
+		});
+		this.dispatchEvent(abortEvent);
+
+		return abortEvent.defaultPrevented;
+	}
+
 	_open() {
 		if (!this.opened) return;
 
@@ -314,11 +334,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
 		const animPromise = new Promise((resolve) => {
-			const transitionEnd = () => {
-				dialog.removeEventListener('transitionend', transitionEnd);
+			const animationEnd = () => {
+				dialog.removeEventListener('animationend', animationEnd);
 				resolve();
 			};
-			dialog.addEventListener('transitionend', transitionEnd);
+			dialog.addEventListener('animationend', animationEnd);
 		});
 
 		if (this._useNative) {

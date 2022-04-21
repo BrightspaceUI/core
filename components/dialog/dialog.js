@@ -80,10 +80,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 					top: 42px;
 				}
 
-				div[nested].d2l-dialog-outer {
-					top: 0;
-				}
-
 				.d2l-dialog-header > div > d2l-button-icon {
 					margin: -8px -13px 0 15px;
 				}
