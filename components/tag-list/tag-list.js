@@ -41,6 +41,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			 */
 			description: { type: String },
 			_chompIndex: { type: Number },
+			_contentReady: { type: Boolean },
 			_lines: { type: Number },
 			_showHiddenTags: { type: Boolean }
 		};
@@ -68,10 +69,15 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 				visibility: hidden;
 			}
 			.d2l-tag-list-clear-button {
+				position: absolute;
 				visibility: hidden;
 			}
 			.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
+				position: static;
 				visibility: visible;
+			}
+			.tag-list-hidden {
+				visibility: hidden;
 			}
 		`;
 	}
@@ -83,6 +89,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this.clearable = false;
 		this._chompIndex = 10000;
 		this._clearButtonWidth = 0;
+		this._contentReady = false;
 		this._hasResized = false;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
@@ -154,8 +161,13 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
 		};
 
+		const containerClasses = {
+			'tag-list-container': true,
+			'tag-list-hidden': !this._contentReady
+		};
+
 		const list = html`
-			<div role="list" class="tag-list-container" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
+			<div role="list" class="${classMap(containerClasses)}" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -169,7 +181,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`,
+			minHeight: `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
 		};
 
 		return html`
@@ -314,37 +327,37 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		}
 	}
 
-	_handleResize(entries) {
+	async _handleResize(entries) {
 		this._availableWidth = Math.floor(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
 		if (!this._hasResized) {
 			this._hasResized = true;
-			this._handleSlotChange();
+			await this._handleSlotChange();
 		} else {
 			this._chomp();
 		}
 	}
 
-	_handleSlotChange() {
+	async _handleSlotChange() {
 		if (!this._hasResized) return;
+		this._contentReady = false;
+		await this.updateComplete;
 
-		setTimeout(async() => {
-			this._items = await this._getTagListItems();
-			if (!this._items || this._items.length === 0) {
-				this._chompIndex = 10000;
-				return;
-			}
+		this._items = await this._getTagListItems();
+		if (!this._items || this._items.length === 0) {
+			this._chompIndex = 10000;
+			return;
+		}
 
-			this._itemLayouts = this._getItemLayouts(this._items);
-			this._itemHeight = this._items[0].offsetHeight;
-			this._items.forEach((item, index) => {
-				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
-			});
-			this._chomp();
-			this.requestUpdate();
-		}, 40);
+		this._itemLayouts = this._getItemLayouts(this._items);
+		this._itemHeight = this._items[0].offsetHeight;
+		this._items.forEach((item, index) => {
+			item.setAttribute('tabIndex', index === 0 ? 0 : -1);
+		});
+		this._chomp();
+		this._contentReady = true;
 	}
 
 	async _toggleHiddenTagVisibility(e) {
