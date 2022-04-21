@@ -123,13 +123,17 @@ describe('d2l-tag-list', () => {
 		});
 
 		it('is correct when deleting first item', async function() {
+			await page.keyboard.press('Tab');
+			await page.keyboard.press('Tab');
 			const openEvent = page.$eval(selector, (elem) => {
 				const firstItem = elem.children[0];
-				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
-				return new Promise((resolve) => {
+				return new Promise(async(resolve) => {
 					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
 					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
-					deleteButton.click();
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 46; // delete
+					firstItem.dispatchEvent(eventObj);
 				});
 			});
 			await openEvent;
