@@ -70,6 +70,7 @@ npm install @brightspace-ui/core
   * [FocusMixin](mixins/focus-mixin.md): delegate focus to a nested element when `focus()` is called
   * [FocusVisiblePolyfillMixin](mixins/focus-visible-polyfill-mixin.md): components can use the `:focus-visible` pseudo-class polyfill
   * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
+  * [InteractiveMixin](mixins/interactive-mixin.md): enables toggling interactive elements inside of nested grids
   * [LabelledMixin](mixins/labelled-mixin.md): label custom elements by referencing elements across DOM scopes
   * [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
   * [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion

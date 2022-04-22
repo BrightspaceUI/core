@@ -1,18 +1,7 @@
 import '../demo/arrow-keys-test.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../helpers/focus.js';
-
-function keyDown(element, keycode) {
-	const event = new CustomEvent('keydown', {
-		detail: 0,
-		bubbles: true,
-		cancelable: true,
-		composed: true
-	});
-	event.keyCode = keycode;
-	event.code = keycode;
-	element.dispatchEvent(event);
-}
+import { keyDown } from '../../tools/dom-test-helpers.js';
 
 describe('ArrowKeysMixin', () => {
 
