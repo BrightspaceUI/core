@@ -14,6 +14,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
 
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
+ * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
  */

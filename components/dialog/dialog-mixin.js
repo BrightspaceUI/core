@@ -144,6 +144,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
 
+		if (this._isCloseAborted()) {
+			this._dismissibleId = setDismissible(() => this._close(abortAction));
+			return;
+		}
+
 		if (!this.shadowRoot) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
@@ -296,6 +301,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
 		// so we need to opt out of native dialogs if a non-native nested dialog is launched
 		this._useNative = false;
+	}
+
+	_isCloseAborted() {
+		const abortEvent = new CustomEvent('d2l-dialog-before-close', {
+			cancelable: true,
+			detail: {
+				action: this._action,
+				closeDialog: this._close.bind(this, this._action)
+			}
+		});
+		this.dispatchEvent(abortEvent);
+
+		return abortEvent.defaultPrevented;
 	}
 
 	_open() {
