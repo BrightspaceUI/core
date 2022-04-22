@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",
 	"templates.primary-secondary.keyboardHorizontal": "왼쪽 또는 오른쪽 화살표로 보기 패널의 크기 조정",
 	"templates.primary-secondary.keyboardVertical": "위 또는 아래 화살표로 보기 패널의 크기 조정"

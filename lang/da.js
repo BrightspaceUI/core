@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delt visning",
 	"templates.primary-secondary.keyboardHorizontal": "Pil til venstre eller højre for at justere størrelsen på visningspaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil op eller ned for at justere størrelsen på visningspaneler"

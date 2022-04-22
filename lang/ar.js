@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "تقسيم العرض القابل للضبط",
 	"templates.primary-secondary.keyboardHorizontal": "السهم المتّجه إلى اليسار أو إلى اليمين لضبط حجم لوحات العرض",
 	"templates.primary-secondary.keyboardVertical": "السهم المتّجه إلى الأعلى أو إلى الأسفل لضبط حجم لوحات العرض"

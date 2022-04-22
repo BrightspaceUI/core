@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Vue partagée réglable",
 	"templates.primary-secondary.keyboardHorizontal": "Utiliser la flèche vers la gauche ou vers la droite pour régler la taille des volets d'affichage",
 	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des volets d'affichage"

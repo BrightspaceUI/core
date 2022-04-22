@@ -42,6 +42,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			 */
 			description: { type: String },
 			_chompIndex: { type: Number },
+			_contentReady: { type: Boolean },
 			_lines: { type: Number },
 			_showHiddenTags: { type: Boolean }
 		};
@@ -69,14 +70,15 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				visibility: hidden;
 			}
 			.d2l-tag-list-clear-button {
-				display: none;
-			}
-			:host([clearable]) .d2l-tag-list-clear-button {
-				display: inline-block;
+				position: absolute;
 				visibility: hidden;
 			}
 			.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
+				position: static;
 				visibility: visible;
+			}
+			.tag-list-hidden {
+				visibility: hidden;
 			}
 		`];
 	}
@@ -87,8 +89,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
 		this._chompIndex = 10000;
+		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
+		this._contentReady = false;
 		this._hasResized = false;
+		this._itemHeight = 0;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
 	}
@@ -116,12 +121,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 		this._clearButtonResizeObserver = new ResizeObserver(() => {
 			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+			this._clearButtonHeight = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('height')));
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 	}
 
 	render() {
-
 		let hiddenCount = 0;
 		let hasHiddenTags = false;
 		if (this._items) {
@@ -147,8 +152,9 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				</d2l-button-subtle>
 			` : html`
 				<d2l-button-subtle
-					class="d2l-tag-list-button"
+					class="d2l-tag-list-button d2l-tag-list-button-show-more"
 					@click="${this._toggleHiddenTagVisibility}"
+					description="${this.localize('components.tag-list.show-more-description')}"
 					slim
 					text="${this.localize('components.tag-list.num-hidden', { count: hiddenCount })}">
 				</d2l-button-subtle>
@@ -159,8 +165,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
 		};
 
+		const containerClasses = {
+			'tag-list-container': true,
+			'tag-list-hidden': !this._contentReady
+		};
+
 		const list = html`
-			<div role="list" class="tag-list-container" aria-describedby="d2l-tag-list-description" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
+			<div role="list" class="${classMap(containerClasses)}" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -174,7 +185,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + GAP) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + GAP) * this._lines}px`,
+			minHeight: `${Math.max(this._clearButtonHeight, this._itemHeight)}px`
 		};
 
 		return this._renderInteractiveContainer(
@@ -182,14 +194,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
 					<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 					${this.arrowKeysContainer(list)}
-					<div id="d2l-tag-list-description" hidden>${this.description}</div>
 				</div>
 			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 })
 		);
+
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
+		return this._getVisibleEffectiveChildren();
 	}
 
 	focus() {
@@ -294,8 +306,9 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 
 		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
-		const clearButton = this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || [];
-		return this._items.slice(0, this._chompIndex).concat(showMoreButton).concat(clearButton);
+		const clearButton = !this.clearable ? [] : (this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || []);
+		const items = this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
+		return items.concat(showMoreButton).concat(clearButton);
 	}
 
 	_handleClearAll(e) {
@@ -321,47 +334,50 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 	}
 
-	_handleResize(entries) {
+	async _handleResize(entries) {
 		this._availableWidth = Math.floor(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
 		if (!this._hasResized) {
 			this._hasResized = true;
-			this._handleSlotChange();
+			await this._handleSlotChange();
 		} else {
 			this._chomp();
 		}
 	}
 
-	_handleSlotChange() {
+	async _handleSlotChange() {
 		if (!this._hasResized) return;
+		this._contentReady = false;
+		await this.updateComplete;
 
-		setTimeout(async() => {
-			this._items = await this._getTagListItems();
-			if (!this._items || this._items.length === 0) {
-				this._chompIndex = 10000;
-				return;
-			}
+		this._items = await this._getTagListItems();
+		if (!this._items || this._items.length === 0) {
+			this._chompIndex = 10000;
+			return;
+		}
 
-			this._itemLayouts = this._getItemLayouts(this._items);
-			this._itemHeight = this._items[0].offsetHeight;
-			this._items.forEach((item, index) => {
-				item.setAttribute('tabIndex', index === 0 ? 0 : -1);
-			});
-			this._chomp();
-			this.requestUpdate();
-		}, 40);
+		this._itemLayouts = this._getItemLayouts(this._items);
+		this._itemHeight = this._items[0].offsetHeight;
+		this._items.forEach((item, index) => {
+			item.setAttribute('tabIndex', index === 0 ? 0 : -1);
+		});
+		this._chomp();
+		this._contentReady = true;
 	}
 
-	async _toggleHiddenTagVisibility() {
+	async _toggleHiddenTagVisibility(e) {
 		this._showHiddenTags = !this._showHiddenTags;
 
 		if (!this.shadowRoot) return;
 
 		await this.updateComplete;
-		const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
-		if (button) button.focus();
+		if (e.target.classList.contains('d2l-tag-list-button-show-more')) this._items[this._chompIndex].focus();
+		else {
+			const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
+			if (button) button.focus();
+		}
 	}
 
 }

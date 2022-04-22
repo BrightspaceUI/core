@@ -11,6 +11,12 @@ export const htmlBlockContentStyles = css`
 		font-weight: 400;
 		line-height: 1.2rem;
 	}
+	.d2l-html-block-rendered > :first-child {
+		margin-top: 0;
+	}
+	.d2l-html-block-rendered > :last-child {
+		margin-bottom: 0;
+	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
 	}
@@ -194,7 +200,11 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this._renderContainer) return;
-		this.shadowRoot.innerHTML += `<div class="d2l-html-block-rendered${this.compact ? ' d2l-html-block-compact' : ''}"></div><slot ${!this.noDeferredRendering ? 'style="display: none"' : ''}></slot>`;
+		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
+			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
+			+ '"></div><slot'
+			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
+			+ '></slot>';
 
 		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');

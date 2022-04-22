@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Ayarlanabilir Bölünmüş Görüntü",
 	"templates.primary-secondary.keyboardHorizontal": "Görüntü panellerinin boyutunu ayarlamak için sol veya sağ okları kullanın",
 	"templates.primary-secondary.keyboardVertical": "Görüntü panellerinin boyutunu ayarlamak için yukarı veya aşağı okları kullanın"

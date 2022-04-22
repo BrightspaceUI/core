@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Gwedd Hollt Addasadwy",
 	"templates.primary-secondary.keyboardHorizontal": "Saeth i'r chwith neu'r dde i addasu maint y paneli gweld",
 	"templates.primary-secondary.keyboardVertical": "Saeth i fyny neu i lawr i addasu maint y paneli gweld"

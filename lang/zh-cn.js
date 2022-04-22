@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",
 	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭头可调整视图面板的大小",
 	"templates.primary-secondary.keyboardVertical": "向上或向下箭头可调整视图面板的大小"

@@ -103,6 +103,7 @@ export default {
 	"components.tag-list.interactive-label": "Tag List, {count} items",
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
+	"components.tag-list.show-more-description": "Select to show hidden tag list items",
 	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
 	"templates.primary-secondary.keyboardHorizontal": "Pijl naar links of rechts om de grootte van de weergavevensters aan te passen",
 	"templates.primary-secondary.keyboardVertical": "Pijl omhoog of omlaag om de grootte van de weergavevensters aan te passen"
