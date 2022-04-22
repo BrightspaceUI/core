@@ -1,19 +1,8 @@
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
+import { keyDown } from '../../tools/dom-test-helpers.js';
 import { LitElement } from 'lit';
-
-function keyDown(element, keycode) {
-	const event = new CustomEvent('keydown', {
-		detail: 0,
-		bubbles: true,
-		cancelable: true,
-		composed: true
-	});
-	event.keyCode = keycode;
-	event.code = keycode;
-	element.dispatchEvent(event);
-}
 
 const mixinTag = defineCE(
 	class extends InteractiveMixin(LitElement) {
