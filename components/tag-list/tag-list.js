@@ -204,10 +204,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return this._getVisibleEffectiveChildren();
 	}
 
-	focus() {
-		if (this._items && this._items.length > 0) this._items[0].focus();
-	}
-
 	_chomp() {
 		if (!this.shadowRoot || !this._lines || !this._itemLayouts) return;
 
@@ -266,6 +262,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			showing.count -= 1;
 		}
 		this._chompIndex = showing.count;
+	}
+
+	_focusInteractiveContent() {
+		if (this._items && this._items.length > 0) this._items[0].focus();
 	}
 
 	_getItemLayouts(filteredNodes) {

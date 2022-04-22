@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
-import { getNextFocusable } from '../helpers/focus.js';
+import { forceFocusVisible, getNextFocusable } from '../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../helpers/localize-core-element.js';
 
@@ -20,6 +20,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 	static get styles() {
 		return css`
+			.interactive-container.focus-visible,
 			.interactive-container:focus-visible {
 				border-radius: 6px;
 				outline: 2px solid var(--d2l-color-celestine);
@@ -41,6 +42,12 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 			return ((node.tagName === 'D2L-LIST' && node.grid) || (node.nodeType === Node.ELEMENT_NODE && node.getAttribute('role') === 'grid'));
 		});
 		this._hasInteractiveAncestor = (parentGrid !== null);
+	}
+
+	focus() {
+		if (!this.shadowRoot) return;
+		if (this._hasInteractiveAncestor && !this._interactive) forceFocusVisible(this.shadowRoot.querySelector('.interactive-container'));
+		else this._focusInteractiveContent();
 	}
 
 	_handleInteractiveContentFocusIn() {
