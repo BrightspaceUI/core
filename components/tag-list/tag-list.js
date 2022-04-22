@@ -88,9 +88,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
 		this._chompIndex = 10000;
+		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
 		this._contentReady = false;
 		this._hasResized = false;
+		this._itemHeight = 0;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
 	}
@@ -118,6 +120,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 		this._clearButtonResizeObserver = new ResizeObserver(() => {
 			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+			this._clearButtonHeight = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('height')));
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 	}
@@ -181,7 +184,8 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`,
+			minHeight: `${Math.max(this._clearButtonHeight, this._itemHeight)}px`
 		};
 
 		return html`
