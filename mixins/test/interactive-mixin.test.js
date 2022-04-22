@@ -1,0 +1,117 @@
+import { defineCE, expect, fixture, html } from '@open-wc/testing';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { InteractiveMixin } from '../interactive-mixin.js';
+import { LitElement } from 'lit';
+
+function keyDown(element, keycode) {
+	const event = new CustomEvent('keydown', {
+		detail: 0,
+		bubbles: true,
+		cancelable: true,
+		composed: true
+	});
+	event.keyCode = keycode;
+	event.code = keycode;
+	element.dispatchEvent(event);
+}
+
+const mixinTag = defineCE(
+	class extends InteractiveMixin(LitElement) {
+		render() {
+			return this._renderInteractiveContainer(
+				html`<div><button>interactive</button></div>`, 'interactive label'
+			);
+		}
+		focus() {
+			this.shadowRoot.querySelector('button').focus();
+		}
+	}
+);
+
+describe('InteractiveMixin', () => {
+
+	describe('Non-Interactive', () => {
+
+		it('should not render interactive container if not a descendant of a grid', async() => {
+			const elem = await fixture(`<${mixinTag}></${mixinTag}>`);
+			expect(elem.shadowRoot.querySelector('.interactive-container')).to.be.null;
+		});
+
+	});
+
+	describe('Interactive', () => {
+
+		let fixtureElem, elem, toggle;
+
+		beforeEach(async() => {
+			fixtureElem = await fixture(`<div role="grid"><span id="before" tabindex="0"></span><${mixinTag}></${mixinTag}><span id="after" tabindex="0"></div>`);
+			elem = fixtureElem.querySelector(mixinTag);
+			await elem.updateComplete;
+			toggle = elem.shadowRoot.querySelector('.interactive-container');
+		});
+
+		it('should render interactive container if a descendant of a grid', async() => {
+			expect(toggle).not.be.null;
+			expect(toggle.tabIndex).to.equal(0);
+			expect(toggle.getAttribute('role')).to.equal('button');
+			expect(toggle.getAttribute('aria-label')).to.equal('interactive label');
+		});
+
+		it('should toggle to interactive mode when Enter pressed', async() => {
+			toggle.focus();
+			keyDown(toggle, 13);
+			await new Promise(resolve => setTimeout(resolve, 0));
+			const activeElement = getComposedActiveElement();
+			expect(toggle.tabIndex).to.equal(-1);
+			expect(activeElement).to.equal(elem.shadowRoot.querySelector('button'));
+		});
+
+		it('should toggle to non-interactive mode when Escape pressed', async() => {
+			toggle.focus();
+			keyDown(toggle, 13);
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(elem.shadowRoot.querySelector('button'));
+			keyDown(toggle, 27);
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(toggle);
+		});
+
+		it('should toggle to interactive mode when focus moves into interactive contents', async() => {
+			elem.shadowRoot.querySelector('button').focus();
+			await elem.updateComplete;
+			expect(toggle.tabIndex).to.equal(-1);
+		});
+
+		it('should move focus past focusable contents when moving forwards and in non-interactive mode', async() => {
+			toggle.focus();
+			elem.shadowRoot.querySelector('.interactive-trap-start').focus();
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(fixtureElem.querySelector('#after'));
+		});
+
+		it('should move focus past focusable contents when moving backwards and in non-interactive mode', async() => {
+			fixtureElem.querySelector('#after').focus();
+			elem.shadowRoot.querySelector('.interactive-trap-end').focus();
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(toggle);
+		});
+
+		it('should move focus to toggle if moving focus backwards to outside from within focusable contents', async() => {
+			elem.shadowRoot.querySelector('button').focus();
+			await elem.updateComplete;
+			elem.shadowRoot.querySelector('.interactive-trap-start').focus();
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(toggle);
+		});
+
+		it('should move focus to toggle if moving focus forwards to outside from within focusable contents', async() => {
+			elem.shadowRoot.querySelector('button').focus();
+			await elem.updateComplete;
+			elem.shadowRoot.querySelector('.interactive-trap-end').focus();
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(getComposedActiveElement()).to.equal(toggle);
+		});
+
+	});
+
+});

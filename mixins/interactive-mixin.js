@@ -2,13 +2,14 @@ import { css, html } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
 import { getNextFocusable } from '../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../helpers/localize-core-element.js';
 
 const keyCodes = {
 	ENTER: 13,
 	ESCAPE: 27
 };
 
-export const InteractiveMixin = superclass => class extends superclass {
+export const InteractiveMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
@@ -37,10 +38,9 @@ export const InteractiveMixin = superclass => class extends superclass {
 		super.connectedCallback();
 
 		const parentGrid = findComposedAncestor(this.parentNode, node => {
-			return ((node.tagName === 'D2L-LIST' && node.grid) || node.role === 'grid');
+			return ((node.tagName === 'D2L-LIST' && node.grid) || (node.nodeType === Node.ELEMENT_NODE && node.getAttribute('role') === 'grid'));
 		});
 		this._hasInteractiveAncestor = (parentGrid !== null);
-		this._hasInteractiveAncestor = true;
 	}
 
 	_handleInteractiveContentFocusIn() {
@@ -53,8 +53,10 @@ export const InteractiveMixin = superclass => class extends superclass {
 		this._interactive = false;
 	}
 
-	_handleInteractiveEndFocus() {
+	async _handleInteractiveEndFocus() {
 		// focus moved to trap-end either forwards from contents or backwards from outside - focus interactive toggle
+		this._interactive = false;
+		await this.updateComplete;
 		this.shadowRoot.querySelector('.interactive-container').focus();
 	}
 
