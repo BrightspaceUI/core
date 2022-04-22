@@ -6,11 +6,6 @@ import { requestInstance } from '../../mixins/provider-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const htmlBlockContentStyles = css`
-	.d2l-html-block-compact {
-		font-size: 0.8rem;
-		font-weight: 400;
-		line-height: 1.5; /* 1.2rem / 0.8rem */
-	}
 	.d2l-html-block-rendered {
 		line-height: 1.47; /* 1.4rem / 0.95rem */
 	}
@@ -19,6 +14,11 @@ export const htmlBlockContentStyles = css`
 	}
 	.d2l-html-block-rendered > :last-child {
 		margin-bottom: 0;
+	}
+	.d2l-html-block-compact {
+		font-size: 0.8rem;
+		font-weight: 400;
+		line-height: 1.5; /* 1.2rem / 0.8rem */
 	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
