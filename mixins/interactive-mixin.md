@@ -4,7 +4,9 @@ The `InteractiveMixin` enables keyboard toggling of interactive elements (such a
 
 ## Usage
 
-Apply the mixin, call its `_renderInteractiveContainer` method from `render`, and provide the required label for the interactive toggle.
+Apply the mixin, call its `renderInteractiveContainer` method from `render`, providing the interactive content, label for the toggle, and a focus delegate that the mixin can call to focus on the contents.
+
+**Note:** consumers _must_ provide a focus delegate as mentioned. They _should not_ implement a `focus` method, since the mixin manages focus with its own implementation.
 
 ```js
 import { InteractiveMixin } from '@brightspace-ui/core/mixins/interactive-mixin.js';
@@ -12,10 +14,12 @@ import { InteractiveMixin } from '@brightspace-ui/core/mixins/interactive-mixin.
 class MyComponent extends InteractiveMixin(LitElement) {
 
   render() {
-    return this._renderInteractiveContainer(
-      html`
-        <div>interactive content</div>
-      `, 'My Label'
+    return this.renderInteractiveContainer(
+      html`<div>interactive content</div>`,
+      'My Label',
+      () => {
+        // focus on interactive content element
+      }
     );
   }
 

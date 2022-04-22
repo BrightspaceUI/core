@@ -189,13 +189,16 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			minHeight: `${Math.max(this._clearButtonHeight, this._itemHeight)}px`
 		};
 
-		return this._renderInteractiveContainer(
+		return this.renderInteractiveContainer(
 			html`
 				<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
 					<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 					${this.arrowKeysContainer(list)}
 				</div>
-			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 })
+			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 }),
+			() => {
+				if (this._items && this._items.length > 0) this._items[0].focus();
+			}
 		);
 
 	}
@@ -262,10 +265,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			showing.count -= 1;
 		}
 		this._chompIndex = showing.count;
-	}
-
-	_focusInteractiveContent() {
-		if (this._items && this._items.length > 0) this._items[0].focus();
 	}
 
 	_getItemLayouts(filteredNodes) {

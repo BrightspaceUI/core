@@ -47,7 +47,30 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 	focus() {
 		if (!this.shadowRoot) return;
 		if (this._hasInteractiveAncestor && !this._interactive) forceFocusVisible(this.shadowRoot.querySelector('.interactive-container'));
-		else this._focusInteractiveContent();
+		else this._focusDelegate();
+	}
+
+	renderInteractiveContainer(inner, label, focusDelegate) {
+		if (!label) {
+			throw new Error(`InteractiveMixin: no label provided for "${this.tagName}"`);
+		}
+		if (!focusDelegate) {
+			throw new Error(`InteractiveMixin: no focus delegate provided for "${this.tagName}"`);
+		}
+		this._focusDelegate = focusDelegate;
+		if (!this._hasInteractiveAncestor) return inner;
+		return html`
+			<div class="interactive-container"
+				aria-label="${label}"
+				aria-description="${this.localize('components.interactive.instructions')}"
+				@keydown="${this._handleInteractiveKeyDown}"
+				role="button"
+				tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : undefined)}">
+					<span class="interactive-trap-start" @focus="${this._handleInteractiveStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
+					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>
+					<span class="interactive-trap-end" @focus="${this._handleInteractiveEndFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
+			</div>
+		`;
 	}
 
 	_handleInteractiveContentFocusIn() {
@@ -68,7 +91,6 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	async _handleInteractiveKeyDown(e) {
-		if (!this._hasInteractiveAncestor) return;
 		if (!this._interactive && e.keyCode === keyCodes.ENTER) {
 			this._interactive = true;
 			await this.updateComplete;
@@ -91,25 +113,6 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 			await this.updateComplete;
 			this.shadowRoot.querySelector('.interactive-container').focus();
 		}
-	}
-
-	_renderInteractiveContainer(inner, label) {
-		if (!label) {
-			throw new Error(`InteractiveMixin: no label provided for "${this.tagName}"`);
-		}
-		if (!this._hasInteractiveAncestor) return inner;
-		return html`
-			<div class="interactive-container"
-				aria-label="${label}"
-				aria-description="${this.localize('components.interactive.instructions')}"
-				@keydown="${this._handleInteractiveKeyDown}"
-				role="button"
-				tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : undefined)}">
-					<span class="interactive-trap-start" @focus="${this._handleInteractiveStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
-					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>
-					<span class="interactive-trap-end" @focus="${this._handleInteractiveEndFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
-			</div>
-		`;
 	}
 
 };
