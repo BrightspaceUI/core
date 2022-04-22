@@ -7,12 +7,11 @@ import { LitElement } from 'lit';
 const mixinTag = defineCE(
 	class extends InteractiveMixin(LitElement) {
 		render() {
-			return this._renderInteractiveContainer(
-				html`<div><button>interactive</button></div>`, 'interactive label'
+			return this.renderInteractiveContainer(
+				html`<div><button>interactive</button></div>`,
+				'interactive label',
+				() => this.shadowRoot.querySelector('button').focus()
 			);
-		}
-		focus() {
-			this.shadowRoot.querySelector('button').focus();
 		}
 	}
 );
