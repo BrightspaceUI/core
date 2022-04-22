@@ -9,10 +9,10 @@ export const htmlBlockContentStyles = css`
 	.d2l-html-block-compact {
 		font-size: 0.8rem;
 		font-weight: 400;
-		line-height: 1.5;
+		line-height: 1.5; /* 1.2rem / 0.8rem */
 	}
 	.d2l-html-block-rendered {
-		line-height: 1.47;
+		line-height: 1.47; /* 1.4rem / 0.95rem */
 	}
 	.d2l-html-block-rendered > :first-child {
 		margin-top: 0;
@@ -25,33 +25,33 @@ export const htmlBlockContentStyles = css`
 	}
 	h1 {
 		font-size: 2em;
-		line-height: 0.97;
-		margin: 21.43px 0;
+		line-height: 1;
+		margin: 21px 0;
 	}
 	h2 {
 		font-size: 1.5em;
-		line-height: 0.95;
-		margin: 19.92px 0;
+		line-height: 1;
+		margin: 20px 0;
 	}
 	h3 {
 		font-size: 1.2em;
 		line-height: 1;
-		margin: 18.72px 0;
+		margin: 19px 0;
 	}
 	h4 {
 		font-size: 1em;
 		line-height: 1.05;
-		margin: 21.28px 0;
+		margin: 21px 0;
 	}
 	h5 {
 		font-size: 0.83em;
-		line-height: 1.01;
-		margin: 22.13px 0;
+		line-height: 1;
+		margin: 22px 0;
 	}
 	h6 {
 		font-size: 0.67em;
-		line-height: 1.02;
-		margin: 24.97px 0;
+		line-height: 1;
+		margin: 25px 0;
 	}
 	pre {
 		font-family: Monospace;
