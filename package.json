@@ -52,7 +52,7 @@
     "axe-core": "^4",
     "chalk": "^5",
     "eslint": "^8",
-    "eslint-config-brightspace": "^0.16",
+    "eslint-config-brightspace": "^0.17",
     "eslint-plugin-html": "^6",
     "eslint-plugin-import": "^2",
     "eslint-plugin-lit": "^1",
