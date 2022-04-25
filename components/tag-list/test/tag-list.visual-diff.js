@@ -24,6 +24,29 @@ describe('d2l-tag-list', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('tag list item style behaviour', () => {
+
+		it('is correct on focus on tag list item', async function() {
+			await page.keyboard.press('Tab');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on hover on tag list item', async function() {
+			await page.hover('d2l-tag-list-item');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('is correct on focus and hover tag list item', async function() {
+			await page.keyboard.press('Tab');
+			await page.hover('d2l-tag-list-item');
+			const rect = await visualDiff.getRect(page, '#default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 	[980, 969, 601, 599, 400, 320].forEach((width) => {
 		['default', 'clearable'].forEach((state) => {
 			describe(`${state} at width ${width}`, () => {
@@ -100,13 +123,17 @@ describe('d2l-tag-list', () => {
 		});
 
 		it('is correct when deleting first item', async function() {
+			await page.keyboard.press('Tab');
+			await page.keyboard.press('Tab');
 			const openEvent = page.$eval(selector, (elem) => {
 				const firstItem = elem.children[0];
-				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
 				return new Promise((resolve) => {
 					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
 					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
-					deleteButton.click();
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 46; // delete
+					firstItem.dispatchEvent(eventObj);
 				});
 			});
 			await openEvent;

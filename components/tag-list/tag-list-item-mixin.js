@@ -16,6 +16,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		return {
 			/**
 			 * Enables the option to clear a tag list item. The `d2l-tag-list-item-clear` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
+			 * @type {boolean}
 			 */
 			clearable: { type: Boolean },
 			/**
@@ -63,12 +64,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
-			:host(:focus) .tag-list-item-container,
-			:host(:focus:hover) .tag-list-item-container {
+			:host(:focus-visible) .tag-list-item-container,
+			:host(:focus-visible:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			:host(:focus) .tag-list-item-container {
+			:host(:focus-visible) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
@@ -114,11 +115,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
 			/** @ignore */
-			container.dispatchEvent(new FocusEvent('focus', { bubbles: true, cancelable: true }));
+			container.dispatchEvent(new FocusEvent('focus', { bubbles: false, cancelable: true }));
 		});
 		this.addEventListener('blur', () => {
 			/** @ignore */
-			container.dispatchEvent(new FocusEvent('blur', { bubbles: true, cancelable: true }));
+			container.dispatchEvent(new FocusEvent('blur', { bubbles: false, cancelable: true }));
 		});
 		this.addEventListener('keydown', this._handleKeydown);
 	}
