@@ -150,4 +150,19 @@ describe('d2l-tag-list', () => {
 
 	});
 
+	describe('interactive', () => {
+
+		it('normal', async function() {
+			const rect = await visualDiff.getRect(page, '#interactive');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focus', async function() {
+			const rect = await visualDiff.getRect(page, '#interactive');
+			await page.$eval('#interactive', elem => elem.focus());
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 });

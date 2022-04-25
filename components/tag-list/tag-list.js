@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -16,7 +17,7 @@ const PAGE_SIZE_LINES = {
 	medium: 2,
 	small: 3
 };
-const MARGIN_TOP_RIGHT = 6;
+const GAP = 6;
 
 async function filterAsync(arr, callback) {
 	const fail = Symbol();
@@ -27,7 +28,7 @@ async function filterAsync(arr, callback) {
 	return results.filter(i => i !== fail);
 }
 
-class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
+class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -48,7 +49,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				display: block;
 			}
@@ -79,7 +80,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			.tag-list-hidden {
 				visibility: hidden;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -184,24 +185,26 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		`;
 
 		const outerContainerStyles = {
-			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + MARGIN_TOP_RIGHT) * this._lines}px`,
+			maxHeight: (this._showHiddenTags || !this._lines) ? undefined : `${(this._itemHeight + GAP) * this._lines}px`,
 			minHeight: `${Math.max(this._clearButtonHeight, this._itemHeight)}px`
 		};
 
-		return html`
-			<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
-				<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
-				${this.arrowKeysContainer(list)}
-			</div>
-		`;
+		return this.renderInteractiveContainer(
+			html`
+				<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
+					<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
+					${this.arrowKeysContainer(list)}
+				</div>
+			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 }),
+			() => {
+				if (this._items && this._items.length > 0) this._items[0].focus();
+			}
+		);
+
 	}
 
 	async arrowKeysFocusablesProvider() {
 		return this._getVisibleEffectiveChildren();
-	}
-
-	focus() {
-		if (this._items && this._items.length > 0) this._items[0].focus();
 	}
 
 	_chomp() {
@@ -226,9 +229,9 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
-				const itemWidth = Math.min(itemLayout.width + MARGIN_TOP_RIGHT, this._availableWidth);
+				const itemWidth = Math.min(itemLayout.width + GAP, this._availableWidth);
 
-				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + MARGIN_TOP_RIGHT))) {
+				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + GAP))) {
 					showing.width += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
