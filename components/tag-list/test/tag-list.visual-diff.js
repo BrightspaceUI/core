@@ -24,6 +24,17 @@ describe('d2l-tag-list', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('tag list item style behaviour', () => {
+
+		it('is correct on first focus on tag list', async function() {
+			await page.keyboard.press('Tab');
+			const rect = await visualDiff.getRect(page, '#default');
+			rect.height += 100;
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 	[980, 969, 601, 599, 400, 320].forEach((width) => {
 		['default', 'clearable'].forEach((state) => {
 			describe(`${state} at width ${width}`, () => {

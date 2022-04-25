@@ -102,6 +102,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} more",
 	"components.tag-list.show-less": "Show Less",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list.tooltip-arrow-keys": "Left/Right, Up/Down",
+	"components.tag-list.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
 	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
 	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"

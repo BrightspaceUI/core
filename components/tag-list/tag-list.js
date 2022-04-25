@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -42,6 +43,7 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			description: { type: String },
 			_chompIndex: { type: Number },
 			_contentReady: { type: Boolean },
+			_displayKeyboardTooltip: { type: Boolean },
 			_lines: { type: Number },
 			_showHiddenTags: { type: Boolean }
 		};
@@ -79,6 +81,10 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			.tag-list-hidden {
 				visibility: hidden;
 			}
+			ul {
+				list-style: none;
+				padding: 0;
+			}
 		`;
 	}
 
@@ -88,9 +94,11 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
 		this._chompIndex = 10000;
+		this._displayKeyboardTooltip = false;
 		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
 		this._contentReady = false;
+		this._firstItemId = getUniqueId();
 		this._hasResized = false;
 		this._itemHeight = 0;
 		this._resizeObserver = null;
@@ -192,6 +200,16 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 			<div role="application" class="tag-list-outer-container" style="${styleMap(outerContainerStyles)}">
 				<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 				${this.arrowKeysContainer(list)}
+				${this._displayKeyboardTooltip ? html`
+					<d2l-tooltip
+						align="start"
+						announced
+						@d2l-tooltip-hide="${this._handleTooltipHide}"
+						@d2l-tooltip-show="${this._handleTooltipShow}"
+						for="${this._firstItemId}"
+						for-type="descriptor">
+							${this._renderTooltipContent()}
+					</d2l-tooltip>` : ''}
 			</div>
 		`;
 	}
@@ -361,6 +379,26 @@ class TagList extends LocalizeCoreElement(ArrowKeysMixin(LitElement)) {
 		});
 		this._chomp();
 		this._contentReady = true;
+		if (!this._tooltipShown) this._displayKeyboardTooltip = true;
+		if (this._displayKeyboardTooltip) this._items[0].setAttribute('id', this._firstItemId)
+	}
+
+	_handleTooltipHide() {
+		if (this._tooltipShown) this._displayKeyboardTooltip = false;
+	}
+
+	_handleTooltipShow() {
+		this._tooltipShown = true;
+	}
+
+	_renderTooltipContent() {
+		return html`
+			<div>${this.localize('components.tag-list.tooltip-title')}:</div>
+			<ul>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.tag-list.tooltip-arrow-keys')}</span> - ${this.localize('components.tag-list.tooltip-arrow-keys-desc')}</li>
+				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.tag-list.tooltip-delete-key')}</span> - ${this.localize('components.tag-list.tooltip-delete-key-desc')}</li>
+			</ul>
+		`;
 	}
 
 	async _toggleHiddenTagVisibility(e) {
