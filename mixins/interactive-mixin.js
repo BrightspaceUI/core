@@ -42,7 +42,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		super.connectedCallback();
 
 		const parentGrid = findComposedAncestor(this.parentNode, node => {
-			return ((node.tagName === 'D2L-LIST' && node.grid) || (node.nodeType === Node.ELEMENT_NODE && node.getAttribute('role') === 'grid'));
+			return (node.nodeType === Node.ELEMENT_NODE && (node.hasAttribute('grid') || node.getAttribute('role') === 'grid'));
 		});
 		this._hasInteractiveAncestor = (parentGrid !== null);
 	}
@@ -71,13 +71,12 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		return html`
 			<div class="${classMap(classes)}" @keydown="${this._handleInteractiveKeyDown}">
 					<button
-						aria-description="${this.localize('components.interactive.instructions')}"
 						class="interactive-toggle d2l-offscreen"
 						@blur="${this._handleInteractiveToggleBlur}"
 						@click="${this._handleInteractiveToggleClick}"
 						@focus="${this._handleInteractiveToggleFocus}"
 						tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : '-1')}">
-							${label}
+						${`${label}, ${this.localize('components.interactive.instructions')}`}
 					</button>
 					<span class="interactive-trap-start" @focus="${this._handleInteractiveTrapStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
 					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>
