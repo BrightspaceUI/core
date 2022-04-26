@@ -1,8 +1,10 @@
 import { css, html } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
-import { forceFocusVisible, getNextFocusable } from '../helpers/focus.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { getNextFocusable } from '../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../helpers/localize-core-element.js';
+import { offscreenStyles } from '../components/offscreen/offscreen.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -13,24 +15,25 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 	static get properties() {
 		return {
+			_focusingToggle: { state: true },
 			_hasInteractiveAncestor: { state: true },
 			_interactive: { state: true }
 		};
 	}
 
 	static get styles() {
-		return css`
-			.interactive-container.focus-visible,
-			.interactive-container:focus-visible {
+		return [offscreenStyles, css`
+			.interactive-focusing-toggle {
 				border-radius: 6px;
 				outline: 2px solid var(--d2l-color-celestine);
 				outline-offset: 2px;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
 		super();
+		this._focusingToggle = false;
 		this._hasInteractiveAncestor = false;
 		this._interactive = false;
 	}
@@ -46,7 +49,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 	focus() {
 		if (!this.shadowRoot) return;
-		if (this._hasInteractiveAncestor && !this._interactive) forceFocusVisible(this.shadowRoot.querySelector('.interactive-container'));
+		if (this._hasInteractiveAncestor && !this._interactive) this.shadowRoot.querySelector('.interactive-toggle').focus();
 		else this._focusDelegate();
 	}
 
@@ -57,18 +60,28 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		if (!focusDelegate) {
 			throw new Error(`InteractiveMixin: no focus delegate provided for "${this.tagName}"`);
 		}
+
 		this._focusDelegate = focusDelegate;
 		if (!this._hasInteractiveAncestor) return inner;
+
+		const classes = {
+			'interactive-focusing-toggle': this._focusingToggle
+		};
+
 		return html`
-			<div class="interactive-container"
-				aria-label="${label}"
-				aria-description="${this.localize('components.interactive.instructions')}"
-				@keydown="${this._handleInteractiveKeyDown}"
-				role="button"
-				tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : undefined)}">
-					<span class="interactive-trap-start" @focus="${this._handleInteractiveStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
+			<div class="${classMap(classes)}" @keydown="${this._handleInteractiveKeyDown}">
+					<button
+						aria-description="${this.localize('components.interactive.instructions')}"
+						class="interactive-toggle d2l-offscreen"
+						@blur="${this._handleInteractiveToggleBlur}"
+						@click="${this._handleInteractiveToggleClick}"
+						@focus="${this._handleInteractiveToggleFocus}"
+						tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : '-1')}">
+							${label}
+					</button>
+					<span class="interactive-trap-start" @focus="${this._handleInteractiveTrapStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
 					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>
-					<span class="interactive-trap-end" @focus="${this._handleInteractiveEndFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
+					<span class="interactive-trap-end" @focus="${this._handleInteractiveTrapEndFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
 			</div>
 		`;
 	}
@@ -83,27 +96,37 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		this._interactive = false;
 	}
 
-	async _handleInteractiveEndFocus() {
-		// focus moved to trap-end either forwards from contents or backwards from outside - focus interactive toggle
-		this._interactive = false;
-		await this.updateComplete;
-		this.shadowRoot.querySelector('.interactive-container').focus();
-	}
-
 	async _handleInteractiveKeyDown(e) {
-		if (!this._interactive && e.keyCode === keyCodes.ENTER) {
-			this._interactive = true;
-			await this.updateComplete;
-			this.focus();
-		} else if (this._interactive && e.keyCode === keyCodes.ESCAPE) {
+		if (this._interactive && e.keyCode === keyCodes.ESCAPE) {
 			this._interactive = false;
 			await this.updateComplete;
-			this.shadowRoot.querySelector('.interactive-container').focus();
+			this.shadowRoot.querySelector('.interactive-toggle').focus();
 		}
 	}
 
-	async _handleInteractiveStartFocus(e) {
-		if (e.relatedTarget === this.shadowRoot.querySelector('.interactive-container')) {
+	_handleInteractiveToggleBlur() {
+		this._focusingToggle = false;
+	}
+
+	async _handleInteractiveToggleClick() {
+		this._interactive = true;
+		await this.updateComplete;
+		this.focus();
+	}
+
+	_handleInteractiveToggleFocus() {
+		this._focusingToggle = true;
+	}
+
+	async _handleInteractiveTrapEndFocus() {
+		// focus moved to trap-end either forwards from contents or backwards from outside - focus interactive toggle
+		this._interactive = false;
+		await this.updateComplete;
+		this.shadowRoot.querySelector('.interactive-toggle').focus();
+	}
+
+	async _handleInteractiveTrapStartFocus(e) {
+		if (e.relatedTarget === this.shadowRoot.querySelector('.interactive-toggle')) {
 			// focus moved to trap-start while non-interactive - focus next focusable after this component
 			const nextFocusable = getNextFocusable(this.shadowRoot.querySelector('.interactive-trap-end'));
 			if (nextFocusable) nextFocusable.focus();
@@ -111,7 +134,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 			// focus moved to trap-start backwards from within contents - toggle to non-interactive and apply focus
 			this._interactive = false;
 			await this.updateComplete;
-			this.shadowRoot.querySelector('.interactive-container').focus();
+			this.shadowRoot.querySelector('.interactive-toggle').focus();
 		}
 	}
 
