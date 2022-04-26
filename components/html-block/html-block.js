@@ -203,6 +203,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this._renderContainer) return;
+
+		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
 		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
 			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
 			+ '"></div><slot'
