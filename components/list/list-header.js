@@ -60,6 +60,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				height: 40px;
 				position: absolute;
 				width: 100%;
+				z-index: -1;
 			}
 			:host([hidden]) {
 				display: none;
@@ -69,7 +70,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				display: flex;
 				margin-bottom: 6px;
 				margin-top: 6px;
-				min-height: 36px;
+				min-height: 54px;
 			}
 			.d2l-list-header-extend-separator {
 				padding: 0 0.9rem;
