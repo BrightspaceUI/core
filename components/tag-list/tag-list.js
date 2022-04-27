@@ -49,7 +49,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	static get styles() {
-		return [super.styles, css`
+		return [...super.styles, css`
 			:host {
 				display: block;
 			}
