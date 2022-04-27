@@ -31,6 +31,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
+			_hasActions: { state: true },
 			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
@@ -71,6 +72,9 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-bottom: 6px;
 				margin-top: 6px;
 				min-height: 54px;
+			}
+			.d2l-list-header-container-slim {
+				min-height: 36px;
 			}
 			.d2l-list-header-extend-separator {
 				padding: 0 0.9rem;
@@ -125,6 +129,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const classes = {
 			'd2l-list-header-container': true,
+			'd2l-list-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed),
 			'd2l-list-header-extend-separator': this._extendSeparator
 		};
 		return html`
@@ -139,11 +144,15 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
 				`}
 				<div class="d2l-list-header-actions">
-					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
+					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</div>
 			${!this.noSticky ? html`<div class="d2l-list-header-shadow"></div>` : null}
 		`;
+	}
+
+	_handleSlotChange(e) {
+		this._hasActions = (e.target.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE).length > 0);
 	}
 
 }
