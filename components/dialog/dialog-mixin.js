@@ -14,7 +14,8 @@ import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.j
 window.D2L = window.D2L || {};
 window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 
-window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
+window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined)
+	&& (navigator.vendor && navigator.vendor.toLowerCase().indexOf('apple') === -1);
 if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
