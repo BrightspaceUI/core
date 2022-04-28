@@ -111,9 +111,6 @@ export const htmlBlockContentStyles = css`
 	mjx-assistive-mml math {
 		position: absolute;
 	}
-	:host([dir="rtl"]) {
-		text-align: right;
-	}
 `;
 
 let renderers;
@@ -163,6 +160,9 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			}
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
+			}
+			:host([dir="rtl"]) {
+				text-align: right;
 			}
 		`];
 	}
