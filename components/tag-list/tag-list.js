@@ -94,6 +94,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._contentReady = false;
 		this._hasResized = false;
 		this._itemHeight = 0;
+		this._listContainerObserver = null;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
 	}
@@ -101,6 +102,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._clearButtonResizeObserver) this._clearButtonResizeObserver.disconnect();
+		if (this._listContainerObserver) this._listContainerObserver.disconnect();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 		if (this._subtleButtonResizeObserver) this._subtleButtonResizeObserver.disconnect();
 	}
@@ -114,16 +116,20 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._subtleButtonResizeObserver.observe(subtleButton);
 
-		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
-		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(container);
-
 		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 		this._clearButtonResizeObserver = new ResizeObserver(() => {
 			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
 			this._clearButtonHeight = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('height')));
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
+
+		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
+		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
+		this._resizeObserver.observe(container);
+
+		const listContainer = this.shadowRoot.querySelector('.tag-list-container');
+		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
+		this._listContainerObserver.observe(listContainer);
 	}
 
 	render() {
