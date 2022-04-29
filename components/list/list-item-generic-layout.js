@@ -43,7 +43,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 * Whether to constrain actions so they do not fill the item. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
-			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
+			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action', reflect: true },
 			/**
 			 * @ignore
 			 */
