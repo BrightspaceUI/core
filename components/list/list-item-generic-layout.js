@@ -198,7 +198,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
-			<slot name="content" class="d2l-cell" data-cell-num="7" @focus="${this._preventFocus}"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="7" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="nested"></slot>
 		`;
 	}
