@@ -94,6 +94,7 @@ describe('d2l-dialog-with-mobile-dropdown', () => {
 						setup: async() => {
 							await open(page, '#dialog-nested');
 							await open(page, '#dialog-nested-child');
+							await new Promise(resolve => setTimeout(resolve, 50));
 							await openDropdown(page, '#dialog-nested .left');
 						}
 					},
@@ -102,6 +103,7 @@ describe('d2l-dialog-with-mobile-dropdown', () => {
 						setup: async() => {
 							await open(page, '#dialog-nested');
 							await open(page, '#dialog-nested-child');
+							await new Promise(resolve => setTimeout(resolve, 50));
 							await openDropdown(page, '#dialog-nested .bottom');
 						}
 					},
@@ -110,6 +112,7 @@ describe('d2l-dialog-with-mobile-dropdown', () => {
 						setup: async() => {
 							await open(page, '#dialog-nested');
 							await open(page, '#dialog-nested-child');
+							await new Promise(resolve => setTimeout(resolve, 50));
 							await openFilter(page, '#dialog-nested d2l-filter');
 						}
 					}
@@ -146,6 +149,7 @@ describe('d2l-dialog-with-mobile-dropdown', () => {
 						setup: async() => {
 							await open(page, '#dialog-nested');
 							await open(page, '#dialog-nested-child');
+							await new Promise(resolve => setTimeout(resolve, 50));
 							await openFilter(page, '#dialog-nested d2l-filter');
 						}
 					}
