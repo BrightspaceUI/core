@@ -11,6 +11,13 @@ const keyCodes = {
 	ESCAPE: 27
 };
 
+export function isInteractiveDescendant(node) {
+	if (!node) return false;
+	return !!findComposedAncestor(node, node => {
+		return node.classList && node.classList.contains('interactive-trap');
+	});
+}
+
 export const InteractiveMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
@@ -70,17 +77,19 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 		return html`
 			<div class="${classMap(classes)}" @keydown="${this._handleInteractiveKeyDown}">
-					<button
-						class="interactive-toggle d2l-offscreen"
-						@blur="${this._handleInteractiveToggleBlur}"
-						@click="${this._handleInteractiveToggleClick}"
-						@focus="${this._handleInteractiveToggleFocus}"
-						tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : '-1')}">
-						${`${label}, ${this.localize('components.interactive.instructions')}`}
-					</button>
+				<button
+					class="interactive-toggle d2l-offscreen"
+					@blur="${this._handleInteractiveToggleBlur}"
+					@click="${this._handleInteractiveToggleClick}"
+					@focus="${this._handleInteractiveToggleFocus}"
+					tabindex="${ifDefined(this._hasInteractiveAncestor && !this._interactive ? '0' : '-1')}">
+					${`${label}, ${this.localize('components.interactive.instructions')}`}
+				</button>
+				<div class="interactive-trap">
 					<span class="interactive-trap-start" @focus="${this._handleInteractiveTrapStartFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
 					<div class="interactive-container-content" @focusin="${this._handleInteractiveContentFocusIn}" @focusout="${this._handleInteractiveContentFocusOut}">${inner}</div>
 					<span class="interactive-trap-end" @focus="${this._handleInteractiveTrapEndFocus}" tabindex="${ifDefined(this._hasInteractiveAncestor ? '0' : undefined)}"></span>
+				</div>
 			</div>
 		`;
 	}

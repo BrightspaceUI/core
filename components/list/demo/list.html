@@ -20,11 +20,16 @@
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
+			import '../../tag-list/tag-list.js';
+			import '../../tag-list/tag-list-item.js';
 		</script>
 		<style>
 			img {
 				height: 500px;
 				object-fit: cover;
+			}
+			d2l-tag-list {
+				margin-top: 0.3rem;
 			}
 		</style>
 	</head>
@@ -220,6 +225,89 @@
 								<div>Geomorphology and GIS</div>
 								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>List with Interactive Content</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item no-primary-action selectable key="1" label="Introductory Earth Sciences">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Introductory Earth Sciences</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Science"></d2l-tag-list-item>
+									<d2l-tag-list-item text="Environment"></d2l-tag-list-item>
+									<d2l-tag-list-item text="Earth"></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Engineering Materials for Energy Systems</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Engineering"></d2l-tag-list-item>
+									<d2l-tag-list-item text="Energy Systems"></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="3" label="Geomorphology and GIS">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Geomorphology and GIS</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Geology"></d2l-tag-list-item>
+									<d2l-tag-list-item text="GIS"></d2l-tag-list-item>
+									<d2l-tag-list-item text="Earth Sciences"></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
 							<div slot="actions">
 								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
 								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
