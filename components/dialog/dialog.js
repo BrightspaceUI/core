@@ -106,7 +106,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this.describeContent = false;
 		this.width = 600;
 		this._handleResize = this._handleResize.bind(this);
-		this._handleResize();
 	}
 
 	get asyncContainerCustom() {
@@ -121,6 +120,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	disconnectedCallback() {
 		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handleResize);
 		super.disconnectedCallback();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._handleResize();
 	}
 
 	render() {
