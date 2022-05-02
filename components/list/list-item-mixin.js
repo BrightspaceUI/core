@@ -58,6 +58,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
+			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
+			 * @type {boolean}
+			 */
+			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
+			/**
 			 * How much padding to render list items with
 			 * @type {'normal'|'none'}
 			 */
@@ -106,6 +111,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 			[slot="control-container"] {
 				position: relative;
+				z-index: -1; /* must allow for interactive content to be accessible with mouse */
 			}
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after {
@@ -343,6 +349,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	constructor() {
 		super();
 		this.breakpoints = defaultBreakpoints;
+		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
@@ -531,7 +538,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			'd2l-dragging-over': this._draggingOver
 		};
 
-		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 
 		const innerView = html`
@@ -543,7 +550,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				class="${classMap(classes)}"
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
-				?grid-active="${this.role === 'rowgroup'}">
+				?grid-active="${this.role === 'rowgroup'}"
+				?no-primary-action="${this.noPrimaryAction}">
 				<div slot="outside-control-container"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}

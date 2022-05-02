@@ -363,6 +363,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
+| `no-primary-action` | Boolean | Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive. |
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
