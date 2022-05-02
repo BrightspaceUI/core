@@ -66,7 +66,7 @@ export class HtmlBlockMathRenderer {
 
 		// MathJax 3 does not support newlines, but it does persist styles, so add custom styles to mimic a linebreak
 		// This work-around should be removed when linebreaks are natively supported.
-		const inner = elem.innerHTML.replaceAll('<mspace linebreak="newline">', '<mspace linebreak="newline" style="display: block; height: 1rem;">');
+		const inner = elem.innerHTML.replaceAll('<mspace linebreak="newline">', '<mspace linebreak="newline" style="display: block; height: 0.5rem;">');
 
 		const temp = document.createElement('div');
 		temp.style.display = 'none';
