@@ -28,8 +28,8 @@ describe('d2l-html-block', () => {
 		{ name: 'compact', selector: '#compact' },
 		{ name: 'large-font-size', selector: '#large-font-size' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
-		//{ name: 'math (block)', selector: '#math-block' },
-		//{ name: 'math (inline)', selector: '#math-inline' }
+		{ name: 'math (block)', selector: '#math-block' },
+		{ name: 'math (inline)', selector: '#math-inline' }
 	].forEach((info) => {
 
 		it(info.name, async function() {
