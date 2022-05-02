@@ -14,6 +14,8 @@ import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.j
 window.D2L = window.D2L || {};
 window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 
+// while implemented in Webkit, native <dialog> focus mangement across slotted content is buggy
+// https://bugs.webkit.org/show_bug.cgi?id=233320
 window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined)
 	&& (navigator.vendor && navigator.vendor.toLowerCase().indexOf('apple') === -1);
 if (window.D2L.DialogMixin.preferNative === undefined) {
