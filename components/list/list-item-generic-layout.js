@@ -1,10 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
-import {
-	getComposedActiveElement,
-	getFirstFocusableDescendant,
-	getLastFocusableDescendant,
-	isFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, isFocusable } from '../../helpers/focus.js';
+import { isInteractiveDescendant } from '../../mixins/interactive-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -42,6 +39,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 * @type {'content'|'control'}
 			 */
 			alignNested: { type: String, reflect: true, attribute: 'align-nested' },
+			/**
+			 * Whether to constrain actions so they do not fill the item. Required if slotted content is interactive.
+			 * @type {boolean}
+			 */
+			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action', reflect: true },
 			/**
 			 * @ignore
 			 */
@@ -127,15 +129,24 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: start / end;
 				z-index: 1;
 			}
+			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
+				grid-column: start / outside-control-end;
+			}
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
 				height: 100%;
 				width: 100%;
 				z-index: 2;
 			}
+			:host([no-primary-action]) ::slotted([slot="control-action"]) {
+				grid-column: control-start / control-end;
+			}
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
 				z-index: 3;
+			}
+			:host([no-primary-action]) ::slotted([slot="content-action"]) {
+				display: none;
 			}
 
 			::slotted([slot="outside-control-container"]) {
@@ -152,6 +163,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alignNested = 'content';
+		this.noPrimaryAction = false;
 		this._preventFocus = {
 			handleEvent(event) {
 				// target content slot only for now - can add others later
@@ -186,7 +198,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
-			<slot name="content" @focus="${this._preventFocus}"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="7" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="nested"></slot>
 		`;
 	}
@@ -276,14 +288,18 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusNextWithinCell(node, num = 1) {
+
 		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
 		let focusable = null;
 		let siblingNum = 1;
 		while (!focusable || siblingNum < num) {
 			node = this._getNextSiblingInCell(node);
+
 			if (!node) break;
 			++siblingNum;
+
 			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
+			if (isInteractiveDescendant(focusable)) focusable = null;
 		}
 
 		if (focusable) focusable.focus();

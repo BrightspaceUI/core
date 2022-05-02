@@ -96,6 +96,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		} else {
 			return;
 		}
+		e.stopPropagation();
 		e.preventDefault();
 	}
 

@@ -6,11 +6,6 @@ import { requestInstance } from '../../mixins/provider-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const htmlBlockContentStyles = css`
-	.d2l-html-block-compact {
-		font-size: 0.8rem;
-		font-weight: 400;
-		line-height: 1.5; /* 1.2rem / 0.8rem */
-	}
 	.d2l-html-block-rendered {
 		line-height: 1.47; /* 1.4rem / 0.95rem */
 	}
@@ -19,6 +14,11 @@ export const htmlBlockContentStyles = css`
 	}
 	.d2l-html-block-rendered > :last-child {
 		margin-bottom: 0;
+	}
+	.d2l-html-block-compact {
+		font-size: 0.8rem;
+		font-weight: 400;
+		line-height: 1.5; /* 1.2rem / 0.8rem */
 	}
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
@@ -111,9 +111,6 @@ export const htmlBlockContentStyles = css`
 	mjx-assistive-mml math {
 		position: absolute;
 	}
-	:host([dir="rtl"]) {
-		text-align: right;
-	}
 `;
 
 let renderers;
@@ -164,6 +161,9 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
 			}
+			:host([dir="rtl"]) {
+				text-align: right;
+			}
 		`];
 	}
 
@@ -203,6 +203,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this._renderContainer) return;
+
+		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
 		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
 			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
 			+ '"></div><slot'
