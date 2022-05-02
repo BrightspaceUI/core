@@ -412,12 +412,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
 		};
 
-		inner = html`<d2l-focus-trap
-			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
-			?trap="${this.opened}">
-				${inner}
-			</d2l-focus-trap>`;
-
 		return html`${this._useNative ?
 			html`<dialog
 				aria-describedby="${ifDefined(info.descId)}"
@@ -443,7 +437,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				id="${this._dialogId}"
 				role="${info.role}"
 				style=${styleMap(styles)}>
-					${inner}
+					<d2l-focus-trap
+						@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+						?trap="${this.opened}">${inner}</d2l-focus-trap>
 				</div>
 				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
