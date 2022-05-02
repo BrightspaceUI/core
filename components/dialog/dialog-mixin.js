@@ -184,7 +184,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				return;
 			}
 		}
-		this.shadowRoot.querySelector('d2l-focus-trap').focus();
+		const focusTrap = this.shadowRoot.querySelector('d2l-focus-trap');
+		if (focusTrap) {
+			focusTrap.focus();
+		}
 	}
 
 	_focusInitial() {
