@@ -60,7 +60,7 @@ export class HtmlBlockMathRenderer {
 		// This work-around should be removed when linebreaks are natively supported.
 		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
 		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-		const lineBreakStyle = 'display: block; height: 0.5rem;'
+		const lineBreakStyle = 'display: block; height: 0.5rem;';
 
 		// If we're opting out of deferred rendering, we need to rely
 		// on the global MathJax install for rendering.
