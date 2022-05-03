@@ -1,6 +1,5 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
-import '../../helpers/viewport-size.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';

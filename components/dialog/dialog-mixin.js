@@ -1,4 +1,5 @@
 import '../focus-trap/focus-trap.js';
+import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
