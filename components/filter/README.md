@@ -159,7 +159,8 @@ The filter will announce changes to filter selections, search results, and when 
 | Property | Type | Description |
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener for the filter |
-| `opened` | Boolean, default: `false` | Whether or not the filter is open  |
+| `opened` | Boolean, default: `false` | Whether or not the filter is open |
+| `text` | String | Optional override for the button text used for a multi-dimensional filter |
 
 ### Events
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
