@@ -145,6 +145,7 @@ describe('d2l-tag-list', () => {
 				});
 			});
 			await openEvent;
+			await page.waitForTimeout(200);
 			const rect = await visualDiff.getRect(page, selector);
 			rect.height += 75;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
