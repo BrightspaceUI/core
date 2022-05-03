@@ -154,11 +154,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					padding-bottom: 15px;
 				}
 
-				.d2l-dialog-header > div > d2l-button-icon {
-					flex: none;
-					margin: -8px -13px 0 15px;
-				}
-
 				.d2l-dialog-footer.d2l-footer-no-content {
 					padding: 0 0 5px 0;
 				}
@@ -171,17 +166,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					height: calc(100% - 1px);
 				}
 
-				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-					margin-left: -13px;
-					margin-right: 15px;
-				}
-
-				dialog.d2l-dialog-outer,
-				div.d2l-dialog-outer {
-					margin: 0 !important;
-					min-width: calc(var(--d2l-vw, 1vw) * 100);
-					top: 42px;
-				}
 			}
 		`];
 	}
@@ -226,9 +210,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				: 0;
 			const startTop = mediaQueryList.matches ? 42 : 0;
 			topOverride = iframeTop + startTop;
-		} else if (window.innerWidth <= 615 || (window.innerWidth <= 900 && window.innerHeight <= 420)) {
-			heightOverride.height = `${window.innerHeight - 42 - 2}px`; // render full window height - 42px top padding - 2px border
-			heightOverride.minHeight = heightOverride.height;
 		}
 
 		let loading = null;
@@ -269,7 +250,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		`;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' },
+			{
+				fullscreenMobile: true,
+				labelId: this._titleId,
+				role: 'dialog'
+			},
 			topOverride
 		);
 	}
