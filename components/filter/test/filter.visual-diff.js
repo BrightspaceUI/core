@@ -27,7 +27,7 @@ describe('d2l-filter', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			[ 'single', 'multiple' ].forEach(type => {
+			[ 'single', 'multiple', 'multiple-text-override' ].forEach(type => {
 				it(`${type}-over-99`, async function() {
 					const selector = `#${type}-closed`;
 					await page.$eval(selector, async(filter) => {
