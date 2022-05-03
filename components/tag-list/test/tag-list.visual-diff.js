@@ -21,7 +21,7 @@ describe('d2l-tag-list', () => {
 
 	it('is correct at 1400px page width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
 	describe('tag list item style behaviour', () => {
@@ -29,20 +29,20 @@ describe('d2l-tag-list', () => {
 		it('is correct on focus on tag list item', async function() {
 			await page.keyboard.press('Tab');
 			const rect = await visualDiff.getRect(page, '#default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct on hover on tag list item', async function() {
 			await page.hover('d2l-tag-list-item');
 			const rect = await visualDiff.getRect(page, '#default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct on focus and hover tag list item', async function() {
 			await page.keyboard.press('Tab');
 			await page.hover('d2l-tag-list-item');
 			const rect = await visualDiff.getRect(page, '#default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 	});
@@ -63,7 +63,7 @@ describe('d2l-tag-list', () => {
 
 				it('is correct', async function() {
 					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 				});
 
 				it('is correct after adding items', async function() {
@@ -77,7 +77,7 @@ describe('d2l-tag-list', () => {
 					});
 					await page.waitForTimeout(500);
 					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 				});
 
 				it('is correct when show more button clicked if applicable', async function() {
@@ -92,7 +92,7 @@ describe('d2l-tag-list', () => {
 					});
 					await page.waitForTimeout(500);
 					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 				});
 
 			});
@@ -119,7 +119,7 @@ describe('d2l-tag-list', () => {
 			});
 			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct when deleting first item', async function() {
@@ -138,14 +138,14 @@ describe('d2l-tag-list', () => {
 			});
 			await openEvent;
 			const rect = await visualDiff.getRect(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct after clicking Clear All', async function() {
 			await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click());
 			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 	});
@@ -154,13 +154,13 @@ describe('d2l-tag-list', () => {
 
 		it('normal', async function() {
 			const rect = await visualDiff.getRect(page, '#interactive');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('focus', async function() {
 			const rect = await visualDiff.getRect(page, '#interactive');
 			await page.$eval('#interactive', elem => elem.focus());
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 	});

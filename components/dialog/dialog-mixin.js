@@ -14,6 +14,8 @@ import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.j
 window.D2L = window.D2L || {};
 window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 
+// while implemented in Webkit, native <dialog> focus mangement across slotted content is buggy
+// https://bugs.webkit.org/show_bug.cgi?id=233320
 window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined)
 	&& (navigator.vendor && navigator.vendor.toLowerCase().indexOf('apple') === -1);
 if (window.D2L.DialogMixin.preferNative === undefined) {
@@ -182,7 +184,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				return;
 			}
 		}
-		this.shadowRoot.querySelector('d2l-focus-trap').focus();
+		const focusTrap = this.shadowRoot.querySelector('d2l-focus-trap');
+		if (focusTrap) {
+			focusTrap.focus();
+			return;
+		}
+		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
+		if (header) {
+			const firstFocusable = getNextFocusable(header);
+			if (firstFocusable) forceFocusVisible(firstFocusable);
+		}
 	}
 
 	_focusInitial() {
@@ -412,12 +423,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
 		};
 
-		inner = html`<d2l-focus-trap
-			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
-			?trap="${this.opened}">
-				${inner}
-			</d2l-focus-trap>`;
-
 		return html`${this._useNative ?
 			html`<dialog
 				aria-describedby="${ifDefined(info.descId)}"
@@ -443,7 +448,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				id="${this._dialogId}"
 				role="${info.role}"
 				style=${styleMap(styles)}>
-					${inner}
+					<d2l-focus-trap
+						@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+						?trap="${this.opened}">${inner}</d2l-focus-trap>
 				</div>
 				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
