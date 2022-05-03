@@ -85,6 +85,7 @@ describe('d2l-dialog-fullscreen', () => {
 					await page.$eval('#dialogLong #bottom', (bottom) => {
 						bottom.scrollIntoView();
 					});
+					await new Promise(resolve => setTimeout(resolve, 50));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
