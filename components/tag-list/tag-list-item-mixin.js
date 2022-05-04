@@ -60,7 +60,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				max-width: 320px;
 				min-width: 0;
 				outline: none;
-				padding: 0.25rem 0.6rem;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
@@ -69,11 +68,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			}
 			:host([dir="rtl"]) .tag-list-item-container.tag-list-item-container-clearable {
 				padding-left: 0.25rem;
-				padding-right: 0.6rem;
+				padding-right: 0;
 			}
 			.tag-list-item-content {
 				outline: none;
 				overflow: hidden;
+				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
 			:host(:focus-visible) .tag-list-item-container,
@@ -94,9 +94,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				}
 			}
 			.d2l-tag-list-item-clear-button {
+				margin-left: -0.6rem;
 				padding-left: 3px;
 			}
 			:host([dir="rtl"]) .d2l-tag-list-item-clear-button {
+				margin-left: 0;
+				margin-right: -0.6rem;
 				padding-left: 0;
 				padding-right: 3px;
 			}
@@ -200,7 +203,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 		const tooltipTagOverflow = hasTruncationTooltip ? html`
-				<d2l-tooltip for="${this._id}" offset="20" show-truncated-only>
+				<d2l-tooltip for="${this._id}" show-truncated-only>
 					${tagContent}
 				</d2l-tooltip>
 			` : null;
@@ -209,8 +212,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				align="start"
 				@d2l-tooltip-hide="${this._handleTooltipHide}"
 				@d2l-tooltip-show="${this._handleTooltipShow}"
-				for="${this._id}"
-				offset="20">
+				for="${this._id}">
 					${this._renderTooltipContent()}
 			</d2l-tooltip>` : null;
 		const containerClasses = {
