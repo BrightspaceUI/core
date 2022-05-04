@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} till",
 	"components.tag-list.show-less": "Visa färre",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "Justerbar delad vy",
 	"templates.primary-secondary.keyboardHorizontal": "Pil vänster eller höger för att justera storleken på vypaneler",
 	"templates.primary-secondary.keyboardVertical": "Pil upp eller ned för att justera storleken på vypaneler"

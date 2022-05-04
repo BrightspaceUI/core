@@ -93,6 +93,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._clearButtonWidth = 0;
 		this._contentReady = false;
 		this._hasResized = false;
+		this._hasShownKeyboardTooltip = false;
 		this._itemHeight = 0;
 		this._listContainerObserver = null;
 		this._resizeObserver = null;
@@ -177,7 +178,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		};
 
 		const list = html`
-			<div role="list" class="${classMap(containerClasses)}" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}">
+			<div
+				aria-label="${this.description}"
+				class="${classMap(containerClasses)}"
+				role="list"
+				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
+				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}"
+			>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -206,7 +213,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				if (this._items && this._items.length > 0) this._items[0].focus();
 			}
 		);
-
 	}
 
 	async arrowKeysFocusablesProvider() {
@@ -299,6 +305,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.removeAttribute('data-is-chomped');
+			node.removeAttribute('keyboard-tooltip-item');
 
 			return true;
 		});
@@ -339,6 +346,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 	}
 
+	_handleKeyboardTooltipShown() {
+		this._hasShownKeyboardTooltip = true;
+	}
+
 	async _handleResize(entries) {
 		this._availableWidth = Math.floor(entries[0].contentRect.width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
@@ -370,6 +381,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._chomp();
 		this._contentReady = true;
+		if (!this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-item', 'keyboard-tooltip-item');
 	}
 
 	async _toggleHiddenTagVisibility(e) {

@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "زيادة {count} إضافي",
 	"components.tag-list.show-less": "إظهار أقل",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "تقسيم العرض القابل للضبط",
 	"templates.primary-secondary.keyboardHorizontal": "السهم المتّجه إلى اليسار أو إلى اليمين لضبط حجم لوحات العرض",
 	"templates.primary-secondary.keyboardVertical": "السهم المتّجه إلى الأعلى أو إلى الأسفل لضبط حجم لوحات العرض"

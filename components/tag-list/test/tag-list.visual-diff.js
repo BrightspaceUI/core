@@ -29,6 +29,7 @@ describe('d2l-tag-list', () => {
 		it('is correct on focus on tag list item', async function() {
 			await page.keyboard.press('Tab');
 			const rect = await visualDiff.getRect(page, '#default');
+			rect.height += 100;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
@@ -39,6 +40,12 @@ describe('d2l-tag-list', () => {
 		});
 
 		it('is correct on focus and hover tag list item', async function() {
+			await page.$eval('#default', async(elem) => {
+				await elem.updateComplete;
+				const firstListItem = elem.children[0];
+				firstListItem.keyboardTooltipItem = false;
+				await firstListItem.updateComplete;
+			});
 			await page.keyboard.press('Tab');
 			await page.hover('d2l-tag-list-item');
 			const rect = await visualDiff.getRect(page, '#default');
@@ -137,7 +144,9 @@ describe('d2l-tag-list', () => {
 				});
 			});
 			await openEvent;
+			await page.waitForTimeout(200);
 			const rect = await visualDiff.getRect(page, selector);
+			rect.height += 75;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 

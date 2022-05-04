@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} extra",
 	"components.tag-list.show-less": "Minder weergeven",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
 	"templates.primary-secondary.keyboardHorizontal": "Pijl naar links of rechts om de grootte van de weergavevensters aan te passen",
 	"templates.primary-secondary.keyboardVertical": "Pijl omhoog of omlaag om de grootte van de weergavevensters aan te passen"

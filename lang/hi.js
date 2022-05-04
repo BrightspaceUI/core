@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} और",
 	"components.tag-list.show-less": "कम दिखाएँ",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "समायोजन योग्य विभाजन दृश्य",
 	"templates.primary-secondary.keyboardHorizontal": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर बाएँ या दाएँ करें",
 	"templates.primary-secondary.keyboardVertical": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर ऊपर या नीचे करें"
