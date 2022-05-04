@@ -101,6 +101,15 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			d2l-button-icon:hover {
 				--d2l-button-icon-fill-color: var(--d2l-color-tungsten);
 			}
+			d2l-tooltip ul {
+				list-style: none;
+				margin-bottom: 0;
+				margin-top: 0.2rem;
+				padding: 0;
+			}
+			.d2l-tag-list-item-tooltip-title-key {
+				font-weight: 600;
+			}
 		`];
 	}
 
@@ -184,7 +193,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 					${tagContent}
 				</d2l-tooltip>
 			` : null;
-		const tooltipKeyboardInstructions = this._displayKeyboardTooltip && this.keyboardTooltipItem ? html`
+		const tooltipKeyboardInstructions = this._displayKeyboardTooltip ? html`
 			<d2l-tooltip
 				align="start"
 				@d2l-tooltip-hide="${this._handleTooltipHide}"
@@ -217,10 +226,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 	_renderTooltipContent() {
 		return html`
-			<div>${this.localize('components.tag-list.tooltip-title')}:</div>
+			<div class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-title')}</div>
 			<ul>
-				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.tag-list.tooltip-arrow-keys')}</span> - ${this.localize('components.tag-list.tooltip-arrow-keys-desc')}</li>
-				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.tag-list.tooltip-delete-key')}</span> - ${this.localize('components.tag-list.tooltip-delete-key-desc')}</li>
+				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-arrow-keys')}</span> - ${this.localize('components.tag-list-item.tooltip-arrow-keys-desc')}</li>
+				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-delete-key')}</span> - ${this.localize('components.tag-list-item.tooltip-delete-key-desc')}</li>
 			</ul>
 		`;
 	}

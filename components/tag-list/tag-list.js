@@ -81,10 +81,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			.tag-list-hidden {
 				visibility: hidden;
 			}
-			ul {
-				list-style: none;
-				padding: 0;
-			}
 		`];
 	}
 
@@ -97,7 +93,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
 		this._contentReady = false;
-		this._firstItemId = getUniqueId();
 		this._hasResized = false;
 		this._hasShownKeyboardTooltip = false;
 		this._itemHeight = 0;
@@ -184,7 +179,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		};
 
 		const list = html`
-			<div role="list" class="${classMap(containerClasses)}" aria-label="${this.description}" @d2l-tag-list-item-clear="${this._handleItemDeleted}" @d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}">
+			<div
+				aria-label="${this.description}"
+				class="${classMap(containerClasses)}"
+				role="list"
+				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
+				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}"
+			>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle

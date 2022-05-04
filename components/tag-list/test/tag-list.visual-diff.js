@@ -29,7 +29,7 @@ describe('d2l-tag-list', () => {
 		it('is correct on focus on tag list item', async function() {
 			await page.keyboard.press('Tab');
 			const rect = await visualDiff.getRect(page, '#default');
-			rect.height += 140;
+			rect.height += 100;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
@@ -44,7 +44,6 @@ describe('d2l-tag-list', () => {
 				await elem.updateComplete;
 				const firstListItem = elem.children[0];
 				firstListItem.keyboardTooltipItem = false;
-				firstListItem._displayKeyboardTooltip = false;
 				await firstListItem.updateComplete;
 			});
 			await page.keyboard.press('Tab');

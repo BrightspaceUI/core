@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+{count} tane daha",
 	"components.tag-list.show-less": "Daha Azını Göster",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "Ayarlanabilir Bölünmüş Görüntü",
 	"templates.primary-secondary.keyboardHorizontal": "Görüntü panellerinin boyutunu ayarlamak için sol veya sağ okları kullanın",
 	"templates.primary-secondary.keyboardVertical": "Görüntü panellerinin boyutunu ayarlamak için yukarı veya aşağı okları kullanın"

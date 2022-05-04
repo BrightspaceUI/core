@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} 件追加",
 	"components.tag-list.show-less": "少なく表示",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "調整可能な分割ビュー",
 	"templates.primary-secondary.keyboardHorizontal": "左矢印または右矢印を使用して、ビューパネルのサイズを調整します",
 	"templates.primary-secondary.keyboardVertical": "上矢印または下矢印を使用して、ビューパネルのサイズを調整します"

@@ -104,6 +104,11 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} 个",
 	"components.tag-list.show-less": "显示更少",
 	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
+	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",
 	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭头可调整视图面板的大小",
 	"templates.primary-secondary.keyboardVertical": "向上或向下箭头可调整视图面板的大小"
