@@ -52,6 +52,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			 * @type {boolean}
 			 */
 			opened: { type: Boolean, reflect: true },
+			/**
+			 * Optional override for the button text used for a multi-dimensional filter
+			 * @type {string}
+			 */
+			text: { type: String },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
@@ -175,7 +180,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimensions = this._buildDimensions(singleDimension);
 
 		const filterCount = this._formatFilterCount(this._totalAppliedCount);
-		let buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
+		let buttonText = singleDimension ? this._dimensions[0].text : (this.text || this.localize('components.filter.filters'));
 		if (filterCount) buttonText = `${buttonText} (${filterCount})`;
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
