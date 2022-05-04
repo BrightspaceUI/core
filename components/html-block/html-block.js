@@ -159,14 +159,13 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				position: relative;
 				text-align: left;
 			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([inline]) {
-				display: inline;
-			}
+			:host([hidden]),
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
+			}
+			:host([inline]),
+			:host([inline]) div.d2l-html-block-rendered {
+				display: inline;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
@@ -215,8 +214,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
 		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
 			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
-			+ '" style="'
-			+ `${this.inline ? 'display: inline;' : ''}`
 			+ '"></div><slot'
 			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
 			+ '></slot>';
