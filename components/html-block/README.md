@@ -78,25 +78,23 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
 <d2l-html-block>
-  <div class="mathml-container">
-    <math xmlns="http://www.w3.org/1998/Math/MathML">
-      <msqrt>
-        <mn>3</mn>
-        <mi>x</mi>
-        <mo>&#x2212;</mo>
-        <mn>1</mn>
-      </msqrt>
-      <mo>+</mo>
-      <mo stretchy="false">(</mo>
-      <mn>1</mn>
-      <mo>+</mo>
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msqrt>
+      <mn>3</mn>
       <mi>x</mi>
-      <msup>
-        <mo stretchy="false">)</mo>
-        <mn>2</mn>
-      </msup>
-    </math>
-  </div>
+      <mo>&#x2212;</mo>
+      <mn>1</mn>
+    </msqrt>
+    <mo>+</mo>
+    <mo stretchy="false">(</mo>
+    <mn>1</mn>
+    <mo>+</mo>
+    <mi>x</mi>
+    <msup>
+      <mo stretchy="false">)</mo>
+      <mn>2</mn>
+    </msup>
+  </math>
 </d2l-html-block>
 ```
 
@@ -109,9 +107,7 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
 <d2l-html-block>
-  <div class="latex-container">
     $$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
-  </div>
 </d2l-html-block>
 ```
 
