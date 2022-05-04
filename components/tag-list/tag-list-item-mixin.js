@@ -10,6 +10,13 @@ import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const keyCodes = {
+	BACKSPACE: 8,
+	DELETE: 46,
+	ENTER: 13,
+	SPACE: 32
+};
+
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -166,8 +173,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_handleKeydown(e) {
-		const expectedKey = e.keyCode === 8 || e.keyCode === 46; // backspace or delete
-		if (!this.clearable || !expectedKey) return;
+		const openKeys = e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER;
+		if (this._displayKeyboardTooltip) this._displayKeyboardTooltip = false;
+
+		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
+		if (!this.clearable || !clearKeys) return;
 		e.preventDefault();
 		this.handleClearItem(e);
 	}
@@ -200,7 +210,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				@d2l-tooltip-hide="${this._handleTooltipHide}"
 				@d2l-tooltip-show="${this._handleTooltipShow}"
 				for="${this._id}"
-				for-type="descriptor"
 				offset="20">
 					${this._renderTooltipContent()}
 			</d2l-tooltip>` : null;
