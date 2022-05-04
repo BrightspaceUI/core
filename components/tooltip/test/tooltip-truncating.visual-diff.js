@@ -34,7 +34,7 @@ describe('d2l-tooltip truncating', () => {
 				content.focus();
 			});
 			const rect = await getRect(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 	});
