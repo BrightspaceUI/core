@@ -137,6 +137,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 */
 			compact: { type: Boolean },
 			/**
+			 * Whether to display the HTML in inline mode
+			 */
+			inline: { type: Boolean },
+			/**
 			 * Whether to disable deferred rendering of the user-authored HTML. Do *not* set this
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
@@ -155,11 +159,13 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				position: relative;
 				text-align: left;
 			}
-			:host([hidden]) {
-				display: none;
-			}
+			:host([hidden]),
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
+			}
+			:host([inline]),
+			:host([inline]) div.d2l-html-block-rendered {
+				display: inline;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
@@ -170,6 +176,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.compact = false;
+		this.inline = false;
 		this.noDeferredRendering = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
