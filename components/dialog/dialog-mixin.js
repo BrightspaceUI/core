@@ -1,4 +1,5 @@
 import '../focus-trap/focus-trap.js';
+import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
@@ -420,6 +421,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
 			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing,
 			'd2l-dialog-outer-scroll': this._scroll,
+			'd2l-dialog-fullscreen-mobile': info.fullscreenMobile,
 			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
 		};
 

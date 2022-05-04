@@ -48,19 +48,19 @@ describe('d2l-dialog', () => {
 
 					it('opened', async function() {
 						await open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 					it('opened-wide', async function() {
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
 						await open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
 					});
 
 					it('rtl', async function() {
 						await open(page, '#dialogRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 					it('resize', async function() {
@@ -70,7 +70,7 @@ describe('d2l-dialog', () => {
 							dialog.width = 500;
 							dialog.resize();
 						});
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 				});
@@ -85,22 +85,20 @@ describe('d2l-dialog', () => {
 
 				it('no footer content', async function() {
 					await open(page, '#dialogNoFooterContent');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('scroll bottom shadow', async function() {
 					await open(page, '#dialogLong');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
-				it.skip('scroll top shadow', async function() {
-					page.waitForSelector('#dialogLong', { visible: true })
-						.then(async(elem) => {
-							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
-						});
-
+				it('scroll top shadow', async function() {
 					await open(page, '#dialogLong');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await page.$eval('#dialogLong #bottom', (bottom) => {
+						bottom.scrollIntoView();
+					});
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('fullscreen-within-on', async function() {
@@ -114,7 +112,7 @@ describe('d2l-dialog', () => {
 							}
 						));
 					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('fullscreen-within-off', async function() {
@@ -137,7 +135,7 @@ describe('d2l-dialog', () => {
 							));
 						});
 					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 			});

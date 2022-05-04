@@ -154,11 +154,28 @@ export const dialogStyles = css`
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}
+		.d2l-dialog-fullscreen-mobile .d2l-dialog-header > div > d2l-button-icon {
+			margin: -8px -13px 0 15px;
+		}
+		:host([dir="rtl"]) .d2l-dialog-fullscreen-mobile .d2l-dialog-header > div > d2l-button-icon {
+			margin-left: -13px;
+			margin-right: 15px;
+		}
 		.d2l-dialog-content {
 			padding: 0 20px;
 		}
 		.d2l-dialog-footer {
 			padding: 20px 20px 2px 20px;
+		}
+		.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
+			margin: 0 !important;
+			min-width: calc(var(--d2l-vw, 1vw) * 100);
+			top: 42px;
+		}
+		:host(:not([in-iframe])) dialog.d2l-dialog-outer.d2l-dialog-fullscreen-mobile,
+		:host(:not([in-iframe])) div.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
+			height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+			min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 		}
 	}
 

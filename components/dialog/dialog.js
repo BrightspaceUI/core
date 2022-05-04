@@ -1,6 +1,5 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
-import '../../helpers/viewport-size.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -73,30 +72,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				padding: 0 0 5px 0;
 			}
 
-			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
-
-				.d2l-dialog-outer {
-					margin: 0 !important;
-					min-width: calc(var(--d2l-vw, 1vw) * 100);
-					top: 42px;
-				}
-
-				.d2l-dialog-header > div > d2l-button-icon {
-					margin: -8px -13px 0 15px;
-				}
-
-				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-					margin-left: -13px;
-					margin-right: 15px;
-				}
-
-				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
-				:host(:not([in-iframe])) div.d2l-dialog-outer {
-					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-				}
-			}
-
 		`];
 	}
 
@@ -167,7 +142,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
-			<div class="d2l-dialog-inner"  style=${styleMap(heightOverride)}>
+			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
@@ -184,7 +159,12 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		const descId = (this.describeContent) ? this._textId : undefined;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, descId: descId, role: 'dialog' },
+			{
+				descId: descId,
+				fullscreenMobile: true,
+				labelId: this._titleId,
+				role: 'dialog'
+			},
 			topOverride
 		);
 	}

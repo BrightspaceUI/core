@@ -36,13 +36,13 @@ describe('d2l-dialog-mixin', () => {
 				});
 
 				it('initial closed', async function() {
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('closed', async function() {
 					await open(page, '#dialog');
 					await close(page, '#dialog');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('abort', async function() {
@@ -52,7 +52,7 @@ describe('d2l-dialog-mixin', () => {
 						dialog.shadowRoot.querySelector('d2l-button-icon').click();
 					});
 					await closeEvent;
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('escape', async function() {
@@ -74,7 +74,7 @@ describe('d2l-dialog-mixin', () => {
 					});
 
 					await closeEvent;
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 			});
