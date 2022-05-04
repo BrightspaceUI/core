@@ -137,6 +137,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 */
 			compact: { type: Boolean },
 			/**
+			 * Whether to display the HTML in inline mode
+			 */
+			inline: { type: Boolean },
+			/**
 			 * Whether to disable deferred rendering of the user-authored HTML. Do *not* set this
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
@@ -170,6 +174,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.compact = false;
+		this.inline = false;
 		this.noDeferredRendering = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
@@ -207,6 +212,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
 		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
 			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
+			+ '" style="'
+			+ `${this.inline ? 'display: inline;' : ''}`
 			+ '"></div><slot'
 			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
 			+ '></slot>';
