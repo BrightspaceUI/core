@@ -78,7 +78,7 @@ describe('d2l-dialog-ifrau', () => {
 						window.ifrauTop = info.ifrau.top;
 					}, info);
 					await open(page, '#ifrau-dialog-container');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 			});
 

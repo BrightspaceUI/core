@@ -47,12 +47,12 @@ describe('d2l-dialog-fullscreen', () => {
 
 					it('opened', async function() {
 						await open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 					it('rtl', async function() {
 						await open(page, '#dialogRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 				});
@@ -67,17 +67,17 @@ describe('d2l-dialog-fullscreen', () => {
 
 				it('no footer content', async function() {
 					await open(page, '#dialogNoFooterContent');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('horizontal overflow', async function() {
 					await open(page, '#dialogHorizontalOverflow');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('scroll bottom shadow', async function() {
 					await open(page, '#dialogLong');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('scroll top shadow', async function() {
@@ -99,7 +99,7 @@ describe('d2l-dialog-fullscreen', () => {
 							}
 						));
 					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 				it('fullscreen-within-off', async function() {
@@ -122,7 +122,7 @@ describe('d2l-dialog-fullscreen', () => {
 							));
 						});
 					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 
 			});

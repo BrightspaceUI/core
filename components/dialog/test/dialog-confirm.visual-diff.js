@@ -47,12 +47,12 @@ describe('d2l-dialog-confirm', () => {
 
 					it('opened', async function() {
 						await open(page, '#confirm');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 					it('rtl', async function() {
 						await open(page, '#confirmRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 
 				});
@@ -77,7 +77,7 @@ describe('d2l-dialog-confirm', () => {
 					it(info.name, async function() {
 						await open(page, info.selector);
 						const rect = await getRect(page, info.selector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 					});
 
 				});
