@@ -116,6 +116,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	constructor() {
 		super();
 		this.clearable = false;
+		/** @ignore */
 		this.keyboardTooltipItem = false;
 		/** @ignore */
 		this.role = 'listitem';
