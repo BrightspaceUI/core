@@ -174,7 +174,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 	_handleKeydown(e) {
 		const openKeys = e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER;
-		if (this._displayKeyboardTooltip) this._displayKeyboardTooltip = false;
+		if (this._displayKeyboardTooltip && openKeys) this._displayKeyboardTooltip = false;
 
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
