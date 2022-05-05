@@ -12,7 +12,7 @@ Tag lists are used to present a list of compact, discrete pieces of information.
 
 <d2l-tag-list description="Example Tags">
   <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse lorem ipsum dolor"></d2l-tag-list-item>
   <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
   <d2l-tag-list-item text="Duis aute irure"></d2l-tag-list-item>
   <d2l-tag-list-item text="Excepteur sint"></d2l-tag-list-item>
@@ -39,7 +39,7 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
 </script>
 <d2l-tag-list description="Example Tags">
   <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse"></d2l-tag-list-item>
+  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse lorem ipsum dolor"></d2l-tag-list-item>
   <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
   <d2l-tag-list-item text="Duis aute irure"></d2l-tag-list-item>
 </d2l-tag-list>
