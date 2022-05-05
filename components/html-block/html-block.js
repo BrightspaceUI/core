@@ -161,9 +161,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			:host([inline]) div.d2l-html-block-rendered {
 				display: inline;
 			}
-			:host([dir="rtl"]) {
-				text-align: right;
-			}
 		`];
 	}
 
