@@ -179,7 +179,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 			resourcesLoadedPromises.push(res);
 		} else if ('_getAllLocalizeResources' in superCtor) {
 			// check up the chain to see if there is something else with getLocalizeResources that can process the config
-			resourcesLoadedPromises = resourcesLoadedPromises.concat(superCtor._getAllLocalizeResources(possibleLanguages, config))
+			resourcesLoadedPromises = resourcesLoadedPromises.concat(superCtor._getAllLocalizeResources(possibleLanguages, config));
 		}
 		return resourcesLoadedPromises;
 	}
