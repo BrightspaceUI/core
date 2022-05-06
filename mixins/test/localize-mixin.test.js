@@ -81,7 +81,7 @@ const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 			importFunc: async lang => (await import(`./lang/${lang}.js`)).default
 		};
 	}
-}
+};
 
 const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 	static get localizeConfig() {
@@ -89,7 +89,7 @@ const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 			importFunc: async lang => (await import(`./lang/${lang}b.js`)).default
 		};
 	}
-}
+};
 
 const multiMixinTag = defineCE(
 	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
@@ -248,7 +248,7 @@ describe('LocalizeMixin', () => {
 		let elem, elemDynamic;
 		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
-			elemDynamic = await fixture(multiMixinFixtureDynamic)
+			elemDynamic = await fixture(multiMixinFixtureDynamic);
 		});
 
 		it('should localize text from all mixins', () => {
