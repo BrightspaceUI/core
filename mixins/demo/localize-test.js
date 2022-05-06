@@ -1,7 +1,8 @@
 import { html, LitElement } from 'lit';
-import { LocalizeMixin } from '../../mixins/localize-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 
-class LocalizeTest extends LocalizeMixin(LitElement) {
+class LocalizeTest extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -11,7 +12,7 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 		};
 	}
 
-	static async getLocalizeResources(langs) {
+	static get localizeConfig() {
 		const langResources = {
 			'ar': { 'hello': 'مرحبا {name}' },
 			'de': { 'hello': 'Hallo {name}' },
@@ -29,17 +30,15 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			'zh-cn': { 'hello': '你好 {name}' },
 			'zh-tw': { 'hello': '你好 {name}' }
 		};
-
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
+		return {
+			importFunc: async lang => {
+				return new Promise((resolve) => {
+					setTimeout(() => {
+						resolve(langResources[lang]);
+					}, 50);
+				});
 			}
-		}
-
-		return null;
+		};
 	}
 
 	render() {
@@ -50,7 +49,7 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			}))
 		);
 		return html`
-			<p>${this.localize('hello', { name: this.name })}</p>
+			<p>${this.localize('hello', { name: this.name })}, ${this.localize('components.filter.clearAll')}</p>
 		`;
 	}
 
