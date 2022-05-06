@@ -301,20 +301,20 @@ describe('LocalizeMixin', () => {
 			expect(val4).to.equal('This is English from Test4LocalizeMixin');
 		});
 
-		it.only('should localize text from all dynamic mixins', () => {
-			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith'});
-			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
-
-			expect(val1).to.equal('Hello Jane Smith');
-			expect(val2).to.equal('Clear All');
-		});
-
-		it.only('should localize text from all dynamic mixins when in same file', () => {
+		it('should localize text from all dynamic mixins', () => {
 			const val1 = elemDynamic.localize('testA');
 			const val2 = elemDynamic.localize('testB');
 
 			expect(val1).to.equal('Test A Content');
 			expect(val2).to.equal('Test B Content');
+		});
+
+		it('should localize text from all dynamic mixins when imported in same file', () => {
+			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith'});
+			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
+
+			expect(val1).to.equal('Hello Jane Smith');
+			expect(val2).to.equal('Clear All');
 		});
 
 		it('should re-localize text from all mixins when locale changes', (done) => {

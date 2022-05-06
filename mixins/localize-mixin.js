@@ -165,17 +165,21 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	static _getAllLocalizeResources(possibleLanguages, config = this.localizeConfig) {
 		let resourcesLoadedPromises;
 		const superCtor = Object.getPrototypeOf(this);
+		// get imported terms for each config, head up the chain to get them all
 		if ('_getAllLocalizeResources' in superCtor) {
-			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages, config);
+			let superConfig = config;
+			if (superCtor.localizeConfig && superCtor.localizeConfig.importFunc) superConfig = superCtor.localizeConfig;
+			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages, superConfig);
 		} else {
 			resourcesLoadedPromises = [];
 		}
 		// eslint-disable-next-line no-prototype-builtins
 		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
-			let superConfig = config;
-			if (superCtor.localizeConfig && superCtor.localizeConfig.importFunc) superConfig = superCtor.localizeConfig;
-			const res = this.getLocalizeResources([...possibleLanguages], superConfig);
+			const res = this.getLocalizeResources([...possibleLanguages], config);
 			resourcesLoadedPromises.push(res);
+		} else if ('_getAllLocalizeResources' in superCtor) {
+			// check up the chain to see if there is something else with getLocalizeResources that can process the config
+			resourcesLoadedPromises = resourcesLoadedPromises.concat(superCtor._getAllLocalizeResources(possibleLanguages, config))
 		}
 		return resourcesLoadedPromises;
 	}
