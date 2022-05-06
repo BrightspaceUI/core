@@ -2,6 +2,7 @@ import '../demo/localize-test.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
+import { LocalizeDynamicMixin } from '../localize-dynamic-mixin.js';
 import { LocalizeMixin } from '../localize-mixin.js';
 import { LocalizeStaticMixin } from '../localize-static-mixin.js';
 import { stub } from 'sinon';
@@ -74,8 +75,30 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
+const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/${lang}.js`)).default
+		};
+	}
+}
+
+const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/${lang}b.js`)).default
+		};
+	}
+}
+
 const multiMixinTag = defineCE(
 	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
+
+	}
+);
+
+const multiMixinTagDynaic = defineCE(
+	class extends test1LocalizeDynamicMixn(test2LocalizeDynamicMixn((LitElement))) {
 
 	}
 );
@@ -220,10 +243,12 @@ describe('LocalizeMixin', () => {
 	describe('multiple localize and localize static mixin', () => {
 
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
+		const multiMixinFixtureDynamic = `<${multiMixinTagDynaic}></${multiMixinTagDynaic}>`;
 
-		let elem;
+		let elem, elemDynamic;
 		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
+			elemDynamic = await fixture(multiMixinFixtureDynamic)
 		});
 
 		it('should localize text from all mixins', () => {
@@ -236,6 +261,14 @@ describe('LocalizeMixin', () => {
 			expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
 			expect(val3).to.equal('This is English from Test3LocalizeMixin');
 			expect(val4).to.equal('This is English from Test4LocalizeMixin');
+		});
+
+		it('should localize text from all dynamic mixins', () => {
+			const val1 = elemDynamic.localize('testA');
+			const val2 = elemDynamic.localize('testB');
+
+			expect(val1).to.equal('Test A Content');
+			expect(val2).to.equal('Test B Content');
 		});
 
 		it('should re-localize text from all mixins when locale changes', (done) => {
