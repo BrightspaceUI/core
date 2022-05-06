@@ -172,7 +172,9 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		}
 		// eslint-disable-next-line no-prototype-builtins
 		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
-			const res = this.getLocalizeResources([...possibleLanguages], config);
+			let superConfig = config;
+			if (superCtor.localizeConfig && superCtor.localizeConfig.importFunc) superConfig = superCtor.localizeConfig;
+			const res = this.getLocalizeResources([...possibleLanguages], superConfig);
 			resourcesLoadedPromises.push(res);
 		}
 		return resourcesLoadedPromises;
