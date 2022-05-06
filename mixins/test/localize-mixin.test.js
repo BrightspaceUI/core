@@ -280,7 +280,7 @@ describe('LocalizeMixin', () => {
 
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
 		const multiMixinFixtureDynamic = `<${multiMixinTagDynamic}></${multiMixinTagDynamic}>`;
-		const multiMixinFixtureDynamicConsolidated = `<${multiMixinTagDynamicConsolidated}></${multiMixinTagDynamicConsolidated}>`
+		const multiMixinFixtureDynamicConsolidated = `<${multiMixinTagDynamicConsolidated}></${multiMixinTagDynamicConsolidated}>`;
 
 		let elem, elemDynamic, elemDynamicConsolidated;
 		beforeEach(async() => {
@@ -310,7 +310,7 @@ describe('LocalizeMixin', () => {
 		});
 
 		it('should localize text from all dynamic mixins when imported in same file', () => {
-			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith'});
+			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith' });
 			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
 
 			expect(val1).to.equal('Hello Jane Smith');
