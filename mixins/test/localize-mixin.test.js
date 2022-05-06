@@ -2,6 +2,7 @@ import '../demo/localize-test.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { LocalizeDynamicMixin } from '../localize-dynamic-mixin.js';
 import { LocalizeMixin } from '../localize-mixin.js';
 import { LocalizeStaticMixin } from '../localize-static-mixin.js';
@@ -97,8 +98,43 @@ const multiMixinTag = defineCE(
 	}
 );
 
-const multiMixinTagDynaic = defineCE(
+const multiMixinTagDynamic = defineCE(
 	class extends test1LocalizeDynamicMixn(test2LocalizeDynamicMixn((LitElement))) {
+
+	}
+);
+
+const multiMixinTagDynamicConsolidated = defineCE(
+	class extends LocalizeCoreElement(LocalizeDynamicMixin((LitElement))) {
+
+		static get localizeConfig() {
+			const langResources = {
+				'ar': { 'hello': 'مرحبا {name}' },
+				'de': { 'hello': 'Hallo {name}' },
+				'en': {
+					'hello': 'Hello {name}',
+					'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+				},
+				'en-ca': { 'hello': 'Hello, {name} eh' },
+				'es': { 'hello': 'Hola {name}' },
+				'fr': { 'hello': 'Bonjour {name}' },
+				'ja': { 'hello': 'こんにちは {name}' },
+				'ko': { 'hello': '안녕하세요 {name}' },
+				'pt-br': { 'hello': 'Olá {name}' },
+				'tr': { 'hello': 'Merhaba {name}' },
+				'zh-cn': { 'hello': '你好 {name}' },
+				'zh-tw': { 'hello': '你好 {name}' }
+			};
+			return {
+				importFunc: async lang => {
+					return new Promise((resolve) => {
+						setTimeout(() => {
+							resolve(langResources[lang]);
+						}, 50);
+					});
+				}
+			};
+		}
 
 	}
 );
@@ -243,12 +279,14 @@ describe('LocalizeMixin', () => {
 	describe('multiple localize and localize static mixin', () => {
 
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
-		const multiMixinFixtureDynamic = `<${multiMixinTagDynaic}></${multiMixinTagDynaic}>`;
+		const multiMixinFixtureDynamic = `<${multiMixinTagDynamic}></${multiMixinTagDynamic}>`;
+		const multiMixinFixtureDynamicConsolidated = `<${multiMixinTagDynamicConsolidated}></${multiMixinTagDynamicConsolidated}>`
 
-		let elem, elemDynamic;
+		let elem, elemDynamic, elemDynamicConsolidated;
 		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
 			elemDynamic = await fixture(multiMixinFixtureDynamic);
+			elemDynamicConsolidated = await fixture(multiMixinFixtureDynamicConsolidated);
 		});
 
 		it('should localize text from all mixins', () => {
@@ -263,7 +301,15 @@ describe('LocalizeMixin', () => {
 			expect(val4).to.equal('This is English from Test4LocalizeMixin');
 		});
 
-		it('should localize text from all dynamic mixins', () => {
+		it.only('should localize text from all dynamic mixins', () => {
+			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith'});
+			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
+
+			expect(val1).to.equal('Hello Jane Smith');
+			expect(val2).to.equal('Clear All');
+		});
+
+		it.only('should localize text from all dynamic mixins when in same file', () => {
 			const val1 = elemDynamic.localize('testA');
 			const val2 = elemDynamic.localize('testB');
 
