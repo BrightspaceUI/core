@@ -1,8 +1,7 @@
 import { html, LitElement } from 'lit';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 
-class LocalizeTest extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
+class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -49,7 +48,7 @@ class LocalizeTest extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement))
 			}))
 		);
 		return html`
-			<p>${this.localize('hello', { name: this.name })}, ${this.localize('components.filter.clearAll')}</p>
+			<p>${this.localize('hello', { name: this.name })}</p>
 		`;
 	}
 
