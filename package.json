@@ -60,7 +60,7 @@
     "lit-analyzer": "^1",
     "messageformat-validator": "^2",
     "node-sass": "^7",
-    "sinon": "^13",
+    "sinon": "^14",
     "stylelint": "^14"
   },
   "dependencies": {
