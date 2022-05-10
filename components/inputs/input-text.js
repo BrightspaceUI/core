@@ -402,7 +402,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 
 		const input = html`
 			<div class="d2l-input-container">
-				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
+				<div class="d2l-input-text-container d2l-skeletize" tabindex="-1" style="${styleMap(inputContainerStyles)}">
 					<input aria-atomic="${ifDefined(this.atomic)}"
 						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
