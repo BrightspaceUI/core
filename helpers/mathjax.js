@@ -204,7 +204,7 @@ export function loadMathJax(mathJaxConfig) {
 					html.options.elements = [elem];
 					html.render().typeset();
 					return html;
-				}
+				};
 
 				//
 				//  Now do the usual startup now that the extensions are in place
