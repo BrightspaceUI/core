@@ -69,7 +69,7 @@ export class HtmlBlockMathRenderer {
 				elm.setAttribute('style', lineBreakStyle);
 			});
 			await window.MathJax.startup.promise;
-			window.MathJax.typeset([elem]);
+			await window.MathJax.typesetPromise([elem]);
 			return elem;
 		}
 
@@ -82,7 +82,7 @@ export class HtmlBlockMathRenderer {
 
 		elem.appendChild(temp);
 		await window.MathJax.startup.promise;
-		window.MathJax.typesetShadow(temp.shadowRoot);
+		await window.MathJax.typesetShadow(temp.shadowRoot);
 
 		return temp.shadowRoot.firstChild;
 	}
@@ -182,12 +182,15 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = function(root) {
-					const InputJax = startup.getInputJax();
-					const OutputJax = startup.getOutputJax();
-					const html = mathjax.document(root, { InputJax, OutputJax });
-					html.render().typeset();
-					return html;
+				window.MathJax.typesetShadow = async function(root) {
+					return await mathjax.handleRetriesFor(() => {
+						const InputJax = startup.getInputJax();
+						const OutputJax = startup.getOutputJax();
+						const html = mathjax.document(root, { InputJax, OutputJax });
+
+						html.render().typeset();
+						return html;
+					});
 				};
 
 				//
