@@ -68,8 +68,9 @@ export class HtmlBlockMathRenderer {
 			elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
 				elm.setAttribute('style', lineBreakStyle);
 			});
+
 			await window.MathJax.startup.promise;
-			window.MathJax.typeset([elem]);
+			window.MathJax.typesetShadow(elem.getRootNode(), elem);
 			return elem;
 		}
 
@@ -93,6 +94,11 @@ export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;
 
+	const loadOptions = ['ui/menu'];
+	if (mathJaxConfig && mathJaxConfig.renderLatex) {
+		loadOptions.push('[tex]/all-packages');
+	}
+
 	window.MathJax = {
 		chtml: {
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
@@ -102,7 +108,7 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: ['ui/menu'] },
+		loader: { load: loadOptions },
 		startup: {
 			ready: () => {
 
@@ -182,10 +188,13 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = function(root) {
+				window.MathJax.typesetShadow = function(root, elem) {
 					const InputJax = startup.getInputJax();
 					const OutputJax = startup.getOutputJax();
 					const html = mathjax.document(root, { InputJax, OutputJax });
+
+					if (elem) html.options.elements = [elem];
+
 					html.render().typeset();
 					return html;
 				};
