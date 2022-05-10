@@ -69,7 +69,7 @@ export class HtmlBlockMathRenderer {
 				elm.setAttribute('style', lineBreakStyle);
 			});
 			await window.MathJax.startup.promise;
-			await window.MathJax.typesetPromise([elem]);
+			window.MathJax.typesetElement(elem);
 			return elem;
 		}
 
@@ -82,7 +82,7 @@ export class HtmlBlockMathRenderer {
 
 		elem.appendChild(temp);
 		await window.MathJax.startup.promise;
-		await window.MathJax.typesetShadow(temp.shadowRoot);
+		window.MathJax.typesetShadow(temp.shadowRoot);
 
 		return temp.shadowRoot.firstChild;
 	}
@@ -93,6 +93,11 @@ export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;
 
+	const loadOptions = ['ui/menu'];
+	if (mathJaxConfig && mathJaxConfig.renderLatex) {
+		loadOptions.push('[tex]/all-packages');
+	}
+
 	window.MathJax = {
 		chtml: {
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
@@ -102,7 +107,7 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: ['ui/menu'] },
+		loader: { load: loadOptions },
 		startup: {
 			ready: () => {
 
@@ -182,16 +187,24 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = async function(root) {
-					return await mathjax.handleRetriesFor(() => {
-						const InputJax = startup.getInputJax();
-						const OutputJax = startup.getOutputJax();
-						const html = mathjax.document(root, { InputJax, OutputJax });
+				window.MathJax.typesetShadow = function(root) {
+					const InputJax = startup.getInputJax();
+					const OutputJax = startup.getOutputJax();
+					const html = mathjax.document(root, { InputJax, OutputJax });
 
-						html.render().typeset();
-						return html;
-					});
+					html.render().typeset();
+					return html;
 				};
+
+				window.MathJax.typesetElement = function(elem) {
+					const InputJax = startup.getInputJax();
+					const OutputJax = startup.getOutputJax();
+					const html = mathjax.document(document, { InputJax, OutputJax });
+
+					html.options.elements = [elem];
+					html.render().typeset();
+					return html;
+				}
 
 				//
 				//  Now do the usual startup now that the extensions are in place
