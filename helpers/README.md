@@ -125,7 +125,7 @@ getComposedActiveElement()
 // gets the first focusable descendant given a node, including those within the shadow DOM
 getFirstFocusableDescendant(node, includeHidden, predicate)
 
-// gets the last fusable descendant given a node, including those within the shadow DOM
+// gets the last focusable descendant given a node, including those within the shadow DOM
 getLastFocusableDescendant(node, includeHidden)
 
 // gets the previous focusable node on the page given a node
@@ -134,7 +134,7 @@ getPreviousFocusable(node, includeHidden)
 // gets the next focusable node on the page given a node
 getNextFocusable(node, includeHidden)
 
-// gets the ancestor of the given node that is focusable
+// gets the nearest focusable ancestor of the given node
 getPreviousFocusableAncestor(node, includeHidden, includeTabbablesOnly)
 
 // returns true/false whether the element is focusable
