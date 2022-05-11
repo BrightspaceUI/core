@@ -30,11 +30,9 @@ describe('d2l-tooltip truncating', () => {
 
 		it(testCase.name, async function() {
 			const selector = `#${testCase.name}`;
-			const delay = await page.$eval(`${selector}${testCase.focus}`, (content) => {
+			await page.$eval(`${selector}${testCase.focus}`, (content) => {
 				content.focus();
-				return content.nextElementSibling.delay;
 			});
-			page.waitForTimeout(delay);
 			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
