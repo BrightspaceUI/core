@@ -68,7 +68,7 @@ export class HtmlBlockMathRenderer {
 		// This work-around should be removed when linebreaks are natively supported.
 		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
 		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-		const inner = elem.innerHTML.replaceAll('<mspace linebreak="newline">', '<mspace linebreak="newline" style="display: block; height: 0.5rem;">');
+		const inner = elem.innerHTML.replace(/<mspace linebreak="newline">/gi, '<mspace linebreak="newline" style="display: block; height: 0.5rem;">');
 
 		const temp = document.createElement('div');
 		temp.style.display = 'none';
