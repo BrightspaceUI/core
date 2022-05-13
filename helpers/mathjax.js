@@ -74,7 +74,7 @@ export class HtmlBlockMathRenderer {
 			return elem;
 		}
 
-		const inner = elem.innerHTML.replaceAll('<mspace linebreak="newline">', `<mspace linebreak="newline" style="${lineBreakStyle}">`);
+		const inner = elem.innerHTML.replace(/<mspace linebreak="newline">/gi, `<mspace linebreak="newline" style="${lineBreakStyle}">`);
 
 		const temp = document.createElement('div');
 		temp.style.display = 'none';
