@@ -8,6 +8,10 @@ import { SwitchMixin } from './switch-mixin.js';
  */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
+	/**
+	 * The text that is displayed for the switch label.
+	 * @default "Visibility"
+	 */
 	get text() {
 		return (this._text ? this._text : this.localize('components.switch.visibility'));
 	}
