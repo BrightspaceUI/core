@@ -48,7 +48,7 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 			}))
 		);
 		return html`
-			<p>${this.localize('hello', { name: this.name })}, ${this.localize('components.filter.clearAll')}</p>
+			<p>${this.localize('hello', { name: this.name })}</p>
 		`;
 	}
 

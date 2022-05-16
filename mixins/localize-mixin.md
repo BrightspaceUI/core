@@ -103,6 +103,17 @@ static get localizeConfig() {
 }
 ```
 
+**Note:** If using `LocalizeCoreElement` or a mixin that utilizes `LocalizeCoreElement` as well as `LocalizeDynamicMixin` or a mixin that uses `LocalizeDynamicMixin`, `LocalizeDynamicMixin` **must** appear before `LocalizeCoreElement` in the chain. For example:
+
+```javascript
+import { LocalizeCoreElement } from '@brightspace-ui/core/helpers/localize-core-element.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+
+class MyComponent extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
+  ...
+}
+```
+
 ## `localize()`
 
 Once your localization resources are available, the `localize()` method is used to localize a piece of text in your `render()` method.
