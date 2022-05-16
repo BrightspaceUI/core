@@ -683,7 +683,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			const centerDelta = contentRect.width - targetRect.width;
 			const position = this._getPosition(spaceAround, centerDelta);
-			if (position) {
+			if (position !== null) {
 				this._position = position;
 			}
 
