@@ -1,8 +1,7 @@
 import { html, LitElement } from 'lit';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 
-class LocalizeTest extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
+class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 
 	static get properties() {
 		return {

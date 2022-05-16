@@ -79,7 +79,13 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 	static get localizeConfig() {
 		return {
-			importFunc: async lang => (await import(`./lang/${lang}.js`)).default
+			importFunc: () => {
+				return new Promise((resolve) => {
+					setTimeout(() => {
+						resolve({ 'testA': 'Test A Content' });
+					}, 50);
+				});
+			}
 		};
 	}
 };
@@ -87,7 +93,13 @@ const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 	static get localizeConfig() {
 		return {
-			importFunc: async lang => (await import(`./lang/${lang}b.js`)).default
+			importFunc: () => {
+				return new Promise((resolve) => {
+					setTimeout(() => {
+						resolve({ 'testB': 'Test B Content' });
+					}, 50);
+				});
+			}
 		};
 	}
 };
@@ -105,37 +117,18 @@ const multiMixinTagDynamic = defineCE(
 );
 
 const multiMixinTagDynamicConsolidated = defineCE(
-	class extends LocalizeCoreElement(LocalizeDynamicMixin((LitElement))) {
-
+	class extends LocalizeDynamicMixin(LocalizeCoreElement((LitElement))) {
 		static get localizeConfig() {
-			const langResources = {
-				'ar': { 'hello': 'مرحبا {name}' },
-				'de': { 'hello': 'Hallo {name}' },
-				'en': {
-					'hello': 'Hello {name}',
-					'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
-				},
-				'en-ca': { 'hello': 'Hello, {name} eh' },
-				'es': { 'hello': 'Hola {name}' },
-				'fr': { 'hello': 'Bonjour {name}' },
-				'ja': { 'hello': 'こんにちは {name}' },
-				'ko': { 'hello': '안녕하세요 {name}' },
-				'pt-br': { 'hello': 'Olá {name}' },
-				'tr': { 'hello': 'Merhaba {name}' },
-				'zh-cn': { 'hello': '你好 {name}' },
-				'zh-tw': { 'hello': '你好 {name}' }
-			};
 			return {
-				importFunc: async lang => {
+				importFunc: () => {
 					return new Promise((resolve) => {
 						setTimeout(() => {
-							resolve(langResources[lang]);
+							resolve({ 'testC': 'Test C Content' });
 						}, 50);
 					});
 				}
 			};
 		}
-
 	}
 );
 
@@ -301,7 +294,7 @@ describe('LocalizeMixin', () => {
 			expect(val4).to.equal('This is English from Test4LocalizeMixin');
 		});
 
-		it('should localize text from all dynamic mixins', () => {
+		it('should localize text from inherited dynamic mixins', () => {
 			const val1 = elemDynamic.localize('testA');
 			const val2 = elemDynamic.localize('testB');
 
@@ -309,11 +302,11 @@ describe('LocalizeMixin', () => {
 			expect(val2).to.equal('Test B Content');
 		});
 
-		it('should localize text from all dynamic mixins when imported in same file', () => {
-			const val1 = elemDynamicConsolidated.localize('hello', { name: 'Jane Smith' });
+		it('should localize text from inherited dynamic mixin and class itself', () => {
+			const val1 = elemDynamicConsolidated.localize('testC');
 			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
 
-			expect(val1).to.equal('Hello Jane Smith');
+			expect(val1).to.equal('Test C Content');
 			expect(val2).to.equal('Clear All');
 		});
 

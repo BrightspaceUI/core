@@ -163,15 +163,13 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	}
 
 	static _getAllLocalizeResources(possibleLanguages, config = this.localizeConfig) {
-		let resourcesLoadedPromises;
+		let resourcesLoadedPromises = [];
 		const superCtor = Object.getPrototypeOf(this);
 		// get imported terms for each config, head up the chain to get them all
 		if ('_getAllLocalizeResources' in superCtor) {
-			let superConfig = config;
-			if (superCtor.localizeConfig && superCtor.localizeConfig.importFunc) superConfig = superCtor.localizeConfig;
+			// eslint-disable-next-line no-prototype-builtins
+			const superConfig = superCtor.hasOwnProperty('localizeConfig') && superCtor.localizeConfig.importFunc ? superCtor.localizeConfig : config;
 			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages, superConfig);
-		} else {
-			resourcesLoadedPromises = [];
 		}
 		// eslint-disable-next-line no-prototype-builtins
 		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
