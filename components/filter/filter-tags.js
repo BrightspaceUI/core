@@ -1,4 +1,3 @@
-import '../button/button-subtle.js';
 import '../colors/colors.js';
 import '../tag-list/tag-list.js';
 import '../tag-list/tag-list-item.js';
@@ -35,19 +34,13 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host {
 				display: block;
 			}
-
 			:host([hidden]) {
-				display: none;
-			}
-
-			[hidden] {
 				display: none;
 			}
 
 			.d2l-filter-tags-wrapper {
 				display: flex;
 			}
-
 			d2l-tag-list {
 				flex: 1;
 			}
@@ -58,7 +51,6 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-right: 0.25rem;
 				padding-top: 0.15rem;
 			}
-
 			:host([dir="rtl"]) .d2l-filter-tags-label {
 				margin-left: 0.25rem;
 				margin-right: 0;
@@ -68,10 +60,6 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				color: var(--d2l-color-corundum);
 				display: inline-block;
 				font-style: italic;
-			}
-
-			.d2l-fitler-tags-list-container {
-				flex: 1;
 			}
 		`];
 	}
@@ -88,42 +76,38 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		/**
-		 * TODO: deal with ids
-		 */
 		let numActiveFilters = 0;
 		const allActiveFilters = Array.from(this._allActiveFilters);
 		const labelText = this.labelText || this.localize('components.filter.appliedFilters');
-		let filters = html`
-			<d2l-tag-list description="${labelText}">
-				${allActiveFilters.map(filter => filter[1].map((value, index) => {
-					numActiveFilters++;
-					return html`
-						<d2l-tag-list-item
-							clearable
-							@d2l-tag-list-item-clear="${this._tagListItemDeleted}"
-							data-filter-id="${filter[0]}"
-							data-index="${index}"
-							text="${value.text}">
-						</d2l-tag-list-item>
-					`;
-				}))}
-			</d2l-tag-list>
-		`;
+		const tagListItems = allActiveFilters.map(filter => filter[1].map((value, index) => {
+			numActiveFilters++;
+			return html`
+				<d2l-tag-list-item
+					@d2l-tag-list-item-clear="${this._tagListItemDeleted}"
+					data-filter-id="${filter[0]}"
+					data-index="${index}"
+					text="${value.text}">
+				</d2l-tag-list-item>
+			`;
+		}));
+		let filters = html``;
 		if (numActiveFilters === 0) filters = html`<span class="d2l-filter-tags-none-label d2l-body-compact">${this.localize('components.filter.noActiveFilters')}</span>`;
+		else {
+			filters = html`
+				<d2l-tag-list
+					clear-text="${this.localize('components.filter.clearFilters')}"
+					clearable
+					description="${labelText}"
+					?hide-clear-button="${numActiveFilters < CLEAR_FILTERS_THRESHOLD}">
+					${tagListItems}
+				</d2l-tag-list>
+			`;
+		}
 
 		return html`
 			<div class="d2l-filter-tags-wrapper">
 				<span class="d2l-filter-tags-label d2l-body-compact">${labelText}</span>
-				<div class="d2l-fitler-tags-list-container">
-					${filters}
-					<d2l-button-subtle
-						@click="${this._clearFiltersClicked}"
-						?hidden="${numActiveFilters < CLEAR_FILTERS_THRESHOLD}"
-						text="${this.localize('components.filter.clearFilters')}"
-						slim>
-					</d2l-button-subtle>
-				</div>
+				${filters}
 			</div>
 		`;
 	}

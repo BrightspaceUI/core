@@ -34,13 +34,25 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return {
 			/**
 			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-clear` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
+			 * @type {boolean}
 			 */
 			clearable: { type: Boolean },
+			/**
+			 * Text on the clear all button that appears when `clearable` is true.
+			 * @default "Clear All"
+			 * @type {string}
+			 */
+			clearText: { type: String, attribute: 'clear-text' },
 			/**
 			 * REQUIRED: A description of the tag list for additional accessibility context
 			 * @type {string}
 			 */
 			description: { type: String },
+			/**
+			 * Hide the clear all button that by default appears when `clearable` is true.
+			 * @type {boolean}
+			 */
+			hideClearButton: { type: Boolean, attribute: 'hide-clear-button' },
 			_chompIndex: { type: Number },
 			_contentReady: { type: Boolean },
 			_lines: { type: Number },
@@ -88,6 +100,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
+		this.hideClearButton = false;
+
 		this._chompIndex = 10000;
 		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
@@ -169,7 +183,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		const clearableClasses = {
 			'd2l-tag-list-clear-button': true,
-			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
+			'd2l-tag-list-clear-button-visible': this.clearable && !this.hideClearButton && this._items && this._items.length > 0
 		};
 
 		const containerClasses = {
@@ -191,7 +205,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 					class="${classMap(clearableClasses)}"
 					@click="${this._handleClearAll}"
 					slim
-					text="${this.localize('components.tag-list.clear-all')}"
+					text="${this.clearText || this.localize('components.tag-list.clear-all')}"
 				>
 				</d2l-button-subtle>
 			</div>
