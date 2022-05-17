@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
-import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '../../mixins/localize-mixin.js';
 
-class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
+class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -11,7 +11,7 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 		};
 	}
 
-	static get localizeConfig() {
+	static async getLocalizeResources(langs) {
 		const langResources = {
 			'ar': { 'hello': 'مرحبا {name}' },
 			'de': { 'hello': 'Hallo {name}' },
@@ -29,15 +29,17 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 			'zh-cn': { 'hello': '你好 {name}' },
 			'zh-tw': { 'hello': '你好 {name}' }
 		};
-		return {
-			importFunc: async lang => {
-				return new Promise((resolve) => {
-					setTimeout(() => {
-						resolve(langResources[lang]);
-					}, 50);
-				});
+
+		for (let i = 0; i < langs.length; i++) {
+			if (langResources[langs[i]]) {
+				return {
+					language: langs[i],
+					resources: langResources[langs[i]]
+				};
 			}
-		};
+		}
+
+		return null;
 	}
 
 	render() {

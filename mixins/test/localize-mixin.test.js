@@ -2,8 +2,6 @@ import '../demo/localize-test.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { LocalizeDynamicMixin } from '../localize-dynamic-mixin.js';
 import { LocalizeMixin } from '../localize-mixin.js';
 import { LocalizeStaticMixin } from '../localize-static-mixin.js';
 import { stub } from 'sinon';
@@ -76,59 +74,9 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
-const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
-	static get localizeConfig() {
-		return {
-			importFunc: () => {
-				return new Promise((resolve) => {
-					setTimeout(() => {
-						resolve({ 'testA': 'Test A Content' });
-					}, 50);
-				});
-			}
-		};
-	}
-};
-
-const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
-	static get localizeConfig() {
-		return {
-			importFunc: () => {
-				return new Promise((resolve) => {
-					setTimeout(() => {
-						resolve({ 'testB': 'Test B Content' });
-					}, 50);
-				});
-			}
-		};
-	}
-};
-
 const multiMixinTag = defineCE(
 	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
 
-	}
-);
-
-const multiMixinTagDynamic = defineCE(
-	class extends test1LocalizeDynamicMixn(test2LocalizeDynamicMixn((LitElement))) {
-
-	}
-);
-
-const multiMixinTagDynamicConsolidated = defineCE(
-	class extends LocalizeDynamicMixin(LocalizeCoreElement((LitElement))) {
-		static get localizeConfig() {
-			return {
-				importFunc: () => {
-					return new Promise((resolve) => {
-						setTimeout(() => {
-							resolve({ 'testC': 'Test C Content' });
-						}, 50);
-					});
-				}
-			};
-		}
 	}
 );
 
@@ -272,14 +220,10 @@ describe('LocalizeMixin', () => {
 	describe('multiple localize and localize static mixin', () => {
 
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
-		const multiMixinFixtureDynamic = `<${multiMixinTagDynamic}></${multiMixinTagDynamic}>`;
-		const multiMixinFixtureDynamicConsolidated = `<${multiMixinTagDynamicConsolidated}></${multiMixinTagDynamicConsolidated}>`;
 
-		let elem, elemDynamic, elemDynamicConsolidated;
+		let elem;
 		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
-			elemDynamic = await fixture(multiMixinFixtureDynamic);
-			elemDynamicConsolidated = await fixture(multiMixinFixtureDynamicConsolidated);
 		});
 
 		it('should localize text from all mixins', () => {
@@ -292,22 +236,6 @@ describe('LocalizeMixin', () => {
 			expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
 			expect(val3).to.equal('This is English from Test3LocalizeMixin');
 			expect(val4).to.equal('This is English from Test4LocalizeMixin');
-		});
-
-		it('should localize text from inherited dynamic mixins', () => {
-			const val1 = elemDynamic.localize('testA');
-			const val2 = elemDynamic.localize('testB');
-
-			expect(val1).to.equal('Test A Content');
-			expect(val2).to.equal('Test B Content');
-		});
-
-		it('should localize text from inherited dynamic mixin and class itself', () => {
-			const val1 = elemDynamicConsolidated.localize('testC');
-			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
-
-			expect(val1).to.equal('Test C Content');
-			expect(val2).to.equal('Clear All');
 		});
 
 		it('should re-localize text from all mixins when locale changes', (done) => {
