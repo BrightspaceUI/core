@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
@@ -14,7 +15,8 @@ export const linkStyles = css`
 		bottom: 0.2rem;
 		top: 0.2rem;
 	}
-	.d2l-link:hover, .d2l-link:focus {
+	.d2l-link:hover,
+	.d2l-link.focus-visible {
 		color: var(--d2l-color-celestine-minus-1);
 		outline-width: 0;
 		text-decoration: underline;
@@ -42,7 +44,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends FocusMixin(LitElement) {
+class Link extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
