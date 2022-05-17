@@ -76,12 +76,14 @@ describe('d2l-dropdown-content', () => {
 		const selector = '#before-open-event';
 		await page.$eval(selector, dropdown => {
 			dropdown.addEventListener('d2l-dropdown-before-open', e => {
-				e.detail.ready = new Promise(resolve => {
-					setTimeout(() => {
-						dropdown.querySelector('d2l-dropdown-content').innerHTML = '<div>Some delayed content</div>';
-						resolve();
-					}, 100);
-				});
+				e.detail.ready.push(
+					new Promise(resolve => {
+						setTimeout(() => {
+							dropdown.querySelector('d2l-dropdown-content').innerHTML = '<div>Some delayed content</div>';
+							resolve();
+						}, 100);
+					})
+				);
 			});
 		});
 		await open(page, selector);
