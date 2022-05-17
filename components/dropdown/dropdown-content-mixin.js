@@ -575,11 +575,25 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		if (newValue) {
 
-			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
-				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
-			}
+			const evt = new CustomEvent('d2l-dropdown-before-open', {
+				bubbles: true,
+				composed: true,
+				detail: {}
+			});
+			this.dispatchEvent(evt);
 
-			await doOpen();
+			// if any handlers are async we need to let them run to assign promise before proceeding
+			requestAnimationFrame(async() => {
+
+				if (evt.detail.ready) await evt.detail.ready;
+
+				if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
+					this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+				}
+
+				await doOpen();
+
+			});
 
 		} else {
 

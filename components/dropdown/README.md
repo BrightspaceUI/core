@@ -257,6 +257,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ### Events
 | Name | Description |
 |---|---|
+| `d2l-dropdown-before-open` | Dispatched before the dropdown is opened. A Promise may be assigned to the event's `detail.ready` enabling updates before opening. |
 | `d2l-dropdown-open` | Dispatched when the dropdown is opened |
 | `d2l-dropdown-close` | dispatched when the dropdown is closed |
 | `d2l-dropdown-position` | Dispatched when the dropdown position finishes adjusting |

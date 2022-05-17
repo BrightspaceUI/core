@@ -72,6 +72,22 @@ describe('d2l-dropdown-content', () => {
 		});
 	});
 
+	it('before-open-event', async function() {
+		const selector = '#before-open-event';
+		await page.$eval(selector, dropdown => {
+			dropdown.addEventListener('d2l-dropdown-before-open', e => {
+				e.detail.ready = new Promise(resolve => {
+					setTimeout(() => {
+						dropdown.querySelector('d2l-dropdown-content').innerHTML = '<div>Some delayed content</div>';
+						resolve();
+					}, 100);
+				});
+			});
+		});
+		await open(page, selector);
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+	});
+
 	[
 		'mobile-right-tray',
 		'mobile-left-tray',
