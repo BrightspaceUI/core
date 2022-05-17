@@ -12,11 +12,11 @@ export default {
 	"components.filter.clear": "Wissen",
 	"components.filter.clearAll": "Alles wissen",
 	"components.filter.clearAllAnnounce": "Alle filters wissen",
+	"components.filter.clearAllAnnounceOverride": "Clearing all filters for: {filterText}",
 	"components.filter.clearAllDescription": "Alle filters wissen",
+	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Filters wissen voor {filterName}",
-	"components.filter.clearAnnounceSingle": "Filters wissen",
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
-	"components.filter.clearDescriptionSingle": "Filters wissen",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {1 filter toegepast.} other {{number} filters toegepast.}}",
 	"components.filter.filters": "Filters", // mfv-translated
