@@ -582,18 +582,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 			this.dispatchEvent(evt);
 
-			// if any handlers are async we need to let them run to assign promise before proceeding
-			requestAnimationFrame(async() => {
+			if (evt.detail.ready.length > 0) await Promise.all(evt.detail.ready);
 
-				if (evt.detail.ready.length > 0) await Promise.all(evt.detail.ready);
+			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
+				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+			}
 
-				if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
-					this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
-				}
-
-				await doOpen();
-
-			});
+			await doOpen();
 
 		} else {
 
