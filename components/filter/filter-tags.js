@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../tag-list/tag-list.js';
 import '../tag-list/tag-list-item.js';
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { IdSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -60,6 +60,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				color: var(--d2l-color-corundum);
 				display: inline-block;
 				font-style: italic;
+				padding-top: 0.15rem;
 			}
 		`];
 	}
@@ -97,6 +98,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				<d2l-tag-list
 					clear-text="${this.localize('components.filter.clearFilters')}"
 					clearable
+					@d2l-tag-list-clear-all="${this._clearFiltersClicked}"
 					description="${labelText}"
 					?hide-clear-button="${numActiveFilters < CLEAR_FILTERS_THRESHOLD}">
 					${tagListItems}
