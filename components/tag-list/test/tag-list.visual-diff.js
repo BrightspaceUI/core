@@ -8,7 +8,7 @@ describe('d2l-tag-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 1500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tag-list/test/tag-list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -19,9 +19,11 @@ describe('d2l-tag-list', () => {
 
 	after(async() => await browser.close());
 
-	it('is correct at 1400px page width', async function() {
-		const rect = await visualDiff.getRect(page, '#default');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+	['default', 'clear-text', 'clear-text-not-clearable', 'hide-clear-button'].forEach((testCase) => {
+		it(`${testCase} is correct`, async function() {
+			const rect = await visualDiff.getRect(page, `#${testCase}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
 	});
 
 	describe('tag list item style behaviour', () => {
