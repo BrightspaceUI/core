@@ -1,5 +1,4 @@
 import '../colors/colors.js';
-import '../tooltip/tooltip.js';
 import { css, html } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
@@ -31,12 +30,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 * @type {'start'|'end'|'hidden'}
 			 * @default end
 			 */
-			textPosition: { type: String, attribute: 'text-position', reflect: true },
-			/**
-			 * The text that is displayed in a tooltip when the switch is hovered over.
-			 * @type {string}
-			 */
-			tooltip: { type: String, reflect: true }
+			textPosition: { type: String, attribute: 'text-position', reflect: true }
 		};
 	}
 
@@ -192,7 +186,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
-		const tooltip = (this.tooltip ? html`<d2l-tooltip for="${this._switchId}">${this.tooltip}</d2l-tooltip>` : '');
 		return html`
 			${textPosition === 'start' ? text : ''}
 			<div
@@ -212,7 +205,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${tooltip}
 			${textPosition === 'end' ? text : ''}
 		`;
 	}
