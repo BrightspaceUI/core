@@ -70,22 +70,6 @@ describe('d2l-switch', () => {
 				});
 			});
 		});
-
-		// Separating out from the tests above to remove the resetFocus call, reducing the chance of a test flake as
-		// resetFocus causes a delay in taking the screenshot (https://github.com/puppeteer/puppeteer/issues/7251)
-		describe('tooltip', () => {
-			[
-				{ name: 'on', selector: '#tooltip' },
-				{ name: 'on-focus', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) }
-			].forEach((info) => {
-
-				it(info.name, async function() {
-					const rect = await visualDiff.getRect(page, info.selector);
-					if (info.action) await info.action(info.selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-			});
-		});
 	});
 
 	describe('rtl', () => {
