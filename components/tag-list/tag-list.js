@@ -38,12 +38,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			 */
 			clearable: { type: Boolean },
 			/**
-			 * When an item is `clearable`, optionally add a timeout before the focus happens on clear. This is useful if the consumer has some operations that will reload the list items prior to wanting focus to occur.
+			 * ADVANCED: When an item is `clearable`, optionally add a timeout before the focus happens on clear. This is useful if the consumer has some operations that will reload the list items prior to wanting focus to occur.
 			 * @type {number}
 			 */
 			clearFocusTimeout: { type: Number, attribute: 'clear-focus-timeout' },
 			/**
-			 * Text on the clear all button that appears when `clearable` is true.
+			 * ADVANCED: Text on the clear all button that appears when `clearable` is true.
 			 * @default "Clear All"
 			 * @type {string}
 			 */
@@ -54,7 +54,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			 */
 			description: { type: String },
 			/**
-			 * Hide the clear all button that by default appears when `clearable` is true.
+			 * ADVANCED: Hide the clear all button that by default appears when `clearable` is true.
 			 * @type {boolean}
 			 */
 			hideClearButton: { type: Boolean, attribute: 'hide-clear-button' },
