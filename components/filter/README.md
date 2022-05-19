@@ -227,7 +227,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 A multi-select-list allowing the user to see (and remove) the currently applied filters. Works with the `d2l-filter`. It supports hooking up to multiple filters.
 
-<!-- docs: demo live name:d2l-filter-tags align:start -->
+<!-- docs: demo live name:d2l-filter-tags align:start display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
