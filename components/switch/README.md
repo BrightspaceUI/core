@@ -49,7 +49,6 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 | `disabled` | Boolean | Disables the switch |
 | `on` | Boolean | Whether the switch is "on" or "off" |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
-| `tooltip` | String | Text to display in a tooltip for the switch |
 ### Events
 
 - `change`: dispatched when the `on` property is updated
@@ -88,7 +87,6 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 | `disabled` | Boolean | Disabled the switch |
 | `on` | Boolean | Whether the switch is "on" or "off" |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
-| `tooltip` | String | Text to display in a tooltip for the switch |
 
 ### Events
 
