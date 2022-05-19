@@ -38,6 +38,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			 */
 			clearable: { type: Boolean },
 			/**
+			 * When an item is `clearable`, optionally add a timeout before the focus happens on clear. This is useful if the consumer has some operations that will reload the list items prior to wanting focus to occur.
+			 * @type {number}
+			 */
+			clearFocusTimeout: { type: Number, attribute: 'clear-focus-timeout' },
+			/**
 			 * Text on the clear all button that appears when `clearable` is true.
 			 * @default "Clear All"
 			 * @type {string}
@@ -100,6 +105,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
+		this.clearFocusTimeout = 0;
 		this.hideClearButton = false;
 
 		this._chompIndex = 10000;
@@ -360,10 +366,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const rootTarget = e.composedPath()[0];
 		const children = this._getVisibleEffectiveChildren();
 		const itemIndex = children.indexOf(rootTarget);
-		if (children.length > 1) {
-			if (children[itemIndex - 1]) children[itemIndex - 1].focus();
-			else children[itemIndex + 1].focus();
-		}
+
+		if (children.length <= 1) return;
+		const focusableElem = children[itemIndex - 1] || children[itemIndex + 1];
+
+		setTimeout(() => focusableElem.focus(), this.clearFocusTimeout);
 	}
 
 	_handleKeyboardTooltipShown() {

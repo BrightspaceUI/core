@@ -96,6 +96,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		else {
 			filters = html`
 				<d2l-tag-list
+					clear-focus-timeout=210
 					clear-text="${this.localize('components.filter.clearFilters')}"
 					clearable
 					@d2l-tag-list-clear-all="${this._clearFiltersClicked}"

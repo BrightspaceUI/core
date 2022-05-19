@@ -81,9 +81,10 @@ describe('d2l-filter-tags', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
-		it('is correct when deleting first item', async function() {
+		it('is correct when deleting second item', async function() {
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
+			await page.keyboard.press('ArrowRight');
 			await page.keyboard.press('Delete');
 			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
