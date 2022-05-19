@@ -422,7 +422,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		this.addEventListener('blur', () => this._isInitialFocusDate = true);
 
-		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+		this.addEventListener('d2l-localize-resources-change', () => {
 			calendarData = null;
 			getCalendarData(true);
 			this.requestUpdate();
