@@ -166,7 +166,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		this.labelHidden = false;
 		this.on = false;
 		this.textPosition = 'end';
-		this._switchId = getUniqueId();
 		this._textId = getUniqueId();
 	}
 
@@ -194,7 +193,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
 				class="d2l-switch-container"
 				@click="${this._handleClick}"
-				id="${this._switchId}"
 				@keydown="${this._handleKeyDown}"
 				@keyup="${this._handleKeyUp}"
 				role="switch"
