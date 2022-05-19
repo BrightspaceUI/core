@@ -297,7 +297,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					slot="header"
 					@click="${this._handleClearAll}"
 					?disabled="${this._totalAppliedCount === 0}"
-					description="${this.localize('components.filter.clearAllDescription')}"
+					description="${this.text ? this.localize('components.filter.clearAllDescriptionOverride', { filterText: this.text }) : this.localize('components.filter.clearAllDescription')}"
 					text="${this.localize('components.filter.clearAll')}">
 				</d2l-button-subtle>
 			`;
@@ -309,7 +309,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			<d2l-button-subtle
 				@click="${this._handleClear}"
 				?disabled="${dimension.loading || dimension.appliedCount === 0}"
-				description="${singleDimension ? this.localize('components.filter.clearDescriptionSingle') : this.localize('components.filter.clearDescription', { filterName: dimension.text })}"
+				description="${this.localize('components.filter.clearDescription', { filterName: dimension.text })}"
 				text="${this.localize('components.filter.clear')}">
 			</d2l-button-subtle>
 		`;
@@ -485,11 +485,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
 
-		if (!this._activeDimensionKey) {
-			announce(this.localize('components.filter.clearAnnounceSingle'));
-		} else {
-			announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
-		}
+		announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 	}
 
 	_handleClearAll() {
@@ -504,7 +500,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._dispatchChangeEventNow(true);
 		this.requestUpdate();
 
-		announce(this.localize('components.filter.clearAllAnnounce'));
+		this.text ? announce(this.localize('components.filter.clearAllAnnounceOverride', { filterText: this.text })) : announce(this.localize('components.filter.clearAllAnnounce'));
 	}
 
 	_handleDimensionDataChange(e) {

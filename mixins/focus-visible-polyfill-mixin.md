@@ -18,7 +18,7 @@ import { FocusVisiblePolyfillMixin } from '@brightspace-ui/core/mixins/focus-vis
 class MyComponent extends FocusVisiblePolyfillMixin(LitElement) {
   static get styles() {
     return css`
-      /* styles to apply when clicked or focused with a keybard */
+      /* styles to apply when clicked or focused with a keyboard */
       button:hover,
       button:focus {
         background-color: #cccccc;
