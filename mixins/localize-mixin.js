@@ -35,11 +35,10 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 							}
 						}
 						this.__resources = resources;
+						this._onResourcesChange();
 						if (first) {
 							resolve();
 							first = false;
-						} else {
-							this._languageChange();
 						}
 					});
 			};
@@ -183,11 +182,9 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		return this.constructor['getLocalizeResources'] !== undefined;
 	}
 
-	_languageChange() {
+	_onResourcesChange() {
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-localize-behavior-language-changed', { bubbles: true, composed: true }
-		));
+		this.dispatchEvent(new CustomEvent('d2l-localize-resources-change'));
 	}
 
 });

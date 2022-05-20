@@ -200,7 +200,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		this.addEventListener('blur', this._handleBlur);
-		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+		this.addEventListener('d2l-localize-resources-change', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
 			this.updateComplete.then(() => {
