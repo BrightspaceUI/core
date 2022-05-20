@@ -4,10 +4,8 @@ import '../tag-list/tag-list-item.js';
 import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { IdSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-
-const CLEAR_FILTERS_THRESHOLD = 4;
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A tag-list allowing the user to see (and remove) the currently applied filters.
@@ -97,11 +95,9 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			filters = html`
 				<d2l-tag-list
 					clear-focus-timeout=210
-					clear-text="${this.localize('components.filter.clearFilters')}"
 					clearable
 					@d2l-tag-list-clear-all="${this._clearFiltersClicked}"
-					description="${labelText}"
-					?hide-clear-button="${numActiveFilters < CLEAR_FILTERS_THRESHOLD}">
+					description="${labelText}">
 					${tagListItems}
 				</d2l-tag-list>
 			`;
@@ -109,7 +105,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		return html`
 			<div class="d2l-filter-tags-wrapper">
-				<span class="d2l-filter-tags-label d2l-body-compact">${labelText}</span>
+				${this.labelText ? html`<span class="d2l-filter-tags-label d2l-body-compact">${labelText}</span>` : null}
 				${filters}
 			</div>
 		`;

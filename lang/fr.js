@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Effacement des filtres pour : {filterName} en cours",
 	"components.filter.clearDescription": "Effacer les filtres pour : {filterName}",
-	"components.filter.clearFilters": "Effacer les filtres",
 	"components.filter.loading": "Chargement des filtres",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Aucun filtre appliqué.} one {1 filtre appliqué.} other {{number} filtres appliqués.}}",
 	"components.filter.filters": "Filtres",

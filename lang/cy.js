@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Wrthi’n clirio hidlwyr ar gyfer: {filterName}",
 	"components.filter.clearDescription": "Wrthi’n clirio hidlwyd ar gyfer: {filterName}",
-	"components.filter.clearFilters": "Clirio hidlwyr",
 	"components.filter.loading": "Wrthi’n llwytho hidlyddion",
 	"components.filter.filterCountDescription": "{number, plural, zero {Dim hildwyr wedi'u gweithredu.} one {1 hidlydd wedi'i weithredu.} other {{number} hidlydd wedi'u gweithredu.}}",
 	"components.filter.filters": "Hidlyddion",

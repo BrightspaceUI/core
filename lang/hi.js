@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "इसके लिए फ़िल्टर साफ़ हो रहे हैं: {filterName}",
 	"components.filter.clearDescription": "इसके लिए फ़िल्टर्स साफ़ करें: {filterName}",
-	"components.filter.clearFilters": "फ़िल्टर साफ़ करें",
 	"components.filter.loading": "फिल्टर्स लोड किए जा रहे हैं",
 	"components.filter.filterCountDescription": "{number, plural, =0 {कोई फ़िल्टर लागू नहीं किए गए} one {1 फ़िल्टर लागू किया गया।} other {{number} फ़िल्टर्स लागू किए गए।}}",
 	"components.filter.filters": "फ़िल्टर्स",

@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "{filterName} フィルタのクリア",
 	"components.filter.clearDescription": "{filterName} フィルタのクリア",
-	"components.filter.clearFilters": "フィルタのクリア",
 	"components.filter.loading": "フィルタのロード中",
 	"components.filter.filterCountDescription": "{number, plural, =0 {フィルタは適用されていません。} other {{number} 個のフィルタが適用されています。}}",
 	"components.filter.filters": "フィルタ",

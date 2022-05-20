@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Rydder filtre for: {filterName}",
 	"components.filter.clearDescription": "Ryd filtre for: {filterName}",
-	"components.filter.clearFilters": "Ryd filtre",
 	"components.filter.loading": "Indlæser filtre",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Ingen filtre anvendt.} one {1 filter anvendt.} other {{number} filtre anvendt.}}",
 	"components.filter.filters": "Filtre",

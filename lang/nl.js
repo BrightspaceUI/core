@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Filters wissen voor {filterName}",
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
-	"components.filter.clearFilters": "Filters wissen",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {1 filter toegepast.} other {{number} filters toegepast.}}",
 	"components.filter.filters": "Filters", // mfv-translated

@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "Rensar filter för {filterName}",
 	"components.filter.clearDescription": "Rensa filter för {filterName}",
-	"components.filter.clearFilters": "Rensa filter",
 	"components.filter.loading": "Läser in filter",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Inga filter tillämpade.} one {1 filter tillämpat.} other {{number} filter tillämpade.}}",
 	"components.filter.filters": "Filter",

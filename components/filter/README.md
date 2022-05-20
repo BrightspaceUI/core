@@ -225,7 +225,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 ## Tags for Applied Filters [d2l-filter-tags]
 
-A multi-select-list allowing the user to see (and remove) the currently applied filters. Works with the `d2l-filter`. It supports hooking up to multiple filters.
+A tag-list allowing the user to see (and remove) the currently applied filters. Works with the `d2l-filter`. It supports hooking up to multiple filters.
 
 <!-- docs: demo live name:d2l-filter-tags align:start display:block autoSize:false size:medium -->
 ```html

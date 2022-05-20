@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "{filterName}에 대한 필터 지우기",
 	"components.filter.clearDescription": "{filterName}에 대한 필터를 지웁니다.",
-	"components.filter.clearFilters": "필터 지우기",
 	"components.filter.loading": "필터 로드 중",
 	"components.filter.filterCountDescription": "{number, plural, =0 {적용된 필터 없음.} other {{number}개 필터 적용됨.}}",
 	"components.filter.filters": "개 필터",

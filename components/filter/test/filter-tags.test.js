@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-tags.js';
-import { expect, fixture, html, oneEvent, waitUntil, aTimeout } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { spy } from 'sinon';
 
@@ -121,63 +121,6 @@ describe('d2l-filter-tags', () => {
 		});
 
 		describe('clear filters button', () => {
-			describe('visiblity', () => {
-				it('clear filters button is hidden when 3 filters are applied', () => {
-					const clearFilters = tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
-					expect(window.getComputedStyle(clearFilters).visibility).to.equal('hidden');
-				});
-				it('selecting a 4th filter reveals the clear filters button, then removing it hides it', async() => {
-					const updateSpy = spy(filterTags, 'updateActiveFilters');
-					const clearFilters = tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
-					const values = filter.querySelectorAll('d2l-filter-dimension-set-value');
-					values[1].selected = true;
-					await waitUntil(() => updateSpy.callCount === 1, 'Active filters were not updated');
-
-					expect(window.getComputedStyle(clearFilters).visibility).to.equal('visible');
-					values[1].selected = false;
-					await waitUntil(() => updateSpy.callCount === 2, 'Active filters were not updated a second time');
-
-					expect(window.getComputedStyle(clearFilters).visibility).to.equal('hidden');
-				});
-				it('clear filters button is visible when all filters are applied', async() => {
-					const updateSpy = spy(filterTags, 'updateActiveFilters');
-					const values = filter.querySelectorAll('d2l-filter-dimension-set-value');
-
-					values[1].selected = true;
-					values[2].selected = true;
-					values[4].selected = true;
-					values[5].selected = true;
-
-					await waitUntil(() => updateSpy.callCount > 0, 'Active filters were not updated');
-					const clearFilters = tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
-					expect(window.getComputedStyle(clearFilters).visibility).to.equal('visible');
-				});
-				it('tag list is removed when 0 filters are applied', async() => {
-					const updateSpy = spy(filterTags, 'updateActiveFilters');
-					const clearFilters = tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
-					const values = filter.querySelectorAll('d2l-filter-dimension-set-value');
-
-					values[0].selected = false;
-					values[3].selected = false;
-					values[6].selected = false;
-
-					await waitUntil(() => updateSpy.callCount > 0, 'Active filters were not updated');
-
-					const updatedTagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
-					expect(updatedTagList).to.be.null;
-				});
-				it('clear filters button is hidden when 1 filters is applied', async() => {
-					const updateSpy = spy(filterTags, 'updateActiveFilters');
-					const clearFilters = tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
-					const values = filter.querySelectorAll('d2l-filter-dimension-set-value');
-
-					values[0].selected = false;
-					values[3].selected = false;
-
-					await waitUntil(() => updateSpy.callCount > 0, 'Active filters were not updated');
-					expect(window.getComputedStyle(clearFilters).visibility).to.equal('hidden');
-				});
-			});
 			describe('functionality', () => {
 				it('selecting a 4th filter & clicking clear filters fires a d2l-filter-change event', async() => {
 					const updateSpy = spy(filterTags, 'updateActiveFilters');
@@ -269,7 +212,6 @@ describe('d2l-filter-tags', () => {
 			expect(values[0].selected).to.be.true;
 
 			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
-			// await items[0].updateComplete;
 			items[0].shadowRoot.querySelector('d2l-button-icon').click();
 
 			const e = await oneEvent(filter1, 'd2l-filter-change');

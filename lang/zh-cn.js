@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "正在清除筛选器：{ filterName }",
 	"components.filter.clearDescription": "清除筛选条件：{ filterName }",
-	"components.filter.clearFilters": "清除筛选",
 	"components.filter.loading": "正在加载筛选器",
 	"components.filter.filterCountDescription": "{number, plural, =0 {未应用筛选器。} other {已应用 {number} 个筛选器。}}",
 	"components.filter.filters": "个筛选条件",

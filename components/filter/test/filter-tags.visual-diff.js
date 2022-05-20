@@ -8,7 +8,7 @@ describe('d2l-filter-tags', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/filter/test/filter-tags.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -24,13 +24,17 @@ describe('d2l-filter-tags', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
-	[1400, 980, 969, 601, 599, 400, 320].forEach((width) => {
+	[1500, 980, 969, 601, 599, 400, 320].forEach((width) => {
 		describe(`basic at width ${width}`, () => {
 			const selector = '#basic';
 
 			before(async() => {
 				await page.$eval(selector, async(elem, width) => {
 					elem.parentNode.style.width = `${width + 140}px`; // account for label
+					const filterTags = elem.querySelector('d2l-filter-tags');
+					const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
+					tagList._showHiddenTags = false;
+					await elem.updateComplete;
 				}, width);
 				await page.waitForTimeout(500);
 			});
@@ -62,7 +66,7 @@ describe('d2l-filter-tags', () => {
 
 		before(async() => {
 			await page.$eval(selector, async(elem) => {
-				elem.parentNode.style.width = '1200px';
+				elem.parentNode.style.width = '1500px';
 				elem._showHiddenTags = false;
 				await elem.updateComplete;
 			});
@@ -73,7 +77,7 @@ describe('d2l-filter-tags', () => {
 			await page.$eval(selector, (elem) => {
 				const filterTags = elem.querySelector('d2l-filter-tags');
 				const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
-				const deleteButton = items[4].shadowRoot.querySelector('d2l-button-icon');
+				const deleteButton = items[6].shadowRoot.querySelector('d2l-button-icon');
 				deleteButton.click();
 			});
 			await page.waitForTimeout(500);
@@ -92,11 +96,6 @@ describe('d2l-filter-tags', () => {
 		});
 
 		it('is correct after clicking Clear All', async function() {
-			await page.$eval(selector, async(elem) => {
-				const values = elem.querySelectorAll('d2l-filter-dimension-set-value');
-				values[0].selected = true;
-				values[4].selected = true;
-			});
 			await page.$eval(selector, async(elem) => {
 				const filterTags = elem.querySelector('d2l-filter-tags');
 				const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');

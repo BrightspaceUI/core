@@ -19,11 +19,9 @@ describe('d2l-tag-list', () => {
 
 	after(async() => await browser.close());
 
-	['default', 'clear-text', 'clear-text-not-clearable', 'hide-clear-button'].forEach((testCase) => {
-		it(`${testCase} is correct`, async function() {
-			const rect = await visualDiff.getRect(page, `#${testCase}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
-		});
+	it('is correct at 1400px page width', async function() {
+		const rect = await visualDiff.getRect(page, '#default');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
 	describe('tag list item style behaviour', () => {

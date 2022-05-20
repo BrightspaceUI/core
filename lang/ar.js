@@ -18,7 +18,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
 	"components.filter.clearAnnounce": "جارٍ مسح عوامل التصفية لـ: {filterName}",
 	"components.filter.clearDescription": "مسح عوامل التصفية لـ: {filterName}",
-	"components.filter.clearFilters": "مسح عوامل التصفية",
 	"components.filter.loading": "يتم تحميل عوامل التصفية",
 	"components.filter.filterCountDescription": "{number, plural, zero {لم يتم تطبيق عوامل تصفية.} one {تم تطبيق عامل تصفية واحد.} other {{number} من عوامل التصفية التي تم تطبيقها.}}",
 	"components.filter.filters": "عوامل التصفية",
