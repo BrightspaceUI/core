@@ -8,7 +8,7 @@ describe('d2l-filter-tags', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1700, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/filter/test/filter-tags.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -87,7 +87,6 @@ describe('d2l-filter-tags', () => {
 
 		it('is correct when deleting second item', async function() {
 			await page.keyboard.press('Tab');
-			await page.keyboard.press('Tab');
 			await page.keyboard.press('ArrowRight');
 			await page.keyboard.press('Delete');
 			await page.waitForTimeout(500);
@@ -103,6 +102,17 @@ describe('d2l-filter-tags', () => {
 				tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click();
 			});
 			const rect = await visualDiff.getRect(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
+
+		it('is correct after clicking Clear All with label', async function() {
+			await page.$eval('#two-filters', async(elem) => {
+				const filterTags = elem.querySelector('d2l-filter-tags');
+				const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
+				await tagList.updateComplete;
+				tagList.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click();
+			});
+			const rect = await visualDiff.getRect(page, '#two-filters');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 

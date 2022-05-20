@@ -16,10 +16,19 @@
 		<title>d2l-filter</title>
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
 		<meta charset="UTF-8">
+		<style>
+			#basic d2l-filter-tags{
+				max-width: calc(100% - 120px);
+			}
+			#two-filters d2l-filter-tags {
+				max-width: calc(100% - 250px);
+			}
+		</style>
 	</head>
 	<body class="d2l-typography">
 		<div>
 			<div class="visual-diff" id="basic">
+				<d2l-filter-tags filter-ids="filter"></d2l-filter-tags>
 				<d2l-filter id="filter">
 					<d2l-filter-dimension-set key="1" text="Category 1">
 						<d2l-filter-dimension-set-value selected text="Value 1 - 1" key="1"></d2l-filter-dimension-set-value>
@@ -35,9 +44,9 @@
 						<d2l-filter-dimension-set-value selected text="Value 2 - 3" key="3"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
-				<d2l-filter-tags filter-ids="filter"></d2l-filter-tags>
 			</div>
 			<div class="visual-diff" id="two-filters">
+				<d2l-filter-tags filter-ids="filter-1 filter-2" label-text="An optional filter label"></d2l-filter-tags>
 				<d2l-filter id="filter-1">
 					<d2l-filter-dimension-set key="1" text="Category 1">
 						<d2l-filter-dimension-set-value selected text="Value 1 - 1" key="1"></d2l-filter-dimension-set-value>
@@ -51,7 +60,6 @@
 						<d2l-filter-dimension-set-value selected text="Value" key="1"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
-				<d2l-filter-tags filter-ids="filter-1 filter-2" label-text="An optional filter label"></d2l-filter-tags>
 			</div>
 		</div>
 	</body>

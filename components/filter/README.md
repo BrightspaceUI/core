@@ -235,6 +235,20 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
   import '@brightspace-ui/core/components/filter/filter-tags.js';
 </script>
+<style>
+	d2l-filter-tags {
+		max-width: calc(100% - 300px);
+	}
+
+	@media(max-width: 600px) {
+      d2l-filter-tags {
+        display: block;
+        max-width: 100%;
+      }
+	}
+</style>
+
+<d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
 
 <d2l-filter id="core-filter">
   <d2l-filter-dimension-set key="1" text="Dim 1">
@@ -263,8 +277,6 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
     <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
-
-<d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
 ```
 
 <!-- docs: start hidden content -->

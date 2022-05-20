@@ -30,7 +30,8 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	static get styles() {
 		return [bodyCompactStyles, css`
 			:host {
-				display: block;
+				display: inline-block;
+				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
