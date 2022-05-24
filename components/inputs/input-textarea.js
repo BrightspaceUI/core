@@ -123,6 +123,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 			/* mirror dimensions must match textarea - match border + padding */
 			.d2l-input-textarea-mirror {
 				line-height: 1rem;
+				overflow: hidden;
 				padding-bottom: 0.5rem;
 				padding-top: 0.5rem;
 				visibility: hidden;
