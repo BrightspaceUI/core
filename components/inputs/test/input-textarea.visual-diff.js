@@ -68,6 +68,15 @@ describe('d2l-input-textarea', () => {
 
 		});
 
+		it('mirror does not add additional container height', async function() {
+			// scroll to bottom
+			await page.$eval('#scroll', (container) => {
+				container.scrollTop = container.scrollHeight;
+			});
+			const rect = await visualDiff.getRect(page, '#scroll');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+		});
+
 	});
 
 });
