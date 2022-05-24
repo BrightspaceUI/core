@@ -162,7 +162,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
 			}
-			:host([inline]),
+			:host([inline]:not([hidden])),
 			:host([inline]:not([no-deferred-rendering])) div.d2l-html-block-rendered {
 				display: inline;
 			}
