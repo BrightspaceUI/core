@@ -163,7 +163,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				display: none;
 			}
 			:host([inline]),
-			:host([inline]) div.d2l-html-block-rendered {
+			:host([inline]:not([no-deferred-rendering])) div.d2l-html-block-rendered {
 				display: inline;
 			}
 			:host([dir="rtl"]) {
