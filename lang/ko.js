@@ -32,7 +32,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label}은(는) {minlength}자 이상이어야 합니다",
 	"components.form-element.input.url.typeMismatch": "URL이 유효하지 않습니다",
 	"components.form-element.valueMissing": "{label}이(가) 필요합니다.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {제출한 정보에서 1개의 오류가 발견되었습니다} other {제출한 정보에서 {count}개의 오류가 발견되었습니다}}",
+	"components.form-error-summary.errorSummary": "{count, plural, other {제출한 정보에서 {count}개의 오류가 발견되었습니다}}",
 	"components.input-date-range.endDate": "종료일",
 	"components.input-date-range.errorBadInput": "{startLabel}은(는) {endLabel} 앞에 있어야 합니다",
 	"components.input-date-range.startDate": "시작일",

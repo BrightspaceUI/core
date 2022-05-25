@@ -32,7 +32,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} は {minlength} 文字以上である必要があります",
 	"components.form-element.input.url.typeMismatch": "URL が有効ではありません",
 	"components.form-element.valueMissing": "{label} は必須です。",
-	"components.form-error-summary.errorSummary": "{count, plural, one {送信した情報に 1 件のエラーが見つかりました} other {送信した情報に {count} 件のエラーが見つかりました}}",
+	"components.form-error-summary.errorSummary": "{count, plural, other {送信した情報に {count} 件のエラーが見つかりました}}",
 	"components.input-date-range.endDate": "終了日",
 	"components.input-date-range.errorBadInput": "{startLabel} は {endLabel} より前にする必要があります",
 	"components.input-date-range.startDate": "開始日",
