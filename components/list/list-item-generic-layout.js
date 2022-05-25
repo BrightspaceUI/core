@@ -208,7 +208,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);
-		if (!firstFocusable) return;
+		if (!firstFocusable) {
+			const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+			if (listItem) listItem.focus();
+			return;
+		}
 
 		if (itemNum === 1 || !this._focusNextWithinCell(firstFocusable, itemNum)) {
 			firstFocusable.focus();
