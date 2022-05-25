@@ -394,24 +394,10 @@ describe('d2l-list-item-generic-layout', () => {
 					activeElement: getComposedActiveElement
 				},
 				{
-					key: { name: 'ArrowUp', code: keyCodes.UP },
-					desc: 'does not move focus when above row does not contain same cell',
-					itemKey: 'item5',
-					initial: () => layout.querySelector('[slot="content-action"] a'),
-					activeElement: getComposedActiveElement
-				},
-				{
 					key: { name: 'ArrowDown', code: keyCodes.DOWN },
 					desc: 'does not move focus when last row already focused',
 					itemKey: 'item7',
 					initial: () => layout.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
-					activeElement: getComposedActiveElement
-				},
-				{
-					key: { name: 'ArrowDown', code: keyCodes.DOWN },
-					desc: 'does not move focus when above row does not contain same cell',
-					itemKey: 'item3',
-					initial: () => layout.querySelector('[slot="content-action"] a'),
 					activeElement: getComposedActiveElement
 				},
 				{
