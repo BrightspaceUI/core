@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, isFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable, isFocusable } from '../../helpers/focus.js';
 import { isInteractiveDescendant } from '../../mixins/interactive-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -203,14 +203,17 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_focusCellItem(num, itemNum) {
+	_focusCellItem(previous, num, itemNum) {
 		const cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);
 		if (!firstFocusable) {
 			const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
-			if (listItem) listItem.focus();
+			if (listItem) {
+				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
+				if (nextFocusable) nextFocusable.focus();
+			}
 			return;
 		}
 
@@ -287,7 +290,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		if (!listItem) return;
 		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		listItemRow._focusCellItem(this._cellNum, this._cellFocusedItem);
+		listItemRow._focusCellItem(previous, this._cellNum, this._cellFocusedItem);
 
 	}
 
