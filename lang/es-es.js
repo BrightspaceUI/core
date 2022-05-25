@@ -32,7 +32,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} debe tener al menos {minlength} caracteres",
 	"components.form-element.input.url.typeMismatch": "La dirección URL no es válida",
 	"components.form-element.valueMissing": "{label} es obligatorio.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Se ha encontrado un error en la información que ha enviado} other {Se han encontrado {count} errores en la información que ha enviado}}",
+	"components.form-error-summary.errorSummary": "{count, plural, one {Se ha encontrado 1 error en la información enviada} other {Se han encontrado {count} errores en la información que ha enviado}}",
 	"components.input-date-range.endDate": "Fecha final",
 	"components.input-date-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-date-range.startDate": "Fecha de inicio",

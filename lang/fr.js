@@ -40,7 +40,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date",
+	"components.input-date-time.date": "Date", // mfv-translated
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",

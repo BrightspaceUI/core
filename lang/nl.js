@@ -19,7 +19,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {1 filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters",
+	"components.filter.filters": "Filters", // mfv-translated
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {1 zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
