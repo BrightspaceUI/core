@@ -9,7 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
 	"components.dropdown.close": "إغلاق",
-	"components.filter.appliedFilters": "عوامل التصفية المطبقة:",
+	"components.filter.activeFilters": "Active Filters:",
 	"components.filter.clear": "مسح",
 	"components.filter.clearAll": "مسح الكل",
 	"components.filter.clearAllAnnounce": "جارٍ مسح كل عوامل التصفية",

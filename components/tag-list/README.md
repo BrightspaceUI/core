@@ -26,6 +26,10 @@ Tag lists are used to present a list of compact, discrete pieces of information.
 
 The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-item` and adds the appropriate keyboard navigation, list semantics, clearing behaviour and responsive behaviour.
 
+### Clearable
+
+The corresponding `*-clear` event must be listened to for whatever component (`d2l-tag-list` or `d2l-tag-list-item`) has `clearable` on it and that listener must handle individual `d2l-tag-list-item` deletion as well as potentially focus behavior (see individual event descriptions).
+
 <!-- docs: demo live name:d2l-tag-list autoSize:false display:block size:small -->
 ```html
 <script type="module">
@@ -35,6 +39,14 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
   document.addEventListener('d2l-tag-list-item-clear', (e) => {
     e.target.parentNode.removeChild(e.target);
     console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+  });
+
+  document.addEventListener('d2l-tag-list-clear', (e) => {
+    const items = e.target.querySelectorAll('[role="listitem"]');
+    items.forEach((item) => {
+      item.parentNode.removeChild(item);
+    });
+    console.log('d2l-tag-list-clear event dispatched');
   });
 </script>
 <d2l-tag-list description="Example Tags">

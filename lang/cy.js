@@ -9,7 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Cau'r dialog hwn",
 	"components.dropdown.close": "Cau",
-	"components.filter.appliedFilters": "Hidlyddion wedi’u Gosod:",
+	"components.filter.activeFilters": "Active Filters:",
 	"components.filter.clear": "Clirio",
 	"components.filter.clearAll": "Clirio’r Cyfan",
 	"components.filter.clearAllAnnounce": "Wrthi’n clirio’r holl hidlwyr",

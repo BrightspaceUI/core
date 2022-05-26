@@ -70,7 +70,7 @@ describe('d2l-tag-list', () => {
 		});
 	});
 
-	describe('clearable items', () => {
+	describe('clearable', () => {
 		it('should dispatch expected events when Clear All clicked', async() => {
 			const elem = await fixture(clearableFixture);
 			await waitUntil(() => elem._items, 'List items did not become ready');
@@ -78,18 +78,7 @@ describe('d2l-tag-list', () => {
 
 			setTimeout(() => button.click());
 
-			const details = [];
-			await Promise.all(elem._items.map(async(item) => {
-				const { detail } = await oneEvent(item, 'd2l-tag-list-item-clear');
-				detail.expectedValue = item.text;
-				details.push(detail);
-			}));
-
-			expect(details.length).to.equal(4);
-			details.forEach(detail => {
-				expect(detail.value).to.equal(detail.expectedValue);
-				expect(detail.handleFocus).to.be.false;
-			});
+			await oneEvent(elem, 'd2l-tag-list-clear');
 		});
 	});
 });

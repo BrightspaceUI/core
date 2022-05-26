@@ -23,7 +23,7 @@ const basic = html`
 				<d2l-filter-dimension-set-value text="Value 2 - 3" key="3"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set>
 		</d2l-filter>
-		<d2l-filter-tags filter-ids="filter" label-text="The applied filters"></d2l-filter-tags>
+		<d2l-filter-tags filter-ids="filter" label="The applied filters"></d2l-filter-tags>
 	</div>`;
 
 const twoFilters = html`
@@ -41,7 +41,7 @@ const twoFilters = html`
 				<d2l-filter-dimension-set-value selected text="Value" key="1"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set>
 		</d2l-filter>
-		<d2l-filter-tags filter-ids="filter-1 filter-2" label-text="The applied filters"></d2l-filter-tags>
+		<d2l-filter-tags filter-ids="filter-1 filter-2" label="The applied filters"></d2l-filter-tags>
 	</div>`;
 
 describe('d2l-filter-tags', () => {
@@ -70,9 +70,9 @@ describe('d2l-filter-tags', () => {
 		});
 		it('attributes are set correctly', () => {
 			expect(filterTags.filterIds).to.equal('filter');
-			expect(filterTags.labelText).to.equal('The applied filters');
+			expect(filterTags.label).to.equal('The applied filters');
 		});
-		it('instantiates with the selected filters added as multi-select items', async() => {
+		it('instantiates with the selected filters added as tag-list items', async() => {
 			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
 			expect(items.length).to.equal(3);
 			expect(items[0].text).to.equal('Category 1: Value 1 - 1');
@@ -103,7 +103,7 @@ describe('d2l-filter-tags', () => {
 			expect(items[0].text).to.equal('Category 1: Value 1 - 4');
 			expect(items[1].text).to.equal('Value 2 - 1');
 		});
-		it('deleting an item from the multi-select list deselects the corresponding value from the filter', async() => {
+		it('deleting an item from the tag-list deselects the corresponding value from the filter', async() => {
 			const values = filter.querySelectorAll('d2l-filter-dimension-set-value');
 			expect(values[0].selected).to.be.true;
 
@@ -174,7 +174,7 @@ describe('d2l-filter-tags', () => {
 			await waitUntil(() => tagList._items, 'Tag list items did not become ready');
 		});
 
-		it('instantiates with the selected filters added as multi-select items', async() => {
+		it('instantiates with the selected filters added as tag-list items', async() => {
 			expect(filterTags.filterIds).to.equal('filter-1 filter-2');
 			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
 			expect(items.length).to.equal(2);
@@ -207,7 +207,7 @@ describe('d2l-filter-tags', () => {
 			expect(items.length).to.equal(1);
 			expect(items[0].text).to.equal('Value');
 		});
-		it('deleting an item from the multi-select list deselects the corresponding value from the filter', async() => {
+		it('deleting an item from the tag list deselects the corresponding value from the filter', async() => {
 			const values = filter1.querySelectorAll('d2l-filter-dimension-set-value');
 			expect(values[0].selected).to.be.true;
 

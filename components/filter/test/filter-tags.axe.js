@@ -21,7 +21,7 @@ const basicFixture = html`
 				<d2l-filter-dimension-set-value text="Value 2 - 3" key="3"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set>
 		</d2l-filter>
-		<d2l-filter-tags filter-ids="filter" label-text="The applied filters"></d2l-filter-tags>
+		<d2l-filter-tags filter-ids="filter" label="The applied filters"></d2l-filter-tags>
 	</div>
 `;
 

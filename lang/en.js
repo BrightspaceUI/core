@@ -9,7 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Close this dialog",
 	"components.dropdown.close": "Close",
-	"components.filter.appliedFilters": "Applied Filters:",
+	"components.filter.activeFilters": "Active Filters:",
 	"components.filter.clear": "Clear",
 	"components.filter.clearAll": "Clear All",
 	"components.filter.clearAllAnnounce": "Clearing all filters",

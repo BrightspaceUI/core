@@ -9,7 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "यह संवाद बंद करें",
 	"components.dropdown.close": "बंद करें",
-	"components.filter.appliedFilters": "लगाए गए फ़िल्टर:",
+	"components.filter.activeFilters": "Active Filters:",
 	"components.filter.clear": "साफ़ करें",
 	"components.filter.clearAll": "सभी साफ़ करें",
 	"components.filter.clearAllAnnounce": "सभी फिल्टर साफ़ किए जा रहे हैं",

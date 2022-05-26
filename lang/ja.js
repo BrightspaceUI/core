@@ -9,7 +9,7 @@ export default {
 	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "このダイアログを閉じる",
 	"components.dropdown.close": "閉じる",
-	"components.filter.appliedFilters": "適用されるフィルタ:",
+	"components.filter.activeFilters": "Active Filters:",
 	"components.filter.clear": "クリア",
 	"components.filter.clearAll": "すべてをクリア",
 	"components.filter.clearAllAnnounce": "すべてのフィルタのクリア",

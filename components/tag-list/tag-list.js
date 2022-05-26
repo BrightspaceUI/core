@@ -336,7 +336,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		/** Dispatched when a user selects to delete all tag list items. The consumer must handle the actual element deletion and focus behaviour. */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-tag-list-clear-all',
+			'd2l-tag-list-clear',
 			{ bubbles: true, composed: true }
 		));
 

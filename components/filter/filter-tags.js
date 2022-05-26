@@ -10,6 +10,9 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 /**
  * A tag-list allowing the user to see (and remove) the currently applied filters.
  */
+
+const CLEAR_TIMEOUT = 210; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
+
 class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
@@ -23,7 +26,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @default "Applied Filters:"
 			 * @type {string}
 			 */
-			labelText: { type: String, attribute: 'label-text' }
+			label: { type: String }
 		};
 	}
 
@@ -66,7 +69,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	constructor() {
 		super();
-		this.labelText = '';
+		this.label = '';
 
 		this._allActiveFilters = new Map();
 		this._filters = new IdSubscriberController(this,
@@ -78,7 +81,6 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		let numActiveFilters = 0;
 		const allActiveFilters = Array.from(this._allActiveFilters);
-		const labelText = this.labelText || this.localize('components.filter.appliedFilters');
 		const tagListItems = allActiveFilters.map(filter => filter[1].map((value, index) => {
 			numActiveFilters++;
 			return html`
@@ -95,10 +97,10 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		else {
 			filters = html`
 				<d2l-tag-list
-					clear-focus-timeout=210
 					clearable
-					@d2l-tag-list-clear-all="${this._clearFiltersClicked}"
-					description="${labelText}">
+					clear-focus-timeout="${CLEAR_TIMEOUT}"
+					@d2l-tag-list-clear="${this._clearFiltersClicked}"
+					description="${this.label || this.localize('components.filter.activeFilters')}">
 					${tagListItems}
 				</d2l-tag-list>
 			`;
@@ -106,7 +108,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		return html`
 			<div class="d2l-filter-tags-wrapper">
-				${this.labelText ? html`<span class="d2l-filter-tags-label d2l-body-compact">${labelText}</span>` : null}
+				${this.label ? html`<span class="d2l-filter-tags-label d2l-body-compact">${this.label}</span>` : null}
 				${filters}
 			</div>
 		`;
