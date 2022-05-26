@@ -118,7 +118,7 @@ describe('d2l-input-date', () => {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#placeholder');
 					return new Promise((resolve) => {
-						input.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
+						input.addEventListener('d2l-localize-resources-change', resolve, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});
 				}, lang);

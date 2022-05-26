@@ -60,7 +60,7 @@ describe('d2l-calendar', () => {
 				await page.evaluate((lang, firstCalendarOfPage) => {
 					const calendar = document.querySelector(firstCalendarOfPage);
 					return new Promise((resolve) => {
-						calendar.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
+						calendar.addEventListener('d2l-localize-resources-change', resolve, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});
 				}, lang, firstCalendarOfPage);

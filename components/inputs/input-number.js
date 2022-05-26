@@ -308,7 +308,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+		this.addEventListener('d2l-localize-resources-change', () => {
 			this._descriptor = getNumberDescriptor();
 			if (this._formattedValue.length > 0) {
 				this._updateFormattedValue();

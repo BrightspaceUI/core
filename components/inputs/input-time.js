@@ -271,7 +271,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
-		this.addEventListener('d2l-localize-behavior-language-changed', async() => {
+		this.addEventListener('d2l-localize-resources-change', async() => {
 			await this.updateComplete;
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
