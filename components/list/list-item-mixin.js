@@ -427,17 +427,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		});
 	}
 
-	scrollToAndHighlight() {
-		this.scrollToItem();
+	scrollToAndHighlight(alignToTop = true) {
+		this.scrollToItem(alignToTop);
 		setTimeout(() => {
 			this.highlight();
 		}, 1000);
 	}
 
-	scrollToItem() {
+	scrollToItem(alignToTop = true) {
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (reduceMotion) this.scrollIntoView();
-		else this.scrollIntoView({ behavior: 'smooth' });
+		if (reduceMotion) this.scrollIntoView(alignToTop);
+		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
 	}
 
 	_getNestedList() {
