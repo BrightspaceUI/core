@@ -187,11 +187,11 @@ Set dimension on mobile:
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology"><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
   <d2l-filter-dimension-set key="role" text="Role" >
-    <d2l-filter-dimension-set-value key="admin" text="Admin" selected><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="admin" text="Admin" selected></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
