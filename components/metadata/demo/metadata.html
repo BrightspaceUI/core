@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../../button/button-icon.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../dropdown/dropdown-content.js';
+			import '../../status-indicator/status-indicator.js';
+			import '../../tooltip/tooltip.js';
+
+			import '../metadata.js';
+			import '../metadata-item.js';
+			import '../metadata-item-link.js';
+
+			import '../../card/card.js';
+			import '../../card/card-loading-shimmer.js';
+			import '../../card/card-content-meta.js';
+			import '../../card/card-content-title.js';
+			import '../../card/card-footer-link.js';
+
+			import '../../loading-spinner/loading-spinner.js';
+		</script>
+		<style>
+			d2l-card {
+				vertical-align: top;
+			}
+			.subtle-demo {
+				background-color: #f6f7f8;
+				padding: 20px;
+			}
+			.badge {
+				text-align: center;
+			}
+			.badge > img {
+				background-color: white;
+				border: 1px solid #202122; /* ferrite */
+				border-radius: 6px;
+				height: 70px;
+				object-fit: cover;
+				object-position: center;
+			}
+			.badge-status {
+				background-color: white;
+				border: 1px solid white;
+				border-radius: 0.6rem;
+				display: inline-block;
+			}
+			div[slot="footer"] {
+				display: inline-block;
+			}
+			#toggleLoading {
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-metadata">
+
+			<h2>Metadata</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-metadata>
+						<d2l-metadata-item text="item"></d2l-metadata-item>
+						<d2l-metadata-item text="item with icon" icon="emoji:happy"></d2l-metadata-item>
+						<d2l-metadata-item-link text="link" href="https://www.google.com"></d2l-metadata-item-link>
+						<d2l-metadata-item-link text="link2"></d2l-metadata-item-link>
+					</d2l-metadata>
+				</template>
+			</d2l-demo-snippet>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-metadata>
+						<d2l-metadata-item text="Includes assessment" icon="tier1:grade"></d2l-metadata-item>
+						<d2l-metadata-item text="Moderated" icon="tier1:alert"></d2l-metadata-item>
+					</d2l-metadata>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
