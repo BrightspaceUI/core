@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script type="module">
+		import '../../../test/typography-preload.js';
+		import '../tooltip-help.js';
+		import { forceFocusVisible } from '../../../helpers/focus.js';
+		window.forceFocusVisible = forceFocusVisible;
+	</script>
+	<title>d2l-tooltip-help</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<style>
+		html, body {
+			box-sizing: border-box;
+			height: 100%;
+			margin: 0;
+		}
+		.visual-diff {
+			height: 100%;
+			margin: 0;
+			position: relative;
+			width: 100%;
+		}
+		.tooltip-target {
+			background-color: gray;
+			border-color: black;
+			border-radius: 50%;
+			border-style: solid;
+			border-width: 2px;
+			box-sizing: border-box;
+			height: 30px;
+			position: absolute;
+			width: 30px;
+		}
+
+		.top {
+			top: 0;
+		}
+		.bottom {
+			bottom: 0;
+		}
+		.left {
+			left: 0;
+		}
+		.right {
+			right: 0;
+		}
+		.middle-horizontal {
+			left: calc(50% - 15px);
+		}
+		.middle-vertical {
+			top: calc(50% - 15px);
+		}
+		.wide-target,
+		.wide-target-horizontal,
+		.wide-target-vertical {
+			border-radius: 5px;
+			z-index: -1;
+		}
+		.wide-target-horizontal {
+			width: 100%;
+		}
+		.wide-target-vertical {
+			height: 100%;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-tooltip-help id="help-tooltip-basic" text="Focus or hover over me for more information.">
+			More information
+		</d2l-tooltip-help>
+		<d2l-tooltip-help id="help-tooltip-unordered-list" text="Focus or hover over me for more information.">
+			Unordered List
+			<ul>
+				<li> Bullet 1 </li>
+				<li> Bullet 2 </li>
+				<li> Bullet 3 </li>
+			</ul>
+		</d2l-tooltip-help>
+		<d2l-tooltip-help id="help-tooltip-ordered-list" text="Focus or hover over me for more information.">
+			Ordered List
+			<ol>
+				<li> Point 1 </li>
+				<li> Point 2 </li>
+				<li> Point 3 </li>
+			</ol>
+		</d2l-tooltip-help>
+	</div>
+</body>
+</html>
