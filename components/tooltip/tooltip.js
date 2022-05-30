@@ -340,6 +340,17 @@ class Tooltip extends RtlMixin(LitElement) {
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
 
+			::slotted(ul),
+			::slotted(ol) {
+				padding-left: 1rem;
+			}
+
+			:host([dir="rtl"]) ::slotted(ul),
+			:host([dir="rtl"]) ::slotted(ol) {
+				padding-left: 0;
+				padding-right: 1rem;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				:host([_open-dir="bottom"]) .d2l-tooltip-container,
 				:host([_open-dir="top"]) .d2l-tooltip-container,

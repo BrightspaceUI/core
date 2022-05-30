@@ -11,6 +11,7 @@
 		import '../../demo/demo-page.js';
 		import '../../inputs/input-text.js';
 		import '../tooltip.js';
+		import '../tooltip-help.js';
 	</script>
 	<style>
 		.boundary {
@@ -51,6 +52,10 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+		}
+
+		.help {
+
 		}
 	</style>
 </head>
@@ -146,6 +151,15 @@
 					<d2l-tooltip for="tooltip-long" show-truncated-only>
 						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Help Tooltip</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="help">
+					<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 				</div>
 			</template>
 		</d2l-demo-snippet>
