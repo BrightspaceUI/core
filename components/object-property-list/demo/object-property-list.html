@@ -13,9 +13,9 @@
 			import '../../status-indicator/status-indicator.js';
 			import '../../tooltip/tooltip.js';
 
-			import '../metadata.js';
-			import '../metadata-item.js';
-			import '../metadata-item-link.js';
+			import '../object-property-list.js';
+			import '../object-property-list-item.js';
+			import '../object-property-list-item-link.js';
 
 			import '../../card/card.js';
 			import '../../card/card-loading-shimmer.js';
@@ -59,27 +59,27 @@
 		</style>
 	</head>
 	<body unresolved>
-		<d2l-demo-page page-title="d2l-metadata">
+		<d2l-demo-page page-title="d2l-object-property-list">
 
-			<h2>Metadata</h2>
+			<h2>Object Property List</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-metadata>
-						<d2l-metadata-item text="item"></d2l-metadata-item>
-						<d2l-metadata-item text="item with icon" icon="emoji:happy"></d2l-metadata-item>
-						<d2l-metadata-item-link text="link" href="https://www.google.com"></d2l-metadata-item-link>
-						<d2l-metadata-item-link text="link2"></d2l-metadata-item-link>
-					</d2l-metadata>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item text="item"></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="item with icon" icon="emoji:happy"></d2l-object-property-list-item>
+						<d2l-object-property-list-item-link text="link" href="https://www.google.com"></d2l-object-property-list-item-link>
+						<d2l-object-property-list-item-link text="link2"></d2l-object-property-list-item-link>
+					</d2l-object-property-list>
 				</template>
 			</d2l-demo-snippet>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-metadata>
-						<d2l-metadata-item text="Includes assessment" icon="tier1:grade"></d2l-metadata-item>
-						<d2l-metadata-item text="Moderated" icon="tier1:alert"></d2l-metadata-item>
-					</d2l-metadata>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item text="Includes assessment" icon="tier1:grade"></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="Moderated" icon="tier1:alert"></d2l-object-property-list-item>
+					</d2l-object-property-list>
 				</template>
 			</d2l-demo-snippet>
 

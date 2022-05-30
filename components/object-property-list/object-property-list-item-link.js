@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
-import { MetadataItem } from './metadata-item.js';
+import { ObjectPropertyListItem } from './object-property-list-item.js';
 
 /**
  * A placeholder.
  */
-class MetadataItemLink extends MetadataItem {
+class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	static properties = {
 		...super.properties,
 
@@ -47,4 +47,4 @@ class MetadataItemLink extends MetadataItem {
 	}
 }
 
-customElements.define('d2l-metadata-item-link', MetadataItemLink);
+customElements.define('d2l-object-property-list-item-link', ObjectPropertyListItemLink);

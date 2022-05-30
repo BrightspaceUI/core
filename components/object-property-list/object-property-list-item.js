@@ -18,7 +18,7 @@ export function getSeparator(nonBreaking) {
 /**
  * A placeholder.
  */
-export class MetadataItem extends LitElement {
+export class ObjectPropertyListItem extends LitElement {
 	static properties = {
 		/**
 		 * Name of an optional icon to display
@@ -42,7 +42,7 @@ export class MetadataItem extends LitElement {
 			width: 0.9rem;
 		}
 		.separator {
-			display: var(--d2l-metadata-item-separator-display, inline);
+			display: var(--d2l-object-property-list-item-separator-display, inline);
 			margin: 0 0.3rem;
 		}
 		.item-icon {
@@ -76,4 +76,4 @@ export class MetadataItem extends LitElement {
 
 }
 
-customElements.define('d2l-metadata-item', MetadataItem);
+customElements.define('d2l-object-property-list-item', ObjectPropertyListItem);

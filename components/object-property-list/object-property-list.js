@@ -4,14 +4,14 @@ import { bodySmallStyles } from '../typography/styles.js';
 /**
  * A placeholder.
  */
-class Metadata extends LitElement {
+class ObjectPropertyList extends LitElement {
 	static styles = [bodySmallStyles, css`
 		:host {
 			display: flex;
 			align-items: center;
 		}
 		::slotted(:last-child) {
-			--d2l-metadata-item-separator-display: none;
+			--d2l-object-property-list-item-separator-display: none;
 		}
 	`];
 
@@ -21,4 +21,4 @@ class Metadata extends LitElement {
 
 }
 
-customElements.define('d2l-metadata', Metadata);
+customElements.define('d2l-object-property-list', ObjectPropertyList);
