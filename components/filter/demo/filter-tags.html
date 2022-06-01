@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../filter.js';
+			import '../filter-dimension-set.js';
+			import '../filter-dimension-set-value.js';
+			import '../filter-tags.js';
+		</script>
+	</head>
+	<body unresolved class="d2l-typography">
+
+		<d2l-demo-page page-title="d2l-filter-tags">
+
+			<div class="d2l-body-compact">
+				Use these d2l-filters to control the applied filters in the demos below. The first filter is set up to send the dimension and value to the subscribers. The second filter only sends the value.
+			</div>
+
+			<d2l-filter id="core-filter">
+				<d2l-filter-dimension-set key="1" text="Dim 1">
+					<d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="2" text="Dim 2">
+					<d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+			</d2l-filter>
+
+			<d2l-filter id="core-filter-2">
+				<d2l-filter-dimension-set key="1" text="Dim 1" value-only-active-filter-text>
+					<d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="2" text="Dim 2" value-only-active-filter-text>
+					<d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+			</d2l-filter>
+			<script>
+				const coreFilter = document.querySelector('#core-filter');
+				coreFilter.addEventListener('d2l-filter-dimension-first-open', (e) => {
+					logEvent(e, 'Filter dimension opened!');
+				});
+				coreFilter.addEventListener('d2l-filter-dimension-search', (e) => {
+					logEvent(e, 'Filter dimension searched!');
+				});
+				coreFilter.addEventListener('d2l-filter-change', (e) => {
+					logEvent(e, 'Filter value(s) changed!');
+				});
+				/* eslint-disable no-console */
+				function logEvent(e, text) {
+					console.group(text);
+					console.log('event', e);
+					if (e.detail) console.log('detail', e.detail);
+					console.groupEnd();
+				}
+				/* eslint-enable no-console */
+			</script>
+
+			<h2>Default label and registered to both filters</h2>
+
+			<d2l-demo-snippet>
+				<d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
+			</d2l-demo-snippet>
+
+			<h2>Custom label and registered to only the first filter</h2>
+
+			<d2l-demo-snippet>
+				<d2l-filter-tags filter-ids="core-filter" label-text="Filters selected:"></d2l-filter-tags>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

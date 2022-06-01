@@ -428,6 +428,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._setDimensionChangeEvent(dimension, change, false);
 
 		if (!this._changeEventTimeout) {
+			/** 200 ms timeout used in filter-tags CLEAR_TIMEOUT. If the timeout here changes, update that as well */
 			this._changeEventTimeout = setTimeout(() => {
 				this._dispatchChangeEventNow(false);
 			}, 200);

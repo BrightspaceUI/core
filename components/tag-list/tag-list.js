@@ -34,8 +34,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return {
 			/**
 			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-clear` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
+			 * @type {boolean}
 			 */
 			clearable: { type: Boolean },
+			/**
+			 * ADVANCED: When an item is `clearable`, optionally add a timeout before the focus happens on clear. This is useful if the consumer has some operations that will reload the list items prior to wanting focus to occur.
+			 * @type {number}
+			 */
+			clearFocusTimeout: { type: Number, attribute: 'clear-focus-timeout' },
 			/**
 			 * REQUIRED: A description of the tag list for additional accessibility context
 			 * @type {string}
@@ -88,6 +94,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		/** @ignore */
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
+		this.clearFocusTimeout = 0;
+
 		this._chompIndex = 10000;
 		this._clearButtonHeight = 0;
 		this._clearButtonWidth = 0;
@@ -326,6 +334,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	_handleClearAll(e) {
 		if (!this._items) return;
 
+		/** Dispatched when a user selects to delete all tag list items. The consumer must handle the actual element deletion and focus behaviour. */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tag-list-clear',
+			{ bubbles: true, composed: true }
+		));
+
 		announce(this.localize('components.tag-list.cleared-all'));
 
 		this._items.forEach((item) => {
@@ -340,10 +354,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const rootTarget = e.composedPath()[0];
 		const children = this._getVisibleEffectiveChildren();
 		const itemIndex = children.indexOf(rootTarget);
-		if (children.length > 1) {
-			if (children[itemIndex - 1]) children[itemIndex - 1].focus();
-			else children[itemIndex + 1].focus();
-		}
+
+		if (children.length <= 1) return;
+		const focusableElem = children[itemIndex - 1] || children[itemIndex + 1];
+
+		setTimeout(() => focusableElem.focus(), this.clearFocusTimeout);
 	}
 
 	_handleKeyboardTooltipShown() {
