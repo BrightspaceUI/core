@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
 /**
@@ -10,7 +11,7 @@ import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-m
  * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
  * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
  */
-class HelpTooltip extends FocusVisiblePolyfillMixin(LitElement) {
+class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -33,21 +34,17 @@ class HelpTooltip extends FocusVisiblePolyfillMixin(LitElement) {
             #d2l-tooltip-help-text {
                 text-decoration: dashed underline var(--d2l-color-galena) 1px;
 				text-underline-offset: .15rem;
-				/*//! Remove the below if we're going with a span and not a button */
-                padding: 0; 
-                border: none;
-                background: none;
-                font-family: inherit;
 			}
 			#d2l-tooltip-help-text:focus-visible {
-				text-decoration: none;
-				border: 2px solid var(--d2l-color-celestine);
-				border-radius: .2rem;
-			}
-			#d2l-tooltip-help-text:focus {
- 				outline: none;
+				outline: 2px solid var(--d2l-color-celestine);
+				border-radius: .1rem;
+				outline-offset: .15rem;
 			}
 		`];
+	}
+
+	static get focusElementSelector() {
+		return 'button';
 	}
 
 	firstUpdated(changedProperties) {
@@ -59,8 +56,8 @@ class HelpTooltip extends FocusVisiblePolyfillMixin(LitElement) {
 
 	render() {
 		return html`
-            <button id="d2l-tooltip-help-text" class="d2l-body-small">${this.text}</button>
-            <d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0>
+            <span tabindex="0" role="button" id="d2l-tooltip-help-text" class="d2l-body-small">${this.text}</span>
+            <d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0 offset=13>
                 <slot></slot>
             </d2l-tooltip>
 		`;
