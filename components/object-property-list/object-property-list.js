@@ -7,8 +7,10 @@ import { bodySmallStyles } from '../typography/styles.js';
 class ObjectPropertyList extends LitElement {
 	static styles = [bodySmallStyles, css`
 		:host {
-			display: flex;
-			align-items: center;
+			display: contents;
+		}
+		slot {
+			display: block;
 		}
 		::slotted(:last-child) {
 			--d2l-object-property-list-item-separator-display: none;

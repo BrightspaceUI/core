@@ -3,6 +3,7 @@ import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 
 export function getSeparator(nonBreaking) {
@@ -18,7 +19,7 @@ export function getSeparator(nonBreaking) {
 /**
  * A placeholder.
  */
-export class ObjectPropertyListItem extends LitElement {
+export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	static properties = {
 		/**
 		 * Name of an optional icon to display
@@ -33,20 +34,18 @@ export class ObjectPropertyListItem extends LitElement {
 	};
 
 	static styles = [offscreenStyles, css`
-		:host {
-			display: flex;
-			align-items: center;
-		}
 		d2l-icon {
-			height: 0.9rem;
-			width: 0.9rem;
+			height: 1.1428em;
+			width: 1.1428em;
 		}
 		.separator {
 			display: var(--d2l-object-property-list-item-separator-display, inline);
-			margin: 0 0.3rem;
 		}
 		.item-icon {
-			margin-right: 0.3rem;
+			margin: 0 0.3rem 0 0;
+		}
+		:host([dir="rtl"]) .item-icon {
+			margin: 0 0 0 0.3rem;
 		}
 	`];
 
@@ -65,7 +64,6 @@ export class ObjectPropertyListItem extends LitElement {
 	}
 
 	renderSeparator() {
-		// TODO: Styling the icon to resize properly with font size.
 		return html`
 			<span class="separator">
 				<span class="d2l-offscreen">${getSeparator(true)}</span>
@@ -73,7 +71,6 @@ export class ObjectPropertyListItem extends LitElement {
 			</span>
 		`;
 	}
-
 }
 
 customElements.define('d2l-object-property-list-item', ObjectPropertyListItem);

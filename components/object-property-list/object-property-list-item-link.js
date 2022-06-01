@@ -34,6 +34,7 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 
 	render() {
 		return html`
+			${this.renderIcon()}
 			<a
 				?download="${this.download}"
 				class="d2l-link"
