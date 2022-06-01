@@ -146,7 +146,7 @@ To make your usage of `d2l-breadcrumb` (child) accessible, use the following att
 
 ## Current Page [d2l-breadcrumb-current-page]
 
-Older pages or tools include the current page name at the end of the breadcrumb, even though this is not best practice going forward. Use the d2l-breadcrumb-current-page if you need to replicate this in a legacy page:
+Only include the current page in the breadcrumb if your page or view does not have a visible heading. You will notice that some older pages or tools in Brightspace still display the current page as the last breadcrumb despite having a visible page heading, but this is now a legacy pattern.
 
 <!-- docs: demo live name:d2l-breadcrumb-current-page display:block -->
 ```html

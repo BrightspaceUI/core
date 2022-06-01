@@ -187,11 +187,11 @@ Set dimension on mobile:
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology"><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
   <d2l-filter-dimension-set key="role" text="Role" >
-    <d2l-filter-dimension-set-value key="admin" text="Admin" selected><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="admin" text="Admin" selected></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -219,6 +219,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 | Property | Type | Description |
 |---|---|---|
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |

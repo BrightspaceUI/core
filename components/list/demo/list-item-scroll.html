@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../menu/menu.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list.js';
+			import '../../../components/inputs/input-date.js';
+			import '../../../components/dropdown/dropdown-button-subtle.js';
+			import '../../../components/dropdown/dropdown-menu.js';
+			import '../../../components/selection/selection-action-menu-item.js';
+		</script>
+		<style>
+			html {
+				--d2l-list-header-background-color: #f1f5fb;
+			}
+			.container {
+				height: 400px;
+				position: relative;
+			}
+			.template {
+				bottom: 0;
+				left: 0;
+				overflow: hidden;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+			.main {
+				height: 100%;
+				overflow-x: hidden;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list-item (scroll)">
+
+			<h2>Scroll To Item in Absolutely Positioned Div</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div class="container">
+						<div class="template">
+							<div class="main">
+								<d2l-dropdown-button-subtle text="Scroll To Item">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Actions">
+											<d2l-selection-action-menu-item id="scroll-item-start" text="Scroll To Last Item Align Start"></d2l-selection-action-menu-item>
+											<d2l-selection-action-menu-item id="scroll-item-end" text="Scroll To Last Item Align End"></d2l-selection-action-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-button-subtle>
+								<script>
+									document.querySelector('#scroll-item-start').addEventListener('d2l-selection-action-click', () => {
+										window.setTimeout(() => {
+											const element = document.querySelector('#algebraic-number-theory');
+											element.scrollToItem();
+										});
+									});
+									document.querySelector('#scroll-item-end').addEventListener('d2l-selection-action-click', () => {
+										window.setTimeout(() => {
+											const element = document.querySelector('#algebraic-number-theory');
+											element.scrollToItem(false);
+										});
+									});
+								</script>
+								<div>
+									<label>Date included to show issues with overflow when scrolling to items</label>
+									<d2l-input-date></d2l-input-date>
+									<p>
+										The hidden d2l-calendar causes overflow which is hidden by the template but becomes
+										visible when scrollIntoView is called with <code>alignToTop=true</code> (<code>block='start'</code>).
+										Use <code>alignToTop=false</code> to avoid the issue.
+									</p>
+								</div>
+						
+								<d2l-list>
+									<d2l-list-item selectable key="1" label="Introductory Earth Sciences">
+										<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="2" selected label="Engineering Materials for Energy Systems">
+										<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="3" label="Geomorphology and GIS">
+										<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="4" label="Introductory Earth Sciences">
+										<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="5" selected label="Engineering Materials for Energy Systems">
+										<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="6" label="Geomorphology and GIS">
+										<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="7" label="Introductory Earth Sciences">
+										<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="8" selected label="Engineering Materials for Energy Systems">
+										<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item id="algebraic-number-theory" selectable key="9" label="Algebraic Number Theory">
+										<d2l-list-item-content>Algebraic Number Theory</d2l-list-item-content>
+									</d2l-list-item>
+								</d2l-list>
+							</div>
+						</div>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
