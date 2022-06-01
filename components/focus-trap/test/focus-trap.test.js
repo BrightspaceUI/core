@@ -102,4 +102,91 @@ describe('d2l-focus-trap', () => {
 
 	});
 
+	describe('legacy prompt', () => {
+
+		beforeEach(async() => {
+			focusTrap.trap = true;
+			await focusTrap.updateComplete;
+		});
+
+		it('does not trap after prompt opened', async() => {
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+
+			await focusTrap.updateComplete;
+
+			elem.querySelector('#before').focus();
+			expect(document.activeElement).to.equal(elem.querySelector('#before'));
+
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').hasAttribute('tabindex')).to.be.false;
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').hasAttribute('tabindex')).to.be.false;
+		});
+
+		it('traps after prompt closed', async() => {
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-close', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+
+			await focusTrap.updateComplete;
+
+			elem.querySelector('#before').focus();
+			expect(document.activeElement).to.equal(elem.querySelector('#first'));
+
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').getAttribute('tabindex')).to.equal('0');
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').getAttribute('tabindex')).to.equal('0');
+		});
+
+		it('does not trap after closing one of multiple open prompts', async() => {
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt2' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-close', { bubbles: false, detail: { id: 'prompt2' } })
+			);
+			// intentional duplicate event to ensure focus-trap is tracking prompts properly
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-close', { bubbles: false, detail: { id: 'prompt2' } })
+			);
+
+			await focusTrap.updateComplete;
+
+			elem.querySelector('#before').focus();
+			expect(document.activeElement).to.equal(elem.querySelector('#before'));
+
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').hasAttribute('tabindex')).to.be.false;
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').hasAttribute('tabindex')).to.be.false;
+		});
+
+		it('traps after closing all prompts', async() => {
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-open', { bubbles: false, detail: { id: 'prompt2' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-close', { bubbles: false, detail: { id: 'prompt1' } })
+			);
+			document.body.dispatchEvent(
+				new CustomEvent('d2l-legacy-prompt-close', { bubbles: false, detail: { id: 'prompt2' } })
+			);
+
+			await focusTrap.updateComplete;
+
+			elem.querySelector('#before').focus();
+			expect(document.activeElement).to.equal(elem.querySelector('#first'));
+
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').getAttribute('tabindex')).to.equal('0');
+			expect(focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').getAttribute('tabindex')).to.equal('0');
+		});
+
+	});
+
 });
