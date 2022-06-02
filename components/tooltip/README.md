@@ -151,3 +151,46 @@ In the following example to constrain the tooltip to the dashed boundary we can 
   </d2l-tooltip>
 </div>
 ```
+
+## Help Tooltip [d2l-tooltip-help]
+
+The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text formatted with an underline.
+
+<!-- docs: demo code name:d2l-tooltip-help autoSize:false size:small -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
+</script>
+
+<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Provide the `text` that will render as the Help Tooltip opener.|
+
+### Events
+* `d2l-tooltip-show`: dispatched when the opener text is hovered over, focused on, or clicked
+* `d2l-tooltip-hide`: dispatched when the opener text is no longer hovered over or focused on
+<!-- docs: end hidden content -->
+
+
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a helpful label that provides value on its own
+* The contents of the tooltip should elaborate on the label
+* Keep help text short and concise (full sentences are not necessary)
+* Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t overuse help tooltips (users end up hunting for information and even experts feel obligated to check their contents)
+* Don't use help tooltips when you are able to use inline help text instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
