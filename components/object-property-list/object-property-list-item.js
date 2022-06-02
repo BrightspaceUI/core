@@ -35,17 +35,18 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 
 	static styles = [offscreenStyles, css`
 		d2l-icon {
-			height: 1.1428em;
-			width: 1.1428em;
+			height: 0.9rem;
+			width: 0.9rem;
+			margin-top: -0.1rem;
 		}
 		.separator {
 			display: var(--d2l-object-property-list-item-separator-display, inline);
 		}
-		.item-icon {
-			margin: 0 0.3rem 0 0;
+		:host(:not([dir="rtl"])) .item-icon {
+			margin-right: 0.3rem;
 		}
 		:host([dir="rtl"]) .item-icon {
-			margin: 0 0 0 0.3rem;
+			margin-left: 0.3rem;
 		}
 	`];
 
