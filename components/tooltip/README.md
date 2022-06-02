@@ -177,8 +177,6 @@ The `d2l-tooltip-help` component is used to display additional information when 
 * `d2l-tooltip-hide`: dispatched when the opener text is no longer hovered over or focused on
 <!-- docs: end hidden content -->
 
-
-
 ### Best Practices
 
 <!-- docs: start best practices -->
