@@ -5,6 +5,7 @@ import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
+import { trimWhitespace } from './trimWhitespace.js';
 
 export function getSeparator(nonBreaking) {
 	const langTag = getLanguage();
@@ -51,9 +52,9 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	`];
 
 	render() {
-		return html`
+		return html`${trimWhitespace()}
 			${this.renderIcon()}
-			${this.text}
+			<span>${this.text}</span>
 			${this.renderSeparator()}
 		`;
 	}

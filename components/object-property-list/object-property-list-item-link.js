@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
 import { ObjectPropertyListItem } from './object-property-list-item.js';
+import { trimWhitespace } from './trimWhitespace.js';
 
 /**
  * A placeholder.
@@ -33,7 +34,7 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	];
 
 	render() {
-		return html`
+		return html`${trimWhitespace()}
 			${this.renderIcon()}
 			<a
 				?download="${this.download}"
