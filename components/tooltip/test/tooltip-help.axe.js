@@ -24,7 +24,7 @@ describe('d2l-tooltip-help', () => {
 
 	it('should pass all aXe tests when the opener is focused', async() => {
 		const helpTooltip = await fixture(tooltipFixture);
-		const opener = helpTooltip.shadowRoot.querySelector('button');
+		const opener = helpTooltip.shadowRoot.querySelector('span');
 
 		setTimeout(() => opener.focus());
 
