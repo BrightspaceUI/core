@@ -51,7 +51,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	static get focusElementSelector() {
-		return 'button';
+		return 'span';
 	}
 
 	firstUpdated(changedProperties) {
