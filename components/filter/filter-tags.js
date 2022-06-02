@@ -11,6 +11,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * A tag-list allowing the user to see (and remove) the currently applied filters.
  */
 
+const CLEAR_FILTERS_THRESHOLD = 4;
 const CLEAR_TIMEOUT = 210; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
 
 class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
@@ -100,7 +101,8 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					clearable
 					clear-focus-timeout="${CLEAR_TIMEOUT}"
 					@d2l-tag-list-clear="${this._clearFiltersClicked}"
-					description="${this.label || this.localize('components.filter.activeFilters')}">
+					description="${this.label || this.localize('components.filter.activeFilters')}"
+					?hide-clear-button="${numActiveFilters < CLEAR_FILTERS_THRESHOLD}">
 					${tagListItems}
 				</d2l-tag-list>
 			`;

@@ -24,6 +24,11 @@ describe('d2l-tag-list', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
+	it('is correct when clear button hidden', async function() {
+		const rect = await visualDiff.getRect(page, '#hide-clear-button');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+	});
+
 	describe('tag list item style behaviour', () => {
 
 		it('is correct on focus on tag list item', async function() {

@@ -47,6 +47,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			 * @type {string}
 			 */
 			description: { type: String },
+			/**
+			 * ADVANCED: Hide the clear all button that by default appears when `clearable` is true.
+			 * @type {boolean}
+			 */
+			hideClearButton: { type: Boolean, attribute: 'hide-clear-button' },
 			_chompIndex: { type: Number },
 			_contentReady: { type: Boolean },
 			_lines: { type: Number },
@@ -95,6 +100,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this.arrowKeysDirection = 'leftrightupdown';
 		this.clearable = false;
 		this.clearFocusTimeout = 0;
+		this.hideClearButton = false;
 
 		this._chompIndex = 10000;
 		this._clearButtonHeight = 0;
@@ -177,7 +183,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		const clearableClasses = {
 			'd2l-tag-list-clear-button': true,
-			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
+			'd2l-tag-list-clear-button-visible': this.clearable && !this.hideClearButton && this._items && this._items.length > 0
 		};
 
 		const containerClasses = {
