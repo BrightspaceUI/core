@@ -33,12 +33,12 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
             #d2l-tooltip-help-text {
                 text-decoration: dashed underline var(--d2l-color-galena) 1px;
-				text-underline-offset: .15rem;
+				text-underline-offset: 0.15rem;
 			}
 			#d2l-tooltip-help-text:focus-visible {
 				outline: 2px solid var(--d2l-color-celestine);
-				border-radius: .1rem;
-				outline-offset: .15rem;
+				border-radius: 0.025rem;
+				outline-offset: 0.15rem;
 			}
 		`];
 	}
@@ -50,17 +50,35 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (!this.text || this.text.length === 0) {
-			console.warn('Help Tooltip component requires accessible text.');
+			console.warn('Help Tooltip component requires text.');
 		}
 	}
 
 	render() {
 		return html`
-            <span tabindex="0" role="button" id="d2l-tooltip-help-text" class="d2l-body-small">${this.text}</span>
-            <d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0 offset=13>
-                <slot></slot>
-            </d2l-tooltip>
+			<span 
+				id="d2l-tooltip-help-text" 
+				class="d2l-body-small"
+				@keydown="${this._handleKeyDown}"
+				role="button" 
+				tabindex="0" >
+				${this.text}
+			</span>
+			<d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0 offset=13>
+				<slot></slot>
+			</d2l-tooltip>
 		`;
+	}
+
+	_handleKeyDown(event) {
+		if (event.defaultPrevented) {
+			return;
+		}
+
+		const SPACE_KEYCODE = 32;
+		if (event.keyCode === SPACE_KEYCODE) {
+			event.preventDefault();
+		}
 	}
 
 }
