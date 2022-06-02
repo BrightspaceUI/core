@@ -8,7 +8,5 @@ describe('d2l-tooltip-help', () => {
 		it('should construct', () => {
 			runConstructor('d2l-tooltip-help');
 		});
-
 	});
-
 });
