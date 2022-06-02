@@ -1,6 +1,6 @@
-// import { forceFocusVisible } from '../../../helpers/focus.js';
+/*global forceFocusVisible */
+import { getRect, show } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
-import { show } from './tooltip-helper.js';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip-help', () => {
@@ -11,8 +11,7 @@ describe('d2l-tooltip-help', () => {
 	let browser, page;
 
 	before(async() => {
-		// browser = await puppeteer.launch();
-		browser = await puppeteer.launch({headless: false});
+		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 400 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tooltip/test/tooltip-help.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
@@ -33,23 +32,29 @@ describe('d2l-tooltip-help', () => {
 	].forEach((testCase) => {
 
 		it(testCase.case, async function() {
-			const target = await page.evaluate(async(selector) => { document.querySelector(selector); }, tooltipHelpSelector);
+			const openEvent = page.$eval(tooltipHelpSelector, async(elem) => {
+				return new Promise((resolve) => {
+					const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+					tooltip.addEventListener('d2l-tooltip-show', resolve);
+				});
+			});
+
 			if (testCase.focus) {
-				await page.$eval(tooltipHelpSelector, async(elem, focus) => { focus(elem); }, forceFocusVisible);
+				await page.$eval(tooltipHelpSelector, (elem) => forceFocusVisible(elem));
 			}
 			if (testCase.hover) {
 				await page.hover(tooltipHelpSelector);
 			}
 			if (testCase.click) {
-				await page.$eval(tooltipHelpSelector, (elem) => elem.click());
-				// await page.click(tooltipHelpSelector);
+				await page.click(tooltipHelpSelector);
 			}
 
 			if (testCase.focus || testCase.hover || testCase.click) {
-				await visualDiff.oneEvent(page, target, 'd2l-tooltip-show');
+				await openEvent;
 			}
 
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			const rect = await getRect(page, tooltipHelpSelector, true);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
@@ -60,7 +65,31 @@ describe('d2l-tooltip-help', () => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			await show(page, selector);
+			await show(page, selector, true);
+
+			const rect = await getRect(page, selector, true);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
+	[
+		'help-tooltip-in-sentence',
+		'help-tooltip-in-paragraph',
+	].forEach((testName) => {
+
+		it(testName, async function() {
+			const selector = `#${testName}`;
+			const openEvent = page.$eval(`${selector} d2l-tooltip-help`, async(elem) => {
+				return new Promise((resolve) => {
+					const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+					tooltip.addEventListener('d2l-tooltip-show', resolve);
+				});
+			});
+
+			await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
+			await openEvent;
+
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 

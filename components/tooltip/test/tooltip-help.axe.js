@@ -8,36 +8,27 @@ describe('d2l-tooltip-help', () => {
 
 	it('should pass all aXe tests (hide)', async() => {
 		const helpTooltip = await fixture(tooltipFixture);
-		await helpTooltip.updateComplete;
 
 		await expect(helpTooltip).to.be.accessible();
 	});
 
 	it('should pass all aXe tests for state info (show)', async() => {
 		const helpTooltip = await fixture(tooltipFixture);
-		await helpTooltip.updateComplete;
-
 		const actualTooltip = helpTooltip.shadowRoot.querySelector('d2l-tooltip');
 
 		actualTooltip.setAttribute('state', 'info');
 		actualTooltip.setAttribute('showing', 'showing');
 
-		await actualTooltip.updateComplete;
-		await helpTooltip.updateComplete;
 		await expect(helpTooltip).to.be.accessible();
 	});
 
 	it('should pass all aXe tests when the opener is focused', async() => {
 		const helpTooltip = await fixture(tooltipFixture);
-		await helpTooltip.updateComplete;
-		const actualTooltip = helpTooltip.shadowRoot.querySelector('d2l-tooltip');
+		const opener = helpTooltip.shadowRoot.querySelector('button');
 
-		setTimeout(() => actualTooltip.focus());
-		actualTooltip.focus();
+		setTimeout(() => opener.focus());
 
-		await actualTooltip.updateComplete;
-		await helpTooltip.updateComplete;
-		await oneEvent(actualTooltip, 'focus');
+		await oneEvent(opener, 'focus');
 		await expect(helpTooltip).to.be.accessible();
 	});
 
