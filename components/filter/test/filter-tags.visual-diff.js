@@ -118,4 +118,22 @@ describe('d2l-filter-tags', () => {
 
 	});
 
+	describe('rtl', () => {
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/filter/test/filter-tags.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
+			await page.setViewport({ width: 1700, height: 800, deviceScaleFactor: 2 });
+			await page.bringToFront();
+		});
+
+		it('basic is correct', async function() {
+			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
+
+		it('two-filters is correct', async function() {
+			const rect = await visualDiff.getRect(page, '#two-filters');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
+	});
+
 });

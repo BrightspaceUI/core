@@ -286,7 +286,7 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
 | Property | Type | Description |
 |---|---|---|
 | `filter-ids` | String, required | Id(s) (space-delimited) of the filter component(s) to subscribe to |
-| `label-text` | String | The text displayed in this component's label |
+| `label` | String | The text displayed in this component's label |
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Date [d2l-filter-dimension-date]

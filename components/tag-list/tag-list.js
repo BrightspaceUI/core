@@ -8,6 +8,8 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+const CLEAR_ALL_THRESHOLD = 4;
+const GAP = 6;
 const PAGE_SIZE = {
 	medium: 600,
 	large: 970
@@ -17,7 +19,6 @@ const PAGE_SIZE_LINES = {
 	medium: 2,
 	small: 3
 };
-const GAP = 6;
 
 async function filterAsync(arr, callback) {
 	const fail = Symbol();
@@ -177,7 +178,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		const clearableClasses = {
 			'd2l-tag-list-clear-button': true,
-			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length > 0
+			'd2l-tag-list-clear-button-visible': this.clearable && this._items && this._items.length >= CLEAR_ALL_THRESHOLD
 		};
 
 		const containerClasses = {

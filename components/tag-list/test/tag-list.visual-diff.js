@@ -8,7 +8,7 @@ describe('d2l-tag-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 1000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tag-list/test/tag-list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -21,6 +21,11 @@ describe('d2l-tag-list', () => {
 
 	it('is correct at 1400px page width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+	});
+
+	it('is correct when clear button hidden', async function() {
+		const rect = await visualDiff.getRect(page, '#hide-clear-button');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
