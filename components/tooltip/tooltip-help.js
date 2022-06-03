@@ -44,7 +44,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text.focus-visible {
 				border-radius: 0.025rem;
 				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.15rem;
+				outline-offset: 0.05rem;
 				text-underline-offset: 0.05rem;
 			}
 		`];
