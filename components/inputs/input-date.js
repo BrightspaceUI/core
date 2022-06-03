@@ -82,7 +82,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			 * @type {string}
 			 */
 			value: { type: String },
-			_hiddenCalendarHeight: { type: Number },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownFirstOpened: { type: Boolean },
@@ -114,8 +113,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
-			.d2l-input-date-hidden-text,
-			.d2l-input-date-hidden-calendar {
+			.d2l-input-date-hidden-text {
 				font-family: inherit;
 				font-size: 0.8rem;
 				font-weight: 400;
@@ -154,7 +152,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
-		this._hiddenCalendarHeight = 415; // height of 6 date row calendar when 1rem = 20px
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
@@ -191,7 +188,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
-		if (this._hiddenCalendarResizeObserver) this._hiddenCalendarResizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -219,17 +215,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this._hiddenContentWidth = `${width}px`;
 		});
 		this._hiddenContentResizeObserver.observe(hiddenContent);
-
-		const hiddenCalendar = this.shadowRoot.querySelector('.d2l-input-date-hidden-calendar');
-		if (!hiddenCalendar) return;
-		this._hiddenCalendarResizeObserver = new ResizeObserver(() => {
-			const hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
-			if (hiddenCalendarHeight > 0) {
-				this._hiddenCalendarHeight = hiddenCalendarHeight;
-				this._hiddenCalendarResizeObserver.disconnect();
-			}
-		});
-		this._hiddenCalendarResizeObserver.observe(hiddenCalendar);
 	}
 
 	render() {
@@ -252,7 +237,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
 				max-width="335"
-				min-height="${this._hiddenCalendarHeight}"
+				min-height="415"
 				?no-auto-fit="${!mediaQueryList.matches}"
 				trap-focus
 				no-auto-focus
@@ -307,13 +292,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				</d2l-input-text>
 				${dropdownContent}
 			</d2l-dropdown>
-			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
-				<d2l-calendar selected-value="2018-09-08">
-					<div class="d2l-calendar-slot-buttons">
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}"></d2l-button-subtle>
-					</div>
-				</d2l-calendar>
-			</div>` : null}
 		`;
 	}
 
