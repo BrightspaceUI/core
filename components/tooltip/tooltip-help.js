@@ -17,7 +17,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		return {
 			/**
 			 * REQUIRED: The text that will be rendered as the Help Tooltip component.
-			 * @type {String}
+			 * @type {string}
 			 */
 			text: { type: String }
 		};
