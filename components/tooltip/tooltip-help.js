@@ -6,7 +6,7 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
 /**
- * A component used to display additional information when users focus or hover on certain text.
+ * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
  * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
