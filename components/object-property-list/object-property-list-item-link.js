@@ -8,34 +8,38 @@ import { trimWhitespace } from './trimWhitespace.js';
  * A placeholder.
  */
 class ObjectPropertyListItemLink extends ObjectPropertyListItem {
-	static properties = {
-		...super.properties,
+	static get properties() {
+		return {
+			...super.properties,
 
-		/**
-		 * Download a URL instead of navigating to it
-		 * @type {boolean}
-		 */
-		download: { type: Boolean },
-		/**
-		 * REQUIRED: URL or URL fragment of the link
-		 * @type {string}
-		 */
-		href: { type: String },
-		/**
-		 * Where to display the linked URL
-		 * @type {string}
-		 */
-		target: { type: String },
-	};
+			/**
+			 * Download a URL instead of navigating to it
+			 * @type {boolean}
+			 */
+			download: { type: Boolean },
+			/**
+			 * REQUIRED: URL or URL fragment of the link
+			 * @type {string}
+			 */
+			href: { type: String },
+			/**
+			 * Where to display the linked URL
+			 * @type {string}
+			 */
+			target: { type: String },
+		};
+	}
 
-	static styles = [
-		...super.styles,
-		linkStyles,
-	];
+	static get styles() {
+		return [
+			...super.styles,
+			linkStyles,
+		];
+	}
 
 	render() {
 		return html`${trimWhitespace()}
-			${this.renderIcon()}
+			${this._renderIcon()}
 			<a
 				?download="${this.download}"
 				class="d2l-link"
@@ -44,7 +48,7 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 			>
 				${this.text}
 			</a>
-			${this.renderSeparator()}
+			${this._renderSeparator()}
 		`;
 	}
 }
