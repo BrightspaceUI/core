@@ -1,4 +1,3 @@
-import '../tooltip.js';
 import '../tooltip-help.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
