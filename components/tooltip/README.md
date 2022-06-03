@@ -25,22 +25,6 @@ Tooltips display additional information when users focus or hover on a point of 
 </d2l-tooltip>
 ```
 
-## Best Practices
-
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Use to show error messages during form validation
-* Use to give the name or purpose of an icon button
-* Use to provide the “full text” for a truncated value in a tight datagrid or list
-<!-- docs: end dos -->
-
-<!-- docs: start donts -->
-* Don’t use tooltips for long paragraphs of text
-* Don’t use tooltips to repeat text that is already shown
-* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
-<!-- docs: end donts -->
-<!-- docs: end best practices -->
-
 ## Accessibility
 
 **Interactive Target Elements:**
@@ -66,6 +50,22 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 ## Tooltip [d2l-tooltip]
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
+
+## Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use to show error messages during form validation
+* Use to give the name or purpose of an icon button
+* Use to provide the “full text” for a truncated value in a tight datagrid or list
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use tooltips for long paragraphs of text
+* Don’t use tooltips to repeat text that is already shown
+* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo live name:d2l-tooltip autoSize:false size:small -->
 ```html
@@ -156,6 +156,22 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 
 The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text.
 
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a helpful label that provides value on its own
+* The contents of the tooltip should elaborate on the label
+* Keep help text short and concise (full sentences are not necessary)
+* Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t overuse help tooltips (users end up hunting for information and even experts feel obligated to check their contents)
+* Don't use help tooltips when you are able to use inline help text instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 <!-- docs: demo code name:d2l-tooltip-help autoSize:false size:small -->
 ```html
 <script type="module">
@@ -176,19 +192,3 @@ The `d2l-tooltip-help` component is used to display additional information when 
 * `d2l-tooltip-show`: dispatched when the opener text is hovered over, focused on, or clicked
 * `d2l-tooltip-hide`: dispatched when the opener text is no longer hovered over or focused on
 <!-- docs: end hidden content -->
-
-### Best Practices
-
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Use a helpful label that provides value on its own
-* The contents of the tooltip should elaborate on the label
-* Keep help text short and concise (full sentences are not necessary)
-* Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
-<!-- docs: end dos -->
-
-<!-- docs: start donts -->
-* Don’t overuse help tooltips (users end up hunting for information and even experts feel obligated to check their contents)
-* Don't use help tooltips when you are able to use inline help text instead
-<!-- docs: end donts -->
-<!-- docs: end best practices -->
