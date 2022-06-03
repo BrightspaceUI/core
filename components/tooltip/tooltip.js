@@ -144,7 +144,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			forType: { type: String, attribute: 'for-type' },
 			/**
-			 * Adjust the size of the gap between the tooltip and its target. Specify a number that would be the px value.
+			 * Adjust the size of the gap between the tooltip and its target (px)
 			 * @type {number}
 			 */
 			offset: { type: Number }, /* tooltipOffset */
