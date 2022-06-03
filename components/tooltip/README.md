@@ -154,7 +154,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 
 ## Help Tooltip [d2l-tooltip-help]
 
-The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text formatted with an underline.
+The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text.
 
 <!-- docs: demo code name:d2l-tooltip-help autoSize:false size:small -->
 ```html
