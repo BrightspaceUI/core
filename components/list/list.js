@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
+//import { PageableMixin } from '../paging/pageable-mixin.js';
 
 const keyCodes = {
 	TAB: 9
@@ -49,6 +50,9 @@ class List extends SelectionMixin(LitElement) {
 			}
 			:host([hidden]) {
 				display: none;
+			}
+			slot[name="pager"]::slotted(*) {
+				margin-top: 12px;
 			}
 		`;
 	}
@@ -116,6 +120,7 @@ class List extends SelectionMixin(LitElement) {
 			<div role="${role}" class="d2l-list-container">
 				<slot name="header"></slot>
 				<slot @keydown="${this._handleKeyDown}"></slot>
+				<slot name="pager"></slot>
 			</div>
 		`;
 	}
