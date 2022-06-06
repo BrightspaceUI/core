@@ -227,10 +227,10 @@ describe('LocalizeMixin', () => {
 				const myEventListener = () => {
 					const val = elem.localize('hello', { name: 'Mary' });
 					expect(val).to.equal('Bonjour Mary');
-					elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+					elem.removeEventListener('d2l-localize-resources-change', myEventListener);
 					done();
 				};
-				elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+				elem.addEventListener('d2l-localize-resources-change', myEventListener);
 				documentLocaleSettings.language = 'fr';
 			});
 
@@ -329,10 +329,10 @@ describe('LocalizeMixin', () => {
 				expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
 				expect(val3).to.equal('This is French from Test3LocalizeMixin');
 				expect(val4).to.equal('This is English from Test4LocalizeMixin');
-				elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+				elem.removeEventListener('d2l-localize-resources-change', myEventListener);
 				done();
 			};
-			elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+			elem.addEventListener('d2l-localize-resources-change', myEventListener);
 			documentLocaleSettings.language = 'fr';
 		});
 	});

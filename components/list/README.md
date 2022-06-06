@@ -372,8 +372,8 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ### Methods
 
 - `highlight()`: highlights the item
-- `scrollToItem()`: scrolls to the item
-- `scrollToAndHighlight()`: scrolls to the item and then highlights it
+- `scrollToItem(alignToTop=true)`: scrolls to the item. See [Element.scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) for definition of alignToTop.
+- `scrollToAndHighlight(alignToTop=true)`: scrolls to the item and then highlights it. . See [Element.scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) for definition of alignToTop.
 
 ### Events
 

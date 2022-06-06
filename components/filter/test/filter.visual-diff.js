@@ -225,7 +225,7 @@ describe('d2l-filter', () => {
 				const selector = '#multiple-closed';
 				await page.$eval(selector, async(filter) => {
 					await new Promise((resolve) => {
-						filter.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
+						filter.addEventListener('d2l-localize-resources-change', resolve, { once: true });
 						document.querySelector('html').setAttribute('lang', 'ar');
 					});
 					filter._totalAppliedCount = 100;

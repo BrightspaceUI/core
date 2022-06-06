@@ -125,6 +125,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				line-height: unset;
 			}
 
+			d2l-list-item[disabled] .d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-chromite);
+			}
+
 			.d2l-filter-dimension-info-message {
 				padding: 0.9rem 0;
 				text-align: center;
@@ -407,6 +411,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				separators="between">
 				${dimension.values.map(item => html`
 					<d2l-list-item
+						?disabled="${item.disabled}"
 						?hidden="${item.hidden}"
 						key="${item.key}"
 						label="${item.text}"
@@ -423,6 +428,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._setDimensionChangeEvent(dimension, change, false);
 
 		if (!this._changeEventTimeout) {
+			/** 200 ms timeout used in filter-tags CLEAR_TIMEOUT. If the timeout here changes, update that as well */
 			this._changeEventTimeout = setTimeout(() => {
 				this._dispatchChangeEventNow(false);
 			}, 200);

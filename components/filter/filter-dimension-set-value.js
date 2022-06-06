@@ -9,6 +9,11 @@ class FilterDimensionSetValue extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * Whether this value in the filter is disabled or not
+			 * @type {boolean}
+			 */
+			disabled: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Unique key to represent this value in the dimension
 			 * @type {string}
 			 */
@@ -28,6 +33,7 @@ class FilterDimensionSetValue extends LitElement {
 
 	constructor() {
 		super();
+		this.disabled = false;
 		this.selected = false;
 		this.text = '';
 	}
@@ -39,7 +45,7 @@ class FilterDimensionSetValue extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'selected' || prop === 'text') {
+			if (prop === 'disabled' || prop === 'selected' || prop === 'text') {
 				changes.set(prop, this[prop]);
 			}
 		});

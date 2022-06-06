@@ -17,7 +17,9 @@ window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 
 // while implemented in Webkit, native <dialog> focus mangement across slotted content is buggy
 // https://bugs.webkit.org/show_bug.cgi?id=233320
-window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined)
+// starting in Chrome 102, all elements inside <dialog>s that are inside shadow roots have null offsetParent
+// https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
+window.D2L.DialogMixin.hasNative = false && (window.HTMLDialogElement !== undefined)
 	&& (navigator.vendor && navigator.vendor.toLowerCase().indexOf('apple') === -1);
 if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;

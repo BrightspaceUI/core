@@ -166,9 +166,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			handleFocus = listItemParent ? true : false;
 		}
 
-		if (!clearAll) announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
+		if (clearAll) return;
 
-		/** Dispatched when a user selects to delete a tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
+		announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
+
+		/** Dispatched when a user selects to delete an individual tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-clear',
 			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
