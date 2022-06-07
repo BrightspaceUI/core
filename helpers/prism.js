@@ -67,49 +67,49 @@ export const codeSampleStyles = css`
 	.token.number,
 	.token.url,
 	.token.operator {
-		color: #D4D4D4;
+		color: #d4d4d4;
 	}
 
 	.token.interpolation,
 	.token.attr-name,
 	.token.constant,
 	.token.property {
-		color: #9CDCFE;
+		color: #9cdcfe;
 	}
 
 	.token.tag,
 	.token.boolean,
 	.token.entity,
 	.token.interpolation-punctuation {
-		color: #569CD6;
+		color: #569cd6;
 	}
 
 	.token.function {
-		color: #DCDCAA;
+		color: #dcdcaa;
 	}
 
 	.token.class-name {
-		color: #4EC9B0;
+		color: #4ec9b0;
 	}
 
 	.token.keyword,
 	.token.atrule {
-		color: #C586C0;
+		color: #c586c0;
 	}
 
 	.token.selector {
-		color: #D7BA7D;
+		color: #d7ba7d;
 	}
 
 	.token.important,
 	.token.regex {
-		color: #D16969;
+		color: #d16969;
 	}
 
 	.token.string,
 	.token.char,
 	.token.attr-value {
-		color: #CE9178;
+		color: #ce9178;
 	}
 
 	.token.important,
