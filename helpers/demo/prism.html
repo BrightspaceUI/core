@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../components/colors/colors.js';
+			import '../../components/typography/typography.js';
+		</script>
+		<style>
+			html {
+				font-size: 20px;
+			}
+			body {
+				padding: 1rem;
+			}
+			.code-samples {
+				width: 600px;
+			}
+		</style>
+	</head>
+	<body class="d2l-typography">
+
+		<h1 class="d2l-heading-2">Prism Loader</h1>
+
+		<div class="code-samples">
+<pre class="language-javascript"><code>function helloGrumpy(name) {
+	console.log(`Hi there ${name}.`);
+}
+helloGrumpy('Wizard');</code></pre>
+<br>
+<pre class="language-bash"><code>#!/bin/bash
+if [ -d $directory ]; then
+	echo "Directory exists"
+else
+	echo "Directory does not exists"
+fi</code></pre>
+<br>
+<pre class="language-css"><code>.grumpy > img {
+	height: 100%;
+	width: 100%;
+}</code></pre>
+<br>
+<pre class="language-json"><code>{
+	"jinxed": "gnomes",
+	"grumpy": [ "wizards" ]
+}
+</code></pre>
+<br>
+<pre class="language-sql"><code>SELECT * FROM courses
+INNEE JOIN enrollments ON courses.id = enrollments.courseId
+ORDER BY enrollments.lastUpdated ASC
+
+SET ROWCOUNT 4;
+SELECT * enrollments
+WHERE Quantity < 300;
+GO
+
+</code></pre>
+		</div>
+
+		<script type="module">
+				import { formatCodeSample } from '../prism.js';
+				const codeSamples = document.querySelectorAll('pre');
+				codeSamples.forEach(codeSample => {
+					formatCodeSample(codeSample);
+				});
+		</script>
+	</body>
+</html>
