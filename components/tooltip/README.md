@@ -187,8 +187,4 @@ The `d2l-tooltip-help` component is used to display additional information when 
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | Text that will render as the Help Tooltip opener |
-
-### Events
-* `d2l-tooltip-show`: dispatched when the opener text is hovered over, focused on, or clicked
-* `d2l-tooltip-hide`: dispatched when the opener text is no longer hovered over or focused on
 <!-- docs: end hidden content -->

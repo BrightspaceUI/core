@@ -10,8 +10,6 @@ const KEYCODE_SPACE = 32;
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
- * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
- * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
  */
 class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
@@ -34,6 +32,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				display: none;
 			}
 			#d2l-tooltip-help-text {
+				font-size: inherit;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
@@ -64,10 +63,11 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	render() {
+		// 				class="d2l-body-small"
 		return html`
 			<span 
 				id="d2l-tooltip-help-text" 
-				class="d2l-body-small"
+
 				@keydown="${this._handleKeyDown}"
 				role="button" 
 				tabindex="0" >
