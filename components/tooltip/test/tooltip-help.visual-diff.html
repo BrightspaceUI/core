@@ -18,32 +18,21 @@
 			margin: 0;
 			width: 400px;
 		}
-		p {
-			height: 200px;
-			padding: 20px;
-			text-align: left;
-		}
-		p d2l-tooltip-help {
-			display: inline;
-		}
 		.visual-diff {
-			height: 100%;
-			margin: 0;
-			position: relative;
-			width: 100%;
-		}
-		.visual-diff > d2l-tooltip-help {
-			display: block;
-			margin-bottom: 10rem;
-			padding: 20px;
+			padding-bottom: 10rem;
+			padding-left: 20px;
 		}
 	</style>
 </head>
 <body class="d2l-typography">
+
 	<div class="visual-diff">
 		<d2l-tooltip-help id="help-tooltip-basic" text="Focus or hover over me for more information.">
 			More information
 		</d2l-tooltip-help>
+	</div>
+
+	<div class="visual-diff">
 		<d2l-tooltip-help id="help-tooltip-unordered-list" text="Focus or hover over me for more information.">
 			Unordered List
 			<ul>
@@ -52,6 +41,9 @@
 				<li> Bullet 3 </li>
 			</ul>
 		</d2l-tooltip-help>
+	</div>
+
+	<div class="visual-diff">
 		<d2l-tooltip-help id="help-tooltip-ordered-list" text="Focus or hover over me for more information.">
 			Ordered List
 			<ol>
@@ -60,15 +52,22 @@
 				<li> Point 3 </li>
 			</ol>
 		</d2l-tooltip-help>
+	</div>
+
+	<div class="visual-diff">
 		<p id="help-tooltip-in-sentence" class="d2l-body-small">
 			This is some sample text.
 			<d2l-tooltip-help text="Helpful label.">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 		</p>
+	</div>
+
+	<div class="visual-diff">
 		<p id="help-tooltip-in-paragraph" class="d2l-body-small">
 			This is some sample text. This is some more text.
 			<d2l-tooltip-help text="Helpful label.">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 			Now we have some more text. And here's a bit more text.
 		</p>
 	</div>
+
 </body>
 </html>

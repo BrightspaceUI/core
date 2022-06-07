@@ -5,6 +5,8 @@ import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
+const KEYCODE_SPACE = 32;
+
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
@@ -78,12 +80,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	_handleKeyDown(event) {
-		if (event.defaultPrevented) {
-			return;
-		}
-
-		const SPACE_KEYCODE = 32;
-		if (event.keyCode === SPACE_KEYCODE) {
+		if (event.keyCode === KEYCODE_SPACE) {
 			event.preventDefault();
 		}
 	}

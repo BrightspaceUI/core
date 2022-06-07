@@ -18,6 +18,7 @@ describe('d2l-tooltip-help', () => {
 		actualTooltip.setAttribute('state', 'info');
 		actualTooltip.setAttribute('showing', 'showing');
 
+		await actualTooltip.updateComplete;
 		await expect(helpTooltip).to.be.accessible();
 	});
 

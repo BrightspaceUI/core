@@ -13,6 +13,7 @@ describe('d2l-tooltip-help', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 400 } });
+
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tooltip/test/tooltip-help.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -34,8 +35,7 @@ describe('d2l-tooltip-help', () => {
 		it(testCase.case, async function() {
 			const openEvent = page.$eval(tooltipHelpSelector, async(elem) => {
 				return new Promise((resolve) => {
-					const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
-					tooltip.addEventListener('d2l-tooltip-show', resolve);
+					elem.addEventListener('d2l-tooltip-show', resolve);
 				});
 			});
 
@@ -82,8 +82,7 @@ describe('d2l-tooltip-help', () => {
 			const selector = `#${testName}`;
 			const openEvent = page.$eval(`${selector} d2l-tooltip-help`, async(elem) => {
 				return new Promise((resolve) => {
-					const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
-					tooltip.addEventListener('d2l-tooltip-show', resolve);
+					elem.addEventListener('d2l-tooltip-show', resolve);
 				});
 			});
 
