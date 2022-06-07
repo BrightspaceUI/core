@@ -5,8 +5,6 @@ import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
-const KEYCODE_SPACE = 32;
-
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
@@ -27,32 +25,41 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		return [bodySmallStyles, css`
 			:host {
 				display: inline-block;
+				color: var(--d2l-color-tungsten);
+				font-size: 0.7rem;
+				font-weight: 400;
+				line-height: 1rem;
+				margin: auto;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			#d2l-tooltip-help-text {
+				background: none;
+				border: none;
+				color: inherit;
 				font-size: inherit;
+				padding: 0;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
-				text-underline-offset: 0.15rem;
+				text-underline-offset: 0.075rem;
 			}
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
 			#d2l-tooltip-help-text.focus-visible {
-				border-radius: 0.025rem;
+				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.05rem;
-				text-underline-offset: 0.05rem;
+				outline-offset: 0.1rem;
+				text-underline-offset: 0.075rem;
 			}
 		`];
 	}
 
 	static get focusElementSelector() {
-		return 'span';
+		return 'button';
 	}
 
 	firstUpdated(changedProperties) {
@@ -63,26 +70,14 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	render() {
-		// 				class="d2l-body-small"
 		return html`
-			<span 
-				id="d2l-tooltip-help-text" 
-
-				@keydown="${this._handleKeyDown}"
-				role="button" 
-				tabindex="0" >
+			<button id="d2l-tooltip-help-text" class="d2l-body-small">
 				${this.text}
-			</span>
+			</button>
 			<d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0 offset=13>
 				<slot></slot>
 			</d2l-tooltip>
 		`;
-	}
-
-	_handleKeyDown(event) {
-		if (event.keyCode === KEYCODE_SPACE) {
-			event.preventDefault();
-		}
 	}
 
 }
