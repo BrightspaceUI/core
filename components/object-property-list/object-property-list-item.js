@@ -1,11 +1,11 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
+import { noTrim, trimWhitespace } from './trim-whitespace.js';
 import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { trimWhitespace } from './trimWhitespace.js';
 
 export function getSeparator(nonBreaking) {
 	const langTag = getLanguage();
@@ -72,7 +72,7 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	_renderSeparator() {
 		return html`
 			<span class="separator">
-				<span class="d2l-offscreen">${getSeparator(true)}</span>
+				<span class="d2l-offscreen" ${noTrim()}>${getSeparator(true)}</span>
 				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
 			</span>
 		`;

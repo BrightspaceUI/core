@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
-import { trimWhitespace } from './trimWhitespace.js';
+import { trimWhitespace } from './trim-whitespace.js';
 
 /**
  * A placeholder.

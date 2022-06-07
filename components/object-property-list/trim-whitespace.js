@@ -4,7 +4,7 @@ import { noChange } from 'lit';
 class TrimWhitespace extends Directive {
 	constructor(part) {
 		super(part);
-		const node = part.element || part.options.host;
+		const node = part.element || part.parentNode?.host || part.parentNode;
 
 		this._trimAndObserve(node);
 		if (node.shadowRoot && this.constructor._depth === 'shallow') this._trimAndObserve(node.shadowRoot);
@@ -30,6 +30,8 @@ class TrimWhitespace extends Directive {
 	}
 
 	_trimTextNodes(node, recurse) {
+		if (node.__d2l_no_trim || node.parentNode?.__d2l_no_trim) return;
+
 		if (node.nodeType === Node.TEXT_NODE && node.textContent) {
 			const trimmed = node.textContent.trim();
 			if (node.textContent !== trimmed) node.textContent = trimmed;
@@ -44,5 +46,18 @@ class TrimWhitespaceDeep extends TrimWhitespace {
 	static _depth = 'deep';
 }
 
+class NoTrim extends Directive {
+	constructor(part) {
+		super(part);
+		const node = part.element || part.parentNode;
+		node.__d2l_no_trim = true;
+	}
+
+	render() {
+		return noChange;
+	}
+}
+
 export const trimWhitespace = directive(TrimWhitespace);
 export const trimWhitespaceDeep = directive(TrimWhitespaceDeep);
+export const noTrim = directive(NoTrim);
