@@ -38,7 +38,6 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				background: none;
 				border: none;
 				color: inherit;
-				font-size: inherit;
 				padding: 0;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
