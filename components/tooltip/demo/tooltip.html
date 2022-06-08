@@ -14,6 +14,14 @@
 		import '../tooltip-help.js';
 	</script>
 	<style>
+		p {
+			padding-top: 1rem;
+		}
+
+		p:nth-child(3) {
+			padding-top: 0;
+		}
+
 		.boundary {
 			background-color: var(--d2l-color-citrine);
 			box-sizing: border-box;
@@ -158,6 +166,10 @@
 				<p class="d2l-body-small">
 					This is some sample text.
 					<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+				</p>
+				<p>
+					This is some sample text.
+					<d2l-tooltip-help text="Helpful label" style="color: inherit; font-size: inherit;">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 				</p>
 			</template>
 		</d2l-demo-snippet>
