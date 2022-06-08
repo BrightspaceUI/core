@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
-import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
@@ -22,10 +21,10 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodySmallStyles, css`
+		return [css`
 			:host {
-				display: inline-block;
 				color: var(--d2l-color-tungsten);
+				display: inline-block;
 				font-size: 0.7rem;
 				font-weight: 400;
 				line-height: 1rem;
@@ -38,12 +37,16 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				background: none;
 				border: none;
 				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				line-height: inherit;
 				padding: 0;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
-				text-underline-offset: 0.075rem;
+				text-underline-offset: 0.1rem;
 			}
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
@@ -52,7 +55,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);
 				outline-offset: 0.1rem;
-				text-underline-offset: 0.075rem;
+				text-underline-offset: 0.1rem;
 			}
 		`];
 	}
