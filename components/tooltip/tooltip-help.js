@@ -29,6 +29,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				font-weight: 400;
 				line-height: 1rem;
 				margin: auto;
+				text-decoration-color: var(--d2l-color-galena);
 			}
 			:host([hidden]) {
 				display: none;
@@ -42,7 +43,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				font-weight: inherit;
 				line-height: inherit;
 				padding: 0;
-				text-decoration-color: var(--d2l-color-galena);
+				text-decoration-color: inherit;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
