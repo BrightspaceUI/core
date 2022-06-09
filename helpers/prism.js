@@ -1,11 +1,16 @@
 import { css } from 'lit-element/lit-element.js';
 
+window.Prism = window.Prism || {};
+Prism.manual = true;
+
+const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
+//const prismLocation = '/node_modules/prismjs';
+
 export const codeSampleStyles = css`
+
 	code[class*="language-"],
 	pre[class*="language-"] {
-		background: none;
-		border-radius: 6px;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+		background-color: none;
 		color: #cccccc;
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 		-webkit-hyphens: none;
@@ -26,6 +31,8 @@ export const codeSampleStyles = css`
 
 	/* Code blocks */
 	pre[class*="language-"] {
+		border-radius: 6px;
+		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 		font-size: 14px;
 		margin: 0.5em 0;
 		overflow: auto;
@@ -45,7 +52,7 @@ export const codeSampleStyles = css`
 
 	:not(pre) > code[class*="language-"],
 	pre[class*="language-"] {
-		background: #2d2d2d;
+		background-color: #2d2d2d;
 	}
 
 	/* Inline code */
@@ -169,6 +176,7 @@ export const codeSampleStyles = css`
 
 	.line-numbers-rows > span::before {
 		color: #999999;
+		color: #ffffff;
 		content: counter(linenumber);
 		display: block;
 		padding-right: 0.8em;
@@ -199,14 +207,30 @@ const loadLanguage = async component => {
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = `https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570/components/prism-${component}.min.js`;
+		script.src = `${prismLocation}/components/prism-${component}.min.js`;
 		document.head.appendChild(script);
 	});
 
 	return languagesLoaded[component];
 };
 
-let prismLoaded = (window.Prism ? Promise.resolve() : undefined);
+const pluginsLoaded = {};
+
+const loadPlugin = async plugin => {
+	if (pluginsLoaded[plugin]) return pluginsLoaded[plugin];
+
+	pluginsLoaded[plugin] = new Promise(resolve => {
+		const script = document.createElement('script');
+		script.async = 'async';
+		script.onload = resolve;
+		script.src = `${prismLocation}/plugins/${plugin}/prism-${plugin}.js`;
+		document.head.appendChild(script);
+	});
+
+	return pluginsLoaded[plugin];
+};
+
+let prismLoaded;
 
 const loadPrism = () => {
 	if (prismLoaded) return prismLoaded;
@@ -216,7 +240,7 @@ const loadPrism = () => {
 			const script = document.createElement('script');
 			script.async = 'async';
 			script.onload = resolve;
-			script.src = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570/prism.js';
+			script.src = `${prismLocation}/prism.js`;
 			document.head.appendChild(script);
 		}),
 		new Promise(resolve => {
@@ -230,18 +254,26 @@ const loadPrism = () => {
 	return prismLoaded;
 };
 
-export function isCodeSample(elem) {
-	return elem && elem.tagName === 'PRE' && elem.className.indexOf('language-') !== -1;
-}
+const getCodeElement = elem => {
+	if (!elem) return;
+	if (elem.tagName === 'CODE') return elem;
+	if (!elem.tagName === 'PRE') return;
+	return elem.querySelector('code');
+};
 
 export async function formatCodeSample(elem) {
-	if (!isCodeSample(elem)) return;
+	const code = getCodeElement(elem);
 
-	const language = getLanguage(elem);
+	if (code.className.indexOf('language-') === -1) return;
 
-	await loadPrism(); // must be loaded before loading languages
-	await loadLanguage(language);
+	const language = getLanguage(code);
+
+	await loadPrism(); // must be loaded before loading plugins or languages
+	await Promise.all([
+		loadLanguage(language),
+		elem.classList.contains('line-numbers') ? loadPlugin('line-numbers') : null
+	]);
 
 	if (!elem.dataset.language) elem.dataset.language = language;
-	Prism.highlightElement(elem);
+	Prism.highlightElement(code);
 }

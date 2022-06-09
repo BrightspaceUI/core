@@ -16,9 +16,6 @@
 			body {
 				padding: 1rem;
 			}
-			.code-samples {
-				width: 600px;
-			}
 		</style>
 	</head>
 	<body class="d2l-typography">
@@ -27,31 +24,31 @@
 
 		<h1 class="d2l-heading-2">Prism Helper</h1>
 
-		<div class="code-samples">
-<pre class="language-javascript"><code>function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
+		<div>
+<pre class="line-numbers"><code class="language-javascript">function helloGrumpy(name) {
+	console.log(`Hi there ${name}. Here's some really long text that should wrap onto the next line or overflow.`);
 }
 helloGrumpy('Wizard');</code></pre>
 <br>
-<pre class="language-bash"><code>#!/bin/bash
+<pre class="line-numbers"><code class="language-bash">#!/bin/bash
 if [ -d $directory ]; then
 	echo "Directory exists"
 else
 	echo "Directory does not exists"
 fi</code></pre>
 <br>
-<pre class="language-css"><code>.grumpy > img {
+<pre class="line-numbers"><code class="language-css">.grumpy > img {
 	height: 100%;
 	width: 100%;
 }</code></pre>
 <br>
-<pre class="language-json"><code>{
+<pre class="line-numbers"><code class="language-json">{
 	"jinxed": "gnomes",
 	"grumpy": [ "wizards" ]
 }
 </code></pre>
 <br>
-<pre class="language-sql"><code>SELECT * FROM courses
+<pre class="line-numbers"><code class="language-sql">SELECT * FROM courses
 INNEE JOIN enrollments ON courses.id = enrollments.courseId
 ORDER BY enrollments.lastUpdated ASC
 
