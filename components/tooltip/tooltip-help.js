@@ -29,7 +29,6 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				font-weight: 400;
 				line-height: 1rem;
 				margin: auto;
-				text-decoration-color: var(--d2l-color-galena);
 			}
 			:host([hidden]) {
 				display: none;
@@ -43,20 +42,20 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				font-weight: inherit;
 				line-height: inherit;
 				padding: 0;
-				text-decoration-color: inherit;
+				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
-				text-underline-offset: 0.1rem;
+				text-underline-offset: 0.1em;
 			}
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
 			#d2l-tooltip-help-text.focus-visible {
-				border-radius: 0.05rem;
+				border-radius: 0.05em;
 				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.1rem;
-				text-underline-offset: 0.1rem;
+				outline-offset: 0.05em;
+				text-underline-offset: 0.1em;
 			}
 		`];
 	}
@@ -74,7 +73,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	render() {
 		return html`
-			<button id="d2l-tooltip-help-text" class="d2l-body-small">
+			<button id="d2l-tooltip-help-text">
 				${this.text}
 			</button>
 			<d2l-tooltip class="help-tooltip" for="d2l-tooltip-help-text" delay=0 offset=13>
