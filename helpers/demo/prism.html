@@ -8,12 +8,12 @@
 		<script type="module">
 			import '../../components/colors/colors.js';
 			import '../../components/typography/typography.js';
-			import { codeSampleStyles, formatCodeSample } from '../prism.js';
+			import { codeStyles, formatCodeElement } from '../prism.js';
 			import { css, html, LitElement } from 'lit';
 
 			class DemoPrism extends LitElement {
 				static get styles() {
-					return [codeSampleStyles, css`
+					return [codeStyles, css`
 						:host {
 							display: block;
 						}
@@ -58,7 +58,7 @@ GO
 				}
 				updated(changedProperties) {
 					super.updated(changedProperties);
-					this.shadowRoot.querySelectorAll('code').forEach(codeSample => formatCodeSample(codeSample));
+					this.shadowRoot.querySelectorAll('code').forEach(code => formatCodeElement(code));
 				}
 			}
 			customElements.define('d2l-demo-prism', DemoPrism);
@@ -120,10 +120,10 @@ GO
 		<d2l-demo-prism></d2l-demo-prism>
 
 		<script type="module">
-				import { formatCodeSample } from '../prism.js';
-				const codeSamples = document.querySelectorAll('pre');
-				codeSamples.forEach(codeSample => {
-					formatCodeSample(codeSample);
+				import { formatCodeElement } from '../prism.js';
+				const codeElements = document.querySelectorAll('pre');
+				codeElements.forEach(codeElement => {
+					formatCodeElement(codeElement);
 				});
 		</script>
 	</body>

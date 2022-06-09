@@ -6,7 +6,7 @@ Prism.manual = true;
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
 //const prismLocation = '/node_modules/prismjs';
 
-export const codeSampleStyles = css`
+export const codeStyles = css`
 
 	code[class*="language-"],
 	pre[class*="language-"] {
@@ -245,7 +245,7 @@ const loadPrism = () => {
 		}),
 		new Promise(resolve => {
 			const style = document.createElement('style');
-			style.textContent = codeSampleStyles.cssText;
+			style.textContent = codeStyles.cssText;
 			style.onload = resolve;
 			document.head.appendChild(style);
 		})
@@ -261,7 +261,7 @@ const getCodeElement = elem => {
 	return elem.querySelector('code');
 };
 
-export async function formatCodeSample(elem) {
+export async function formatCodeElement(elem) {
 	const code = getCodeElement(elem);
 
 	if (code.className.indexOf('language-') === -1) return;
