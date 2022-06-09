@@ -27,6 +27,26 @@ jobs:
         run: npm run build
       - name: Create custom-elements.json
         run: npx wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json
+      - name: Get Repo's Last LMS Release
+        id: repo-lms-version
+        run: echo "::set-output name=value::$(cat .lmsrelease)"
+      - name: Get Active LMS Release
+        id: get-lms-version
+        uses: Brightspace/lms-version-actions/get-lms-release@main
+        with:
+          RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}
+      - name: Update Repo's Last LMS Release
+        if: steps.repo-lms-version.outputs.VALUE != steps.get-lms-version.outputs.LMS_VERSION
+        run: |
+          echo "Updating last LMS release..."
+          echo "${{ steps.get-lms-version.outputs.LMS_VERSION }}" > .lmsrelease
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .lmsrelease
+          git commit -m "feat: updating tracked LMS release version [skip ci]"
+          git push --follow-tags --repo=https://${{ inputs.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
       - name: Semantic Release
         uses: BrightspaceUI/actions/semantic-release@main
         with:
