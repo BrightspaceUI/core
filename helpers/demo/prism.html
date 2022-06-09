@@ -8,6 +8,60 @@
 		<script type="module">
 			import '../../components/colors/colors.js';
 			import '../../components/typography/typography.js';
+			import { codeSampleStyles, formatCodeSample } from '../prism.js';
+			import { css, html, LitElement } from 'lit';
+
+			class DemoPrism extends LitElement {
+				static get styles() {
+					return [codeSampleStyles, css`
+						:host {
+							display: block;
+						}
+					`];
+				}
+				render() {
+					return html`
+<pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
+	console.log(\`Hi there \${name}. Here's some really long text to test overflowing the bounding container.\`);
+}
+helloGrumpy('Wizard');
+</code></pre>
+<br>
+<pre><code class="language-bash line-numbers">#!/bin/bash
+if [ -d $directory ]; then
+	echo "Directory exists"
+else
+	echo "Directory does not exists"
+fi</code></pre>
+<br>
+<pre><code class="language-css line-numbers">.grumpy > img {
+	height: 100%;
+	width: 100%;
+}</code></pre>
+<br>
+<pre><code class="language-json line-numbers">{
+	"jinxed": "gnomes",
+	"grumpy": [ "wizards" ]
+}
+</code></pre>
+<br>
+<pre><code class="language-sql line-numbers">SELECT * FROM courses
+INNEE JOIN enrollments ON courses.id = enrollments.courseId
+ORDER BY enrollments.lastUpdated ASC
+
+SET ROWCOUNT 4;
+SELECT * enrollments
+WHERE Quantity = 300;
+GO
+</code></pre>
+					`;
+				}
+				updated(changedProperties) {
+					super.updated(changedProperties);
+					this.shadowRoot.querySelectorAll('code').forEach(codeSample => formatCodeSample(codeSample));
+				}
+			}
+			customElements.define('d2l-demo-prism', DemoPrism);
 		</script>
 		<style>
 			html {
@@ -24,31 +78,33 @@
 
 		<h1 class="d2l-heading-2">Prism Helper</h1>
 
+		<h2 class="d2l-heading-3">Global Scope</h2>
+
 		<div>
-<pre class="line-numbers"><code class="language-javascript">function helloGrumpy(name) {
-	console.log(`Hi there ${name}. Here's some really long text that should wrap onto the next line or overflow.`);
+<pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
+	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
 }
 helloGrumpy('Wizard');</code></pre>
 <br>
-<pre class="line-numbers"><code class="language-bash">#!/bin/bash
+<pre><code class="language-bash line-numbers">#!/bin/bash
 if [ -d $directory ]; then
 	echo "Directory exists"
 else
 	echo "Directory does not exists"
 fi</code></pre>
 <br>
-<pre class="line-numbers"><code class="language-css">.grumpy > img {
+<pre><code class="language-css line-numbers">.grumpy > img {
 	height: 100%;
 	width: 100%;
 }</code></pre>
 <br>
-<pre class="line-numbers"><code class="language-json">{
+<pre><code class="language-json line-numbers">{
 	"jinxed": "gnomes",
 	"grumpy": [ "wizards" ]
 }
 </code></pre>
 <br>
-<pre class="line-numbers"><code class="language-sql">SELECT * FROM courses
+<pre><code class="language-sql line-numbers">SELECT * FROM courses
 INNEE JOIN enrollments ON courses.id = enrollments.courseId
 ORDER BY enrollments.lastUpdated ASC
 
@@ -59,6 +115,10 @@ GO
 
 </code></pre>
 		</div>
+
+		<h2 class="d2l-heading-3">Web Component Scope</h2>
+
+		<d2l-demo-prism></d2l-demo-prism>
 
 		<script type="module">
 				import { formatCodeSample } from '../prism.js';

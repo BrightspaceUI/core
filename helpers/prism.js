@@ -3,8 +3,8 @@ import { css } from 'lit-element/lit-element.js';
 window.Prism = window.Prism || {};
 Prism.manual = true;
 
-const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
-//const prismLocation = '/node_modules/prismjs';
+//const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
+const prismLocation = '/node_modules/prismjs';
 
 export const codeSampleStyles = css`
 
@@ -271,7 +271,7 @@ export async function formatCodeSample(elem) {
 	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
 		loadLanguage(language),
-		elem.classList.contains('line-numbers') ? loadPlugin('line-numbers') : null
+		code.classList.contains('line-numbers') ? loadPlugin('line-numbers') : null
 	]);
 
 	if (!elem.dataset.language) elem.dataset.language = language;
