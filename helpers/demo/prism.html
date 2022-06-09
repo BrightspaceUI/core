@@ -78,9 +78,9 @@ GO
 
 		<h1 class="d2l-heading-2">Prism Helper</h1>
 
-		<h2 class="d2l-heading-3">Global Scope</h2>
+		<h2 class="d2l-heading-3">Global Scope (formatCodeElement)</h2>
 
-		<div>
+		<div id="format-code-element-container">
 <pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
 	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
 }
@@ -115,16 +115,39 @@ GO
 </code></pre>
 		</div>
 
+		<!--
+		<h2 class="d2l-heading-3">Global Scope (formatCode)</h2>
+		<div id="format-code-container">
+<pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
+	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
+}
+helloGrumpy('Wizard');</code></pre>
+		</div>
+		-->
+
 		<h2 class="d2l-heading-3">Web Component Scope</h2>
 
 		<d2l-demo-prism></d2l-demo-prism>
 
 		<script type="module">
 				import { formatCodeElement } from '../prism.js';
-				const codeElements = document.querySelectorAll('pre');
+
+				// formatCodeElement
+				const codeElements = document.querySelectorAll('#format-code-element-container pre');
 				codeElements.forEach(codeElement => {
 					formatCodeElement(codeElement);
 				});
+
+				// formatCode
+				/*
+				codeElements = document.querySelectorAll('#format-code-container pre');
+				codeElements.forEach(async codeElement => {
+					const formattedCode = await formatCode(codeElement.outerHTML);
+					console.log(formattedCode);
+					codeElement.outerHTML = formattedCode;
+				});
+				*/
+
 		</script>
 	</body>
 </html>

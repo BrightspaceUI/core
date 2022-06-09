@@ -257,9 +257,21 @@ const loadPrism = () => {
 const getCodeElement = elem => {
 	if (!elem) return;
 	if (elem.tagName === 'CODE') return elem;
-	if (!elem.tagName === 'PRE') return;
+	if (elem.tagName !== 'PRE') return;
 	return elem.querySelector('code');
 };
+
+/*
+export async function formatCode(html) {
+	const temp = document.createElement('div');
+	temp.innerHTML = html;
+
+	const code = getCodeElement(temp.firstElementChild);
+	const formattedCode = await formatCodeElement(code);
+
+	return temp.innerHTML;
+}
+*/
 
 export async function formatCodeElement(elem) {
 	const code = getCodeElement(elem);
@@ -276,4 +288,6 @@ export async function formatCodeElement(elem) {
 
 	if (!elem.dataset.language) elem.dataset.language = language;
 	Prism.highlightElement(code);
+
+	return elem;
 }
