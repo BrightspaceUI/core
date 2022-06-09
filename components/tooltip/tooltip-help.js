@@ -46,16 +46,16 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
-				text-underline-offset: 0.1em;
+				text-underline-offset: 0.1rem;
 			}
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
 			#d2l-tooltip-help-text.focus-visible {
-				border-radius: 0.05em;
+				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.05em;
-				text-underline-offset: 0.1em;
+				outline-offset: 0.05rem;
+				text-underline-offset: 0.1rem;
 			}
 		`];
 	}
