@@ -150,18 +150,22 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		const selectables = Array.from(this._selectionSelectables.values());
 		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
-		let newIndex;
+		let newIndex = currentIndex;
 
 		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| e.keyCode === keyCodes.DOWN) {
-			if (currentIndex === selectables.length - 1) newIndex = 0;
-			else newIndex = currentIndex + 1;
+				do {
+					if (newIndex === selectables.length - 1) newIndex = 0;
+					else newIndex = newIndex + 1;
+				} while (!!selectables[newIndex].disabled);
 		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| e.keyCode === keyCodes.UP) {
-			if (currentIndex === 0) newIndex = selectables.length - 1;
-			else newIndex = currentIndex - 1;
+				do {
+					if (newIndex === 0) newIndex = selectables.length - 1;
+					else newIndex = newIndex - 1;
+				} while (!!selectables[newIndex].disabled);
 		}
 		selectables[newIndex].selected = true;
 		selectables[newIndex].focus();
