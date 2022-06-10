@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
@@ -14,7 +15,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * ADVANCED: Allows this component to inherit certain font properties
+			 * Allows this component to inherit certain font properties
 			 * @type {boolean}
 			 */
 			inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
@@ -57,7 +58,9 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				color: inherit;
 				font-size: inherit;
 				font-weight: inherit;
+				letter-spacing: inherit;
 				line-height: inherit;
+				margin: inherit;
 			}
 		`];
 	}
@@ -75,12 +78,12 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const opener = this.shadowRoot.querySelector('#d2l-tooltip-help-text');
-		if (this.inheritFontStyle) {
-			opener.classList.add('inherit-font');
-		} else {
-			opener.classList.add('d2l-body-small');
-		}
+		// const opener = this.shadowRoot.querySelector('#d2l-tooltip-help-text');
+		// if (this.inheritFontStyle) {
+		// 	// opener.classList.add('inherit-font');
+		// } else {
+		// 	opener.classList.add('d2l-body-small');
+		// }
 
 		if (!this.text || this.text.length === 0) {
 			console.warn('Help Tooltip component requires text.');
@@ -88,8 +91,12 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	render() {
+		const classes = {
+			'inherit-font': this.inheritFontStyle,
+			'd2l-body-small': !this.inheritFontStyle
+		};
 		return html`
-			<button id="d2l-tooltip-help-text">
+			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
 				${this.text}
 			</button>
 			<d2l-tooltip for="d2l-tooltip-help-text" delay=0 offset=13>
