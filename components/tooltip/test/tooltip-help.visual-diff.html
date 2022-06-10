@@ -17,6 +17,7 @@
 			height: 100%;
 			margin: 0;
 			width: 350px;
+			word-wrap: break-word;
 		}
 		.visual-diff {
 			padding-bottom: 10rem;
@@ -57,14 +58,14 @@
 	<div class="visual-diff">
 		<p id="help-tooltip-in-sentence" class="d2l-body-small">
 			This is some sample text.
-			<d2l-tooltip-help text="Helpful label.">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+			<d2l-tooltip-help text="Helpful label." inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 		</p>
 	</div>
 
 	<div class="visual-diff">
-		<p id="help-tooltip-in-paragraph" class="d2l-body-small">
+		<p id="help-tooltip-in-paragraph" class="d2l-body-compact">
 			This is some sample text. This is some more text.
-			<d2l-tooltip-help text="Helpful label.">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+			<d2l-tooltip-help text="Helpful label." inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 			Now we have some more text. And here's a bit more text.
 		</p>
 	</div>

@@ -188,3 +188,9 @@ The `d2l-tooltip-help` component is used to display additional information when 
 |--|--|--|
 | `text` | String, required | Text that will render as the Help Tooltip opener |
 <!-- docs: end hidden content -->
+
+### Advanced Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `inherit-font-style` | Boolean, default: `false` | Allows this component to inherit certain font properties |
