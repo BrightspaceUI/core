@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
+import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
@@ -13,6 +14,11 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * ADVANCED: Allows this component to inherit certain font properties
+			 * @type {boolean}
+			 */
+			inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
+			/**
 			 * REQUIRED: Text that will render as the Help Tooltip opener
 			 * @type {string}
 			 */
@@ -21,14 +27,9 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [css`
+		return [bodySmallStyles, css`
 			:host {
-				color: var(--d2l-color-tungsten);
-				display: inline-block;
-				font-size: 0.7rem;
-				font-weight: 400;
-				line-height: 1rem;
-				margin: auto;
+				display: inline;
 			}
 			:host([hidden]) {
 				display: none;
@@ -36,11 +37,6 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text {
 				background: none;
 				border: none;
-				color: inherit;
-				font-family: inherit;
-				font-size: inherit;
-				font-weight: inherit;
-				line-height: inherit;
 				padding: 0;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
@@ -57,7 +53,19 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				outline-offset: 0.05rem;
 				text-underline-offset: 0.1rem;
 			}
+			.inherit-font {
+				color: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				line-height: inherit;
+			}
 		`];
+	}
+
+	constructor() {
+		super();
+
+		this.inheritFontStyle = false;
 	}
 
 	static get focusElementSelector() {
@@ -66,6 +74,14 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		const opener = this.shadowRoot.querySelector('#d2l-tooltip-help-text');
+		if (this.inheritFontStyle) {
+			opener.classList.add('inherit-font');
+		} else {
+			opener.classList.add('d2l-body-small');
+		}
+
 		if (!this.text || this.text.length === 0) {
 			console.warn('Help Tooltip component requires text.');
 		}
