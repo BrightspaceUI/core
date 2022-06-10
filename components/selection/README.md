@@ -8,9 +8,17 @@ The selection components (`d2l-selection-action`, `d2l-selection-input`, `d2l-se
 ![Selection](./screenshots/selection-single.png?raw=true)
 <!-- docs: end hidden content -->
 
+## Use Case
+
+The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be defined to enable the use of these selection controls in different semantic contexts or radically different layouts.
+
 ## SelectionMixin
 
-The selection components below work with a component that extends the `SelectionMixin`, which acts like a controller for the checkboxes, radios, actions, etc. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+The `SelectionMixin` acts like a controller for the checkboxes, radios, actions, etc. and enables the creation of custom selection control components. The selection components below must be contained within a component that extends the `SelectionMixin`. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+
+The `SelectionMixin` defines the `selection-single` attribute that consumers can specify for single selection behaviour.
+
+Note: The `d2l-list` component already provides a selection control component for selectable list items. `SelectionMixin` is only necessary for constructing custom selection components.
 
 <!-- docs: demo live name:d2l-demo-selection display:block -->
 ```html
@@ -18,7 +26,7 @@ The selection components below work with a component that extends the `Selection
   import { css, html, LitElement } from 'lit';
   import { SelectionMixin } from '@brightspace-ui/core/components/selection/selection-mixin.js';
 
-  class CustomSelection extends SelectionMixin(LitElement) {
+  class DemoSelection extends SelectionMixin(LitElement) {
     static get styles() {
       return css`
         :host {
@@ -32,7 +40,7 @@ The selection components below work with a component that extends the `Selection
       `;
     }
   }
-  customElements.define('d2l-demo-selection', CustomSelection);
+  customElements.define('d2l-demo-selection', DemoSelection);
 </script>
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
@@ -90,8 +98,6 @@ The selection components below work with a component that extends the `Selection
 </d2l-demo-selection>
 ```
 
-The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be easily defined to enable the use of these selection controls in different semantic contexts or radically different layouts. The `SelectionMixin` defines the `selection-single` attribute that consumers can specify for single selection behaviour.
-
 <!-- docs: start hidden content -->
 ### Properties
 
@@ -111,12 +117,12 @@ The selection components can then be used within the custom selection component 
   <d2l-selection-action selection-for="custom" text="Settings" icon="tier1:gear"></d2l-selection-action>
   <d2l-selection-summary selection-for="custom"></d2l-selection-summary>
 </div>
-<d2l-custom-selection id="custom">
+<d2l-demo-selection id="custom">
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
   </ul>
-</d2l-custom-selection>
+</d2l-demo-selection>
 ```
 
 ## Selection Action [d2l-selection-action]
@@ -152,19 +158,17 @@ The `d2l-selection-action` is an optional component that provides a button for a
 
 The `d2l-selection-action-dropdown` is an optional component that provides a button opener for dropdown content associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the opener should be non-interactive if nothing is selected.
 
-<!-- docs: demo live name:d2l-selection-action-dropdown autoSize:false size:medium align:baseline -->
+<!-- docs: demo live name:d2l-selection-action-dropdown align:baseline -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/menu/menu.js';
-  import '@brightspace-ui/core/components/menu/menu-item.js';
   import '@brightspace-ui/core/components/selection/selection-action-dropdown.js';
 </script>
 <d2l-selection-action-dropdown text="Actions" requires-selection>
   <d2l-dropdown-menu>
     <d2l-menu label="Actions">
-      <d2l-menu-item text="Action 1"></d2l-menu-item>
-      <d2l-menu-item text="Action 2"></d2l-menu-item>
+            <!-- This is where you add instances of <d2l-selection-action-menu-item>. -->
     </d2l-menu>
   </d2l-dropdown-menu>
 </d2l-selection-action-dropdown>
@@ -220,7 +224,11 @@ The `d2l-selection-action-menu-item` is an optional component that is a menu ite
 
 ## Selection Input [d2l-selection-input]
 
-The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! Note: `d2l-list-item` already provides a selection input for selectable list items. If `d2l-selection-input` is placed within a selection control that specifies `selection-single`, then radios will be rendered instead of checkboxes.
+The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! This component must be placed _within_ the selection control.
+
+If `d2l-selection-input` is placed within a selection control that specifies `selection-single`, then radios will be rendered instead of checkboxes.
+
+Note: `d2l-list-item` already provides a selection input for selectable list items.
 
 <!-- docs: demo live name:d2l-selection-input display:block -->
 ```html
@@ -247,6 +255,7 @@ The `d2l-selection-input` is a required component in selection controls - withou
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+    <li><d2l-selection-input key="mat" label="Math"></d2l-selection-input>Math</li>
   </ul>
 </d2l-demo-selection>
 ```
@@ -276,7 +285,7 @@ Either `label` or `labelled-by` is **required**.
 
 The `d2l-selection-select-all` is an optional component that provides a checkbox for bulk selecting the selectable elements within the selection control. Its state will also be automatically updated when the state of the selectable elements change.
 
-In the example below, setting `selection-for` to `other-list` demonstrates the ability to use `d2l-selection-select-all` for `d2l-select-input` outside of the custom selection element.
+The `d2l-selection-select-all` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
 <!-- docs: demo live name:d2l-selection-select-all display:block -->
 ```html
@@ -288,6 +297,10 @@ In the example below, setting `selection-for` to `other-list` demonstrates the a
 </script>
 <!-- docs: start hidden content -->
 <style>
+  .container {
+    display: flex;
+    justify-content: center;
+  }
   ul {
     margin: 0;
     padding: 0;
@@ -305,26 +318,41 @@ In the example below, setting `selection-for` to `other-list` demonstrates the a
     margin-right: 10px;
   }
   #other-list {
-    padding-top: 1rem;
+    padding-top: 2.1rem;
+  }
+  @media only screen and (max-width: 350px) {
+    .container {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+  }
+  @media only screen and (min-width: 350px) {
+    #other-list {
+      margin-left: 5rem;
+    }
   }
 </style>
 <!-- docs: end hidden content -->
-<d2l-demo-selection>
-  <div>
-    <d2l-selection-select-all></d2l-selection-select-all>
-    <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
-  </div>
-  <ul>
-    <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>List 1 item 1</li>
-    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>List 1 item 2</li>
-  </ul>
-</d2l-demo-selection>
-<d2l-demo-selection id="other-list">
-  <ul>
-    <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>List 2 item 1</li>
-    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>List 2 item 2</li>
-  </ul>
-</d2l-demo-selection>
+<div class="container">
+  <d2l-demo-selection>
+    <div>
+      <d2l-selection-select-all></d2l-selection-select-all>
+      <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+    </div>
+    <ul>
+      <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
+      <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+      <li><d2l-selection-input key="mat" label="Math" disabled></d2l-selection-input>Math</li>
+    </ul>
+  </d2l-demo-selection>
+  <d2l-demo-selection id="other-list">
+    <ul>
+      <li><d2l-selection-input key="ear" label="Earth"></d2l-selection-input>Earth</li>
+      <li><d2l-selection-input key="mar" label="Mars"></d2l-selection-input>Mars</li>
+      <li><d2l-selection-input key="jup" label="Jupiter"></d2l-selection-input>Jupiter</li>
+    </ul>
+  </d2l-demo-selection>
+</div>
 ```
 
 <!-- docs: start hidden content -->
@@ -340,7 +368,7 @@ In the example below, setting `selection-for` to `other-list` demonstrates the a
 
 The `d2l-selection-summary` is an optional component that shows a simple count of the selected items within the selection control.
 
-In the example below, setting `selection-for` to `other-list` demonstrates the ability to use `d2l-selection-summary` for `d2l-select-input` outside of the custom selection element.
+The `d2l-selection-summary` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
 <!-- docs: demo live name:d2l-selection-summary display:block -->
 ```html
@@ -351,6 +379,10 @@ In the example below, setting `selection-for` to `other-list` demonstrates the a
 </script>
 <!-- docs: start hidden content -->
 <style>
+  .container {
+    display: flex;
+    justify-content: center;
+  }
   ul {
     margin: 0;
     padding: 0;
@@ -370,24 +402,39 @@ In the example below, setting `selection-for` to `other-list` demonstrates the a
   #other-list {
     padding-top: 1rem;
   }
+  @media only screen and (max-width: 350px) {
+    .container {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+  }
+  @media only screen and (min-width: 350px) {
+    #other-list {
+      margin-left: 5rem;
+    }
+  }
 </style>
 <!-- docs: end hidden content -->
-<d2l-demo-selection>
-  <div>
-    <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
-    <d2l-selection-summary></d2l-selection-summary>
-  </div>
-  <ul>
-    <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>List 1 item 1</li>
-    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>List 1 item 2</li>
-  </ul>
-</d2l-demo-selection>
-<d2l-demo-selection id="other-list">
-  <ul>
-    <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>List 2 item 1</li>
-    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>List 2 item 2</li>
-  </ul>
-</d2l-demo-selection>
+<div class="container">
+  <d2l-demo-selection>
+    <div>
+      <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+      <d2l-selection-summary></d2l-selection-summary>
+    </div>
+    <ul>
+      <li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
+      <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+      <li><d2l-selection-input key="mat" label="Math" disabled></d2l-selection-input>Math</li>
+    </ul>
+  </d2l-demo-selection>
+  <d2l-demo-selection id="other-list">
+    <ul>
+      <li><d2l-selection-input key="ear" label="Earth"></d2l-selection-input>Earth</li>
+        <li><d2l-selection-input key="mar" label="Mars"></d2l-selection-input>Mars</li>
+        <li><d2l-selection-input key="jup" label="Jupiter"></d2l-selection-input>Jupiter</li>
+    </ul>
+  </d2l-demo-selection>
+</div>
 ```
 
 <!-- docs: start hidden content -->
