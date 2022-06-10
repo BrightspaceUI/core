@@ -186,11 +186,18 @@ The `d2l-tooltip-help` component is used to display additional information when 
 
 | Property | Type | Description |
 |--|--|--|
+| `inherit-font-style` | Boolean, default: `false` | Allows this component to inherit certain font properties |
 | `text` | String, required | Text that will render as the Help Tooltip opener |
 <!-- docs: end hidden content -->
 
-### Advanced Properties
+### Using in a Sentence or Paragraph
 
-| Property | Type | Description |
-|--|--|--|
-| `inherit-font-style` | Boolean, default: `false` | Allows this component to inherit certain font properties |
+There are two things to note when you wish to place a help tooltip next to other text as part of a sentence or a paragraph.  
+
+First, you must have the help tooltip match the font styling of the text it is next to.  
+To do so, add the `inherit-font-style` attribute to the help tooltip element, as seen in the second and third demo examples.
+
+Second, note that the help tooltip does not support being used *within* a lang term.   
+Instead, treat the text that you wish to be used as the opener as a separate lang term, and any text before or after the opener (within your desired sentence/paragraph) as other separate lang terms.  
+Due to this limitation, you will likely want to word your sentence/paragraph such that it makes sense to have the opener text at the end, as a separate sentence.  
+See the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example.
