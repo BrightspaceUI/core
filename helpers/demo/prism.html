@@ -96,7 +96,17 @@ fi</code></pre>
 <pre><code class="language-css line-numbers">.grumpy > img {
 	height: 100%;
 	width: 100%;
-}</code></pre>
+}
+@media (prefers-reduced-motion: reduce) {
+	:host([opened]), :host([opened-above]) {
+		animation: none !important;
+	}
+}
+@keyframes d2l-dropdown-animation {
+	0% { opacity: 0; transform: translate(0, -10px); }
+	100% { opacity: 1; transform: translate(0, 0); }
+}
+</code></pre>
 <br>
 <pre><code class="language-json line-numbers">{
 	"jinxed": "gnomes",

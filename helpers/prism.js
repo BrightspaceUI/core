@@ -291,3 +291,23 @@ export async function formatCodeElement(elem) {
 
 	return elem;
 }
+
+export class HtmlBlockCodeRenderer {
+
+	get canRenderInline() {
+		return true;
+	}
+
+	async render(elem) {
+		const codeElements = [...elem.querySelectorAll('pre'), ...elem.querySelectorAll(':not(pre) > code')];
+		if (codeElements.length === 0) return elem;
+
+		// wait; formatting is not synchronous due to lazy loading of Prism, languages, plugins
+		await Promise.all(codeElements.map(codeElement => {
+			return formatCodeElement(codeElement);
+		}));
+
+		return elem;
+	}
+
+}
