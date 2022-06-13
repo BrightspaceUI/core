@@ -14,7 +14,7 @@ The `d2l-list` already extends `SelectionMixin` and should always be used for li
 
 ## SelectionMixin
 
-The `SelectionMixin` acts like a controller for the checkboxes, radios, actions and other selection components. It enables the creation of custom selection control components. The selection components below must be contained within a component that extends the `SelectionMixin`. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+The `SelectionMixin` enables the creation of custom selection control components. The selection components below work with a component that extends the `SelectionMixin` which acts like a controller for the checkboxes, radios, actions and other selection components. The selection components below must be contained within a component that extends the `SelectionMixin`. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
 The `SelectionMixin` defines the `selection-single` attribute that consumers can specify for single selection behaviour.
 
