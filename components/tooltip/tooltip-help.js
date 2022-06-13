@@ -54,7 +54,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				outline-offset: 0.05rem;
 				text-underline-offset: 0.1rem;
 			}
-			.inherit-font {
+			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
 				font-size: inherit;
 				font-weight: inherit;
@@ -78,13 +78,6 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		// const opener = this.shadowRoot.querySelector('#d2l-tooltip-help-text');
-		// if (this.inheritFontStyle) {
-		// 	// opener.classList.add('inherit-font');
-		// } else {
-		// 	opener.classList.add('d2l-body-small');
-		// }
-
 		if (!this.text || this.text.length === 0) {
 			console.warn('Help Tooltip component requires text.');
 		}
@@ -92,7 +85,6 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	render() {
 		const classes = {
-			'inherit-font': this.inheritFontStyle,
 			'd2l-body-small': !this.inheritFontStyle
 		};
 		return html`
