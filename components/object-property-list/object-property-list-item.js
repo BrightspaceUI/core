@@ -41,16 +41,19 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 			d2l-icon {
 				height: 0.9rem;
 				width: 0.9rem;
-				margin-top: -0.1rem;
 			}
 			.separator {
 				display: var(--d2l-object-property-list-item-separator-display, inline);
+				margin: 0 0.05rem;
 			}
-			:host(:not([dir="rtl"])) .item-icon {
-				margin-right: 0.3rem;
+			.separator d2l-icon {
+				color: var(--d2l-color-galena);
+			}
+			.item-icon {
+				margin: -0.1rem 0.3rem 0 0;
 			}
 			:host([dir="rtl"]) .item-icon {
-				margin-left: 0.3rem;
+				margin: -0.1rem 0 0 0.3rem;
 			}
 		`];
 	}
