@@ -325,8 +325,7 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
       margin-right: 15px;
     }
     #other-list {
-      margin-left: 0;
-      
+      margin-left: 0;   
     }
     body {
       overflow-y: scroll;
