@@ -10,15 +10,13 @@ The selection components (`d2l-selection-action`, `d2l-selection-input`, `d2l-se
 
 ## Use Case
 
-The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be defined to enable the use of these selection controls in different semantic contexts or radically different layouts.
+The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be defined to enable the use of these selection controls in different semantic contexts or radically different layouts. See [SelectionMixin](#selectionmixin).
 
 ## SelectionMixin
 
-The `SelectionMixin` acts like a controller for the checkboxes, radios, actions, etc. and enables the creation of custom selection control components. The selection components below must be contained within a component that extends the `SelectionMixin`. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+The `SelectionMixin` acts like a controller for the checkboxes, radios, actions and other selection components. It enables the creation of custom selection control components. The selection components below must be contained within a component that extends the `SelectionMixin`. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
 The `SelectionMixin` defines the `selection-single` attribute that consumers can specify for single selection behaviour.
-
-Note: The `d2l-list` component already provides a selection control component for selectable list items. `SelectionMixin` is only necessary for constructing custom selection components.
 
 <!-- docs: demo live name:d2l-demo-selection display:block -->
 ```html
@@ -109,7 +107,7 @@ Note: The `d2l-list` component already provides a selection control component fo
 
 ### Usage
 
-The selection components can then be used within the custom selection component as shown above, or the non-`d2l-selection-input` components can be used outside the custom selection component as long as they are in the same DOM scope:
+Define a custom web component that extends the `SelectionMixin`. The selection components can then be used within the custom selection component as shown above, or the non-`d2l-selection-input` components can be used outside the custom selection component as long as they are in the same DOM scope:
 
 ```html
 <div>
@@ -127,7 +125,7 @@ The selection components can then be used within the custom selection component 
 
 ## Selection Action [d2l-selection-action]
 
-The `d2l-selection-action` is an optional component that provides a button for actions associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the button should be non-interactive if nothing is selected.
+The `d2l-selection-action` is an optional component that provides a button for actions associated with the [selection control](#selectionmixin) (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the button should be non-interactive if nothing is selected.
 
 <!-- docs: demo live name:d2l-selection-action -->
 ```html
@@ -156,7 +154,7 @@ The `d2l-selection-action` is an optional component that provides a button for a
 
 ## Selection Action Dropdown [d2l-selection-action-dropdown]
 
-The `d2l-selection-action-dropdown` is an optional component that provides a button opener for dropdown content associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the opener should be non-interactive if nothing is selected.
+The `d2l-selection-action-dropdown` is an optional component that provides a button opener for dropdown content associated with the [selection control](#selectionmixin) (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the opener should be non-interactive if nothing is selected.
 
 <!-- docs: demo live name:d2l-selection-action-dropdown align:baseline -->
 ```html
@@ -186,7 +184,7 @@ The `d2l-selection-action-dropdown` is an optional component that provides a but
 
 ## Selection Action Menu Item [d2l-selection-action-menu-item]
 
-The `d2l-selection-action-menu-item` is an optional component that is a menu item for actions associated with the selection component (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the menu item should be non-interactive if nothing is selected. This component enables the app to define an opener that is enabled regardless of the selection state, while having a menu containing one or more menu items that `requires-selection`.
+The `d2l-selection-action-menu-item` is an optional component that is a menu item for actions associated with the [selection control](#selectionmixin) (ex. bulk actions). The `requires-selection` attribute may be specified to indicate that the menu item should be non-interactive if nothing is selected. This component enables the app to define an opener that is enabled regardless of the selection state, while having a menu containing one or more menu items that `requires-selection`.
 
 <!-- docs: demo live name:d2l-selection-action-menu-item autoSize:false size:medium align:baseline -->
 ```html
@@ -224,7 +222,7 @@ The `d2l-selection-action-menu-item` is an optional component that is a menu ite
 
 ## Selection Input [d2l-selection-input]
 
-The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! This component must be placed _within_ the selection control.
+The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! This component must be placed _within_ the [selection control](#selectionmixin).
 
 If `d2l-selection-input` is placed within a selection control that specifies `selection-single`, then radios will be rendered instead of checkboxes.
 
@@ -283,7 +281,7 @@ Either `label` or `labelled-by` is **required**.
 
 ## Select All [d2l-selection-select-all]
 
-The `d2l-selection-select-all` is an optional component that provides a checkbox for bulk selecting the selectable elements within the selection control. Its state will also be automatically updated when the state of the selectable elements change.
+The `d2l-selection-select-all` is an optional component that provides a checkbox for bulk selecting the selectable elements within the [selection control](#selectionmixin). Its state will also be automatically updated when the state of the selectable elements change.
 
 The `d2l-selection-select-all` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
@@ -298,7 +296,6 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
 <!-- docs: start hidden content -->
 <style>
   .container {
-    display: flex;
     justify-content: center;
   }
   ul {
@@ -319,16 +316,20 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
   }
   #other-list {
     padding-top: 2.1rem;
+    margin-left: 5rem;
   }
   @media only screen and (max-width: 350px) {
     .container {
       flex-direction: column;
-      align-items: flex-start !important;
+      align-items: flex-start;
+      margin-right: 15px;
     }
-  }
-  @media only screen and (min-width: 350px) {
     #other-list {
-      margin-left: 5rem;
+      margin-left: 0;
+      
+    }
+    body {
+      overflow-y: scroll;
     }
   }
 </style>
@@ -366,7 +367,7 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
 
 ## Selection Summary [d2l-selection-summary]
 
-The `d2l-selection-summary` is an optional component that shows a simple count of the selected items within the selection control.
+The `d2l-selection-summary` is an optional component that shows a simple count of the selected items within the [selection control](#selectionmixin).
 
 The `d2l-selection-summary` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
@@ -401,16 +402,18 @@ The `d2l-selection-summary` component may be placed inside the selection control
   }
   #other-list {
     padding-top: 1rem;
+    margin-left: 5rem;
   }
   @media only screen and (max-width: 350px) {
     .container {
       flex-direction: column;
-      align-items: flex-start !important;
+      align-items: flex-start;
     }
-  }
-  @media only screen and (min-width: 350px) {
     #other-list {
-      margin-left: 5rem;
+      margin-left: 0;
+    }
+    body {
+      overflow-y: scroll;
     }
   }
 </style>
