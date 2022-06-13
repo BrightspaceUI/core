@@ -299,7 +299,7 @@ export class HtmlBlockCodeRenderer {
 	}
 
 	async render(elem) {
-		const codeElements = [...elem.querySelectorAll('pre'), ...elem.querySelectorAll(':not(pre) > code')];
+		const codeElements = [...elem.querySelectorAll('.d2l-code')];
 		if (codeElements.length === 0) return elem;
 
 		// wait; formatting is not synchronous due to lazy loading of Prism, languages, plugins
