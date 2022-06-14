@@ -166,7 +166,7 @@ The `d2l-selection-action-dropdown` is an optional component that provides a but
 <d2l-selection-action-dropdown text="Actions" requires-selection>
   <d2l-dropdown-menu>
     <d2l-menu label="Actions">
-            <!-- This is where you add instances of <d2l-selection-action-menu-item>. -->
+      <!-- This is where you add instances of <d2l-selection-action-menu-item>. -->
     </d2l-menu>
   </d2l-dropdown-menu>
 </d2l-selection-action-dropdown>
