@@ -283,7 +283,7 @@ Either `label` or `labelled-by` is **required**.
 
 The `d2l-selection-select-all` is an optional component that provides a checkbox for bulk selecting the selectable elements within the [selection control](#selectionmixin). Its state will also be automatically updated when the state of the selectable elements change.
 
-The `d2l-selection-select-all` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+The `d2l-selection-select-all` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component. In the example below, setting `selection-for` to `other-list` demonstrates the ability to use `d2l-selection-select-all` from outside of the selection control component.
 
 <!-- docs: demo live name:d2l-selection-select-all display:block -->
 ```html
@@ -297,6 +297,10 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
 <style>
   .container {
     justify-content: center;
+  }
+  #other-list {
+    padding-top: 2.1rem;
+    margin-left: 5rem;
   }
   ul {
     margin: 0;
@@ -314,21 +318,17 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
   d2l-selection-input {
     margin-right: 10px;
   }
-  #other-list {
-    padding-top: 2.1rem;
-    margin-left: 5rem;
-  }
   @media only screen and (max-width: 350px) {
+    body {
+      overflow-y: scroll;
+    }
     .container {
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
       margin-right: 15px;
     }
     #other-list {
       margin-left: 0;   
-    }
-    body {
-      overflow-y: scroll;
     }
   }
 </style>
@@ -368,7 +368,7 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
 
 The `d2l-selection-summary` is an optional component that shows a simple count of the selected items within the [selection control](#selectionmixin).
 
-The `d2l-selection-summary` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
+The `d2l-selection-summary` component may be placed inside the selection control, or in the same DOM scope with the `selection-for` attribute set to the id of that component. In the example below, setting `selection-for` to `other-list` demonstrates the ability to use `d2l-selection-summary` from outside of the selection control component.
 
 <!-- docs: demo live name:d2l-selection-summary display:block -->
 ```html
@@ -382,6 +382,10 @@ The `d2l-selection-summary` component may be placed inside the selection control
   .container {
     display: flex;
     justify-content: center;
+  }
+  #other-list {
+    padding-top: 1rem;
+    margin-left: 5rem;
   }
   ul {
     margin: 0;
@@ -399,20 +403,16 @@ The `d2l-selection-summary` component may be placed inside the selection control
   d2l-selection-input {
     margin-right: 10px;
   }
-  #other-list {
-    padding-top: 1rem;
-    margin-left: 5rem;
-  }
   @media only screen and (max-width: 350px) {
+    body {
+      overflow-y: scroll;
+    }
     .container {
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
     }
     #other-list {
       margin-left: 0;
-    }
-    body {
-      overflow-y: scroll;
     }
   }
 </style>
