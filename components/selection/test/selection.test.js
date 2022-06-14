@@ -153,6 +153,7 @@ describe('SelectionMixin', () => {
 				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
 				<d2l-selection-input key="key2" label="label2"></d2l-selection-input>
 				<d2l-selection-input key="key3" label="label3"></d2l-selection-input>
+				<d2l-selection-input key="key4" label="label4" disabled></d2l-selection-input>
 			</d2l-test-selection>
 		`);
 		await el.updateComplete;
@@ -178,12 +179,12 @@ describe('SelectionMixin', () => {
 	});
 
 	it('registers selectables', async() => {
-		expect(el._selectionSelectables.size).to.equal(3);
+		expect(el._selectionSelectables.size).to.equal(4);
 	});
 
 	it('unregisters selectables', async() => {
 		el.removeChild(el.querySelector('[key="key1"]'));
-		expect(el._selectionSelectables.size).to.equal(2);
+		expect(el._selectionSelectables.size).to.equal(3);
 	});
 
 	it('returns none for getSelectionInfo when none selected', async() => {
@@ -204,7 +205,7 @@ describe('SelectionMixin', () => {
 		el.querySelectorAll('[key]').forEach(checkbox => checkbox.selected = true);
 		const info = el.getSelectionInfo();
 		expect(info.state).to.equal('all');
-		expect(info.keys.length).to.equal(3);
+		expect(info.keys.length).to.equal(4);
 		el.querySelectorAll('[key]').forEach(checkbox => expect(info.keys.includes(checkbox.key)).to.equal(true));
 	});
 
@@ -214,13 +215,22 @@ describe('SelectionMixin', () => {
 			const spy1 = Sinon.spy(el.querySelector('[key="key1"]'), 'selected', ['set']);
 			const spy2 = Sinon.spy(el.querySelector('[key="key2"]'), 'selected', ['set']);
 			const spy3 = Sinon.spy(el.querySelector('[key="key3"]'), 'selected', ['set']);
+			const spy4 = Sinon.spy(el.querySelector('[key="key4"]'), 'selected', ['set']);
 
 			el.setSelectionForAll(true);
 
 			expect(spy1.set).to.not.have.been.called;
 			expect(spy2.set).to.have.been.calledOnce;
 			expect(spy3.set).to.have.been.calledOnce;
-			el.querySelectorAll('[key]').forEach(checkbox => expect(checkbox.selected).to.equal(true));
+			expect(spy4.set).to.not.have.been.called;
+			el.querySelectorAll('[key]').forEach(checkbox => {
+				if (checkbox.key === 'key4') {
+					expect(checkbox.selected).to.equal(false);
+				}
+				else {
+					expect(checkbox.selected).to.equal(true);
+				}
+			});
 		});
 
 		it('cannot be used for selecting in the selection-single case (only clearing)', async() => {
@@ -229,14 +239,17 @@ describe('SelectionMixin', () => {
 			const spy1 = Sinon.spy(el.querySelector('[key="key1"]'), 'selected', ['set']);
 			const spy2 = Sinon.spy(el.querySelector('[key="key2"]'), 'selected', ['set']);
 			const spy3 = Sinon.spy(el.querySelector('[key="key3"]'), 'selected', ['set']);
+			const spy4 = Sinon.spy(el.querySelector('[key="key4"]'), 'selected', ['set']);
 
 			el.setSelectionForAll(true);
 			expect(spy1.set).to.not.have.been.called;
 			expect(spy2.set).to.not.have.been.called;
 			expect(spy3.set).to.not.have.been.called;
+			expect(spy4.set).to.not.have.been.called;
 			expect(el.querySelector('[key="key1"]').selected).to.be.true;
 			expect(el.querySelector('[key="key2"]').selected).to.be.false;
 			expect(el.querySelector('[key="key3"]').selected).to.be.false;
+			expect(el.querySelector('[key="key4"]').selected).to.be.false;
 
 			el.setSelectionForAll(false);
 			expect(spy1.set).to.have.been.calledOnce;
