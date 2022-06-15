@@ -26,7 +26,7 @@ export const radioStyles = css`
 		background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%09%3Ccircle%20cx%3D%225%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23494c4e%22%3E%3C/circle%3E%0A%3C/svg%3E");
 	}
 	.d2l-input-radio,
-	.d2l-input-radio:hover:disabled,
+	.d2l-input-radio:hover.d2l-disabled,
 	.d2l-input-radio-label > input[type="radio"],
 	.d2l-input-radio-label > input[type="radio"]:hover:disabled {
 		background-color: var(--d2l-color-regolith);
