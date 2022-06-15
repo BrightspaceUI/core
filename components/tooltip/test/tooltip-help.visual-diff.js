@@ -12,7 +12,7 @@ describe('d2l-tooltip-help', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 400 } });
+		page = await visualDiff.createPage(browser);
 
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tooltip/test/tooltip-help.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
@@ -89,7 +89,10 @@ describe('d2l-tooltip-help', () => {
 			await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
 			await openEvent;
 
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			const rect = await visualDiff.getRect(page, selector);
+			rect.width += 100;
+			rect.height += 70;
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 	});
