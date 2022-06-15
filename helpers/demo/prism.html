@@ -26,25 +26,25 @@
 }
 helloGrumpy('Wizard');
 </code></pre>
-<br>
+
 <pre><code class="language-bash line-numbers">#!/bin/bash
 if [ -d $directory ]; then
 	echo "Directory exists"
 else
 	echo "Directory does not exists"
 fi</code></pre>
-<br>
+
 <pre><code class="language-css line-numbers">.grumpy > img {
 	height: 100%;
 	width: 100%;
 }</code></pre>
-<br>
+
 <pre><code class="language-json line-numbers">{
 	"jinxed": "gnomes",
 	"grumpy": [ "wizards" ]
 }
 </code></pre>
-<br>
+
 <pre><code class="language-sql line-numbers">SELECT * FROM courses
 INNEE JOIN enrollments ON courses.id = enrollments.courseId
 ORDER BY enrollments.lastUpdated ASC
@@ -58,7 +58,7 @@ GO
 				}
 				updated(changedProperties) {
 					super.updated(changedProperties);
-					this.shadowRoot.querySelectorAll('code').forEach(code => formatCodeElement(code));
+					this.shadowRoot.querySelectorAll('pre').forEach(code => formatCodeElement(code));
 				}
 			}
 			customElements.define('d2l-demo-prism', DemoPrism);
@@ -78,62 +78,80 @@ GO
 
 		<h1 class="d2l-heading-2">Prism Helper</h1>
 
-		<h2 class="d2l-heading-3">Global Scope (formatCodeElement)</h2>
+		<h2 class="d2l-heading-3">Token Samples</h2>
 
-		<div id="format-code-element-container">
-<pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
-	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
+<pre><code class="language-javascript line-numbers">// comment
+/* comment */
+
+import { stuff } from 'some/where.js'; // keyword, punctuation, string
+
+function helloGrumpy(name) { // keyword, function, parameter
+	console.log(`Hi there ${name}.`); // template-string, template-punctuation, interpolation, interpolation-punctuation
 }
-helloGrumpy('Wizard');</code></pre>
-<br>
-<pre><code class="language-bash line-numbers">#!/bin/bash
-if [ -d $directory ]; then
-	echo "Directory exists"
-else
-	echo "Directory does not exists"
-fi</code></pre>
-<br>
-<pre><code class="language-css line-numbers">.grumpy > img {
-	height: 100%;
-	width: 100%;
+
+class Wizard extends Human { } // keyword, class-name
+
+const grumpy = new Wizard(); // keyword, operator, class-name
+
+let wizardFoods = [...donuts, ... cakes, ...pies]; // keyword, operator
+
+const wizardsLikeBeer = false; // keyword, operator, boolean
+
+const favouriteNumber = 3.14159; // keyword, operator, number
+
+const regex = /[^\w\s]/g; // keyword, operator, regex, regex-delimiter, regex-source, regex-flags
+</code></pre>
+
+<pre><code class="language-css line-numbers">.grumpy > img { /* selector */
+	background-image: url("smile.png"); /* property, url, string */
+	height: 100%; /* property, punctuation */
+	width: var(--some-var); /* property, punctuation, function */
 }
-@media (prefers-reduced-motion: reduce) {
+@font-face { /* atrule, rule */
+	font-family: 'Lato'; /* property, punctuation, string */
+	font-style: normal;
+	src: local('Lato Regular'); /* property, function, string */
+}
+@media (prefers-reduced-motion: reduce) { /* atrule, rule, property */
 	:host([opened]), :host([opened-above]) {
-		animation: none !important;
+		animation: none !important; /* property, important */
 	}
 }
-@keyframes d2l-dropdown-animation {
-	0% { opacity: 0; transform: translate(0, -10px); }
-	100% { opacity: 1; transform: translate(0, 0); }
-}
 </code></pre>
-<br>
-<pre><code class="language-json line-numbers">{
-	"jinxed": "gnomes",
-	"grumpy": [ "wizards" ]
-}
-</code></pre>
-<br>
-<pre><code class="language-sql line-numbers">SELECT * FROM courses
-INNEE JOIN enrollments ON courses.id = enrollments.courseId
-ORDER BY enrollments.lastUpdated ASC
 
-SET ROWCOUNT 4;
-SELECT * enrollments
-WHERE Quantity < 300;
-GO
+<pre><code class="language-markup line-numbers">&lt;!DOCTYPE html&gt; &lt;!-- doctype, doctype-tag, name --&gt;
+&lt;html&gt; &lt;!-- tag, punctuation --&gt;
+	&lt;body class="typography"&gt; &lt;!-- attr-name, attr-value --&gt;
+		&lt;![CDATA[ some cdata section ]]&gt; &lt;!-- cdata --&gt;
+		&lt;div style="color: blue;"&gt; &lt;!-- attr-name, attr-value, attr-equals, value, css, property --&gt;
+			&amp;pound; &lt;!-- entity, named-entity --&gt;
+			&amp;#163; &lt;!-- entity --&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
-		</div>
 
-		<!--
-		<h2 class="d2l-heading-3">Global Scope (formatCode)</h2>
-		<div id="format-code-container">
-<pre><code class="language-javascript line-numbers">function helloGrumpy(name) {
-	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
+<pre><code class="language-sql line-numbers">DECLARE @MyCounter INT; /* keyword, variable, punctuation */
+
+SELECT AVG(Calories) AS AverageCalories FROM Desserts; /* keyword, function */
+
+SELECT * FROM Desserts /* keyword, operator */
+
+SET ROWCOUNT 4; /* keyword, number */
+
+SET @Hidden = FALSE; /* keyword, variable, boolean */
+
+SET @Donuts = 'Yummy'; /* keyword, variable, string */
+</code></pre>
+
+<pre><code class="language-json line-numbers">{ /* punctuation */
+	"jinxed": "gnomes", /* property, operator, string */
+	"grumpy": [ "wizards" ],
+	"jelly": 99, /* property, operator, number */
+	"donut": true, /* property, operator, boolean */
+	"fritter": null /* property, operator, null, keyword */
 }
-helloGrumpy('Wizard');</code></pre>
-		</div>
-		-->
+</code></pre>
 
 		<h2 class="d2l-heading-3">Web Component Scope</h2>
 
@@ -143,20 +161,10 @@ helloGrumpy('Wizard');</code></pre>
 				import { formatCodeElement } from '../prism.js';
 
 				// formatCodeElement
-				const codeElements = document.querySelectorAll('#format-code-element-container pre');
+				const codeElements = document.querySelectorAll('pre');
 				codeElements.forEach(codeElement => {
 					formatCodeElement(codeElement);
 				});
-
-				// formatCode
-				/*
-				codeElements = document.querySelectorAll('#format-code-container pre');
-				codeElements.forEach(async codeElement => {
-					const formattedCode = await formatCode(codeElement.outerHTML);
-					console.log(formattedCode);
-					codeElement.outerHTML = formattedCode;
-				});
-				*/
 
 		</script>
 	</body>
