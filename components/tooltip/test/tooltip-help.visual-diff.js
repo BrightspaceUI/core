@@ -90,7 +90,7 @@ describe('d2l-tooltip-help', () => {
 			await openEvent;
 
 			const rect = await visualDiff.getRect(page, selector);
-			rect.width += 100;
+			rect.width += 120;
 			rect.height += 70;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
