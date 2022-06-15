@@ -179,6 +179,14 @@ The `d2l-tooltip-help` component is used to display additional information when 
 </script>
 
 <d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+<p class="d2l-body-small">
+  This is some sample text.
+  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+</p>
+<p class="d2l-body-compact">
+  This is some sample text.
+  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+</p>
 ```
 
 <!-- docs: start hidden content -->
@@ -186,18 +194,16 @@ The `d2l-tooltip-help` component is used to display additional information when 
 
 | Property | Type | Description |
 |--|--|--|
-| `inherit-font-style` | Boolean, default: `false` | Allows this component to inherit certain font properties |
-| `text` | String, required | Text that will render as the Help Tooltip opener |
+| `text` | String, required | Text for the Help Tooltip opener |
+| `inherit-font-style` | Boolean, default: `false` | Allows the opener text to inherit font properties such as size and color |
 <!-- docs: end hidden content -->
 
 ### Using in a Sentence or Paragraph
 
-There are two things to note when you wish to place a help tooltip next to other text as part of a sentence or a paragraph.  
+When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text 
+(see 2nd and 3rd examples above).
 
-First, you must have the help tooltip match the font styling of the text it is next to.  
-To do so, add the `inherit-font-style` attribute to the help tooltip element, as seen in the second and third demo examples.
+Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.   
+Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own. 
 
-Second, note that the help tooltip does not support being used *within* a lang term.   
-Instead, treat the text that you wish to be used as the opener as a separate lang term, and any text before or after the opener (within your desired sentence/paragraph) as other separate lang terms.  
-Due to this limitation, you will likely want to word your sentence/paragraph such that it makes sense to have the opener text at the end, as a separate sentence.  
 See the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example.
