@@ -6,6 +6,33 @@ Prism.manual = true;
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
 //const prismLocation = '/node_modules/prismjs';
 
+export const codeLanguages = new Map();
+codeLanguages.set('armasm', 'ARM Assembly');
+codeLanguages.set('arduino', 'Arduino');
+codeLanguages.set('bash', 'Bash');
+codeLanguages.set('c', 'C');
+codeLanguages.set('cpp', 'C++');
+codeLanguages.set('csharp', 'C#');
+codeLanguages.set('css', 'CSS');
+codeLanguages.set('javascript', 'JavaScript');
+codeLanguages.set('java', 'Java');
+codeLanguages.set('json', 'JSON');
+codeLanguages.set('markup', 'Markup');
+codeLanguages.set('wolfram', 'Wolfram Mathematica');
+codeLanguages.set('plain', 'Plain Text');
+codeLanguages.set('python', 'Python');
+codeLanguages.set('sql', 'SQL');
+
+/*
+BASIC, VB
+Git
+Haskell
+Kotlin
+MATLAB
+R
+Racket
+*/
+
 export const codeStyles = css`
 
 	code[class*="language-"],
@@ -184,34 +211,50 @@ export const codeStyles = css`
 	}
 `;
 
-const getLanguage = elem => {
+const getLanguageInfo = elem => {
 	const classes = elem.classList;
 	for (let i = 0; i < classes.length; i++) {
 		if (classes[i].startsWith('language-')) {
-			return classes[i].substring(9);
+			const key = classes[i].substring(9);
+			const desc = codeLanguages.get(key);
+			if (desc) return { key: key, desc: desc };
 		}
 	}
+	return { key: 'plain', desc: codeLanguages.get('plain') };
+};
+
+const languageDependencies = {
+	arduino: [ 'cpp' ],
+	cpp: [ 'c' ]
 };
 
 const languagesLoaded = {
 	clike: Promise.resolve(),
 	css: Promise.resolve(),
 	javascript: Promise.resolve(),
-	markup: Promise.resolve()
+	markup: Promise.resolve(),
+	plain: Promise.resolve()
 };
 
-const loadLanguage = async component => {
-	if (languagesLoaded[component]) return languagesLoaded[component];
+const loadLanguage = async key => {
+	if (languagesLoaded[key]) return languagesLoaded[key];
 
-	languagesLoaded[component] = new Promise(resolve => {
+	// Prism languages can extend other anguages and must be loaded in order
+
+	// eslint-disable-next-line no-async-promise-executor
+	languagesLoaded[key] = new Promise(async resolve => {
+		if (languageDependencies[key]) {
+			await Promise.all(languageDependencies[key].map(dependencyKey => loadLanguage(dependencyKey)));
+		}
+
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = `${prismLocation}/components/prism-${component}.min.js`;
+		script.src = `${prismLocation}/components/prism-${key}.min.js`;
 		document.head.appendChild(script);
 	});
 
-	return languagesLoaded[component];
+	return languagesLoaded[key];
 };
 
 const pluginsLoaded = {};
@@ -261,32 +304,20 @@ const getCodeElement = elem => {
 	return elem.querySelector('code');
 };
 
-/*
-export async function formatCode(html) {
-	const temp = document.createElement('div');
-	temp.innerHTML = html;
-
-	const code = getCodeElement(temp.firstElementChild);
-	const formattedCode = await formatCodeElement(code);
-
-	return temp.innerHTML;
-}
-*/
-
 export async function formatCodeElement(elem) {
 	const code = getCodeElement(elem);
 
 	if (code.className.indexOf('language-') === -1) return;
 
-	const language = getLanguage(code);
+	const languageInfo = getLanguageInfo(code);
 
 	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
-		loadLanguage(language),
+		loadLanguage(languageInfo.key),
 		code.classList.contains('line-numbers') ? loadPlugin('line-numbers') : null
 	]);
 
-	if (!elem.dataset.language) elem.dataset.language = language;
+	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
 	Prism.highlightElement(code);
 
 	return elem;
