@@ -267,7 +267,7 @@ const loadPlugin = async plugin => {
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = `${prismLocation}/plugins/${plugin}/prism-${plugin}.js`;
+		script.src = `${prismLocation}/plugins/${plugin}/prism-${plugin}.min.js`;
 		document.head.appendChild(script);
 	});
 
