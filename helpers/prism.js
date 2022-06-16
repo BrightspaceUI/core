@@ -10,28 +10,28 @@ export const codeLanguages = new Map();
 codeLanguages.set('armasm', 'ARM Assembly');
 codeLanguages.set('arduino', 'Arduino');
 codeLanguages.set('bash', 'Bash');
+codeLanguages.set('basic', 'BASIC');
 codeLanguages.set('c', 'C');
+codeLanguages.set('clike', 'C-like');
 codeLanguages.set('cpp', 'C++');
 codeLanguages.set('csharp', 'C#');
 codeLanguages.set('css', 'CSS');
+codeLanguages.set('fortran', 'Fortran');
+codeLanguages.set('haskell', 'Haskell');
 codeLanguages.set('javascript', 'JavaScript');
 codeLanguages.set('java', 'Java');
 codeLanguages.set('json', 'JSON');
+codeLanguages.set('kotlin', 'Kotlin');
+codeLanguages.set('latex', 'LaTeX');
 codeLanguages.set('markup', 'Markup');
-codeLanguages.set('wolfram', 'Wolfram Mathematica');
+codeLanguages.set('matlab', 'MATLAB');
 codeLanguages.set('plain', 'Plain Text');
 codeLanguages.set('python', 'Python');
+codeLanguages.set('r', 'R');
+codeLanguages.set('racket', 'Racket');
 codeLanguages.set('sql', 'SQL');
-
-/*
-BASIC, VB
-Git
-Haskell
-Kotlin
-MATLAB
-R
-Racket
-*/
+codeLanguages.set('visual-basic', 'Visual Basic');
+codeLanguages.set('wolfram', 'Wolfram Mathematica');
 
 export const codeStyles = css`
 
@@ -225,7 +225,8 @@ const getLanguageInfo = elem => {
 
 const languageDependencies = {
 	arduino: [ 'cpp' ],
-	cpp: [ 'c' ]
+	cpp: [ 'c' ],
+	racket: [ 'scheme' ]
 };
 
 const languagesLoaded = {
