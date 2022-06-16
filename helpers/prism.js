@@ -7,8 +7,8 @@ const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c9
 //const prismLocation = '/node_modules/prismjs';
 
 export const codeLanguages = new Map();
-codeLanguages.set('armasm', 'ARM Assembly');
 codeLanguages.set('arduino', 'Arduino');
+codeLanguages.set('armasm', 'ARM Assembly');
 codeLanguages.set('bash', 'Bash');
 codeLanguages.set('c', 'C');
 codeLanguages.set('clike', 'C-like');
@@ -16,8 +16,8 @@ codeLanguages.set('cpp', 'C++');
 codeLanguages.set('csharp', 'C#');
 codeLanguages.set('css', 'CSS');
 codeLanguages.set('haskell', 'Haskell');
-codeLanguages.set('javascript', 'JavaScript');
 codeLanguages.set('java', 'Java');
+codeLanguages.set('javascript', 'JavaScript');
 codeLanguages.set('json', 'JSON');
 codeLanguages.set('kotlin', 'Kotlin');
 codeLanguages.set('latex', 'LaTeX');
