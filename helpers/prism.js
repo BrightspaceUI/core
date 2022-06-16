@@ -10,13 +10,11 @@ export const codeLanguages = new Map();
 codeLanguages.set('armasm', 'ARM Assembly');
 codeLanguages.set('arduino', 'Arduino');
 codeLanguages.set('bash', 'Bash');
-codeLanguages.set('basic', 'BASIC');
 codeLanguages.set('c', 'C');
 codeLanguages.set('clike', 'C-like');
 codeLanguages.set('cpp', 'C++');
 codeLanguages.set('csharp', 'C#');
 codeLanguages.set('css', 'CSS');
-codeLanguages.set('fortran', 'Fortran');
 codeLanguages.set('haskell', 'Haskell');
 codeLanguages.set('javascript', 'JavaScript');
 codeLanguages.set('java', 'Java');
@@ -30,8 +28,14 @@ codeLanguages.set('python', 'Python');
 codeLanguages.set('r', 'R');
 codeLanguages.set('racket', 'Racket');
 codeLanguages.set('sql', 'SQL');
-codeLanguages.set('visual-basic', 'Visual Basic');
 codeLanguages.set('wolfram', 'Wolfram Mathematica');
+
+/*
+codeLanguages.set('basic', 'BASIC');
+codeLanguages.set('fortran', 'Fortran');
+codeLanguages.set('regex', 'Regex');
+codeLanguages.set('visual-basic', 'Visual Basic');
+*/
 
 export const codeStyles = css`
 
