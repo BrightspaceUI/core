@@ -76,7 +76,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			this._provider = evt.detail.provider;
 			if (this._provider && this._provider._selectAllPages) this.selected = true;
 		});
-
 	}
 
 	disconnectedCallback() {
@@ -139,6 +138,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				composed: true,
 				detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected }
 			}));
+
 		}
 	}
 

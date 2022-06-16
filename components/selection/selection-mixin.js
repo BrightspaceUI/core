@@ -151,17 +151,17 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 			.filter(item => !item.disabled);
 		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
-		let newIndex = currentIndex;
+		let newIndex;
 
 		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| e.keyCode === keyCodes.DOWN) {
-			if (newIndex === selectables.length - 1) newIndex = 0;
+			if (currentIndex === selectables.length - 1) newIndex = 0;
 			else newIndex = newIndex + 1;
 		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| e.keyCode === keyCodes.UP) {
-			if (newIndex === 0) newIndex = selectables.length - 1;
+			if (currentIndex === 0) newIndex = selectables.length - 1;
 			else newIndex = newIndex - 1;
 		}
 		selectables[newIndex].selected = true;
