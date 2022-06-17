@@ -283,7 +283,7 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 ![Nested Menu](./screenshots/nested-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo -->
+<!-- docs: demo live -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -292,24 +292,16 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 </script>
 
 <d2l-menu label="Astronomy">
-  <d2l-menu-item text="Introduction"></d2l-menu-item>
-  <d2l-menu-item-separator></d2l-menu-item-separator>
-  <d2l-menu-item text="Searching the Heavens"></d2l-menu-item>
   <d2l-menu-item text="The Solar System">
     <d2l-menu>
-      <d2l-menu-item text="Formation"></d2l-menu-item>
-      <d2l-menu-item text="Modern Solar System"></d2l-menu-item>
+      <d2l-menu-item text="The Sun"></d2l-menu-item>
       <d2l-menu-item text="The Planets">
         <d2l-menu>
           <d2l-menu-item text="Mercury"></d2l-menu-item>
           <d2l-menu-item text="Venus"></d2l-menu-item>
           <d2l-menu-item text="Earth"></d2l-menu-item>
-          <d2l-menu-item text="Mars"></d2l-menu-item>
-          <d2l-menu-item text="..."></d2l-menu-item>
         </d2l-menu>
       </d2l-menu-item>
-      <d2l-menu-item text="The Sun"></d2l-menu-item>
-      <d2l-menu-item text="Asteroids"></d2l-menu-item>
       <d2l-menu-item text="Comets"></d2l-menu-item>
     </d2l-menu>
   </d2l-menu-item>
@@ -317,9 +309,6 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
     <d2l-menu>
       <d2l-menu-item text="What is a Star?"></d2l-menu-item>
       <d2l-menu-item text="Lifecycle of a Star"></d2l-menu-item>
-      <d2l-menu-item text="Binaries &amp; Multiples"></d2l-menu-item>
-      <d2l-menu-item text="Star Clusters"></d2l-menu-item>
-      <d2l-menu-item text="Star Death"></d2l-menu-item>
       <d2l-menu-item text="Galaxies"></d2l-menu-item>
     </d2l-menu>
   </d2l-menu-item>
