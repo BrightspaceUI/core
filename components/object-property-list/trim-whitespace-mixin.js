@@ -1,7 +1,4 @@
-import { Directive, directive } from 'lit/directive.js';
-import { noChange } from 'lit';
-
-const isCustomElement = node => node?.tagName?.includes('-');
+import { TrimWhitespaceEngine } from './trim-whitespace.js';
 
 export const TrimWhitespaceMixin = superclass => class extends superclass {
 	static get properties() {
@@ -12,68 +9,24 @@ export const TrimWhitespaceMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this._trimObserver = new MutationObserver(this._trimObserverCallback.bind(this));
+		this._trimWhitespaceEngine = new TrimWhitespaceEngine(this, this.trimWhitespaceDeep);
+	}
+
+	set trimWhitespaceDeep(value) {
+		const oldValue = this._trimWhitespaceEngine.deep;
+		this._trimWhitespaceEngine.deep = value;
+		this.requestUpdate('trimWhitespaceDeep', oldValue);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._trimAndObserve(this);
-		if (!this.trimWhitespaceDeep) this._trimAndObserveShadow(this);
+		this._trimWhitespaceEngine.start();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._trimObserver.disconnect();
+		this._trimWhitespaceEngine.stop();
 	}
-
-	_trimAndObserve(node) {
-		this._trimTextNodes(node, true);
-		this._trimObserver.observe(node, { subtree: true, characterData: true, childList: true });
-	}
-
-	_trimAndObserveShadow(node) {
-		if (node.shadowRoot) this._trimAndObserve(node.shadowRoot);
-		else if (isCustomElement(node) && node.attachShadow) {
-			const attachShadow = node.attachShadow.bind(node);
-			node.attachShadow = (...args) => {
-				const shadowRoot = attachShadow(...args);
-				this._trimAndObserve(shadowRoot);
-				return shadowRoot;
-			};
-		}
-	}
-
-	_trimObserverCallback(records) {
-		records.forEach(record => {
-			record.addedNodes.forEach(node => this._trimTextNodes(node, true));
-			if (record.type === 'characterData') this._trimTextNodes(record.target);
-		});
-	}
-
-	_trimTextNodes(node, recurse) {
-		if (node.__d2l_no_trim || node.parentNode?.__d2l_no_trim) return;
-
-		if (node.nodeType === Node.TEXT_NODE && node.textContent) {
-			const trimmed = node.textContent.trim();
-			if (node.textContent !== trimmed) node.textContent = trimmed;
-		} else if (recurse) {
-			if (this.trimWhitespaceDeep) this._trimAndObserveShadow(node);
-			node.childNodes?.forEach(childNode => this._trimTextNodes(childNode, true));
-		}
-	}
-
 };
 
-class NoTrim extends Directive {
-	constructor(part) {
-		super(part);
-		const node = part.element || part.parentNode;
-		node.__d2l_no_trim = true;
-	}
-
-	render() {
-		return noChange;
-	}
-}
-
-export const noTrim = directive(NoTrim);
+export { noTrim } from './trim-whitespace-directive.js';

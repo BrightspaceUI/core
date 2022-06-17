@@ -1,23 +1,31 @@
-import { Directive, directive } from 'lit/directive.js';
-import { noChange } from 'lit';
-
 const isCustomElement = node => node?.tagName?.includes('-');
 
-class NoChangeDirective extends Directive {
-	render() { return noChange; }
-}
+const addShadowListener = (node, callback) => {
+	if (!node.attachShadow) return;
+	const attachShadow = node.attachShadow.bind(node);
 
-class TrimWhitespace extends NoChangeDirective {
-	constructor(part, deep) {
-		super(part);
+	node.attachShadow = (...args) => {
+		const shadowRoot = attachShadow(...args);
+		callback(shadowRoot);
+		return shadowRoot;
+	};
+};
+
+export class TrimWhitespaceEngine {
+	constructor(node, deep) {
+		this.node = node;
 		this.deep = !!deep;
-		const node = part.element || part.parentNode?.host || part.parentNode;
-
-		this._trimAndObserve(node);
-		if (!this.deep) this._trimAndObserveShadow(node);
+		this._observer = new MutationObserver(this._observe.bind(this));
 	}
 
-	_observer = new MutationObserver(this._observe.bind(this));
+	start() {
+		this._trimAndObserve(this.node);
+		if (!this.deep) this._trimAndObserveShadow(this.node);
+	}
+
+	stop() {
+		this._observer.disconnect();
+	}
 
 	_observe(records) {
 		records.forEach(record => {
@@ -33,14 +41,7 @@ class TrimWhitespace extends NoChangeDirective {
 
 	_trimAndObserveShadow(node) {
 		if (node.shadowRoot) this._trimAndObserve(node.shadowRoot);
-		else if (isCustomElement(node) && node.attachShadow) {
-			const attachShadow = node.attachShadow.bind(node);
-			node.attachShadow = (...args) => {
-				const shadowRoot = attachShadow(...args);
-				this._trimAndObserve(shadowRoot);
-				return shadowRoot;
-			};
-		}
+		else if (isCustomElement(node)) addShadowListener(node, this._trimAndObserve.bind(this));
 	}
 
 	_trimTextNodes(node, recurse) {
@@ -55,21 +56,3 @@ class TrimWhitespace extends NoChangeDirective {
 		}
 	}
 }
-
-class TrimWhitespaceDeep extends TrimWhitespace {
-	constructor(part) {
-		super(part, true);
-	}
-}
-
-class NoTrim extends NoChangeDirective {
-	constructor(part) {
-		super(part);
-		const node = part.element || part.parentNode;
-		node.__d2l_no_trim = true;
-	}
-}
-
-export const trimWhitespace = directive(TrimWhitespace);
-export const trimWhitespaceDeep = directive(TrimWhitespaceDeep);
-export const noTrim = directive(NoTrim);
