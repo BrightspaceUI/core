@@ -3,31 +3,31 @@ import { noChange } from 'lit';
 
 const isCustomElement = node => node?.tagName?.includes('-');
 
-class TrimWhitespace extends Directive {
-	constructor(part) {
+class NoChangeDirective extends Directive {
+	render() { return noChange; }
+}
+
+class TrimWhitespace extends NoChangeDirective {
+	constructor(part, deep) {
 		super(part);
+		this.deep = !!deep;
 		const node = part.element || part.parentNode?.host || part.parentNode;
 
 		this._trimAndObserve(node);
-		if (this.constructor._depth === 'shallow') this._trimAndObserveShadow(node);
+		if (!this.deep) this._trimAndObserveShadow(node);
 	}
 
-	render() {
-		return noChange;
-	}
-
-	static _depth = 'shallow';
 	_observer = new MutationObserver(this._observe.bind(this));
 
 	_observe(records) {
 		records.forEach(record => {
-			record.addedNodes.forEach(node => this._trimTextNodes(node, this.constructor._depth));
+			record.addedNodes.forEach(node => this._trimTextNodes(node, true));
 			if (record.type === 'characterData') this._trimTextNodes(record.target);
 		});
 	}
 
 	_trimAndObserve(node) {
-		this._trimTextNodes(node, this.constructor._depth);
+		this._trimTextNodes(node, true);
 		this._observer.observe(node, { subtree: true, characterData: true, childList: true });
 	}
 
@@ -49,26 +49,24 @@ class TrimWhitespace extends Directive {
 		if (node.nodeType === Node.TEXT_NODE && node.textContent) {
 			const trimmed = node.textContent.trim();
 			if (node.textContent !== trimmed) node.textContent = trimmed;
-		} else {
-			if (recurse === 'deep') this._trimAndObserveShadow(node);
-			if (recurse) node.childNodes?.forEach(childNode => this._trimTextNodes(childNode, recurse));
+		} else if (recurse) {
+			if (this.deep) this._trimAndObserveShadow(node);
+			node.childNodes?.forEach(childNode => this._trimTextNodes(childNode, true));
 		}
 	}
 }
 
 class TrimWhitespaceDeep extends TrimWhitespace {
-	static _depth = 'deep';
+	constructor(part) {
+		super(part, true);
+	}
 }
 
-class NoTrim extends Directive {
+class NoTrim extends NoChangeDirective {
 	constructor(part) {
 		super(part);
 		const node = part.element || part.parentNode;
 		node.__d2l_no_trim = true;
-	}
-
-	render() {
-		return noChange;
 	}
 }
 
