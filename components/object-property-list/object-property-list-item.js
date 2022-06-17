@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
-import { noTrim, TrimWhitespaceMixin } from './trim-whitespace-mixin.js';
+import { noTrim, TrimWhitespaceMixin } from './trim-whitespace/trim-whitespace-mixin.js';
 import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
