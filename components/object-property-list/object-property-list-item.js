@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
-import { noTrim, trimWhitespace } from './trim-whitespace.js';
+import { noTrim, TrimWhitespaceMixin } from './trim-whitespace-mixin.js';
 import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -20,7 +20,7 @@ export function getSeparator(nonBreaking) {
 /**
  * A placeholder.
  */
-export class ObjectPropertyListItem extends RtlMixin(LitElement) {
+export class ObjectPropertyListItem extends TrimWhitespaceMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -59,7 +59,7 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		return html`${trimWhitespace()}
+		return html`
 			${this._renderIcon()}
 			<span>${this.text}</span>
 			${this._renderSeparator()}
