@@ -25,22 +25,6 @@ Tooltips display additional information when users focus or hover on a point of 
 </d2l-tooltip>
 ```
 
-## Best Practices
-
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Use to show error messages during form validation
-* Use to give the name or purpose of an icon button
-* Use to provide the “full text” for a truncated value in a tight datagrid or list
-<!-- docs: end dos -->
-
-<!-- docs: start donts -->
-* Don’t use tooltips for long paragraphs of text
-* Don’t use tooltips to repeat text that is already shown
-* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
-<!-- docs: end donts -->
-<!-- docs: end best practices -->
-
 ## Accessibility
 
 **Interactive Target Elements:**
@@ -66,6 +50,22 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 ## Tooltip [d2l-tooltip]
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
+
+## Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use to show error messages during form validation
+* Use to give the name or purpose of an icon button
+* Use to provide the “full text” for a truncated value in a tight datagrid or list
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use tooltips for long paragraphs of text
+* Don’t use tooltips to repeat text that is already shown
+* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo live name:d2l-tooltip autoSize:false size:small -->
 ```html
@@ -151,3 +151,59 @@ In the following example to constrain the tooltip to the dashed boundary we can 
   </d2l-tooltip>
 </div>
 ```
+
+## Help Tooltip [d2l-tooltip-help]
+
+The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text.
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a helpful label that provides value on its own
+* The contents of the tooltip should elaborate on the label
+* Keep help text short and concise (full sentences are not necessary)
+* Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t overuse help tooltips (users end up hunting for information and even experts feel obligated to check their contents)
+* Don't use help tooltips when you are able to use inline help text instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+<!-- docs: demo code name:d2l-tooltip-help autoSize:false size:small -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
+</script>
+
+<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+<p class="d2l-body-small">
+  This is some sample text.
+  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+</p>
+<p class="d2l-body-compact">
+  This is some sample text.
+  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+</p>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the Help Tooltip opener |
+| `inherit-font-style` | Boolean, default: `false` | Allows the opener text to inherit font properties such as size and color |
+<!-- docs: end hidden content -->
+
+### Using in a Sentence or Paragraph
+
+When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text 
+(see 2nd and 3rd examples above).
+
+Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.   
+Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own. 
+
+See the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example.

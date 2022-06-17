@@ -1,22 +1,38 @@
 import { oneEvent } from '@brightspace-ui/visual-diff';
 
-export async function hide(page, selector) {
+export async function hide(page, selector, isHelp) {
 	const hideEvent = oneEvent(page, selector, 'd2l-tooltip-hide');
-	page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.hide());
+	if (isHelp) {
+		page.$eval(selector, isHelpTooltip => {
+			const tooltip = isHelpTooltip.shadowRoot.querySelector('d2l-tooltip');
+			tooltip.hide();
+		});
+	}
+	else {
+		page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.hide());
+	}
 	return hideEvent;
 }
 
-export async function show(page, selector) {
+export async function show(page, selector, isHelp) {
 	const openEvent = oneEvent(page, selector, 'd2l-tooltip-show');
-	page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.show());
+	if (isHelp) {
+		page.$eval(selector, isHelpTooltip => {
+			const tooltip = isHelpTooltip.shadowRoot.querySelector('d2l-tooltip');
+			tooltip.show();
+		});
+	}
+	else {
+		page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.show());
+	}
 	return openEvent;
 }
 
-export function getRect(page, selector) {
-	return page.$eval(selector, elem => {
+export function getRect(page, selector, isHelp) {
+	return page.$eval(selector, (elem, isHelp) => {
 		let x, y, width, height;
 		const openerRect = elem.getBoundingClientRect();
-		const content = elem.querySelector('d2l-tooltip');
+		const content = isHelp ? elem.shadowRoot.querySelector('d2l-tooltip') : elem.querySelector('d2l-tooltip');
 		if (!content.showing) {
 			x = openerRect.x;
 			y = openerRect.y;
@@ -36,5 +52,5 @@ export function getRect(page, selector) {
 			width: width + 20,
 			height: height + 20
 		};
-	});
+	}, isHelp);
 }
