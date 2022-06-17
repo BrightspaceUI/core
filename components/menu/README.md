@@ -283,7 +283,7 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 ![Nested Menu](./screenshots/nested-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live -->
+<!-- docs: demo code -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
