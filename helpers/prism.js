@@ -37,6 +37,76 @@ codeLanguages.set('regex', 'Regex');
 codeLanguages.set('visual-basic', 'Visual Basic');
 */
 
+export const colorModes = {
+	LIGHT: 'light',
+	DARK: 'dark'
+};
+
+const darkColors = {
+	background: '#2d2d2d',
+	language: '#6e7376',
+	lineNumbers: '#ffffff',
+	lineNumbersSeparator: '#999999',
+	tokenDefault: '#cccccc',
+	tokenComment: '#808080',
+	tokenPunctuation: '#d4d4d4',
+	tokenNumber: '#d4d4d4',
+	tokenUrl: '#d4d4d4',
+	tokenOperator: '#d4d4d4',
+	tokenInterpolation: '#9cdcfe',
+	tokenAttributeName: '#9cdcfe',
+	tokenConstant: '#9cdcfe',
+	tokenProperty: '#9cdcfe',
+	tokenTag: '#569cd6',
+	tokenBoolean: '#569cd6',
+	tokenEntity: '#569cd6',
+	tokenInterpolationPunctuation: '#569cd6',
+	tokenFunction: '#dcdcaa',
+	tokenClassName: '#4ec9b0',
+	tokenKeyword: '#c586c0',
+	tokenAtRule: '#c586c0',
+	tokenSelector: '#d7ba7d',
+	tokenImportant: '#d16969',
+	tokenRegex: '#d16969',
+	tokenString: '#ce9178',
+	tokenChar: '#ce9178',
+	tokenAttributeValue: '#ce9178'
+};
+const lightColors = {
+	background: '#ffffff',
+	language: '#000000',
+	lineNumbers: '#000000',
+	lineNumbersSeparator: '#000000',
+	tokenDefault: '#000000',
+	tokenComment: '#000000',
+	tokenPunctuation: '#000000',
+	tokenNumber: '#000000',
+	tokenUrl: '#000000',
+	tokenOperator: '#000000',
+	tokenInterpolation: '#000000',
+	tokenAttributeName: '#000000',
+	tokenConstant: '#000000',
+	tokenProperty: '#000000',
+	tokenTag: '#000000',
+	tokenBoolean: '#000000',
+	tokenEntity: '#000000',
+	tokenInterpolationPunctuation: '#000000',
+	tokenFunction: '#000000',
+	tokenClassName: '#000000',
+	tokenKeyword: '#000000',
+	tokenAtRule: '#000000',
+	tokenSelector: '#000000',
+	tokenImportant: '#000000',
+	tokenRegex: '#000000',
+	tokenString: '#000000',
+	tokenChar: '#000000',
+	tokenAttributeValue: '#000000'
+};
+
+export const getCodeColors = mode => {
+	return mode === colorModes.DARK ? darkColors : lightColors;
+};
+
 export const codeStyles = css`
 
 	pre[class*="language-"].d2l-code,
