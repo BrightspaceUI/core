@@ -1,6 +1,8 @@
 import { Directive, directive } from 'lit/directive.js';
 import { noChange } from 'lit';
 
+const isCustomElement = node => node?.tagName?.includes('-');
+
 export const TrimWhitespaceMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
@@ -16,7 +18,7 @@ export const TrimWhitespaceMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		this._trimAndObserve(this);
-		if (this.shadowRoot && !this.trimWhitespaceDeep) this._trimAndObserve(this.shadowRoot);
+		if (!this.trimWhitespaceDeep) this._trimAndObserveShadow(this);
 	}
 
 	disconnectedCallback() {
@@ -24,18 +26,21 @@ export const TrimWhitespaceMixin = superclass => class extends superclass {
 		this._trimObserver.disconnect();
 	}
 
-	_listenForAttachShadow(node) {
-		const attachShadow = node.attachShadow.bind(node);
-		node.attachShadow = (...args) => {
-			const res = attachShadow(...args);
-			this._trimAndObserve(node.shadowRoot);
-			return res;
-		};
-	}
-
 	_trimAndObserve(node) {
 		this._trimTextNodes(node, true);
 		this._trimObserver.observe(node, { subtree: true, characterData: true, childList: true });
+	}
+
+	_trimAndObserveShadow(node) {
+		if (node.shadowRoot) this._trimAndObserve(node.shadowRoot);
+		else if (isCustomElement(node) && node.attachShadow) {
+			const attachShadow = node.attachShadow.bind(node);
+			node.attachShadow = (...args) => {
+				const shadowRoot = attachShadow(...args);
+				this._trimAndObserve(shadowRoot);
+				return shadowRoot;
+			};
+		}
 	}
 
 	_trimObserverCallback(records) {
@@ -52,10 +57,7 @@ export const TrimWhitespaceMixin = superclass => class extends superclass {
 			const trimmed = node.textContent.trim();
 			if (node.textContent !== trimmed) node.textContent = trimmed;
 		} else if (recurse) {
-			if (this.trimWhitespaceDeep) {
-				if (node.shadowRoot) this._trimAndObserve(node.shadowRoot);
-				else if (node.attachShadow) this._listenForAttachShadow(node);
-			}
+			if (this.trimWhitespaceDeep) this._trimAndObserveShadow(node);
 			node.childNodes?.forEach(childNode => this._trimTextNodes(childNode, true));
 		}
 	}

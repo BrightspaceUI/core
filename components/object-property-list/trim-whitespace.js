@@ -1,13 +1,15 @@
 import { Directive, directive } from 'lit/directive.js';
 import { noChange } from 'lit';
 
+const isCustomElement = node => node?.tagName?.includes('-');
+
 class TrimWhitespace extends Directive {
 	constructor(part) {
 		super(part);
 		const node = part.element || part.parentNode?.host || part.parentNode;
 
 		this._trimAndObserve(node);
-		if (node.shadowRoot && this.constructor._depth === 'shallow') this._trimAndObserve(node.shadowRoot);
+		if (this.constructor._depth === 'shallow') this._trimAndObserveShadow(node);
 	}
 
 	render() {
@@ -29,6 +31,18 @@ class TrimWhitespace extends Directive {
 		this._observer.observe(node, { subtree: true, characterData: true, childList: true });
 	}
 
+	_trimAndObserveShadow(node) {
+		if (node.shadowRoot) this._trimAndObserve(node.shadowRoot);
+		else if (isCustomElement(node) && node.attachShadow) {
+			const attachShadow = node.attachShadow.bind(node);
+			node.attachShadow = (...args) => {
+				const shadowRoot = attachShadow(...args);
+				this._trimAndObserve(shadowRoot);
+				return shadowRoot;
+			};
+		}
+	}
+
 	_trimTextNodes(node, recurse) {
 		if (node.__d2l_no_trim || node.parentNode?.__d2l_no_trim) return;
 
@@ -36,7 +50,7 @@ class TrimWhitespace extends Directive {
 			const trimmed = node.textContent.trim();
 			if (node.textContent !== trimmed) node.textContent = trimmed;
 		} else {
-			if (node.shadowRoot && recurse === 'deep') this._trimAndObserve(node.shadowRoot);
+			if (recurse === 'deep') this._trimAndObserveShadow(node);
 			if (recurse) node.childNodes?.forEach(childNode => this._trimTextNodes(childNode, recurse));
 		}
 	}
