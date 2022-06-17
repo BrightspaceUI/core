@@ -288,7 +288,6 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item.js';
-  import '@brightspace-ui/core/components/menu/menu-item-separator.js';
 </script>
 
 <d2l-menu label="Astronomy">
@@ -307,7 +306,6 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
   </d2l-menu-item>
   <d2l-menu-item text="Stars &amp; Galaxies">
     <d2l-menu>
-      <d2l-menu-item text="What is a Star?"></d2l-menu-item>
       <d2l-menu-item text="Lifecycle of a Star"></d2l-menu-item>
       <d2l-menu-item text="Galaxies"></d2l-menu-item>
     </d2l-menu>
