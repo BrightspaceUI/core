@@ -1,4 +1,4 @@
-import { css } from 'lit-element/lit-element.js';
+import { css, unsafeCSS } from 'lit-element/lit-element.js';
 
 window.Prism = window.Prism || {};
 Prism.manual = true;
@@ -107,70 +107,50 @@ export const getCodeColors = mode => {
 	return mode === colorModes.DARK ? darkColors : lightColors;
 };
 
+const generateColorVariables = mode => {
+	const colors = getCodeColors(mode);
+	return `
+		--d2l-code-background: ${colors.background};
+		--d2l-code-language: ${colors.language};
+		--d2l-code-line-numbers: ${colors.lineNumbers};
+		--d2l-code-line-numbers-separator: ${colors.lineNumbersSeparator};
+		--d2l-code-token-default: ${colors.tokenDefault};
+		--d2l-code-token-comment: ${colors.tokenComment};
+		--d2l-code-token-punctuation: ${colors.tokenPunctuation};
+		--d2l-code-token-number: ${colors.tokenNumber};
+		--d2l-code-token-url: ${colors.tokenUrl};
+		--d2l-code-token-operator: ${colors.tokenOperator};
+		--d2l-code-token-interpolation: ${colors.tokenInterpolation};
+		--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
+		--d2l-code-token-constant: ${colors.tokenConstant};
+		--d2l-code-token-property: ${colors.tokenProperty};
+		--d2l-code-token-tag: ${colors.tokenTag};
+		--d2l-code-token-boolean: ${colors.tokenBoolean};
+		--d2l-code-token-entity: ${colors.tokenEntity};
+		--d2l-code-token-interpolation-punctuation: ${colors.tokenInterpolationPunctuation};
+		--d2l-code-token-function: ${colors.tokenFunction};
+		--d2l-code-token-class-name: ${colors.tokenClassName};
+		--d2l-code-token-keyword: ${colors.tokenKeyword};
+		--d2l-code-token-atrule: ${colors.tokenAtRule};
+		--d2l-code-token-selector: ${colors.tokenSelector};
+		--d2l-code-token-important: ${colors.tokenImportant};
+		--d2l-code-token-regex: ${colors.tokenRegex};
+		--d2l-code-token-string: ${colors.tokenString};
+		--d2l-code-token-char: ${colors.tokenChar};
+		--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
+	`;
+};
+
 export const codeStyles = css`
 
 	pre[class*="language-"].d2l-code,
 	code[class*="language-"].d2l-code {
-		--d2l-code-background: #ffffff;
-		--d2l-code-language: #000000;
-		--d2l-code-line-numbers: #000000;
-		--d2l-code-line-numbers-separator: #000000;
-		--d2l-code-token-default: #000000;
-		--d2l-code-token-comment: #000000;
-		--d2l-code-token-punctuation: #000000;
-		--d2l-code-token-number: #000000;
-		--d2l-code-token-url: #000000;
-		--d2l-code-token-operator: #000000;
-		--d2l-code-token-interpolation: #000000;
-		--d2l-code-token-attribute-name: #000000;
-		--d2l-code-token-constant: #000000;
-		--d2l-code-token-property: #000000;
-		--d2l-code-token-tag: #000000;
-		--d2l-code-token-boolean: #000000;
-		--d2l-code-token-entity: #000000;
-		--d2l-code-token-interpolation-punctuation: #000000;
-		--d2l-code-token-function: #000000;
-		--d2l-code-token-class-name: #000000;
-		--d2l-code-token-keyword: #000000;
-		--d2l-code-token-atrule: #000000;
-		--d2l-code-token-selector: #000000;
-		--d2l-code-token-important: #000000;
-		--d2l-code-token-regex: #000000;
-		--d2l-code-token-string: #000000;
-		--d2l-code-token-char: #000000;
-		--d2l-code-token-attribute-value: #000000;
+		${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
 	}
 
 	pre[class*="language-"].d2l-code-dark,
 	code[class*="language-"].d2l-code-dark {
-		--d2l-code-background: #2d2d2d;
-		--d2l-code-language: #6e7376;
-		--d2l-code-line-numbers: #ffffff;
-		--d2l-code-line-numbers-separator: #999999;
-		--d2l-code-token-default: #cccccc;
-		--d2l-code-token-comment: #808080;
-		--d2l-code-token-punctuation: #d4d4d4;
-		--d2l-code-token-number: #d4d4d4;
-		--d2l-code-token-url: #d4d4d4;
-		--d2l-code-token-operator: #d4d4d4;
-		--d2l-code-token-interpolation: #9cdcfe;
-		--d2l-code-token-attribute-name: #9cdcfe;
-		--d2l-code-token-constant: #9cdcfe;
-		--d2l-code-token-property: #9cdcfe;
-		--d2l-code-token-tag: #569cd6;
-		--d2l-code-token-boolean: #569cd6;
-		--d2l-code-token-entity: #569cd6;
-		--d2l-code-token-interpolation-punctuation: #569cd6;
-		--d2l-code-token-function: #dcdcaa;
-		--d2l-code-token-class-name: #4ec9b0;
-		--d2l-code-token-keyword: #c586c0;
-		--d2l-code-token-atrule: #c586c0;
-		--d2l-code-token-selector: #d7ba7d;
-		--d2l-code-token-important: #d16969;
-		--d2l-code-token-regex: #d16969;
-		--d2l-code-token-string: #ce9178;
-		--d2l-code-token-char: #ce9178;
-		--d2l-code-token-attribute-value: #ce9178;
+		${unsafeCSS(generateColorVariables(colorModes.DARK))}
 	}
 
 	pre[class*="language-"].d2l-code,
