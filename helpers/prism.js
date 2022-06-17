@@ -28,7 +28,7 @@ codeLanguages.set('python', 'Python');
 codeLanguages.set('r', 'R');
 codeLanguages.set('racket', 'Racket');
 codeLanguages.set('sql', 'SQL');
-codeLanguages.set('wolfram', 'Wolfram Mathematica');
+codeLanguages.set('wolfram', 'Wolfram');
 
 /*
 codeLanguages.set('basic', 'BASIC');
@@ -39,20 +39,84 @@ codeLanguages.set('visual-basic', 'Visual Basic');
 
 export const codeStyles = css`
 
-	code[class*="language-"],
-	pre[class*="language-"] {
-		background-color: none;
-		color: #cccccc;
+	pre[class*="language-"].d2l-code,
+	code[class*="language-"].d2l-code {
+		--d2l-code-background: #ffffff;
+		--d2l-code-language: #000000;
+		--d2l-code-line-numbers: #000000;
+		--d2l-code-line-numbers-separator: #000000;
+		--d2l-code-token-default: #000000;
+		--d2l-code-token-comment: #000000;
+		--d2l-code-token-punctuation: #000000;
+		--d2l-code-token-number: #000000;
+		--d2l-code-token-url: #000000;
+		--d2l-code-token-operator: #000000;
+		--d2l-code-token-interpolation: #000000;
+		--d2l-code-token-attribute-name: #000000;
+		--d2l-code-token-constant: #000000;
+		--d2l-code-token-property: #000000;
+		--d2l-code-token-tag: #000000;
+		--d2l-code-token-boolean: #000000;
+		--d2l-code-token-entity: #000000;
+		--d2l-code-token-interpolation-punctuation: #000000;
+		--d2l-code-token-function: #000000;
+		--d2l-code-token-class-name: #000000;
+		--d2l-code-token-keyword: #000000;
+		--d2l-code-token-atrule: #000000;
+		--d2l-code-token-selector: #000000;
+		--d2l-code-token-important: #000000;
+		--d2l-code-token-regex: #000000;
+		--d2l-code-token-string: #000000;
+		--d2l-code-token-char: #000000;
+		--d2l-code-token-attribute-value: #000000;
+	}
+
+	pre[class*="language-"].d2l-code-dark,
+	code[class*="language-"].d2l-code-dark {
+		--d2l-code-background: #2d2d2d;
+		--d2l-code-language: #6e7376;
+		--d2l-code-line-numbers: #ffffff;
+		--d2l-code-line-numbers-separator: #999999;
+		--d2l-code-token-default: #cccccc;
+		--d2l-code-token-comment: #808080;
+		--d2l-code-token-punctuation: #d4d4d4;
+		--d2l-code-token-number: #d4d4d4;
+		--d2l-code-token-url: #d4d4d4;
+		--d2l-code-token-operator: #d4d4d4;
+		--d2l-code-token-interpolation: #9cdcfe;
+		--d2l-code-token-attribute-name: #9cdcfe;
+		--d2l-code-token-constant: #9cdcfe;
+		--d2l-code-token-property: #9cdcfe;
+		--d2l-code-token-tag: #569cd6;
+		--d2l-code-token-boolean: #569cd6;
+		--d2l-code-token-entity: #569cd6;
+		--d2l-code-token-interpolation-punctuation: #569cd6;
+		--d2l-code-token-function: #dcdcaa;
+		--d2l-code-token-class-name: #4ec9b0;
+		--d2l-code-token-keyword: #c586c0;
+		--d2l-code-token-atrule: #c586c0;
+		--d2l-code-token-selector: #d7ba7d;
+		--d2l-code-token-important: #d16969;
+		--d2l-code-token-regex: #d16969;
+		--d2l-code-token-string: #ce9178;
+		--d2l-code-token-char: #ce9178;
+		--d2l-code-token-attribute-value: #ce9178;
+	}
+
+	pre[class*="language-"].d2l-code,
+	pre[class*="language-"].d2l-code > code[class*="language-"],
+	code[class*="language-"].d2l-code {
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+		line-height: 1.5;
+	}
+
+	pre[class*="language-"].d2l-code > code[class*="language-"],
+	code[class*="language-"].d2l-code {
+		color: var(--d2l-code-token-default);
 		-webkit-hyphens: none;
 		-moz-hyphens: none;
 		-ms-hyphens: none;
 		hyphens: none;
-		line-height: 1.5;
-		-moz-tab-size: 4;
-		-o-tab-size: 4;
-		tab-size: 4;
-		text-align: left;
 		text-shadow: none;
 		white-space: pre;
 		word-break: normal;
@@ -60,8 +124,8 @@ export const codeStyles = css`
 		word-wrap: normal;
 	}
 
-	/* Code blocks */
-	pre[class*="language-"] {
+	pre[class*="language-"].d2l-code {
+		background-color: var(--d2l-code-background);
 		border-radius: 6px;
 		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 		font-size: 14px;
@@ -69,10 +133,14 @@ export const codeStyles = css`
 		overflow: auto;
 		padding: 1em;
 		position: relative;
+		-moz-tab-size: 4;
+		-o-tab-size: 4;
+		tab-size: 4;
+		text-align: left;
 	}
 
-	pre[class*="language-"]::before {
-		color: #6e7376;
+	pre[class*="language-"].d2l-code::before {
+		color: var(--d2l-code-language);
 		content: attr(data-language);
 		font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 		margin: 0.1rem 0.4rem;
@@ -81,13 +149,8 @@ export const codeStyles = css`
 		top: 0;
 	}
 
-	:not(pre) > code[class*="language-"],
-	pre[class*="language-"] {
-		background-color: #2d2d2d;
-	}
-
-	/* Inline code */
-	:not(pre) > code[class*="language-"] {
+	code[class*="language-"].d2l-code {
+		background-color: var(--d2l-code-background);
 		border-radius: 0.3em;
 		padding: 0.1em;
 		white-space: normal;
@@ -98,57 +161,40 @@ export const codeStyles = css`
 	.token.prolog,
 	.token.doctype,
 	.token.cdata {
-		color: #808080;
+		color: var(--d2l-code-token-comment);
 	}
 
-	.token.punctuation,
-	.token.number,
-	.token.url,
-	.token.operator {
-		color: #d4d4d4;
-	}
+	.token.punctuation { color: var(--d2l-code-token-punctuation); }
+	.token.number { color: var(--d2l-code-token-number); }
+	.token.operator { color: var(--d2l-code-token-operator); }
 
-	.token.interpolation,
-	.token.attr-name,
-	.token.constant,
-	.token.property {
-		color: #9cdcfe;
-	}
+	.token.interpolation { color: var(--d2l-code-token-interpolation); }
+	.token.attr-name { color: var(--d2l-code-token-attribute-name); }
+	.token.constant { color: var(--d2l-code-token-constant); }
+	.token.property { color: var(--d2l-code-token-property); }
 
-	.token.tag,
-	.token.boolean,
-	.token.entity,
-	.token.interpolation-punctuation {
-		color: #569cd6;
-	}
+	.token.tag { color: var(--d2l-code-token-tag); }
+	.token.boolean { color: var(--d2l-code-token-boolean); }
+	.token.entity { color: var(--d2l-code-token-entity); }
+	.token.interpolation-punctuation { color: var(--d2l-code-token-interpolation-punctuation); }
 
-	.token.function {
-		color: #dcdcaa;
-	}
+	.token.function { color: var(--d2l-code-token-function); }
 
-	.token.class-name {
-		color: #4ec9b0;
-	}
+	.token.class-name { color: var(--d2l-code-token-class-name); }
 
-	.token.keyword,
-	.token.atrule {
-		color: #c586c0;
-	}
+	.token.keyword { color: var(--d2l-code-token-keyword); }
+	.token.atrule { color: var(--d2l-code-token-atrule); }
 
-	.token.selector {
-		color: #d7ba7d;
-	}
+	.token.selector { color: var(--d2l-code-token-selector); }
 
-	.token.important,
-	.token.regex {
-		color: #d16969;
-	}
+	.token.important { color: var(--d2l-code-token-important); }
+	.token.regex { color: var(--d2l-code-token-regex); }
 
-	.token.string,
-	.token.char,
-	.token.attr-value {
-		color: #ce9178;
-	}
+	.token.string { color: var(--d2l-code-token-string); }
+	.token.char { color: var(--d2l-code-token-char); }
+	.token.attr-value { color: var(--d2l-code-token-attribute-value); }
+
+	.token.url { color: var(--d2l-code-token-url); }
 
 	.token.important,
 	.token.bold {
@@ -156,10 +202,6 @@ export const codeStyles = css`
 	}
 	.token.italic {
 		font-style: italic;
-	}
-
-	.token.entity {
-		cursor: help;
 	}
 
 	.token.inserted {
@@ -186,7 +228,7 @@ export const codeStyles = css`
 	}
 
 	.line-numbers .line-numbers-rows {
-		border-right: 1px solid #999999;
+		border-right: 1px solid var(--d2l-code-line-numbers-separator);
 		font-size: 100%;
 		left: -3.8em;
 		letter-spacing: -1px;
@@ -206,8 +248,7 @@ export const codeStyles = css`
 	}
 
 	.line-numbers-rows > span::before {
-		color: #999999;
-		color: #ffffff;
+		color: var(--d2l-code-line-numbers);
 		content: counter(linenumber);
 		display: block;
 		padding-right: 0.8em;
