@@ -61,6 +61,11 @@ describe('d2l-typography', function() {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('blockquote', async function() {
+			const rect = await visualDiff.getRect(page, '#blockquote', 0);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 	};
 
 	describe('wide', function() {
