@@ -42,7 +42,7 @@ export const colorModes = {
 	DARK: 'dark'
 };
 
-const darkColors = {
+const darkColors = Object.freeze({
 	background: '#2d2d2d',
 	language: '#6e7376',
 	lineNumbers: '#ffffff',
@@ -71,8 +71,9 @@ const darkColors = {
 	tokenString: '#ce9178',
 	tokenChar: '#ce9178',
 	tokenAttributeValue: '#ce9178'
-};
-const lightColors = {
+});
+
+const lightColors = Object.freeze({
 	background: '#ffffff',
 	language: '#000000',
 	lineNumbers: '#000000',
@@ -101,7 +102,7 @@ const lightColors = {
 	tokenString: '#000000',
 	tokenChar: '#000000',
 	tokenAttributeValue: '#000000'
-};
+});
 
 export const getCodeColors = mode => {
 	return mode === colorModes.DARK ? darkColors : lightColors;
