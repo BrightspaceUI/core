@@ -45,14 +45,17 @@ fi</code></pre>
 }
 </code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-sql line-numbers">SELECT * FROM courses
-INNEE JOIN enrollments ON courses.id = enrollments.courseId
-ORDER BY enrollments.lastUpdated ASC
+<pre class="d2l-code d2l-code-dark"><code class="language-sql line-numbers">DECLARE @MyCounter INT; /* keyword, variable, punctuation */
 
-SET ROWCOUNT 4;
-SELECT * enrollments
-WHERE Quantity = 300;
-GO
+SELECT AVG(Calories) AS AverageCalories FROM Desserts; /* keyword, function */
+
+SELECT * FROM Desserts /* keyword, operator */
+
+SET ROWCOUNT 4; /* keyword, number */
+
+SET @Hidden = FALSE; /* keyword, variable, boolean */
+
+SET @Donuts = 'Yummy'; /* keyword, variable, string */
 </code></pre>
 					`;
 				}
@@ -70,6 +73,16 @@ GO
 			body {
 				padding: 1rem;
 			}
+			table {
+				font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+				font-size: 16px;
+			}
+			th {
+				text-align: left;
+			}
+			tr > td:first-child {
+				width: 300px;
+			}
 		</style>
 	</head>
 	<body class="d2l-typography">
@@ -78,7 +91,207 @@ GO
 
 		<h1 class="d2l-heading-2">Prism Helper</h1>
 
-		<h2 class="d2l-heading-3">Token Samples</h2>
+		<h2 class="d2l-heading-3">Tokens</h2>
+
+		<table style="width: 100%;">
+			<thead>
+				<tr>
+					<th>Token</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>keyword</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">import { stuff } from 'some/where.js';</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>builtin</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-python">pi = round(float('3.14159'), 2)</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>class-name</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">class Wizard extends Human { /* ... */ }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>function</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">function helloGrumpy(name) { /* ... */ }
+helloGrumpy('Wizard');</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>parameter</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">function helloGrumpy(name) { /* ... */ }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>boolean</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">const wizardsLikeBeer = false;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>number</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">const favouriteNumber = 3.14159;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>string</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">const hiGrumpy = 'Hi Grumpy!';</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>template-string, template-punctuation</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">const hiGrumpy = `Hi Grumpy!`;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>interpolation, interpolation-punctuation</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">console.log(`Hi there ${name}.`);</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>char</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript"></code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>symbol</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript"></code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>regex</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">let entity = /&amp;#x?[\da-f]{1,8};/;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>url</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">body { background: url("wizard.png"); }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>operator</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">x += (y + 4 &gt;&gt; -z === w) ? b ** c : ~a;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>variable</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-sql">DECLARE @MyCounter INT;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>constant</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">const PI = 3.14159;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>property</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">.grumpy > img { height: 100%; }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>punctuation</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">import { stuff } from 'some/where.js';</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>important</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">.grumpy > img { height: 100% !important; }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>comment</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-javascript">/* grump wizards */</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>tag</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&lt;h1&gt;Grumpy Wizards&lt;/h1&gt;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>attr-name, attr-value</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&lt;h1 class="dangerous"&gt;Grumpy Wizards&lt;/h1&gt;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>namespace</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-java">throw new java.lang.UnsupportedOperationException();</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>prolog</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&lt?xml version="1.0" encoding="utf-8"?&gt;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>doctype</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&lt;!DOCTYPE html&gt;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>cdata</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&lt;![CDATA[ grumpy wizards eat donuts ]]&gt;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>entity</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-markup">&amp;pound; &amp;#163;</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>atrule</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">@media (prefers-reduced-motion: reduce) { /* no animations */ }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>selector</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">.grumpy > img { /* ... */ }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>null</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-json">{ "fritter": null }</code></pre>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2 class="d2l-heading-3">More Samples (Global Scope)</h2>
 
 <pre class="d2l-code d2l-code-dark"><code class="language-javascript line-numbers">// comment
 /* comment */
@@ -98,6 +311,8 @@ let wizardFoods = [...donuts, ... cakes, ...pies]; // keyword, operator
 const wizardsLikeBeer = false; // keyword, operator, boolean
 
 const favouriteNumber = 3.14159; // keyword, operator, number
+
+const PI = 3.14159; // keyword, operator, constant
 
 const regex = /[^\w\s]/g; // keyword, operator, regex, regex-delimiter, regex-source, regex-flags
 </code></pre>
@@ -153,7 +368,7 @@ SET @Donuts = 'Yummy'; /* keyword, variable, string */
 }
 </code></pre>
 
-		<h2 class="d2l-heading-3">Web Component Scope</h2>
+		<h2 class="d2l-heading-3">More Samples (Web Component Scope)</h2>
 
 		<d2l-demo-prism></d2l-demo-prism>
 

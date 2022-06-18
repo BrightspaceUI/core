@@ -63,6 +63,8 @@ const darkColors = Object.freeze({
 	tokenInterpolationPunctuation: '#569cd6',
 	tokenFunction: '#dcdcaa',
 	tokenClassName: '#4ec9b0',
+	tokenSymbol: '#4ec9b0',
+	tokenBuiltin: '#c586c0',
 	tokenKeyword: '#c586c0',
 	tokenAtRule: '#c586c0',
 	tokenSelector: '#d7ba7d',
@@ -94,6 +96,8 @@ const lightColors = Object.freeze({
 	tokenInterpolationPunctuation: '#000000',
 	tokenFunction: '#000000',
 	tokenClassName: '#000000',
+	tokenSymbol: '#000000',
+	tokenBuiltin: '#000000',
 	tokenKeyword: '#000000',
 	tokenAtRule: '#000000',
 	tokenSelector: '#000000',
@@ -119,6 +123,7 @@ const generateColorVariables = mode => {
 		--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
 		--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
 		--d2l-code-token-boolean: ${colors.tokenBoolean};
+		--d2l-code-token-builtin: ${colors.tokenBuiltin};
 		--d2l-code-token-char: ${colors.tokenChar};
 		--d2l-code-token-class-name: ${colors.tokenClassName};
 		--d2l-code-token-comment: ${colors.tokenComment};
@@ -137,6 +142,7 @@ const generateColorVariables = mode => {
 		--d2l-code-token-regex: ${colors.tokenRegex};
 		--d2l-code-token-selector: ${colors.tokenSelector};
 		--d2l-code-token-string: ${colors.tokenString};
+		--d2l-code-token-symbol: ${colors.tokenSymbol};
 		--d2l-code-token-tag: ${colors.tokenTag};
 		--d2l-code-token-url: ${colors.tokenUrl};
 	`;
@@ -202,7 +208,7 @@ export const codeStyles = css`
 
 	code[class*="language-"].d2l-code {
 		background-color: var(--d2l-code-background);
-		border-radius: 0.3em;
+		border-radius: 6px;
 		padding: 0.1em;
 		white-space: normal;
 	}
@@ -232,7 +238,9 @@ export const codeStyles = css`
 	.token.function { color: var(--d2l-code-token-function); }
 
 	.token.class-name { color: var(--d2l-code-token-class-name); }
+	.token.symbol { color: var(--d2l-code-token-symbol); }
 
+	.token.builtin { color: var(--d2l-code-token-builtin); }
 	.token.keyword { color: var(--d2l-code-token-keyword); }
 	.token.atrule { color: var(--d2l-code-token-atrule); }
 
@@ -247,16 +255,20 @@ export const codeStyles = css`
 
 	.token.url { color: var(--d2l-code-token-url); }
 
+	.token.deleted { color: #990055; }
+	.token.inserted { color: #669900; }
+
+	/*
+	.token.namespace
+	.token.variable
+	*/
+
 	.token.important,
 	.token.bold {
 		font-weight: bold;
 	}
 	.token.italic {
 		font-style: italic;
-	}
-
-	.token.inserted {
-		color: green;
 	}
 
 	.language-css .token.string,
