@@ -156,6 +156,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			padding-top: 0.2rem;
 		}
 
+		[dir="rtl"] .d2l-typography .d2l-blockquote,
 		.d2l-typography .d2l-blockquote[dir="rtl"] {
 			background-position: right top;
 			margin-left: 1.2rem;
