@@ -159,6 +159,7 @@ export const codeStyles = css`
 	code[class*="language-"].d2l-code {
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 		line-height: 1.5;
+		text-shadow: none;
 	}
 
 	pre[class*="language-"].d2l-code > code[class*="language-"],
@@ -168,7 +169,6 @@ export const codeStyles = css`
 		-moz-hyphens: none;
 		-ms-hyphens: none;
 		hyphens: none;
-		text-shadow: none;
 		white-space: pre;
 		word-break: normal;
 		word-spacing: normal;
