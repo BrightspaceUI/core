@@ -4,7 +4,7 @@ window.Prism = window.Prism || {};
 Prism.manual = true;
 
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
-//const prismLocation = '/node_modules/prismjs';
+//const prismLocation = '/node_modules/prismjs'; // for local debugging
 
 export const codeLanguages = new Map();
 codeLanguages.set('arduino', 'Arduino');
@@ -29,13 +29,6 @@ codeLanguages.set('r', 'R');
 codeLanguages.set('racket', 'Racket');
 codeLanguages.set('sql', 'SQL');
 codeLanguages.set('wolfram', 'Wolfram');
-
-/*
-codeLanguages.set('basic', 'BASIC');
-codeLanguages.set('fortran', 'Fortran');
-codeLanguages.set('regex', 'Regex');
-codeLanguages.set('visual-basic', 'Visual Basic');
-*/
 
 export const colorModes = {
 	LIGHT: 'light',
@@ -254,22 +247,6 @@ export const codeStyles = css`
 	.token.attr-value { color: var(--d2l-code-token-attribute-value); }
 
 	.token.url { color: var(--d2l-code-token-url); }
-
-	/*
-	.token.deleted { color: #990055; }
-	.token.inserted { color: #669900; }
-
-	.token.namespace
-	.token.variable
-
-	.token.important,
-	.token.bold {
-		font-weight: bold;
-	}
-	.token.italic {
-		font-style: italic;
-	}
-	*/
 
 	.language-css .token.string,
 	.style .token.string,
