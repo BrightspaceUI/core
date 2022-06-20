@@ -3,7 +3,7 @@ import { css, unsafeCSS } from 'lit-element/lit-element.js';
 window.Prism = window.Prism || {};
 Prism.manual = true;
 
-const prismLocation = 'https://s.brightspace.com/lib/prismjs/dev/e6c680b249943c96f8a12f0097730103874da570';
+const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
 //const prismLocation = '/node_modules/prismjs';
 
 export const codeLanguages = new Map();
@@ -255,13 +255,12 @@ export const codeStyles = css`
 
 	.token.url { color: var(--d2l-code-token-url); }
 
+	/*
 	.token.deleted { color: #990055; }
 	.token.inserted { color: #669900; }
 
-	/*
 	.token.namespace
 	.token.variable
-	*/
 
 	.token.important,
 	.token.bold {
@@ -270,6 +269,7 @@ export const codeStyles = css`
 	.token.italic {
 		font-style: italic;
 	}
+	*/
 
 	.language-css .token.string,
 	.style .token.string,
@@ -419,11 +419,12 @@ export async function formatCodeElement(elem) {
 	if (code.className.indexOf('language-') === -1) return;
 
 	const languageInfo = getLanguageInfo(code);
+	const lineNumbers = elem.classList.contains('line-numbers') || code.classList.contains('line-numbers');
 
 	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
 		loadLanguage(languageInfo.key),
-		code.classList.contains('line-numbers') ? loadPlugin('line-numbers') : null
+		lineNumbers ? loadPlugin('line-numbers') : null
 	]);
 
 	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
