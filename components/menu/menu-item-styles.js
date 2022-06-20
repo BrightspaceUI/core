@@ -16,8 +16,8 @@ export const menuItemStyles = css`
 		width: 100%;
 	}
 
-	:host(:focus),
-	:host([first]:focus),
+	:host(.focus-visible),
+	:host([first].focus-visible),
 	:host(:hover),
 	:host([first]:hover) {
 		background-color: var(--d2l-menu-background-color-hover);
@@ -37,7 +37,13 @@ export const menuItemStyles = css`
 		z-index: 2;
 	}
 
-	:host([disabled]), :host([disabled]:hover), :host([disabled]:focus-visible) {
+	:host([disabled]), :host([disabled]:hover), :host([disabled].focus-visible) {
+		cursor: default;
+		opacity: 0.75;
+	}
+
+	/** separated because safari is having trouble parsing these */
+	:host([disabled]:focus-visible) {
 		cursor: default;
 		opacity: 0.75;
 	}
@@ -50,7 +56,7 @@ export const menuItemStyles = css`
 		border-top-color: transparent;
 	}
 
-	:host([last]:hover) {
+	:host([last]:hover), :host([last].focus-visible) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
 
