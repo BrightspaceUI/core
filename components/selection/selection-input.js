@@ -154,6 +154,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	_handleRadioClick(e) {
 		e.stopPropagation();
+		if (this.disabled) return;
 		this.selected = true;
 	}
 
