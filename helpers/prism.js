@@ -108,51 +108,49 @@ export const getCodeColors = mode => {
 
 const generateColorVariables = mode => {
 	const colors = getCodeColors(mode);
+	const keySelector = mode === colorModes.DARK ? '.d2l-code-dark' : '.d2l-code';
 	return `
-		--d2l-code-background: ${colors.background};
-		--d2l-code-language: ${colors.language};
-		--d2l-code-line-numbers: ${colors.lineNumbers};
-		--d2l-code-line-numbers-separator: ${colors.lineNumbersSeparator};
-		--d2l-code-token-atrule: ${colors.tokenAtRule};
-		--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
-		--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
-		--d2l-code-token-boolean: ${colors.tokenBoolean};
-		--d2l-code-token-builtin: ${colors.tokenBuiltin};
-		--d2l-code-token-char: ${colors.tokenChar};
-		--d2l-code-token-class-name: ${colors.tokenClassName};
-		--d2l-code-token-comment: ${colors.tokenComment};
-		--d2l-code-token-constant: ${colors.tokenConstant};
-		--d2l-code-token-default: ${colors.tokenDefault};
-		--d2l-code-token-entity: ${colors.tokenEntity};
-		--d2l-code-token-function: ${colors.tokenFunction};
-		--d2l-code-token-important: ${colors.tokenImportant};
-		--d2l-code-token-interpolation: ${colors.tokenInterpolation};
-		--d2l-code-token-interpolation-punctuation: ${colors.tokenInterpolationPunctuation};
-		--d2l-code-token-keyword: ${colors.tokenKeyword};
-		--d2l-code-token-number: ${colors.tokenNumber};
-		--d2l-code-token-operator: ${colors.tokenOperator};
-		--d2l-code-token-property: ${colors.tokenProperty};
-		--d2l-code-token-punctuation: ${colors.tokenPunctuation};
-		--d2l-code-token-regex: ${colors.tokenRegex};
-		--d2l-code-token-selector: ${colors.tokenSelector};
-		--d2l-code-token-string: ${colors.tokenString};
-		--d2l-code-token-symbol: ${colors.tokenSymbol};
-		--d2l-code-token-tag: ${colors.tokenTag};
-		--d2l-code-token-url: ${colors.tokenUrl};
+		pre[class*="language-"]${keySelector},
+		code[class*="language-"]${keySelector} {
+			--d2l-code-background: ${colors.background};
+			--d2l-code-language: ${colors.language};
+			--d2l-code-line-numbers: ${colors.lineNumbers};
+			--d2l-code-line-numbers-separator: ${colors.lineNumbersSeparator};
+			--d2l-code-token-atrule: ${colors.tokenAtRule};
+			--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
+			--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
+			--d2l-code-token-boolean: ${colors.tokenBoolean};
+			--d2l-code-token-builtin: ${colors.tokenBuiltin};
+			--d2l-code-token-char: ${colors.tokenChar};
+			--d2l-code-token-class-name: ${colors.tokenClassName};
+			--d2l-code-token-comment: ${colors.tokenComment};
+			--d2l-code-token-constant: ${colors.tokenConstant};
+			--d2l-code-token-default: ${colors.tokenDefault};
+			--d2l-code-token-entity: ${colors.tokenEntity};
+			--d2l-code-token-function: ${colors.tokenFunction};
+			--d2l-code-token-important: ${colors.tokenImportant};
+			--d2l-code-token-interpolation: ${colors.tokenInterpolation};
+			--d2l-code-token-interpolation-punctuation: ${colors.tokenInterpolationPunctuation};
+			--d2l-code-token-keyword: ${colors.tokenKeyword};
+			--d2l-code-token-number: ${colors.tokenNumber};
+			--d2l-code-token-operator: ${colors.tokenOperator};
+			--d2l-code-token-property: ${colors.tokenProperty};
+			--d2l-code-token-punctuation: ${colors.tokenPunctuation};
+			--d2l-code-token-regex: ${colors.tokenRegex};
+			--d2l-code-token-selector: ${colors.tokenSelector};
+			--d2l-code-token-string: ${colors.tokenString};
+			--d2l-code-token-symbol: ${colors.tokenSymbol};
+			--d2l-code-token-tag: ${colors.tokenTag};
+			--d2l-code-token-url: ${colors.tokenUrl};
+		}
 	`;
 };
 
 export const codeStyles = css`
 
-	pre[class*="language-"].d2l-code,
-	code[class*="language-"].d2l-code {
-		${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
-	}
+	${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
 
-	pre[class*="language-"].d2l-code-dark,
-	code[class*="language-"].d2l-code-dark {
-		${unsafeCSS(generateColorVariables(colorModes.DARK))}
-	}
+	${unsafeCSS(generateColorVariables(colorModes.DARK))}
 
 	pre[class*="language-"].d2l-code,
 	pre[class*="language-"].d2l-code > code[class*="language-"],
