@@ -27,23 +27,7 @@ export const menuItemStyles = css`
 		z-index: 2;
 	}
 
-	/** separated because safari is having trouble parsing these */
-	:host(:focus-visible),
-	:host(:focus-visible[first]) {
-		background-color: var(--d2l-menu-background-color-hover);
-		border-bottom: 1px solid var(--d2l-menu-border-color-hover);
-		border-top: 1px solid var(--d2l-menu-border-color-hover);
-		color: var(--d2l-menu-foreground-color-hover);
-		z-index: 2;
-	}
-
 	:host([disabled]), :host([disabled]:hover), :host([disabled].focus-visible) {
-		cursor: default;
-		opacity: 0.75;
-	}
-
-	/** separated because safari is having trouble parsing these */
-	:host([disabled]:focus-visible) {
 		cursor: default;
 		opacity: 0.75;
 	}
@@ -57,11 +41,6 @@ export const menuItemStyles = css`
 	}
 
 	:host([last]:hover), :host([last].focus-visible) {
-		border-bottom-color: var(--d2l-menu-border-color-hover);
-	}
-
-	/** separated because safari is having trouble parsing these */
-	:host([last]:focus-visible) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
 
