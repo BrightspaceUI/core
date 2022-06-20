@@ -7,11 +7,18 @@
 		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../components/colors/colors.js';
+			import '../../components/switch/switch.js';
 			import '../../components/typography/typography.js';
 			import { codeStyles, formatCodeElement } from '../prism.js';
 			import { css, html, LitElement } from 'lit';
+			import { classMap } from 'lit/directives/class-map.js';
 
 			class DemoPrism extends LitElement {
+				static get properties() {
+					return {
+						dark: { type: Boolean, reflect: true }
+					};
+				}
 				static get styles() {
 					return [codeStyles, css`
 						:host {
@@ -20,32 +27,33 @@
 					`];
 				}
 				render() {
+					const classes = { 'd2l-code': true, 'd2l-code-dark': this.dark };
 					return html`
-<pre class="d2l-code d2l-code-dark"><code class="language-javascript line-numbers">function helloGrumpy(name) {
+<pre class="${classMap(classes)}"><code class="language-javascript line-numbers">function helloGrumpy(name) {
 	console.log(\`Hi there \${name}. Here's some really long text to test overflowing the bounding container.\`);
 }
 helloGrumpy('Wizard');
 </code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-bash line-numbers">#!/bin/bash
+<pre class="${classMap(classes)}"><code class="language-bash line-numbers">#!/bin/bash
 if [ -d $directory ]; then
 	echo "Directory exists"
 else
 	echo "Directory does not exists"
 fi</code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-css line-numbers">.grumpy > img {
+<pre class="${classMap(classes)}"><code class="language-css line-numbers">.grumpy > img {
 	height: 100%;
 	width: 100%;
 }</code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-json line-numbers">{
+<pre class="${classMap(classes)}"><code class="language-json line-numbers">{
 	"jinxed": "gnomes",
 	"grumpy": [ "wizards" ]
 }
 </code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-sql line-numbers">DECLARE @MyCounter INT; /* keyword, variable, punctuation */
+<pre class="${classMap(classes)}"><code class="language-sql line-numbers">DECLARE @MyCounter INT; /* keyword, variable, punctuation */
 
 SELECT AVG(Calories) AS AverageCalories FROM Desserts; /* keyword, function */
 
@@ -73,6 +81,16 @@ SET @Donuts = 'Yummy'; /* keyword, variable, string */
 			body {
 				padding: 1rem;
 			}
+			.heading-container {
+				display: flex;
+			}
+			.heading-container > h1 {
+				flex: auto;
+			}
+			.heading-container > d2l-switch {
+				align-self: center;
+				flex: none;
+			}
 			table {
 				font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 				font-size: 16px;
@@ -89,7 +107,10 @@ SET @Donuts = 'Yummy'; /* keyword, variable, string */
 
 		<!-- This page intentionally does not use d2l-demo-page so we can properly demo/test the loader without PrismJS being loaded by those components -->
 
-		<h1 class="d2l-heading-2">Prism Helper</h1>
+		<div class="heading-container">
+			<h1 class="d2l-heading-2">Prism Helper</h1>
+			<d2l-switch text="Dark" on text-position="start" on></d2l-switch>
+		</div>
 
 		<h2 class="d2l-heading-3">Tokens</h2>
 
@@ -293,7 +314,7 @@ helloGrumpy('Wizard');</code></pre>
 
 		<h2 class="d2l-heading-3">More Samples (Global Scope)</h2>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-javascript line-numbers">// comment
+<pre class="d2l-code"><code class="language-javascript line-numbers">// comment
 /* comment */
 
 import { stuff } from 'some/where.js'; // keyword, punctuation, string
@@ -317,7 +338,7 @@ const PI = 3.14159; // keyword, operator, constant
 const regex = /[^\w\s]/g; // keyword, operator, regex, regex-delimiter, regex-source, regex-flags
 </code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-css line-numbers">.grumpy > img { /* selector */
+<pre class="d2l-code"><code class="language-css line-numbers">.grumpy > img { /* selector */
 	background-image: url("smile.png"); /* property, url, string */
 	height: 100%; /* property, punctuation */
 	width: var(--some-var); /* property, punctuation, function */
@@ -334,7 +355,7 @@ const regex = /[^\w\s]/g; // keyword, operator, regex, regex-delimiter, regex-so
 }
 </code></pre>
 
-<pre class="d2l-code d2l-code-dark"><code class="language-markup line-numbers">&lt;!DOCTYPE html&gt; &lt;!-- doctype, doctype-tag, name --&gt;
+<pre class="d2l-code"><code class="language-markup line-numbers">&lt;!DOCTYPE html&gt; &lt;!-- doctype, doctype-tag, name --&gt;
 &lt;html&gt; &lt;!-- tag, punctuation --&gt;
 	&lt;body class="typography"&gt; &lt;!-- attr-name, attr-value --&gt;
 		&lt;![CDATA[ some cdata section ]]&gt; &lt;!-- cdata --&gt;
@@ -370,16 +391,26 @@ SET @Donuts = 'Yummy'; /* keyword, variable, string */
 
 		<h2 class="d2l-heading-3">More Samples (Web Component Scope)</h2>
 
-		<d2l-demo-prism></d2l-demo-prism>
+		<d2l-demo-prism dark></d2l-demo-prism>
 
 		<script type="module">
 				import { formatCodeElement } from '../prism.js';
 
-				// formatCodeElement
-				const codeElements = document.querySelectorAll('pre');
-				codeElements.forEach(codeElement => {
-					formatCodeElement(codeElement);
-				});
+				const formatCodeElements = () => {
+					const darkSwitch = document.querySelector('d2l-switch');
+					const codeElements = document.querySelectorAll('pre');
+					codeElements.forEach(codeElement => {
+						if (darkSwitch.on) codeElement.classList.add('d2l-code-dark');
+						else codeElement.classList.remove('d2l-code-dark');
+						formatCodeElement(codeElement);
+					});
+					document.querySelector('d2l-demo-prism').dark = darkSwitch.on;
+				};
+
+				formatCodeElements();
+
+				const darkSwitch = document.querySelector('d2l-switch');
+				darkSwitch.addEventListener('change', formatCodeElements);
 
 		</script>
 	</body>
