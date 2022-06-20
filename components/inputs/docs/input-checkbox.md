@@ -2,10 +2,6 @@
 
 Checkboxes are used in forms to toggle an option or preference.
 
-<!-- docs: start hidden content -->
-![example screenshot of checkbox input](../screenshots/checkbox.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo -->
 ```html
 <script type="module">
@@ -34,10 +30,6 @@ Checkboxes are used in forms to toggle an option or preference.
 ## Checkbox Input [d2l-input-checkbox]
 
 The `<d2l-input-checkbox>` element can be used to get a checkbox and optional visible label.
-
-<!-- docs: start hidden content -->
-![example screenshot of checkbox input](../screenshots/checkbox.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-input-checkbox display:block -->
 ```html

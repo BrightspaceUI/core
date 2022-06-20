@@ -21,19 +21,13 @@ The following link styles are available:
 
 This is the standard link style, used in most cases.
 
-![example screenshot of standard link](./screenshots/standard.png?raw=true)
-
 ### Small
 
 Similarly styled to the standard link, but slightly smaller and more compact.
 
-![example screenshot of small link](./screenshots/small.png?raw=true)
-
 ### Main
 
 Same size as the standard link, but bolder.
-
-![example screenshot of main link](./screenshots/main.png?raw=true)
 <!-- docs: end hidden content -->
 
 ## Link [d2l-link]

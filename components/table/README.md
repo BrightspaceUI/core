@@ -2,10 +2,6 @@
 
 Tables are used to display tabular data in rows and columns. They can allow users to select rows and sort by columns.
 
-<!-- docs: start hidden content -->
-![table with default style](./screenshots/default.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo display:block -->
 ```html
 <script type="module">
@@ -124,8 +120,6 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 
 For a table style with fewer borders and tighter padding, there's the `light` type:
 
-![table with light style](./screenshots/light.png?raw=true)
-
 ```html
 <d2l-table-wrapper type="light">
   <table class="d2l-table">...</table>
@@ -135,8 +129,6 @@ For a table style with fewer borders and tighter padding, there's the `light` ty
 ## Sticky Headers
 
 For long tables, the header row can be made to "stick" in place as the user scrolls.
-
-![table with sticky headers](./screenshots/sticky.gif?raw=true)
 
 ```html
 <d2l-table-wrapper sticky-headers>
@@ -148,10 +140,6 @@ For long tables, the header row can be made to "stick" in place as the user scro
 ## Sortable Column Buttons [d2l-table-col-sort-button]
 
 When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction.
-
-<!-- docs: start hidden content -->
-![table with sorting](./screenshots/sorting.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo -->
 ```html
@@ -249,10 +237,6 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 ## Selection
 
 If your table supports row selection, apply the `selected` attribute to `<tr>` row elements which are actively selected.
-
-<!-- docs: start hidden content -->
-![table with selection](./screenshots/selection.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo -->
 ```html

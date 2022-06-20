@@ -21,10 +21,6 @@ Numeric inputs allow users to input numbers. These include the more generic `d2l
 
 The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
 
-<!-- docs: start hidden content -->
-![example screenshot of number input](../screenshots/number.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-number -->
 ```html
 <script type="module">
@@ -102,10 +98,6 @@ To accept only integer numbers, set `max-fraction-digits` to zero:
 ## Percent Input [d2l-input-percent]
 
 The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it provides a "%" symbol beside the number.
-
-<!-- docs: start hidden content -->
-![example screenshot of number input](../screenshots/percent.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-input-percent -->
 ```html
