@@ -6,6 +6,7 @@ Prism.manual = true;
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
 //const prismLocation = '/node_modules/prismjs'; // for local debugging
 
+// If adding a language, check its Prism dependencies and modify languageDependencies below if necessary
 export const codeLanguages = new Map();
 codeLanguages.set('arduino', 'Arduino');
 codeLanguages.set('armasm', 'ARM Assembly');
