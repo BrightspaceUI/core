@@ -2,9 +2,7 @@
 
 These directives can be used to animate the showing or hiding of elements in your application.
 
-The animation will slide the element in (or out) of its final position, while transitioning its height and opacity:
-
-![animation](./screenshots/show-hide.gif?raw=true)
+The animation will slide the element in (or out) of its final position, while transitioning its height and opacity.
 
 ## Using the directives
 
@@ -51,5 +49,3 @@ html`<some-elem .animate="${show({ skip: true })}"></some-elem>`;
 When hiding an element, it's possible that the user's focus was inside that element. The act of hiding it would lose the user's focus point.
 
 If this scenario is detected, focus will automatically be moved to the next focusable element after the element being hidden.
-
-![focus](./screenshots/focus.gif?raw=true)
