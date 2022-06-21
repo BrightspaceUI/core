@@ -99,6 +99,7 @@ describe('d2l-selection-input', () => {
 			<d2l-test-selection>
 				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
 				<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
+				<d2l-selection-input key="key3" label="label3" disabled></d2l-selection-input>
 			</d2l-test-selection>
 		`);
 		await el.updateComplete;
@@ -113,6 +114,22 @@ describe('d2l-selection-input', () => {
 	it('dispatches d2l-selection-change event when selected changes to false', async() => {
 		setTimeout(() => el.querySelector('[key="key2"]').selected = false);
 		await oneEvent(el, 'd2l-selection-change');
+	});
+
+	describe('_handleRadioClick', () => {
+
+		it('sets the selected property to true when enabled element is clicked', async() => {
+			const clickEvent = new Event('click');
+			el.querySelector('[key="key1"]')._handleRadioClick(clickEvent);
+			expect(el.querySelector('[key="key1"]').selected).to.be.true;
+		});
+
+		it('does not set the selected property to true when a disabled element is clicked', async() => {
+			const clickEvent = new Event('click');
+			el.querySelector('[key="key3"]')._handleRadioClick(clickEvent);
+			expect(el.querySelector('[key="key3"]').selected).to.be.false;
+		});
+
 	});
 
 });

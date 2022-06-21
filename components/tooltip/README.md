@@ -172,17 +172,12 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo code name:d2l-tooltip-help autoSize:false size:small -->
+<!-- docs: demo live name:d2l-tooltip-help autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
 </script>
 
-<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
-<p class="d2l-body-small">
-  This is some sample text.
-  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
-</p>
 <p class="d2l-body-compact">
   This is some sample text.
   <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
@@ -201,9 +196,9 @@ The `d2l-tooltip-help` component is used to display additional information when 
 ### Using in a Sentence or Paragraph
 
 When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text 
-(see 2nd and 3rd examples above).
+(see the demo example above).
 
 Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.   
 Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own. 
 
-See the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example.
+See also the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example use case.
