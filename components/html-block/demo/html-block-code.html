@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>d2l-html-block (code samples)</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../colors/colors.js';
+			import '../../typography/typography.js';
+			import '../html-block.js';
+		</script>
+		<style>
+			html {
+				font-size: 20px;
+			}
+			body {
+				padding: 1rem;
+			}
+		</style>
+	</head>
+	<body class="d2l-typography">
+
+		<h1 class="d2l-heading-2">d2l-html-block (code)</h1>
+
+		<h2 class="d2l-heading-3">Block Samples</h2>
+
+		<d2l-html-block>
+<pre class="d2l-code d2l-code-dark"><code class="language-javascript">function helloGrumpy(name) {
+	console.log(`Hi there ${name}.`);
+}
+helloGrumpy('Wizard');</code></pre>
+<br>
+<pre class="d2l-code d2l-code-dark"><code class="language-javascript line-numbers">function helloGrumpy(name) {
+	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
+}
+helloGrumpy('Wizard');</code></pre>
+		</d2l-html-block>
+
+		<h2 class="d2l-heading-3">Inline Samples</h2>
+
+		<d2l-html-block>
+			The best type of donuts are he kind you assign in code, for example: <code class="d2l-code d2l-code-dark language-javascript">const jelly = 'donuts';</code>. The next best type of thing you can assign in code is stuff you can ferment. <code class="d2l-code d2l-code-dark language-javascript">let beer = hopsAndWater.map(ingredients => ferment(ingredients));</code>
+		</d2l-html-block>
+
+	</body>
+</html>
