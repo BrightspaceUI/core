@@ -550,11 +550,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate)  this.requestUpdate();
 		if (shouldResizeDropdown) {
-			const singleDimension = this._dimensions.length === 1;
-			if (singleDimension && this.opened) {
-				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-				dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
-			}
+			this._resizeDropdown();
 		}
 	}
 
@@ -605,6 +601,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (dimension.searchType === 'automatic' || searchValue === '') {
 			this._performDimensionSearch(dimension);
+			this._resizeDropdown();
 		} else if (dimension.searchType === 'manual') {
 			dimension.loading = true;
 			this.requestUpdate();
@@ -718,6 +715,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		this.requestUpdate();
+	}
+
+	_resizeDropdown() {
+		const singleDimension = this._dimensions.length === 1;
+		if (singleDimension && this.opened) {
+			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+			dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+		}
 	}
 
 	_setDimensionChangeEvent(dimension, change, dimensionCleared) {
