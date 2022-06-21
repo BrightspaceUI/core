@@ -58,10 +58,6 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ## Opener: Dropdown Button [d2l-dropdown-button]
 `d2l-dropdown-button` is a `d2l-button` opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-button opener](./screenshots/dropdown-button.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dropdown-button align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -89,10 +85,6 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 
 ## Opener: Button Subtle [d2l-dropdown-button-subtle]
 `d2l-dropdown-button-subtle` is a `d2l-button-subtle` opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
-
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-button-subtle opener](./screenshots/dropdown-button-subtle.png)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-dropdown-button-subtle align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
@@ -131,10 +123,6 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 ## Opener: Context Menu [d2l-dropdown-context-menu]
 `d2l-dropdown-context-menu` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-context-menu opener](./screenshots/dropdown-context-menu.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -172,10 +160,6 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 ## Opener: More [d2l-dropdown-more]
 `d2l-dropdown-more` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-more opener](./screenshots/dropdown-more.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dropdown-more align:flex-start autoOpen:true autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -212,11 +196,6 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 ## Content: Container [d2l-dropdown-content]
 `d2l-dropdown-content` is a generic container for dropdown content.  It provides behavior such as sizing,  positioning, and managing focus gain/loss.
-
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-content](./screenshots/dropdown-content.png)
-![screenshot the dropdown-content with mobile-tray="right"](./screenshots/dropdown-content-mobile-tray.png)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-dropdown-content align:flex-start autoSize:false autoOpen:true size:medium -->
 ```html
@@ -276,10 +255,6 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ## Content: Menu [d2l-dropdown-menu]
 `d2l-dropdown-menu` is a container for a [d2l-menu](../menu/README.md) component. It provides additional support on top of `d2l-dropdown-content` for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
 
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-menu](./screenshots/dropdown-menu.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dropdown-menu align:flex-start autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -318,10 +293,6 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 ## Content: Tabs [d2l-dropdown-tabs]
 `d2l-dropdown-tabs` is a container for a [d2l-tabs](https://github.com/BrightspaceUI/tabs) component. It provides additional support on top of `d2l-dropdown-content` for automatic resizing when the tab changes.
-
-<!-- docs: start hidden content -->
-![screenshot the basic dropdown-tabs](./screenshots/dropdown-tabs.png)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-dropdown-tabs autoOpen:true autoSize:false align:flex-start size:large -->
 ```html

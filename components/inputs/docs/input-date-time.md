@@ -31,10 +31,6 @@ Use the `<d2l-input-date>` component when users need to choose a single date. It
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: start hidden content -->
-![example screenshot of date input](../screenshots/date.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-date align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
@@ -80,10 +76,6 @@ To make your usage of `d2l-input-date` accessible, use the following properties 
 Use the `<d2l-input-date-range>` component when users need to enter two dates in a range, like a course start and end date. The component consists of two input-date components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
-
-<!-- docs: start hidden content -->
-![example screenshot of date range input](../screenshots/date-range.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-input-date-range align:flex-start autoSize:false size:xlarge -->
 ```html
@@ -137,10 +129,6 @@ Use the `<d2l-input-time>` component when users need to enter a time, without a
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: start hidden content -->
-![example screenshot of time input](../screenshots/time.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-time align:flex-start autoSize:false size:large -->
 ```html
 <script type="module">
@@ -186,10 +174,6 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 Use the `<d2l-input-time-range>` component when users need to enter two times in a range, and the date is already known. The component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
-
-<!-- docs: start hidden content -->
-![example screenshot of time range input](../screenshots/time-range.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-input-time-range align:flex-start autoSize:false size:large -->
 ```html
@@ -239,10 +223,6 @@ Use the `<d2l-input-date-time>` component when users need to enter a single dat
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
-<!-- docs: start hidden content -->
-![example screenshot of date input](../screenshots/date-time.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-date-time align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
@@ -289,10 +269,6 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 Use the `<d2l-input-date-time-range>` component when users need to enter two dates and times in a range, like an assignment start and end date/time. The component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
-
-<!-- docs: start hidden content -->
-![example screenshot of date-time range input](../screenshots/date-time-range.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoSize:false size:xlarge -->
 ```html

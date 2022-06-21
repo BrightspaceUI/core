@@ -102,10 +102,6 @@ When using `d2l-list`, the `grid` attribute will enable the table-like keyboard 
 
 The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
 
-<!-- docs: start hidden content -->
-![List](./screenshots/list.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-list autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -201,10 +197,6 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 
 The `d2l-list` supports drag & drop.
 
-<!-- docs: start hidden content -->
-![List](./screenshots/drag-and-drop.gif?raw=true)
-<!-- docs: end hidden content -->
-
 The `d2l-list` is simply a rendering component, so there is some light work involved in hooking up this behaviour. In order for items to be draggable, they must have their `draggable` and `key` attributes set. Optionally, the `drop-nested` attribute can be applied to items to indicate whether other items can be dropped as nested children on the item.
 
 Reordering and re-rendering is the consuming component's responsibility. For a simple flat list, listen for the `d2l-list-item-position-change` event and call the `reorder` helper method. Alternatively, or for more complex lists such as those with nested lists, listen for the `d2l-list-items-move` event on the root list and update the consumer data using the provided source and target event detail.
@@ -272,10 +264,6 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: start hidden content -->
-![List](./screenshots/list-selection.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-list-header autoSize:false size:medium -->
 ```html
 <script type="module">
@@ -319,10 +307,6 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 ## List Item [d2l-list-item]
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection.
-
-<!-- docs: start hidden content -->
-![List](./screenshots/list-item.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-list-item autoSize:false size:small -->
 ```html
@@ -399,10 +383,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ## Button List Item [d2l-list-item-button]
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
-
-<!-- docs: start hidden content -->
-![List](./screenshots/list-item.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-list-item-button -->
 ```html
@@ -486,10 +466,6 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 ## List Item Content
 
 The `d2l-list-item-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
-
-<!-- docs: start hidden content -->
-![List](./screenshots/list-item-content.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-list-item-content -->
 ```html

@@ -27,10 +27,6 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 **Note:** `d2l-menu` renders without an outer border since it's typically used in a context where a containing element defines a border (ex. `d2l-dropdown-menu` or side nav).
 
-<!-- docs: start hidden content -->
-![Menu](./screenshots/menu.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-menu -->
 ```html
 <script type="module">
@@ -67,10 +63,6 @@ To make your usage of `d2l-menu` accessible, use the following property:
 ## Menu Item [d2l-menu-item]
 
 The `d2l-menu item` component is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event.
-
-<!-- docs: start hidden content -->
-![Menu Items](./screenshots/menu-items.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-menu-item -->
 ```html
@@ -160,10 +152,6 @@ To make your usage of `d2l-menu-item-link` accessible, use the following propert
 
 The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up to the `d2l-menu-item-change` event. Multiple checkboxes can be selected at once.
 
-<!-- docs: start hidden content -->
-![Checkbox Menu](./screenshots/checkbox-menu.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-menu-item-checkbox -->
 ```html
 <script type="module">
@@ -209,10 +197,6 @@ To make your usage of `d2l-menu-item-checkbox` accessible, use the following pro
 ## Radio Menu Item [d2l-menu-item-radio]
 
 The `d2l-menu-item-radio` component is used for selection. It can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
-
-<!-- docs: start hidden content -->
-![Radio Menu](./screenshots/radio-menu.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-menu-item-radio -->
 ```html
@@ -278,10 +262,6 @@ The `d2l-menu-item-separator` component can be used to semantically separate men
 ## Nested Menus
 
 Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  For nested menus, a `label` attribute is automatically applied using the text attribute of the `d2l-menu-item` that contains it - no need to duplicate this value.  A "return" menu item will be added to the top of the nested menu by default.
-
-<!-- docs: start hidden content -->
-![Nested Menu](./screenshots/nested-menu.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo code -->
 ```html

@@ -2,12 +2,6 @@
 
 The selection components (`d2l-selection-action`, `d2l-selection-input`, `d2l-selection-select-all`, `d2l-selection-summary`, `d2l-selection-action`) are low-level components that provide the ability to create selection interfaces with select-all and bulk-action behaviours.
 
-<!-- docs: start hidden content -->
-![Selection](./screenshots/selection-multiple.png?raw=true)
-
-![Selection](./screenshots/selection-single.png?raw=true)
-<!-- docs: end hidden content -->
-
 ## Use Case
 
 The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be defined to enable the use of these selection controls in different semantic contexts or radically different layouts. See [SelectionMixin](#selectionmixin).

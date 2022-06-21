@@ -2,10 +2,6 @@
 
 Tooltips display additional information when users focus or hover on a point of interest.
 
-<!-- docs: start hidden content -->
-![screenshot of an error tooltip](./screenshots/tooltip-error.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
@@ -118,10 +114,6 @@ If no boundaries are provided the union of the `window` or `iframe` document and
 This can be done with the `boundary` attribute that allows any of the tooltip's `"top"`, `"bottom"`, `"left"` and `"right"` to be constrained. Boundaries are defined relative on the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent) meaning a boundary of `{"top": 0, "bottom": 0, "left": 0, "right": 0}` will constrain the tooltip so that it opens within its offset parent's bounds.
 
 In the following example to constrain the tooltip to the dashed boundary we can set the top boundary to `50`, the bottom boundary to `10`, the left boundary to `100`, and the right boundary to `0`.
-
-<!-- docs: start hidden content -->
-![screenshot of a tooltip with custom boundaries](./screenshots/tooltip-boundary.png)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo code -->
 ```html

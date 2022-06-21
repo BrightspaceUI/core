@@ -18,8 +18,6 @@ Groups of inputs (like checkboxes or radios) should be wrapped in a `<fieldset>`
 
 ### Visible labels using the `<label>` element
 
-![example screenshot of input label](./screenshots/label.png?raw=true)
-
 Import the label styles and `RtlMixin` and include them in your component:
 
 ```javascript
@@ -54,8 +52,6 @@ Alternately, associate the `<label>` with the input using the `for` and `id` att
 ```
 
 For required inputs, add the `d2l-input-label-required` CSS class to the label to get a visual indicator. Don't forget to add `aria-required="true"` to the input so that assistive technology is aware as well.
-
-![example screenshot of required input](./screenshots/label-required.png?raw=true)
 
 ```html
 <label for="myInput" class="d2l-input-label d2l-input-label-required">City</label>

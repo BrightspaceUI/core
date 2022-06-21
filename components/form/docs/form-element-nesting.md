@@ -145,8 +145,6 @@ get validationMessage() {
 
 **5. Prevent tooltip overlap:**
 
-![screenshot of a two validation tooltips overlapping](../screenshots/nesting-tooltip-conflict.png)
-
 Now that we have the validation logic for the parent and nested custom form elements, we need to make sure their validation tooltips don't overlap. To do this we will hide the tooltip using the `childErrors` `Map` which will tell us if any of the nested form elements are currently displaying validation errors.
 
 ```javascript
@@ -164,8 +162,6 @@ render() {
 ```
 
 **6: Adding invalid styling for the nested custom form elements:**
-
-![screenshot of a component that is invalid but looks valid](../screenshots/nesting-invalid-styling.png)
 
 Now that the tooltips no longer overlap, we want to ensure the nested `input-text` elements look invalid even if only the parent is actually invalid. To do this, we will use the `forceInvalid` property to force the nested elements to look invalid when the parent is invalid.
 

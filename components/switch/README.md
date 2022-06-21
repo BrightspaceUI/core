@@ -28,9 +28,6 @@ A switch is used to toggle between two states, on and off, just like a light swi
 
 ## Switch [d2l-switch]
 The `d2l-switch` element is a generic switch with on/off semantics.
-<!-- docs: start hidden content -->
-![Switch](./screenshots/switch.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-switch autoSize:false size:small -->
 ```html
@@ -65,10 +62,6 @@ To make your usage of `d2l-switch` accessible, use the following property:
 ## Visibility Switch [d2l-switch-visibility]
 
 The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
-
-<!-- docs: start hidden content -->
-![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
