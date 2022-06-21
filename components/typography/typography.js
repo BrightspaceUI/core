@@ -113,7 +113,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-blockquote {
-			color: var(--d2l-color-tungsten);
 			font-size: 0.8rem;
 			font-weight: 400;
 			line-height: 1.4rem;
