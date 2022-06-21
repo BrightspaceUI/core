@@ -112,41 +112,11 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			margin: 1.5rem 0 1.5rem 0;
 		}
 
-		@media (max-width: 615px) {
-
-			.d2l-typography .d2l-body-standard {
-				font-size: 0.8rem;
-				line-height: 1.2rem;
-			}
-
-			.d2l-typography .d2l-body-small {
-				font-size: 0.6rem;
-				line-height: 0.9rem;
-			}
-
-			.d2l-typography .d2l-heading-1 {
-				font-size: 1.5rem;
-				line-height: 1.8rem;
-			}
-
-			.d2l-typography .d2l-heading-2 {
-				font-size: 1rem;
-				font-weight: 700;
-				line-height: 1.5rem;
-			}
-
-			.d2l-typography .d2l-heading-3 {
-				font-size: 0.8rem;
-				line-height: 1.2rem;
-			}
-
-		}
-
 		.d2l-typography .d2l-blockquote {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.8rem;
 			font-weight: 400;
-			line-height: 1.2rem;
+			line-height: 1.4rem;
 			margin: 0;
 			margin-right: 1.2rem;
 			padding: 0;
@@ -175,6 +145,40 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			left: initial;
 			right: 0;
 			transform: scaleX(-1);
+		}
+
+		@media (max-width: 615px) {
+
+			.d2l-typography .d2l-body-standard {
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+			}
+
+			.d2l-typography .d2l-body-small {
+				font-size: 0.6rem;
+				line-height: 0.9rem;
+			}
+
+			.d2l-typography .d2l-heading-1 {
+				font-size: 1.5rem;
+				line-height: 1.8rem;
+			}
+
+			.d2l-typography .d2l-heading-2 {
+				font-size: 1rem;
+				font-weight: 700;
+				line-height: 1.5rem;
+			}
+
+			.d2l-typography .d2l-heading-3 {
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+			}
+
+			.d2l-typography .d2l-blockquote {
+				line-height: 1.2rem;
+			}
+
 		}
 	`;
 	document.head.appendChild(style);
