@@ -550,7 +550,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate)  this.requestUpdate();
 		if (shouldResizeDropdown) {
-			this._resizeDropdown();
+			this._requestDropdownResize();
 		}
 	}
 
@@ -713,11 +713,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				break;
 		}
 
-		this._resizeDropdown();
+		this._requestDropdownResize();
 		this.requestUpdate();
 	}
 
-	_resizeDropdown() {
+	_requestDropdownResize() {
 		const singleDimension = this._dimensions.length === 1;
 		if (singleDimension && this.opened) {
 			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
