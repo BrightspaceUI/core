@@ -601,7 +601,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (dimension.searchType === 'automatic' || searchValue === '') {
 			this._performDimensionSearch(dimension);
-			this._resizeDropdown();
 		} else if (dimension.searchType === 'manual') {
 			dimension.loading = true;
 			this.requestUpdate();
@@ -714,6 +713,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				break;
 		}
 
+		this._resizeDropdown();
 		this.requestUpdate();
 	}
 
