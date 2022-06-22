@@ -227,7 +227,6 @@ export const labelStyles = css`
 
 export const blockquoteStyles = css`
 	.d2l-blockquote {
-		color: var(--d2l-color-tungsten);
 		font-size: 0.8rem;
 		font-weight: 400;
 		line-height: 1.4rem;
