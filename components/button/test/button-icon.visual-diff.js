@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-button-icon', () => {
+describe.only('d2l-button-icon', () => {
 
 	const visualDiff = new VisualDiff('button-icon', import.meta.url);
 
@@ -23,11 +23,11 @@ describe('d2l-button-icon', () => {
 
 	[
 		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'click', 'disabled'] },
-		{ category: 'translucent-enabled', tests: ['normal', 'hover', 'focus', 'click'] },
-		{ category: 'translucent-disabled', tests: ['normal', 'hover'] },
-		{ category: 'dark', tests: ['normal', 'hover', 'focus', 'click'] },
-		{ category: 'dark-disabled', tests: ['normal', 'hover'] },
-		{ category: 'custom', tests: ['normal', 'hover', 'focus', 'click'] }
+		// { category: 'translucent-enabled', tests: ['normal', 'hover', 'focus', 'click'] },
+		// { category: 'translucent-disabled', tests: ['normal', 'hover'] },
+		// { category: 'dark', tests: ['normal', 'hover', 'focus', 'click'] },
+		// { category: 'dark-disabled', tests: ['normal', 'hover'] },
+		// { category: 'custom', tests: ['normal', 'hover', 'focus', 'click'] }
 	].forEach((entry) => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {

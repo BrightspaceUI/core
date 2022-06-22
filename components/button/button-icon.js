@@ -57,7 +57,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-background-color-hover: var(--d2l-color-gypsum);
 					--d2l-button-icon-border-radius: 0.3rem;
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-					--d2l-button-icon-min-height: calc(2rem + 2px);
+					--d2l-button-icon-min-height: calc(3rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
