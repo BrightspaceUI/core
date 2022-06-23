@@ -30,6 +30,7 @@ describe('d2l-dialog-confirm', () => {
 				await reset(page, '#confirmLongTitle');
 				await reset(page, '#confirmNoTitle');
 				await reset(page, '#confirmLongText');
+				await reset(page, '#confirmLongButtons');
 				await reset(page, '#confirmRtl');
 				await reset(page, '#confirmMultiParagraph');
 			});

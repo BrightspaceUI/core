@@ -16,7 +16,8 @@ class FocusTrap extends FocusMixin(LitElement) {
 			 * Whether the component should trap user focus.
 			 * @type {boolean}
 			 */
-			trap: { type: Boolean }
+			trap: { type: Boolean },
+			_legacyPromptIds: { state: true }
 		};
 	}
 
@@ -35,6 +36,9 @@ class FocusTrap extends FocusMixin(LitElement) {
 		super();
 		this.trap = false;
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
+		this._handleLegacyPromptOpen = this._handleLegacyPromptOpen.bind(this);
+		this._handleLegacyPromptClose = this._handleLegacyPromptClose.bind(this);
+		this._legacyPromptIds = new Set();
 	}
 
 	static get focusElementSelector() {
@@ -44,15 +48,19 @@ class FocusTrap extends FocusMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 		document.body.addEventListener('focus', this._handleBodyFocus, true);
+		document.body.addEventListener('d2l-legacy-prompt-open', this._handleLegacyPromptOpen);
+		document.body.addEventListener('d2l-legacy-prompt-close', this._handleLegacyPromptClose);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		document.body.removeEventListener('focus', this._handleBodyFocus, true);
+		document.body.removeEventListener('d2l-legacy-prompt-open', this._handleLegacyPromptOpen);
+		document.body.removeEventListener('d2l-legacy-prompt-close', this._handleLegacyPromptClose);
 	}
 
 	render() {
-		const tabindex = this.trap ? '0' : undefined;
+		const tabindex = (this.trap && this._legacyPromptIds.size === 0) ? '0' : undefined;
 		return html`
 			<span class="d2l-focus-trap-start" @focusin="${this._handleStartFocusIn}" tabindex="${ifDefined(tabindex)}"></span>
 			<slot></slot>
@@ -72,7 +80,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 	}
 
 	_handleBodyFocus(e) {
-		if (!this.trap) return;
+		if (!this.trap || this._legacyPromptIds.size > 0) return;
 		const container = this._getContainer();
 		const target = e.composedPath()[0];
 		if (isComposedAncestor(container, target)) return;
@@ -93,6 +101,16 @@ class FocusTrap extends FocusMixin(LitElement) {
 			}
 		}
 		this._focusFirst();
+	}
+
+	_handleLegacyPromptClose(e) {
+		this._legacyPromptIds.delete(e.detail.id);
+		this.requestUpdate();
+	}
+
+	_handleLegacyPromptOpen(e) {
+		this._legacyPromptIds.add(e.detail.id);
+		this.requestUpdate();
 	}
 
 	_handleStartFocusIn(e) {

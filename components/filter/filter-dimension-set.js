@@ -103,6 +103,7 @@ class FilterDimensionSet extends LitElement {
 		const valueNodes = this._getSlottedNodes();
 		const values = valueNodes.map(value => {
 			return {
+				disabled: value.disabled,
 				key: value.key,
 				selected: value.selected,
 				text: value.text

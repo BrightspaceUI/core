@@ -5,10 +5,6 @@ Scroll containers can be used to control how content acts when overflowing its c
 
 The `d2l-scroll-wrapper` element can be used to wrap content which may overflow its horizontal boundaries, providing left/right scroll buttons.
 
-<!-- docs: start hidden content -->
-![scroll wrapper](./screenshots/scroll-wrapper.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-scroll-wrapper -->
 ```html
 <script type="module">

@@ -2,10 +2,6 @@
 
 Search inputs allow users to input text, execute a search, and clear results. A search input may be used in conjunction with filters, sort, and/or auto-complete.
 
-<!-- docs: start hidden content -->
-![example screenshot of search input](../screenshots/search.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo -->
 ```html
 <script type="module">

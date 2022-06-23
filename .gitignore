@@ -2,6 +2,8 @@ generated/
 node_modules/
 components/*/test/screenshots/current/
 components/*/test/screenshots/golden/
+helpers/test/screenshots/current/
+helpers/test/screenshots/golden/
 mixins/*/test/screenshots/current/
 mixins/*/test/screenshots/golden/
 templates/*/test/screenshots/current/

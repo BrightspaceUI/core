@@ -208,7 +208,7 @@ describe('d2l-input-date-time', () => {
 	});
 
 	describe('functionality', () => {
-		it('change time', async function() {
+		it.skip('change time', async function() {
 			await page.$eval('#basic', (elem) => {
 				elem.blur();
 				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');

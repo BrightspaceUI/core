@@ -49,10 +49,6 @@ Therefore in text inputs, placeholder text is a light colour (Mica), which fails
 
 The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
 
-<!-- docs: start hidden content -->
-![example screenshot of text input](../screenshots/text.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-text -->
 ```html
 <script type="module">
@@ -172,10 +168,6 @@ As an alternative to using the `<d2l-input-text>` custom element, you can style 
 
 The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element that provides auto-grow and validation behaviours. It's intended for inputting unformatted multi-line text.
 
-<!-- docs: start hidden content -->
-![example screenshot of text input](../screenshots/textarea.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-input-textarea -->
 ```html
 <script type="module">
@@ -257,10 +249,6 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 ## Applying styles to native textarea
 
 Native `<textarea>` elements can be styled by importing `input-styles.js` into your LitElement and applying the `d2l-input` CSS class.
-
-<!-- docs: start hidden content -->
-![example screenshot of textarea inputs](../screenshots/textarea-styles.gif?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo code -->
 ```html

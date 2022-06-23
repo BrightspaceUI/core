@@ -16,10 +16,6 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
-<!-- docs: start hidden content -->
-![Primary-Secondary](./screenshots/primary-secondary.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-template-primary-secondary autoSize:false size:large -->
 ```html
 <script type="module">

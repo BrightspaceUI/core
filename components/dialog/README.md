@@ -43,10 +43,6 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: start hidden content -->
-![Dialog](./screenshots/dialog.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dialog autoSize:false display:block size:large -->
 ```html
 <script type="module">
@@ -157,10 +153,6 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: start hidden content -->
-![Confirmation Dialog](./screenshots/dialog-confirm.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dialog-confirm autoSize:false display:block size:large -->
 ```html
 <script type="module">
@@ -213,10 +205,6 @@ document.querySelector('#open').addEventListener('click', () => {
 ## Fullscreen Dialog [d2l-dialog-fullscreen]
 
 The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-dialog`. It provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
-
-<!-- docs: start hidden content -->
-![Fullscreen Dialog](./screenshots/dialog-fullscreen.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-dialog-fullscreen autoSize:false display:block size:large -->
 ```html

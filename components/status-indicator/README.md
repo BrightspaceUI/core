@@ -1,10 +1,6 @@
 # Status Indicators
 Status Indicators are used to communicate the status of an item. They are non-interactive and assert prominence on state.
 
-<!-- docs: start hidden content -->
-![screenshot of status-indicator component](./screenshots/default-indicator.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo display:block -->
 ```html
 <script type="module">

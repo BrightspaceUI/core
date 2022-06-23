@@ -144,7 +144,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			forType: { type: String, attribute: 'for-type' },
 			/**
-			 * Adjust the size of the gap between the tooltip and its target
+			 * Adjust the size of the gap between the tooltip and its target (px)
 			 * @type {number}
 			 */
 			offset: { type: Number }, /* tooltipOffset */
@@ -338,6 +338,17 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="right"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
 				animation: d2l-tooltip-right-animation 200ms ease;
+			}
+
+			::slotted(ul),
+			::slotted(ol) {
+				padding-left: 1rem;
+			}
+
+			:host([dir="rtl"]) ::slotted(ul),
+			:host([dir="rtl"]) ::slotted(ol) {
+				padding-left: 0;
+				padding-right: 1rem;
 			}
 
 			@media (prefers-reduced-motion: reduce) {

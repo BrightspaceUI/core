@@ -111,7 +111,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this._selectAllPages = (selected && selectAllPages);
 
 		this._selectionSelectables.forEach(selectable => {
-			if (!!selectable.selected !== selected) {
+			if (!selectable.disabled && !!selectable.selected !== selected) {
 				selectable.selected = selected;
 			}
 		});
@@ -147,7 +147,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
-		const selectables = Array.from(this._selectionSelectables.values());
+		const selectables = Array.from(this._selectionSelectables.values())
+			.filter(item => !item.disabled);
 		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
 		let newIndex;

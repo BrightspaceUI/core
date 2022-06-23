@@ -34,10 +34,6 @@ A Button is used to communicate and perform an action.
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
-<!-- docs: start hidden content -->
-![Button](./screenshots/button.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-button -->
 ```html
 <script type="module">
@@ -72,10 +68,6 @@ To make your `d2l-button` accessible, use the following properties when applicab
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
 
 **Note:** It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
-
-<!-- docs: start hidden content -->
-![Subtle Button](./screenshots/button-subtle.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-button-subtle -->
 ```html
@@ -112,10 +104,6 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 ## Icon Button [d2l-button-icon]
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
-
-<!-- docs: start hidden content -->
-![Icon Button](./screenshots/button-icon.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-button-icon -->
 ```html

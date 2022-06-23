@@ -8,7 +8,7 @@ describe('d2l-tag-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1400, height: 1000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tag-list/test/tag-list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -21,6 +21,11 @@ describe('d2l-tag-list', () => {
 
 	it('is correct at 1400px page width', async function() {
 		const rect = await visualDiff.getRect(page, '#default');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+	});
+
+	it('is correct when clear button hidden', async function() {
+		const rect = await visualDiff.getRect(page, '#hide-clear-button');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
@@ -113,6 +118,7 @@ describe('d2l-tag-list', () => {
 			await page.$eval(selector, async(elem) => {
 				elem.parentNode.style.width = '1200px';
 				elem._showHiddenTags = false;
+				elem._hasShownKeyboardTooltip = true;
 				await elem.updateComplete;
 			});
 			await page.waitForTimeout(2000);
@@ -135,8 +141,7 @@ describe('d2l-tag-list', () => {
 			const openEvent = page.$eval(selector, (elem) => {
 				const firstItem = elem.children[0];
 				return new Promise((resolve) => {
-					const tooltip = elem.children[1].shadowRoot.querySelector('d2l-tooltip');
-					tooltip.addEventListener('d2l-tooltip-show', resolve, { once: true });
+					elem.children[1].addEventListener('focus', resolve);
 					const eventObj = document.createEvent('Events');
 					eventObj.initEvent('keydown', true, true);
 					eventObj.keyCode = 46; // delete
@@ -144,7 +149,7 @@ describe('d2l-tag-list', () => {
 				});
 			});
 			await openEvent;
-			await page.waitForTimeout(200);
+			await page.waitForTimeout(500);
 			const rect = await visualDiff.getRect(page, selector);
 			rect.height += 75;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });

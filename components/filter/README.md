@@ -2,11 +2,6 @@
 
 Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters. Filter dimensions provide methods for entering parameters for a wide range of data types.
 
-<!-- docs: start hidden content -->
-Filter with multiple dimensions:
-![Filter with multiple dimensions](./screenshots/filter-multi-dim.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
@@ -70,11 +65,6 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 
 ### Single Vs Multi Dimensional
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
-
-<!-- docs: start hidden content -->
-Filter with a single dimension:
-![Filters with single dimension](./screenshots/filter.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo code align:start autoSize:false size:large -->
 ```html
@@ -140,13 +130,13 @@ If you are going to be constructing your dimensions and/or dimension values by i
 import { repeat } from 'lit/directives/repeat.js';
 ...
 return html`<d2l-filter>
-	${repeat(this._dimensions, (dim) => dim.key, dim => html`
-		<d2l-filter-dimension-set key="${dim.key}" text=${dim.text}>
-			${repeat(dim._values, (value) => value.key, value => html`
-				<d2l-filter-dimension-set-value key="${value.kay}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
-			`)}
-		</d2l-filter-dimension-set>
-	`)}
+  ${repeat(this._dimensions, (dim) => dim.key, dim => html`
+    <d2l-filter-dimension-set key="${dim.key}" text=${dim.text}>
+      ${repeat(dim._values, (value) => value.key, value => html`
+        <d2l-filter-dimension-set-value key="${value.kay}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+      `)}
+    </d2l-filter-dimension-set>
+  `)}
 </d2l-filter>`;
 ```
 
@@ -173,11 +163,6 @@ The filter will announce changes to filter selections, search results, and when 
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
 
-<!-- docs: start hidden content -->
-Set dimension on mobile:
-![Set dimension on mobile](./screenshots/filter-mobile.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
@@ -187,11 +172,11 @@ Set dimension on mobile:
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology"><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
   <d2l-filter-dimension-set key="role" text="Role" >
-    <d2l-filter-dimension-set-value key="admin" text="Admin" selected><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="admin" text="Admin" selected></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -219,18 +204,79 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 
 | Property | Type | Description |
 |---|---|---|
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 
+## Tags for Applied Filters [d2l-filter-tags]
+
+A tag-list allowing the user to see (and remove) the currently applied filters. Works with the `d2l-filter`. It supports hooking up to multiple filters.
+
+<!-- docs: demo live name:d2l-filter-tags align:start display:block autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+  import '@brightspace-ui/core/components/filter/filter-tags.js';
+</script>
+<style>
+	d2l-filter-tags {
+		max-width: calc(100% - 300px);
+	}
+
+	@media(max-width: 600px) {
+      d2l-filter-tags {
+        display: block;
+        max-width: 100%;
+      }
+	}
+</style>
+
+<d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
+
+<d2l-filter id="core-filter">
+  <d2l-filter-dimension-set key="1" text="Dim 1">
+    <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+  <d2l-filter-dimension-set key="2" text="Dim 2">
+    <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+
+<d2l-filter id="core-filter-2">
+  <d2l-filter-dimension-set key="1" text="Dim 1" value-only-active-filter-text>
+    <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+  <d2l-filter-dimension-set key="2" text="Dim 2" value-only-active-filter-text>
+    <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `filter-ids` | String, required | Id(s) (space-delimited) of the filter component(s) to subscribe to |
+| `label` | String | The text displayed in this component's label |
+<!-- docs: end hidden content -->
 
 ## Filter Dimension: Date [d2l-filter-dimension-date]
 
 **Coming Soon!**
-
-## Tags for Applied Filters [d2l-filter-tags]
-
-**This is in progress now! Stable API expected by May.**
 
 <!-- docs: start hidden content -->
 ## Future Improvements
