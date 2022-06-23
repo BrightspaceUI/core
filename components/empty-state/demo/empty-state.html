@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+            import '../../demo/demo-snippet.js';
+            import '../empty-state-text.js';
+		</script>
+		<style>
+			.d2l-typography p:first-child { margin-top: 0; }
+			.d2l-typography p:last-child { margin-bottom: 0; }
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-empty-state">
+
+			<h2>Empty State Text</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-empty-state-text description="There are currently no courses." action-text="Create a Course"></d2l-empty-state-text>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
