@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 
@@ -19,26 +20,31 @@ class EmptyStateText extends LitElement {
 	}
 
 	static get styles() {
-		return css``;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		// Add event listener
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		// Remove event listener
+		return css`
+			::slotted(*) {
+				visibility: hidden;
+			}
+			::slotted(d2l-button-subtle:first-child),
+			::slotted(d2l-link:first-child) {
+				visibility: visible;
+			}
+			div {
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 6px;
+				padding: 1.2rem 1.5rem;
+			}
+			span {
+				padding-right: 0.5rem;
+			}
+		`;
 	}
 
 	render() {
-		// What if given empty string????
-		if (this.actionText) {
+		if (this.actionText !== undefined) {
 			return html`
 				<div>
 					<span>${this.description}</span>
-					<d2l-button-subtle>${this.actionText}</d2l-button-subtle>
+					<d2l-button-subtle @click=${this._handleActionClick} text=${this.actionText}  h-align="text"></d2l-button-subtle>
 				</div>
 			`;
 		}
@@ -54,6 +60,10 @@ class EmptyStateText extends LitElement {
 
 	_handleActionClick(e) {
 		e.stopPropagation();
+		this.dispatchEvent(new CustomEvent(
+			'd2l-empty-state-action',
+			{ bubbles: true })
+		);
 	}
 }
 
