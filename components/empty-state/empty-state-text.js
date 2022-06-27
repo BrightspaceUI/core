@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
+import { bodyStandardStyles } from '../typography/styles.js';
 
 class EmptyStateText extends LitElement {
 
@@ -20,7 +21,19 @@ class EmptyStateText extends LitElement {
 	}
 
 	static get styles() {
-		return css`
+		return [bodyStandardStyles, css`
+			div {
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 6px;
+				padding: 1.2rem 1.5rem;
+			}
+			d2l-button-subtle {
+				margin-top: 1px;
+			}
+			:host([dir="rtl"]) span {
+				padding-left: 0.5rem;
+				padding-right: 0;
+			}
 			::slotted(*) {
 				visibility: hidden;
 			}
@@ -28,15 +41,11 @@ class EmptyStateText extends LitElement {
 			::slotted(d2l-link:first-child) {
 				visibility: visible;
 			}
-			div {
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 6px;
-				padding: 1.2rem 1.5rem;
-			}
 			span {
 				padding-right: 0.5rem;
+				font-size:0.7rem;
 			}
-		`;
+		`];
 	}
 
 	render() {
