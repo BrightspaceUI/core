@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>d2l-empty-state-text</title>
-  <script type="module">
-    import '../..//typography/typography.js';
-    import '../empty-state-text.js';
-    import '../../button/button-subtle.js';
-    import '../../link/link.js';
-  </script>
-  <style>
-    html { font-size: 20px; }
-    body { padding: 30px; }
-    .visual-diff { margin-bottom: 30px; }
-  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>d2l-empty-state-text</title>
+    <script type="module">
+        import '../..//typography/typography.js';
+        import '../empty-state-text.js';
+        import '../../button/button-subtle.js';
+        import '../../link/link.js';
+    </script>
 </head>
 <body class="d2l-typography">
 
     <div class="visual-diff">
-        <d2l-empty-state-text id="simple" description="There are currently no courses." action-text="Create a Course"></d2l-empty-state-text>
+        <d2l-empty-state-text id="default-normal" description="There are currently no courses." action-text="Create a Course"></d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
-        <d2l-empty-state-text id="simple-button-wrap" description="There are currently no courses. Adding additional text here to wrap the button to the next line." action-text="Create a Course"></d2l-empty-state-text>
+        <d2l-empty-state-text id="default-button-wrap" description="There are currently no courses. Adding additional text here to wrap the button to the next line." action-text="Create a Course"></d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
-        <d2l-empty-state-text id="simple-wrap" description="There are currently no courses. Adding additional text here to wrap the button and the text to the next line." action-text="Create a Course"></d2l-empty-state-text>
+        <d2l-empty-state-text id="default-button-wrap-rtl" dir="rtl" description="There are currently no courses. Adding additional text here to wrap the button to the next line." action-text="Create a Course"></d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
-        <d2l-empty-state-text id="no-description" action-text="Create a Course"></d2l-empty-state-text>
+        <d2l-empty-state-text id="default-wrap" description="There are currently no courses. Adding additional text here to wrap the button and the text to the next line." action-text="Create a Course"></d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
-        <d2l-empty-state-text id="no-action" description="There are currently no courses. Adding additional text here to wrap the button and the text to the next line."></d2l-empty-state-text>
+        <d2l-empty-state-text id="default-wrap-rtl" dir="rtl" description="There are currently no courses. Adding additional text here to wrap the button and the text to the next line." action-text="Create a Course"></d2l-empty-state-text>
+    </div>
+
+    <div class="visual-diff">
+        <d2l-empty-state-text id="default-no-description" action-text="Create a Course"></d2l-empty-state-text>
+    </div>
+
+    <div class="visual-diff">
+        <d2l-empty-state-text id="default-no-action" description="There are currently no courses. Adding additional text here to wrap the button and the text to the next line."></d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
         <d2l-empty-state-text id="custom-subtle-button" description="There are currently no courses.">
-            <d2l-button-subtle slim description="Create a Course"></d2l-button-subtle>
+            <d2l-button-subtle slim text="Create a Course"></d2l-button-subtle>
         </d2l-empty-state-text>
     </div>
 
     <div class="visual-diff">
         <d2l-empty-state-text id="custom-link" description="There are currently no courses.">
-            <d2l-link href="https://www.d2l.com/" target="_blank" style="font-size: 0.7rem">Create a Course</d2l-link>
+            <d2l-link href="https://www.d2l.com/" target="_blank" style="font-size: 0.7rem;">Create a Course</d2l-link>
         </d2l-empty-state-text>
     </div>
 

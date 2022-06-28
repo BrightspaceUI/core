@@ -21,39 +21,19 @@ describe('d2l-empty-state-text', () => {
 
 	after(async() => await browser.close());
 
-	it('simple', async function() {
-		const rect = await visualDiff.getRect(page, '#simple');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('simple-button-wrap', async function() {
-		const rect = await visualDiff.getRect(page, '#simple-button-wrap');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('simple-wrap', async function() {
-		const rect = await visualDiff.getRect(page, '#simple-wrap');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('no-description', async function() {
-		const rect = await visualDiff.getRect(page, '#no-description');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('no-action', async function() {
-		const rect = await visualDiff.getRect(page, '#no-action');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('custom-subtle-button', async function() {
-		const rect = await visualDiff.getRect(page, '#custom-subtle-button');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('custom-link', async function() {
-		const rect = await visualDiff.getRect(page, '#custom-link');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		{ category: 'default', tests: [ 'normal', 'button-wrap', 'button-wrap-rtl', 'wrap', 'wrap-rtl', 'no-description', 'no-action' ] },
+		{ category: 'custom', tests: ['subtle-button', 'link'] }
+	].forEach(entry => {
+		describe(entry.category, () => {
+			entry.tests.forEach(name => {
+				it(name, async function() {
+					const selector = `#${entry.category}-${name}`;
+					const rect = await visualDiff.getRect(page, selector);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
+		});
 	});
 
 });

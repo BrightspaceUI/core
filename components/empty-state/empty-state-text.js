@@ -2,13 +2,20 @@ import '../colors/colors.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { bodyStandardStyles } from '../typography/styles.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class EmptyStateText extends LitElement {
+/**
+ * ADD DESCRIPTION HERE
+ * @slot - You can place your own custom action component in lieu of the actionText property. The component in the slot will only render if actionText is not defined. Only a d2l-button-subtle or d2l-link component will render in this slot.
+ * @fires d2l-empty-state-action - Dispatched when the action button is clicked
+ */
+class EmptyStateText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
 			/**
-			 * A description to be added to the button for accessib
+			 * A description giving details about the empty state
 			 * @type {String}
 			 */
 			description: { type: String },
@@ -35,15 +42,15 @@ class EmptyStateText extends LitElement {
 				padding-right: 0;
 			}
 			::slotted(*) {
-				visibility: hidden;
+				display: none;
 			}
 			::slotted(d2l-button-subtle:first-child),
 			::slotted(d2l-link:first-child) {
-				visibility: visible;
+				display: inline;
 			}
 			span {
+				font-size: 0.7rem;
 				padding-right: 0.5rem;
-				font-size:0.7rem;
 			}
 		`];
 	}
@@ -53,7 +60,7 @@ class EmptyStateText extends LitElement {
 			return html`
 				<div>
 					<span>${this.description}</span>
-					<d2l-button-subtle @click=${this._handleActionClick} text=${this.actionText}  h-align="text"></d2l-button-subtle>
+					<d2l-button-subtle dir=${ifDefined(this.dir === 'rtl' ? 'rtl' : undefined)} @click=${this._handleActionClick} text=${this.actionText}  h-align="text"></d2l-button-subtle>
 				</div>
 			`;
 		}
