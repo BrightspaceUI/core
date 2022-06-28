@@ -49,7 +49,16 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-switch-visibility></d2l-switch-visibility>
+					<d2l-switch-visibility>
+						<p slot="conditions">
+							These are some conditions that must be met for the activity to be visible.
+							<ul slot="conditions">
+								<li> Condition 1 </li>
+								<li> Condition 2 </li>
+								<li> Condition 3 </li>
+							</ul>
+						</p>
+					</d2l-switch-visibility>
 				</template>
 			</d2l-demo-snippet>
 
