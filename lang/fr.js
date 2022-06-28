@@ -23,7 +23,7 @@ export default {
 	"components.filter.filters": "Filtres",
 	"components.filter.noActiveFilters": "Aucun filtre actif",
 	"components.filter.noFilters": "Aucun filtre disponible",
-	"components.filter.searchResults": "{number, plural, = 0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
+	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
 	"components.form-element.defaultError": "{label} n'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
