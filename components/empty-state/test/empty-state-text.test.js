@@ -5,6 +5,7 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-empty-state-text',  () => {
+
 	it('should construct', () => {
 		runConstructor('d2l-empty-state-text');
 	});
@@ -56,4 +57,5 @@ describe('d2l-empty-state-text',  () => {
 		setTimeout(() => el.shadowRoot.querySelector('d2l-button-subtle').click());
 		await oneEvent(el, 'd2l-empty-state-action');
 	});
+
 });

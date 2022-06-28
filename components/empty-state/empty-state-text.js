@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
-import { bodyStandardStyles } from '../typography/styles.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -28,7 +27,7 @@ class EmptyStateText extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [bodyStandardStyles, css`
+		return css`
 			div {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
@@ -50,9 +49,11 @@ class EmptyStateText extends RtlMixin(LitElement) {
 			}
 			span {
 				font-size: 0.7rem;
+				font-weight: 400;
+				line-height: 1rem;
 				padding-right: 0.5rem;
 			}
-		`];
+		`;
 	}
 
 	render() {
@@ -81,6 +82,7 @@ class EmptyStateText extends RtlMixin(LitElement) {
 			{ bubbles: true })
 		);
 	}
+
 }
 
 customElements.define('d2l-empty-state-text', EmptyStateText);
