@@ -47,7 +47,7 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
 
-## Best Practices
+### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
