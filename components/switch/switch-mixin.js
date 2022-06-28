@@ -185,12 +185,14 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
+
 		return html`
 			${textPosition === 'start' ? text : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
 				aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
+				aria-describedby="conditions-help"
 				class="d2l-switch-container"
 				@click="${this._handleClick}"
 				@keydown="${this._handleKeyDown}"
