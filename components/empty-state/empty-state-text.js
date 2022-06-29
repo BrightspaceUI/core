@@ -14,7 +14,7 @@ class EmptyStateText extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * A description giving details about the empty state
+			 * REQUIRED: A description giving details about the empty state
 			 * @type {String}
 			 */
 			description: { type: String },
