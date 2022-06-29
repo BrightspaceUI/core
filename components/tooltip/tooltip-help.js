@@ -36,7 +36,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	static get styles() {
 		return [bodySmallStyles, css`
 			:host {
-				display: inline;
+				display: inline-block;
 			}
 			:host([hidden]) {
 				display: none;
