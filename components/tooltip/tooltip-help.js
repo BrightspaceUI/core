@@ -97,7 +97,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
 				${this.text}
 			</button>
-			<d2l-tooltip for="d2l-tooltip-help-text" delay=0 offset=13 position="${ifDefined(this.position)}">
+			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}">
 				<slot></slot>
 			</d2l-tooltip>
 		`;
