@@ -234,9 +234,7 @@ class Menu extends FocusVisiblePolyfillMixin(ThemeMixin(HierarchicalViewMixin(Li
 			items.unshift(returnItem);
 		}
 		// Wait for menu items to have their role attribute set
-		await Promise.all(items.map(async(item) => {
-			await item.updateComplete;
-		}));
+		await Promise.all(items.map(item => item.updateComplete));
 		return items.filter((item) => {
 			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
