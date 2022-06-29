@@ -57,6 +57,10 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
 </d2l-tag-list>
 ```
 
+### Methods
+
+* `setParentNode(node)`: Sets the parent node to be used for the `ResizeObserver` that detects when page size has changed and updates the chomping of tag list items. Useful if `tag-list` is wrapped in a non-block element which can cause flicker. For example: `tagList.setParentNode(this.parentNode);`
+
 ## Tag List Item [d2l-tag-list-item]
 The `d2l-tag-list-item` provides the appropriate `listitem` semantics and styling for children within a tag list. Tag List items do not work outside of a Tag List and should not be used on their own.
 

@@ -133,9 +133,9 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(container);
+		if (this._parentNode) this._resizeObserver.observe(this._parentNode);
+		else this._resizeObserver.observe(this.parentNode);
 
 		const listContainer = this.shadowRoot.querySelector('.tag-list-container');
 		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
@@ -226,6 +226,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 	async arrowKeysFocusablesProvider() {
 		return this._getVisibleEffectiveChildren();
+	}
+
+	setParentNode(node) {
+		this._parentNode = node;
+		if (!this._resizeObserver) return;
+
+		this._resizeObserver.disconnect();
+		this._resizeObserver.observe(node);
 	}
 
 	_chomp() {

@@ -26,7 +26,8 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 * @default "Applied Filters:"
 			 * @type {string}
 			 */
-			label: { type: String }
+			label: { type: String },
+			_numActiveFilters: { type: Number }
 		};
 	}
 
@@ -34,7 +35,6 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return [bodyCompactStyles, css`
 			:host {
 				display: inline-block;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -76,13 +76,14 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			{ onUnsubscribe: this._removeLostFilter.bind(this) },
 			{ idPropertyName: 'filterIds' }
 		);
+		this._numActiveFilters = 0;
 	}
 
 	render() {
-		let numActiveFilters = 0;
+		this._numActiveFilters = 0;
 		const allActiveFilters = Array.from(this._allActiveFilters);
 		const tagListItems = allActiveFilters.map(filter => filter[1].map((value, index) => {
-			numActiveFilters++;
+			this._numActiveFilters++;
 			return html`
 				<d2l-tag-list-item
 					@d2l-tag-list-item-clear="${this._tagListItemDeleted}"
@@ -93,7 +94,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			`;
 		}));
 		let filters = html``;
-		if (numActiveFilters === 0) filters = html`<span class="d2l-filter-tags-none-label d2l-body-compact">${this.localize('components.filter.noActiveFilters')}</span>`;
+		if (this._numActiveFilters === 0) filters = html`<span class="d2l-filter-tags-none-label d2l-body-compact">${this.localize('components.filter.noActiveFilters')}</span>`;
 		else {
 			filters = html`
 				<d2l-tag-list
@@ -112,6 +113,19 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				${filters}
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (!changedProperties.has('_numActiveFilters')) return;
+
+		// only update parentNode when going from 0 to # of filters since d2l-tag-list is only rendered when there are filters
+		const prevValue = changedProperties.get('_numActiveFilters');
+		if (prevValue !== 0 || this._numActiveFilters === 0) return;
+
+		const tagList = this.shadowRoot.querySelector('d2l-tag-list');
+		if (tagList) tagList.setParentNode(this.parentNode);
 	}
 
 	updateActiveFilters(filterId, activeFilters) {
