@@ -169,7 +169,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
 </script>
 
-<p class="d2l-body-compact">
+<p class="d2l-body-standard">
   This is some sample text.
   <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 </p>
