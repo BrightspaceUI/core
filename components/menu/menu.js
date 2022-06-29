@@ -224,7 +224,7 @@ class Menu extends FocusVisiblePolyfillMixin(ThemeMixin(HierarchicalViewMixin(Li
 		return this.shadowRoot && this.shadowRoot.querySelector('d2l-menu-item-return');
 	}
 
-	_getMenuItems() {
+	async _getMenuItems() {
 		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
 		const items = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
@@ -233,6 +233,10 @@ class Menu extends FocusVisiblePolyfillMixin(ThemeMixin(HierarchicalViewMixin(Li
 		if (returnItem) {
 			items.unshift(returnItem);
 		}
+		// Wait for menu items to have their role attribute set
+		await Promise.all(items.map(async(item) => {
+			await item.updateComplete;
+		}));
 		return items.filter((item) => {
 			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
@@ -328,8 +332,8 @@ class Menu extends FocusVisiblePolyfillMixin(ThemeMixin(HierarchicalViewMixin(Li
 	}
 
 	_onMenuItemsChanged() {
-		requestAnimationFrame(() => {
-			this._items = this._getMenuItems();
+		requestAnimationFrame(async() => {
+			this._items = await this._getMenuItems();
 			this._updateItemAttributes();
 		});
 	}
