@@ -120,6 +120,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		this._outerContainer = this.shadowRoot.querySelector('.tag-list-outer-container');
+
 		const subtleButton = this.shadowRoot.querySelector('.d2l-tag-list-hidden-button');
 		this._subtleButtonResizeObserver = new ResizeObserver(() => {
 			this._subtleButtonWidth = Math.ceil(parseFloat(getComputedStyle(subtleButton).getPropertyValue('width')));
@@ -375,7 +377,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize(entries) {
-		this._availableWidth = Math.floor(entries[0].contentRect.width);
+		this._availableWidth = Math.floor(this._outerContainer.offsetWidth);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
