@@ -29,7 +29,7 @@ Tooltips display additional information when users focus or hover on a point of 
 </d2l-tooltip-help>
 ```
 <!-- docs: start hidden content -->
-TODO: Look more into this bug and fix it
+TODO: Look more into this bug and eventually fix it
 <!-- docs: end hidden content -->
 Note: there is a known defect with tooltips where they are sometimes rendered offset by some amount unexpectedly, the first time that they are shown.
 
@@ -80,7 +80,8 @@ The `d2l-tooltip` component is used to display additional information when users
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';  <!-- docs: start hidden content --> window.addEventListener('load', function () {
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';  <!-- docs: start hidden content --> 
+  window.addEventListener('load', function () {
     setTimeout(function() {
       var tooltip = document.querySelector('d2l-tooltip[for="tooltip-error"]');
       tooltip.showing = true;
@@ -138,7 +139,8 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js'; <!-- docs: start hidden content --> window.addEventListener('load', function () {
+  import '@brightspace-ui/core/components/tooltip/tooltip.js'; <!-- docs: start hidden content --> 
+  window.addEventListener('load', function () {
     setTimeout(function() {
       var tooltip = document.querySelector('d2l-tooltip[for="tooltip-boundary"]');
       tooltip.showing = true;
@@ -192,7 +194,8 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <!-- docs: demo live name:d2l-tooltip-help autoSize:false size:medium -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/tooltip/tooltip-help.js'; <!-- docs: start hidden content --> window.addEventListener('load', function () {
+  import '@brightspace-ui/core/components/tooltip/tooltip-help.js'; <!-- docs: start hidden content --> 
+  window.addEventListener('load', function () {
     setTimeout(function() {
       var tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)').shadowRoot.querySelector('d2l-tooltip');
       tooltip.showing = true;
