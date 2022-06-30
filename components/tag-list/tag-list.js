@@ -135,7 +135,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
+		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize()));
 		if (this._parentNode) this._resizeObserver.observe(this._parentNode);
 		else this._resizeObserver.observe(this.parentNode);
 
@@ -376,7 +376,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._hasShownKeyboardTooltip = true;
 	}
 
-	async _handleResize(entries) {
+	async _handleResize() {
 		this._availableWidth = Math.floor(this._outerContainer.offsetWidth);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
