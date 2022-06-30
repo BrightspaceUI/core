@@ -2,44 +2,10 @@ import '../menu.js';
 import '../menu-item.js';
 import '../menu-item-radio.js';
 import './custom-slots.js';
-import { defineCE, expect, fixture, html, nextFrame, oneEvent, unsafeStatic } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { LitElement } from 'lit';
 import { MenuItemMixin } from '../menu-item-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-
-const delayedUpdateMenuItem = unsafeStatic(defineCE(
-	class extends MenuItemMixin(LitElement) {
-		static get properties() {
-			return {
-				_ready: { type: Boolean, attribute: false  }
-			};
-		}
-		constructor() {
-			super();
-			this._ready = false;
-			this.__updatedProperties = new Map();
-		}
-		render() {
-			return this.text;
-		}
-		shouldUpdate(changedProperties) {
-			if (!this._ready) return false;
-			return super.shouldUpdate(changedProperties);
-		}
-		async getUpdateComplete() {
-			await super.getUpdateComplete();
-			if (this._ready) return;
-			await this._getReady();
-		}
-		async _getReady() {
-			await new Promise(resolve => setTimeout(resolve, 10));
-			this._ready = true;
-		}
-	}
-));
-
-// eslint-disable-next-line lit/binding-positions, lit/no-invalid-html
-const delayedMenuItem = html`<${delayedUpdateMenuItem} id="a1" text="a"></${delayedUpdateMenuItem}>`;
 
 function dispatchKeyEvent(elem, key) {
 	const eventObj = document.createEvent('Events');
@@ -91,16 +57,13 @@ describe('d2l-menu', () => {
 			elem = await fixture(html`
 				<d2l-menu>
 					<d2l-menu-item id="hidden_a" text="a" hidden></d2l-menu-item>
-					${delayedMenuItem}
+					<d2l-menu-item id="a1" text="a"></d2l-menu-item>
 					<d2l-menu-item id="b1" text="b" disabled></d2l-menu-item>
 					<d2l-menu-item id="a2" text="a"></d2l-menu-item>
 					<d2l-menu-item id="c1" text="C"></d2l-menu-item>
 					<d2l-menu-item id="d1" text="d"></d2l-menu-item>
 				</d2l-menu>
 			`);
-			const delayed = elem.querySelector('#a1');
-			await delayed.updateComplete;
-			await nextFrame();
 			await nextFrame();
 		});
 
@@ -281,6 +244,56 @@ describe('d2l-menu', () => {
 			expect(elem.querySelector('#item1').getAttribute('tabindex')).to.equal('0');
 			expect(elem.querySelector('#item2').getAttribute('tabindex')).to.equal('-1');
 		});
+
+	});
+
+	it('waits for slow menu items to render', async() => {
+
+		const delayedUpdateMenuItem = defineCE(
+			class extends MenuItemMixin(LitElement) {
+				static get properties() {
+					return {
+						_ready: { type: Boolean, state: true  }
+					};
+				}
+				constructor() {
+					super();
+					this._ready = false;
+					this._resolve = null;
+					this._readyPromise = new Promise((resolve) => {
+						this._resolve = resolve;
+					});
+				}
+				render() {
+					return 'i am slow';
+				}
+				shouldUpdate(changedProperties) {
+					if (!this._ready) return false;
+					return super.shouldUpdate(changedProperties);
+				}
+				async getUpdateComplete() {
+					await super.getUpdateComplete();
+					return this._readyPromise;
+				}
+				makeReady() {
+					this._ready = true;
+					this._resolve();
+				}
+			}
+		);
+
+		const elem = await fixture(`
+			<d2l-menu>
+				<d2l-menu-item text="fast"></d2l-menu-item>
+				<${delayedUpdateMenuItem}></${delayedUpdateMenuItem}>
+				<span>not a menu item</span>
+			</d2l-menu>
+		`);
+		const slowItem = elem.querySelector(delayedUpdateMenuItem);
+		setTimeout(() => slowItem.makeReady());
+
+		const items = await elem._getMenuItems();
+		expect(items.length).to.equal(2);
 
 	});
 
