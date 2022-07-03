@@ -2,10 +2,6 @@
 
 Tooltips display additional information when users focus or hover on a point of interest.
 
-<!-- docs: start hidden content -->
-![screenshot of an error tooltip](./screenshots/tooltip-error.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
@@ -24,22 +20,6 @@ Tooltips display additional information when users focus or hover on a point of 
   Tooltip message example
 </d2l-tooltip>
 ```
-
-## Best Practices
-
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Use to show error messages during form validation
-* Use to give the name or purpose of an icon button
-* Use to provide the “full text” for a truncated value in a tight datagrid or list
-<!-- docs: end dos -->
-
-<!-- docs: start donts -->
-* Don’t use tooltips for long paragraphs of text
-* Don’t use tooltips to repeat text that is already shown
-* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
-<!-- docs: end donts -->
-<!-- docs: end best practices -->
 
 ## Accessibility
 
@@ -66,6 +46,22 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 ## Tooltip [d2l-tooltip]
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use to show error messages during form validation
+* Use to give the name or purpose of an icon button
+* Use to provide the “full text” for a truncated value in a tight datagrid or list
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use tooltips for long paragraphs of text
+* Don’t use tooltips to repeat text that is already shown
+* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo live name:d2l-tooltip autoSize:false size:small -->
 ```html
@@ -119,10 +115,6 @@ This can be done with the `boundary` attribute that allows any of the tooltip's 
 
 In the following example to constrain the tooltip to the dashed boundary we can set the top boundary to `50`, the bottom boundary to `10`, the left boundary to `100`, and the right boundary to `0`.
 
-<!-- docs: start hidden content -->
-![screenshot of a tooltip with custom boundaries](./screenshots/tooltip-boundary.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo code -->
 ```html
 <script type="module">
@@ -151,3 +143,55 @@ In the following example to constrain the tooltip to the dashed boundary we can 
   </d2l-tooltip>
 </div>
 ```
+
+## Help Tooltip [d2l-tooltip-help]
+
+The `d2l-tooltip-help` component is used to display additional information when users focus or hover over some text.
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
+* Use a helpful label that provides value on its own; the tooltip should elaborate on the label
+* Keep help text short and concise, full sentences are not necessary
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don't use help tooltips when you're able to use inline help text instead
+* Avoid overusing help tooltips since even expert users will feel obligated to check their contents
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+<!-- docs: demo live name:d2l-tooltip-help autoSize:false size:small -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
+</script>
+
+<p class="d2l-body-standard">
+  This is some sample text.
+  <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+</p>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the Help Tooltip opener |
+| `inherit-font-style` | Boolean, default: `false` | Allows the opener text to inherit font properties such as size and color |
+| `position` | String | Optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left. |
+
+<!-- docs: end hidden content -->
+
+### Using in a Sentence or Paragraph
+
+When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text 
+(see the demo example above).
+
+Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.   
+Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own. 
+
+See also the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example use case.

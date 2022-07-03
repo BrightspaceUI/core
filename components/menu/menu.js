@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit';
+import { FocusVisiblePolyfillMixin } from  '../../mixins/focus-visible-polyfill-mixin.js';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
@@ -20,7 +21,7 @@ const keyCodes = {
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
  */
-class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
+class Menu extends FocusVisiblePolyfillMixin(ThemeMixin(HierarchicalViewMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -223,7 +224,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		return this.shadowRoot && this.shadowRoot.querySelector('d2l-menu-item-return');
 	}
 
-	_getMenuItems() {
+	async _getMenuItems() {
 		const slot = this.shadowRoot && this.shadowRoot.querySelector('slot');
 		if (!slot) return;
 		const items = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
@@ -232,6 +233,8 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		if (returnItem) {
 			items.unshift(returnItem);
 		}
+		// Wait for menu items to have their role attribute set
+		await Promise.all(items.map(item => item.updateComplete));
 		return items.filter((item) => {
 			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
@@ -327,8 +330,8 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 	}
 
 	_onMenuItemsChanged() {
-		requestAnimationFrame(() => {
-			this._items = this._getMenuItems();
+		requestAnimationFrame(async() => {
+			this._items = await this._getMenuItems();
 			this._updateItemAttributes();
 		});
 	}

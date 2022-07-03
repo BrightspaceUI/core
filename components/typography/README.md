@@ -8,31 +8,21 @@ Importing `typography` will add the font-faces and prebuilt CSS classes to the d
 
 "Standard Body" can be used to apply base font properties, but will also respond to viewport width changes.
 
-![Standard Body](./screenshots/body-standard.png?raw=true)
-
 ### Compact Body
 
 Compact body is a smaller version of the standard body style, for use in areas that prefer to be conservative with the amount of real estate used by text.  It is **not** recommended for blocks of readable text, particularly in paragraph form. Rather, it is best employed for brief informative text or calls to action.
-
-![Compact Body](./screenshots/body-compact.png?raw=true)
 
 ### Small Body
 
 Never used by itself; always in support of another piece of content on the page. Used for inline assistive text in forms, and for specifying metadata or properties of an existing piece of content.
 
-![Small Body](./screenshots/body-small.png?raw=true)
-
 ### Label Text
 
 Used for labels. Its font size/line spacing is relative to the root font and responds to viewport width changes.
 
-![Label](./screenshots/labels.png?raw=true)
-
 ### Headings
 
 There are four available heading styles. These are typically be applied to the `h1`, `h2`, `h3` and `h4` HTML elements, though it's not a requirement.
-
-![Headings](./screenshots/headings.png?raw=true)
 
 ## Usage
 

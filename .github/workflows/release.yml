@@ -7,7 +7,6 @@ on:
       - '[0-9]+.[0-9]+.x'
 jobs:
   release:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: Release
     timeout-minutes: 5
     runs-on: ubuntu-latest
@@ -31,5 +30,7 @@ jobs:
         uses: BrightspaceUI/actions/semantic-release@main
         with:
           GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
+          MINOR_RELEASE_WITH_LMS: true
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}

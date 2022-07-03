@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import { css } from 'lit';
 
 export const bodyStandardStyles = css`
@@ -221,5 +222,41 @@ export const labelStyles = css`
 	:host([skeleton]) .d2l-label-text.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
+	}
+`;
+
+export const blockquoteStyles = css`
+	.d2l-blockquote {
+		font-size: 0.8rem;
+		font-weight: 400;
+		line-height: 1.4rem;
+		margin: 0;
+		margin-right: 1.2rem;
+		padding: 0;
+		padding-left: 1.2rem;
+		padding-top: 0.5rem;
+		position: relative;
+	}
+	.d2l-blockquote::before {
+		content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAyMiAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik02IDIyLjY2N0E0LjY2NyA0LjY2NyAwIDAgMCAxMC42NjcgMThjMC0xLjIyNy0uNTU5LTIuNS0xLjMzNC0zLjMzM0M4LjQ4MSAxMy43NSA3LjM1IDEzLjMzMyA2IDEzLjMzM2MtLjQxMSAwIDEuMzMzLTYuNjY2IDMtOSAxLjY2Ny0yLjMzMyAxLjMzMy0zIC4zMzMtM0M4IDEuMzMzIDUuMjUzIDQuNTg2IDQgNy4yNTUgMS43NzMgMTIgMS4zMzMgMTUuMzkyIDEuMzMzIDE4QTQuNjY3IDQuNjY3IDAgMCAwIDYgMjIuNjY3em0xMiAwQTQuNjY3IDQuNjY3IDAgMCAwIDIyLjY2NyAxOGMwLTEuMjI3LS41NTktMi41LTEuMzM0LTMuMzMzLS44NTItLjkxNy0xLjk4My0xLjMzNC0zLjMzMy0xLjMzNC0uNDExIDAgMS4zMzMtNi42NjYgMy05IDEuNjY3LTIuMzMzIDEuMzMzLTMgLjMzMy0zLTEuMzMzIDAtNC4wOCAzLjI1My01LjMzMyA1LjkyMkMxMy43NzMgMTIgMTMuMzMzIDE1LjM5MiAxMy4zMzMgMThBNC42NjcgNC42NjcgMCAwIDAgMTggMjIuNjY3eiIgZmlsbD0iI0QzRDlFMyIgbWFzaz0idXJsKCNiKSIvPjwvZz48L3N2Zz4=");
+		left: 0;
+		position: absolute;
+		top: 0;
+	}
+	:host([dir="rtl"]) .d2l-blockquote {
+		margin-left: 1.2rem;
+		margin-right: 0;
+		padding-left: 0;
+		padding-right: 1.2rem;
+	}
+	:host([dir="rtl"]) .d2l-blockquote::before {
+		left: initial;
+		right: 0;
+		transform: scaleX(-1);
+	}
+	@media (max-width: 615px) {
+		.d2l-blockquote {
+			line-height: 1.2rem;
+		}
 	}
 `;

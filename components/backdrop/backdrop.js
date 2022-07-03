@@ -176,7 +176,7 @@ function hideAccessible(target) {
 	};
 
 	let parent = getComposedParent(target);
-	while (parent !== document.documentElement) {
+	while (parent !== document.documentElement && parent !== null) {
 		if (parent.nodeType === Node.ELEMENT_NODE) {
 			path.push(parent);
 			hideAccessibleChildren(parent);

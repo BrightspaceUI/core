@@ -1,9 +1,5 @@
 # Form Components
 
-<!-- docs: start hidden content -->
-![screenshot of a form-native with a text input and select input](../screenshots/form-native.gif)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo -->
 ```html
 <script type="module">

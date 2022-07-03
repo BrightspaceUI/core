@@ -10,9 +10,6 @@ A loading spinner indicates that something is happening and we don't know how lo
 
 <d2l-loading-spinner></d2l-loading-spinner>
 ```
-<!-- docs: start hidden content -->
-![Loading Spinner](./screenshots/loading-spinner.gif?raw=true)
-<!-- docs: end hidden content -->
 
 ## Best Practices
 

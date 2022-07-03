@@ -2,8 +2,6 @@
 
 Skeletons provide a low fidelity representation of an application before it has finished loading, improving the user's perception of performance.
 
-![skeleton overview](./screenshots/overview.png?raw=true)
-
 ## Skeleton-Aware Components
 
 Components which are skeleton-aware extend the `SkeletonMixin` (more on that below). These components can be skeletized by setting the `skeleton` boolean attribute/property.
@@ -13,8 +11,6 @@ For example, this causes a text input to be skeletized:
 ```html
 <d2l-input-text label="Name" skeleton></d2l-input-text>
 ```
-
-![skeleton text input](./screenshots/text-input.png?raw=true)
 
 In a typical scenario, many skeleton-aware components would have their `skeleton` attributes bound to a single property on the host component, making it easy to toggle them all together:
 
@@ -93,8 +89,6 @@ class MyElement extends SkeletonMixin(LitElement) {
 
 You can also apply a skeleton to a native element you are using as a container using the `d2l-skeletize-container` CSS class. Instead of blocking out the whole box, this will skeletonize the text and the border and allow you to individually skeletonize the components/elements inside as you wish.
 
-![skeleton container](./screenshots/container.png?raw=true)
-
 ```javascript
 render() {
   return html`
@@ -111,11 +105,7 @@ render() {
 
 Paragraphs of text that may span multiple lines are a special case for skeletons. The `d2l-skeletize` CSS class would turn the entire paragraph block into a skeleton box, which isn't quite what we want. Also, often we're showing a skeleton because we don't yet know how much data we'll have.
 
-Ideally, we'd like to show several lines of skeletized text, like this:
-
-![skeleton text input](./screenshots/paragraph.png?raw=true)
-
-To accomplish this, three special CSS classes exist to provide skeletons that span 2, 3 or 5 lines: `d2l-skeletize-paragraph-2`, `d2l-skeletize-paragraph-3` and `d2l-skeletize-paragraph-5` respectively.
+Ideally, we'd like to show several lines of skeletized text. To accomplish this, three special CSS classes exist to provide skeletons that span 2, 3 or 5 lines: `d2l-skeletize-paragraph-2`, `d2l-skeletize-paragraph-3` and `d2l-skeletize-paragraph-5` respectively.
 
 Apply one of these classes plus any additional (optional) typography styles for your paragraph:
 

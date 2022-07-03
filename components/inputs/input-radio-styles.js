@@ -27,6 +27,7 @@ export const radioStyles = css`
 	}
 	.d2l-input-radio,
 	.d2l-input-radio:hover:disabled,
+	.d2l-input-radio:hover.d2l-disabled,
 	.d2l-input-radio-label > input[type="radio"],
 	.d2l-input-radio-label > input[type="radio"]:hover:disabled {
 		background-color: var(--d2l-color-regolith);

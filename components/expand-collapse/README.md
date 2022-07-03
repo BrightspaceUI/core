@@ -4,10 +4,6 @@
 
 The `d2l-expand-collapse-content` element can be used to create expandable and collapsible content. This component only provides the logic to expand and collapse the content; controlling when and how it expands or collapses is the responsibility of the user.
 
-<!-- docs: start hidden content -->
-![Expand Collapse Content](./screenshots/expand-collapse-content.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-expand-collapse-content autoSize:false display:block size:small -->
 ```html
 <script type="module">
@@ -47,10 +43,6 @@ To make your usage of `d2l-expand-collapse-content` accessible, the [`aria-expan
 ## More-Less [d2l-more-less]
 
 The `d2l-more-less` element can be used to minimize the display of long content, while providing a way to reveal the full content.
-
-<!-- docs: start hidden content -->
-![More-Less](./screenshots/more-less.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-more-less -->
 ```html

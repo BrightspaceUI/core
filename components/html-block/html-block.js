@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import { codeStyles, HtmlBlockCodeRenderer } from '../../helpers/prism.js';
 import { css, LitElement } from 'lit';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
@@ -111,6 +112,7 @@ export const htmlBlockContentStyles = css`
 	mjx-assistive-mml math {
 		position: absolute;
 	}
+	${codeStyles}
 `;
 
 let renderers;
@@ -118,8 +120,8 @@ let renderers;
 const getRenderers = () => {
 	if (renderers) return renderers;
 	const tempRenderers = requestInstance(document, 'html-block-renderers');
-	const htmlBlockMathRenderer = new HtmlBlockMathRenderer();
-	renderers = (tempRenderers ? [ htmlBlockMathRenderer, ...tempRenderers ] : [ htmlBlockMathRenderer ]);
+	const defaultRenderers = [ new HtmlBlockMathRenderer(), new HtmlBlockCodeRenderer() ];
+	renderers = (tempRenderers ? [ ...defaultRenderers, ...tempRenderers ] : defaultRenderers);
 	return renderers;
 };
 
