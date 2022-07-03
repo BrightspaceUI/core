@@ -28,6 +28,7 @@ codeLanguages.set('plain', 'Plain Text');
 codeLanguages.set('python', 'Python');
 codeLanguages.set('r', 'R');
 codeLanguages.set('racket', 'Racket');
+codeLanguages.set('regex', 'Regex');
 codeLanguages.set('sql', 'SQL');
 codeLanguages.set('wolfram', 'Wolfram');
 
@@ -37,85 +38,130 @@ export const colorModes = {
 };
 
 const darkColors = Object.freeze({
-	background: '#2d2d2d',
-	language: '#6e7376',
-	lineNumbers: '#ffffff',
-	lineNumbersSeparator: '#999999',
-	tokenDefault: '#cccccc',
-	tokenComment: '#808080',
-	tokenPunctuation: '#d4d4d4',
-	tokenNumber: '#d4d4d4',
-	tokenUrl: '#d4d4d4',
-	tokenOperator: '#d4d4d4',
-	tokenInterpolation: '#9cdcfe',
-	tokenAttributeName: '#9cdcfe',
-	tokenConstant: '#9cdcfe',
-	tokenProperty: '#9cdcfe',
-	tokenTag: '#569cd6',
-	tokenBoolean: '#569cd6',
-	tokenEntity: '#569cd6',
-	tokenInterpolationPunctuation: '#569cd6',
-	tokenFunction: '#dcdcaa',
-	tokenClassName: '#4ec9b0',
-	tokenSymbol: '#4ec9b0',
-	tokenBuiltin: '#c586c0',
-	tokenKeyword: '#c586c0',
-	tokenAtRule: '#c586c0',
-	tokenSelector: '#d7ba7d',
-	tokenImportant: '#d16969',
-	tokenRegex: '#d16969',
-	tokenString: '#ce9178',
-	tokenChar: '#ce9178',
-	tokenAttributeValue: '#ce9178'
+	background: '#202122',
+	language: '#90989d',
+	lineNumbers: '#9ea5a9',
+	lineNumbersBackground: '#6e747733', // galena 20%
+	tokenDefault: '#cdd5dc',
+	tokenComment: '#81898d',
+	tokenPunctuation: '#cdd5dc',
+	tokenNumber: '#cdd5dc',
+	tokenUrl: '#cdd5dc',
+	tokenOperator: '#cdd5dc',
+	tokenInterpolation: '#92d1ff',
+	tokenAttributeName: '#92d1ff',
+	tokenConstant: '#00d2ed',
+	tokenProperty: '#92d1ff',
+	tokenTag: '#2899e9',
+	tokenBoolean: '#2896e4',
+	tokenEntity: '#29a6ff',
+	tokenInterpolationPunctuation: '#29a6ff',
+	tokenFunction: '#fff9d6',
+	tokenClassName: '#2ccfb0',
+	tokenSymbol: '#2de2c0',
+	tokenBuiltin: '#fd4e9d',
+	tokenKeyword: '#e94a92',
+	tokenAtRule: '#fd4e9d',
+	tokenSelector: '#fff9d6',
+	tokenImportant: '#ff575a',
+	tokenRegex: '#ec5457',
+	tokenString: '#e9ba79',
+	tokenChar: '#e9ba79',
+	tokenAttributeValue: '#e9ba79'
 });
 
-const lightColors = Object.freeze({
-	background: '#f2f1f1',
-	language: '#1b1b1b',
-	lineNumbers: '#1b1b1b',
-	lineNumbersSeparator: '#1b1b1b',
-	tokenDefault: '#1b1b1b',
-	tokenComment: '#9e9e9e',
-	tokenPunctuation: '#9e9e9e',
-	tokenNumber: '#007936',
-	tokenUrl: '#9e9e9e',
-	tokenOperator: '#9e9e9e',
-	tokenInterpolation: '#872bff',
-	tokenAttributeName: '#d30038',
-	tokenConstant: '#007936',
-	tokenProperty: '#d30038',
-	tokenTag: '#007936',
-	tokenBoolean: '#007936',
-	tokenEntity: 'inherit',
-	tokenInterpolationPunctuation: '#872bff',
-	tokenFunction: '#d30038',
-	tokenClassName: '#d30038',
-	tokenSymbol: '#007936',
-	tokenBuiltin: '#872bff',
-	tokenKeyword: '#0069c2',
-	tokenAtRule: '#007936',
-	tokenSelector: '#872bff',
-	tokenImportant: 'inherit',
-	tokenRegex: 'inherit',
-	tokenString: '#007936',
-	tokenChar: '#007936',
-	tokenAttributeValue: '#007936'
+const lightColors = Object.freeze({ // failing #90989d (chromite), #008eab (zircon), #e87511 (carnelian), #00a490 (malachite-minus-1), #46a661 (olivine), #c47400 (citrine-minus-1)
+	background: '#f9fbff', // regolith
+	language: '#90989d', // chromite
+	lineNumbers: '#6e7477', // galena
+	lineNumbersBackground: '#f1f5fb', // sylvite
+	tokenDefault: '#202122', // ferrite pass
+	tokenComment: '#90989d', // chromite fail
+	tokenPunctuation: '#202122', // ferrite pass
+	tokenNumber: '#202122', // ferrite pass
+	tokenUrl: '#202122', // ferrite pass
+	tokenOperator: '#202122', // ferrite pass
+	tokenInterpolation: '#008eab', // zircon fail
+	tokenAttributeName: '#008eab', // zircon fail
+	tokenConstant: '#008eab', // zircon fail
+	tokenProperty: '#008eab', // zircon fail
+	tokenTag: '#6038ff', // amethyst pass AA fail AAA
+	tokenBoolean: '#990056', // tourmaline-minus-1 pass
+	tokenEntity: '#990056', // tourmaline-minus-1 pass
+	tokenInterpolationPunctuation: '#990056', // tourmaline-minus-1 pass
+	tokenFunction: '#e87511', // carnelian fail
+	tokenClassName: '#00a490', // malachite-minus-1 fail
+	tokenSymbol: '#46a661', // olivine fail
+	tokenBuiltin: '#990056', // tourmaline-minus-1 pass
+	tokenKeyword: '#006fbe', // not daylight pass AA fail AAA
+	tokenAtRule: '#006fbe', // not daylight pass AA fail AAA
+	tokenSelector: '#c47400', // citrine-minus-1 fail
+	tokenImportant: '#46a661', // olivine fail
+	tokenRegex: '#46a661', // olivine fail
+	tokenString: '#46a661', // olivine fail
+	tokenChar: '#46a661', // olivine fail
+	tokenAttributeValue: '#46a661' // olivine fail
 });
 
+const lightColorsVSCode = Object.freeze({ // failing #3B8758, #EA3323, #89BBE2, #377F9A
+	background: '#f9fbff',
+	language: '#337794', //
+	lineNumbers: '#337794', //
+	lineNumbersBackground: '#f9fbff', //
+	tokenDefault: '#202122', // pass
+	tokenComment: '#388123', // pass AA fail AAA
+	tokenPunctuation: '#202122', // pass
+	tokenNumber: '#3B8758', // fail
+	tokenUrl: '#A31F16', // pass
+	tokenOperator: '#202122', // pass
+	tokenInterpolation: '#050580', // pass
+	tokenAttributeName: '#EA3323', // fail
+	tokenConstant: '#89BBE2', // fail
+	tokenProperty: '#EA3324', // fail
+	tokenTag: '#80170E', // pass
+	tokenBoolean: '#1902F5', // pass
+	tokenEntity: '#1903F4', // pass
+	tokenInterpolationPunctuation: '#1620F4', // pass
+	tokenFunction: '#7A5F26', // pass AA fail AAA
+	tokenClassName: '#377F9A', // fail
+	tokenSymbol: '#377F9A', // fail
+	tokenBuiltin: '#1900F5', // pass
+	tokenKeyword: '#1900F5', // pass
+	tokenAtRule: '#B023DB', // pass AA fail AAA
+	tokenSelector: '#80170E', // pass
+	tokenImportant: '#1A00F5', // pass
+	tokenRegex: '#821E40', // pass
+	tokenString: '#A32016', // pass
+	tokenChar: '#A32016', // pass
+	tokenAttributeValue: '#1903F4' // pass
+});
+
+/*
 export const getCodeColors = mode => {
 	return mode === colorModes.DARK ? darkColors : lightColors;
 };
+*/
 
-const generateColorVariables = mode => {
-	const colors = getCodeColors(mode);
+export const getCodeColors = (mode, theme) => {
+	if (mode === colorModes.DARK) {
+		return darkColors;
+	} else {
+		if (theme === 'vscode') return lightColorsVSCode;
+		else return lightColors;
+	}
+};
+
+const generateColorVariables = (mode, theme) => {
+	const colors = getCodeColors(mode, theme);
 	const keySelector = mode === colorModes.DARK ? '.d2l-code-dark' : '.d2l-code';
+	const themeSelector = theme ? `.d2l-code-${theme}` : '';
 	return `
-		pre[class*="language-"]${keySelector},
-		code[class*="language-"]${keySelector} {
+		pre[class*="language-"]${keySelector}${themeSelector},
+		code[class*="language-"]${keySelector}${themeSelector} {
 			--d2l-code-background: ${colors.background};
 			--d2l-code-language: ${colors.language};
 			--d2l-code-line-numbers: ${colors.lineNumbers};
-			--d2l-code-line-numbers-separator: ${colors.lineNumbersSeparator};
+			--d2l-code-line-numbers-background: ${colors.lineNumbersBackground};
 			--d2l-code-token-atrule: ${colors.tokenAtRule};
 			--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
 			--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
@@ -149,6 +195,7 @@ const generateColorVariables = mode => {
 export const codeStyles = css`
 
 	${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
+	${unsafeCSS(generateColorVariables(colorModes.LIGHT, 'vscode'))}
 
 	${unsafeCSS(generateColorVariables(colorModes.DARK))}
 
@@ -267,7 +314,9 @@ export const codeStyles = css`
 	}
 
 	.line-numbers .line-numbers-rows {
-		border-right: 1px solid var(--d2l-code-line-numbers-separator);
+		background-color: var(--d2l-code-line-numbers-background);
+		border-bottom-right-radius: 6px;
+		border-top-right-radius: 6px;
 		font-size: 100%;
 		left: -3.8em;
 		letter-spacing: -1px;
