@@ -24,15 +24,12 @@ Tooltips display additional information when users focus or hover on a point of 
   Tooltip message example
 </d2l-tooltip>
 
-<d2l-tooltip-help id="help-tooltip" text="Helpful label">
-  Contents should elaborate on the label (be short and concise)
+<d2l-tooltip-help id="help-tooltip" text="Hover here">
+  Tooltip message example
 </d2l-tooltip-help>
 ```
-<!-- docs: start hidden content -->
-TODO: Look more into this bug and eventually fix it
-<!-- docs: end hidden content -->
-Note: there is a known defect with tooltips where they are sometimes rendered offset by some amount unexpectedly, the first time that they are shown.
 
+Note: there is a [known defect](https://rally1.rallydev.com/#/?detail=/defect/641656338755&fdp=true) within the Daylight site for tooltips, where they are sometimes rendered offset by some amount unexpectedly.
 
 ## Accessibility
 
