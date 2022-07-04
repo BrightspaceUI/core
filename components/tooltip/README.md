@@ -11,8 +11,8 @@ Tooltips display additional information when users focus or hover on a point of 
 
   window.addEventListener('load', function () {
     setTimeout(function() {
-      var tooltip = document.querySelector('#tooltip');
-      var helpTooltip = document.querySelector('#help-tooltip').shadowRoot.querySelector('d2l-tooltip');
+      const tooltip = document.querySelector('#tooltip');
+      const helpTooltip = document.querySelector('#help-tooltip').shadowRoot.querySelector('d2l-tooltip');
 
       tooltip.showing = true;
       helpTooltip.showing = true;
@@ -80,7 +80,7 @@ The `d2l-tooltip` component is used to display additional information when users
   import '@brightspace-ui/core/components/tooltip/tooltip.js';  <!-- docs: start hidden content --> 
   window.addEventListener('load', function () {
     setTimeout(function() {
-      var tooltip = document.querySelector('d2l-tooltip[for="tooltip-error"]');
+      const tooltip = document.querySelector('d2l-tooltip[for="tooltip-error"]');
       tooltip.showing = true;
     }, 20);
   });
@@ -139,7 +139,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
   import '@brightspace-ui/core/components/tooltip/tooltip.js'; <!-- docs: start hidden content --> 
   window.addEventListener('load', function () {
     setTimeout(function() {
-      var tooltip = document.querySelector('d2l-tooltip[for="tooltip-boundary"]');
+      const tooltip = document.querySelector('d2l-tooltip[for="tooltip-boundary"]');
       tooltip.showing = true;
     }, 20);
   });
@@ -194,7 +194,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js'; <!-- docs: start hidden content --> 
   window.addEventListener('load', function () {
     setTimeout(function() {
-      var tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)').shadowRoot.querySelector('d2l-tooltip');
+      const tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)').shadowRoot.querySelector('d2l-tooltip');
       tooltip.showing = true;
     }, 20);
   });
