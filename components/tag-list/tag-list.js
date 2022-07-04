@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -133,9 +134,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
-		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(container);
+		const offsetParent = getOffsetParent(this);
+		const outerContainer = this.shadowRoot.querySelector('.tag-list-outer-container');
+		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => {
+			if (offsetParent.tagName === 'BODY') this._availableWidth = Math.floor(outerContainer.offsetWidth);
+			else this._availableWidth = Math.floor(e[0].contentRect.width);
+			this._handleResize();
+		}));
+		this._resizeObserver.observe(offsetParent);
 
 		const listContainer = this.shadowRoot.querySelector('.tag-list-container');
 		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
@@ -366,8 +372,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._hasShownKeyboardTooltip = true;
 	}
 
-	async _handleResize(entries) {
-		this._availableWidth = Math.floor(entries[0].contentRect.width);
+	async _handleResize() {
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
