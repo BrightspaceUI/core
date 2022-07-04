@@ -29,7 +29,7 @@ Tooltips display additional information when users focus or hover on a point of 
 </d2l-tooltip-help>
 ```
 
-Note: there is a [known defect](https://rally1.rallydev.com/#/?detail=/defect/641656338755&fdp=true) within the Daylight site for tooltips, where they are sometimes rendered offset by some amount unexpectedly.
+Note: there is a [known defect](https://rally1.rallydev.com/#/?detail=/defect/641656338755&fdp=true) for tooltips, where they are sometimes rendered offset by some amount unexpectedly.
 
 ## Accessibility
 
