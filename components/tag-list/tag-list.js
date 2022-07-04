@@ -135,9 +135,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._clearButtonResizeObserver.observe(clearButton);
 
 		const offsetParent = getOffsetParent(this);
-		const outerContainer = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => {
-			if (offsetParent.tagName === 'BODY') this._availableWidth = Math.floor(outerContainer.offsetWidth);
+			if (offsetParent.tagName === 'BODY') this._availableWidth = Math.floor(this.parentNode.offsetWidth);
 			else this._availableWidth = Math.floor(e[0].contentRect.width);
 			this._handleResize();
 		}));
