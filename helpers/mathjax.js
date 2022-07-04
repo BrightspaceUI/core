@@ -4,7 +4,7 @@
  */
 
 const mathjaxContextAttribute = 'data-mathjax-context';
-const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.1.2';
+const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.2.1';
 
 const mathjaxFontMappings = new Map([
 	['MJXTEX', 'MathJax_Main-Regular'],
@@ -50,7 +50,7 @@ export class HtmlBlockMathRenderer {
 
 		const mathJaxConfig = {
 			deferTypeset: true,
-			renderLatex: isLatexSupported,
+			renderLatex: isLatexSupported || false,
 			outputScale: context.outputScale || 1
 		};
 
@@ -60,32 +60,25 @@ export class HtmlBlockMathRenderer {
 		// This work-around should be removed when linebreaks are natively supported.
 		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
 		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-		const lineBreakStyle = 'display: block; height: 0.5rem;';
+		elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+			elm.setAttribute('style', 'display: block; height: 0.5rem;');
+		});
 
-		// If we're opting out of deferred rendering, we need to rely
-		// on the global MathJax install for rendering.
-		if (options.noDeferredRendering) {
-			elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
-				elm.setAttribute('style', lineBreakStyle);
-			});
+		await window.MathJax.startup.promise;
+		await window.MathJax.typesetPromise([elem]);
 
-			await window.MathJax.startup.promise;
-			window.MathJax.typesetShadow(elem.getRootNode(), elem);
-			return elem;
+		// If we're opting out of deferred rendering, we can rely
+		// on the global MathJax styles for rendering.
+		if (options.noDeferredRendering) return elem;
+
+		const styleElm = window.MathJax.chtmlStylesheet().cloneNode(true);
+		styleElm.id = 'd2l-mathjax-styles';
+
+		if (!elem.querySelector(`#${styleElm.id}`)) {
+			elem.appendChild(styleElm);
 		}
 
-		const inner = elem.innerHTML.replace(/<mspace linebreak="newline">/gi, `<mspace linebreak="newline" style="${lineBreakStyle}">`);
-
-		const temp = document.createElement('div');
-		temp.style.display = 'none';
-		temp.attachShadow({ mode: 'open' });
-		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${inner}</mjx-body></mjx-doc></div>`;
-
-		elem.appendChild(temp);
-		await window.MathJax.startup.promise;
-		window.MathJax.typesetShadow(temp.shadowRoot);
-
-		return temp.shadowRoot.firstChild;
+		return elem;
 	}
 
 }
@@ -101,6 +94,7 @@ export function loadMathJax(mathJaxConfig) {
 
 	window.MathJax = {
 		chtml: {
+			adaptiveCSS: false,
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
 		},
 		options: {
@@ -110,100 +104,6 @@ export function loadMathJax(mathJaxConfig) {
 		},
 		loader: { load: loadOptions },
 		startup: {
-			ready: () => {
-
-				// Setup for using MathJax for typesetting math in shadowDOM
-				// https://github.com/mathjax/MathJax/issues/2195
-
-				//
-				//  Get some MathJax objects from the MathJax global
-				//
-				//  (Ideally, you would turn this into a custom component, and
-				//  then these could be handled by normal imports, but this is
-				//  just an example and so we use an expedient method of
-				//  accessing these for now.)
-				//
-				const mathjax = window.MathJax._.mathjax.mathjax;
-				const HTMLAdaptor = window.MathJax._.adaptors.HTMLAdaptor.HTMLAdaptor;
-				const HTMLHandler = window.MathJax._.handlers.html.HTMLHandler.HTMLHandler;
-				const AbstractHandler = window.MathJax._.core.Handler.AbstractHandler.prototype;
-				const startup = window.MathJax.startup;
-
-				//
-				//  Extend HTMLAdaptor to handle shadowDOM as the document
-				//
-				class ShadowAdaptor extends HTMLAdaptor {
-					body(doc) {
-						return doc.body || (doc.firstChild || {}).lastChild || doc;
-					}
-					create(kind, ns) {
-						const document = (this.document.createElement ? this.document : this.window.document);
-						return (ns ?
-							document.createElementNS(ns, kind) :
-							document.createElement(kind));
-					}
-					head(doc) {
-						return doc.head || (doc.firstChild || {}).firstChild || doc;
-					}
-					root(doc) {
-						return doc.documentElement || doc.firstChild || doc;
-					}
-					text(text) {
-						const document = (this.document.createTextNode ? this.document : this.window.document);
-						return document.createTextNode(text);
-					}
-				}
-
-				//
-				//  Extend HTMLHandler to handle shadowDOM as document
-				//
-				class ShadowHandler extends HTMLHandler {
-					create(document, options) {
-						const adaptor = this.adaptor;
-						if (typeof(document) === 'string') {
-							document = adaptor.parse(document, 'text/html');
-						} else if ((document instanceof adaptor.window.HTMLElement || document instanceof adaptor.window.DocumentFragment) && !(document instanceof window.ShadowRoot)) {
-							const child = document;
-							document = adaptor.parse('', 'text/html');
-							adaptor.append(adaptor.body(document), child);
-						}
-						//
-						//  We can't use super.create() here, since that doesn't
-						//  handle shadowDOM correctly, so call HTMLHandler's parent class
-						//  directly instead.
-						//
-						return AbstractHandler.create.call(this, document, options);
-					}
-				}
-
-				//
-				//  Register the new handler and adaptor
-				//
-				startup.registerConstructor('HTMLHandler', ShadowHandler);
-				startup.registerConstructor('browserAdaptor', () => new ShadowAdaptor(window));
-
-				//
-				//  A service function that creates a new MathDocument from the
-				//  shadow root with the configured input and output jax, and then
-				//  renders the document.  The MathDocument is returned in case
-				//  you need to rerender the shadowRoot later.
-				//
-				window.MathJax.typesetShadow = function(root, elem) {
-					const InputJax = startup.getInputJax();
-					const OutputJax = startup.getOutputJax();
-					const html = mathjax.document(root, { InputJax, OutputJax });
-
-					if (elem) html.options.elements = [elem];
-
-					html.render().typeset();
-					return html;
-				};
-
-				//
-				//  Now do the usual startup now that the extensions are in place
-				//
-				window.MathJax.startup.defaultReady();
-			},
 			// Defer typesetting if the config is present and deferring is set
 			typeset: !(mathJaxConfig && mathJaxConfig.deferTypeset)
 		}
