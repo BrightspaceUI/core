@@ -8,6 +8,7 @@ export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
 		color: var(--d2l-color-celestine);
 		cursor: pointer;
+		outline-style: none;
 		text-decoration: none;
 	}
 	:host([skeleton]) .d2l-link.d2l-skeletize::before {
@@ -16,7 +17,6 @@ export const linkStyles = css`
 	}
 	.d2l-link:hover, .d2l-link:focus {
 		color: var(--d2l-color-celestine-minus-1);
-		outline-width: 0;
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
