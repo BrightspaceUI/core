@@ -1,32 +1,42 @@
-import '../button/button.js';
+import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement } from 'lit';
+import { buttonStyles } from '../button/button-styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { labelStyles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  *  A pager component for load-more paging.
  * @fires d2l-pager-load-more-load - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
  */
-class LoadMore extends FocusMixin(LitElement) {
+class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
-			/**
-			 * The number of additional items if more items can be loaded
-			 * @type {boolean}
-			 */
-			count: { type: Number },
 			/**
 			 * Whether there are more items that can be loaded
 			 * @type {boolean}
 			 */
 			hasMore: { type: Boolean, attribute: 'has-more' },
+			/**
+			 * Total number of items
+			 * @type {number}
+			 */
+			itemCount: { type: Number, attribute: 'item-count' },
+			/**
+			 * The number of additional items if more items can be loaded
+			 * @type {number}
+			 */
+			pageSize: { type: Number, attribute: 'page-size' },
 			_loading: { state: true }
 		};
 	}
 
 	static get styles() {
-		return css`
+		return [ buttonStyles, labelStyles, css`
 			:host {
 				display: block;
 			}
@@ -34,31 +44,66 @@ class LoadMore extends FocusMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			d2l-button {
+			button {
+				align-items: center;
+				background-color: var(--d2l-color-regolith);
+				border: 1px solid var(--d2l-color-sylvite);
+				display: flex;
+				gap: 0.5rem;
+				justify-content: center;
 				width: 100%;
 			}
-		`;
+			.action {
+				color: var(--d2l-color-celestine);
+			}
+			.separator {
+				border-right: 1px solid var(--d2l-color-mica);
+				height: 0.8rem;
+			}
+			.info {
+				color: var(--d2l-color-galena);
+				font-weight: 400;
+			}
+			d2l-loading-spinner {
+				display: none;
+			}
+			.loading > .action,
+			.loading > .separator,
+			.loading > .info {
+				display: none;
+			}
+			.loading > d2l-loading-spinner {
+				display: inline-block;
+			}
+		`];
 	}
 
 	constructor() {
 		super();
-		this.count = -1;
 		this.hasMore = false;
+		this.itemCount = -1;
+		this.pageSize = 50;
 		this._loading = false;
 	}
 
 	static get focusElementSelector() {
-		return 'd2l-button';
+		return 'button';
 	}
 
 	render() {
 		if (!this.hasMore) return;
-		if (this._loading) {
-			return html`<d2l-loading-spinner></d2l-loading-spinner>`;
-		} else {
-			const loadMoreText = (this.count > 0 ? `Load More (${this.count})` : 'Load More');
-			return html`<d2l-button @click="${this._handleClick}">${loadMoreText}</d2l-button>`;
+		const classes = {
+			'd2l-label-text': true,
+			'loading': this._loading
 		}
+		return html`<button class="${classMap(classes)}" @click="${this._handleClick}">
+			<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
+			${this.itemCount > -1 ? html`
+				<span class="separator"></span>
+				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: 2, totalCount: this.itemCount })}</span>
+			` : null}
+			<d2l-loading-spinner size="24"></d2l-loading-spinner>
+		</button>`;
 	}
 
 	async _handleClick() {
