@@ -12,7 +12,7 @@ Tooltips display additional information when users focus or hover on a point of 
   window.addEventListener('load', function () {
     setTimeout(function() {
       const tooltip = document.querySelector('#tooltip');
-      const helpTooltip = document.querySelector('#help-tooltip').shadowRoot.querySelector('d2l-tooltip');
+      const helpTooltip = document.querySelector('#help-tooltip');
 
       tooltip.showing = true;
       helpTooltip.showing = true;
@@ -202,7 +202,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
-      const tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)').shadowRoot.querySelector('d2l-tooltip');
+      const tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)');
       tooltip.showing = true;
     }, 20);
   });

@@ -26,6 +26,10 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			 */
 			position: { type: String },
 			/**
+			 * @ignore
+			 */
+			showing: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Text that will render as the Help Tooltip opener
 			 * @type {string}
 			 */
@@ -98,7 +102,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
 				${this.text}
 			</button>
-			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}">
+			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" showing="${ifDefined(this.showing)}">
 				<slot></slot>
 			</d2l-tooltip>
 		`;
