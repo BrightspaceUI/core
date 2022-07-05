@@ -53,6 +53,10 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 				justify-content: center;
 				width: 100%;
 			}
+			button:hover {
+				background-color: var(--d2l-color-sylvite);
+				border-color: var(--d2l-color-gypsum);
+			}
 			.action {
 				color: var(--d2l-color-celestine);
 			}
