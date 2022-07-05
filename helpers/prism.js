@@ -64,100 +64,56 @@ const darkColors = Object.freeze({
 	tokenAtRule: '#fd4e9d',
 	tokenSelector: '#fff9d6',
 	tokenImportant: '#ff575a',
-	tokenRegex: '#ec5457',
+	tokenRegex: '#29A6FF',
 	tokenString: '#e9ba79',
 	tokenChar: '#e9ba79',
 	tokenAttributeValue: '#e9ba79'
 });
 
-const lightColors = Object.freeze({ // failing #90989d (chromite), #008eab (zircon), #e87511 (carnelian), #00a490 (malachite-minus-1), #46a661 (olivine), #c47400 (citrine-minus-1)
-	background: '#f9fbff', // regolith
-	language: '#90989d', // chromite
-	lineNumbers: '#6e7477', // galena
-	lineNumbersBackground: '#f1f5fb', // sylvite
-	tokenDefault: '#202122', // ferrite pass
-	tokenComment: '#90989d', // chromite fail
-	tokenPunctuation: '#202122', // ferrite pass
-	tokenNumber: '#202122', // ferrite pass
-	tokenUrl: '#202122', // ferrite pass
-	tokenOperator: '#202122', // ferrite pass
-	tokenInterpolation: '#008eab', // zircon fail
-	tokenAttributeName: '#008eab', // zircon fail
-	tokenConstant: '#008eab', // zircon fail
-	tokenProperty: '#008eab', // zircon fail
-	tokenTag: '#6038ff', // amethyst pass AA fail AAA
-	tokenBoolean: '#990056', // tourmaline-minus-1 pass
-	tokenEntity: '#990056', // tourmaline-minus-1 pass
-	tokenInterpolationPunctuation: '#990056', // tourmaline-minus-1 pass
-	tokenFunction: '#e87511', // carnelian fail
-	tokenClassName: '#00a490', // malachite-minus-1 fail
-	tokenSymbol: '#46a661', // olivine fail
-	tokenBuiltin: '#990056', // tourmaline-minus-1 pass
-	tokenKeyword: '#006fbe', // not daylight pass AA fail AAA
-	tokenAtRule: '#006fbe', // not daylight pass AA fail AAA
-	tokenSelector: '#c47400', // citrine-minus-1 fail
-	tokenImportant: '#46a661', // olivine fail
-	tokenRegex: '#46a661', // olivine fail
-	tokenString: '#46a661', // olivine fail
-	tokenChar: '#46a661', // olivine fail
-	tokenAttributeValue: '#46a661' // olivine fail
-});
-
-const lightColorsVSCode = Object.freeze({ // failing #3B8758, #EA3323, #89BBE2, #377F9A
+const lightColors = Object.freeze({
 	background: '#f9fbff',
-	language: '#337794', //
-	lineNumbers: '#337794', //
-	lineNumbersBackground: '#f9fbff', //
-	tokenDefault: '#202122', // pass
-	tokenComment: '#388123', // pass AA fail AAA
-	tokenPunctuation: '#202122', // pass
-	tokenNumber: '#3B8758', // fail
-	tokenUrl: '#A31F16', // pass
-	tokenOperator: '#202122', // pass
-	tokenInterpolation: '#050580', // pass
-	tokenAttributeName: '#EA3323', // fail
-	tokenConstant: '#89BBE2', // fail
-	tokenProperty: '#EA3324', // fail
-	tokenTag: '#80170E', // pass
-	tokenBoolean: '#1902F5', // pass
-	tokenEntity: '#1903F4', // pass
-	tokenInterpolationPunctuation: '#1620F4', // pass
-	tokenFunction: '#7A5F26', // pass AA fail AAA
-	tokenClassName: '#377F9A', // fail
-	tokenSymbol: '#377F9A', // fail
-	tokenBuiltin: '#1900F5', // pass
-	tokenKeyword: '#1900F5', // pass
-	tokenAtRule: '#B023DB', // pass AA fail AAA
-	tokenSelector: '#80170E', // pass
-	tokenImportant: '#1A00F5', // pass
-	tokenRegex: '#821E40', // pass
-	tokenString: '#A32016', // pass
-	tokenChar: '#A32016', // pass
-	tokenAttributeValue: '#1903F4' // pass
+	language: '#6e7477',
+	lineNumbers: '#6e7477',
+	lineNumbersBackground: '#f1f5fb',
+	tokenDefault: '#202122',
+	tokenComment: '#90989d',
+	tokenPunctuation: '#494c4e',
+	tokenNumber: '#494c4e',
+	tokenUrl: '#494c4e',
+	tokenOperator: '#006fbf',
+	tokenInterpolation: '#006fbf',
+	tokenAttributeName: '#006fbf',
+	tokenConstant: '#035670',
+	tokenProperty: '#008eab',
+	tokenTag: '#006fbf',
+	tokenBoolean: '#004489',
+	tokenEntity: '#004489',
+	tokenInterpolationPunctuation: '#004489',
+	tokenFunction: '#006fbf',
+	tokenClassName: '#00635e',
+	tokenSymbol: '#00635e',
+	tokenBuiltin: '#d40067',
+	tokenKeyword: '#d40067',
+	tokenAtRule: '#d40067',
+	tokenSelector: '#006fbf',
+	tokenImportant: '#cd2026',
+	tokenRegex: '#006fbf',
+	tokenString: '#c74c00',
+	tokenChar: '#c74c00',
+	tokenAttributeValue: '#c74c00',
+	tokenCombinator: '#202122'
 });
 
-/*
 export const getCodeColors = mode => {
 	return mode === colorModes.DARK ? darkColors : lightColors;
-};
-*/
-
-export const getCodeColors = (mode, theme) => {
-	if (mode === colorModes.DARK) {
-		return darkColors;
-	} else {
-		if (theme === 'vscode') return lightColorsVSCode;
-		else return lightColors;
-	}
 };
 
 const generateColorVariables = (mode, theme) => {
 	const colors = getCodeColors(mode, theme);
 	const keySelector = mode === colorModes.DARK ? '.d2l-code-dark' : '.d2l-code';
-	const themeSelector = theme ? `.d2l-code-${theme}` : '';
 	return `
-		pre[class*="language-"]${keySelector}${themeSelector},
-		code[class*="language-"]${keySelector}${themeSelector} {
+		pre[class*="language-"]${keySelector},
+		code[class*="language-"]${keySelector} {
 			--d2l-code-background: ${colors.background};
 			--d2l-code-language: ${colors.language};
 			--d2l-code-line-numbers: ${colors.lineNumbers};
@@ -195,8 +151,6 @@ const generateColorVariables = (mode, theme) => {
 export const codeStyles = css`
 
 	${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
-	${unsafeCSS(generateColorVariables(colorModes.LIGHT, 'vscode'))}
-
 	${unsafeCSS(generateColorVariables(colorModes.DARK))}
 
 	pre[class*="language-"].d2l-code,
@@ -302,18 +256,18 @@ export const codeStyles = css`
 		background-color: transparent;
 	}
 
-	pre[class*="language-"].line-numbers {
+	pre[class*="language-"].d2l-code.line-numbers {
 		counter-reset: linenumber;
 		padding-left: 3.8em;
 		position: relative;
 	}
 
-	pre[class*="language-"].line-numbers > code {
+	pre[class*="language-"].d2l-code.line-numbers > code {
 		position: relative;
 		white-space: inherit;
 	}
 
-	.line-numbers .line-numbers-rows {
+	.d2l-code.line-numbers > code > .line-numbers-rows {
 		background-color: var(--d2l-code-line-numbers-background);
 		border-bottom-right-radius: 6px;
 		border-top-right-radius: 6px;
@@ -341,6 +295,35 @@ export const codeStyles = css`
 		display: block;
 		padding-right: 0.8em;
 		text-align: right;
+	}
+
+	span.inline-color-wrapper {
+		/*
+		 * <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
+		 *     <path fill="gray" d="M0 0h2v2H0z"/>
+		 *     <path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
+		 * </svg>
+		 */
+		background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDIiPjxwYXRoIGZpbGw9ImdyYXkiIGQ9Ik0wIDBoMnYySDB6Ii8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0wIDBoMXYxSDB6TTEgMWgxdjFIMXoiLz48L3N2Zz4=");
+		/* Prevent visual glitches where one pixel from the repeating pattern could be seen */
+		background-position: center;
+		background-size: 110%;
+		border: 1px solid white;
+		border-radius: 2px;
+		box-sizing: border-box;
+		display: inline-block;
+		height: 1.333ch;
+		margin: 0 0.333ch;
+		outline: 1px solid rgba(0, 0, 0, 0.5);
+		overflow: hidden;
+		width: 1.333ch;
+	}
+
+	span.inline-color {
+		display: block;
+		/* Prevent visual glitches again */
+		height: 120%;
+		width: 120%;
 	}
 `;
 
@@ -407,6 +390,18 @@ const loadPlugin = async plugin => {
 	return pluginsLoaded[plugin];
 };
 
+const languageAddons = {
+	css: [{ key: 'css-extras', type: 'lang' }, { key: 'inline-color', type: 'plugin' }]
+};
+
+const loadLanguageAddons = async key => {
+	if (!languageAddons[key]) return;
+	return Promise.all(languageAddons[key].map(addon => {
+		if (addon.type === 'lang') return loadLanguage(addon.key);
+		else return loadPlugin(addon.key);
+	}));
+};
+
 let prismLoaded;
 
 const loadPrism = () => {
@@ -449,6 +444,7 @@ export async function formatCodeElement(elem) {
 	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
 		loadLanguage(languageInfo.key),
+		loadLanguageAddons(languageInfo.key),
 		lineNumbers ? loadPlugin('line-numbers') : null
 	]);
 

@@ -76,6 +76,7 @@ SET @Donuts = 'Yummy'; /* keyword, variable, string */
 		</script>
 		<style>
 			html {
+				background-color: white;
 				font-size: 20px;
 			}
 			body {
@@ -311,6 +312,14 @@ helloGrumpy('Wizard');</code></pre>
 					<td>null</td>
 					<td>
 						<pre class="d2l-code d2l-code-dark"><code class="language-json">{ "fritter": null }</code></pre>
+					</td>
+				</tr>
+				<tr>
+					<td>color</td>
+					<td>
+						<pre class="d2l-code d2l-code-dark"><code class="language-css">background-color: rgba(0, 0, 0, 0.4);
+border: 1px solid #cd2026;
+</code></pre>
 					</td>
 				</tr>
 			</tbody>
@@ -2468,21 +2477,12 @@ SET @Donuts = 'Yummy';
 		<script type="module">
 				import { formatCodeElement } from '../prism.js';
 
-				var urlParams = new URLSearchParams(window.location.search);
-				const theme = urlParams.has('theme') ? urlParams.get('theme') : '';
-
 				const formatCodeElements = () => {
 					const darkSwitch = document.querySelector('d2l-switch');
 					const codeElements = document.querySelectorAll('pre');
 					codeElements.forEach(codeElement => {
 						if (darkSwitch.on) codeElement.classList.add('d2l-code-dark');
 						else codeElement.classList.remove('d2l-code-dark');
-
-						if (theme === '2') codeElement.classList.add(`d2l-code-daylight2`);
-						else if (theme === '3') codeElement.classList.add(`d2l-code-flourite`);
-						else if (theme === '4') codeElement.classList.add(`d2l-code-vscode`);
-						else if (theme !== '') codeElement.classList.add(`d2l-code-${theme}`);
-
 						formatCodeElement(codeElement);
 					});
 					document.querySelector('d2l-demo-prism').dark = darkSwitch.on;

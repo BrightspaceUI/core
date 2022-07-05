@@ -75,7 +75,8 @@ describe('prism-helper', () => {
 			'entity',
 			'atrule',
 			'selector',
-			'null'
+			'null',
+			'color'
 		].forEach(token => {
 
 			['light', 'dark'].forEach(color => {
