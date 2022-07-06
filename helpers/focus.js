@@ -13,8 +13,8 @@ const focusableElements = {
 	textarea: true
 };
 
-export function forceFocusVisible(elem) {
-	if (!isFocusable(elem)) {
+export function forceFocusVisible(elem, includeTabbablesOnly) {
+	if (!isFocusable(elem, false, includeTabbablesOnly)) {
 		elem = getFirstFocusableDescendant(elem);
 	}
 	if (!elem) return;
