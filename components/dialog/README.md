@@ -256,6 +256,21 @@ document.querySelector('#open').addEventListener('click', () => {
 });
 ```
 
+## Focus Management
+
+When opened, dialogs will automatically place focus on the first focusable element within its content. When a dialog is closed, focus will return to the element that initiated the opening of the dialog.
+
+### Specifying an autofocus element
+
+To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if any of the following are true:
+
+* The element has a `tabindex` value of `0` or `-1`
+* The element has a focusable descendant in the plain DOM or its Shadow DOM
+* The element is a naturally focusable element (e.g. input, button)
+
+
+Note that the element must be in the dialog's immediate shadow root and not within another component's Shadow DOM.
+
 <!-- docs: start hidden content -->
 ## Future Improvements
 
