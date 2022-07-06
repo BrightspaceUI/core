@@ -189,7 +189,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 
 		const content = node.querySelector('slot').assignedElements({ flatten: true });
-		const el = content.find(el => el.autofocus)
+		const el = content.find(el => el.getAttribute('autofocus') === '' || el.getAttribute('autofocus') === 'true')
 			?? content.find(el => el.querySelector('[autofocus]'))?.querySelector('[autofocus]');
 		return el;
 	}
