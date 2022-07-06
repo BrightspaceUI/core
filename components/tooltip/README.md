@@ -84,7 +84,7 @@ The `d2l-tooltip` component is used to display additional information when users
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
-      const tooltip = document.querySelector('d2l-tooltip[for="tooltip-error"]');
+      const tooltip = document.querySelector('d2l-tooltip');
       tooltip.showing = true;
     }, 20);
   });
@@ -145,7 +145,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
-      const tooltip = document.querySelector('d2l-tooltip[for="tooltip-boundary"]');
+      const tooltip = document.querySelector('d2l-tooltip');
       tooltip.showing = true;
     }, 20);
   });
@@ -202,7 +202,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
-      const tooltip = document.querySelector('d2l-tooltip-help[text="Helpful label"]:not(#help-tooltip)');
+      const tooltip = document.querySelector('d2l-tooltip-help');
       tooltip.showing = true;
     }, 20);
   });
