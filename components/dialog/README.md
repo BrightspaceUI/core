@@ -266,8 +266,7 @@ To specify which element should be focused, add the `autofocus` attribute to tha
 
 * The element has a `tabindex` value of `0` or `-1`
 * The element has a focusable descendant in the plain DOM or its Shadow DOM
-* The element is a naturally focusable element (e.g. input, button)
-
+* The element is a naturally focusable element (e.g. button)
 
 Note that the element must be in the dialog's immediate shadow root and not within another component's Shadow DOM.
 
