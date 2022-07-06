@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { forceFocusVisible, getComposedActiveElement, getNextFocusable, isFocusable, tryApplyFocus } from '../../helpers/focus.js';
+import { forceFocusVisible, getComposedActiveElement, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -191,13 +191,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		const content = slot.assignedElements({ flatten: true });
 
-		const searchOneElement = (el) => {
-			const foundElementOrNull = el.hasAttribute('autofocus') ? el : el.querySelector('[autofocus]');
-			return isFocusable(foundElementOrNull, false, false) ? foundElementOrNull : null;
-		};
-
 		let autofocusElement = null;
-		content.some(x => (autofocusElement = searchOneElement(x)));
+		for (const el of content) {
+			autofocusElement = el.hasAttribute('autofocus') ? el : el.querySelector('[autofocus]');
+			if (autofocusElement) break;
+		}
 		return autofocusElement;
 	}
 
