@@ -161,7 +161,7 @@ The filter will announce changes to filter selections, search results, and when 
 
 ## Filter Dimension: Set [d2l-filter-dimension-set]
 
-The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
+The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#d2l-filter-dimension-set-value), this will give you a selectable list of filter values.
 
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
 ```html
@@ -198,8 +198,24 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Set Value [d2l-filter-dimension-set-value]
-This component is built to be used alongside the [d2l-filter-dimension-set](#filter-dimension%3A-set-%5Bd2l-filter-dimension-set%5D) component, this will give you a selectable list of filter values.
 
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
+
+<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="course" text="Course" >
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
 ### Properties
 
 | Property | Type | Description |
@@ -208,6 +224,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+<!-- docs: end hidden content -->
 
 ## Tags for Applied Filters [d2l-filter-tags]
 

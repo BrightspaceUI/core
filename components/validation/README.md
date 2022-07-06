@@ -20,13 +20,13 @@ The `d2l-validation-custom` component is used to add custom validation logic to 
 </d2l-validation-custom>
 
 <script>
-const input = document.getElementById('my-text-input');
-input.addEventListener('d2l-validation-custom-validate', e => {
-  // Implement your custom validation logic
-  const myTextInput = e.detail.forElement;
-  const isValid = myTextInput.value === 'secret phrase';
-  e.detail.resolve(isValid);
-});
+  const validator = document.querySelector('d2l-validation-custom');
+  validator.addEventListener('d2l-validation-custom-validate', e => {
+    // Implement your custom validation logic
+    const myTextInput = e.detail.forElement;
+    const isValid = myTextInput.value === 'secret phrase';
+    e.detail.resolve(isValid);
+  });
 </script>
 ```
 

@@ -47,7 +47,7 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
 
-## Best Practices
+### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -152,15 +152,14 @@ The `d2l-tooltip-help` component is used to display additional information when 
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use a helpful label that provides value on its own
-* The contents of the tooltip should elaborate on the label
-* Keep help text short and concise (full sentences are not necessary)
 * Use a help tooltip when there are space limitations, such as in a table, list, or narrow sidebar
+* Use a helpful label that provides value on its own; the tooltip should elaborate on the label
+* Keep help text short and concise, full sentences are not necessary
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t overuse help tooltips (users end up hunting for information and even experts feel obligated to check their contents)
-* Don't use help tooltips when you are able to use inline help text instead
+* Don't use help tooltips when you're able to use inline help text instead
+* Avoid overusing help tooltips since even expert users will feel obligated to check their contents
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -170,7 +169,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
 </script>
 
-<p class="d2l-body-compact">
+<p class="d2l-body-standard">
   This is some sample text.
   <d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 </p>
@@ -183,6 +182,8 @@ The `d2l-tooltip-help` component is used to display additional information when 
 |--|--|--|
 | `text` | String, required | Text for the Help Tooltip opener |
 | `inherit-font-style` | Boolean, default: `false` | Allows the opener text to inherit font properties such as size and color |
+| `position` | String | Optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left. |
+
 <!-- docs: end hidden content -->
 
 ### Using in a Sentence or Paragraph
