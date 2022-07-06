@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>d2l-empty-state-illustrated-link</title>
+    <script type="module">
+        import '../../typography/typography.js';
+        import '../empty-state-illustrated-link.js';
+    </script>
+</head>
+<body class="d2l-typography">
+
+    <div class="visual-diff">
+        <d2l-empty-state-illustrated-link id="default-normal" illustration="assembly_line_pckg" title="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href="https://www.d2l.com/"></d2l-empty-state-illustrated-link>
+    </div>
+    
+    <div class="visual-diff">
+        <d2l-empty-state-illustrated-link id="default-custom-svg" title="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href="https://www.d2l.com/">
+            <svg width="400" height="100">
+                <rect width="400" height="100" style="fill: rgb(0, 0, 255); stroke: rgb(0, 0, 0); stroke-width: 3;" />
+            </svg>
+        </d2l-empty-state-illustrated-link>
+    </div>
+
+    <div class="visual-diff">
+        <d2l-empty-state-illustrated-link id="default-no-svg" title="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href="https://www.d2l.com/"></d2l-empty-state-illustrated-link>
+    </div>
+
+</body>
+</html>

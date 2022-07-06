@@ -1,17 +1,15 @@
-import '../empty-state-text.js';
-import '../../button/button-subtle.js';
+import '../empty-state-simple-button.js';
 import { fixture, html, oneEvent } from '@open-wc/testing';
-
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
-describe('d2l-empty-state-text',  () => {
+describe('d2l-empty-state-simple-button',  () => {
 
 	it('should construct', () => {
-		runConstructor('d2l-empty-state-text');
+		runConstructor('d2l-empty-state-simple-button');
 	});
 
 	it('dispatches d2l-empty-state-action when action is clicked', async() => {
-		const el = await fixture(html`<d2l-empty-state-text action-text='Create a Course'></d2l-empty-state-text>`);
+		const el = await fixture(html`<d2l-empty-state-simple-button action-text='Create a Course'></d2l-empty-state-simple-button>`);
 		setTimeout(() => el.shadowRoot.querySelector('d2l-button-subtle').click());
 		await oneEvent(el, 'd2l-empty-state-action');
 	});

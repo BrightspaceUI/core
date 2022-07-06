@@ -1,9 +1,9 @@
 import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
-describe('d2l-empty-state-text', () => {
+describe('d2l-empty-state-illustrated-button', () => {
 
-	const visualDiff = new VisualDiff('empty-state-text', import.meta.url);
+	const visualDiff = new VisualDiff('empty-state-illustrated-button', import.meta.url);
 
 	let browser, page;
 
@@ -11,7 +11,7 @@ describe('d2l-empty-state-text', () => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
 		await page.goto(
-			`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-text.visual-diff.html`,
+			`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-illustrated-button.visual-diff.html`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
 		await page.bringToFront();
@@ -22,8 +22,7 @@ describe('d2l-empty-state-text', () => {
 	after(async() => await browser.close());
 
 	[
-		{ category: 'default', tests: [ 'normal', 'button-wrap', 'button-wrap-rtl', 'wrap', 'wrap-rtl', 'no-description', 'no-action' ] },
-		{ category: 'custom', tests: ['subtle-button', 'link'] }
+		{ category: 'default', tests: [ 'normal', 'custom-svg', 'no-svg' ] },
 	].forEach(entry => {
 		describe(entry.category, () => {
 			entry.tests.forEach(name => {
