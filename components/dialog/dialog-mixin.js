@@ -199,15 +199,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
-			const firstAutofocus = this._findAutofocusElement(content);
-			if (isFocusable(firstAutofocus, false, false)) {
-				firstAutofocus.focus();
-				return;
-			}
-
-			const firstFocusable = getNextFocusable(content);
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), firstFocusable)) {
-				forceFocusVisible(firstFocusable);
+			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+				forceFocusVisible(elementToFocus, false);
 				return;
 			}
 		}
