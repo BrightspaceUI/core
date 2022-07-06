@@ -37,6 +37,27 @@ describe('d2l-dialog', () => {
 			expect(getComposedActiveElement()).to.equal(button);
 		});
 
+		it('should focus on an autofocus element', async() => {
+			const el = await fixture(html`<d2l-dialog opened><p autofocus tabindex="-1">focus</p><button>focus</button></d2l-dialog>`);
+			const paragraph = el.querySelector('p');
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement()).to.equal(paragraph);
+		});
+
+		it('should focus on a descendant autofocus element', async() => {
+			const el = await fixture(html`<d2l-dialog opened><div><p autofocus tabindex="-1">focus</p></div><button>focus</button></d2l-dialog>`);
+			const paragraph = el.querySelector('p');
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement()).to.equal(paragraph);
+		});
+
+		it('should not focus on an autofocus element that had not been made focusable', async() => {
+			const el = await fixture(html`<d2l-dialog opened><div><p autofocus>focus</p></div><button>focus</button></d2l-dialog>`);
+			const button = el.querySelector('button');
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement()).to.equal(button);
+		});
+
 	});
 
 });
