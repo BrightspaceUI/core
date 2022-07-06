@@ -26,6 +26,10 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			 */
 			position: { type: String },
 			/**
+			 * @ignore
+			 */
+			showing: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Text that will render as the Help Tooltip opener
 			 * @type {string}
 			 */
@@ -44,6 +48,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text {
 				background: none;
 				border: none;
+				cursor: text;
 				padding: 0;
 				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
@@ -75,6 +80,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		super();
 
 		this.inheritFontStyle = false;
+		this.showing = false;
 	}
 
 	static get focusElementSelector() {
@@ -97,7 +103,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
 				${this.text}
 			</button>
-			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}">
+			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
 				<slot></slot>
 			</d2l-tooltip>
 		`;
