@@ -50,7 +50,6 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				border: none;
 				cursor: text;
 				padding: 0;
-				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
