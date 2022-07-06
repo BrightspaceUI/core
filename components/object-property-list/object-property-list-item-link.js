@@ -9,8 +9,6 @@ import { ObjectPropertyListItem } from './object-property-list-item.js';
 class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	static get properties() {
 		return {
-			...super.properties,
-
 			/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
