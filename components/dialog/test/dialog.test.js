@@ -14,7 +14,7 @@ describe('d2l-dialog', () => {
 
 	});
 
-	describe.skip('focus management', () => {
+	describe('focus management', () => {
 
 		it('should focus on close button if no focusable elements inside', async() => {
 			const el = await fixture(html`<d2l-dialog opened>not focusable</d2l-dialog>`);
