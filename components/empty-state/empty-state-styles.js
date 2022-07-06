@@ -57,7 +57,7 @@ export const emptyStateIllustratedStyles = css`
 	}
 
 	::slotted(svg:first-child) {
-		display: inline;
+		display: inline-block;
 	}
 
 `;
