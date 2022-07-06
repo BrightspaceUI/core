@@ -1,6 +1,7 @@
 import '../button/button-subtle.js';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { html, LitElement } from 'lit';
+import { bodySmallStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -25,12 +26,12 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [emptyStateStyles, emptyStateSimpleStyles];
+		return [emptyStateStyles, emptyStateSimpleStyles, bodySmallStyles];
 	}
 
 	render() {
 		return html`
-			<p>${this.description}</p>
+			<p class="d2l-body-small">${this.description}</p>
 			${this.actionText && html`<d2l-button-subtle @click=${this._handleActionClick} text=${this.actionText}  h-align="text"></d2l-button-subtle>`}
 		`;
 	}

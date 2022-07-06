@@ -25,8 +25,6 @@ export const emptyStateSimpleStyles = css`
 
 	p {
 		display: inline;
-		font-size: 0.7rem;
-		line-height: 1rem;
 		padding-right: 0.5rem;
 	}
 
