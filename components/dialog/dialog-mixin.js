@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { forceFocusVisible, getComposedActiveElement, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
+import { forceFocusVisible, getComposedActiveElement, getNextFocusable, isFocusable, tryApplyFocus } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -177,10 +177,33 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	_findAutofocusElement(node) {
+		if (this._useNative) {
+			// Do not override native autofocus attribute implementation
+			return null;
+		}
+
+		if (!node.querySelector('slot')) {
+			// We are in a confirm dialog, autofocus attribute will never be set
+			return null;
+		}
+
+		const content = node.querySelector('slot').assignedElements({ flatten: true });
+		const el = content.find(el => el.autofocus)
+			?? content.find(el => el.querySelector('[autofocus]'))?.querySelector('[autofocus]');
+		return el;
+	}
+
 	_focusFirst() {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
+			const firstAutofocus = this._findAutofocusElement(content);
+			if (isFocusable(firstAutofocus, false, false)) {
+				firstAutofocus.focus();
+				return;
+			}
+
 			const firstFocusable = getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), firstFocusable)) {
 				forceFocusVisible(firstFocusable);
