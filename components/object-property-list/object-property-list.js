@@ -1,12 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
-import { TrimWhitespaceMixin } from './trim-whitespace/trim-whitespace-mixin.js';
 
 /**
  * A placeholder.
  * @slot - Items of the type d2l-object-property-list-item* to be added to the container
  */
-class ObjectPropertyList extends TrimWhitespaceMixin(LitElement) {
+class ObjectPropertyList extends LitElement {
 	static get styles() {
 		return [bodySmallStyles, css`
 			:host {

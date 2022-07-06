@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
-import { noTrim, TrimWhitespaceMixin } from './trim-whitespace/trim-whitespace-mixin.js';
 import { getLanguage } from '@brightspace-ui/intl/lib/common.js';
 // import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -20,7 +19,7 @@ export function getSeparator(nonBreaking) {
 /**
  * A placeholder.
  */
-export class ObjectPropertyListItem extends TrimWhitespaceMixin(RtlMixin(LitElement)) {
+export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -75,7 +74,7 @@ export class ObjectPropertyListItem extends TrimWhitespaceMixin(RtlMixin(LitElem
 	_renderSeparator() {
 		return html`
 			<span class="separator">
-				<span class="d2l-offscreen" ${noTrim()}>${getSeparator(true)}</span>
+				<span class="d2l-offscreen">${getSeparator(true)}</span>
 				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
 			</span>
 		`;
