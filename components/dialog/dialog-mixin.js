@@ -183,12 +183,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			return null;
 		}
 
-		if (!node.querySelector('slot')) {
+		const slot = node.querySelector('slot');
+		if (!slot) {
 			// We are in a confirm dialog, autofocus attribute will never be set
 			return null;
 		}
 
-		const content = node.querySelector('slot').assignedElements({ flatten: true });
+		const content = slot.assignedElements({ flatten: true });
 		const el = content.find(el => el.getAttribute('autofocus') === '' || el.getAttribute('autofocus') === 'true')
 			?? content.find(el => el.querySelector('[autofocus]'))?.querySelector('[autofocus]');
 		return el;
