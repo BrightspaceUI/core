@@ -49,7 +49,8 @@ function createSvgs(svgs) {
 		const destPath = path.join(outputPath, `${name}.js`);
 
 		const data = readFileSync(sourcePath);
-		const output = '// auto-generated\n' + `export const val = \`${  data  }\`;\n`;
+		/* eslint-disable-next-line prefer-template */
+		const output = '// auto-generated\n' + 'export const val = `' + data + '`;\n';
 
 		writeFileSync(destPath, output);
 	});
