@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script type="module">
+		import '../object-property-list.js';
+		import '../object-property-list-item.js';
+		import '../object-property-list-item-link.js';
+	</script>
+	<title>d2l-object-property-list</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			width: 300px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-object-property-list id="single">
+			<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
+		</d2l-object-property-list>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-object-property-list id="all-types">
+			<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
+			<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
+			<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
+			<d2l-object-property-list-item-link text="Example link with icon" href="https://www.d2l.com/" icon="tier1:alert"></d2l-object-property-list-item-link>
+		</d2l-object-property-list>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-object-property-list id="word-wrap">
+			<d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+			<d2l-object-property-list-item icon="tier1:alert" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+		</d2l-object-property-list>
+	</div>
+
+</body>
+</html>
