@@ -119,7 +119,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 				.d2l-button-subtle-content {
 					color: var(--d2l-color-celestine);
-					vertical-align: middle;
+					vertical-align: baseline;
 				}
 				button:hover:not([disabled]) .d2l-button-subtle-content,
 				button:focus:not([disabled]) .d2l-button-subtle-content,
