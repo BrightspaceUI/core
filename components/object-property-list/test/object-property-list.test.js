@@ -54,8 +54,11 @@ describe('d2l-object-property-list', () => {
 
 			const items = elem.querySelectorAll('d2l-object-property-list-item, d2l-object-property-list-item-link');
 			elem.removeChild(items[1]);
+			await elem.updateComplete;
 			validateSeparators(elem, 1);
+
 			elem.appendChild(items[1]);
+			await elem.updateComplete;
 			validateSeparators(elem, 2);
 		});
 	});
