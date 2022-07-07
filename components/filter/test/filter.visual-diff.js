@@ -107,10 +107,16 @@ describe('d2l-filter', () => {
 				it(type, async function() {
 					const selector = `#single-set-${type}`;
 					await open(page, selector);
-					await page.$eval(selector, async(filter) => {
-						filter.shadowRoot.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click();
+					await page.$eval(selector, async(filter, type) => {
+						const checkbox = filter.shadowRoot.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox');
+						if ((type === 'press-unselect-all' && checkbox.checked)
+							|| (type === 'press-select-all' && !checkbox.checked)
+						) {
+							// NOT visual-diff retry
+							checkbox.shadowRoot.querySelector('input').click();
+						}
 						await new Promise(resolve => requestAnimationFrame(resolve));
-					});
+					}, type);
 					const rect = await getRect(page, selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 				});
@@ -189,6 +195,7 @@ describe('d2l-filter', () => {
 					await open(page, selector);
 					page.waitForTimeout(50);
 					await page.$eval (selector, async(elem)  => {
+						window.scrollTo(0, 0);
 						requestAnimationFrame(async() => await elem.updateComplete);
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
