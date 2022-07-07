@@ -2,10 +2,6 @@
 
 Radio Buttons are used in forms to offer a single choice among mutually exclusive options.
 
-<!-- docs: start hidden content -->
-![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo display:block -->
 ```html
 <script type="module">

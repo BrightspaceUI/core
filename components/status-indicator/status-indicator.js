@@ -50,7 +50,7 @@ class StatusIndicator extends LitElement {
 				overflow: hidden;
 				padding: 2px 10px 2px 10px;
 				text-overflow: ellipsis;
-				text-transform: uppercase;
+				text-transform: capitalize;
 				vertical-align: middle;
 				white-space: nowrap;
 			}

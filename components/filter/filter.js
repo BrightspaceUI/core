@@ -550,11 +550,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate)  this.requestUpdate();
 		if (shouldResizeDropdown) {
-			const singleDimension = this._dimensions.length === 1;
-			if (singleDimension && this.opened) {
-				const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-				dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
-			}
+			this._requestDropdownResize();
 		}
 	}
 
@@ -717,7 +713,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				break;
 		}
 
+		this._requestDropdownResize();
 		this.requestUpdate();
+	}
+
+	_requestDropdownResize() {
+		const singleDimension = this._dimensions.length === 1;
+		if (singleDimension && this.opened) {
+			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+			dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+		}
 	}
 
 	_setDimensionChangeEvent(dimension, change, dimensionCleared) {

@@ -2,11 +2,6 @@
 
 Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters. Filter dimensions provide methods for entering parameters for a wide range of data types.
 
-<!-- docs: start hidden content -->
-Filter with multiple dimensions:
-![Filter with multiple dimensions](./screenshots/filter-multi-dim.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
@@ -70,11 +65,6 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 
 ### Single Vs Multi Dimensional
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
-
-<!-- docs: start hidden content -->
-Filter with a single dimension:
-![Filters with single dimension](./screenshots/filter.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo code align:start autoSize:false size:large -->
 ```html
@@ -171,12 +161,7 @@ The filter will announce changes to filter selections, search results, and when 
 
 ## Filter Dimension: Set [d2l-filter-dimension-set]
 
-The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
-
-<!-- docs: start hidden content -->
-Set dimension on mobile:
-![Set dimension on mobile](./screenshots/filter-mobile.png?raw=true)
-<!-- docs: end hidden content -->
+The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#d2l-filter-dimension-set-value), this will give you a selectable list of filter values.
 
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
 ```html
@@ -213,8 +198,24 @@ Set dimension on mobile:
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Set Value [d2l-filter-dimension-set-value]
-This component is built to be used alongside the [d2l-filter-dimension-set](#filter-dimension%3A-set-%5Bd2l-filter-dimension-set%5D) component, this will give you a selectable list of filter values.
 
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
+
+<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="course" text="Course" >
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
 ### Properties
 
 | Property | Type | Description |
@@ -223,6 +224,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+<!-- docs: end hidden content -->
 
 ## Tags for Applied Filters [d2l-filter-tags]
 

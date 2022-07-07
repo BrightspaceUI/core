@@ -30,7 +30,9 @@ describe('d2l-html-block', () => {
 		{ name: 'large-font-size', selector: '#large-font-size' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
 		{ name: 'math (block)', selector: '#math-block' },
-		{ name: 'math (inline)', selector: '#math-inline' }
+		{ name: 'math (inline)', selector: '#math-inline' },
+		{ name: 'code (block)', selector: '#code-block' },
+		{ name: 'code (inline)', selector: '#code-inline' }
 	].forEach((info) => {
 
 		it(info.name, async function() {

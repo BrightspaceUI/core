@@ -2,10 +2,6 @@
 
 Breadcrumbs are a way-finding tool that helps users understand where they are within an application, while also offering an easy way to navigate "up" to higher level pages.
 
-<!-- docs: start hidden content -->
-![screenshot of d2l-breadcrumbs component](./screenshots/basic.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo display:block -->
 ```html
 <script type="module">
@@ -53,10 +49,6 @@ This works well for mobile or other touch devices but not as well for mouse or k
 
 ### Limited Width
 
-<!-- docs: start hidden content -->
-![screenshot of d2l-breadcrumbs component limited width](./screenshots/limited-width.png)
-<!-- docs: end hidden content -->
-
 Set a `max-width` to constrain breadcrumbs to a particular width:
 
 <!-- docs: demo code display:block -->
@@ -71,10 +63,6 @@ Set a `max-width` to constrain breadcrumbs to a particular width:
 ```
 
 ### Compact Mode
-
-<!-- docs: start hidden content -->
-![screenshot of d2l-breadcrumbs component in compact mode](./screenshots/compact.png)
-<!-- docs: end hidden content -->
 
 Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
 

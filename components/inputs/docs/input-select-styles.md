@@ -50,10 +50,6 @@ Toggling progressive disclosure is OK
 
 Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
 
-<!-- docs: start hidden content -->
-![example screenshot of select inputs](../screenshots/select.gif?raw=true)
-<!-- docs: end hidden content -->
-
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
 
 <!-- docs: demo live name:d2l-test-input-select -->

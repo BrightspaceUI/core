@@ -5,12 +5,13 @@ import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  */
-class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
+class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -19,6 +20,15 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			 * @type {boolean}
 			 */
 			inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
+			/**
+			 * ADVANCED: Force the internal tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+			 * @type {'top'|'bottom'|'left'|'right'}
+			 */
+			position: { type: String },
+			/**
+			 * @ignore
+			 */
+			showing: { type: Boolean, reflect: true },
 			/**
 			 * REQUIRED: Text that will render as the Help Tooltip opener
 			 * @type {string}
@@ -30,7 +40,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	static get styles() {
 		return [bodySmallStyles, css`
 			:host {
-				display: inline;
+				display: inline-block;
 			}
 			:host([hidden]) {
 				display: none;
@@ -38,8 +48,8 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text {
 				background: none;
 				border: none;
+				cursor: text;
 				padding: 0;
-				text-decoration-color: var(--d2l-color-galena);
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
@@ -69,6 +79,7 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		super();
 
 		this.inheritFontStyle = false;
+		this.showing = false;
 	}
 
 	static get focusElementSelector() {
@@ -91,11 +102,11 @@ class HelpTooltip extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
 				${this.text}
 			</button>
-			<d2l-tooltip for="d2l-tooltip-help-text" delay=0 offset=13>
+			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
 				<slot></slot>
 			</d2l-tooltip>
 		`;
 	}
 
 }
-customElements.define('d2l-tooltip-help', HelpTooltip);
+customElements.define('d2l-tooltip-help', TooltipHelp);

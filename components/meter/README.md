@@ -36,12 +36,6 @@ Meters are a visually engaging way to communicate progress or measurements.
 
 Linear meters show a horizontal progress bar.
 
-<!-- docs: start hidden content -->
-![Linear meter with no progress](./screenshots/d2l-meter-linear-no-progress.png?raw=true)
-![Linear meter with some progress](./screenshots/d2l-meter-linear-has-progress.png?raw=true)
-![Linear meter completed](./screenshots/d2l-meter-linear-completed.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-meter-linear -->
 ```html
 <script type="module">
@@ -67,13 +61,6 @@ Linear meters show a horizontal progress bar.
 
 Radial meters appear as a half circle. They have more visual weight than a linear meter and should only be used when the data is central to the user's task.
 
-<!-- docs: start hidden content -->
-![Radial meter with no progress](./screenshots/d2l-meter-radial-no-progress.png?raw=true)
-![Radial meter with some progress](./screenshots/d2l-meter-radial-has-progress.png?raw=true)
-![Radial meter completed](./screenshots/d2l-meter-radial-completed.png?raw=true)
-![Radial meter with text](./screenshots/d2l-meter-radial-with-text.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-meter-radial size:medium -->
 ```html
 <script type="module">
@@ -97,12 +84,6 @@ Radial meters appear as a half circle. They have more visual weight than a line
 ## Circular Meter [d2l-meter-circle]
 
 Circle meters display data in a compact circle format, so they're useful when horizontal space is at a premium.
-
-<!-- docs: start hidden content -->
-![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
-![Circle meter with no progress](./screenshots/d2l-meter-circle-has-progress.png?raw=true)
-![Circle meter with no progress](./screenshots/d2l-meter-circle-completed.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-meter-circle -->
 ```html

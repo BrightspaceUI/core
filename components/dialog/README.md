@@ -43,10 +43,6 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: start hidden content -->
-![Dialog](./screenshots/dialog.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dialog autoSize:false display:block size:large -->
 ```html
 <script type="module">
@@ -157,10 +153,6 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: start hidden content -->
-![Confirmation Dialog](./screenshots/dialog-confirm.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dialog-confirm autoSize:false display:block size:large -->
 ```html
 <script type="module">
@@ -214,10 +206,6 @@ document.querySelector('#open').addEventListener('click', () => {
 
 The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-dialog`. It provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
 
-<!-- docs: start hidden content -->
-![Fullscreen Dialog](./screenshots/dialog-fullscreen.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-dialog-fullscreen autoSize:false display:block size:large -->
 ```html
 <script type="module">
@@ -267,6 +255,16 @@ document.querySelector('#open').addEventListener('click', () => {
   });
 });
 ```
+
+## Focus Management
+
+When opened, focus will be automatically placed within the dialog. The element to be focused will either be the content element having the optional `autofocus` attribute, or a focusable element identified by the dialog depending on the type of dialog. For `d2l-dialog` and `d2l-dialog-fullscreen`, the first focusable element will be focused. For `d2l-dialog-confirm`, the least destructive action will be focused, which is assumed to be the first non-primary button in the footer.
+
+### Specifying an `autofocus` Element (Optional)
+
+To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if the element has a `tabindex` value of `0` or `-1`, or is a naturally focusable element (e.g. button).
+
+Note that the element must be in the dialog content's DOM scope and not within another component's Shadow DOM.
 
 <!-- docs: start hidden content -->
 ## Future Improvements

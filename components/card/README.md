@@ -107,10 +107,6 @@ Cards are composed of 3 sections. Each card will have a content section but is n
 
 The `d2l-card` element is a container that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
-<!-- docs: start hidden content -->
-![Card](./screenshots/card.png?raw=true)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-card size:large -->
 ```html
 <script type="module">

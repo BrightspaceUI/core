@@ -63,10 +63,6 @@ The `d2l-alert` component can be used to communicate important information relat
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: start hidden content -->
-![screenshot of a basic alert](./screenshots/alert.png)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-alert autoSize:false  -->
 ```html
 <script type="module">
