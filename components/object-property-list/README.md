@@ -36,6 +36,23 @@ An object property list can be defined using `d2l-object-property-list` and a co
 </d2l-object-property-list>
 ```
 
+### Word wrap
+
+The object property list is designed to wrap in an inline manner if the items are wider than the container.
+
+<!-- docs: demo live name:word-wrap -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
+</script>
+
+<d2l-object-property-list>
+  <d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+  <d2l-object-property-list-item icon="tier1:alert" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+</d2l-object-property-list>
+```
+
 ## Text Item [d2l-object-property-list-item]
 
 The `d2l-object-property-list-item` component is the basic type of item for an object property list, displaying text and an optional leading icon.
@@ -67,7 +84,7 @@ The `d2l-object-property-list-item` component is the basic type of item for an o
 
 The `d2l-object-property-list-item-link` component is a link item for the object property list. It displays text as a hyperlink, with an optional leading icon.
 
-<!-- docs: demo live name:d2l-object-property-list-item -->
+<!-- docs: demo live name:d2l-object-property-list-item-link -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
