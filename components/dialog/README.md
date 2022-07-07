@@ -262,11 +262,7 @@ When opened, focus will be automatically placed within the dialog. The element t
 
 ### Specifying an `autofocus` Element (Optional)
 
-To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if any of the following are true:
-
-* The element has a `tabindex` value of `0` or `-1`
-* The element has a focusable descendant in the plain DOM or its Shadow DOM
-* The element is a naturally focusable element (e.g. button)
+To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if the element has a `tabindex` value of `0` or `-1`, or is a naturally focusable element (e.g. button).
 
 Note that the element must be in the dialog content's DOM scope and not within another component's Shadow DOM.
 
