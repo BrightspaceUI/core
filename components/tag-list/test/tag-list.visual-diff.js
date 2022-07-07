@@ -112,33 +112,27 @@ describe('d2l-tag-list', () => {
 	});
 
 	describe('clearable behavior', () => {
-		const selector = '#clearable';
 
-		before(async() => {
-			await page.$eval(selector, async(elem) => {
-				elem.parentNode.style.width = '1200px';
-				elem._showHiddenTags = false;
-				elem._hasShownKeyboardTooltip = true;
-				await elem.updateComplete;
-			});
-			await page.waitForTimeout(2000);
+		beforeEach(async() => {
+			await page.reload();
+			await visualDiff.resetFocus(page);
 		});
 
 		it('is correct when deleting the last item', async function() {
-			await page.$eval(selector, (elem) => {
+			await page.$eval('#clearable', (elem) => {
 				const firstItem = elem.children[4];
 				const deleteButton = firstItem.shadowRoot.querySelector('d2l-button-icon');
 				deleteButton.click();
 			});
 			await page.waitForTimeout(500);
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await visualDiff.getRect(page, '#clearable');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct when deleting first item', async function() {
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
-			const openEvent = page.$eval(selector, (elem) => {
+			const openEvent = page.$eval('#clearable2', (elem) => {
 				const firstItem = elem.children[0];
 				return new Promise((resolve) => {
 					elem.children[1].addEventListener('focus', resolve);
@@ -150,15 +144,15 @@ describe('d2l-tag-list', () => {
 			});
 			await openEvent;
 			await page.waitForTimeout(500);
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await visualDiff.getRect(page, '#clearable2');
 			rect.height += 75;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
 		it('is correct after clicking Clear All', async function() {
-			await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click());
+			await page.$eval('#clearable', (elem) => elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button').click());
 			await page.waitForTimeout(500);
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await visualDiff.getRect(page, '#clearable');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
