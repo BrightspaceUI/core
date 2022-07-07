@@ -208,6 +208,10 @@ describe('d2l-input-date-range', () => {
 					await page.$eval('#min-max', (elem) => elem.shadowRoot.querySelector('d2l-input-date').opened = false);
 				});
 
+				beforeEach(async() => {
+					await visualDiff.resetFocus(page);
+				});
+
 				it('open', async function() {
 					await page.$eval('#min-max', (elem) => {
 						elem.blur();
