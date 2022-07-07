@@ -9,7 +9,7 @@ describe('d2l-object-property-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3700 } });
+		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/object-property-list/test/object-property-list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -22,8 +22,7 @@ describe('d2l-object-property-list', () => {
 		{ name: 'word-wrap', selector: '#word-wrap' },
 	].forEach((info) => {
 		it(info.name, async function() {
-			const rect = await visualDiff.getRect(page, info.selector, info.margin);
-			if (info.action) await info.action(info.selector);
+			const rect = await visualDiff.getRect(page, info.selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
