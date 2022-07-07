@@ -6,7 +6,8 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * A placeholder.
+ * A single object property, to be used within an object-property-list,
+ * with an optional icon.
  */
 export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	static get properties() {

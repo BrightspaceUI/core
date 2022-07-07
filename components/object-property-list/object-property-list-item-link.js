@@ -4,7 +4,8 @@ import { linkStyles } from '../link/link.js';
 import { ObjectPropertyListItem } from './object-property-list-item.js';
 
 /**
- * A placeholder.
+ * A single object property, to be used within an object-property-list,
+ * rendered as a link and with an optional icon.
  */
 class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	static get properties() {

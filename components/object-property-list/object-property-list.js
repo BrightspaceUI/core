@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 
 /**
- * A placeholder.
+ * A dot-separated list of object properties.
  * @slot - Items of the type d2l-object-property-list-item* to be added to the container
  */
 class ObjectPropertyList extends LitElement {
