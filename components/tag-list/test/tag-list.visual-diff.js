@@ -32,6 +32,12 @@ describe('d2l-tag-list', () => {
 	describe('tag list item style behaviour', () => {
 
 		it('is correct on focus on tag list item', async function() {
+			await page.$eval('#default', async(elem) => {
+				const firstListItem = elem.children[0];
+				firstListItem.keyboardTooltipItem = true;
+				firstListItem._tooltipShown = false;
+				await firstListItem.updateComplete;
+			});
 			await page.keyboard.press('Tab');
 			const rect = await visualDiff.getRect(page, '#default');
 			rect.height += 100;
@@ -73,6 +79,17 @@ describe('d2l-tag-list', () => {
 					await page.waitForTimeout(500);
 				});
 
+				beforeEach(async() => {
+					await page.$eval(selector, async(elem) => {
+						if (elem.children[0].text === 'Added New Item') {
+							for (let i = 0; i < 2; i++) {
+								if (elem.children[0].text === 'Added New Item') elem.removeChild(elem.children[0]);
+							}
+							await elem.updateComplete;
+						}
+					});
+				});
+
 				it('is correct', async function() {
 					const rect = await visualDiff.getRect(page, selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
@@ -94,10 +111,6 @@ describe('d2l-tag-list', () => {
 
 				it('is correct when show more button clicked if applicable', async function() {
 					await page.$eval(selector, async(elem) => {
-						for (let i = 0; i < 2; i++) {
-							if (elem.children[0].text === 'Added New Item') elem.removeChild(elem.children[0]);
-						}
-						await elem.updateComplete;
 						const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
 						if (button) button.click();
 						await elem.updateComplete;
@@ -133,6 +146,7 @@ describe('d2l-tag-list', () => {
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
 			const openEvent = page.$eval('#clearable2', (elem) => {
+				elem._hasShownKeyboardTooltip = true;
 				const firstItem = elem.children[0];
 				return new Promise((resolve) => {
 					elem.children[1].addEventListener('focus', resolve);
