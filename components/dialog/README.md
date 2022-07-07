@@ -260,7 +260,7 @@ document.querySelector('#open').addEventListener('click', () => {
 
 When opened, focus will be automatically placed within the dialog. The element to be focused will either be the content element having the optional `autofocus` attribute, or a focusable element identified by the dialog depending on the type of dialog. For `d2l-dialog` and `d2l-dialog-fullscreen`, the first focusable element will be focused. For `d2l-dialog-confirm`, the least destructive action will be focused, which is assumed to be the first non-primary button in the footer.
 
-### Specifying an autofocus element
+### Specifying an `autofocus` Element (Optional)
 
 To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if any of the following are true:
 
