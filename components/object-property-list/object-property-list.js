@@ -11,6 +11,9 @@ class ObjectPropertyList extends LitElement {
 			:host {
 				display: contents;
 			}
+			:host([hidden]) {
+				display: none;
+			}
 			slot {
 				display: block;
 			}

@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -56,7 +56,7 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	}
 
 	_renderIcon() {
-		return !this.icon ? null : html`
+		return !this.icon ? nothing : html`
 			<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>
 		`;
 	}
