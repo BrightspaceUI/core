@@ -1,6 +1,6 @@
 # Buttons
 
-A Button is used to communicate and perform an action.
+A Button is used to communicate and perform an action. CHANGED
 
 <!-- docs: demo -->
 ```html
