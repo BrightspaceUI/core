@@ -1,30 +1,35 @@
-import '../button/button.js';
 import { html } from 'lit';
 
-//const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-export const pagingTypes = {
-	NONE: 'none',
-	LOADMORE: 'load-more'
-};
-
-/*
 export const PageableMixin = superclass => class extends superclass {
-
-	static get properties() {
-		return {
-			pagingType: { type: String, attribute: 'paging-type' }
-		};
-	}
 
 	constructor() {
 		super();
-		this.pagingType = pagingTypes.NONE;
+		this._pageable = true;
 	}
 
-	renderPager() {
-		return html`<d2l-button>Load More</d2l-button>`;
+	/* must be implemented by consumer */
+	_getItemByIndex(index) { } // eslint-disable-line no-unused-vars
+
+	/* must be implemented by consumer */
+	async _getItemsShowingCount() { }
+
+	/* must be implemented by consumer */
+	_getLastItemIndex() { }
+
+	async _handlePagerSlotChange(e) {
+		this._updatePagerCount(await this._getItemsShowingCount(), e.target);
+	}
+
+	_renderPagerContainer() {
+		return html`<slot name="pager" @slotchange="${this._handlePagerSlotChange}"></slot>`;
+	}
+
+	_updatePagerCount(count, slot) {
+		if (!slot) slot = this.shadowRoot.querySelector('slot[name="pager"]');
+		const elements = slot.assignedElements({ flatten: true });
+		if (elements.length > 0) {
+			elements[0].itemShowingCount = count;
+		}
 	}
 
 };
-*/

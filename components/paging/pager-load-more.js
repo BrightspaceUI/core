@@ -3,10 +3,14 @@ import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+
+const nativeFocus = document.createElement('div').focus;
 
 /**
  *  A pager component for load-more paging.
@@ -31,6 +35,10 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 			 * @type {number}
 			 */
 			pageSize: { type: Number, attribute: 'page-size' },
+			/**
+			 * @ignore
+			 */
+			itemShowingCount: { type: Number },
 			_loading: { state: true }
 		};
 	}
@@ -86,6 +94,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		super();
 		this.hasMore = false;
 		this.itemCount = -1;
+		this.itemShowingCount = 0;
 		this.pageSize = 50;
 		this._loading = false;
 	}
@@ -99,27 +108,44 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		const classes = {
 			'd2l-label-text': true,
 			'loading': this._loading
-		}
+		};
 		return html`<button class="${classMap(classes)}" @click="${this._handleClick}">
 			<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
 			${this.itemCount > -1 ? html`
 				<span class="separator"></span>
-				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: 2, totalCount: this.itemCount })}</span>
+				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: this.itemShowingCount, totalCount: this.itemCount })}</span>
 			` : null}
 			<d2l-loading-spinner size="24"></d2l-loading-spinner>
 		</button>`;
 	}
 
 	async _handleClick() {
+		const pageable = findComposedAncestor(this, node => node._pageable);
+		const lastItemIndex = pageable._getLastItemIndex();
+
 		await new Promise(resolve => {
 			this._loading = true;
-			this.dispatchEvent(new CustomEvent('d2l-pager-load-more-load', {
+			this.dispatchEvent(new CustomEvent('d2l-pager-load-more', {
 				bubbles: true,
 				composed: false,
 				detail: { complete: resolve }
 			}));
 		});
 		this._loading = false;
+
+		const item = pageable._getItemByIndex(lastItemIndex + 1);
+
+		if (!item) return;
+		if (item.updateComplete) await item.updateComplete;
+
+		if (item.focus !== nativeFocus) {
+			requestAnimationFrame(() => {
+				item.focus();
+			});
+		} else {
+			const firstFocusable = getFirstFocusableDescendant(this);
+			if (firstFocusable) firstFocusable.focus();
+		}
 	}
 
 }

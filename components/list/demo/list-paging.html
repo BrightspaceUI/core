@@ -27,7 +27,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list item-count="50">
+					<d2l-list item-count="500">
 						<d2l-list-header slot="header" select-all-pages-allowed></d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -56,9 +56,9 @@
 						const loadMorePageSize = 5;
 						let loadMoreItemCount = 0;
 
-						document.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more-load', (e) => {
+						document.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more', (e) => {
 							setTimeout(() => {
-								for(let i = 0; i < loadMorePageSize; i++) {
+								for (let i = 0; i < loadMorePageSize; i++) {
 									loadMoreItemCount += 1;
 
 									const item = document.createElement('d2l-list-item');
