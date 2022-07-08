@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
+import { PageableMixin } from '../paging/pageable-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const tableStyles = css`
@@ -167,7 +168,7 @@ export const tableStyles = css`
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
  */
-export class TableWrapper extends RtlMixin(LitElement) {
+export class TableWrapper extends PageableMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -245,11 +246,14 @@ export class TableWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const inner = html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+			${this._renderPagerContainer()}
+		`;
 		if (this.stickyHeaders) {
-			return slot;
+			return inner;
 		} else {
-			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
+			return html`<d2l-scroll-wrapper>${inner}</d2l-scroll-wrapper>`;
 		}
 	}
 
@@ -325,17 +329,50 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	}
 
-	_handleSlotChange(e) {
+	/* required by PageableMixin */
+	_getItemByIndex(index) {
+		const items = this._getItems();
+		if (index > items.length - 1) return;
+		return items[index];
+	}
 
-		const table = e.target.assignedNodes({ flatten: true }).find(
+	_getItems() {
+		const table = this._getTable();
+		if (!table) return [];
+		// TODO: handle the case where no tbody is used
+		return table.querySelectorAll('tbody > tr');
+	}
+
+	/* required by PageableMixin */
+	async _getItemsShowingCount() {
+		const items = this._getItems();
+		return items.length;
+	}
+
+	/* required by PageableMixin */
+	_getLastItemIndex() {
+		return this._getItemsShowingCount() - 1;
+	}
+
+	_getTable(slot) {
+		if (!slot) slot = this.shadowRoot.querySelector('slot');
+		return slot.assignedNodes({ flatten: true }).find(
 			node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TABLE' && node.classList.contains('d2l-table'))
 		);
+	}
+
+	_handleSlotChange(e) {
+
+		const table = this._getTable(e.target);
 		if (!table) return;
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
 		if (this._tableMutationObserver === null) {
-			this._tableMutationObserver = new MutationObserver(() => this._applyClassNames(table, 0));
+			this._tableMutationObserver = new MutationObserver(async() => {
+				this._applyClassNames(table, 0);
+				this._updatePagerCount(await this._getItemsShowingCount());
+			});
 		} else {
 			this._tableMutationObserver.disconnect();
 		}
@@ -365,8 +402,8 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		}
 
 		this._applyClassNames(table);
-
 	}
+
 }
 
 customElements.define('d2l-table-wrapper', TableWrapper);

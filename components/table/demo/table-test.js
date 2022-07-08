@@ -1,3 +1,4 @@
+import '../../paging/pager-load-more.js';
 import '../table-col-sort-button.js';
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
@@ -36,6 +37,7 @@ class TestTable extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
+			_data: { state: true },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
 		};
@@ -55,11 +57,13 @@ class TestTable extends RtlMixin(LitElement) {
 		this.sortDesc = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
+		this._data = [];
+		data.forEach(item => this._data.push(item));
 	}
 
 	render() {
 		const type = this.type === 'light' ? 'light' : 'default';
-		const sorted = data.sort((a, b) => {
+		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
 				return b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
@@ -84,8 +88,17 @@ class TestTable extends RtlMixin(LitElement) {
 						`)}
 					</tbody>
 				</table>
+				<d2l-pager-load-more slot="pager" has-more page-size="3" item-count="500" @d2l-pager-load-more="${this._handlePagerLoadMore}"></d2l-pager-load-more>
 			</d2l-table-wrapper>
 		`;
+	}
+
+	_handlePagerLoadMore(e) {
+		for (let i = 0; i < e.target.pageSize; i++) {
+			this._data.push({ name: `Country ${i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+		}
+		this.requestUpdate();
+		e.detail.complete();
 	}
 
 	_handleSort(e) {
