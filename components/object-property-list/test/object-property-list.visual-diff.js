@@ -20,6 +20,7 @@ describe('d2l-object-property-list', () => {
 		{ name: 'single', selector: '#single' },
 		{ name: 'all-types', selector: '#all-types' },
 		{ name: 'word-wrap', selector: '#word-wrap' },
+		{ name: 'rtl', selector: '#rtl' },
 	].forEach((info) => {
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
