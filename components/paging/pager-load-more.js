@@ -122,6 +122,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 
 	async _handleClick() {
 		const pageable = findComposedAncestor(this, node => node._pageable);
+		if (!pageable) return;
 		const lastItemIndex = pageable._getLastItemIndex();
 
 		await new Promise(resolve => {
