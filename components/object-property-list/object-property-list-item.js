@@ -56,9 +56,7 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	}
 
 	_renderIcon() {
-		return !this.icon ? nothing : html`
-			<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>
-		`;
+		return this.icon ? html`<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>` : nothing;
 	}
 
 	_renderSeparator() {
