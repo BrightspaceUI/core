@@ -240,12 +240,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}, 0);
 	}
 
-	_handleSlotChange(e) {
+	async _handleSlotChange(e) {
 		const items = this.getItems(e.target);
 		if (this._itemsShowingCount === items.length) return;
 		this._itemsShowingCount = items.length;
 
-		// TODO: handle update for the nested case
+		this._updatePagerCount(await this._getListItemsShowingTotalCount(true));
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-items-showing-count-change', {
