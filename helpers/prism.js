@@ -28,6 +28,7 @@ codeLanguages.set('plain', 'Plain Text');
 codeLanguages.set('python', 'Python');
 codeLanguages.set('r', 'R');
 codeLanguages.set('racket', 'Racket');
+codeLanguages.set('regex', 'Regex');
 codeLanguages.set('sql', 'SQL');
 codeLanguages.set('wolfram', 'Wolfram');
 
@@ -37,77 +38,78 @@ export const colorModes = {
 };
 
 const darkColors = Object.freeze({
-	background: '#2d2d2d',
-	language: '#6e7376',
-	lineNumbers: '#ffffff',
-	lineNumbersSeparator: '#999999',
-	tokenDefault: '#cccccc',
-	tokenComment: '#808080',
-	tokenPunctuation: '#d4d4d4',
-	tokenNumber: '#d4d4d4',
-	tokenUrl: '#d4d4d4',
-	tokenOperator: '#d4d4d4',
-	tokenInterpolation: '#9cdcfe',
-	tokenAttributeName: '#9cdcfe',
-	tokenConstant: '#9cdcfe',
-	tokenProperty: '#9cdcfe',
-	tokenTag: '#569cd6',
-	tokenBoolean: '#569cd6',
-	tokenEntity: '#569cd6',
-	tokenInterpolationPunctuation: '#569cd6',
-	tokenFunction: '#dcdcaa',
-	tokenClassName: '#4ec9b0',
-	tokenSymbol: '#4ec9b0',
-	tokenBuiltin: '#c586c0',
-	tokenKeyword: '#c586c0',
-	tokenAtRule: '#c586c0',
-	tokenSelector: '#d7ba7d',
-	tokenImportant: '#d16969',
-	tokenRegex: '#d16969',
-	tokenString: '#ce9178',
-	tokenChar: '#ce9178',
-	tokenAttributeValue: '#ce9178'
+	background: '#202122',
+	language: '#90989d',
+	lineNumbers: '#9ea5a9',
+	lineNumbersBackground: '#6e747733', // galena 20%
+	tokenDefault: '#cdd5dc',
+	tokenComment: '#81898d',
+	tokenPunctuation: '#cdd5dc',
+	tokenNumber: '#cdd5dc',
+	tokenUrl: '#cdd5dc',
+	tokenOperator: '#cdd5dc',
+	tokenInterpolation: '#92d1ff',
+	tokenAttributeName: '#92d1ff',
+	tokenConstant: '#00d2ed',
+	tokenProperty: '#92d1ff',
+	tokenTag: '#2899e9',
+	tokenBoolean: '#2896e4',
+	tokenEntity: '#29a6ff',
+	tokenInterpolationPunctuation: '#29a6ff',
+	tokenFunction: '#fff9d6',
+	tokenClassName: '#2ccfb0',
+	tokenSymbol: '#2de2c0',
+	tokenBuiltin: '#fd4e9d',
+	tokenKeyword: '#e94a92',
+	tokenAtRule: '#fd4e9d',
+	tokenSelector: '#fff9d6',
+	tokenImportant: '#ff575a',
+	tokenRegex: '#29A6FF',
+	tokenString: '#e9ba79',
+	tokenChar: '#e9ba79',
+	tokenAttributeValue: '#e9ba79'
 });
 
 const lightColors = Object.freeze({
-	background: '#f2f1f1',
-	language: '#1b1b1b',
-	lineNumbers: '#1b1b1b',
-	lineNumbersSeparator: '#1b1b1b',
-	tokenDefault: '#1b1b1b',
-	tokenComment: '#9e9e9e',
-	tokenPunctuation: '#9e9e9e',
-	tokenNumber: '#007936',
-	tokenUrl: '#9e9e9e',
-	tokenOperator: '#9e9e9e',
-	tokenInterpolation: '#872bff',
-	tokenAttributeName: '#d30038',
-	tokenConstant: '#007936',
-	tokenProperty: '#d30038',
-	tokenTag: '#007936',
-	tokenBoolean: '#007936',
-	tokenEntity: 'inherit',
-	tokenInterpolationPunctuation: '#872bff',
-	tokenFunction: '#d30038',
-	tokenClassName: '#d30038',
-	tokenSymbol: '#007936',
-	tokenBuiltin: '#872bff',
-	tokenKeyword: '#0069c2',
-	tokenAtRule: '#007936',
-	tokenSelector: '#872bff',
-	tokenImportant: 'inherit',
-	tokenRegex: 'inherit',
-	tokenString: '#007936',
-	tokenChar: '#007936',
-	tokenAttributeValue: '#007936'
+	background: '#f9fbff',
+	language: '#6e7477',
+	lineNumbers: '#6e7477',
+	lineNumbersBackground: '#f1f5fb',
+	tokenDefault: '#202122',
+	tokenComment: '#90989d',
+	tokenPunctuation: '#494c4e',
+	tokenNumber: '#494c4e',
+	tokenUrl: '#494c4e',
+	tokenOperator: '#006fbf',
+	tokenInterpolation: '#006fbf',
+	tokenAttributeName: '#006fbf',
+	tokenConstant: '#035670',
+	tokenProperty: '#008eab',
+	tokenTag: '#006fbf',
+	tokenBoolean: '#004489',
+	tokenEntity: '#004489',
+	tokenInterpolationPunctuation: '#004489',
+	tokenFunction: '#006fbf',
+	tokenClassName: '#00635e',
+	tokenSymbol: '#00635e',
+	tokenBuiltin: '#d40067',
+	tokenKeyword: '#d40067',
+	tokenAtRule: '#d40067',
+	tokenSelector: '#006fbf',
+	tokenImportant: '#cd2026',
+	tokenRegex: '#006fbf',
+	tokenString: '#c74c00',
+	tokenChar: '#c74c00',
+	tokenAttributeValue: '#c74c00',
+	tokenCombinator: '#202122'
 });
 
 export const getCodeColors = mode => {
 	return mode === colorModes.DARK ? darkColors : lightColors;
 };
 
-const generateColorVariables = mode => {
-	const colors = getCodeColors(mode);
+const generateColorVariables = (mode, theme) => {
+	const colors = getCodeColors(mode, theme);
 	const keySelector = mode === colorModes.DARK ? '.d2l-code-dark' : '.d2l-code';
 	return `
 		pre[class*="language-"]${keySelector},
@@ -115,7 +117,7 @@ const generateColorVariables = mode => {
 			--d2l-code-background: ${colors.background};
 			--d2l-code-language: ${colors.language};
 			--d2l-code-line-numbers: ${colors.lineNumbers};
-			--d2l-code-line-numbers-separator: ${colors.lineNumbersSeparator};
+			--d2l-code-line-numbers-background: ${colors.lineNumbersBackground};
 			--d2l-code-token-atrule: ${colors.tokenAtRule};
 			--d2l-code-token-attribute-name: ${colors.tokenAttributeName};
 			--d2l-code-token-attribute-value: ${colors.tokenAttributeValue};
@@ -149,7 +151,6 @@ const generateColorVariables = mode => {
 export const codeStyles = css`
 
 	${unsafeCSS(generateColorVariables(colorModes.LIGHT))}
-
 	${unsafeCSS(generateColorVariables(colorModes.DARK))}
 
 	pre[class*="language-"].d2l-code,
@@ -255,19 +256,21 @@ export const codeStyles = css`
 		background-color: transparent;
 	}
 
-	pre[class*="language-"].line-numbers {
+	pre[class*="language-"].d2l-code.line-numbers {
 		counter-reset: linenumber;
 		padding-left: 3.8em;
 		position: relative;
 	}
 
-	pre[class*="language-"].line-numbers > code {
+	pre[class*="language-"].d2l-code.line-numbers > code {
 		position: relative;
 		white-space: inherit;
 	}
 
-	.line-numbers .line-numbers-rows {
-		border-right: 1px solid var(--d2l-code-line-numbers-separator);
+	.d2l-code.line-numbers > code > .line-numbers-rows {
+		background-color: var(--d2l-code-line-numbers-background);
+		border-bottom-right-radius: 6px;
+		border-top-right-radius: 6px;
 		font-size: 100%;
 		left: -3.8em;
 		letter-spacing: -1px;
@@ -292,6 +295,35 @@ export const codeStyles = css`
 		display: block;
 		padding-right: 0.8em;
 		text-align: right;
+	}
+
+	span.inline-color-wrapper {
+		/*
+		 * <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
+		 *     <path fill="gray" d="M0 0h2v2H0z"/>
+		 *     <path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
+		 * </svg>
+		 */
+		background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDIiPjxwYXRoIGZpbGw9ImdyYXkiIGQ9Ik0wIDBoMnYySDB6Ii8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0wIDBoMXYxSDB6TTEgMWgxdjFIMXoiLz48L3N2Zz4=");
+		/* Prevent visual glitches where one pixel from the repeating pattern could be seen */
+		background-position: center;
+		background-size: 110%;
+		border: 1px solid white;
+		border-radius: 2px;
+		box-sizing: border-box;
+		display: inline-block;
+		height: 1.333ch;
+		margin: 0 0.333ch;
+		outline: 1px solid rgba(0, 0, 0, 0.5);
+		overflow: hidden;
+		width: 1.333ch;
+	}
+
+	span.inline-color {
+		display: block;
+		/* Prevent visual glitches again */
+		height: 120%;
+		width: 120%;
 	}
 `;
 
@@ -358,6 +390,18 @@ const loadPlugin = async plugin => {
 	return pluginsLoaded[plugin];
 };
 
+const languageAddons = {
+	css: [{ key: 'css-extras', type: 'lang' }, { key: 'inline-color', type: 'plugin' }]
+};
+
+const loadLanguageAddons = async key => {
+	if (!languageAddons[key]) return;
+	return Promise.all(languageAddons[key].map(addon => {
+		if (addon.type === 'lang') return loadLanguage(addon.key);
+		else return loadPlugin(addon.key);
+	}));
+};
+
 let prismLoaded;
 
 const loadPrism = () => {
@@ -400,6 +444,7 @@ export async function formatCodeElement(elem) {
 	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
 		loadLanguage(languageInfo.key),
+		loadLanguageAddons(languageInfo.key),
 		lineNumbers ? loadPlugin('line-numbers') : null
 	]);
 

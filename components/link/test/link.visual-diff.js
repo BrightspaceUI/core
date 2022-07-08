@@ -1,4 +1,3 @@
-/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -59,8 +58,7 @@ describe('d2l-link', () => {
 		it(`focus-${name}`, async function() {
 			await page.evaluate((name) => {
 				const elem = document.querySelector(`#${name}`);
-				if (elem.shadowRoot) forceFocusVisible(elem.shadowRoot.querySelector('a'));
-				else forceFocusVisible(elem);
+				elem.focus();
 			}, name);
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
