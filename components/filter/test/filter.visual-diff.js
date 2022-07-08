@@ -233,7 +233,12 @@ describe('d2l-filter', () => {
 				await page.$eval(selector, async(filter) => {
 					await new Promise((resolve) => {
 						filter.addEventListener('d2l-localize-resources-change', resolve, { once: true });
-						document.querySelector('html').setAttribute('lang', 'ar');
+						if (document.querySelector('html').getAttribute('lang') !== 'ar') {
+							document.querySelector('html').setAttribute('lang', 'ar');
+						}
+						else {
+							resolve();
+						}
 					});
 					filter._totalAppliedCount = 100;
 					await filter.updateComplete;
