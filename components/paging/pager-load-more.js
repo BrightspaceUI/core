@@ -127,7 +127,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		await new Promise(resolve => {
 			this._loading = true;
 			this.dispatchEvent(new CustomEvent('d2l-pager-load-more', {
-				bubbles: true,
+				bubbles: false,
 				composed: false,
 				detail: { complete: resolve }
 			}));
