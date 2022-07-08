@@ -14,7 +14,7 @@ const nativeFocus = document.createElement('div').focus;
 
 /**
  *  A pager component for load-more paging.
- * @fires d2l-pager-load-more-load - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
+ * @fires d2l-pager-load-more - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
  */
 class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(LitElement))) {
 
