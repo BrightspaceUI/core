@@ -37,18 +37,18 @@ export const emptyStateIllustratedStyles = css`
 	}
 
 	#d2l-empty-state-description {
-		margin-bottom: 0.3rem;
+		margin: 0 auto 0.3rem;
+		width: 500px;
+		max-width: 100%;
 	}
 
 	#d2l-empty-state-title {
 		margin-bottom: 0.9rem;
-		margin-top: 2.5rem;
 	}
 
 	svg {
-		max-height: 250px;
-		max-width: 375px;
-		width: 45%;
+		max-width: 475px;
+		width: 100%;
 	}
 
 	::slotted(*) {
@@ -57,6 +57,32 @@ export const emptyStateIllustratedStyles = css`
 
 	::slotted(svg:first-child) {
 		display: inline-block;
+	}
+
+	@media (max-width: 615px) {
+
+		#d2l-empty-state-title {
+			margin-top: 0.5rem;
+		}
+
+		:host([illustration-name="calendar"]) #d2l-empty-state-title{
+			margin-top: 1rem;
+		}
+
+		:host([illustration-name="checklist"]) #d2l-empty-state-title {
+			margin-top: 1.3rem;
+		}
+
+		svg {
+			max-height: 200px;
+		}
+
+	}
+
+	@media (min-width: 616px) {
+		#d2l-empty-state-title {
+			margin-top: 1rem;
+		}
 	}
 
 `;
