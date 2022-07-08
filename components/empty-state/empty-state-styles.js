@@ -5,7 +5,7 @@ export const emptyStateStyles = css`
 
 	:host {
 		border: 1px solid var(--d2l-color-mica);
-		border-radius: 6px;
+		border-radius: 0.3rem;
 		display: block;
 		padding: 1.2rem 1.5rem;
 	}
@@ -42,10 +42,11 @@ export const emptyStateIllustratedStyles = css`
 
 	#d2l-empty-state-title {
 		margin-bottom: 0.9rem;
-		margin-top: 1.8rem;
+		margin-top: 2.5rem;
 	}
 
 	svg {
+		max-height: 250px;
 		max-width: 375px;
 		width: 45%;
 	}

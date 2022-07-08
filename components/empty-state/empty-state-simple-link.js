@@ -13,17 +13,17 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * REQUIRED: A description giving details about the empty state
-			 * @type {String}
+			 * @type {string}
 			 */
 			description: { type: String },
 			/**
 			 * Optional: The action text to be used in the link
-			 * @type {String}
+			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },
 			/**
 			 * Optional: The action URL or URL fragment of the link
-			 * @type {String}
+			 * @type {string}
 			 */
 			actionHref: { type: String, attribute: 'action-href' }
 		};

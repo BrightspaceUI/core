@@ -22,7 +22,7 @@ describe('d2l-empty-state-illustrated-button', () => {
 	after(async() => await browser.close());
 
 	[
-		{ category: 'default', tests: [ 'normal', 'custom-svg', 'no-svg' ] },
+		{ category: 'default', tests: [ 'normal', 'custom-svg', 'no-svg', 'no-action' ] },
 	].forEach(entry => {
 		describe(entry.category, () => {
 			entry.tests.forEach(name => {

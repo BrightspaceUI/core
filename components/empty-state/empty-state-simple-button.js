@@ -14,12 +14,12 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Optional: The action text to be used in the subtle button
-			 * @type {String}
+			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },
 			/**
 			 * REQUIRED: A description giving details about the empty state
-			 * @type {String}
+			 * @type {string}
 			 */
 			description: { type: String },
 		};
