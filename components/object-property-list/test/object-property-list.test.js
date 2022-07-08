@@ -1,7 +1,7 @@
 import '../object-property-list.js';
 import '../object-property-list-item.js';
 import '../object-property-list-item-link.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const validateSeparators = (elem, count) => {
@@ -54,11 +54,11 @@ describe('d2l-object-property-list', () => {
 
 			const items = elem.querySelectorAll('d2l-object-property-list-item, d2l-object-property-list-item-link');
 			elem.removeChild(items[1]);
-			await elem.updateComplete;
+			await aTimeout(); // Required for Webkit only.
 			validateSeparators(elem, 1);
 
 			elem.appendChild(items[1]);
-			await elem.updateComplete;
+			await aTimeout(); // Required for Webkit only.
 			validateSeparators(elem, 2);
 		});
 	});
