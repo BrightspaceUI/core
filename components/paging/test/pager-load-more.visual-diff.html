@@ -6,6 +6,8 @@
 		import '../../typography/typography.js';
 		import './pageable-component.js';
 		import '../pager-load-more.js';
+		import { forceFocusVisible } from '../../../helpers/focus.js';
+		window.forceFocusVisible = forceFocusVisible;
 	</script>
 	<title>d2l-pager-load-more</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +19,13 @@
 		.visual-diff {
 			width: 400px;
 		}
+		a {
+			outline: none;
+			text-decoration: none;
+		}
+		a:focus {
+			text-decoration: underline;
+		}
 	</style>
 </head>
 <body class="d2l-typography">
@@ -24,8 +33,8 @@
 	<div class="visual-diff" id="no-more">
 		<d2l-test-pageable>
 			<ul>
-				<li>item 1</li>
-				<li>item 2</li>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
 			</ul>
 			<d2l-pager-load-more slot="pager" page-size="3" item-count="15"></d2l-pager-load-more>
 		</d2l-test-pageable>
@@ -34,8 +43,8 @@
 	<div class="visual-diff" id="item-count">
 		<d2l-test-pageable>
 			<ul>
-				<li>item 1</li>
-				<li>item 2</li>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
 			</ul>
 			<d2l-pager-load-more slot="pager" has-more page-size="3" item-count="15"></d2l-pager-load-more>
 		</d2l-test-pageable>
@@ -44,10 +53,20 @@
 	<div class="visual-diff" id="no-item-count">
 		<d2l-test-pageable>
 			<ul>
-				<li>item 1</li>
-				<li>item 2</li>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
 			</ul>
 			<d2l-pager-load-more slot="pager" has-more page-size="3"></d2l-pager-load-more>
+		</d2l-test-pageable>
+	</div>
+
+	<div class="visual-diff" id="load-more">
+		<d2l-test-pageable>
+			<ul>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
+			</ul>
+			<d2l-pager-load-more slot="pager" has-more page-size="3" item-count="15"></d2l-pager-load-more>
 		</d2l-test-pageable>
 	</div>
 

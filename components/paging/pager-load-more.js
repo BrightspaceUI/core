@@ -144,7 +144,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		if (item.focus !== nativeFocus) {
 			requestAnimationFrame(() => item.focus());
 		} else {
-			const firstFocusable = getFirstFocusableDescendant(this);
+			const firstFocusable = getFirstFocusableDescendant(item);
 			if (firstFocusable) firstFocusable.focus();
 		}
 	}
