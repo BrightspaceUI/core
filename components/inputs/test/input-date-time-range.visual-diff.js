@@ -100,6 +100,15 @@ describe('d2l-input-date-time-range', () => {
 			await page.$eval('#opened', (elem) => elem.endOpened = false);
 		});
 
+		beforeEach(async() => {
+			await page.$eval('#opened', async(elem) => {
+				if (!elem.getAttribute('start-opened')) {
+					elem.setAttribute('start-opened', true);
+					await elem.updateComplete;
+				}
+			});
+		});
+
 		it('intially start opened', async function() {
 			const rect = await getRect(page, '#opened', 0);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -243,6 +252,10 @@ describe('d2l-input-date-time-range', () => {
 			describe('function', () => {
 				after(async() => {
 					await page.$eval('#min-max', (elem) => elem.startOpened = false);
+				});
+
+				beforeEach(async() => {
+					await visualDiff.resetFocus(page);
 				});
 
 				it('open', async function() {
