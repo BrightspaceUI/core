@@ -95,6 +95,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		super();
 		this.hasMore = false;
 		this.itemCount = -1;
+		/** @ignore */
 		this.itemShowingCount = 0;
 		this.pageSize = 50;
 		this._loading = false;
