@@ -32,7 +32,7 @@
 							<li><a href="https://some-website">item 1</a></li>
 							<li><a href="https://some-website">item 2</a></li>
 						</ul>
-						<d2l-pager-load-more id="pager1" slot="pager" has-more page-size="3" item-count="15"></d2l-pager-load-more>
+						<d2l-pager-load-more id="pager1" slot="pager" has-more page-size="3" item-count="12"></d2l-pager-load-more>
 					</d2l-test-pageable>
 					<script>
 						document.querySelector('#pager1').addEventListener('d2l-pager-load-more', window.handleLoadMore);
@@ -60,14 +60,23 @@
 		</d2l-demo-page>
 
 		<script>
+			const ITEM_COUNT = 12;
 			window.handleLoadMore = e => {
 				// fake delay
 				setTimeout(() => {
 					const list = e.target.parentNode.querySelector('ul');
-					for (let i = 0; i < e.target.pageSize; i++) {
+					let remainingCount = ITEM_COUNT - list.children.length;
+					const numberToLoad = remainingCount < e.target.pageSize ? remainingCount : e.target.pageSize;
+					for (let i = 0; i < numberToLoad; i++) {
 						const newItem = list.lastElementChild.cloneNode(true);
 						newItem.querySelector('a').textContent = `item ${list.children.length + 1}`;
 						list.appendChild(newItem);
+					}
+					if (list.children.length === ITEM_COUNT) {
+						e.target.hasMore = false;
+					} else {
+						remainingCount = ITEM_COUNT - list.children.length;
+						if (remainingCount < e.target.pageSize) e.target.pageSize = remainingCount;
 					}
 					e.detail.complete();
 				}, 1000);
