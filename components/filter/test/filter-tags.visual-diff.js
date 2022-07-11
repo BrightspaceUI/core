@@ -73,6 +73,11 @@ describe('d2l-filter-tags', () => {
 			await visualDiff.resetFocus(page);
 		});
 
+		beforeEach(async() => {
+			await page.reload();
+			await visualDiff.resetFocus(page);
+		});
+
 		it('is correct when deleting the last item', async function() {
 			await page.$eval(selector, (elem) => {
 				const filterTags = elem.querySelector('d2l-filter-tags');
