@@ -21,17 +21,17 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 	static get properties() {
 		return {
 			/**
-			 * Whether there are more items that can be loaded
+			 * Whether there are more items that can be loaded.
 			 * @type {boolean}
 			 */
 			hasMore: { type: Boolean, attribute: 'has-more' },
 			/**
-			 * Total number of items
+			 * Total number of items. If not specified, neither it nor the count of items showing will be displayed.
 			 * @type {number}
 			 */
 			itemCount: { type: Number, attribute: 'item-count' },
 			/**
-			 * The number of additional items if more items can be loaded
+			 * The number of additional items to load.
 			 * @type {number}
 			 */
 			pageSize: { type: Number, attribute: 'page-size' },
