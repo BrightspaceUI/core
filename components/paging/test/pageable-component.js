@@ -1,18 +1,6 @@
 import { html, LitElement } from 'lit';
 import { PageableMixin } from '../pageable-mixin.js';
 
-document.querySelectorAll('d2l-pager-load-more').forEach(pager => {
-	pager.addEventListener('d2l-pager-load-more', e => {
-		const list = e.target.parentNode.querySelector('ul');
-		for (let i = 0; i < e.target.pageSize; i++) {
-			const newItem = list.lastElementChild.cloneNode(true);
-			newItem.querySelector('a').textContent = `item ${list.children.length + 1}`;
-			list.appendChild(newItem);
-		}
-		e.detail.complete();
-	});
-});
-
 class TestPageable extends PageableMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
