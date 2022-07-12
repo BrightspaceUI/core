@@ -91,6 +91,8 @@ export default {
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
 	"components.overflow-group.moreActions": "Plus d'actions",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
 	"components.selection.action-hint": "Sélectionner un élément pour exécuter cette action.",
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",

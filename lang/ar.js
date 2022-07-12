@@ -91,6 +91,8 @@ export default {
 	"components.more-less.less": "أقل",
 	"components.more-less.more": "المزيد",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
 	"components.selection.action-hint": "حدد مادة لتنفيذ هذا الإجراء.",
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items": "تحديد كل المواد الـ {count}.",

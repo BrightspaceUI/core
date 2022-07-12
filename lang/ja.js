@@ -91,6 +91,8 @@ export default {
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
 	"components.overflow-group.moreActions": "その他のアクション",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
 	"components.selection.action-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",
 	"components.selection.select-all-items": "{count} 個の項目をすべて選択",

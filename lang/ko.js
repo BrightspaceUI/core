@@ -91,6 +91,8 @@ export default {
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
 	"components.overflow-group.moreActions": "추가 작업",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
 	"components.selection.action-hint": "이 작업을 수행할 항목을 선택하십시오.",
 	"components.selection.select-all": "모두 선택",
 	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",

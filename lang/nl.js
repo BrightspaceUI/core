@@ -91,6 +91,8 @@ export default {
 	"components.more-less.less": "minder",
 	"components.more-less.more": "meer",
 	"components.overflow-group.moreActions": "Meer acties",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
 	"components.selection.action-hint": "Selecteer een item om deze actie uit te voeren.",
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items": "Alle {count} records selecteren",
