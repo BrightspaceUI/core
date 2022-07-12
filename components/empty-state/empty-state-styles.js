@@ -36,10 +36,14 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
+	#d2l-empty-state-action {
+		margin-top: 0.5rem;
+	}
+
 	#d2l-empty-state-description {
 		margin: 0 auto 0.3rem;
-		width: 500px;
-		max-width: 100%;
+		max-width: 500px;
+		width: 100%;
 	}
 
 	#d2l-empty-state-title {
@@ -65,7 +69,7 @@ export const emptyStateIllustratedStyles = css`
 			margin-top: 0.5rem;
 		}
 
-		:host([illustration-name="calendar"]) #d2l-empty-state-title{
+		:host([illustration-name="calendar"]) #d2l-empty-state-title {
 			margin-top: 1rem;
 		}
 

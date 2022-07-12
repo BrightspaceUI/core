@@ -9,7 +9,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 /**
  * The `d2l-empty-state-illustrated-link` component is an empty state component that displays an illustration and action link. The illustration property can be set to use one of the preset illustrations or a custom SVG illustration can be added in the default slot.
- * @slot - Custom SVG content if illustration property is not set
+ * @slot - Custom SVG content if `illustration-name` property is not set
  */
 class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 
@@ -54,7 +54,7 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 	}, { pendingState: false })}` : html`<slot></slot>`}
             <p class="d2l-heading-2" id="d2l-empty-state-title">${this.titleText}</p>
 			<p class="d2l-body-compact" id="d2l-empty-state-description">${this.description}</p>
-			${this.actionText && html`<d2l-link href=${this.actionHref} small>${this.actionText}</d2l-link>`}
+			${this.actionText && html`<d2l-link id='d2l-empty-state-action' href=${this.actionHref} small>${this.actionText}</d2l-link>`}
 		`;
 	}
 

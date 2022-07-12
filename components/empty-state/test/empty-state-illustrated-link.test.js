@@ -10,7 +10,7 @@ describe('d2l-empty-state-illustrated-link',  () => {
 
 	it('dispatches click event when action is clicked', async() => {
 		const el = await fixture(html`
-			<d2l-empty-state-illustrated-link illustration="tumbleweed" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href="https://www.d2l.com/"></d2l-empty-state-illustrated-link>
+			<d2l-empty-state-illustrated-link illustration-name="tumbleweed" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href="https://www.d2l.com/"></d2l-empty-state-illustrated-link>
 		`);
 		setTimeout(() => el.shadowRoot.querySelector('d2l-link').click());
 		await oneEvent(el, 'click');
