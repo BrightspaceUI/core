@@ -20,7 +20,7 @@ The paging components and mixins can be used to provide consistent paging functi
 
 The `d2l-pager-load-more` component can be used in conjunction with pageable components such as `d2l-list` to provide load-more paging functionality. The pager will dispatch the `d2l-pager-load-more` when clicked, and then the consumer handles the event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete.
 
-See [d2l-list (paging)](../../components/list/#selection-lists).
+See [Pageable Lists](../../components/list/#pageable-lists).
 
 ```html
 <d2l-list>
