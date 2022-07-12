@@ -12,6 +12,7 @@
 			import '../../dropdown/dropdown-more.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
+			import '../../paging/pager-load-more.js';
 			import '../../selection/selection-action.js';
 			import '../../selection/selection-action-dropdown.js';
 			import '../../selection/selection-action-menu-item.js';
@@ -83,7 +84,7 @@
 											<d2l-menu>
 												<d2l-menu-item text="Option 1"></d2l-menu-item>
 												<d2l-menu-item text="Option 2"></d2l-menu-item>
-											</d2l-menu-item>
+											</d2l-menu>
 										</d2l-menu-item>
 									</d2l-menu>
 								</d2l-dropdown-menu>
@@ -118,10 +119,10 @@
 							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected label="Engineering Materials for Energy Systems">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/c87d778f-e5f1-442b-8ac7-5d1a3d7ca725/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</div>
 							</d2l-list-item-content>
 							<div slot="actions">
 								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
@@ -137,10 +138,10 @@
 							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="3" label="Geomorphology and GIS">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/2f035317-5014-4095-82c8-e29f34c7f99e/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Geomorphology and GIS</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 							</d2l-list-item-content>
 							<div slot="actions">
 								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
@@ -155,22 +156,63 @@
 								</d2l-dropdown-more>
 							</div>
 						</d2l-list-item>
+						<d2l-pager-load-more slot="pager" has-more page-size="2" item-count="7"></d2l-pager-load-more>
 					</d2l-list>
 					<script>
-						let newItemCount = 0;
-						document.querySelector('d2l-selection-action[text="Add"]').addEventListener('d2l-selection-action-click', () => {
+						const itemsData = [
+							{ key: '1', title: 'Introductory Earth Sciences', imgSrc: 'https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg', supportingInfo: 'This course explores the geological process of the Earth\'s interior and surface. These include volcanism, earthquakes, mountains...' },
+							{ key: '2', title: 'Engineering Materials for Energy Systems', imgSrc: 'https://s.brightspace.com/course-images/images/c87d778f-e5f1-442b-8ac7-5d1a3d7ca725/tile-high-density-max-size.jpg', supportingInfo: 'Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.'  },
+							{ key: '3', title: 'Geomorphology and GIS', imgSrc: 'https://s.brightspace.com/course-images/images/2f035317-5014-4095-82c8-e29f34c7f99e/tile-high-density-max-size.jpg', supportingInfo: 'Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow\'s nest rutters.'  },
+							{ key: '4', title: 'Pedagogy Case Studies', imgSrc: 'https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg', supportingInfo: 'Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to. Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors.' },
+							{ key: '5', title: 'Introduction to Painting', imgSrc: 'https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg', supportingInfo: 'Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits. Bring a spring upon her cable holystone blow the man down spanker.' },
+							{ key: '4', title: 'Analytical Chemistry', imgSrc: 'https://s.brightspace.com/course-images/images/85f865dd-4c73-49c5-8809-c872256f7715/tile-high-density-max-size.jpg', supportingInfo: 'Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.' },
+							{ key: '5', title: 'Plant Biology', imgSrc: 'https://s.brightspace.com/course-images/images/61f07ae4-4686-4019-8146-1604cb8ae9bf/tile-high-density-max-size.jpg', supportingInfo: 'Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker.' }
+						];
+
+						const list = document.querySelector('#allFeatures');
+
+						const createItem = (key, title, imgSrc, supportingInfo) => {
 							const item = document.createElement('d2l-list-item');
 							item.selectable = true;
-							item.key = `${++newItemCount}`;
-							item.label = 'New Item';
+							item.key = key;
+							item.label = title;
+							item.href = 'http://www.d2l.com';
 							item.innerHTML = `
-								<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+								<img slot="illustration" src="${imgSrc}"></img>
 								<d2l-list-item-content>
-									<div>New Item ${newItemCount}</div>
-									<div slot="supporting-info">Supporting Info</div>
+									<div>${title}</div>
+									<div slot="supporting-info">${supportingInfo}</div>
 								</d2l-list-item-content>
 							`;
-							document.querySelector('#allFeatures').appendChild(item);
+							return item;
+						};
+
+						let newItemCount = 0;
+						document.querySelector('d2l-selection-action[text="Add"]').addEventListener('d2l-selection-action-click', () => {
+							list.appendChild(createItem(`${++newItemCount}`, `New Item ${newItemCount}`, 'https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg', 'Supporting Info'));
+						});
+
+						let lastLoadedIndex = 2;
+						list.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more', e => {
+							// fake delay
+							setTimeout(() => {
+								let remainingCount = itemsData.length - lastLoadedIndex - 1;
+								const numberToLoad = remainingCount < e.target.pageSize ? remainingCount : e.target.pageSize;
+
+								for (let i = 0; i < numberToLoad; i++) {
+									lastLoadedIndex += 1;
+									list.appendChild(createItem(itemsData[lastLoadedIndex].key, itemsData[lastLoadedIndex].title, itemsData[lastLoadedIndex].imgSrc, itemsData[lastLoadedIndex].supportingInfo));
+								}
+
+								if (lastLoadedIndex === itemsData.length - 1) {
+									e.target.hasMore = false;
+								} else {
+									remainingCount = itemsData.length - lastLoadedIndex - 1;
+									if (remainingCount < e.target.pageSize) e.target.pageSize = remainingCount;
+								}
+
+								e.detail.complete();
+							}, 1000);
 						});
 					</script>
 				</template>
@@ -201,10 +243,10 @@
 							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected label="Engineering Materials for Energy Systems">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/c87d778f-e5f1-442b-8ac7-5d1a3d7ca725/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</div>
 							</d2l-list-item-content>
 							<div slot="actions">
 								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
@@ -220,10 +262,10 @@
 							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="3" label="Geomorphology and GIS">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/2f035317-5014-4095-82c8-e29f34c7f99e/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Geomorphology and GIS</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 							</d2l-list-item-content>
 							<div slot="actions">
 								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
