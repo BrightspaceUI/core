@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../../demo/demo-page.js';
+			import './trim-whitespace-test.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="trim-whitespace">
+
+			<h2>Tester without trim-whitespace</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<whitespace-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+					>
+						<span> (4 Slotted Element 4) </span>
+						<nested-tester span-text=" (A1 Nested Span Text A1) ">
+							<span> (A2 Nested Slotted Element A2) </span>
+						</nested-tester>
+					</whitespace-tester>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Testers with trim-whitespace (mixin and directive)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<whitespace-mixin-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+					>
+						<!-- Uses extends TrimWhitespaceMixin(...) internally -->
+						<span> (4 Slotted Element 4) </span>
+						<nested-tester span-text=" (A1 Nested Span Text A1) ">
+							<span> (A2 Nested Slotted Element A2) </span>
+						</nested-tester>
+					</whitespace-mixin-tester>
+
+					<whitespace-directive-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+					>
+						<!-- Uses html`${trimWhitespace()} ...` internally -->
+						<span> (4 Slotted Element 4) </span>
+						<nested-tester span-text=" (A1 Nested Span Text A1) ">
+							<span> (A2 Nested Slotted Element A2) </span>
+						</nested-tester>
+					</whitespace-directive-tester>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Testers with trim-whitespace deep (mixin and directive)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<whitespace-mixin-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+						trim-whitespace-deep
+					>
+						<!-- Uses extends TrimWhitespaceMixin(...) internally -->
+						<span> (4 Slotted Element 4) </span>
+						<nested-tester span-text=" (A1 Nested Span Text A1) ">
+							<span> (A2 Nested Slotted Element A2) </span>
+						</nested-tester>
+					</whitespace-mixin-tester>
+
+					<whitespace-directive-deep-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+					>
+						<!-- Uses html`${trimWhitespaceDeep()} ...` internally -->
+						<span> (4 Slotted Element 4) </span>
+						<nested-tester span-text=" (A1 Nested Span Text A1) ">
+							<span> (A2 Nested Slotted Element A2) </span>
+						</nested-tester>
+					</whitespace-directive-deep-tester>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Testers with a nested noTrim directive (mixin and directive)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<whitespace-mixin-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+						trim-whitespace-deep
+					>
+						<no-trim-tester>
+							<!-- Uses html`${noTrim()} ...` internally -->
+						</no-trim-tester>
+						<span> (B2 Yes Trim B2) </span>
+					</whitespace-mixin-tester>
+
+					<whitespace-directive-deep-tester
+						span-text=" (1 Span Text 1) "
+						enable-span-content
+						enable-span-element
+					>
+						<no-trim-tester>
+							<!-- Uses html`${noTrim()} ...` internally -->
+						</no-trim-tester>
+						<span> (B2 Yes Trim B2) </span>
+					</whitespace-directive-deep-tester>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
