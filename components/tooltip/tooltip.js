@@ -1,6 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit';
-import { cssEscape, elemIdListAdd, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -446,6 +446,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearDismissible(this._dismissibleId);
 		delayTimeoutId = null;
 		this._dismissibleId = null;
+		if (this._target) {
+			elemIdListRemove(this._target, 'aria-labelledby', this.id);
+			elemIdListRemove(this._target, 'aria-describedby', this.id);
+		}
 	}
 
 	render() {
