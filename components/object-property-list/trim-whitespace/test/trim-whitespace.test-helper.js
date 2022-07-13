@@ -2,7 +2,26 @@ import { css, html, LitElement, nothing } from 'lit';
 import { noTrim, trimWhitespace, trimWhitespaceDeep } from '../trim-whitespace-directive.js';
 import { TrimWhitespaceMixin } from '../trim-whitespace-mixin.js';
 
-class WhitespaceTester extends LitElement {
+const GetTextMixin = superclass => class extends superclass {
+	getText() {
+		const shadowNodes = [...this.shadowRoot.childNodes].filter(node => [1, 3].includes(node.nodeType));
+		const childNodes = [...this.childNodes].filter(node => [1, 3].includes(node.nodeType));
+
+		const slotNodes = childNodes.reduce((acc, node) => {
+			if (node.assignedSlot) acc.set(node.assignedSlot, [...(acc.get(node.assignedSlot) || []), node]);
+			return acc;
+		}, new Map());
+
+		slotNodes.forEach((nodes, slot) => {
+			if (shadowNodes.indexOf(slot) < 0) return;
+			shadowNodes.splice(shadowNodes.indexOf(slot), 1, ...nodes);
+		});
+
+		return shadowNodes.map(node => (node.getText ? node.getText() : node.textContent)).join('');
+	}
+};
+
+class WhitespaceTester extends GetTextMixin(LitElement) {
 	static get properties() {
 		return {
 			spanText: { type: String, attribute: 'span-text' },
@@ -24,7 +43,7 @@ class WhitespaceTester extends LitElement {
 			${this.enableSpanElement ? html`<span> (3 Span Element 3) </span>` : nothing}
 			|
 			<slot></slot>
-		`;
+		|`;
 	}
 }
 
@@ -48,7 +67,7 @@ class WhitespaceDirectiveDeepTester extends WhitespaceTester {
 	}
 }
 
-class NestedTester extends LitElement {
+class NestedTester extends GetTextMixin(LitElement) {
 	static get properties() {
 		return { spanText: { type: String, attribute: 'span-text' } };
 	}
@@ -58,19 +77,21 @@ class NestedTester extends LitElement {
 			<span> ${this.spanText} </span>
 			|
 			<slot></slot>
-		|`;
+		`;
 	}
 }
 
-class NoTrimTester extends LitElement {
+class NoTrimTester extends GetTextMixin(LitElement) {
 	render() {
-		return html`${noTrim()}
-			(B1 No Trim B1)
-		|`;
+		return html`|
+			<span ${noTrim()}> (B1 No Trim B1) </span>
+			|
+			<span> (B2 Yes Trim B2) </span>
+		`;
 	}
 }
 
-class WhitespaceTesterRunner extends LitElement {
+class WhitespaceTesterRunner extends GetTextMixin(LitElement) {
 	static get properties() {
 		return {
 			spanText: { type: String, attribute: 'span-text' },
@@ -78,12 +99,22 @@ class WhitespaceTesterRunner extends LitElement {
 			enableSpanElement: { type: Boolean, attribute: 'enable-span-element' }, // First three are caught by update()
 			slottedText: { type: String, attribute: 'slotted-text' }, // This isn't caught by update or slotchange!
 			enableSlottedElement: { type: Boolean, attribute: 'enable-slotted-element' }, // This is caught by slotchange
+			enableNested: { type: Boolean, attribute: 'enable-nested' },
+			enableNoTrim: { type: Boolean, attribute: 'enable-no-trim' },
 			trimWhitespaceDeep: { type: Boolean, attribute: 'trim-whitespace-deep' },
 			testType: { type: String, attribute: 'test-type' },
 		};
 	}
 
 	render() {
+		if (!this.testType) return html`
+			<whitespace-tester
+				span-text="${this.spanText}"
+				?enable-span-content="${this.enableSpanContent}"
+				?enable-span-element="${this.enableSpanElement}"
+				?trim-whitespace-deep="${this.trimWhitespaceDeep}"
+			>${this._getContents()}</whitespace-tester>
+		`;
 		if (this.testType === 'mixin') return html`
 			<whitespace-mixin-tester
 				span-text="${this.spanText}"
@@ -108,14 +139,19 @@ class WhitespaceTesterRunner extends LitElement {
 		`;
 	}
 
+	getText() {
+		return this.shadowRoot.children[0].getText();
+	}
+
 	_getContents() {
 		return html`
-			${this.enableSlottedElement ? html`<span> (4 Slotted Element 4) </span>` : nothing}
 			<span> ${this.slottedText} </span>
-			<nested-tester span-text=" (A1 Nested Span Text A1) ">
+			|
+			${this.enableSlottedElement ? html`<span> (5 Slotted Element 5) </span>` : nothing}
+			${this.enableNested ? html`<nested-tester span-text=" (A1 Nested Span Text A1) ">
 				<span> (A2 Nested Slotted Element A2) </span>
-			</nested-tester>
-			<no-trim-tester></no-trim-tester>
+			</nested-tester>` : nothing}
+			${this.enableNoTrim ? html`<no-trim-tester></no-trim-tester>` : nothing}
 		`;
 	}
 }

@@ -38,7 +38,7 @@
 						enable-span-content
 						enable-span-element
 					>
-						<!-- Uses extends TrimWhitespaceMixin(...) internally -->
+						<!-- Uses "extends TrimWhitespaceMixin(...)" internally -->
 						<span> (4 Slotted Element 4) </span>
 						<nested-tester span-text=" (A1 Nested Span Text A1) ">
 							<span> (A2 Nested Slotted Element A2) </span>
@@ -69,7 +69,7 @@
 						enable-span-element
 						trim-whitespace-deep
 					>
-						<!-- Uses extends TrimWhitespaceMixin(...) internally -->
+						<!-- Uses "extends TrimWhitespaceMixin(...)" internally -->
 						<span> (4 Slotted Element 4) </span>
 						<nested-tester span-text=" (A1 Nested Span Text A1) ">
 							<span> (A2 Nested Slotted Element A2) </span>
@@ -100,10 +100,8 @@
 						enable-span-element
 						trim-whitespace-deep
 					>
-						<no-trim-tester>
-							<!-- Uses html`${noTrim()} ...` internally -->
-						</no-trim-tester>
-						<span> (B2 Yes Trim B2) </span>
+						<span> (4 Slotted Element 4) </span>
+						<no-trim-tester> <!-- Uses html`<span ${noTrim()}> ...` internally --> </no-trim-tester>
 					</whitespace-mixin-tester>
 
 					<whitespace-directive-deep-tester
@@ -111,10 +109,8 @@
 						enable-span-content
 						enable-span-element
 					>
-						<no-trim-tester>
-							<!-- Uses html`${noTrim()} ...` internally -->
-						</no-trim-tester>
-						<span> (B2 Yes Trim B2) </span>
+						<span> (4 Slotted Element 4) </span>
+						<no-trim-tester> <!-- Uses html`<span ${noTrim()}> ...` internally --> </no-trim-tester>
 					</whitespace-directive-deep-tester>
 				</template>
 			</d2l-demo-snippet>
