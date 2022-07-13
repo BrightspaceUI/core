@@ -39,7 +39,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 			 * The number of items showing. Assigned by PageableMixin.
 			 * @ignore
 			 */
-			itemShowingCount: { type: Number },
+			itemShowingCount: { attribute: false, type: Number },
 			_loading: { state: true }
 		};
 	}
