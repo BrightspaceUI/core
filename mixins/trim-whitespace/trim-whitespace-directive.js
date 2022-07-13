@@ -1,6 +1,6 @@
 import { Directive, directive } from 'lit/directive.js';
 import { noChange } from 'lit';
-import { TrimWhitespaceCore } from './trim-whitespace.js';
+import { TrimWhitespaceCore } from './trim-whitespace-core.js';
 
 class NoChangeDirective extends Directive {
 	render() { return noChange; }

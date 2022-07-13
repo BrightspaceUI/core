@@ -1,4 +1,4 @@
-import { TrimWhitespaceCore } from './trim-whitespace.js';
+import { TrimWhitespaceCore } from './trim-whitespace-core.js';
 
 export const TrimWhitespaceMixin = superclass => class extends superclass {
 	static get properties() {
