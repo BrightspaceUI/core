@@ -17,6 +17,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			dropdownOpened: { state: true },
+
+			/**
+			 * @ignore
+			 */
 			dropdownOpener: {
 				type: Boolean
 			},
@@ -40,7 +45,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				attribute: 'open-on-hover'
 			},
 			_isHovering: { type: Boolean },
-			_isOpen: { type: Boolean },
 			_isOpenedViaClick: { type: Boolean },
 			_isFading: { type: Boolean }
 		};
@@ -55,7 +59,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		// hover option
 		this._dismissTimerId = getUniqueId();
-		this._isOpen = false;
+		this.dropdownOpened = false;
 		this._isOpenedViaClick = false;
 		this._isHovering = false;
 		this._isFading = false;
@@ -121,7 +125,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	/* used by open-on-hover option */
 	async closeDropdown(fadeOut) {
-		this._isOpen = false;
+		this.dropdownOpened = false;
 		this._isHovering = false;
 		this._isOpenedViaClick = false;
 		if (fadeOut) {
@@ -150,7 +154,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	/* used by open-on-hover option */
 	async openDropdown(applyFocus) {
-		this._isOpen = true;
+		this.dropdownOpened = true;
 		const dropdownContent = this.__getContentElement();
 		if (!dropdownContent) return;
 		await dropdownContent.open(applyFocus);
@@ -167,7 +171,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			return;
 		}
 		content.toggleOpen(applyFocus);
-		this._isOpen = !this._isOpen;
+		this.dropdownOpened = !this.dropdownOpened;
 	}
 
 	__getContentElement() {
@@ -183,12 +187,12 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		opener.setAttribute('aria-expanded', 'false');
 		opener.removeAttribute('active');
-		this._isOpen = false;
+		this.dropdownOpened = false;
 		this._isOpenedViaClick = false;
 	}
 
 	__onDropdownMouseUp() {
-		this._isOpen = true;
+		this.dropdownOpened = true;
 		this._isFading = false;
 		this._isHovering = false;
 		this._isOpenedViaClick = true;
@@ -216,7 +220,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		const dropdownContent = this.__getContentElement();
 		if (dropdownContent._useMobileStyling) return;
 		clearTimeout(this._dismissTimerId);
-		if (!this._isOpen) await this.openDropdown(false);
+		if (!this.dropdownOpened) await this.openDropdown(false);
 		this._closeTimerStop();
 		if (!this._isOpenedViaClick) this._isHovering = true;
 	}
@@ -259,7 +263,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				e.stopPropagation();
 			}
 			this._closeTimerStop();
-			if (this._isOpen && !this._isHovering) {
+			if (this.dropdownOpened && !this._isHovering) {
 				this.closeDropdown();
 			} else {
 				this._isOpenedViaClick = true;
@@ -271,7 +275,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	/* used by open-on-hover option */
 	_closeTimerStart() {
-		if (this._isOpen) return;
+		if (this.dropdownOpened) return;
 		clearTimeout(this._setTimeoutId);
 		this._isFading = true;
 		this._setTimeoutId = setTimeout(() => {
@@ -289,7 +293,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	/* used by open-on-hover option */
 	_onOutsideClick(e) {
-		if (!this._isOpen) return;
+		if (!this.dropdownOpened) return;
 		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), e.composedPath()[0]);
 		const isWithinOpener = isComposedAncestor(this.getOpenerElement(), e.composedPath()[0]);
 		const isBackdropClick = isWithinDropdown
