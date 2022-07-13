@@ -31,12 +31,16 @@ describe('d2l-filter-tags', () => {
 			before(async() => {
 				await page.$eval(selector, async(elem, width) => {
 					elem.parentNode.style.width = `${width + 140}px`; // account for label
+				}, width);
+			});
+
+			after(async() => {
+				await page.$eval(selector, async(elem) => {
 					const filterTags = elem.querySelector('d2l-filter-tags');
 					const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
 					tagList._showHiddenTags = false;
 					await elem.updateComplete;
-				}, width);
-				await page.waitForTimeout(500);
+				});
 			});
 
 			it('is correct', async function() {
@@ -64,13 +68,9 @@ describe('d2l-filter-tags', () => {
 	describe('clearable behavior', () => {
 		const selector = '#basic';
 
-		before(async() => {
-			await page.$eval(selector, async(elem) => {
-				elem.parentNode.style.width = '1500px';
-				elem._showHiddenTags = false;
-				await elem.updateComplete;
-			});
-			await page.waitForTimeout(2000);
+		beforeEach(async() => {
+			await page.reload();
+			await visualDiff.resetFocus(page);
 		});
 
 		it('is correct when deleting the last item', async function() {

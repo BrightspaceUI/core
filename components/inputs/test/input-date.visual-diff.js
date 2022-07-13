@@ -534,6 +534,7 @@ describe('d2l-input-date', () => {
 			});
 
 			it('open required with enter after empty text input', async function() {
+				await visualDiff.resetFocus(page);
 				await setValue(page, '#required-value', '');
 				await openKey(page, '#required-value');
 				const rect = await getRect(page, '#required-value');
