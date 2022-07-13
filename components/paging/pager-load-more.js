@@ -111,7 +111,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 			'd2l-label-text': true,
 			'loading': this._loading
 		};
-		return html`<button class="${classMap(classes)}" @click="${this._handleClick}">
+		return html`<button class="${classMap(classes)}" @click="${this._handleClick}" type="button">
 			<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
 			${this.itemCount > -1 ? html`
 				<span class="separator"></span>
