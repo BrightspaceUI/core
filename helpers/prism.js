@@ -41,7 +41,7 @@ const darkColors = Object.freeze({
 	background: '#202122',
 	language: '#90989d',
 	lineNumbers: '#9ea5a9',
-	lineNumbersBackground: '#6e747733', // galena 20%
+	lineNumbersBackground: '#303133',
 	tokenDefault: '#cdd5dc',
 	tokenComment: '#81898d',
 	tokenPunctuation: '#cdd5dc',
