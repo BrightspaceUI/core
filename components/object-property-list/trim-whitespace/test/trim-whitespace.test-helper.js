@@ -107,7 +107,7 @@ class WhitespaceTesterRunner extends GetTextMixin(LitElement) {
 	}
 
 	render() {
-		if (!this.testType) return html`
+		if (this.testType === 'untrimmed' || !this.testType) return html`
 			<whitespace-tester
 				span-text="${this.spanText}"
 				?enable-span-content="${this.enableSpanContent}"
@@ -151,7 +151,9 @@ class WhitespaceTesterRunner extends GetTextMixin(LitElement) {
 			${this.enableNested ? html`<nested-tester span-text=" (A1 Nested Span Text A1) ">
 				<span> (A2 Nested Slotted Element A2) </span>
 			</nested-tester>` : nothing}
-			${this.enableNoTrim ? html`<no-trim-tester></no-trim-tester>` : nothing}
+			${this.enableNoTrim ?  html`|
+				<span ${noTrim()}> (B1 No Trim B1) </span> | <span> (B2 Yes Trim B2) </span>
+			` : nothing}
 		`;
 	}
 }
