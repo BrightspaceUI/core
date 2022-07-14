@@ -9,7 +9,7 @@ The mixin is initially in the `initial` state, and changes to the `pending` stat
 Apply the mixin and use the `asyncState` property as necessary. The `render` method will be called automatically when `asyncState` changes. Optionally, the `asyncPendingDelay` property may be configured to delay the transition to the pending state.
 
 ```js
-import { AsyncContainerMixin, asyncStates } from '@brightspace-ui/core/mixins/async-container-mixin.js';
+import { AsyncContainerMixin, asyncStates } from '@brightspace-ui/core/mixins/async-container/async-container-mixin.js';
 class MyComponent extends AsyncContainerMixin(LitElement) {
 
   constructor() {
