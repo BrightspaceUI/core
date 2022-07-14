@@ -1,7 +1,7 @@
 import '../link/link.js';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
-import { html, LitElement } from 'lit';
-import { bodySmallStyles } from '../typography/styles.js';
+import { html, LitElement, nothing } from 'lit';
+import { bodyCompactStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -30,13 +30,17 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [emptyStateStyles, emptyStateSimpleStyles, bodySmallStyles];
+		return [emptyStateStyles, emptyStateSimpleStyles, bodyCompactStyles];
 	}
 
 	render() {
+		const actionLink = this.actionText
+			? html`<d2l-link class="d2l-body-compact" href=${this.actionHref}>${this.actionText}</d2l-link>`
+			: nothing;
+
 		return html`
-			<p class="d2l-body-small">${this.description}</p>
-			${this.actionText && html`<d2l-link href=${this.actionHref} small>${this.actionText}</d2l-link>`}
+			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
+			${actionLink}
 		`;
 	}
 

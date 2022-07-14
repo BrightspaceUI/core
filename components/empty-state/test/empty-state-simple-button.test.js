@@ -9,7 +9,7 @@ describe('d2l-empty-state-simple-button',  () => {
 	});
 
 	it('dispatches d2l-empty-state-action when action is clicked', async() => {
-		const el = await fixture(html`<d2l-empty-state-simple-button action-text='Create a Course'></d2l-empty-state-simple-button>`);
+		const el = await fixture(html`<d2l-empty-state-simple-button action-text='Create New Assignment'></d2l-empty-state-simple-button>`);
 		setTimeout(() => el.shadowRoot.querySelector('d2l-button-subtle').click());
 		await oneEvent(el, 'd2l-empty-state-action');
 	});

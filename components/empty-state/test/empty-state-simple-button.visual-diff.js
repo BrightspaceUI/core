@@ -10,29 +10,34 @@ describe('d2l-empty-state-simple-button', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(
-			`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-simple-button.visual-diff.html`,
-			{ waitUntil: ['networkidle0', 'load'] }
-		);
-		await page.bringToFront();
 	});
 
 	beforeEach(async() => await visualDiff.resetFocus(page));
 
 	after(async() => await browser.close());
 
-	[
-		{ category: 'default', tests: [ 'normal', 'button-wrap', 'wrap', 'no-description', 'no-action' ] },
-	].forEach(entry => {
-		describe(entry.category, () => {
-			entry.tests.forEach(name => {
-				it(name, async function() {
-					const selector = `#${entry.category}-${name}`;
-					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
+	['ltr', 'rtl'].forEach(dir => {
+		describe(dir, () => {
+
+			before(async() => {
+				await page.goto(
+					`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-simple-button.visual-diff.html?dir=${dir}`,
+					{ waitUntil: ['networkidle0', 'load'] }
+				);
+				await page.bringToFront();
 			});
+
+			[ 'normal', 'button-wrap', 'wrap', 'no-description', 'no-action' ]
+				.forEach(name => {
+					it(`${name}`, async function() {
+						const selector = `#${name}`;
+						const rect = await visualDiff.getRect(page, selector);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				});
+
 		});
+
 	});
 
 });

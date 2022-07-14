@@ -21,18 +21,28 @@ describe('d2l-empty-state-simple-link', () => {
 
 	after(async() => await browser.close());
 
-	[
-		{ category: 'default', tests: [ 'normal', 'link-wrap', 'wrap', 'no-description', 'no-link' ] },
-	].forEach(entry => {
-		describe(entry.category, () => {
-			entry.tests.forEach(name => {
-				it(name, async function() {
-					const selector = `#${entry.category}-${name}`;
-					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
+	['ltr', 'rtl'].forEach(dir => {
+		describe(dir, () => {
+
+			before(async() => {
+				await page.goto(
+					`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-simple-link.visual-diff.html?dir=${dir}`,
+					{ waitUntil: ['networkidle0', 'load'] }
+				);
+				await page.bringToFront();
 			});
+
+			[ 'normal', 'link-wrap', 'wrap', 'no-description', 'no-link' ]
+				.forEach(name => {
+					it(`${name}`, async function() {
+						const selector = `#${name}`;
+						const rect = await visualDiff.getRect(page, selector);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				});
+
 		});
+
 	});
 
 });

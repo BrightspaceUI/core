@@ -18,12 +18,12 @@ export const emptyStateStyles = css`
 
 export const emptyStateSimpleStyles = css`
 
-	:host([dir="rtl"]) p {
+	:host([dir="rtl"]) .d2l-empty-state-description {
 		padding-left: 0.5rem;
 		padding-right: 0;
 	}
 
-	p {
+	.d2l-empty-state-description {
 		display: inline;
 		padding-right: 0.5rem;
 	}
@@ -36,23 +36,36 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	#d2l-empty-state-action {
+	:host([illustration-name="checklist"]) .d2l-empty-state-title {
+		margin-top: 0;
+	}
+
+	.d2l-empty-state-action {
 		margin-top: 0.5rem;
 	}
 
-	#d2l-empty-state-description {
+	.d2l-empty-state-description {
 		margin: 0 auto 0.3rem;
-		max-width: 500px;
+		max-width: 492px;
 		width: 100%;
 	}
 
-	#d2l-empty-state-title {
+	.d2l-empty-state-title {
 		margin-bottom: 0.9rem;
 	}
+	
+	.d2l-empty-state-title-large {
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 1.8rem;
+		margin: 1rem 0 1.5rem 0;
+	}
 
-	svg {
-		max-width: 475px;
-		width: 100%;
+	.d2l-empty-state-title-small {
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.5rem;
+		margin-top: 0.5rem;
 	}
 
 	::slotted(*) {
@@ -63,30 +76,10 @@ export const emptyStateIllustratedStyles = css`
 		display: inline-block;
 	}
 
-	@media (max-width: 615px) {
-
-		#d2l-empty-state-title {
-			margin-top: 0.5rem;
-		}
-
-		:host([illustration-name="calendar"]) #d2l-empty-state-title {
-			margin-top: 1rem;
-		}
-
-		:host([illustration-name="checklist"]) #d2l-empty-state-title {
-			margin-top: 1.3rem;
-		}
-
-		svg {
-			max-height: 200px;
-		}
-
-	}
-
-	@media (min-width: 616px) {
-		#d2l-empty-state-title {
-			margin-top: 1rem;
-		}
+	svg {
+		height: 100%;
+		max-width: 492px;
+		width: 100%;
 	}
 
 `;

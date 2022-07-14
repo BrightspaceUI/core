@@ -21,18 +21,14 @@ describe('d2l-empty-state-illustrated-link', () => {
 
 	after(async() => await browser.close());
 
-	[
-		{ category: 'default', tests: [ 'normal', 'custom-svg', 'no-svg' ] },
-	].forEach(entry => {
-		describe(entry.category, () => {
-			entry.tests.forEach(name => {
-				it(name, async function() {
-					const selector = `#${entry.category}-${name}`;
-					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-			});
-		});
-	});
+	[ 'normal', 'small', 'custom-svg', 'no-svg' ]
+		.forEach(name => {
 
+			it(name, async function() {
+				const selector = `#${name}`;
+				const rect = await visualDiff.getRect(page, selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+		});
 });
