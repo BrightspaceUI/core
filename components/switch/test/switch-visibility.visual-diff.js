@@ -34,7 +34,12 @@ describe('d2l-switch-visibility', () => {
 					if (info.name === 'on with conditions, conditions focused') {
 						await page.$eval(info.selector, (elem) => elem.shadowRoot.querySelector('#conditions-help').focus());
 					}
+
 					const rect = await visualDiff.getRect(page, info.selector);
+
+					if (info.name === 'on with conditions, conditions focused') {
+						rect.height += 90;
+					}
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
