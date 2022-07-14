@@ -3,7 +3,7 @@ on: pull_request
 jobs:
   build:
     name: Visual Diff
-    timeout-minutes: 40
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
@@ -22,3 +22,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RETRIES: 1
