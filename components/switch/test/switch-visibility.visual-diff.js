@@ -25,10 +25,15 @@ describe('d2l-switch-visibility', () => {
 
 			[
 				{ name: 'off', selector: '#off' },
-				{ name: 'on', selector: '#on' }
+				{ name: 'on', selector: '#on' },
+				{ name: 'on with conditions', selector: '#on-with-conditions' },
+				{ name: 'on with conditions, conditions focused', selector: '#on-with-conditions' }
 			].forEach(info => {
 
 				it(info.name, async function() {
+					if (info.name === 'on with conditions, conditions focused') {
+						await page.$eval(info.selector, (elem) => elem.shadowRoot.querySelector('#conditions-help').focus());
+					}
 					const rect = await visualDiff.getRect(page, info.selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
