@@ -28,7 +28,7 @@ export default {
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",
 	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Number must be greater than {min} and less than {max}.} other {Number must be greater than {min} and less than or equal to {max}.}}} other {{maxExclusive, select, true {Number must be greater than or equal to {min} and less than {max}.} other {Number must be greater than or equal to {min} and less than or equal to {max}.}}}}",
+	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Rhaid i'r nifer fod yn fwy na {min} a llai na {max}.} other {Rhaid i'r nifer fod yn fwy na {min} a llai na neu'n hafal i {max}.}}} other {{maxExclusive, select, true {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min} a llai na {max}.} other {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min} a llai na neu'n hafal i {max}.}}}}",
 	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Rhaid i'r nifer fod yn llai na {max}.} other {Rhaid i'r nifer fod yn llai na neu’n hafal i {max}.}}",
 	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Rhaid i'r nifer fod yn fwy na {min}.} other {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min}.}}",
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",

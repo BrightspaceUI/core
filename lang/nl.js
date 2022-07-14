@@ -20,7 +20,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "Filters",
 	"components.filter.noActiveFilters": "Geen actieve filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
@@ -108,7 +108,7 @@ export default {
 	"components.tag-list.show-more-description": "Selecteer deze optie om verborgen items op labellijsten weer te geven",
 	"components.tag-list-item.tooltip-arrow-keys": "Pijltoetsen",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Schakelen tussen tags",
-	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Verwijderen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Verwijder de gerichte tag",
 	"components.tag-list-item.tooltip-title": "Bedieningselementen op het toetsenbord",
 	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
