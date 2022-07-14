@@ -4,8 +4,9 @@ import { TrimWhitespaceMixin } from '../trim-whitespace-mixin.js';
 
 const GetTextMixin = superclass => class extends superclass {
 	getText() {
-		const shadowNodes = [...this.shadowRoot.childNodes].filter(node => [1, 3].includes(node.nodeType));
-		const childNodes = [...this.childNodes].filter(node => [1, 3].includes(node.nodeType));
+		const filterNodeList = nodes => [...nodes].filter(node => [1, 3].includes(node.nodeType) && node.nodeName !== 'STYLE');
+		const shadowNodes = filterNodeList(this.shadowRoot.childNodes);
+		const childNodes = filterNodeList(this.childNodes);
 
 		const slotNodes = childNodes.reduce((acc, node) => {
 			if (node.assignedSlot) acc.set(node.assignedSlot, [...(acc.get(node.assignedSlot) || []), node]);
