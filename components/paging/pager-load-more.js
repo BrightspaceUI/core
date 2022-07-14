@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
@@ -116,7 +116,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 			${this.itemCount > -1 ? html`
 				<span class="separator"></span>
 				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: this.itemShowingCount, totalCount: this.itemCount })}</span>
-			` : null}
+			` : nothing}
 			<d2l-loading-spinner size="24"></d2l-loading-spinner>
 		</button>`;
 	}
