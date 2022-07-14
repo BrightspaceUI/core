@@ -70,15 +70,15 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
 					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
-					--d2l-icon-fill-color: white;
-					--d2l-button-icon-fill-color-hover: white;
+					--d2l-icon-fill-color: black;
+					--d2l-button-icon-fill-color-hover: black;
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
-					--d2l-icon-fill-color: var(--d2l-color-sylvite);
-					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
+					--d2l-icon-fill-color: var(--d2l-color-ferrite);
+					--d2l-button-icon-fill-color-hover: var(--d2l-color-ferrite);
 				}
 
 				button {

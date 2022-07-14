@@ -25,7 +25,7 @@ export const dropdownContentStyles = css`
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
 		--d2l-dropdown-background-color: #333536; /* tungsten @ 70% */
-		--d2l-dropdown-border-color: var(--d2l-color-tungsten);
+		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
 		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);
 		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
 		opacity: 0.9;

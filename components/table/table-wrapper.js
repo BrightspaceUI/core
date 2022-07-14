@@ -204,7 +204,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		return css`
 			:host {
 				--d2l-table-border: 1px solid var(--d2l-table-border-color);
-				--d2l-table-border-color: var(--d2l-color-mica);
+				--d2l-table-border-color: var(--d2l-color-ferrite);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
 				--d2l-table-cell-padding: 0.5rem 1rem;
@@ -222,7 +222,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
 				--d2l-table-cell-padding: 0.6rem;
 				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
-				--d2l-table-border-color: var(--d2l-color-gypsum);
+				--d2l-table-border-color: var(--d2l-color-ferrite);
 				--d2l-table-header-background-color: #ffffff;
 			}
 		`;
