@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin.",
 	"components.selection.select-all": "Tümünü Seç",
 	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",

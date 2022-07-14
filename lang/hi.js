@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "यह कार्रवाई निष्पादित करने के लिए कोई आइटम का चयन करें।",
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",

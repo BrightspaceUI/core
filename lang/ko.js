@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "이 작업을 수행할 항목을 선택하십시오.",
 	"components.selection.select-all": "모두 선택",
 	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",

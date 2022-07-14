@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "更多操作",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "选择一个项目后才能执行此操作。",
 	"components.selection.select-all": "全选",
 	"components.selection.select-all-items": "选择全部 {count} 个项目",

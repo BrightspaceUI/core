@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",
 	"components.selection.select-all-items": "{count} 個の項目をすべて選択",

@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "Dewiswch eitem i gyflawni'r weithred hon.",
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",

@@ -93,6 +93,7 @@ export default {
 	"components.overflow-group.moreActions": "Weitere Aktionen",
 	"components.pager-load-more.action": "Load {count} More",
 	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "Wählen Sie ein Element aus, um diese Aktion auszuführen.",
 	"components.selection.select-all": "Alle auswählen",
 	"components.selection.select-all-items": "Alle {count} Elemente auswählen",
