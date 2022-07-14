@@ -52,7 +52,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		}
 	}
 
-	render() {
+	_getText() {
 		const tooltipHelpClasses = {
 			'conditions-show': this.on && this._hasConditions
 		};
@@ -63,12 +63,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 			</d2l-tooltip-help>
 			`;
 
-		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
-			? this.textPosition : 'end');
-
-		let renderedHTML = super.render();
-		renderedHTML = html`${textPosition === 'start' ? conditions : ''}${renderedHTML}${textPosition === 'end' ? conditions : ''}`;
-		return renderedHTML;
+		return html`<span id="${this._textId}" class="d2l-switch-text">${this.text}${conditions}</span>`;
 	}
 
 	_handleConditionsSlotChange(e) {
