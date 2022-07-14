@@ -7,8 +7,10 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const nativeFocus = document.createElement('div').focus;
 
@@ -45,7 +47,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 	}
 
 	static get styles() {
-		return [ buttonStyles, labelStyles, css`
+		return [ buttonStyles, labelStyles, offscreenStyles, css`
 			:host {
 				display: block;
 			}
@@ -114,6 +116,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		return html`<button class="${classMap(classes)}" @click="${this._handleClick}" type="button">
 			<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
 			${this.itemCount > -1 ? html`
+				<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
 				<span class="separator"></span>
 				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: this.itemShowingCount, totalCount: this.itemCount })}</span>
 			` : nothing}
