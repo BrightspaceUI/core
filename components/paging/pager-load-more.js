@@ -115,7 +115,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		};
 		return html`<button class="${classMap(classes)}" @click="${this._handleClick}" type="button">
 			${this._loading ? html`
-				<span class="d2l-offscreen">${this.localize('components.pager-load-more.status-loading')}</span>
+				<span class="d2l-offscreen" role="alert">${this.localize('components.pager-load-more.status-loading')}</span>
 				<d2l-loading-spinner size="24"></d2l-loading-spinner>
 			` : html`
 				<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
