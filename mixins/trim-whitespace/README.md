@@ -40,10 +40,6 @@ class MyComponent extends TrimWhitespaceMixin(LitElement) {
 
 - `trimWhitespaceDeep` (Boolean): Whether to recurse into nested shadow DOMs when trimming and listening for changes
 
-## Features
-
-- Any updates to the component's contents (changed text, added elements, etc.) will immediately re-trigger the whitespace trimming
-
 ## Limitations
 
 - `noTrim`: Doesn't recurse, meaning it only prevents trimming of an element's own direct text nodes, not any of its descendants
