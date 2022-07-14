@@ -31,7 +31,7 @@ const fullSettings = {
 const propsExpected = {
 	all: {
 		untrimmed: '| (1 Span Text 1) | (2 Span Content 2) | (3 Span Element 3) | (4 Slotted Text 4) | (5 Slotted Element 5) | (A1 Nested Span Text A1) | (A2 Nested Slotted Element A2) | (B1 No Trim B1) | (B2 Yes Trim B2) |',
-		shallow: '|(1 Span Text 1)|(2 Span Content 2)|(3 Span Element 3)|(4 Slotted Text 4)|(5 Slotted Element 5)| (A1 Nested Span Text A1) | (A2 Nested Slotted Element A2) | (B1 No Trim B1) |(B2 Yes Trim B2)|',
+		shallow: '|(1 Span Text 1)|(2 Span Content 2)|(3 Span Element 3)|(4 Slotted Text 4)|(5 Slotted Element 5)| (A1 Nested Span Text A1) |(A2 Nested Slotted Element A2)| (B1 No Trim B1) |(B2 Yes Trim B2)|',
 		deep: '|(1 Span Text 1)|(2 Span Content 2)|(3 Span Element 3)|(4 Slotted Text 4)|(5 Slotted Element 5)|(A1 Nested Span Text A1)|(A2 Nested Slotted Element A2)| (B1 No Trim B1) |(B2 Yes Trim B2)|',
 	},
 	spanText: {
@@ -50,7 +50,7 @@ const propsExpected = {
 		untrimmed: '| | | | | (5 Slotted Element 5) |', shallow: '|||||(5 Slotted Element 5)|', deep: '|||||(5 Slotted Element 5)|',
 	},
 	enableNested: {
-		untrimmed: '| | | | | | (A1 Nested Span Text A1) | (A2 Nested Slotted Element A2) |', shallow: '|||||| (A1 Nested Span Text A1) | (A2 Nested Slotted Element A2) |', deep: '||||||(A1 Nested Span Text A1)|(A2 Nested Slotted Element A2)|',
+		untrimmed: '| | | | | | (A1 Nested Span Text A1) | (A2 Nested Slotted Element A2) |', shallow: '|||||| (A1 Nested Span Text A1) |(A2 Nested Slotted Element A2)|', deep: '||||||(A1 Nested Span Text A1)|(A2 Nested Slotted Element A2)|',
 	},
 	enableNoTrim: {
 		untrimmed: '| | | | | | (B1 No Trim B1) | (B2 Yes Trim B2) |', shallow: '|||||| (B1 No Trim B1) |(B2 Yes Trim B2)|', deep: '|||||| (B1 No Trim B1) |(B2 Yes Trim B2)|',

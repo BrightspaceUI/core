@@ -73,11 +73,7 @@ class NestedTester extends GetTextMixin(LitElement) {
 	}
 
 	render() {
-		return html`|
-			<span> ${this.spanText} </span>
-			|
-			<slot></slot>
-		`;
+		return html`|<span> ${this.spanText} </span>|<slot></slot>`;
 	}
 }
 
