@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
@@ -79,17 +78,6 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 				color: var(--d2l-color-galena);
 				font-weight: 400;
 			}
-			d2l-loading-spinner {
-				display: none;
-			}
-			.loading > .action,
-			.loading > .separator,
-			.loading > .info {
-				display: none;
-			}
-			.loading > d2l-loading-spinner {
-				display: inline-block;
-			}
 		`];
 	}
 
@@ -109,11 +97,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 
 	render() {
 		if (!this.hasMore) return;
-		const classes = {
-			'd2l-label-text': true,
-			'loading': this._loading
-		};
-		return html`<button class="${classMap(classes)}" @click="${this._handleClick}" type="button">
+		return html`<button ?disabled="${this._loading}" class="d2l-label-text" @click="${this._handleClick}" type="button">
 			${this._loading ? html`
 				<span class="d2l-offscreen" role="alert">${this.localize('components.pager-load-more.status-loading')}</span>
 				<d2l-loading-spinner size="24"></d2l-loading-spinner>
