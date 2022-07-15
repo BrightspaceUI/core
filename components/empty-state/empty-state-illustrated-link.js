@@ -55,7 +55,6 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 
 		this._contentWidth = 0;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
-
 	}
 
 	connectedCallback() {
@@ -66,6 +65,18 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._resizeObserver.disconnect();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (!this.titleText || this.titleText.length === 0) {
+			console.warn('d2l-empty-state-illustrated-link component requires titleText.');
+		}
+
+		if (!this.description || this.description.length === 0) {
+			console.warn('d2l-empty-state-illustrated-link component requires a description.');
+		}
 	}
 
 	render() {

@@ -33,6 +33,14 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (!this.description || this.description.length === 0) {
+			console.warn('d2l-empty-state-simple-link component requires a description.');
+		}
+	}
+
 	render() {
 		const actionLink = this.actionText && this.actionHref
 			? html`<d2l-link class="d2l-body-compact" href=${this.actionHref}>${this.actionText}</d2l-link>`

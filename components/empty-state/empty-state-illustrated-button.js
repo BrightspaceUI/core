@@ -70,6 +70,18 @@ class EmptyStateIllustratedButton extends RtlMixin(LitElement) {
 		this._resizeObserver.disconnect();
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (!this.titleText || this.titleText.length === 0) {
+			console.warn('d2l-empty-state-illustrated-button component requires titleText.');
+		}
+
+		if (!this.description || this.description.length === 0) {
+			console.warn('d2l-empty-state-illustrated-button component requires a description.');
+		}
+	}
+
 	render() {
 		const illustrationContainerStyle = {
 			height: `${Math.min(this._contentWidth, 500) / 1.5}px`,

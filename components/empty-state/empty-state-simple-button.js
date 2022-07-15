@@ -29,6 +29,14 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (!this.description || this.description.length === 0) {
+			console.warn('d2l-empty-state-simple-button component requires a description.');
+		}
+	}
+
 	render() {
 		const actionButton = this.actionText
 			? html`<d2l-button-subtle class="d2l-empty-state-action" @click=${this._handleActionClick}  h-align="text" text=${this.actionText}></d2l-button-subtle>`
