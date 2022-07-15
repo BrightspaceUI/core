@@ -97,7 +97,8 @@ class EmptyStateIllustratedButton extends RtlMixin(LitElement) {
 				${runAsync(this.illustrationName, () => this._getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
 			</div>`
 		: html`<slot></slot>`}
-            <p class="${classMap(titleClass)}">${this.titleText}</p>
+
+			<p class="${classMap(titleClass)}">${this.titleText}</p>
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			${actionButton}
 		`;

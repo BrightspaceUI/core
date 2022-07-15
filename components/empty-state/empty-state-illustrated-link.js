@@ -92,7 +92,7 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 			</div>`
 		: html`<slot></slot>`}
 
-            <p class="${classMap(titleClass)}" id="d2l-empty-state-title">${this.titleText}</p>
+			<p class="${classMap(titleClass)}" id="d2l-empty-state-title">${this.titleText}</p>
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			${actionLink}
 		`;

@@ -35,10 +35,8 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 			: nothing;
 
 		return html`
-		<div>
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			${actionButton}
-		</div>
 		`;
 	}
 
