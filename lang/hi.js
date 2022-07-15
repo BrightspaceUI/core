@@ -2,7 +2,7 @@
 
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
-	"components.breadcrumbs.breadcrumb": "Breadcrumb",
+	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.calendar.notSelected": "चयनित नहीं।",
 	"components.calendar.selected": "चयनित।",
 	"components.calendar.show": "{month} दिखाएँ",

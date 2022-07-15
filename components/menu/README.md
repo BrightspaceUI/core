@@ -62,7 +62,7 @@ To make your usage of `d2l-menu` accessible, use the following property:
 
 ## Menu Item [d2l-menu-item]
 
-The `d2l-menu item` component is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event.
+The `d2l-menu-item` component is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event.
 
 <!-- docs: demo live name:d2l-menu-item -->
 ```html

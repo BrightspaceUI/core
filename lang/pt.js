@@ -108,7 +108,7 @@ export default {
 	"components.tag-list.show-more-description": "Selecione para mostrar itens ocultos da lista de marcas",
 	"components.tag-list-item.tooltip-arrow-keys": "Teclas de seta",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Mover entre marcas",
-	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key": "Retroceder/Excluir",
 	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a marca de foco",
 	"components.tag-list-item.tooltip-title": "Controles do teclado",
 	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",

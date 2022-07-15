@@ -177,13 +177,35 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	_findAutofocusElement(node) {
+		if (this._useNative) {
+			// Do not override native autofocus attribute implementation
+			return null;
+		}
+
+		const slot = node.querySelector('slot');
+		if (!slot) {
+			// We are in a confirm dialog, autofocus attribute will never be set
+			return null;
+		}
+
+		const content = slot.assignedElements({ flatten: true });
+
+		let autofocusElement = null;
+		for (const el of content) {
+			autofocusElement = el.hasAttribute('autofocus') ? el : el.querySelector('[autofocus]');
+			if (autofocusElement) break;
+		}
+		return autofocusElement;
+	}
+
 	_focusFirst() {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
-			const firstFocusable = getNextFocusable(content);
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), firstFocusable)) {
-				forceFocusVisible(firstFocusable);
+			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+				forceFocusVisible(elementToFocus, false);
 				return;
 			}
 		}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+
+			import '../object-property-list.js';
+			import '../object-property-list-item.js';
+			import '../object-property-list-item-link.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-object-property-list">
+
+			<h2>Object Property List: Single item</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
+					</d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Object Property List: All item variants</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
+						<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
+						<d2l-object-property-list-item-link text="Example link with icon" href="https://www.d2l.com/" icon="tier1:alert"></d2l-object-property-list-item-link>
+					</d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Object Property List: Long items to demonstrate word-wrap</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+						<d2l-object-property-list-item icon="tier1:alert" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+					</d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

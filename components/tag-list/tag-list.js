@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -133,7 +134,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
+		let container = getOffsetParent(this);
+		if (!container || container.tagName === 'BODY') container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(container);
 

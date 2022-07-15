@@ -239,47 +239,54 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
   import '@brightspace-ui/core/components/filter/filter-tags.js';
 </script>
 <style>
-	d2l-filter-tags {
-		max-width: calc(100% - 300px);
-	}
+  .filter-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  d2l-filter-tags {
+    align-self: center;
+    position: relative;
+    width: 100%;
+  }
 
-	@media(max-width: 600px) {
-      d2l-filter-tags {
+  @media(max-width: 600px) {
+      .filter-wrapper {
         display: block;
         max-width: 100%;
       }
 	}
 </style>
+<div class="filter-wrapper">
+  <d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
 
-<d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
+  <d2l-filter id="core-filter">
+    <d2l-filter-dimension-set key="1" text="Dim 1">
+      <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+    <d2l-filter-dimension-set key="2" text="Dim 2">
+      <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
 
-<d2l-filter id="core-filter">
-  <d2l-filter-dimension-set key="1" text="Dim 1">
-    <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
-  </d2l-filter-dimension-set>
-  <d2l-filter-dimension-set key="2" text="Dim 2">
-    <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
-  </d2l-filter-dimension-set>
-</d2l-filter>
-
-<d2l-filter id="core-filter-2">
-  <d2l-filter-dimension-set key="1" text="Dim 1" value-only-active-filter-text>
-    <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
-  </d2l-filter-dimension-set>
-  <d2l-filter-dimension-set key="2" text="Dim 2" value-only-active-filter-text>
-    <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
-  </d2l-filter-dimension-set>
-</d2l-filter>
+  <d2l-filter id="core-filter-2">
+    <d2l-filter-dimension-set key="1" text="Dim 1" value-only-active-filter-text>
+      <d2l-filter-dimension-set-value selected text="Option 1 - 1" key="1" ></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 2" key="2"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 3" key="3"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 1 - 4" key="4"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+    <d2l-filter-dimension-set key="2" text="Dim 2" value-only-active-filter-text>
+      <d2l-filter-dimension-set-value selected text="Option 2 - 1" key="1"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 2 - 2" key="2"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+</div>
 ```
 
 <!-- docs: start hidden content -->

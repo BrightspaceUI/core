@@ -108,7 +108,7 @@ export default {
 	"components.tag-list.show-more-description": "Selecteer deze optie om verborgen items op labellijsten weer te geven",
 	"components.tag-list-item.tooltip-arrow-keys": "Pijltoetsen",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Schakelen tussen tags",
-	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Verwijderen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Verwijder de gerichte tag",
 	"components.tag-list-item.tooltip-title": "Bedieningselementen op het toetsenbord",
 	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
