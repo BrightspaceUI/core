@@ -13,6 +13,7 @@ export const listSelectionStates = SelectionInfo.states;
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
  * @slot - Slot for list items (ex. `d2l-list-item`, `d2l-list-item-button`, or custom items)
  * @slot header - Slot for `d2l-list-header` to be rendered above the list
+ * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
 class List extends PageableMixin(SelectionMixin(LitElement)) {
@@ -240,12 +241,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}, 0);
 	}
 
-	_handleSlotChange(e) {
+	async _handleSlotChange(e) {
 		const items = this.getItems(e.target);
 		if (this._itemsShowingCount === items.length) return;
 		this._itemsShowingCount = items.length;
 
-		// TODO: handle update for the nested case
+		this._updatePagerCount(await this._getListItemsShowingTotalCount(true));
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-items-showing-count-change', {

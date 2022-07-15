@@ -1,14 +1,15 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const nativeFocus = document.createElement('div').focus;
 
@@ -21,31 +22,31 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 	static get properties() {
 		return {
 			/**
-			 * Whether there are more items that can be loaded
+			 * Whether there are more items that can be loaded.
 			 * @type {boolean}
 			 */
-			hasMore: { type: Boolean, attribute: 'has-more' },
+			hasMore: { type: Boolean, attribute: 'has-more', reflect: true },
 			/**
-			 * Total number of items
+			 * Total number of items. If not specified, neither it nor the count of items showing will be displayed.
 			 * @type {number}
 			 */
-			itemCount: { type: Number, attribute: 'item-count' },
+			itemCount: { type: Number, attribute: 'item-count', reflect: true },
 			/**
-			 * The number of additional items if more items can be loaded
+			 * The number of additional items to load.
 			 * @type {number}
 			 */
-			pageSize: { type: Number, attribute: 'page-size' },
+			pageSize: { type: Number, attribute: 'page-size', reflect: true },
 			/**
 			 * The number of items showing. Assigned by PageableMixin.
 			 * @ignore
 			 */
-			itemShowingCount: { type: Number },
+			itemShowingCount: { attribute: false, type: Number },
 			_loading: { state: true }
 		};
 	}
 
 	static get styles() {
-		return [ buttonStyles, labelStyles, css`
+		return [ buttonStyles, labelStyles, offscreenStyles, css`
 			:host {
 				display: block;
 			}
@@ -77,17 +78,6 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 				color: var(--d2l-color-galena);
 				font-weight: 400;
 			}
-			d2l-loading-spinner {
-				display: none;
-			}
-			.loading > .action,
-			.loading > .separator,
-			.loading > .info {
-				display: none;
-			}
-			.loading > d2l-loading-spinner {
-				display: inline-block;
-			}
 		`];
 	}
 
@@ -95,6 +85,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		super();
 		this.hasMore = false;
 		this.itemCount = -1;
+		/** @ignore */
 		this.itemShowingCount = 0;
 		this.pageSize = 50;
 		this._loading = false;
@@ -106,22 +97,25 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 
 	render() {
 		if (!this.hasMore) return;
-		const classes = {
-			'd2l-label-text': true,
-			'loading': this._loading
-		};
-		return html`<button class="${classMap(classes)}" @click="${this._handleClick}">
-			<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
-			${this.itemCount > -1 ? html`
-				<span class="separator"></span>
-				<span class="info">${this.localize('components.pager-load-more.info', { showingCount: this.itemShowingCount, totalCount: this.itemCount })}</span>
-			` : null}
-			<d2l-loading-spinner size="24"></d2l-loading-spinner>
-		</button>`;
+		return html`<button ?disabled="${this._loading}" class="d2l-label-text" @click="${this._handleClick}" type="button">
+			${this._loading ? html`
+				<span class="d2l-offscreen" role="alert">${this.localize('components.pager-load-more.status-loading')}</span>
+				<d2l-loading-spinner size="24"></d2l-loading-spinner>
+			` : html`
+				<span class="action">${this.localize('components.pager-load-more.action', { count: this.pageSize })}</span>
+				${this.itemCount > -1 ? html`
+					<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
+					<span class="separator"></span>
+					<span class="info">${this.localize('components.pager-load-more.info', { showingCount: this.itemShowingCount, totalCount: this.itemCount })}</span>
+				` : nothing}
+			`}
+		</button>
+		`;
 	}
 
 	async _handleClick() {
 		const pageable = findComposedAncestor(this, node => node._pageable);
+		if (!pageable) return;
 		const lastItemIndex = pageable._getLastItemIndex();
 
 		await new Promise(resolve => {
@@ -142,7 +136,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 		if (item.focus !== nativeFocus) {
 			requestAnimationFrame(() => item.focus());
 		} else {
-			const firstFocusable = getFirstFocusableDescendant(this);
+			const firstFocusable = getFirstFocusableDescendant(item);
 			if (firstFocusable) firstFocusable.focus();
 		}
 	}

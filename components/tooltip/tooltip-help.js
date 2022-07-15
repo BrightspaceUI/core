@@ -48,7 +48,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text {
 				background: none;
 				border: none;
-				cursor: text;
+				cursor: inherit;
 				padding: 0;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
@@ -71,6 +71,9 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				letter-spacing: inherit;
 				line-height: inherit;
 				margin: inherit;
+			}
+			d2l-tooltip {
+				cursor: text;
 			}
 		`];
 	}

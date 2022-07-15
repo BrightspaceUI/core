@@ -34,7 +34,6 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return [bodyCompactStyles, css`
 			:host {
 				display: inline-block;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
