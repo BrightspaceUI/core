@@ -56,7 +56,7 @@ class EmptyStateIllustratedButton extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 
-		this._contentWidth = 0;
+		this._contentWidth = 700;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 	}
 
@@ -131,7 +131,7 @@ class EmptyStateIllustratedButton extends RtlMixin(LitElement) {
 	_onResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
-		this._contentWidth = entry.borderBoxSize[0].inlineSize;
+		this._contentWidth = entry.contentRect.right;
 	}
 
 }
