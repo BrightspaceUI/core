@@ -144,7 +144,8 @@ class DemoList extends LitElement {
 	}
 
 	render() {
-		const items = this.items.slice(0, this._lastItemLoadedIndex + 1);
+		const loadedItems = this.items.slice(0, this._lastItemLoadedIndex + 1);
+		const remainingItemCount = this.items.length - loadedItems.length;
 		return html`
 			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}">
 				<d2l-list-header slot="header" select-all-pages-allowed>
@@ -173,7 +174,7 @@ class DemoList extends LitElement {
 					</d2l-dropdown-button-subtle>
 					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
 				</d2l-list-header>
-				${repeat(items, item => item.key, item => {
+				${repeat(loadedItems, item => item.key, item => {
 					const tooltipButtonId = getUniqueId();
 					return html`
 						<d2l-list-item href="http://www.d2l.com" key="${item.key}" label="${item.primaryText}" selectable>
@@ -199,9 +200,9 @@ class DemoList extends LitElement {
 				})}
 				<d2l-pager-load-more slot="pager"
 					@d2l-pager-load-more="${this._handlePagerLoadMore}"
-					has-more
+					?has-more="${this._lastItemLoadedIndex < this.items.length - 1}"
 					item-count="${this.items.length}"
-					page-size="${this._pageSize}">
+					page-size="${remainingItemCount < this._pageSize ? remainingItemCount : this._pageSize}">
 				</d2l-pager-load-more>
 			</d2l-list>
 		`;
@@ -220,19 +221,9 @@ class DemoList extends LitElement {
 	}
 
 	_handlePagerLoadMore(e) {
-		const pager = e.target;
-
 		// mock delay consumers might have
 		setTimeout(() => {
 			this._lastItemLoadedIndex += this._pageSize;
-
-			if (this._lastItemLoadedIndex >= this.items.length - 1) {
-				pager.hasMore = false;
-			} else {
-				const remainingCount = this.items.length - this._lastItemLoadedIndex - 1;
-				if (remainingCount < pager.pageSize) pager.pageSize = remainingCount;
-			}
-
 			e.detail.complete();
 		}, 2000);
 
