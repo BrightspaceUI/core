@@ -312,7 +312,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			await node.updateComplete;
 
 			const role = node.getAttribute('role');
-			if (role !== 'listitem') return false;
+			const backdropRole = node.getAttribute('d2l-backdrop-role');
+			if (role !== 'listitem' && backdropRole !== 'listitem') return false;
 
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.removeAttribute('data-is-chomped');
