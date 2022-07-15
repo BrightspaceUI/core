@@ -47,25 +47,30 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [emptyStateStyles, emptyStateIllustratedStyles, bodyCompactStyles];
+		return [bodyCompactStyles, emptyStateStyles, emptyStateIllustratedStyles];
 	}
 
 	constructor() {
 		super();
 
 		this._contentWidth = 0;
-		this._onResize = this._onResize.bind(this);
+		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		const resizeObserver = new ResizeObserver(this._onResize);
-		resizeObserver.observe(this);
+	connectedCallback() {
+		super.connectedCallback();
+		this._resizeObserver.observe(this);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this._resizeObserver.disconnect();
 	}
 
 	render() {
 		const illustrationContainerStyle = {
-			height: `${Math.min(this._contentWidth, 492) / 1.5}px`,
+			height: `${Math.min(this._contentWidth, 500) / 1.5}px`,
 		};
 
 		const titleSmall = this._contentWidth <= 615;
@@ -75,7 +80,7 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 			'd2l-empty-state-title-large': !titleSmall,
 		};
 
-		const actionLink = this.actionText
+		const actionLink = this.actionText && this.actionHref
 			? html`<d2l-link class='d2l-body-compact d2l-empty-state-action' href=${this.actionHref}>${this.actionText}</d2l-link>`
 			: nothing;
 
@@ -94,14 +99,10 @@ class EmptyStateIllustratedLink extends RtlMixin(LitElement) {
 	}
 
 	async _getIllustration(illustrationName) {
-
 		if (illustrationName) {
-
 			const svg = await loadSvg(illustrationName);
 			return svg ? html`${unsafeSVG(svg.val)}` : undefined;
-
 		}
-
 	}
 
 	_onResize(entries) {

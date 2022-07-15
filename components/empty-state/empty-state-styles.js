@@ -46,7 +46,7 @@ export const emptyStateIllustratedStyles = css`
 
 	.d2l-empty-state-description {
 		margin: 0 auto 0.3rem;
-		max-width: 492px;
+		max-width: 500px;
 		width: 100%;
 	}
 
@@ -56,7 +56,6 @@ export const emptyStateIllustratedStyles = css`
 	
 	.d2l-empty-state-title-large {
 		font-size: 1.5rem;
-		font-weight: 400;
 		line-height: 1.8rem;
 		margin: 1rem 0 1.5rem 0;
 	}
@@ -78,7 +77,7 @@ export const emptyStateIllustratedStyles = css`
 
 	svg {
 		height: 100%;
-		max-width: 492px;
+		max-width: 500px;
 		width: 100%;
 	}
 

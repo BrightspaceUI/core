@@ -1,5 +1,5 @@
 # Empty State
-Empty states are used when there is no data available to be displayed, or when a search/filter returns no results.
+Empty states are used when there is no data available to be displayed, or when a search or filter returns no results.
 
 <!-- docs: demo autoSize:true align:start -->
 ```html
@@ -22,7 +22,6 @@ Empty states are used when there is no data available to be displayed, or when a
 * Do include guidance on next steps if available, either as short instructions or as Call to Actions
 * Do use a link for navigation and a button for actions
 * Do replace the entire content with its empty state for accessibility
-* Do keep it clear and concise
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->

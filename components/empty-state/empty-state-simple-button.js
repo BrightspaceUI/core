@@ -26,7 +26,7 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [emptyStateStyles, emptyStateSimpleStyles, bodyCompactStyles];
+		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
 	}
 
 	render() {
