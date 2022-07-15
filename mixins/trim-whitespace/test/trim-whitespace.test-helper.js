@@ -50,6 +50,12 @@ class WhitespaceTester extends GetTextMixin(LitElement) {
 
 class WhitespaceMixinTester extends TrimWhitespaceMixin(WhitespaceTester) {}
 
+class WhitespaceMixinDeepTester extends TrimWhitespaceMixin(WhitespaceTester) {
+	static get trimWhitespaceDeep() {
+		return true;
+	}
+}
+
 class WhitespaceDirectiveTester extends WhitespaceTester {
 	render() {
 		return html`
@@ -112,12 +118,18 @@ class WhitespaceTesterRunner extends GetTextMixin(LitElement) {
 				?trim-whitespace-deep="${this.trimWhitespaceDeep}"
 			>${this._getContents()}</whitespace-tester>
 		`;
+		if (this.testType === 'mixin' && this.trimWhitespaceDeep) return html`
+			<whitespace-mixin-deep-tester
+				span-text="${this.spanText}"
+				?enable-span-content="${this.enableSpanContent}"
+				?enable-span-element="${this.enableSpanElement}"
+			>${this._getContents()}</whitespace-mixin-deep-tester>
+		`;
 		if (this.testType === 'mixin') return html`
 			<whitespace-mixin-tester
 				span-text="${this.spanText}"
 				?enable-span-content="${this.enableSpanContent}"
 				?enable-span-element="${this.enableSpanElement}"
-				?trim-whitespace-deep="${this.trimWhitespaceDeep}"
 			>${this._getContents()}</whitespace-mixin-tester>
 		`;
 		if (this.trimWhitespaceDeep) return html`
@@ -157,6 +169,7 @@ class WhitespaceTesterRunner extends GetTextMixin(LitElement) {
 
 customElements.define('whitespace-tester', WhitespaceTester);
 customElements.define('whitespace-mixin-tester', WhitespaceMixinTester);
+customElements.define('whitespace-mixin-deep-tester', WhitespaceMixinDeepTester);
 customElements.define('whitespace-directive-tester', WhitespaceDirectiveTester);
 customElements.define('whitespace-directive-deep-tester', WhitespaceDirectiveDeepTester);
 customElements.define('nested-tester', NestedTester);

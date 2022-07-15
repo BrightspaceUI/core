@@ -63,18 +63,17 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<whitespace-mixin-tester
+					<whitespace-mixin-deep-tester
 						span-text=" (1 Span Text 1) "
 						enable-span-content
 						enable-span-element
-						trim-whitespace-deep
 					>
 						<!-- Uses "extends TrimWhitespaceMixin(...)" internally -->
 						<span> (4 Slotted Element 4) </span>
 						<nested-tester span-text=" (A1 Nested Span Text A1) ">
 							<span> (A2 Nested Slotted Element A2) </span>
 						</nested-tester>
-					</whitespace-mixin-tester>
+					</whitespace-mixin-deep-tester>
 
 					<whitespace-directive-deep-tester
 						span-text=" (1 Span Text 1) "

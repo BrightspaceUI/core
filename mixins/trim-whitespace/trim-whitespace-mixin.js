@@ -1,21 +1,13 @@
 import { TrimWhitespaceCore } from './trim-whitespace-core.js';
 
 export const TrimWhitespaceMixin = superclass => class extends superclass {
-	static get properties() {
-		return {
-			trimWhitespaceDeep: { type: Boolean, attribute: 'trim-whitespace-deep', reflect: true },
-		};
-	}
-
 	constructor() {
 		super();
-		this._trimWhitespaceCore = new TrimWhitespaceCore(this, this.trimWhitespaceDeep);
+		this._trimWhitespaceCore = new TrimWhitespaceCore(this, this.constructor.trimWhitespaceDeep);
 	}
 
-	set trimWhitespaceDeep(value) {
-		const oldValue = this._trimWhitespaceCore.deep;
-		this._trimWhitespaceCore.deep = value;
-		this.requestUpdate('trimWhitespaceDeep', oldValue);
+	static get trimWhitespaceDeep() {
+		return false;
 	}
 
 	connectedCallback() {
