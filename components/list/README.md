@@ -158,6 +158,12 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-header` component can be added to `d2l-list`'s `header` slot to provide select-all and bulk actions.
 
+## Pageable Lists
+
+Load-More paging functionality can be implemented in lists by placing a `d2l-pager-load-more` in `d2l-list`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
+
+
+
 ### Accessibility Properties
 
 If a `d2l-list-item` is selectable then it should have a `label` attribute that corresponds to the hidden label for the checkbox.
@@ -516,7 +522,7 @@ This event includes a detail object with helper methods attached to it.
 <!-- docs: start hidden content -->
 ## Future Improvements
 
-- Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
+- Paging: integration with "scroll" and "numeric" paging mechanisms
 
 Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
