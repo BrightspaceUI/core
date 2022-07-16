@@ -24,6 +24,8 @@ describe('d2l-pager-load-more', () => {
 	it('dispatches d2l-pager-load-more event when clicked', async() => {
 		const el = await fixture(`<${tagName}><d2l-pager-load-more slot="pager" has-more page-size="5" item-count="30"></d2l-pager-load-more></${tagName}`);
 		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
 		setTimeout(() => pager.shadowRoot.querySelector('button').click());
 		await oneEvent(pager, 'd2l-pager-load-more');
 	});
@@ -31,13 +33,14 @@ describe('d2l-pager-load-more', () => {
 	it('does not dispatch d2l-pager-load-more event while loading', async() => {
 		const el = await fixture(`<${tagName}><d2l-pager-load-more slot="pager" has-more page-size="5" item-count="30"></d2l-pager-load-more></${tagName}`);
 		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
 		setTimeout(() => pager.shadowRoot.querySelector('button').click());
 		await oneEvent(pager, 'd2l-pager-load-more');
 
 		// in loading state since e.detail.complete() was never called
 		let dispatched = false;
 		pager.addEventListener('d2l-pager-load-more', () => dispatched = true);
-		await pager.updateComplete;
 		pager.shadowRoot.querySelector('button').click();
 
 		// make sure pager has a chance to dispatch the event
