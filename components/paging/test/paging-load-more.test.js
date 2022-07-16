@@ -37,6 +37,7 @@ describe('d2l-pager-load-more', () => {
 		// in loading state since e.detail.complete() was never called
 		let dispatched = false;
 		pager.addEventListener('d2l-pager-load-more', () => dispatched = true);
+		await pager.updateComplete;
 		pager.shadowRoot.querySelector('button').click();
 
 		// make sure pager has a chance to dispatch the event
