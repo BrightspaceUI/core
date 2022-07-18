@@ -28,6 +28,10 @@ export const emptyStateSimpleStyles = css`
 		padding-right: 0.5rem;
 	}
 
+	.d2l-empty-state-action {
+		vertical-align: top;
+	}
+
 `;
 
 export const emptyStateIllustratedStyles = css`

@@ -59,7 +59,7 @@ function createSvgs(svgs) {
 
 function createCatalogue(svgs) {
 
-	let output = '# Preset Empty State Illustration Catalogue\n\n';
+	let output = '## Preset Empty State Illustrations\n\n';
 
 	const numCols = 1;
 	const numPerCol = Math.ceil(svgs.length / numCols);
@@ -103,10 +103,25 @@ function createCatalogue(svgs) {
 
 	}
 
-	output += '\n';
+	return output.split('\n');
 
-	const outputPath = path.join(__dirname, '../components/empty-state/catalogue.md');
-	writeFileSync(outputPath, output);
+}
+
+function updateReadme(svgs) {
+	const sourcePath = path.join(__dirname, '../components/empty-state/README.md');
+	const data = readFileSync(sourcePath, 'utf8').split('\n');
+
+	let result = [];
+	for (const line of data) {
+		if (line === '## Preset Empty State Illustrations') break;
+		result.push(line);
+	}
+
+	const catalogue = createCatalogue(svgs);
+	result.push(...catalogue);
+	result = result.join('\n');
+
+	writeFileSync(sourcePath, result);
 
 }
 
@@ -125,8 +140,8 @@ function generate() {
 	const svgs = getSvgs();
 	console.log(chalk.blue('Found SVGs, generating output...'));
 
-	createCatalogue(svgs);
-	console.log(chalk.blue('"catalogue.md" generated.'));
+	updateReadme(svgs);
+	console.log(chalk.blue('README.md updated.'));
 
 	createLoader(svgs);
 	console.log(chalk.blue('"presetIconLoader.js" generated.'));
