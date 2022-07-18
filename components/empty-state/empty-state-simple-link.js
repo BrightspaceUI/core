@@ -33,12 +33,15 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
 	}
 
+	constructor() {
+		super();
+		this._missingDescriptionErrorHasBeenThrown =  false;
+		this._validatingDescriptionTimeout = null;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
-		if (!this.description || this.description.length === 0) {
-			console.warn('d2l-empty-state-simple-link component requires a description.');
-		}
+		this._validateDescription();
 	}
 
 	render() {
@@ -50,6 +53,20 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			${actionLink}
 		`;
+	}
+
+	_validateDescription() {
+		clearTimeout(this._validatingDescriptionTimeout);
+		// don't error immediately in case it doesn't get set immediately
+		this._validatingDescriptionTimeout = setTimeout(() => {
+			this._validatingDescriptionTimeout = null;
+			const hasDescription = (typeof this.description === 'string') && this.description.length > 0;
+
+			if (!hasDescription && !this._missingDescriptionErrorHasBeenThrown) {
+				this._missingDescriptionErrorHasBeenThrown = true;
+				setTimeout(() => { throw new Error('<d2l-empty-state-simple-link>: missing required "description" attribute.'); });
+			}
+		}, 3000);
 	}
 
 }

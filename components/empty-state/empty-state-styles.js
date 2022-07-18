@@ -36,10 +36,6 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	:host([illustration-name="checklist"]) .d2l-empty-state-title {
-		margin-top: 0;
-	}
-
 	.d2l-empty-state-action {
 		margin-top: 0.5rem;
 	}
