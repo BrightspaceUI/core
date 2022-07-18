@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { BACKDROP_ROLE } from '../backdrop/backdrop.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
@@ -312,7 +313,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			await node.updateComplete;
 
 			const role = node.getAttribute('role');
-			const backdropRole = node.getAttribute('d2l-backdrop-role');
+			const backdropRole = node.getAttribute(BACKDROP_ROLE);
 			if (role !== 'listitem' && backdropRole !== 'listitem') return false;
 
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
