@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -42,7 +43,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends FocusMixin(LitElement) {
+class Link extends RtlMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
