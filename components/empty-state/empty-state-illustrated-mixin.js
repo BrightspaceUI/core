@@ -1,6 +1,6 @@
 import { emptyStateIllustratedStyles, emptyStateStyles } from './empty-state-styles.js';
+import { html, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
-import { html } from 'lit';
 import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -73,7 +73,7 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 		if (illustrationName) {
 			const svg = await loadSvg(illustrationName);
 			if (!svg) setTimeout(() => { throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`); });
-			return svg ? html`${unsafeSVG(svg.val)}` : undefined;
+			return svg ? html`${unsafeSVG(svg.val)}` : nothing;
 		}
 	}
 
