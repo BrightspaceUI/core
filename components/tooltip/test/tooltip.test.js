@@ -32,12 +32,29 @@ describe('d2l-tooltip', () => {
 		it('should add aria-labelledby to its target if for-type is \'label\'', async() => {
 			const tooltipLabelFixture = await fixture(labelFixture);
 			const target = tooltipLabelFixture.querySelector('#label-target');
-			expect(target.hasAttribute('aria-labelledby')).to.be.true;
+			const tooltip = tooltipLabelFixture.querySelector('d2l-tooltip');
+			expect(target.getAttribute('aria-labelledby')).to.equal(tooltip.id);
+		});
+
+		it('should remove aria-labelledby from its target when tooltip is removed', async() => {
+			const tooltipLabelFixture = await fixture(labelFixture);
+			const target = tooltipLabelFixture.querySelector('#label-target');
+			const tooltip = tooltipLabelFixture.querySelector('d2l-tooltip');
+			tooltip.remove();
+			expect(target.hasAttribute('aria-labelledby')).to.be.false;
 		});
 
 		it('should add aria-describedby to its target if for-type is \'descriptor\'', async() => {
 			const target = tooltipFixture.querySelector('#explicit-target');
-			expect(target.hasAttribute('aria-describedby')).to.be.true;
+			const tooltip = tooltipFixture.querySelector('d2l-tooltip');
+			expect(target.getAttribute('aria-describedby')).to.equal(tooltip.id);
+		});
+
+		it('should remove aria-describedby from its target when tooltip is removed', async() => {
+			const target = tooltipFixture.querySelector('#explicit-target');
+			const tooltip = tooltipFixture.querySelector('d2l-tooltip');
+			tooltip.remove();
+			expect(target.hasAttribute('aria-describedby')).to.be.false;
 		});
 
 	});

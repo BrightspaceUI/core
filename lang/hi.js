@@ -2,7 +2,7 @@
 
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
-	"components.breadcrumbs.breadcrumb": "Breadcrumb",
+	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.calendar.notSelected": "चयनित नहीं।",
 	"components.calendar.selected": "चयनित।",
 	"components.calendar.show": "{month} दिखाएँ",
@@ -91,6 +91,9 @@ export default {
 	"components.more-less.less": "कम",
 	"components.more-less.more": "अधिक",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "यह कार्रवाई निष्पादित करने के लिए कोई आइटम का चयन करें।",
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",

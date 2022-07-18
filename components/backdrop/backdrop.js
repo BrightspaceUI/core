@@ -3,6 +3,8 @@ import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
+export const BACKDROP_ROLE = 'd2l-backdrop-role';
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollKeys = [];
@@ -159,7 +161,7 @@ function hideAccessible(target) {
 			if (child.hasAttribute('d2l-backdrop-hidden')) continue;
 
 			const role = child.getAttribute('role');
-			if (role) child.setAttribute('d2l-backdrop-role', role);
+			if (role) child.setAttribute(BACKDROP_ROLE, role);
 			child.setAttribute('role', 'presentation');
 
 			if (child.nodeName === 'FORM' || child.nodeName === 'A') {
@@ -200,10 +202,10 @@ export function preventBodyScroll() {
 function showAccessible(elems) {
 	for (let i = 0; i < elems.length; i++) {
 		const elem = elems[i];
-		const role = elem.getAttribute('d2l-backdrop-role');
+		const role = elem.getAttribute(BACKDROP_ROLE);
 		if (role) {
 			elem.setAttribute('role', role);
-			elem.removeAttribute('d2l-backdrop-role');
+			elem.removeAttribute(BACKDROP_ROLE);
 		} else {
 			elem.removeAttribute('role');
 		}
