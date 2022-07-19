@@ -7,6 +7,7 @@ import { SwitchMixin } from './switch-mixin.js';
 
 /**
  * A variant of the generic switch configured with special icons and default text for toggling "visibility".
+ * @slot - [Optional] Content that will be displayed within the "conditions" opener tooltip when the switch is on.
  */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
@@ -59,7 +60,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
 		const conditions = html`
 			<d2l-tooltip-help class="${classMap(tooltipHelpClasses)} d2l-switch-text" id="conditions-help" text="${this.localize('components.switch.conditions')}" inherit-font-style>
-				<slot name="conditions" @slotchange="${this._handleConditionsSlotChange}"></slot>
+				<slot @slotchange="${this._handleConditionsSlotChange}"></slot>
 			</d2l-tooltip-help>
 			`;
 
