@@ -34,8 +34,8 @@ class EmptyStateIllustratedButton extends EmptyStateIllustratedMixin(LitElement)
 
 		let actionButton = nothing;
 		if (this.actionText) {
-			actionButton = this.primary ? html`<d2l-button class='d2l-empty-state-action' @click=${this._handleActionClick} primary>${this.actionText}</d2l-button>`
-				: html`<d2l-button-subtle class='d2l-empty-state-action' @click=${this._handleActionClick} text=${this.actionText}></d2l-button-subtle>`;
+			actionButton = this.primary ? html`<d2l-button class="d2l-empty-state-action" @click=${this._handleActionClick} primary>${this.actionText}</d2l-button>`
+				: html`<d2l-button-subtle class="d2l-empty-state-action" @click=${this._handleActionClick} text=${this.actionText}></d2l-button-subtle>`;
 		}
 
 		return html`

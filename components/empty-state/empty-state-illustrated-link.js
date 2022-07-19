@@ -1,7 +1,7 @@
-import '../link/link.js';
 import { html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { EmptyStateIllustratedMixin } from './empty-state-illustrated-mixin.js';
+import { linkStyles } from '../link/link.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -21,6 +21,10 @@ class EmptyStateIllustratedLink extends EmptyStateIllustratedMixin(LitElement) {
 		};
 	}
 
+	static get styles() {
+		return [super.styles, linkStyles];
+	}
+
 	constructor() {
 		super();
 		this._illustratedComponentType = 'link';
@@ -31,7 +35,7 @@ class EmptyStateIllustratedLink extends EmptyStateIllustratedMixin(LitElement) {
 		const titleClass = this._getTitleClass();
 
 		const actionLink = this.actionText && this.actionHref
-			? html`<d2l-link class='d2l-body-compact d2l-empty-state-action' href=${this.actionHref}>${this.actionText}</d2l-link>`
+			? html`<a class="d2l-body-compact d2l-empty-state-action d2l-link" href=${this.actionHref}>${this.actionText}</a>`
 			: nothing;
 
 		return html`
