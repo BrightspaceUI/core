@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<title>d2l-empty-state-simple-button</title>
+	<script>
+		const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+		if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+	</script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../empty-state-simple-button.js';
+	</script>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-empty-state-simple-button
+			id="normal" 
+			description="There are no assignments to display."
+			action-text="Create New Assignment">
+		</d2l-empty-state-simple-button>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-empty-state-simple-button
+			id="button-wrap"
+			description="There are no assignments to display. Adding additional text here to wrap the button to the next line."
+			action-text="Create New Assignment">
+		</d2l-empty-state-simple-button>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-empty-state-simple-button
+			id="wrap"
+			description="There are no assignments to display. Adding additional text here to wrap the button and the text to the next line."
+			action-text="Create New Assignment">
+		</d2l-empty-state-simple-button>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-empty-state-simple-button
+			id="no-description"
+			action-text="Create New Assignment">
+		</d2l-empty-state-simple-button>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-empty-state-simple-button
+			id="no-action"
+			description="There are no assignments to display. Adding additional text here to wrap the button and the text to the next line.">
+		</d2l-empty-state-simple-button>
+	</div>
+
+</body>
+</html>
