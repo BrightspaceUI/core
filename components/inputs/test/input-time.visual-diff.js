@@ -107,10 +107,14 @@ describe.skip('d2l-input-time', () => {
 					const input = document.querySelector('#localizationAM');
 					const timeout = lang === 'da' ? 1000 : 100;
 					return new Promise((resolve) => {
-						input.addEventListener('d2l-localize-resources-change', () => {
-							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
-						}, { once: true });
-						document.querySelector('html').setAttribute('lang', lang);
+						if (document.querySelector('html').getAttribute('lang') !== lang) {
+							input.addEventListener('d2l-localize-resources-change', () => {
+								input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
+							}, { once: true });
+							document.querySelector('html').setAttribute('lang', lang);
+						} else {
+							resolve();
+						}
 					});
 				}, lang);
 

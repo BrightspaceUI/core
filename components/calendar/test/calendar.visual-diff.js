@@ -60,8 +60,12 @@ describe('d2l-calendar', () => {
 				await page.evaluate((lang, firstCalendarOfPage) => {
 					const calendar = document.querySelector(firstCalendarOfPage);
 					return new Promise((resolve) => {
-						calendar.addEventListener('d2l-localize-resources-change', resolve, { once: true });
-						document.querySelector('html').setAttribute('lang', lang);
+						if (document.querySelector('html').getAttribute('lang') !== lang) {
+							calendar.addEventListener('d2l-localize-resources-change', resolve, { once: true });
+							document.querySelector('html').setAttribute('lang', lang);
+						} else {
+							resolve();
+						}
 					});
 				}, lang, firstCalendarOfPage);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
