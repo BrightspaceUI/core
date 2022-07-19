@@ -13,7 +13,7 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 	static get properties() {
 		return {
 			/**
-			 * Optional: The action text to be used in the subtle button
+			 * The action text to be used in the subtle button
 			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },
@@ -23,14 +23,14 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 			 */
 			description: { type: String },
 			/**
-			 * Optional: The name of the preset image you would like to display in the component
+			 * The name of the preset image you would like to display in the component
 			 * @type {string}
 			 */
 			illustrationName: { type: String, attribute: 'illustration-name' },
 			/**
 			 * REQUIRED: A title for the empty state
 			 * @type {string}
-				*/
+			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_contentHeight: { state: true },
 			_illustratedComponentType: { state: true },
@@ -46,11 +46,10 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 		super();
 
 		this._contentHeight = 330;
-		this._titleSmall = false;
-		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
-
-		this._missingTitleTextErrorHasBeenThrown = false;
 		this._missingDescriptionErrorHasBeenThrown = false;
+		this._missingTitleTextErrorHasBeenThrown = false;
+		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+		this._titleSmall = false;
 		this._validatingAttributesTimeout = null;
 	}
 
@@ -69,21 +68,23 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 		this._validateAttributes();
 	}
 
-	async _getIllustration(illustrationName) {
-		if (illustrationName) {
-			const svg = await loadSvg(illustrationName);
-			if (!svg) setTimeout(() => { throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`); });
-			return svg ? html`${unsafeSVG(svg.val)}` : nothing;
-		}
+	async getIllustration(illustrationName) {
+		if (!illustrationName) return;
+
+		const svg = await loadSvg(illustrationName);
+		if (!svg) setTimeout(() => {
+			throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`);
+		});
+		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
 	}
 
-	_getIllustrationContainerStyle() {
+	getIllustrationContainerStyle() {
 		return {
 			height: `${this._contentHeight}px`,
 		};
 	}
 
-	_getTitleClass() {
+	getTitleClass() {
 		return {
 			'd2l-empty-state-title': true,
 			'd2l-empty-state-title-small': this._titleSmall,
@@ -108,12 +109,16 @@ export const EmptyStateIllustratedMixin = superclass => class extends RtlMixin(s
 
 			if (!hasTitleText && !this._missingTitleTextErrorHasBeenThrown) {
 				this._missingTitleTextErrorHasBeenThrown = true;
-				setTimeout(() => { throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: missing required "titleText" attribute.`); });
+				setTimeout(() => {
+					throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: missing required "titleText" attribute.`);
+				});
 			}
 
 			if (!hasDescription && !this._missingDescriptionErrorHasBeenThrown) {
 				this._missingDescriptionErrorHasBeenThrown = true;
-				setTimeout(() => { throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: missing required "description" attribute.`); });
+				setTimeout(() => {
+					throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: missing required "description" attribute.`);
+				});
 			}
 		}, 3000);
 	}

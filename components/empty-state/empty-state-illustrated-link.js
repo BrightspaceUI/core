@@ -14,9 +14,9 @@ class EmptyStateIllustratedLink extends EmptyStateIllustratedMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			  * Optional: The action URL or URL fragment of the link
-			  * @type {string}
-			  */
+			 * The action URL or URL fragment of the link
+			 * @type {string}
+			 */
 			actionHref: { type: String, attribute: 'action-href' },
 		};
 	}
@@ -31,8 +31,8 @@ class EmptyStateIllustratedLink extends EmptyStateIllustratedMixin(LitElement) {
 	}
 
 	render() {
-		const illustrationContainerStyle = this._getIllustrationContainerStyle();
-		const titleClass = this._getTitleClass();
+		const illustrationContainerStyle = this.getIllustrationContainerStyle();
+		const titleClass = this.getTitleClass();
 
 		const actionLink = this.actionText && this.actionHref
 			? html`<a class="d2l-body-compact d2l-empty-state-action d2l-link" href=${this.actionHref}>${this.actionText}</a>`
@@ -42,11 +42,11 @@ class EmptyStateIllustratedLink extends EmptyStateIllustratedMixin(LitElement) {
 			${this.illustrationName
 		? html`
 			<div style="${styleMap(illustrationContainerStyle)}">
-				${runAsync(this.illustrationName, () => this._getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
+				${runAsync(this.illustrationName, () => this.getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
 			</div>`
 		: html`<slot></slot>`}
 
-			<p class="${classMap(titleClass)}" id="d2l-empty-state-title">${this.titleText}</p>
+			<p class="${classMap(titleClass)}">${this.titleText}</p>
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			${actionLink}
 		`;

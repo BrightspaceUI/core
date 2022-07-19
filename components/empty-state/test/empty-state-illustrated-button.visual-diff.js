@@ -21,7 +21,7 @@ describe('d2l-empty-state-illustrated-button', () => {
 
 	after(async() => await browser.close());
 
-	[ 'normal', 'small', 'primary', 'primary-small', 'custom-svg', 'no-svg', 'no-action' ]
+	[ 'normal', 'small', 'primary', 'primary-small', 'custom-svg', 'no-svg', 'no-action-text' ]
 		.forEach(name => {
 
 			it(name, async function() {

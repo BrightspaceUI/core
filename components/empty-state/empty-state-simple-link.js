@@ -12,12 +12,12 @@ class EmptyStateSimpleLink extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Optional: The action URL or URL fragment of the link
+			 * The action URL or URL fragment of the link
 			 * @type {string}
 			 */
 			actionHref: { type: String, attribute: 'action-href' },
 			/**
-			 * Optional: The action text to be used in the link
+			 * The action text to be used in the link
 			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },

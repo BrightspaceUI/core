@@ -9,7 +9,13 @@ describe('d2l-empty-state-simple-link',  () => {
 	});
 
 	it('dispatches click event when action is clicked', async() => {
-		const el = await fixture(html`<d2l-empty-state-simple-link action-text="Create New Assignment" action-href="#"></d2l-empty-state-simple-link>`);
+		const el = await fixture(html`
+			<d2l-empty-state-simple-link
+				description="There are no assignments to display."
+				action-text="Create New Assignment"
+				action-href="#">
+			</d2l-empty-state-simple-link>
+		`);
 		setTimeout(() => el.shadowRoot.querySelector('a').click());
 		await oneEvent(el, 'click');
 	});

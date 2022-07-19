@@ -13,7 +13,7 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Optional: The action text to be used in the subtle button
+			 * The action text to be used in the subtle button
 			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },
@@ -42,7 +42,14 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 
 	render() {
 		const actionButton = this.actionText
-			? html`<d2l-button-subtle class="d2l-empty-state-action" @click=${this._handleActionClick}  h-align="text" text=${this.actionText} slim></d2l-button-subtle>`
+			? html`
+				<d2l-button-subtle
+					class="d2l-empty-state-action"
+					@click=${this._handleActionClick}
+					h-align="text"
+					text=${this.actionText}
+					slim>
+				</d2l-button-subtle>`
 			: nothing;
 
 		return html`

@@ -16,7 +16,7 @@ class EmptyStateIllustratedButton extends EmptyStateIllustratedMixin(LitElement)
 	static get properties() {
 		return {
 			/**
-			 * Optional: This will change the action button to use a primary button instead of the default subtle button
+			 * This will change the action button to use a primary button instead of the default subtle button
 			 * @type {boolean}
 			 */
 			primary: { type: Boolean },
@@ -29,20 +29,29 @@ class EmptyStateIllustratedButton extends EmptyStateIllustratedMixin(LitElement)
 	}
 
 	render() {
-		const illustrationContainerStyle = this._getIllustrationContainerStyle();
-		const titleClass = this._getTitleClass();
+		const illustrationContainerStyle = this.getIllustrationContainerStyle();
+		const titleClass = this.getTitleClass();
 
 		let actionButton = nothing;
 		if (this.actionText) {
-			actionButton = this.primary ? html`<d2l-button class="d2l-empty-state-action" @click=${this._handleActionClick} primary>${this.actionText}</d2l-button>`
-				: html`<d2l-button-subtle class="d2l-empty-state-action" @click=${this._handleActionClick} text=${this.actionText}></d2l-button-subtle>`;
+			actionButton = this.primary
+				? html`<d2l-button
+							class="d2l-empty-state-action"
+							@click=${this._handleActionClick}
+							primary>${this.actionText}
+						</d2l-button>`
+				: html`<d2l-button-subtle
+							class="d2l-empty-state-action"
+							@click=${this._handleActionClick}
+							text=${this.actionText}>
+						</d2l-button-subtle>`;
 		}
 
 		return html`
 			${this.illustrationName
 		? html`
 			<div style="${styleMap(illustrationContainerStyle)}">
-				${runAsync(this.illustrationName, () => this._getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
+				${runAsync(this.illustrationName, () => this.getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
 			</div>`
 		: html`<slot></slot>`}
 
