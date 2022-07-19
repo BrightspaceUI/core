@@ -62,6 +62,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 ## Visibility Switch [d2l-switch-visibility]
 
 The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
+It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions ("Visible. Conditions must be met.").
 
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
@@ -76,12 +77,18 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 | Property | Type | Description |
 |---|---|---|
-| `text`| String, required | Accessible text for the switch; defaults to "Visibility" |
 | `disabled` | Boolean | Disabled the switch |
-| `on` | Boolean | Whether the switch is "on" or "off" |
+| `on` | Boolean | Whether the switch is "on" or "off". If content is passed into the switch, the switch will be "on with conditions". |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 
 ### Events
 
 - `change`: dispatched when the `on` property is updated
+
+### Slots
+
+| Slot | Type | Description |
+|--|--|--|
+| `Default` | optional | Content that will be displayed within the "conditions" opener tooltip when the switch is on. |
+
 <!-- docs: end hidden content -->
