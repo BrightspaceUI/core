@@ -1,7 +1,7 @@
 # Empty State
 Empty states are used when there is no data available to be displayed, or when a search or filter returns no results.
 
-<!-- docs: demo autoSize:true align:start -->
+<!-- docs: demo align:start -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-simple-button.js';

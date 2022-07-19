@@ -31,7 +31,7 @@ class EmptyStateSimpleButton extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this._missingDescriptionErrorHasBeenThrown =  false;
+		this._missingDescriptionErrorHasBeenThrown = false;
 		this._validatingDescriptionTimeout = null;
 	}
 
