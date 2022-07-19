@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-list-item-drag-image', () => {
+describe.skip('d2l-list-item-drag-image', () => {
 
 	const visualDiff = new VisualDiff('list-item-drag-image', import.meta.url);
 

@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-card-content-meta', () => {
+describe.skip('d2l-card-content-meta', () => {
 
 	const visualDiff = new VisualDiff('card-content-meta', import.meta.url);
 

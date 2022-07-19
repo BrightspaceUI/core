@@ -2,7 +2,7 @@ import { open, openDropdown, openFilter, reset, resetDropdown, resetFilter } fro
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-dialog-with-mobile-dropdown', () => {
+describe.skip('d2l-dialog-with-mobile-dropdown', () => {
 
 	const visualDiff = new VisualDiff('dialog-mobile-dropdown', import.meta.url);
 

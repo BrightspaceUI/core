@@ -15,7 +15,7 @@ async function getRect(page, id) {
 	}, id);
 }
 
-describe('d2l-table', () => {
+describe.skip('d2l-table', () => {
 
 	const visualDiff = new VisualDiff('table', import.meta.url);
 

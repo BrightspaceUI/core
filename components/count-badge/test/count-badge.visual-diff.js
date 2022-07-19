@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-count-badge', () => {
+describe.skip('d2l-count-badge', () => {
 
 	const visualDiff = new VisualDiff('count-badge', import.meta.url);
 

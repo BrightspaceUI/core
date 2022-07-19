@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-switch-visibility', () => {
+describe.skip('d2l-switch-visibility', () => {
 
 	const visualDiff = new VisualDiff('switch-visibility', import.meta.url);
 

@@ -1,7 +1,7 @@
 import { oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
-describe('d2l-dialog-ifrau', () => {
+describe.skip('d2l-dialog-ifrau', () => {
 
 	const visualDiff = new VisualDiff('dialog-ifrau', import.meta.url);
 

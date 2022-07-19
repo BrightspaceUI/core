@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-expand-collapse-content', () => {
+describe.skip('d2l-expand-collapse-content', () => {
 
 	const visualDiff = new VisualDiff('expand-collapse-content', import.meta.url);
 

@@ -2,7 +2,7 @@ import { open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-input-date-mobile', () => {
+describe.skip('d2l-input-date-mobile', () => {
 
 	const visualDiff = new VisualDiff('input-date-mobile', import.meta.url);
 

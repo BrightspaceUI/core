@@ -2,7 +2,7 @@ import { getRect } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-tooltip truncating', () => {
+describe.skip('d2l-tooltip truncating', () => {
 
 	const visualDiff = new VisualDiff('tooltip-truncating', import.meta.url);
 

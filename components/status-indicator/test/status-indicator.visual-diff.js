@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-status-indicator', () => {
+describe.skip('d2l-status-indicator', () => {
 
 	const visualDiff = new VisualDiff('status-indicator', import.meta.url);
 

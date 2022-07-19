@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-scroll-wrapper', () => {
+describe.skip('d2l-scroll-wrapper', () => {
 
 	const visualDiff = new VisualDiff('scroll-wrapper', import.meta.url);
 

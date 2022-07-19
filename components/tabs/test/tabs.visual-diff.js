@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-tabs', () => {
+describe.skip('d2l-tabs', () => {
 
 	const visualDiff = new VisualDiff('tabs', import.meta.url);
 

@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-typography', function() {
+describe.skip('d2l-typography', function() {
 
 	const visualDiff = new VisualDiff('typography', import.meta.url);
 

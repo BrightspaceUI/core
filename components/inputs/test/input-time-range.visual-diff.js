@@ -23,7 +23,7 @@ async function getRect(page, selector, timePickerIndex) {
 	}, timePickerIndex);
 }
 
-describe('d2l-input-time-range', () => {
+describe.skip('d2l-input-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-time-range', import.meta.url);
 

@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-object-property-list', () => {
+describe.skip('d2l-object-property-list', () => {
 
 	const visualDiff = new VisualDiff('object-property-list', import.meta.url);
 

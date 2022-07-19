@@ -1,7 +1,7 @@
 import { oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
-describe('d2l-menu radio', () => {
+describe.skip('d2l-menu radio', () => {
 
 	const visualDiff = new VisualDiff('menu-radio', import.meta.url);
 

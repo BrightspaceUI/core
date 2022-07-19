@@ -2,7 +2,7 @@ import { getRect, open, reset } from './dialog-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-dialog-confirm', () => {
+describe.skip('d2l-dialog-confirm', () => {
 
 	const visualDiff = new VisualDiff('dialog-confirm', import.meta.url);
 

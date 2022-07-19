@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import { show } from './tooltip-helper.js';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-tooltip', () => {
+describe.skip('d2l-tooltip', () => {
 
 	const visualDiff = new VisualDiff('tooltip', import.meta.url);
 

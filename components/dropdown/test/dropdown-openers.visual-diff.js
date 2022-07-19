@@ -2,7 +2,7 @@ import { getRect, open } from './dropdown-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-dropdown-openers', () => {
+describe.skip('d2l-dropdown-openers', () => {
 
 	const visualDiff = new VisualDiff('dropdown-openers', import.meta.url);
 
