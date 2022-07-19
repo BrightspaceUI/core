@@ -2,7 +2,7 @@
 
 export default {
 	"components.alert.close": "Benachrichtigung schließen",
-	"components.breadcrumbs.breadcrumb": "Breadcrumb",
+	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.calendar.notSelected": "Nicht ausgewählt.",
 	"components.calendar.selected": "Ausgewählt.",
 	"components.calendar.show": "{month} anzeigen",
@@ -91,6 +91,9 @@ export default {
 	"components.more-less.less": "Weniger",
 	"components.more-less.more": "mehr",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
+	"components.pager-load-more.action": "Load {count} More",
+	"components.pager-load-more.info": "{showingCount} of {totalCount} items",
+	"components.pager-load-more.status-loading": "Loading more items",
 	"components.selection.action-hint": "Wählen Sie ein Element aus, um diese Aktion auszuführen.",
 	"components.selection.select-all": "Alle auswählen",
 	"components.selection.select-all-items": "Alle {count} Elemente auswählen",

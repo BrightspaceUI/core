@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
+import { PageableMixin } from '../paging/pageable-mixin.js';
 
 const keyCodes = {
 	TAB: 9
@@ -12,9 +13,10 @@ export const listSelectionStates = SelectionInfo.states;
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
  * @slot - Slot for list items (ex. `d2l-list-item`, `d2l-list-item-button`, or custom items)
  * @slot header - Slot for `d2l-list-header` to be rendered above the list
+ * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
-class List extends SelectionMixin(LitElement) {
+class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -50,6 +52,9 @@ class List extends SelectionMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
+			slot[name="pager"]::slotted(*) {
+				margin-top: 12px;
+			}
 		`;
 	}
 
@@ -58,7 +63,14 @@ class List extends SelectionMixin(LitElement) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
+		this._itemsShowingCount = 0;
+		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
 	}
 
 	disconnectedCallback() {
@@ -115,14 +127,15 @@ class List extends SelectionMixin(LitElement) {
 			<div class="d2l-list-top-sentinel"></div>
 			<div role="${role}" class="d2l-list-container">
 				<slot name="header"></slot>
-				<slot @keydown="${this._handleKeyDown}"></slot>
+				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				${this._renderPagerContainer()}
 			</div>
 		`;
 	}
 
-	getItems() {
+	getItems(slot) {
 		if (!this.shadowRoot) return;
-		const slot = this.shadowRoot.querySelector('slot:not([name])');
+		if (!slot) slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'rowgroup' || node.role === 'listitem');
@@ -175,6 +188,35 @@ class List extends SelectionMixin(LitElement) {
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
 
+	_getItemByIndex(index) {
+		const items = this.getItems();
+		if (index > items.length - 1) return;
+		return items[index];
+	}
+
+	async _getItemsShowingCount() {
+		if (this.slot === 'nested') return this._itemsShowingCount;
+		else return this._getListItemsShowingTotalCount(false);
+	}
+
+	_getLastItemIndex() {
+		return this._itemsShowingCount - 1;
+	}
+
+	async _getListItemsShowingTotalCount(refresh) {
+		if (refresh) {
+			this._itemsShowingTotalCount = await this.getItems().reduce(async(count, item) => {
+				await item.updateComplete;
+				if (item._selectionProvider) {
+					return (await count + await item._selectionProvider._getListItemsShowingTotalCount(true));
+				} else {
+					return await count;
+				}
+			}, this._itemsShowingCount);
+		}
+		return this._itemsShowingTotalCount;
+	}
+
 	_handleKeyDown(e) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
@@ -182,6 +224,36 @@ class List extends SelectionMixin(LitElement) {
 		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
 			: getNextFocusable(this, false, true, true));
 		if (focusable) focusable.focus();
+	}
+
+	_handleListItemsShowingCountChange() {
+		if (this.slot === 'nested') return;
+
+		// debounce the updates for first render case
+		if (this._updateItemsShowingTotalCountRequested) return;
+
+		this._updateItemsShowingTotalCountRequested = true;
+		setTimeout(async() => {
+			const oldCount = this._itemsShowingTotalCount;
+			const newCount = await this._getListItemsShowingTotalCount(true);
+			if (oldCount !== newCount) this._updatePagerCount(newCount);
+			this._updateItemsShowingTotalCountRequested = false;
+		}, 0);
+	}
+
+	async _handleSlotChange(e) {
+		const items = this.getItems(e.target);
+		if (this._itemsShowingCount === items.length) return;
+		this._itemsShowingCount = items.length;
+
+		this._updatePagerCount(await this._getListItemsShowingTotalCount(true));
+
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-list-items-showing-count-change', {
+			bubbles: true,
+			composed: true,
+			detail: { count: this._itemsShowingCount }
+		}));
 	}
 
 }
