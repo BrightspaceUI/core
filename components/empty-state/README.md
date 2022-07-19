@@ -8,16 +8,8 @@ Empty states are used when there is no data available to be displayed, or when a
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-button.js';
 </script>
 
-<d2l-empty-state-simple-button
-	description="There are no assignments to display."
-	action-text="Create an Assignment">
-</d2l-empty-state-simple-button>
-<d2l-empty-state-illustrated-button
-	illustration-name="desert-road"
-	title-text="No Learning Paths Yet"
-	description="Get started by clicking below to create your first learning path."
-	action-text="Create Learning Paths">
-</d2l-empty-state-illustrated-button>
+<d2l-empty-state-simple-button description="There are no assignments to display." action-text="Create an Assignment"></d2l-empty-state-simple-button>
+<d2l-empty-state-illustrated-button illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths"> </d2l-empty-state-illustrated-button>
 
 ```
 
@@ -48,10 +40,7 @@ The `d2l-empty-state-simple-button` component is an empty state component that d
   import '@brightspace-ui/core/components/empty-state/empty-state-simple-button.js';
 </script>
 
-<d2l-empty-state-simple-button
-	description="There are no assignments to display."
-	action-text="Create an Assignment">
-</d2l-empty-state-simple-button>
+<d2l-empty-state-simple-button description="There are no assignments to display." action-text="Create an Assignment"></d2l-empty-state-simple-button>
 ```
 
 ## Empty State Simple Link [d2l-empty-state-simple-link]
@@ -64,11 +53,7 @@ The `d2l-empty-state-simple-link` component is an empty state component that dis
   import '@brightspace-ui/core/components/empty-state/empty-state-simple-link.js';
 </script>
 
-<d2l-empty-state-simple-link
-	description="There are no assignments to display."
-	action-text="Create an Assignment"
-	action-href='https://d2l.com'>
-</d2l-empty-state-simple-link>
+<d2l-empty-state-simple-link description="There are no assignments to display." action-text="Create an Assignment" action-href='https://d2l.com'></d2l-empty-state-simple-link>
 ```
 ## Empty State Illustrated Button [d2l-empty-state-illustrated-button]
 
@@ -80,12 +65,7 @@ The `d2l-empty-state-illustrated-button` component is an empty state component t
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-button.js';
 </script>
 
-<d2l-empty-state-illustrated-button 
-	illustration-name="desert-road"
-	title-text="No Learning Paths Yet"
-	description="Get started by clicking below to create your first learning path."
-	action-text="Create Learning Paths">
-</d2l-empty-state-illustrated-button>
+<d2l-empty-state-illustrated-button illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths"></d2l-empty-state-illustrated-button>
 ```
 
 ## Empty State Illustrated Link [d2l-empty-state-illustrated-link]
@@ -98,13 +78,7 @@ The `d2l-empty-state-illustrated-link` component is an empty state component tha
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-link.js';
 </script>
 
-<d2l-empty-state-illustrated-link
-	illustration-name="desert-road"
-	title-text="No Learning Paths Yet"
-	description="Get started by clicking below to create your first learning path."
-	action-text="Create Learning Paths"
-	action-href='https://d2l.com'>
-</d2l-empty-state-illustrated-link>
+<d2l-empty-state-illustrated-link illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href='https://d2l.com'></d2l-empty-state-illustrated-link>
 ```
 
 ## Preset Empty State Illustrations
