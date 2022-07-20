@@ -9,7 +9,7 @@ describe('d2l-switch-visibility', () => {
 	});
 
 	it('is on and has conditions', async() => {
-		const elem = await fixture(html`<d2l-switch-visibility on><p slot="conditions">Conditions</p></d2l-switch-visibility>`);
+		const elem = await fixture(html`<d2l-switch-visibility on>Conditions</d2l-switch-visibility>`);
 		await expect(elem).to.be.accessible();
 	});
 
