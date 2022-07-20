@@ -74,12 +74,13 @@ The `d2l-empty-state-illustrated-button` component is an empty state component t
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-button.js';
 </script>
+<!-- docs: start hidden content -->
 <style>
 	body {
 		overflow-y: scroll;
 	}
 </style>
-
+<!-- docs: end hidden content -->
 <d2l-empty-state-illustrated-button illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths"></d2l-empty-state-illustrated-button>
 ```
 
@@ -92,12 +93,13 @@ The `d2l-empty-state-illustrated-link` component is an empty state component tha
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-link.js';
 </script>
+<!-- docs: start hidden content -->
 <style>
 	body {
 		overflow-y: scroll;
 	}
 </style>
-
+<!-- docs: end hidden content -->
 <d2l-empty-state-illustrated-link illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href='https://d2l.com'></d2l-empty-state-illustrated-link>
 ```
 
