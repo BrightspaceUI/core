@@ -2,7 +2,7 @@ import { open, reset } from './dialog-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-dialog-fullscreen', () => {
+describe('d2l-dialog-fullscreen', () => {
 
 	const visualDiff = new VisualDiff('dialog-fullscreen', import.meta.url);
 

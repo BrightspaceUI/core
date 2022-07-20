@@ -2,7 +2,7 @@ import { close, getCloseEvent, open, reset } from './dialog-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-dialog-mixin', () => {
+describe('d2l-dialog-mixin', () => {
 
 	const visualDiff = new VisualDiff('dialog-mixin', import.meta.url);
 
