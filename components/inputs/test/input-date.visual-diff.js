@@ -2,7 +2,7 @@ import { getRect, getRectTooltip, open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-input-date', () => {
+describe('d2l-input-date', () => {
 
 	const visualDiff = new VisualDiff('input-date', import.meta.url);
 

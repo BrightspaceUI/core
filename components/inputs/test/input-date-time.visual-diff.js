@@ -33,7 +33,7 @@ async function focusOnInput(page, selector, inputSelector) {
 	}, inputSelector);
 }
 
-describe.skip('d2l-input-date-time', () => {
+describe('d2l-input-date-time', () => {
 
 	const visualDiff = new VisualDiff('input-date-time', import.meta.url);
 

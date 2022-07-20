@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-input-search', () => {
+describe('d2l-input-search', () => {
 
 	const visualDiff = new VisualDiff('input-search', import.meta.url);
 

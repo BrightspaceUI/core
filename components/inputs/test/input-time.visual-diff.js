@@ -2,7 +2,7 @@ import { getRect, open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-input-time', () => {
+describe('d2l-input-time', () => {
 
 	const visualDiff = new VisualDiff('input-time', import.meta.url);
 

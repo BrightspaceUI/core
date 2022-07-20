@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-input-percent', () => {
+describe('d2l-input-percent', () => {
 	const visualDiff = new VisualDiff('input-percent', import.meta.url);
 
 	let browser, page;

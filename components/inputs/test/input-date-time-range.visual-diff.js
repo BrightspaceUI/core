@@ -24,7 +24,7 @@ async function getRect(page, selector, inputNum) {
 	}, inputNum);
 }
 
-describe.skip('d2l-input-date-time-range', () => {
+describe('d2l-input-date-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-date-time-range', import.meta.url);
 
