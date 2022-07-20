@@ -38,7 +38,11 @@ describe('d2l-switch-visibility', () => {
 					const rect = await visualDiff.getRect(page, info.selector);
 
 					if (info.name === 'on with conditions, conditions focused') {
-						rect.height += 90;
+						if (dir === 'rtl') {
+							rect.x -= 120;
+						}
+						rect.width += 120;
+						rect.height += 170;
 					}
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
