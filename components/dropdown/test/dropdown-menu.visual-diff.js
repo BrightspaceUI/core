@@ -16,12 +16,16 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	beforeEach(async() => {
-		await reset(page, '#dropdown-menu');
 		const defaultViewportOptions = { width: 800, height: 800, deviceScaleFactor: 2 };
 		await page.setViewport(defaultViewportOptions);
 	});
 
 	after(async() => await browser.close());
+
+	afterEach(async function() {
+		const dropdown = this.currentTest.value;
+		if (dropdown) await reset(page, dropdown);
+	});
 
 	it('initially opened', async function() {
 		const rect = await getRect(page, '#dropdown-menu-initially-opened');
@@ -29,13 +33,15 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	it('first-page', async function() {
+		this.test.value = '#dropdown-menu';
 		await open(page, '#dropdown-menu');
 		const rect = await getRect(page, '#dropdown-menu');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	/* Prevent regression to DE37329: reopening caused etra bottom spacing */
+	/* Prevent regression to DE37329: reopening caused extra bottom spacing */
 	it('closed-reopened', async function() {
+		this.test.value = '#dropdown-menu';
 		await open(page, '#dropdown-menu');
 		await reset(page, '#dropdown-menu');
 		await open(page, '#dropdown-menu');
@@ -44,6 +50,7 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	it('with-header-footer', async function() {
+		this.test.value = '#dropdown-menu-header-footer';
 		await open(page, '#dropdown-menu-header-footer');
 		const rect = await getRect(page, '#dropdown-menu-header-footer');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -51,18 +58,20 @@ describe('d2l-dropdown-menu', () => {
 
 	it('with-header-footer-mobile', async function() {
 		await page.setViewport({ width: 300, height: 800 });
+		this.test.value = '#dropdown-menu-header-footer-mobile';
 		await open(page, '#dropdown-menu-header-footer-mobile');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-		await reset(page, '#dropdown-menu-header-footer-mobile');
 	});
 
 	it('with-nopadding-header-footer', async function() {
+		this.test.value = '#dropdown-menu-header-footer-nopadding';
 		await open(page, '#dropdown-menu-header-footer-nopadding');
 		const rect = await getRect(page, '#dropdown-menu-header-footer-nopadding');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('dark theme', async function() {
+		this.test.value = '#dark';
 		await open(page, '#dark');
 		const rect = await getRect(page, '#dark');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

@@ -1,4 +1,4 @@
-import { getRect, open } from './dropdown-helper.js';
+import { getRect, open, reset } from './dropdown-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -17,8 +17,14 @@ describe('d2l-dropdown-openers', () => {
 
 	after(async() => await browser.close());
 
+	afterEach(async function() {
+		const dropdown = this.currentTest.value;
+		if (dropdown) await reset(page, dropdown);
+	});
+
 	// test for https://github.com/BrightspaceUI/core/issues/1398
 	it('autoclose', async function() {
+		this.test.value = '#autoclose';
 		await open(page, '#autoclose');
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
@@ -34,6 +40,7 @@ describe('d2l-dropdown-openers', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
+			this.test.value = selector;
 			const rect = await visualDiff.getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -47,6 +54,7 @@ describe('d2l-dropdown-openers', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
+			this.test.value = selector;
 			await open(page, selector);
 			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

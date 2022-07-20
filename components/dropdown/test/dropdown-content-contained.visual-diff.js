@@ -1,4 +1,4 @@
-import { open } from './dropdown-helper.js';
+import { open, reset } from './dropdown-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -17,6 +17,11 @@ describe('d2l-dropdown-content-contained', () => {
 
 	after(async() => await browser.close());
 
+	afterEach(async function() {
+		const dropdown = this.currentTest.value;
+		if (dropdown) await reset(page, dropdown);
+	});
+
 	[
 		'contained-top',
 		'contained-bottom'
@@ -24,6 +29,7 @@ describe('d2l-dropdown-content-contained', () => {
 		it(testName, async function() {
 			const rect = await visualDiff.getRect(page, `#${testName}`);
 			const selector = `#${testName} d2l-dropdown`;
+			this.test.value = selector;
 			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
