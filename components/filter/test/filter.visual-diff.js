@@ -2,7 +2,7 @@ import { getRect, open, reset, show } from './filter-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-filter', () => {
+describe('d2l-filter', () => {
 
 	const visualDiff = new VisualDiff('filter', import.meta.url);
 

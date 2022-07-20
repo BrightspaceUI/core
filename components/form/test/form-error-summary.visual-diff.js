@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-form-error-summary', () => {
+describe('d2l-form-error-summary', () => {
 
 	const visualDiff = new VisualDiff('form-error-summary', import.meta.url);
 

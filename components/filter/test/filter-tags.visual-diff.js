@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-filter-tags', () => {
+describe('d2l-filter-tags', () => {
 	const visualDiff = new VisualDiff('filter-tags', import.meta.url);
 
 	let browser, page;
