@@ -182,12 +182,12 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
-		const text = this._getText();
+		const switchLabel = this._createLabel();
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
 
 		return html`
-			${textPosition === 'start' ? text : ''}
+			${textPosition === 'start' ? switchLabel : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
@@ -204,11 +204,11 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? text : ''}
+			${textPosition === 'end' ? switchLabel : ''}
 		`;
 	}
 
-	_getText() {
+	_createLabel() {
 		return html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
 	}
 
