@@ -24,8 +24,8 @@ describe('d2l-dropdown-openers', () => {
 
 	// test for https://github.com/BrightspaceUI/core/issues/1398
 	it('autoclose', async function() {
-		this.test.value = '#autoclose';
 		await open(page, '#autoclose');
+		await new Promise(resolve => setTimeout(resolve, 50));
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 		const rect = await visualDiff.getRect(page, '#autoclose');
