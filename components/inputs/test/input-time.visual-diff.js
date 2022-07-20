@@ -133,6 +133,7 @@ describe('d2l-input-time', () => {
 
 		afterEach(async() => {
 			await reset(page, '#dropdown');
+			await reset(page, '#enforce');
 		});
 
 		it('dropdown open top', async function() {
@@ -174,7 +175,6 @@ describe('d2l-input-time', () => {
 			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#enforce');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
-			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 	});
 });

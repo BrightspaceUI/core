@@ -70,6 +70,7 @@ describe('d2l-input-date-time-range', () => {
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => {
 			return new Promise((resolve) => {
+				elem.blur(); // Reset focus
 				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
 				elem.focus();
 			});
@@ -78,14 +79,18 @@ describe('d2l-input-date-time-range', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('timezone change', async function() {
-		await page.evaluate(() => {
-			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+	describe('timezone', () => {
+		afterEach(async() => {
+			await page.evaluate(() => {
+				document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+			});
 		});
-		const rect = await visualDiff.getRect(page, '#start-end-value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await page.evaluate(() => {
-			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+		it('change', async function() {
+			await page.evaluate(() => {
+				document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+			});
+			const rect = await visualDiff.getRect(page, '#start-end-value');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
@@ -191,6 +196,7 @@ describe('d2l-input-date-time-range', () => {
 		}
 
 		it('start equals end when inclusive', async function() {
+			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, ''); // Reset width change event
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange, true);
 

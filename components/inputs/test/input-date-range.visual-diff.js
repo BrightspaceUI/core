@@ -106,6 +106,7 @@ describe('d2l-input-date-range', () => {
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => {
 			return new Promise((resolve) => {
+				elem.blur(); // Reset focus
 				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
 				elem.focus();
 			});
