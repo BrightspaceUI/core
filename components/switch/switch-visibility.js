@@ -53,7 +53,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		}
 	}
 
-	_createLabel() {
+	get _labelContent() {
 		const tooltipHelpClasses = {
 			'conditions-show': this.on && this._hasConditions
 		};
@@ -64,7 +64,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 			</d2l-tooltip-help>
 			`;
 
-		return html`<span id="${this._textId}" class="d2l-switch-text">${this.text}${conditions}</span>`;
+		return html`${super._labelContent}${conditions}`;
 	}
 
 	_handleConditionsSlotChange(e) {

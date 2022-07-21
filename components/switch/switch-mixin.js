@@ -182,7 +182,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
-		const switchLabel = this._createLabel();
+		const switchLabel = html`<span id="${this._textId}" class="d2l-switch-text">${this._labelContent}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
 
@@ -208,8 +208,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		`;
 	}
 
-	_createLabel() {
-		return html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
+	get _labelContent() {
+		return html`${this.text}`;
 	}
 
 	_handleClick() {
