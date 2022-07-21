@@ -26,27 +26,30 @@ describe('d2l-switch-visibility', () => {
 			[
 				{ name: 'off', selector: '#off' },
 				{ name: 'on', selector: '#on' },
-				{ name: 'on with conditions', selector: '#on-with-conditions' },
-				{ name: 'on with conditions, conditions focused', selector: '#on-with-conditions' }
+				{ name: 'off with conditions', selector: '#off-with-conditions' },
+				{ name: 'on with conditions', selector: '#on-with-conditions' }
 			].forEach(info => {
 
 				it(info.name, async function() {
-					if (info.name === 'on with conditions, conditions focused') {
-						await page.$eval(info.selector, (elem) => elem.shadowRoot.querySelector('#conditions-help').focus());
-					}
-
 					const rect = await visualDiff.getRect(page, info.selector);
-
-					if (info.name === 'on with conditions, conditions focused') {
-						if (dir === 'rtl') {
-							rect.x -= 120;
-						}
-						rect.width += 120;
-						rect.height += 170;
-					}
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
+			});
+
+			it('on with conditions and conditions focused', async function() {
+				const selector = '#on-with-conditions';
+				await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('#conditions-help').focus());
+
+				const rect = await visualDiff.getRect(page, selector);
+
+				if (dir === 'rtl') {
+					rect.x -= 120;
+				}
+				rect.width += 120;
+				rect.height += 170;
+
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 		});
