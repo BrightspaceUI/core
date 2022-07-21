@@ -55,7 +55,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
 	_createLabel() {
 		const tooltipHelpClasses = {
-			'conditions-show': this.on && this._hasConditions
+			'switch-visibility-conditions-show': this.on && this._hasConditions
 		};
 
 		const conditions = html`
