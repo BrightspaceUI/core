@@ -7,7 +7,7 @@ import { SwitchMixin } from './switch-mixin.js';
 
 /**
  * A variant of the generic switch configured with special icons and default text for toggling "visibility".
- * @slot - [Optional] Content that will be displayed within the "conditions" opener tooltip when the switch is on.
+ * @slot - Optional content that will be displayed within the "conditions" opener tooltip when the switch is on.
  */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
