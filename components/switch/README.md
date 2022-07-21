@@ -89,6 +89,6 @@ It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions 
 
 | Slot | Type | Description |
 |--|--|--|
-| `Default` | optional | Content that will be displayed within the "conditions" opener tooltip when the switch is on. |
+| `default` | optional | Content that will be displayed within the "conditions" opener tooltip when the switch is on. |
 
 <!-- docs: end hidden content -->
