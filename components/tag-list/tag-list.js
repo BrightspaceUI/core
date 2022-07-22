@@ -130,18 +130,17 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 		this._clearButtonResizeObserver = new ResizeObserver(() => {
-			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+			this._clearButtonWidth = parseFloat(getComputedStyle(clearButton).getPropertyValue('width'));
 			this._clearButtonHeight = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('height')));
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(container);
+		this._resizeObserver.observe(this);
 
-		const listContainer = this.shadowRoot.querySelector('.tag-list-container');
+		this._listContainer = this.shadowRoot.querySelector('.tag-list-container');
 		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
-		this._listContainerObserver.observe(listContainer);
+		this._listContainerObserver.observe(this._listContainer);
 	}
 
 	render() {
@@ -247,14 +246,9 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		 */
 		let isOverflowing = false;
 		let overflowingIndex = 0;
-		let lastLineWidth = 0;
+
 		for (let k = 1; k <= this._lines; k++) {
 			showing.width = 0;
-
-			if (k === this._lines) {
-				if (this.clearable) showing.width += clearButtonWidth + GAP;
-				showing.width += this._subtleButtonWidth + GAP;
-			}
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
@@ -262,32 +256,38 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + GAP))) {
 					showing.width += itemWidth;
-					if (k === this._lines) lastLineWidth += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
 				} else if (k < this._lines) {
 					overflowingIndex = i;
 					break;
 				} else {
-					if (k === this._lines) lastLineWidth += itemWidth;
 					isOverflowing = true;
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
 		}
 
-		if (!isOverflowing) {
+		if (!isOverflowing && !this.clearable) {
 			this._chompIndex = showing.count;
 			return;
 		}
 
-		// check if we can actually fit all items without the "show more" button
-		if (lastLineWidth < this._availableWidth) {
-			this._chompIndex = 1000;
-			return;
-		} else {
-			this._chompIndex = showing.count;
+		// calculate if additional item(s) should be hidden due to subtle button(s) needing space
+		for (let j = this._itemLayouts.length; j--;) {
+			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
+				|| ((showing.width + this._subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
+				break;
+			}
+			const itemLayoutOverflowing = this._itemLayouts[j];
+			if (itemLayoutOverflowing.trigger !== 'soft-show') {
+				continue;
+			}
+			isOverflowing = true;
+			showing.width -= itemLayoutOverflowing.width;
+			showing.count -= 1;
 		}
+		this._chompIndex = showing.count;
 	}
 
 	_getItemLayouts(filteredNodes) {
@@ -296,7 +296,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 			return {
 				isHidden: computedStyles.display === 'none',
-				width: Math.ceil(parseFloat(computedStyles.width) || 0)
+				width: parseFloat(computedStyles.width) || 0
 			};
 		});
 
@@ -370,7 +370,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize(entries) {
-		this._availableWidth = Math.floor(entries[0].contentRect.width);
+		this._chompIndex = 10000;
+		await this.updateComplete;
+
+		this._availableWidth = Math.ceil(this._listContainer.getBoundingClientRect().width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
