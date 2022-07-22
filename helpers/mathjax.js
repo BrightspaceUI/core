@@ -31,7 +31,6 @@ const mathjaxFontMappings = new Map([
 ]);
 
 let mathJaxLoaded;
-
 let renderingPromise = Promise.resolve();
 
 export class HtmlBlockMathRenderer {
@@ -86,7 +85,7 @@ export class HtmlBlockMathRenderer {
 
 		elem.appendChild(temp);
 
-		await window.MathJax.startup.promise;	
+		await window.MathJax.startup.promise;
 		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(temp.shadowRoot));
 		await renderingPromise;
 
