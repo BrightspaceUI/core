@@ -22,7 +22,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 			d2l-tooltip-help {
 				display: none;
 			}
-			d2l-tooltip-help.conditions-show {
+			d2l-tooltip-help.switch-visibility-conditions-show {
 				display: inline;
 			}
 		`];
