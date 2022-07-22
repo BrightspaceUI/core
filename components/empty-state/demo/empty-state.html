@@ -7,14 +7,32 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../empty-state-simple-button.js';
+			import '../empty-state-simple.js';
 			import '../empty-state-simple-link.js';
 			import '../empty-state-illustrated-button.js';
+			import '../empty-state-illustrated.js';
 			import '../empty-state-illustrated-link.js';
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-empty-state">
+
+			<h2>Empty State Simple</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-empty-state-simple description="There are no assignments to display."></d2l-empty-state-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Empty State Illustrated</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-empty-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path."></d2l-empty-state-illustrated>
+				</template>
+			</d2l-demo-snippet>
 
 			<h2>Empty State Simple Button</h2>
 

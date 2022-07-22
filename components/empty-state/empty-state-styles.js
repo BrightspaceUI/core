@@ -27,10 +27,10 @@ export const emptyStateSimpleStyles = css`
 		display: inline;
 		padding-right: 0.5rem;
 	}
-
+/* 
 	.d2l-empty-state-action {
 		vertical-align: top;
-	}
+	} */
 
 `;
 
@@ -40,12 +40,16 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	.d2l-empty-state-action {
-		margin-top: 0.5rem;
+	#illustration-slot::slotted(*) {
+		display: none;
 	}
 
-	.d2l-empty-state-description {
-		margin: 0 auto 0.3rem;
+	#illustration-slot::slotted(svg:first-child) {
+		display: inline-block;
+	}
+
+	svg {
+		height: 100%;
 		max-width: 500px;
 		width: 100%;
 	}
@@ -67,18 +71,18 @@ export const emptyStateIllustratedStyles = css`
 		margin-top: 0.5rem;
 	}
 
-	::slotted(*) {
-		display: none;
-	}
-
-	::slotted(svg:first-child) {
-		display: inline-block;
-	}
-
-	svg {
-		height: 100%;
+	.d2l-empty-state-description {
+		margin: 0 auto 0.3rem;
 		max-width: 500px;
 		width: 100%;
+	}
+
+	/* .d2l-empty-state-action {
+		margin-top: 0.5rem;
+	}	 */
+
+	#action-slot::slotted(*) {
+		display: none;
 	}
 
 `;
