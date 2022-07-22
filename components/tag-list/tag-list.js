@@ -135,8 +135,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
-		let container = getOffsetParent(this);
-		if (!container || container.tagName === 'BODY') container = this.shadowRoot.querySelector('.tag-list-outer-container');
+		const container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(container);
 
@@ -248,8 +247,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		 */
 		let isOverflowing = false;
 		let overflowingIndex = 0;
+		let lastLineWidth = 0;
 		for (let k = 1; k <= this._lines; k++) {
 			showing.width = 0;
+
+			if (k === this._lines) {
+				if (this.clearable) showing.width += clearButtonWidth + GAP;
+				showing.width += this._subtleButtonWidth + GAP;
+			}
 
 			for (let i = overflowingIndex; i < this._itemLayouts.length; i++) {
 				const itemLayout = this._itemLayouts[i];
@@ -257,38 +262,32 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 				if (!isOverflowing && ((showing.width + itemWidth) <= (this._availableWidth + GAP))) {
 					showing.width += itemWidth;
+					if (k === this._lines) lastLineWidth += itemWidth;
 					showing.count += 1;
 					itemLayout.trigger = 'soft-show';
 				} else if (k < this._lines) {
 					overflowingIndex = i;
 					break;
 				} else {
+					if (k === this._lines) lastLineWidth += itemWidth;
 					isOverflowing = true;
 					itemLayout.trigger = 'soft-hide';
 				}
 			}
 		}
 
-		if (!isOverflowing && !this.clearable) {
+		if (!isOverflowing) {
 			this._chompIndex = showing.count;
 			return;
 		}
 
-		// calculate if additional item(s) should be hidden due to subtle button(s) needing space
-		for (let j = this._itemLayouts.length; j--;) {
-			if ((this.clearable && !isOverflowing && ((showing.width + clearButtonWidth) < this._availableWidth))
-				|| ((showing.width + this._subtleButtonWidth + clearButtonWidth) < this._availableWidth)) {
-				break;
-			}
-			const itemLayoutOverflowing = this._itemLayouts[j];
-			if (itemLayoutOverflowing.trigger !== 'soft-show') {
-				continue;
-			}
-			isOverflowing = true;
-			showing.width -= itemLayoutOverflowing.width;
-			showing.count -= 1;
+		// check if we can actually fit all items without the "show more" button
+		if (lastLineWidth < this._availableWidth) {
+			this._chompIndex = 1000;
+			return;
+		} else {
+			this._chompIndex = showing.count;
 		}
-		this._chompIndex = showing.count;
 	}
 
 	_getItemLayouts(filteredNodes) {

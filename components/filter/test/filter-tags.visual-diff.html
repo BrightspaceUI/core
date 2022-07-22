@@ -21,7 +21,7 @@
 				display: flex;
 				justify-content: space-between;
 			}
-			d2l-filter-tags {
+			d2l-filter-tags.single-line {
 				align-self: center;
 				position: relative;
 				width: 100%;
@@ -31,7 +31,7 @@
 	<body class="d2l-typography">
 		<div>
 			<div class="visual-diff" id="basic">
-				<d2l-filter-tags filter-ids="filter"></d2l-filter-tags>
+				<d2l-filter-tags filter-ids="filter" class="single-line"></d2l-filter-tags>
 				<d2l-filter id="filter">
 					<d2l-filter-dimension-set key="1" text="Category 1">
 						<d2l-filter-dimension-set-value selected text="Value 1 - 1" key="1"></d2l-filter-dimension-set-value>
@@ -49,7 +49,7 @@
 				</d2l-filter>
 			</div>
 			<div class="visual-diff" id="two-filters">
-				<d2l-filter-tags filter-ids="filter-1 filter-2" label="An optional filter label"></d2l-filter-tags>
+				<d2l-filter-tags filter-ids="filter-1 filter-2" label="An optional filter label" class="single-line"></d2l-filter-tags>
 				<d2l-filter id="filter-1">
 					<d2l-filter-dimension-set key="1" text="Category 1">
 						<d2l-filter-dimension-set-value selected text="Value 1 - 1" key="1"></d2l-filter-dimension-set-value>
@@ -63,6 +63,9 @@
 						<d2l-filter-dimension-set-value selected text="Value" key="1"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
+			</div>
+			<div class="visual-diff" id="flex-end" style="display: flex; justify-content: flex-end;">
+				<d2l-filter-tags filter-ids="filter"></d2l-filter-tags>
 			</div>
 		</div>
 	</body>
