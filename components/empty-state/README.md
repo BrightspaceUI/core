@@ -1,5 +1,6 @@
 # Empty State
-Empty states are used when there is no data available to be displayed, or when a search or filter returns no results.
+
+Empty state components are used to convey that there is no data available to be displayed, or that a search or filter has returned no results.
 
 <!-- docs: demo align:start -->
 ```html
@@ -7,6 +8,16 @@ Empty states are used when there is no data available to be displayed, or when a
   import '@brightspace-ui/core/components/empty-state/empty-state-simple-button.js';
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-button.js';
 </script>
+<style>
+	body {
+		overflow-y: scroll;
+	}
+	d2l-empty-state-illustrated-button,
+	d2l-empty-state-simple-button {
+		max-width: 500px;
+		width: 100%;
+	}
+</style>
 
 <d2l-empty-state-simple-button description="There are no assignments to display." action-text="Create an Assignment"></d2l-empty-state-simple-button>
 <d2l-empty-state-illustrated-button illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths"> </d2l-empty-state-illustrated-button>
@@ -18,7 +29,7 @@ Empty states are used when there is no data available to be displayed, or when a
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Do make it clear that there is no data available to be displayed
-* Do include guidance on next steps if available, either as short instructions or as Call to Actions
+* Do include guidance on next steps if available, either as short instructions or as a Call to Action
 * Do use a link for navigation and a button for actions
 * Do replace the entire content with its empty state for accessibility
 <!-- docs: end dos -->
@@ -64,7 +75,13 @@ The `d2l-empty-state-illustrated-button` component is an empty state component t
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-button.js';
 </script>
-
+<!-- docs: start hidden content -->
+<style>
+	body {
+		overflow-y: scroll;
+	}
+</style>
+<!-- docs: end hidden content -->
 <d2l-empty-state-illustrated-button illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths"></d2l-empty-state-illustrated-button>
 ```
 
@@ -77,7 +94,13 @@ The `d2l-empty-state-illustrated-link` component is an empty state component tha
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated-link.js';
 </script>
-
+<!-- docs: start hidden content -->
+<style>
+	body {
+		overflow-y: scroll;
+	}
+</style>
+<!-- docs: end hidden content -->
 <d2l-empty-state-illustrated-link illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path." action-text="Create Learning Paths" action-href='https://d2l.com'></d2l-empty-state-illustrated-link>
 ```
 
