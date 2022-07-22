@@ -78,7 +78,7 @@ It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions 
 | Property | Type | Description |
 |---|---|---|
 | `disabled` | Boolean | Disabled the switch |
-| `on` | Boolean | Whether the switch is "on" or "off". If content is passed into the switch, the switch will be "on with conditions". |
+| `on` | Boolean | Whether the switch is "on" or "off". If content is passed into the switch slot, the switch will be "on with conditions". |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 
 ### Events
