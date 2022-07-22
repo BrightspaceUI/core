@@ -4,7 +4,7 @@
  */
 
 const mathjaxContextAttribute = 'data-mathjax-context';
-const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.1.2';
+const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.2.2';
 
 const mathjaxFontMappings = new Map([
 	['MJXTEX', 'MathJax_Main-Regular'],
@@ -31,6 +31,8 @@ const mathjaxFontMappings = new Map([
 ]);
 
 let mathJaxLoaded;
+
+let renderingPromise = Promise.resolve();
 
 export class HtmlBlockMathRenderer {
 
@@ -70,7 +72,8 @@ export class HtmlBlockMathRenderer {
 			});
 
 			await window.MathJax.startup.promise;
-			window.MathJax.typesetShadow(elem.getRootNode(), elem);
+			renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
+			await renderingPromise;
 			return elem;
 		}
 
@@ -82,8 +85,10 @@ export class HtmlBlockMathRenderer {
 		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${inner}</mjx-body></mjx-doc></div>`;
 
 		elem.appendChild(temp);
-		await window.MathJax.startup.promise;
-		window.MathJax.typesetShadow(temp.shadowRoot);
+
+		await window.MathJax.startup.promise;	
+		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(temp.shadowRoot));
+		await renderingPromise;
 
 		return temp.shadowRoot.firstChild;
 	}
@@ -94,13 +99,9 @@ export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;
 
-	const loadOptions = ['ui/menu'];
-	if (mathJaxConfig && mathJaxConfig.renderLatex) {
-		loadOptions.push('[tex]/all-packages');
-	}
-
 	window.MathJax = {
 		chtml: {
+			adaptiveCSS: false,
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
 		},
 		options: {
@@ -108,7 +109,7 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: loadOptions },
+		loader: { load: ['ui/menu'] },
 		startup: {
 			ready: () => {
 
@@ -188,14 +189,16 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = function(root, elem) {
+				window.MathJax.typesetShadow = async function(root, elem) {
 					const InputJax = startup.getInputJax();
 					const OutputJax = startup.getOutputJax();
 					const html = mathjax.document(root, { InputJax, OutputJax });
 
 					if (elem) html.options.elements = [elem];
 
-					html.render().typeset();
+					await mathjax.handleRetriesFor(() => html.render());
+
+					html.typeset();
 					return html;
 				};
 
