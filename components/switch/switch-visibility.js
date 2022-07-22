@@ -33,15 +33,9 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		this._hasConditions = false;
 	}
 
-	get offIcon() {
-		return html`<d2l-icon icon="tier1:visibility-hide"></d2l-icon>`;
-	}
-
-	get onIcon() {
-		return html`<d2l-icon icon="tier1:visibility-show"></d2l-icon>`;
-	}
-
 	get text() {
+		if (this._text) return this._text;
+
 		if (this.on && this._hasConditions) {
 			return this.localize('components.switch.visibleWithPeriod');
 		}
@@ -53,7 +47,26 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		}
 	}
 
+	// TODO: remove this (along with this._text) when we no longer have any consumers overriding the label text
+	set text(val) {
+		const oldVal = this._text;
+		if (oldVal !== val) {
+			this._text = val;
+			this.requestUpdate('text', oldVal);
+		}
+	}
+
+	get offIcon() {
+		return html`<d2l-icon icon="tier1:visibility-hide"></d2l-icon>`;
+	}
+
+	get onIcon() {
+		return html`<d2l-icon icon="tier1:visibility-show"></d2l-icon>`;
+	}
+
 	get _labelContent() {
+		if (this._text) return super._labelContent;
+
 		const tooltipHelpClasses = {
 			'switch-visibility-conditions-show': this.on && this._hasConditions
 		};
