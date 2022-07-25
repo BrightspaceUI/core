@@ -72,7 +72,11 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		};
 
 		const conditions = html`
-			<d2l-tooltip-help class="${classMap(tooltipHelpClasses)} d2l-switch-text" id="conditions-help" text="${this.localize('components.switch.conditions')}" inherit-font-style>
+			<d2l-tooltip-help 
+				class="${classMap(tooltipHelpClasses)} d2l-switch-text" 
+				id="conditions-help" 
+				text="${this.localize('components.switch.conditions')}" 
+				inherit-font-style>
 				<slot @slotchange="${this._handleConditionsSlotChange}"></slot>
 			</d2l-tooltip-help>
 			`;
