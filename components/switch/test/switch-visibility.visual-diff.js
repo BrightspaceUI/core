@@ -27,8 +27,8 @@ describe('d2l-switch-visibility', () => {
 				{ name: 'off', selector: '#off' },
 				{ name: 'on', selector: '#on' },
 				{ name: 'off with conditions', selector: '#off-with-conditions' },
-				{ name: 'on with conditions text position start', selector: '#on-with-conditions' },
-				{ name: 'on with conditions', selector: '#on-with-conditions-text-position-start' },
+				{ name: 'on with conditions', selector: '#on-with-conditions' },
+				{ name: 'on with conditions text position start', selector: '#on-with-conditions-text-position-start' },
 				{ name: 'off text overridden', selector: '#off-text-overridden' },
 				{ name: 'on text overridden', selector: '#on-text-overridden' },
 				{ name: 'off with conditons text overridden', selector: '#off-with-conditions-text-overridden' },
@@ -54,7 +54,7 @@ describe('d2l-switch-visibility', () => {
 					rect.x -= 120;
 				}
 				rect.width += 120;
-				rect.y -= 170;
+				// rect.y -= 170;
 				rect.height += 170;
 
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
