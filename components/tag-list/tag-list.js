@@ -371,7 +371,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._hasShownKeyboardTooltip = true;
 	}
 
-	async _handleResize(entries) {
+	async _handleResize() {
 		this._chompIndex = 10000;
 		await this.updateComplete;
 
