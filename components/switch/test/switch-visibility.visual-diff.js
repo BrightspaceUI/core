@@ -33,7 +33,9 @@ describe('d2l-switch-visibility', () => {
 				{ name: 'on text overridden', selector: '#on-text-overridden' },
 				{ name: 'off with conditons text overridden', selector: '#off-with-conditions-text-overridden' },
 				{ name: 'on with conditions text overridden', selector: '#on-with-conditions-text-overridden' },
-				{ name: 'on with conditions text-position start text overridden', selector: '#on-with-conditions-text-position-start-text-overridden' }
+				{ name: 'on with conditions text-position start text overridden', selector: '#on-with-conditions-text-position-start-text-overridden' },
+				{ name: 'on text-position hidden text overridden', selector: '#on-text-position-hidden-text-overridden' },
+				{ name: 'on with conditions text-position hidden text overridden', selector: '#on-with-conditions-text-position-hidden-text-overridden' }
 			].forEach(info => {
 
 				it(info.name, async function() {
