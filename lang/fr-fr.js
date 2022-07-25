@@ -42,7 +42,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-date-time-range.startDate": "Date de début",
-	"components.input-date-time.date": "Date",
+	"components.input-date-time.date": "Date", // mfv-translated
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "plus",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} supplémentaire(s)",
-	"components.pager-load-more.info": "{ShowingCount} élément(s) sur {totalCount}",
+	"components.pager-load-more.info": "{showingCount} élément(s) sur {totalCount}",
 	"components.pager-load-more.status-loading": "Charger plus d’éléments",
 	"components.selection.action-hint": "Sélectionnez un élément pour exécuter cette action.",
 	"components.selection.select-all": "Tout sélectionner",
