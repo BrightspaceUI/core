@@ -372,6 +372,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
+		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
 
@@ -385,6 +386,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		} else {
 			this._chomp();
 		}
+		this._contentReady = true;
 	}
 
 	async _handleSlotChange() {
