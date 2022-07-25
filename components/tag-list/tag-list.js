@@ -135,8 +135,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
+		let container = getOffsetParent(this);
+		if (!container) container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(this);
+		this._resizeObserver.observe(container);
 
 		this._listContainer = this.shadowRoot.querySelector('.tag-list-container');
 		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
