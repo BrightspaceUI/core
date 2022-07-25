@@ -270,7 +270,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			}
 		}
 
-		if (!isOverflowing && !this.clearable) {
+		if (!isOverflowing && (!this.clearable || this._items.length < CLEAR_ALL_THRESHOLD)) {
 			this._chompIndex = showing.count;
 			return;
 		}
@@ -393,17 +393,21 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		await this.updateComplete;
 
 		this._items = await this._getTagListItems();
+		this._chompIndex = 10000;
 		if (!this._items || this._items.length === 0) {
-			this._chompIndex = 10000;
 			return;
 		}
+		await this.updateComplete;
 
 		this._itemLayouts = this._getItemLayouts(this._items);
 		this._itemHeight = this._items[0].offsetHeight;
 		this._items.forEach((item, index) => {
 			item.setAttribute('tabIndex', index === 0 ? 0 : -1);
 		});
+
+		this._availableWidth = Math.ceil(this._listContainer.getBoundingClientRect().width);
 		this._chomp();
+
 		this._contentReady = true;
 		if (!this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-item', 'keyboard-tooltip-item');
 	}
