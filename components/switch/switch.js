@@ -9,6 +9,16 @@ import { SwitchMixin } from './switch-mixin.js';
  */
 class Switch extends SwitchMixin(LitElement) {
 
+	static get properties() {
+		return {
+			/**
+			 * REQUIRED: The text that is displayed for the switch label.
+			 * @type {string}
+			 */
+			text: { type: String, reflect: true }
+		};
+	}
+
 	get offIcon() {
 		return html`
 			<d2l-icon-custom size="tier1">

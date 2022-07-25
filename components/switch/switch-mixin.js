@@ -21,8 +21,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 */
 			on: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: The text that is displayed for the switch label.
-			 * @type {string}
+			 * @ignore - Need to add documentation in each component that uses this mixin.
 			 */
 			text: { type: String, reflect: true },
 			/**
