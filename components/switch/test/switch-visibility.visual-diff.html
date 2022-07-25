@@ -16,6 +16,7 @@
 	<style>
 		.visual-diff {
 			width: 300px;
+			padding-bottom: 150px;
 		}
 	</style>
 </head>
@@ -42,6 +43,58 @@
 
 	<div class="visual-diff">
 		<d2l-switch-visibility id="on-with-conditions" on>
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-start" on text-position="start">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="off-text-overridden" text="Label text has been overridden."></d2l-switch-visibility>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-text-overridden" on text="Label text has been overridden."></d2l-switch-visibility>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="off-with-conditions-text-overridden" text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+	
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-overridden" on text-position="start" text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-start-text-overridden" on text="Label text has been overridden.">
 			These are some conditions that must be met for the activity to be visible.
 			<ul>
 				<li> Condition 1 </li>
