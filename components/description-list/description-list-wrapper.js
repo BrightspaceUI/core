@@ -79,7 +79,7 @@ class DescriptionListWrapper extends LitElement {
 
 	render() {
 		return html`
-			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<slot></slot>
 		`;
 	}
 
@@ -89,10 +89,6 @@ class DescriptionListWrapper extends LitElement {
 		} else if (this.clientWidth >= this.breakpoint && this.stacked) {
 			this.stacked = false;
 		}
-	}
-
-	_handleSlotChange() {
-		this._checkIfShouldStack();
 	}
 
 	_onResize() {
