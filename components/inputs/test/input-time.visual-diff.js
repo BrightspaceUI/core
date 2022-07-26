@@ -69,6 +69,7 @@ describe('d2l-input-time', () => {
 		});
 
 		it('opened-disabled remove disabled', async function() {
+			await reset(page, '#opened-disabled'); // Needed for retries
 			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('disabled'));
 			const rect = await getRect(page, '#opened-disabled');
@@ -76,6 +77,7 @@ describe('d2l-input-time', () => {
 		});
 
 		it('opened-skeleton remove skeleton', async function() {
+			await reset(page, '#opened-skeleton'); // Needed for retries
 			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('opened'));
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('skeleton'));
 			const rect = await getRect(page, '#opened-skeleton');
@@ -137,6 +139,9 @@ describe('d2l-input-time', () => {
 		});
 
 		it('dropdown open top', async function() {
+			await page.reload(); // Needed for retries
+			await page.$eval('#opened', (elem) => elem.removeAttribute('opened')); // Needed for retries
+
 			await open(page, '#dropdown');
 			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#dropdown');

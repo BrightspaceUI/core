@@ -167,6 +167,7 @@ describe('d2l-input-date-time-range', () => {
 		async function changeInnerInputDateTime(page, selector, inputSelector, date, waitForTime) {
 			return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
 				const dateElem = elem.shadowRoot.querySelector(inputSelector);
+				if (dateElem.value.substring(0, 23) === date.substring(0, 23)) return;
 				dateElem.value = date;
 				const e = new Event(
 					'change',
@@ -195,6 +196,11 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector);
 		}
 
+		async function setupStartingValues(page, selector, expectedStart, expectedEnd) {
+			await changeInnerInputDateTime(page, selector, startDateSelector, expectedStart);
+			await changeInnerInputDateTime(page, selector, endDateSelector, expectedEnd);
+		}
+
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, ''); // Reset width change event
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
@@ -213,6 +219,7 @@ describe('d2l-input-date-time-range', () => {
 				// end-value: 2021-12-04T10:30:00.000Z
 				describe(testCase.name, () => {
 					it('change start date', async function() {
+						await setupStartingValues(page, testCase.id, '2020-12-02T06:00:00.000Z', '2021-12-04T10:30:00.000Z');
 						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-05T06:00:00.000Z');
 
 						const rect = await visualDiff.getRect(page, testCase.id);
@@ -220,6 +227,7 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('change start time', async function() {
+						await setupStartingValues(page, testCase.id, '2020-12-05T06:00:00.000Z', '2021-12-07T10:30:00.000Z');
 						await changeInnerInputDateTime(page, testCase.id, endDateSelector, '2020-12-05T10:30:00.000Z');
 						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-05T15:00:00.000Z');
 
@@ -228,6 +236,7 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('change start date when dates same', async function() {
+						await setupStartingValues(page, testCase.id, '2020-12-05T15:00:00.000Z', '2020-12-05T19:30:00.000Z');
 						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-13T15:00:00.000Z');
 
 						const rect = await visualDiff.getRect(page, testCase.id);
@@ -235,6 +244,7 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('change start time to cause max value to be reached', async function() {
+						await setupStartingValues(page, testCase.id, '2020-12-13T15:00:00.000Z', '2020-12-13T19:30:00.000Z');
 						await page.$eval(testCase.id, (elem, inputSelector) => {
 							const dateElem = elem.shadowRoot.querySelector(inputSelector);
 							const innerInput = dateElem.shadowRoot.querySelector('d2l-input-time');

@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { resetInnerTimeInput } from './input-helper.js';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, tag) {
@@ -193,6 +194,7 @@ describe('d2l-input-date-time', () => {
 		});
 
 		it('open time', async function() {
+			await resetInnerTimeInput(page, '#basic'); // Needed for retries
 			await page.$eval('#basic', async(elem) => {
 				const timeInput = elem.shadowRoot.querySelector('d2l-input-time');
 				const input = timeInput.shadowRoot.querySelector('input');
