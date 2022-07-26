@@ -41,6 +41,27 @@ export const bodyStandardStyles = css`
 	}
 `;
 
+export const bodyCompactStylize = (tag) => css`
+	${tag} {
+		font-size: 0.8rem;
+		font-weight: 400;
+		line-height: 1.2rem;
+	}
+	:host([skeleton]) ${tag}.d2l-skeletize::before {
+		bottom: 0.3rem;
+		top: 0.3rem;
+	}
+	:host([skeleton]) ${tag}.d2l-skeletize-paragraph-2 {
+		max-height: 2.4rem;
+	}
+	:host([skeleton]) ${tag}.d2l-skeletize-paragraph-3 {
+		max-height: 3.6rem;
+	}
+	:host([skeleton]) ${tag}.d2l-skeletize-paragraph-5 {
+		max-height: 6rem;
+	}
+`;
+
 export const bodyCompactStyles = css`
 	.d2l-body-compact {
 		font-size: 0.8rem;
@@ -209,6 +230,19 @@ export const heading4Styles = css`
 	:host([skeleton]) .d2l-heading-4.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.25rem;
+	}
+`;
+
+export const labelStylize = (tag) => css`
+	${tag} {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.2px;
+		line-height: 1rem;
+	}
+	:host([skeleton]) ${tag}.d2l-skeletize::before {
+		bottom: 0.25rem;
+		top: 0.15rem;
 	}
 `;
 
