@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-offscreen', () => {
+describe('d2l-offscreen', () => {
 
 	const visualDiff = new VisualDiff('offscreen', import.meta.url);
 

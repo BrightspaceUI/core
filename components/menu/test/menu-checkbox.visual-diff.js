@@ -1,7 +1,7 @@
 import { oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
-describe.skip('d2l-menu checkbox', () => {
+describe('d2l-menu checkbox', () => {
 
 	const visualDiff = new VisualDiff('menu-checkbox', import.meta.url);
 

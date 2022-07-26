@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-meter-linear', () => {
+describe('d2l-meter-linear', () => {
 
 	const visualDiff = new VisualDiff('meter-linear', import.meta.url);
 
