@@ -54,7 +54,6 @@ describe('d2l-switch-visibility', () => {
 					rect.x -= 120;
 				}
 				rect.width += 120;
-				// rect.y -= 170;
 				rect.height += 170;
 
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
