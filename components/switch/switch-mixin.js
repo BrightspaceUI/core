@@ -6,6 +6,7 @@ import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-m
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
 export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(FocusVisiblePolyfillMixin(superclass))) {
 
 	static get properties() {
