@@ -23,7 +23,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			filterIds: { type: String, attribute: 'filter-ids' },
 			/**
 			 * The text displayed in this component's label
-			 * @default "Applied Filters:"
+			 * @default "Active Filters:"
 			 * @type {string}
 			 */
 			label: { type: String }
