@@ -115,6 +115,7 @@ describe('d2l-input-date-time-range', () => {
 		});
 
 		it('intially start opened', async function() {
+			await new Promise(resolve => setTimeout(resolve, 100));
 			const rect = await getRect(page, '#opened', 0);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
