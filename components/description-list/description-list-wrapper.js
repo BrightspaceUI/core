@@ -53,6 +53,9 @@ class DescriptionListWrapper extends LitElement {
 			:host {
 				display: block;
 			}
+			:host([hidden]) {
+				display: none;
+			}
 		`;
 	}
 
