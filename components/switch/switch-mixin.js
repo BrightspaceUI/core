@@ -31,7 +31,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 * @default end
 			 */
 			textPosition: { type: String, attribute: 'text-position', reflect: true },
-			_labelHovering: { type: Boolean, state: true }
+			_hovering: { type: Boolean, state: true }
 		};
 	}
 
@@ -60,10 +60,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			}
 			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
-			}
-			.d2l-switch-container:hover > .d2l-switch-inner {
-				border-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
@@ -189,7 +185,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
 		const innerSwitchClasses = {
-			'switch-hover': this._labelHovering
+			'switch-hover': this._hovering
 		};
 		const switchLabel = html`<span id="${this._textId}" class="d2l-switch-text">${this._labelContent}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
@@ -207,7 +203,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				@keyup="${this._handleKeyUp}"
 				role="switch"
 				tabindex="${ifDefined(tabindex)}">
-				<div class="d2l-switch-inner ${classMap(innerSwitchClasses)}">
+				<div class="d2l-switch-inner ${classMap(innerSwitchClasses)}" @mouseover='${this._handleSwitchHover}' @mouseout='${this._handleSwitchHoverLeave}'>
 					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
@@ -218,7 +214,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 	}
 
 	get _labelContent() {
-		return html`<span @click='${this._handleClick}' @mouseover='${this._handleLabelHover}' @mouseout='${this._handleLabelHoverLeave}'>${this.text}</span>`;
+		return html`<span @click='${this._handleClick}' @mouseover='${this._handleSwitchHover}' @mouseout='${this._handleSwitchHoverLeave}'>${this.text}</span>`;
 	}
 
 	_handleClick() {
@@ -235,12 +231,12 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		if (e.keyCode === 32) this._toggleState();
 	}
 
-	_handleLabelHover() {
-		this._labelHovering = true;
+	_handleSwitchHover() {
+		this._hovering = true;
 	}
 
-	_handleLabelHoverLeave() {
-		this._labelHovering = false;
+	_handleSwitchHoverLeave() {
+		this._hovering = false;
 	}
 
 	_toggleState() {
