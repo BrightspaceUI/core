@@ -196,9 +196,7 @@ export function loadMathJax(mathJaxConfig) {
 					if (elem) html.options.elements = [elem];
 
 					await mathjax.handleRetriesFor(() => html.render());
-
 					html.typeset();
-					return html;
 				};
 
 				//
