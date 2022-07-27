@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
 
 export const bodyStandardStyles = css`
 	.d2l-body-standard {
@@ -41,26 +41,31 @@ export const bodyStandardStyles = css`
 	}
 `;
 
-export const bodyCompactStyles = css`
-	.d2l-body-compact {
-		font-size: 0.8rem;
-		font-weight: 400;
-		line-height: 1.2rem;
-	}
-	:host([skeleton]) .d2l-body-compact.d2l-skeletize::before {
-		bottom: 0.3rem;
-		top: 0.3rem;
-	}
-	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-2 {
-		max-height: 2.4rem;
-	}
-	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-3 {
-		max-height: 3.6rem;
-	}
-	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-5 {
-		max-height: 6rem;
-	}
-`;
+export const generateBodyCompactStyles = (selector) => {
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 0.8rem;
+			font-weight: 400;
+			line-height: 1.2rem;
+		}
+		:host([skeleton]) ${selector}.d2l-skeletize::before {
+			bottom: 0.3rem;
+			top: 0.3rem;
+		}
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-2 {
+			max-height: 2.4rem;
+		}
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-3 {
+			max-height: 3.6rem;
+		}
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-5 {
+			max-height: 6rem;
+		}
+	`;
+};
+
+export const bodyCompactStyles = generateBodyCompactStyles('.d2l-body-compact');
 
 export const bodySmallStyles = css`
 	.d2l-body-small {
@@ -212,18 +217,23 @@ export const heading4Styles = css`
 	}
 `;
 
-export const labelStyles = css`
-	.d2l-label-text {
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.2px;
-		line-height: 1rem;
-	}
-	:host([skeleton]) .d2l-label-text.d2l-skeletize::before {
-		bottom: 0.25rem;
-		top: 0.15rem;
-	}
-`;
+export const generateLabelStyles = (selector) => {
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.2px;
+			line-height: 1rem;
+		}
+		:host([skeleton]) ${selector}.d2l-skeletize::before {
+			bottom: 0.25rem;
+			top: 0.15rem;
+		}
+	`;
+};
+
+export const labelStyles = generateLabelStyles('.d2l-label-text');
 
 export const blockquoteStyles = css`
 	.d2l-blockquote {
