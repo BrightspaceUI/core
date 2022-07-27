@@ -11,8 +11,9 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 const illustrationAspectRatio = 500 / 330;
 
 /**
- * The `d2l-empty-state-illustrated` component is an empty state component that displays an illustration and action button. The illustration property can be set to use one of the preset illustrations or a custom SVG illustration can be added in the default slot.
- * @slot - Custom SVG content if `illustration-name` property is not set
+ * The `d2l-empty-state-illustrated` component is an empty state component that displays a title and description with an illustration. An empty state action component can be placed inside of the default slot to add an optional action.
+ * @slot - Slot for empty state actions
+ * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
 class EmptyStateIllustrated extends (LitElement) {
 
@@ -54,12 +55,21 @@ class EmptyStateIllustrated extends (LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
+		this.addEventListener('d2l-empty-state-action', () => this._handleEmptyStateAction);
+		this.addEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
 		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this.removeEventListener('d2l-empty-state-action', () => this._handleEmptyStateAction);
+		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
 		this._resizeObserver.disconnect();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._validateAttributes();
 	}
 
 	render() {
@@ -72,11 +82,11 @@ class EmptyStateIllustrated extends (LitElement) {
 			<div style="${styleMap(illustrationContainerStyle)}">
 				${runAsync(this.illustrationName, () => this._getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
 			</div>`
-		: html`<slot id="illustration-slot" name="illustration"></slot>`}
+		: html`<slot class="illustration-slot" name="illustration"></slot>`}
 
 			<p class="${classMap(titleClass)}">${this.titleText}</p>
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
-			<slot id="action-slot"></slot>
+			<slot class="action-slot"></slot>
 		`;
 	}
 
@@ -89,11 +99,13 @@ class EmptyStateIllustrated extends (LitElement) {
 		});
 		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
 	}
+
 	_getIllustrationContainerStyle() {
 		return {
 			height: `${this._contentHeight}px`,
 		};
 	}
+
 	_getTitleClass() {
 		return {
 			'd2l-empty-state-title': true,
@@ -101,9 +113,15 @@ class EmptyStateIllustrated extends (LitElement) {
 			'd2l-empty-state-title-large': !this._titleSmall,
 		};
 	}
-	_handleActionClick(e) {
+
+	_handleEmptyStateAction(e) {
 		e.stopPropagation();
-		this.dispatchEvent(new CustomEvent('d2l-empty-state-action'));
+		this.dispatch(new CustomEvent('d2l-empty-state-action'));
+	}
+
+	_handleEmptyStateIllustratedCheck(e) {
+		e.stopPropagation();
+		e.detail.illustrated = true;
 	}
 
 	_onResize(entries) {

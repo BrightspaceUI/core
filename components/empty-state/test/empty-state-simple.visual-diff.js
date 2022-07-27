@@ -32,7 +32,17 @@ describe('d2l-empty-state-simple', () => {
 				await page.bringToFront();
 			});
 
-			[ 'normal', 'wrap', 'no-description' ]
+			[
+				'normal',
+				'normal-button',
+				'normal-button-primary-blocked',
+				'normal-link',
+				'wrap',
+				'wrap-button',
+				'wrap-link',
+				'no-description-button',
+				'no-description-link'
+			]
 				.forEach(name => {
 					it(`${name}`, async function() {
 						const selector = `#${name}`;

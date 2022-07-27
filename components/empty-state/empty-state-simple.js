@@ -5,7 +5,8 @@ import { bodyCompactStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * The `d2l-empty-state-simple` component is an empty state component that displays a description and an optional empty-state-action component given in its slot.
+ * The `d2l-empty-state-simple` component is an empty state component that displays a description. An empty state action component can be placed inside of the default slot to add an optional action.
+ * @slot - Slot for empty state actions
  */
 class EmptyStateSimple extends RtlMixin(LitElement) {
 
@@ -29,6 +30,16 @@ class EmptyStateSimple extends RtlMixin(LitElement) {
 		this._validatingDescriptionTimeout = null;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._validateDescription();
@@ -41,9 +52,9 @@ class EmptyStateSimple extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_handleActionClick(e) {
+	_handleEmptyStateIllustratedCheck(e) {
 		e.stopPropagation();
-		this.dispatchEvent(new CustomEvent('d2l-empty-state-action'));
+		e.detail.illustrated = false;
 	}
 
 	_validateDescription() {

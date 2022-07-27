@@ -27,10 +27,6 @@ export const emptyStateSimpleStyles = css`
 		display: inline;
 		padding-right: 0.5rem;
 	}
-/* 
-	.d2l-empty-state-action {
-		vertical-align: top;
-	} */
 
 `;
 
@@ -40,11 +36,11 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	#illustration-slot::slotted(*) {
+	.illustration-slot::slotted(*) {
 		display: none;
 	}
 
-	#illustration-slot::slotted(svg:first-child) {
+	.illustration-slot::slotted(svg:first-child) {
 		display: inline-block;
 	}
 
@@ -72,17 +68,18 @@ export const emptyStateIllustratedStyles = css`
 	}
 
 	.d2l-empty-state-description {
-		margin: 0 auto 0.3rem;
+		margin: 0 auto 0.8rem;
 		max-width: 500px;
 		width: 100%;
 	}
 
-	/* .d2l-empty-state-action {
-		margin-top: 0.5rem;
-	}	 */
-
-	#action-slot::slotted(*) {
+	.action-slot::slotted(*) {
 		display: none;
+	}
+
+	.action-slot::slotted(d2l-empty-state-action-button:first-child),
+	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
+		display: inline-block;
 	}
 
 `;
