@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { codeStyles, HtmlBlockCodeRenderer } from '../../helpers/prism.js';
-import { css, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
@@ -140,6 +141,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			compact: { type: Boolean },
 			/**
 			 * Whether to display the HTML in inline mode
+			 * @type {Boolean}
 			 */
 			inline: { type: Boolean },
 			/**
@@ -161,15 +163,18 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				text-align: left;
 			}
 			:host([inline]),
-			:host([inline]) div.d2l-html-block-rendered {
+			div.d2l-html-block-inline {
 				display: inline;
 			}
 			:host([hidden]),
-			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
+			div.d2l-html-block-no-deferred-rendering {
 				display: none;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
+			}
+			slot.d2l-html-block-deferred-rendering {
+				display: none;
 			}
 		`];
 	}
@@ -209,33 +214,49 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
-		if (this._renderContainer) return;
-
-		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
-		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
-			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
-			+ '"></div><slot'
-			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
-			+ '></slot>';
-
-		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
-		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		this._context = this._contextObserverController ? { ...this._contextObserverController.values } : {};
+		this._updateContextKeys();
 	}
 
-	updated() {
-		super.updated();
-		if (this._contextObserverController && this._contextObjectHasChanged()) this._render();
+	render() {
+		const renderContainerClasses = {
+			'd2l-html-block-rendered': true,
+			'd2l-html-block-compact': this.compact,
+			'd2l-html-block-inline': this.inline,
+			'd2l-html-block-no-deferred-rendering': this.noDeferredRendering
+		};
+
+		const slotClasses = {
+			'd2l-html-block-deferred-rendering': !this.noDeferredRendering
+		};
+
+		return html`
+			<div class="${classMap(renderContainerClasses)}"></div>
+			<slot class="${classMap(slotClasses)}" @slotchange="${this._handleSlotChange}"></slot>
+		`;
 	}
 
-	_contextObjectHasChanged() {
-		if (this._context.size !== this._contextObserverController.values.size) return true;
-		for (const [attr, val] of this._context) {
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (this._contextChanged()) {
+			this._render();
+			this._updateContextKeys();
+		}
+	}
+
+	_contextChanged() {
+		if (!this._contextObserverController) return false;
+
+		if (this._contextKeys.size !== this._contextObserverController.values.size) return true;
+		for (const [attr, val] of this._contextKeys) {
 			if (!this._contextObserverController.values.has(attr)) return true;
 			if (this._contextObserverController.values.get(attr) !== val) return true;
 		}
 		return false;
+	}
+
+	async _handleSlotChange(e) {
+		if (!e.target) return;
+		await this._render(e.target);
 	}
 
 	async _processRenderers(elem) {
@@ -253,8 +274,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				});
 			}
 		}
-
-		return elem;
 	}
 
 	async _render(slot) {
@@ -274,20 +293,14 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	_stamp(slot) {
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+
 		const stampHTML = async nodes => {
-			if (nodes && nodes.length > 0) {
+			renderContainer.innerHTML = '';
+			if (!nodes || nodes.length === 0) return;
 
-				let temp = document.createElement('div');
-				temp.style.display = 'none';
-				nodes.forEach(node => temp.appendChild(node.cloneNode(true)));
-
-				this._renderContainer.appendChild(temp);
-				temp = await this._processRenderers(temp);
-				this._renderContainer.innerHTML = temp.innerHTML;
-
-			} else {
-				this._renderContainer.innerHTML = '';
-			}
+			nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
+			await this._processRenderers(renderContainer);
 		};
 
 		if (this._contentObserver) this._contentObserver.disconnect();
@@ -301,6 +314,15 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		);
 
 		stampHTML(slottedNodes);
+	}
+
+	_updateContextKeys() {
+		if (!this._contextObserverController) return;
+		if (!this._contextKeys) this._contextKeys = new Map();
+
+		this._contextObserverController.values.forEach((val, attr) => {
+			this._contextKeys.set(attr, val);
+		});
 	}
 
 }
