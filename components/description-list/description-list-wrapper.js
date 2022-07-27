@@ -3,8 +3,8 @@ import { css, html, LitElement } from 'lit';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
-	labelStylize(css`dt`),
-	bodyCompactStylize(css`dd`),
+	labelStylize('dt'),
+	bodyCompactStylize('dd'),
 	css`
 		:host {
 			--d2l-dt-min-width: min-content;
