@@ -105,17 +105,33 @@ describe('d2l-selection', () => {
 			{ name: 'none-selected', selector: '#select-all-pages-none-selected' },
 			{ name: 'some-selected', selector: '#select-all-pages-some-selected' },
 			{ name: 'all-selected', selector: '#select-all-pages-all-selected' },
-			{ name: 'select-all-pages', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all-pages').shadowRoot.querySelector('d2l-button-subtle').shadowRoot.querySelector('button').click()) },
-			{ name: 'add-item', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => {
-				const item = document.createElement('li');
-				const input = document.createElement('d2l-selection-input');
-				input.key = 'key4';
-				input.label = 'Item 4';
-				item.appendChild(input);
-				item.appendChild(document.createTextNode('Item 4'));
-				elem.querySelector('ul').appendChild(item);
-			}) },
-			{ name: 'unselect-item', selector: '#select-all-pages-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
+			{ name: 'select-all-pages', selector: '#select-all-pages-all-selected', action: async(selector) => {
+				await page.reload(); // Needed for retries
+				await page.$eval(selector, elem => {
+					elem.querySelector('d2l-selection-select-all-pages').shadowRoot.querySelector('d2l-button-subtle').shadowRoot.querySelector('button').click();
+				});
+			} },
+			{ name: 'add-item', selector: '#select-all-pages-all-selected', action: async(selector) => {
+				await page.reload(); // Needed for retries
+				await page.$eval(selector, elem => {
+					elem.querySelector('d2l-selection-select-all-pages').shadowRoot.querySelector('d2l-button-subtle').shadowRoot.querySelector('button').click();
+					const item = document.createElement('li');
+					const input = document.createElement('d2l-selection-input');
+					input.key = 'key4';
+					input.label = 'Item 4';
+					item.appendChild(input);
+					item.appendChild(document.createTextNode('Item 4'));
+					elem.querySelector('ul').appendChild(item);
+				});
+			} },
+			{ name: 'unselect-item', selector: '#select-all-pages-all-selected', action: async(selector) => {
+				await page.$eval(selector, elem => {
+					const input = elem.querySelector('d2l-selection-input');
+					if (input.selected) { // Do not click on retries
+						input.shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click();
+					}
+				});
+			} }
 		].forEach(runTest);
 	});
 
@@ -151,6 +167,10 @@ describe('d2l-selection', () => {
 	});
 
 	describe('mixin-single', () => {
+		afterEach(async() => {
+			await page.reload(); // Needed for retries
+		});
+
 		[
 			{ name: 'right-arrow', selector: '#mixin-single-right-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 39) },
 			{ name: 'left-arrow', selector: '#mixin-single-left-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 37) },
