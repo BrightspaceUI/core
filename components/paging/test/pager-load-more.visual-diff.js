@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-pager-load-more', () => {
+describe('d2l-pager-load-more', () => {
 
 	const visualDiff = new VisualDiff('pager-load-more', import.meta.url);
 

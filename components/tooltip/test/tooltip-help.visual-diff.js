@@ -3,7 +3,7 @@ import { getRect, show } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.skip('d2l-tooltip-help', () => {
+describe('d2l-tooltip-help', () => {
 
 	const visualDiff = new VisualDiff('tooltip-help', import.meta.url);
 	const tooltipHelpSelector = '#help-tooltip-basic';
