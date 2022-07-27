@@ -13,11 +13,11 @@ export const descriptionListStyles = [
 			--d2l-dd-min-width: 50%;
 		}
 		dl {
-			display: var(--d2l-description-list-dl-display, grid);
-			grid-auto-flow: row;
 			align-items: baseline;
-			grid-template-columns: minmax(var(--d2l-dt-min-width), auto) minmax(var(--d2l-dd-min-width), 1fr);
+			display: var(--d2l-description-list-dl-display, grid);
 			gap: 0.5rem 1.5rem;
+			grid-auto-flow: row;
+			grid-template-columns: minmax(var(--d2l-dt-min-width), auto) minmax(var(--d2l-dd-min-width), 1fr);
 		}
 		dt {
 			max-width: var(--d2l-dt-max-width);
