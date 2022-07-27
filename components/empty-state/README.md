@@ -6,8 +6,8 @@ Empty state components are used to convey that there is no data available to be 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-action-link.js';
-  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated.js';
+  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
 </script>
 <style>
 	body {
@@ -89,8 +89,8 @@ The `primary` attribute can be set to render a primary button in place of the de
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-action-button.js';
-  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated.js';
+  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
 </script>
 <!-- docs: start hidden content -->
 <style>
@@ -120,8 +120,8 @@ The `primary` attribute can be set to render a primary button in place of the de
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-action-link.js';
-  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated.js';
+  import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
 </script>
 <!-- docs: start hidden content -->
 <style>

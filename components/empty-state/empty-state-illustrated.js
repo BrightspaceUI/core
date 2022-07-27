@@ -15,7 +15,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for empty state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class EmptyStateIllustrated extends (LitElement) {
+class EmptyStateIllustrated extends LitElement {
 
 	static get properties() {
 		return {
@@ -112,11 +112,6 @@ class EmptyStateIllustrated extends (LitElement) {
 			'd2l-empty-state-title-small': this._titleSmall,
 			'd2l-empty-state-title-large': !this._titleSmall,
 		};
-	}
-
-	_handleEmptyStateAction(e) {
-		e.stopPropagation();
-		this.dispatch(new CustomEvent('d2l-empty-state-action'));
 	}
 
 	_handleEmptyStateIllustratedCheck(e) {
