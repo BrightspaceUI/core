@@ -106,7 +106,6 @@ describe('d2l-more-less', () => {
 	});
 
 	it('auto-expands on focus-in', async function() {
-		await page.reload(); // Needed for retries
 		const resize = contentResize(page, '#auto-expand');
 		await page.evaluate(() => document.querySelector('#auto-expand').querySelector('a').focus());
 		await resize;
