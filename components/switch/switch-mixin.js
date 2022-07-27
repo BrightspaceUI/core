@@ -31,7 +31,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 * @default end
 			 */
 			textPosition: { type: String, attribute: 'text-position', reflect: true },
-			_hovering: { type: Boolean, state: true }
+			_hovering: { state: true }
 		};
 	}
 
@@ -169,6 +169,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		this.on = false;
 		this.textPosition = 'end';
 		this._textId = getUniqueId();
+		this._hovering = false;
 	}
 
 	static get focusElementSelector() {
