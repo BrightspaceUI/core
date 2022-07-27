@@ -1,5 +1,6 @@
 import { bodyCompactStylize, labelStylize } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
@@ -12,7 +13,7 @@ export const descriptionListStyles = [
 			--d2l-dd-min-width: 50%;
 		}
 		dl {
-			display: grid;
+			display: var(--d2l-description-list-dl-display, grid);
 			grid-auto-flow: row;
 			align-items: baseline;
 			grid-template-columns: minmax(var(--d2l-dt-min-width), auto) minmax(var(--d2l-dd-min-width), 1fr);
@@ -22,16 +23,7 @@ export const descriptionListStyles = [
 			max-width: var(--d2l-dt-max-width);
 		}
 		dd {
-			margin: 0;
-		}
-		d2l-dl-wrapper[stacked] dl {
-			display: block;
-		}
-		d2l-dl-wrapper[stacked] dt {
-			max-width: unset;
-		}
-		d2l-dl-wrapper[stacked] dd {
-			margin-bottom: 0.5rem;
+			margin: var(--d2l-description-list-dd-margin, 0);
 		}
 	`
 ];
@@ -43,8 +35,8 @@ export const descriptionListStyles = [
 class DescriptionListWrapper extends LitElement {
 	static get properties() {
 		return {
-			stacked: { type: Boolean, reflect: true },
 			breakpoint: { type: Number, reflect: true },
+			_stacked: { state: true }
 		};
 	}
 
@@ -56,12 +48,17 @@ class DescriptionListWrapper extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
+			.stacked {
+				--d2l-description-list-dl-display: block;
+				--d2l-dt-max-width: unset;
+				--d2l-description-list-dd-margin: 0 0 0.5rem 0;
+			}
 		`;
 	}
 
 	constructor() {
 		super();
-		this.stacked = false;
+		this._stacked = false;
 		this.breakpoint = 350;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 		this._checkIfShouldStack();
@@ -78,16 +75,17 @@ class DescriptionListWrapper extends LitElement {
 	}
 
 	render() {
-		return html`
-			<slot></slot>
-		`;
+		const classes = {
+			'stacked': this._stacked
+		};
+		return html`<slot class="${classMap(classes)}"></slot>`;
 	}
 
 	_checkIfShouldStack() {
-		if (this.clientWidth < this.breakpoint && !this.stacked) {
-			this.stacked = true;
-		} else if (this.clientWidth >= this.breakpoint && this.stacked) {
-			this.stacked = false;
+		if (this.clientWidth < this.breakpoint && !this._stacked) {
+			this._stacked = true;
+		} else if (this.clientWidth >= this.breakpoint && this._stacked) {
+			this._stacked = false;
 		}
 	}
 
