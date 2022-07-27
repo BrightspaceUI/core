@@ -148,7 +148,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
-			.switch-hover {
+			.d2l-switch-inner:hover, .switch-hover {
 				border-color: var(--d2l-color-celestine);
 				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
@@ -204,7 +204,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				@keyup="${this._handleKeyUp}"
 				role="switch"
 				tabindex="${ifDefined(tabindex)}">
-				<div class="d2l-switch-inner ${classMap(innerSwitchClasses)}" @mouseover='${this._handleSwitchHover}' @mouseout='${this._handleSwitchHoverLeave}'>
+				<div class="d2l-switch-inner ${classMap(innerSwitchClasses)}">
 					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
