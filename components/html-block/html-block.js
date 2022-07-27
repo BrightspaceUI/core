@@ -160,13 +160,13 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				overflow-y: hidden;
 				text-align: left;
 			}
+			:host([inline]),
+			:host([inline]) div.d2l-html-block-rendered {
+				display: inline;
+			}
 			:host([hidden]),
 			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
 				display: none;
-			}
-			:host([inline]:not([hidden])),
-			:host([inline]:not([no-deferred-rendering])) div.d2l-html-block-rendered {
-				display: inline;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
