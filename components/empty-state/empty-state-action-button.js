@@ -20,7 +20,7 @@ class EmptyStateActionButton extends LitElement {
 			 * @type {boolean}
 			 */
 			primary: { type: Boolean },
-			_illustrated: { type: Boolean }
+			_illustrated: { state: true }
 		};
 	}
 

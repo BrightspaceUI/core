@@ -14,6 +14,15 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	.action-slot::slotted(*) {
+		display: none;
+	}
+
+	.action-slot::slotted(d2l-empty-state-action-button:first-child),
+	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
+		display: inline-block;
+	}
+
 `;
 
 export const emptyStateSimpleStyles = css`
@@ -71,15 +80,6 @@ export const emptyStateIllustratedStyles = css`
 		margin: 0 auto 0.8rem;
 		max-width: 500px;
 		width: 100%;
-	}
-
-	.action-slot::slotted(*) {
-		display: none;
-	}
-
-	.action-slot::slotted(d2l-empty-state-action-button:first-child),
-	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
-		display: inline-block;
 	}
 
 `;

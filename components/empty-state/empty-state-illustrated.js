@@ -55,14 +55,12 @@ class EmptyStateIllustrated extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-empty-state-action', () => this._handleEmptyStateAction);
 		this.addEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
 		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.removeEventListener('d2l-empty-state-action', () => this._handleEmptyStateAction);
 		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
 		this._resizeObserver.disconnect();
 	}

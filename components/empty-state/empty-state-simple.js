@@ -48,7 +48,7 @@ class EmptyStateSimple extends RtlMixin(LitElement) {
 	render() {
 		return html`
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
-			<slot></slot>
+			<slot class="action-slot"></slot>
 		`;
 	}
 
