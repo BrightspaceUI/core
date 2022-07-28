@@ -1,11 +1,11 @@
-import { bodyCompactStylize, labelStylize } from '../typography/styles.js';
+import { _generateBodyCompactStyles, _generateLabelStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
-	labelStylize('dt'),
-	bodyCompactStylize('dd'),
+	_generateLabelStyles('dt'),
+	_generateBodyCompactStyles('dd'),
 	css`
 		:host {
 			--d2l-dt-min-width: min-content;
