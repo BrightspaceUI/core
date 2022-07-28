@@ -41,7 +41,10 @@ export const bodyStandardStyles = css`
 	}
 `;
 
-export const generateBodyCompactStyles = (selector) => {
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateBodyCompactStyles = (selector) => {
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -65,7 +68,7 @@ export const generateBodyCompactStyles = (selector) => {
 	`;
 };
 
-export const bodyCompactStyles = generateBodyCompactStyles('.d2l-body-compact');
+export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact');
 
 export const bodySmallStyles = css`
 	.d2l-body-small {
@@ -217,7 +220,10 @@ export const heading4Styles = css`
 	}
 `;
 
-export const generateLabelStyles = (selector) => {
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateLabelStyles = (selector) => {
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -233,7 +239,7 @@ export const generateLabelStyles = (selector) => {
 	`;
 };
 
-export const labelStyles = generateLabelStyles('.d2l-label-text');
+export const labelStyles = _generateLabelStyles('.d2l-label-text');
 
 export const blockquoteStyles = css`
 	.d2l-blockquote {
