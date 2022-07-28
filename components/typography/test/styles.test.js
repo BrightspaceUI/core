@@ -37,6 +37,9 @@ describe.only('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('a[b[c]]')).to.be.false;
 		expect(_isValidCssSelector('abc$')).to.be.false;
 		expect(_isValidCssSelector('@')).to.be.false;
+		expect(_isValidCssSelector('@import')).to.be.false;
+		expect(_isValidCssSelector('@media')).to.be.false;
 		expect(_isValidCssSelector('%')).to.be.false;
+		expect(_isValidCssSelector('.class-name{display:block}')).to.be.false;
 	});
 });
