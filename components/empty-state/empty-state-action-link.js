@@ -41,9 +41,7 @@ class EmptyStateActionLink extends LitElement {
 	render() {
 		const actionLink = this.text && this.href
 			? html`
-				<a class="d2l-body-compact d2l-link" href=${this.href}>
-					${this.text}
-				</a>`
+				<a class="d2l-body-compact d2l-link" href=${this.href}>${this.text}</a>`
 			: nothing;
 
 		return html`${actionLink}`;
