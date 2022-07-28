@@ -163,18 +163,19 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				text-align: left;
 			}
 			:host([inline]),
-			div.d2l-html-block-inline {
+			:host([inline]) .d2l-html-block-rendered {
 				display: inline;
 			}
 			:host([hidden]),
-			div.d2l-html-block-no-deferred-rendering {
+			:host([no-deferred-rendering]) .d2l-html-block-rendered,
+			slot {
 				display: none;
+			}
+			:host([no-deferred-rendering]) slot {
+				display: contents;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
-			}
-			slot.d2l-html-block-deferred-rendering {
-				display: none;
 			}
 		`];
 	}
@@ -220,18 +221,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	render() {
 		const renderContainerClasses = {
 			'd2l-html-block-rendered': true,
-			'd2l-html-block-compact': this.compact,
-			'd2l-html-block-inline': this.inline,
-			'd2l-html-block-no-deferred-rendering': this.noDeferredRendering
-		};
-
-		const slotClasses = {
-			'd2l-html-block-deferred-rendering': !this.noDeferredRendering
+			'd2l-html-block-compact': this.compact
 		};
 
 		return html`
 			<div class="${classMap(renderContainerClasses)}"></div>
-			<slot class="${classMap(slotClasses)}" @slotchange="${this._handleSlotChange}"></slot>
+			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
 	}
 
@@ -299,6 +294,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			renderContainer.innerHTML = '';
 			if (!nodes || nodes.length === 0) return;
 
+			// Nodes must be cloned into the render container before processing, as
+			// some renderers require connected nodes (e.g. MathJax).
 			nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
 			await this._processRenderers(renderContainer);
 		};

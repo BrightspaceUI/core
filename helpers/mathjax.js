@@ -62,7 +62,8 @@ export class HtmlBlockMathRenderer {
 		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
 		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
 		elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
-			elm.setAttribute('style', 'display: block; height: 0.5rem;');
+			elm.style.display = 'block';
+			elm.style.height = '0.5rem';
 		});
 
 		// If we're using deferred rendering, we need to create a document structure
