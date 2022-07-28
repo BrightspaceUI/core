@@ -30,16 +30,6 @@ class EmptyStateSimple extends RtlMixin(LitElement) {
 		this._validatingDescriptionTimeout = null;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._validateDescription();
@@ -50,11 +40,6 @@ class EmptyStateSimple extends RtlMixin(LitElement) {
 			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
 			<slot class="action-slot"></slot>
 		`;
-	}
-
-	_handleEmptyStateIllustratedCheck(e) {
-		e.stopPropagation();
-		e.detail.illustrated = false;
 	}
 
 	_validateDescription() {

@@ -30,7 +30,7 @@ describe('d2l-empty-state-simple',  () => {
 		`);
 		const button = el.querySelector('d2l-empty-state-action-button');
 		setTimeout(() => button.shadowRoot.querySelector('d2l-button-subtle').click());
-		await oneEvent(el, 'd2l-empty-state-action');
+		await oneEvent(button, 'd2l-empty-state-action');
 	});
 
 	it('dispatches click event when action link is clicked', async() => {
@@ -45,7 +45,7 @@ describe('d2l-empty-state-simple',  () => {
 		`);
 		const link = el.querySelector('d2l-empty-state-action-link');
 		setTimeout(() => link.shadowRoot.querySelector('a').click());
-		await oneEvent(el, 'click');
+		await oneEvent(link, 'click');
 	});
 
 });

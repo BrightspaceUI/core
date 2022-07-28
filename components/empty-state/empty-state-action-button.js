@@ -20,7 +20,8 @@ class EmptyStateActionButton extends LitElement {
 			 * @type {boolean}
 			 */
 			primary: { type: Boolean },
-			_illustrated: { state: true }
+			_illustrated: { state: true },
+			_ready: { state: true }
 		};
 	}
 
@@ -34,6 +35,8 @@ class EmptyStateActionButton extends LitElement {
 
 	constructor() {
 		super();
+		this._illustrated = false;
+		this._ready = false;
 		this._missingTextErrorHasBeenThrown = false;
 		this._validatingTextTimeout = null;
 	}
@@ -47,6 +50,8 @@ class EmptyStateActionButton extends LitElement {
 			});
 			this.dispatchEvent(e);
 			this._illustrated = e.detail.illustrated;
+			this._ready = true;
+
 		});
 	}
 
@@ -75,11 +80,15 @@ class EmptyStateActionButton extends LitElement {
 		return html`${actionButton}`;
 	}
 
+	shouldUpdate(changedProperties) {
+		if (!this._ready) return false;
+		console.log('ready');
+		return super.shouldUpdate(changedProperties);
+	}
+
 	_handleActionClick(e) {
 		e.stopPropagation();
-		this.dispatchEvent(new CustomEvent('d2l-empty-state-action', {
-			bubbles: true
-		}));
+		this.dispatchEvent(new CustomEvent('d2l-empty-state-action'));
 	}
 
 	_validateText() {
