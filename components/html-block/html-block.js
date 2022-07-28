@@ -259,12 +259,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			if (this._contextObserverController && renderer.contextAttributes) {
 				const contextValues = new Map();
 				renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
-				elem = await renderer.render(elem, {
+				await renderer.render(elem, {
 					contextValues: contextValues,
 					noDeferredRendering: this.noDeferredRendering
 				});
 			} else {
-				elem = await renderer.render(elem, {
+				await renderer.render(elem, {
 					noDeferredRendering: this.noDeferredRendering
 				});
 			}

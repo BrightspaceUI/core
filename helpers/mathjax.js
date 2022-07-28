@@ -73,8 +73,6 @@ export class HtmlBlockMathRenderer {
 		await window.MathJax.startup.promise;
 		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
 		await renderingPromise;
-
-		return elem;
 	}
 
 }
