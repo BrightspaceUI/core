@@ -49,7 +49,7 @@ export const emptyStateIllustratedStyles = css`
 		display: none;
 	}
 
-	.illustration-slot::slotted(svg:first-child) {
+	.illustration-slot::slotted(svg:first-of-type) {
 		display: inline-block;
 	}
 
