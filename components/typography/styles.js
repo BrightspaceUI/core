@@ -1,6 +1,13 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 
+export const _isValidCssSelector = (selector) => {
+	const re = /[#.]?([a-zA-Z0-9-_]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_]+)?/g;
+	const match = selector.match(re);
+
+	return !!match && match.length === 1 && match[0].length === selector.length;
+};
+
 export const bodyStandardStyles = css`
 	.d2l-body-standard {
 		font-size: 0.95rem;
@@ -45,6 +52,8 @@ export const bodyStandardStyles = css`
  * A private helper method that should not be used by general consumers
  */
 export const _generateBodyCompactStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -224,6 +233,8 @@ export const heading4Styles = css`
  * A private helper method that should not be used by general consumers
  */
 export const _generateLabelStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
