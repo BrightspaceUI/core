@@ -1,6 +1,13 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 
+export const _isValidCssSelector = (selector) => {
+	const re = /[#.]?([a-zA-Z0-9-_]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_]+)?/g;
+	const match = selector.match(re);
+
+	return !!match && match.length === 1 && match[0].length === selector.length;
+};
+
 export const bodyStandardStyles = css`
 	.d2l-body-standard {
 		font-size: 0.95rem;
@@ -41,7 +48,12 @@ export const bodyStandardStyles = css`
 	}
 `;
 
-export const bodyCompactStylize = (selector) => {
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateBodyCompactStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -65,7 +77,7 @@ export const bodyCompactStylize = (selector) => {
 	`;
 };
 
-export const bodyCompactStyles = bodyCompactStylize('.d2l-body-compact');
+export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact');
 
 export const bodySmallStyles = css`
 	.d2l-body-small {
@@ -217,7 +229,12 @@ export const heading4Styles = css`
 	}
 `;
 
-export const labelStylize = (selector) => {
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateLabelStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -233,7 +250,7 @@ export const labelStylize = (selector) => {
 	`;
 };
 
-export const labelStyles = labelStylize('.d2l-label-text');
+export const labelStyles = _generateLabelStyles('.d2l-label-text');
 
 export const blockquoteStyles = css`
 	.d2l-blockquote {

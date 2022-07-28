@@ -353,7 +353,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	_handleItemDeleted(e) {
-		if (!this.clearable) return;
 		if (!e || !e.detail || !e.detail.handleFocus) return;
 
 		const rootTarget = e.composedPath()[0];

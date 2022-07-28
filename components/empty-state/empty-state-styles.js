@@ -14,6 +14,15 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	.action-slot::slotted(*) {
+		display: none;
+	}
+
+	.action-slot::slotted(d2l-empty-state-action-button:first-child),
+	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
+		display: inline-block;
+	}
+
 `;
 
 export const emptyStateSimpleStyles = css`
@@ -28,10 +37,6 @@ export const emptyStateSimpleStyles = css`
 		padding-right: 0.5rem;
 	}
 
-	.d2l-empty-state-action {
-		vertical-align: top;
-	}
-
 `;
 
 export const emptyStateIllustratedStyles = css`
@@ -40,12 +45,16 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	.d2l-empty-state-action {
-		margin-top: 0.5rem;
+	.illustration-slot::slotted(*) {
+		display: none;
 	}
 
-	.d2l-empty-state-description {
-		margin: 0 auto 0.3rem;
+	.illustration-slot::slotted(svg:first-of-type) {
+		display: inline-block;
+	}
+
+	svg {
+		height: 100%;
 		max-width: 500px;
 		width: 100%;
 	}
@@ -67,16 +76,8 @@ export const emptyStateIllustratedStyles = css`
 		margin-top: 0.5rem;
 	}
 
-	::slotted(*) {
-		display: none;
-	}
-
-	::slotted(svg:first-child) {
-		display: inline-block;
-	}
-
-	svg {
-		height: 100%;
+	.d2l-empty-state-description {
+		margin: 0 auto 0.8rem;
 		max-width: 500px;
 		width: 100%;
 	}
