@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "المزيد",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
 	"components.pager-load-more.action": "تحميل {count} إضافي",
-	"components.pager-load-more.info": "{showingCount} من {totalCount} من المواد",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
 	"components.pager-load-more.status-loading": "تحميل المزيد من المواد",
 	"components.selection.action-hint": "حدد مادة لتنفيذ هذا الإجراء.",
 	"components.selection.select-all": "تحديد الكل",
