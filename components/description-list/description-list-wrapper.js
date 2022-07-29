@@ -81,7 +81,11 @@ class DescriptionListWrapper extends LitElement {
 		return html`<slot class="${classMap(classes)}"></slot>`;
 	}
 
-	_checkIfShouldStack() {
+	_onResize() {
+		this._updateStacked();
+	}
+
+	_updateStacked() {
 		if (this.clientWidth < this.breakpoint && !this._stacked) {
 			this._stacked = true;
 		} else if (this.clientWidth >= this.breakpoint && this._stacked) {
@@ -89,9 +93,6 @@ class DescriptionListWrapper extends LitElement {
 		}
 	}
 
-	_onResize() {
-		this._checkIfShouldStack();
-	}
 }
 
 customElements.define('d2l-dl-wrapper', DescriptionListWrapper);
