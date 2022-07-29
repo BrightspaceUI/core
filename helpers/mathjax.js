@@ -66,13 +66,19 @@ export class HtmlBlockMathRenderer {
 			elm.style.height = '0.5rem';
 		});
 
-		// If we're using deferred rendering, we need to create a document structure
-		// within the element so MathJax can appropriately process math.
-		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
-
 		await window.MathJax.startup.promise;
-		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
+		renderingPromise = renderingPromise.then(() => window.MathJax.typesetPromise([elem]));
 		await renderingPromise;
+
+		// If we're using deferred rendering, we need to manually attach MathJax's styles to the DOM.
+		if (options.noDeferredRendering) return;
+
+		const styleElm = window.MathJax.chtmlStylesheet().cloneNode(true);
+		styleElm.id = 'd2l-mathjax-styles';
+
+		if (!elem.querySelector(`#${styleElm.id}`)) {
+			elem.appendChild(styleElm);
+		}
 	}
 
 }
@@ -93,107 +99,6 @@ export function loadMathJax(mathJaxConfig) {
 		},
 		loader: { load: ['ui/menu'] },
 		startup: {
-			ready: () => {
-
-				// Setup for using MathJax for typesetting math in shadowDOM
-				// https://github.com/mathjax/MathJax/issues/2195
-
-				//
-				//  Get some MathJax objects from the MathJax global
-				//
-				//  (Ideally, you would turn this into a custom component, and
-				//  then these could be handled by normal imports, but this is
-				//  just an example and so we use an expedient method of
-				//  accessing these for now.)
-				//
-				const mathjax = window.MathJax._.mathjax.mathjax;
-				const HTMLAdaptor = window.MathJax._.adaptors.HTMLAdaptor.HTMLAdaptor;
-				const HTMLHandler = window.MathJax._.handlers.html.HTMLHandler.HTMLHandler;
-				const AbstractHandler = window.MathJax._.core.Handler.AbstractHandler.prototype;
-				const startup = window.MathJax.startup;
-
-				const getFirstChild = doc => {
-					const child = doc.firstChild;
-					if (!child || child.nodeType === Node.ELEMENT_NODE) return child;
-					else return child.nextElementSibling;
-				};
-
-				//
-				//  Extend HTMLAdaptor to handle shadowDOM as the document
-				//
-				class ShadowAdaptor extends HTMLAdaptor {
-					body(doc) {
-						return doc.body || (getFirstChild(doc) || {}).lastChild || doc;
-					}
-					create(kind, ns) {
-						const document = (this.document.createElement ? this.document : this.window.document);
-						return (ns ?
-							document.createElementNS(ns, kind) :
-							document.createElement(kind));
-					}
-					head(doc) {
-						return doc.head || (getFirstChild(doc) || {}).firstChild || doc;
-					}
-					root(doc) {
-						return doc.documentElement || getFirstChild(doc) || doc;
-					}
-					text(text) {
-						const document = (this.document.createTextNode ? this.document : this.window.document);
-						return document.createTextNode(text);
-					}
-				}
-
-				//
-				//  Extend HTMLHandler to handle shadowDOM as document
-				//
-				class ShadowHandler extends HTMLHandler {
-					create(document, options) {
-						const adaptor = this.adaptor;
-						if (typeof(document) === 'string') {
-							document = adaptor.parse(document, 'text/html');
-						} else if ((document instanceof adaptor.window.HTMLElement || document instanceof adaptor.window.DocumentFragment) && !(document instanceof window.ShadowRoot)) {
-							const child = document;
-							document = adaptor.parse('', 'text/html');
-							adaptor.append(adaptor.body(document), child);
-						}
-						//
-						//  We can't use super.create() here, since that doesn't
-						//  handle shadowDOM correctly, so call HTMLHandler's parent class
-						//  directly instead.
-						//
-						return AbstractHandler.create.call(this, document, options);
-					}
-				}
-
-				//
-				//  Register the new handler and adaptor
-				//
-				startup.registerConstructor('HTMLHandler', ShadowHandler);
-				startup.registerConstructor('browserAdaptor', () => new ShadowAdaptor(window));
-
-				//
-				//  A service function that creates a new MathDocument from the
-				//  shadow root with the configured input and output jax, and then
-				//  renders the document.  The MathDocument is returned in case
-				//  you need to rerender the shadowRoot later.
-				//
-				window.MathJax.typesetShadow = async function(root, elem) {
-					const InputJax = startup.getInputJax();
-					const OutputJax = startup.getOutputJax();
-					const html = mathjax.document(root, { InputJax, OutputJax });
-
-					if (elem) html.options.elements = [elem];
-
-					await mathjax.handleRetriesFor(() => html.render());
-					html.typeset();
-				};
-
-				//
-				//  Now do the usual startup now that the extensions are in place
-				//
-				window.MathJax.startup.defaultReady();
-			},
-			// Defer typesetting if the config is present and deferring is set
 			typeset: !(mathJaxConfig && mathJaxConfig.deferTypeset)
 		}
 	};
