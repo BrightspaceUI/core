@@ -30,6 +30,15 @@ const OPENER_STYLE = {
 	SUBTLE: 'subtle',
 };
 
+async function filterAsync(arr, callback) {
+	const fail = Symbol();
+	const results = await Promise.all(arr.map(async item => {
+		const callbackResult = await callback(item);
+		return callbackResult ? item : fail;
+	}));
+	return results.filter(i => i !== fail);
+}
+
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
 	const disabled = !!node.disabled;
@@ -70,7 +79,7 @@ function createMenuItemMenu(node) {
 	const disabled = !!node.disabled;
 	const subMenu = node.querySelector('d2l-menu');
 
-	const subItems = Array.from(subMenu.children).map((node) => convertToDropdownItem(node));
+	const subItems = Array.from(subMenu.children).map((node) => convertToOverflowItem(node));
 
 	return html`<d2l-menu-item
 		?disabled=${disabled}
@@ -81,7 +90,7 @@ function createMenuItemMenu(node) {
 	</d2l-menu-item>`;
 }
 
-function convertToDropdownItem(node) {
+function convertToOverflowItem(node) {
 	const tagName = node.tagName.toLowerCase();
 	switch (tagName) {
 		case 'd2l-button':
@@ -271,7 +280,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		const overflowMenu = this._getOverflowMenu();
+		const overflowMenu = this.getOverflowMenu();
 
 		this._slotItems.forEach((element, index) => {
 			if (!this._overflowMenuHidden && index >= this._chompIndex) {
@@ -309,6 +318,35 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				this._chomp();
 			});
 		}
+	}
+
+	getOverflowMenu() {
+		if (this._overflowMenuHidden) {
+			return;
+		}
+		const moreActionsText = this.localize('components.overflow-group.moreActions');
+		const overflowItems = this._dropdownItems ? this._dropdownItems.slice(this._chompIndex) : [];
+		const menu = html`<d2l-dropdown-menu>
+			<d2l-menu label="${moreActionsText}">
+				${overflowItems}
+			</d2l-menu>
+		</d2l-dropdown-menu>`;
+
+		if (this._mini) {
+			return html`<d2l-dropdown-more class="d2l-overflow-dropdown-mini" text="${moreActionsText}">
+				${menu}
+			</d2l-dropdown-more>`;
+		}
+
+		if (this.openerStyle === OPENER_STYLE.SUBTLE) {
+			return html`<d2l-dropdown-button-subtle class="d2l-overflow-dropdown" text="${moreActionsText}">
+				${menu}
+			</d2l-dropdown-button-subtle>`;
+		}
+
+		return html`<d2l-dropdown-button class="d2l-overflow-dropdown" text="${moreActionsText}">
+			${menu}
+		</d2l-dropdown-button>`;
 	}
 
 	_autoDetectBoundaries(items) {
@@ -428,48 +466,20 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return items.filter(({ isHidden }) => !isHidden);
 	}
 
-	_getItems() {
+	async _getItems() {
 		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
+		this._slotItems = await this._getSlotItems();
 		// convert them to layout items (calculate widths)
 		this._itemLayouts = this._getItemLayouts(this._slotItems);
 		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
+		this._dropdownItems = this._slotItems.map((node) => convertToOverflowItem(node));
 	}
 
-	_getOverflowMenu() {
-		if (this._overflowMenuHidden) {
-			return;
-		}
-		const moreActionsText = this.localize('components.overflow-group.moreActions');
-		const overflowItems = this._dropdownItems ? this._dropdownItems.slice(this._chompIndex) : [];
-		const menu = html`<d2l-dropdown-menu>
-			<d2l-menu label="${moreActionsText}">
-				${overflowItems}
-			</d2l-menu>
-		</d2l-dropdown-menu>`;
-
-		if (this._mini) {
-			return html`<d2l-dropdown-more class="d2l-overflow-dropdown-mini" text="${moreActionsText}">
-				${menu}
-			</d2l-dropdown-more>`;
-		}
-
-		if (this.openerStyle === OPENER_STYLE.SUBTLE) {
-			return html`<d2l-dropdown-button-subtle class="d2l-overflow-dropdown" text="${moreActionsText}">
-				${menu}
-			</d2l-dropdown-button-subtle>`;
-		}
-
-		return html`<d2l-dropdown-button class="d2l-overflow-dropdown" text="${moreActionsText}">
-			${menu}
-		</d2l-dropdown-button>`;
-	}
-
-	_getSlotItems() {
-		const nodes = this._buttonSlot.assignedNodes({ flatten: true });
-		const filteredNodes = nodes.filter((node) => {
-			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
+	async _getSlotItems() {
+		const filteredNodes = await filterAsync(this._buttonSlot.assignedNodes({ flatten: true }), async(node) => {
+			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+			await node.updateComplete;
+			const isNode = node.tagName.toLowerCase() !== 'template';
 			return isNode;
 		});
 
@@ -482,7 +492,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._updateDropdownItemsRequested = true;
 		setTimeout(() => {
-			this._dropdownItems = this._slotItems.map(node => convertToDropdownItem(node));
+			this._dropdownItems = this._slotItems.map(node => convertToOverflowItem(node));
 			this._updateDropdownItemsRequested = false;
 			this.requestUpdate();
 		}, 0);
@@ -494,16 +504,16 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleSlotChange() {
-		requestAnimationFrame(() => {
-			this._getItems();
+		requestAnimationFrame(async() => {
+			await this._getItems();
 
 			this._slotItems.forEach(item => {
 				const observer = new MutationObserver(this._handleItemMutation);
 				observer.observe(item, {
 					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
-					attributeFilter: ['disabled', 'text'],
+					attributeFilter: ['disabled', 'text', 'selected'],
 					childList: false,
-					subtree: false
+					subtree: true
 				});
 			});
 
