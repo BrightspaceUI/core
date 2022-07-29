@@ -81,18 +81,20 @@ class DescriptionListWrapper extends LitElement {
 		return html`<slot class="${classMap(classes)}"></slot>`;
 	}
 
-	_onResize() {
+	_onResize(entries) {
+		if (!entries || entries.length === 0) return;
+		const entry = entries[0];
+		this._contentWidth = entry.contentRect.width;
 		this._updateStacked();
 	}
 
 	_updateStacked() {
-		if (this.clientWidth < this.breakpoint && !this._stacked) {
+		if (this._contentWidth < this.breakpoint && !this._stacked) {
 			this._stacked = true;
-		} else if (this.clientWidth >= this.breakpoint && this._stacked) {
+		} else if (this._contentWidth >= this.breakpoint && this._stacked) {
 			this._stacked = false;
 		}
 	}
-
 }
 
 customElements.define('d2l-dl-wrapper', DescriptionListWrapper);
