@@ -83,14 +83,10 @@ class DescriptionListWrapper extends LitElement {
 	_onResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
-		this._contentWidth = entry.contentRect.width;
-		this._updateStacked();
-	}
 
-	_updateStacked() {
-		if (this._contentWidth < this.breakpoint && !this._stacked) {
+		if (entry.contentRect.width < this.breakpoint && !this._stacked) {
 			this._stacked = true;
-		} else if (this._contentWidth >= this.breakpoint && this._stacked) {
+		} else if (entry.contentRect.width >= this.breakpoint && this._stacked) {
 			this._stacked = false;
 		}
 	}
