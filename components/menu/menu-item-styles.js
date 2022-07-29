@@ -25,7 +25,7 @@ export const menuItemStyles = css`
 		z-index: 2;
 	}
 
-	/** separated because safari is having trouble parsing these */
+	/** separated because Safari <15.4 is having trouble parsing these */
 	:host(:focus-visible),
 	:host([first]:focus-visible) {
 		background-color: var(--d2l-menu-background-color-hover);
@@ -40,7 +40,7 @@ export const menuItemStyles = css`
 		opacity: 0.75;
 	}
 
-	/** separated because safari is having trouble parsing these */
+	/** separated because Safari <15.4 is having trouble parsing these */
 	:host([disabled]:focus-visible) {
 		cursor: default;
 		opacity: 0.75;
@@ -58,7 +58,7 @@ export const menuItemStyles = css`
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
 
-	/** separated because safari is having trouble parsing these */
+	/** separated because Safari <15.4 is having trouble parsing these */
 	:host([last]:focus-visible) {
 		border-bottom-color: var(--d2l-menu-border-color-hover);
 	}
