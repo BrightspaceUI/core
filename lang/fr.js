@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "plus",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} de plus",
-	"components.pager-load-more.info": "{showingCount} de {totalCount} éléments",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",
 	"components.selection.action-hint": "Sélectionner un élément pour exécuter cette action.",
 	"components.selection.select-all": "Tout sélectionner",
