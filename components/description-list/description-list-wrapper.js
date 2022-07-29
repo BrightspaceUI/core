@@ -37,7 +37,6 @@ class DescriptionListWrapper extends LitElement {
 		return {
 			breakpoint: { type: Number, reflect: true },
 			_stacked: { state: true },
-
 		};
 	}
 
@@ -59,9 +58,9 @@ class DescriptionListWrapper extends LitElement {
 
 	constructor() {
 		super();
-		this._stacked = false;
 		this.breakpoint = 350;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+		this._stacked = false;
 	}
 
 	connectedCallback() {
