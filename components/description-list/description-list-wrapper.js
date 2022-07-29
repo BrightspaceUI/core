@@ -8,22 +8,22 @@ export const descriptionListStyles = [
 	_generateBodyCompactStyles('dd'),
 	css`
 		:host {
-			--d2l-dt-min-width: min-content;
-			--d2l-dt-max-width: 10rem;
-			--d2l-dd-min-width: 50%;
+			--d2l-dl-wrapper-dt-min-width: min-content;
+			--d2l-dl-wrapper-dt-max-width: 10rem;
+			--d2l-dl-wrapper-dd-min-width: 50%;
 		}
 		dl {
 			align-items: baseline;
-			display: var(--d2l-description-list-dl-display, grid);
+			display: var(--d2l-dl-wrapper-dl-display, grid);
 			gap: 0.5rem 1.5rem;
 			grid-auto-flow: row;
-			grid-template-columns: minmax(var(--d2l-dt-min-width), auto) minmax(var(--d2l-dd-min-width), 1fr);
+			grid-template-columns: minmax(var(--d2l-dl-wrapper-dt-min-width), auto) minmax(var(--d2l-dl-wrapper-dd-min-width), 1fr);
 		}
 		dt {
-			max-width: var(--d2l-dt-max-width);
+			max-width: var(--d2l-dl-wrapper-dt-max-width);
 		}
 		dd {
-			margin: var(--d2l-description-list-dd-margin, 0);
+			margin: var(--d2l-dl-wrapper-dd-margin, 0);
 		}
 	`,
 ];
@@ -49,9 +49,9 @@ class DescriptionListWrapper extends LitElement {
 				display: none;
 			}
 			.stacked {
-				--d2l-description-list-dl-display: block;
-				--d2l-dt-max-width: unset;
-				--d2l-description-list-dd-margin: 0 0 0.5rem 0;
+				--d2l-dl-wrapper-dl-display: block;
+				--d2l-dl-wrapper-dt-max-width: unset;
+				--d2l-dl-wrapper-dd-margin: 0 0 0.5rem 0;
 			}
 		`;
 	}
