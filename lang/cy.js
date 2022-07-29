@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "mwy",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.pager-load-more.action": "Lwytho {count} Arall",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Llwytho rhagor o eitemau",
 	"components.selection.action-hint": "Dewiswch eitem i gyflawni'r weithred hon.",
 	"components.selection.select-all": "Dewis y Cyfan",

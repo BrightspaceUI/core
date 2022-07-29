@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "増やす",
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.pager-load-more.action": "さらに {count} 件を読み込む",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",
 	"components.selection.action-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",

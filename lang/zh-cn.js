@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "更多",
 	"components.overflow-group.moreActions": "更多操作",
 	"components.pager-load-more.action": "再加载 {count} 个",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "加载更多项目",
 	"components.selection.action-hint": "选择一个项目后才能执行此操作。",
 	"components.selection.select-all": "全选",

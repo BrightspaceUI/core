@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "daha fazla",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.pager-load-more.action": "{count} Tane Daha Yükle",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
 	"components.selection.action-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin.",
 	"components.selection.select-all": "Tümünü Seç",

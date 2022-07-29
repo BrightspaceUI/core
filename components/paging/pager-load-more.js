@@ -107,7 +107,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 				${this.itemCount > -1 ? html`
 					<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
 					<span class="separator"></span>
-					<span class="info">${this.localize('components.pager-load-more.info', { showingCount: formatNumber(this.itemShowingCount), totalCount: formatNumber(this.itemCount) })}</span>
+					<span class="info">${this.localize('components.pager-load-more.info', { showingCount: formatNumber(this.itemShowingCount), totalCount: this.itemCount, totalCountFormatted: formatNumber(this.itemCount) })}</span>
 				` : nothing}
 			`}
 		</button>

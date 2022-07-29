@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "flere",
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.pager-load-more.action": "Indlæs {count} mere",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCount} item} other {{showingCount} of {totalCount} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Indlæser flere elementer",
 	"components.selection.action-hint": "Vælg et element for at udføre denne handling.",
 	"components.selection.select-all": "Vælg alle",
