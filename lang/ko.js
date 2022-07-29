@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "더 보기",
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.pager-load-more.action": "{count}개 더 로드",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "더 많은 항목 로드",
 	"components.selection.action-hint": "이 작업을 수행할 항목을 선택하십시오.",
 	"components.selection.select-all": "모두 선택",
