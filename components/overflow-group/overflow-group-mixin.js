@@ -2,13 +2,12 @@ import { css, html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
-
-const AUTO_SHOW_CLASS = 'd2l-button-group-show';
-const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
 
 export const OVERFLOW_DROPDOWN_CLASS = 'd2l-overflow-dropdown';
 export const OVERFLOW_MINI_DROPDOWN_CLASS = 'd2l-overflow-dropdown-mini';
+
+const AUTO_SHOW_CLASS = 'd2l-button-group-show';
+const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
 
 const OPENER_TYPE = {
 	DEFAULT: 'default',
@@ -24,7 +23,7 @@ async function filterAsync(arr, callback) {
 	return results.filter(i => i !== fail);
 }
 
-export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeCoreElement(superclass)) {
+export const OverflowGroupMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
@@ -303,8 +302,7 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 		const filteredNodes = await filterAsync(this._buttonSlot.assignedNodes({ flatten: true }), async(node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			await node.updateComplete;
-			const isNode = node.tagName.toLowerCase() !== 'template';
-			return isNode;
+			return node.tagName.toLowerCase() !== 'template';
 		});
 
 		return filteredNodes;

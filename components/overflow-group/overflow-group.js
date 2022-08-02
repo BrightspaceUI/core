@@ -13,6 +13,7 @@ import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_DROPDOWN_CLASS, OVERFLOW_MINI_DROPDOWN_CLASS, OverflowGroupMixin } from './overflow-group-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const OPENER_STYLE = {
 	DEFAULT: 'default',
@@ -55,7 +56,7 @@ function createMenuItemSeparator() {
  * A component that can be used to display a set of buttons, links or menus that will be put into a dropdown menu when they no longer fit on the first line of their container
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
 */
-class OverflowGroup extends OverflowGroupMixin(LitElement) {
+class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
