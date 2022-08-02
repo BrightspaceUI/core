@@ -20,7 +20,7 @@ export const emptyStateStyles = css`
 
 	.action-slot::slotted(d2l-empty-state-action-button:first-child),
 	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
-		display: inline-block;
+		display: inline;
 	}
 
 `;
