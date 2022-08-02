@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-overflow-group', () => {
+describe.only('d2l-overflow-group', () => {
 
 	const visualDiff = new VisualDiff('overflow-group', import.meta.url);
 
