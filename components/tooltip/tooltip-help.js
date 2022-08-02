@@ -49,6 +49,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				background: none;
 				border: none;
 				cursor: inherit;
+				font-family: inherit;
 				padding: 0;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
@@ -66,7 +67,6 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
-				font-family: inherit;
 				font-size: inherit;
 				font-weight: inherit;
 				letter-spacing: inherit;
