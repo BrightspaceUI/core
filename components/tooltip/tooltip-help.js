@@ -66,6 +66,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
+				font-family: inherit;
 				font-size: inherit;
 				font-weight: inherit;
 				letter-spacing: inherit;
