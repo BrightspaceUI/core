@@ -7,6 +7,9 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 const AUTO_SHOW_CLASS = 'd2l-button-group-show';
 const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
 
+export const OVERFLOW_DROPDOWN_CLASS = 'd2l-overflow-dropdown';
+export const OVERFLOW_MINI_DROPDOWN_CLASS = 'd2l-overflow-dropdown-mini';
+
 const OPENER_TYPE = {
 	DEFAULT: 'default',
 	ICON: 'icon'
@@ -34,6 +37,12 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 				attribute: 'auto-show',
 			},
 			/**
+			 * @ignore
+			 */
+			chompIndex: {
+				type: Number,
+			},
+			/**
 			 * minimum amount of buttons to show
 			 * @type {number}
 			 */
@@ -52,19 +61,19 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 				attribute: 'max-to-show',
 			},
 			/**
+			 * @ignore
+			 */
+			mini: {
+				type: Boolean,
+				reflect: true
+			},
+			/**
 			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
 			 * @type {'default'|'icon'}
 			 */
 			openerType: {
 				type: String,
 				attribute: 'opener-type'
-			},
-			_mini: {
-				type: Boolean,
-				reflect: true
-			},
-			_chompIndex: {
-				type: Number,
 			}
 		};
 	}
@@ -99,8 +108,8 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 		this.autoShow = false;
 		this.maxToShow = -1;
 		this.minToShow = 1;
+		this.mini = this.openerType === OPENER_TYPE.ICON;
 		this.openerType = OPENER_TYPE.DEFAULT;
-		this._mini = this.openerType === OPENER_TYPE.ICON;
 		this._resizeObserver = null;
 		this._slotItems = [];
 	}
@@ -126,7 +135,7 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 		const overflowMenu = this.getOverflowMenu();
 
 		this._slotItems.forEach((element, index) => {
-			if (!this._overflowMenuHidden && index >= this._chompIndex) {
+			if (!this.overflowMenuHidden && index >= this.chompIndex) {
 				element.setAttribute('data-is-chomped', '');
 			} else {
 				element.removeAttribute('data-is-chomped');
@@ -186,8 +195,8 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 	_chomp() {
 		if (!this.shadowRoot || !this._itemLayouts) return;
 
-		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
-		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
+		this._overflowMenu = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
+		this._overflowMenuMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
 		if (this.openerType === OPENER_TYPE.ICON && this._overflowMenuMini) {
 			this._overflowMenuWidth = this._overflowMenuMini.offsetWidth;
 		} else if (this._overflowMenu) {
@@ -236,8 +245,8 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		this._overflowMenuHidden = this._itemLayouts.length === showing.count;
-		if (!this._overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
+		this.overflowMenuHidden = this._itemLayouts.length === showing.count;
+		if (!this.overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._itemLayouts.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
 					break;
@@ -254,10 +263,10 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 			}
 		}
 		const overflowDropdownOverflowing = (showing.width + this._overflowMenuWidth >= this._availableWidth);
-		const swapToMiniButton = overflowDropdownOverflowing && !this._overflowMenuHidden;
+		const swapToMiniButton = overflowDropdownOverflowing && !this.overflowMenuHidden;
 
-		this._mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
-		this._chompIndex = this._overflowMenuHidden ? null : showing.count;
+		this.mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
+		this.chompIndex = this.overflowMenuHidden ? null : showing.count;
 
 		/** Dispatched when there is an update performed to the overflow group */
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
@@ -287,7 +296,7 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 		// convert them to layout items (calculate widths)
 		this._itemLayouts = this._getItemLayouts(this._slotItems);
 		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
+		this.dropdownItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
 	}
 
 	async _getSlotItems() {
@@ -307,7 +316,7 @@ export const OverflowGroupMixin = superclass => class extends RtlMixin(LocalizeC
 
 		this._updateDropdownItemsRequested = true;
 		setTimeout(() => {
-			this._dropdownItems = this._slotItems.map(node => this.convertToOverflowItem(node));
+			this.dropdownItems = this._slotItems.map(node => this.convertToOverflowItem(node));
 			this._updateDropdownItemsRequested = false;
 			this.requestUpdate();
 		}, 0);
