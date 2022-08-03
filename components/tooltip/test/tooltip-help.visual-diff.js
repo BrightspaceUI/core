@@ -73,29 +73,39 @@ describe('d2l-tooltip-help', () => {
 
 	});
 
-	[
-		'help-tooltip-in-sentence',
-		'help-tooltip-in-paragraph',
-	].forEach((testName) => {
+	describe('d2l-tooltip-help inherit-font-style', () => {
 
-		it(testName, async function() {
-			const selector = `#${testName}`;
-			const openEvent = page.$eval(`${selector} d2l-tooltip-help`, async(elem) => {
-				return new Promise((resolve) => {
-					elem.addEventListener('d2l-tooltip-show', resolve);
-				});
+		[
+			{ case: 'help-tooltip-in-sentence', lang: 'en' },
+			{ case: 'help-tooltip-in-paragraph', lang: 'en' },
+			{ case: 'help-tooltip-in-sentence', lang: 'ar' }
+		].forEach((testCase) => {
+
+			after(async() => {
+				await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
 			});
 
-			await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
-			await openEvent;
+			it(`${testCase.case} ${testCase.lang}`, async function() {
+				await page.evaluate((lang) => document.querySelector('html').setAttribute('lang', lang), testCase.lang);
 
-			const rect = await visualDiff.getRect(page, selector);
-			rect.x -= 10;
-			rect.width += 120;
-			rect.height += 70;
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				const selector = `#${testCase.case}`;
+				const openEvent = page.$eval(`${selector} d2l-tooltip-help`, async(elem) => {
+					return new Promise((resolve) => {
+						elem.addEventListener('d2l-tooltip-show', resolve);
+					});
+				});
+
+				await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
+				await openEvent;
+
+				const rect = await visualDiff.getRect(page, selector);
+				rect.x -= 10;
+				rect.width += 120;
+				rect.height += 70;
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
 		});
-
 	});
 
 });
