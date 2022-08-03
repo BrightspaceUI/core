@@ -15,7 +15,7 @@ export const descriptionListStyles = [
 		dl {
 			align-items: baseline;
 			display: var(--d2l-dl-wrapper-dl-display, grid);
-			gap: 0.5rem 1.5rem;
+			gap: 0.3rem 1.5rem;
 			grid-auto-flow: row;
 			grid-template-columns: minmax(var(--d2l-dl-wrapper-dt-min-width), auto) minmax(var(--d2l-dl-wrapper-dd-min-width), 1fr);
 		}
