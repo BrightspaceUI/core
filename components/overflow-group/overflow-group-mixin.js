@@ -196,6 +196,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		this._overflowMenu = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
 		this._overflowMenuMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
+		this._overflowMenuWidth = 0;
 		if (this.openerType === OPENER_TYPE.ICON && this._overflowMenuMini) {
 			this._overflowMenuWidth = this._overflowMenuMini.offsetWidth;
 		} else if (this._overflowMenu) {
