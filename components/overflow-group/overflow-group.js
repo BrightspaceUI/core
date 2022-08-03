@@ -55,6 +55,7 @@ function createMenuItemSeparator() {
  *
  * A component that can be used to display a set of buttons, links or menus that will be put into a dropdown menu when they no longer fit on the first line of their container
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
+ * @attr {'default'|'icon'} [opener-type="default"] - Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
 */
 class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
@@ -63,6 +64,7 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 			/**
 			 * Setting this property will change the style of the overflow menu opener
 			 * @type {'default'|'subtle'}
+			 * @default "default"
 			 */
 			openerStyle: {
 				type: String,

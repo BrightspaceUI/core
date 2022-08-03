@@ -39,7 +39,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			 * @ignore
 			 */
 			chompIndex: {
-				type: Number,
+				state: true
 			},
 			/**
 			 * minimum amount of buttons to show
@@ -63,12 +63,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			 * @ignore
 			 */
 			mini: {
-				type: Boolean,
-				reflect: true
+				state: true
 			},
 			/**
-			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
-			 * @type {'default'|'icon'}
+			 * @ignore
 			 */
 			openerType: {
 				type: String,
@@ -118,16 +116,22 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
-	async firstUpdated() {
-		super.firstUpdated();
+	connectedCallback() {
+		super.connectedCallback();
 
-		// selected elements
+		requestAnimationFrame(async() => {
+			await this.updateComplete;
+
+			const container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
+			this._resizeObserver = new ResizeObserver(this._throttledResize);
+			this._resizeObserver.observe(container);
+		});
+	}
+
+	async firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
 		this._buttonSlot = this.shadowRoot.querySelector('slot');
-
-		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
-
-		this._resizeObserver = new ResizeObserver(this._throttledResize);
-		this._resizeObserver.observe(this._container);
 	}
 
 	render() {
@@ -152,13 +156,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	update(changedProperties) {
 		super.update(changedProperties);
 
-		if (changedProperties.get('autoShow')) {
-			this._getItemLayouts(this._slotItems);
-			this._autoDetectBoundaries(this._itemLayouts);
+		if (changedProperties.has('autoShow') && this.autoShow) {
+			this._autoDetectBoundaries(this._slotItems);
 		}
 
-		if (changedProperties.get('minToShow')
-			|| changedProperties.get('maxToShow')) {
+		if (changedProperties.has('minToShow')
+			|| changedProperties.has('maxToShow')) {
 			this._chomp();
 		}
 
@@ -172,9 +175,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	_autoDetectBoundaries(items) {
+		if (!items) return;
 
 		let minToShow, maxToShow;
 		for (let i = 0; i < items.length; i++) {
+			if (!items[i].classList) continue;
+
 			if (items[i].classList.contains(AUTO_SHOW_CLASS)) {
 				minToShow = i + 1;
 			}
@@ -301,7 +307,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	async _getSlotItems() {
 		const filteredNodes = await filterAsync(this._buttonSlot.assignedNodes({ flatten: true }), async(node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
-			await node.updateComplete;
+			if (node.updateComplete) await node.updateComplete;
 			return node.tagName.toLowerCase() !== 'template';
 		});
 
