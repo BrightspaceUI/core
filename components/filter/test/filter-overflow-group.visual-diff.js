@@ -1,4 +1,3 @@
-
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -46,8 +45,6 @@ describe('d2l-filter-overflow-group', () => {
 	// const autoShow = [
 	// 	{
 	// 		name: 'auto-show-small',
-	// 		selector: '#auto-show-small',
-	// 		containerSelector: '#auto-show-small-container',
 	// 		action: async(selector) => {
 	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
 	// 			await overflowMenu.click();
@@ -55,8 +52,6 @@ describe('d2l-filter-overflow-group', () => {
 	// 	},
 	// 	{
 	// 		name: 'auto-show',
-	// 		selector: '#auto-show',
-	// 		containerSelector: '#auto-show-container',
 	// 		action: async(selector) => {
 	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
 	// 			await overflowMenu.click();

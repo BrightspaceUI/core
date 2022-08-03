@@ -4,7 +4,7 @@ import '../filter-dimension-set-value.js';
 import '../filter-overflow-group.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
-describe('d2l-overflow-group', () => {
+describe('d2l-filter-overflow-group', () => {
 
 	it('default', async() => {
 		const normal = await fixture(html`<d2l-filter-overflow-group>
