@@ -81,6 +81,23 @@ class TestDescriptionList extends LitElement {
 			`;
 		}
 
+		if (this.type === 'bulk-course-import') {
+			return html`
+				<d2l-dl-wrapper>
+					<dl>
+						<dt>Course code</dt>
+						<dd>fd6b9fd8-29bd-44ef-8322-d6b379b71411</dd>
+
+						<dt>Course name</dt>
+						<dd>Telkom MOMP Course 1</dd>
+
+						<dt>Course ID</dt>
+						<dd>250003</dd>
+					</dl>
+				</d2l-dl-wrapper>
+			`;
+		}
+
 		if (this.type === 'slotted') {
 			return html`
 				<d2l-dl-wrapper>
