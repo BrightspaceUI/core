@@ -21,8 +21,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 */
 			on: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: The text that is displayed for the switch label.
-			 * @type {string}
+			 * @ignore - Need to add documentation in each component that uses this mixin.
 			 */
 			text: { type: String, reflect: true },
 			/**
@@ -182,11 +181,12 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
-		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
+		const switchLabel = html`<span id="${this._textId}" class="d2l-switch-text">${this._labelContent}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
+
 		return html`
-			${textPosition === 'start' ? text : ''}
+			${textPosition === 'start' ? switchLabel : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
@@ -203,8 +203,12 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? text : ''}
+			${textPosition === 'end' ? switchLabel : ''}
 		`;
+	}
+
+	get _labelContent() {
+		return html`${this.text}`;
 	}
 
 	_handleClick() {
