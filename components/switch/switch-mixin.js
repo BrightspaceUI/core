@@ -215,7 +215,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 	}
 
 	get _labelContent() {
-		return html`<span @click='${this._handleClick}' @mouseover='${this._handleSwitchHover}' @mouseout='${this._handleSwitchHoverLeave}'>${this.text}</span>`;
+		return html`<span @click='${this._handleClick}' @mouseenter='${this._handleSwitchHover}' @mouseleave='${this._handleSwitchHoverLeave}'>${this.text}</span>`;
 	}
 
 	_handleClick() {
