@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.only('d2l-filter-overflow-group', () => {
+describe('d2l-filter-overflow-group', () => {
 
 	const visualDiff = new VisualDiff('filter-overflow-group', import.meta.url);
 
@@ -15,11 +15,11 @@ describe.only('d2l-filter-overflow-group', () => {
 		await page.bringToFront();
 	});
 
-	async function getShadowElem(id, selector) {
-		return await page.evaluateHandle(
-			`document.querySelector('${id}').shadowRoot.querySelector('${selector}')`
-		);
-	}
+	// async function getShadowElem(id, selector) {
+	// 	return await page.evaluateHandle(
+	// 		`document.querySelector('${id}').shadowRoot.querySelector('${selector}')`
+	// 	);
+	// }
 
 	after(async() => await browser.close());
 
@@ -43,26 +43,26 @@ describe.only('d2l-filter-overflow-group', () => {
 			name: 'ignores-hidden-filter',
 		}
 	];
-	const autoShow = [
-		{
-			name: 'auto-show-small',
-			selector: '#auto-show-small',
-			containerSelector: '#auto-show-small-container',
-			action: async(selector) => {
-				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
-				await overflowMenu.click();
-			}
-		},
-		{
-			name: 'auto-show',
-			selector: '#auto-show',
-			containerSelector: '#auto-show-container',
-			action: async(selector) => {
-				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
-				await overflowMenu.click();
-			}
-		},
-	];
+	// const autoShow = [
+	// 	{
+	// 		name: 'auto-show-small',
+	// 		selector: '#auto-show-small',
+	// 		containerSelector: '#auto-show-small-container',
+	// 		action: async(selector) => {
+	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
+	// 			await overflowMenu.click();
+	// 		}
+	// 	},
+	// 	{
+	// 		name: 'auto-show',
+	// 		selector: '#auto-show',
+	// 		containerSelector: '#auto-show-container',
+	// 		action: async(selector) => {
+	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
+	// 			await overflowMenu.click();
+	// 		}
+	// 	},
+	// ];
 	[
 		...hiddenButtonTests,
 		...minMaxTests,
