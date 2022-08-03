@@ -466,12 +466,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 
+		// Note: role="text" is a workaround for Safari. Otherwise, list-item content is not announced with VoiceOver
 		return html`
 			<div class="d2l-tooltip-container">
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
 					<div class="d2l-body-small d2l-tooltip-content">
 						<div role="text">
-							<!-- Note: role="text" is a workaround for Safari. Otherwise, list-item content is not announced with VoiceOver" -->
 							<slot></slot>
 						</div>
 					</div>
