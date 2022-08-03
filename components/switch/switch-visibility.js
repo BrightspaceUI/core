@@ -47,7 +47,6 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		}
 	}
 
-	// TODO: remove this (along with this._text) when we no longer have any consumers overriding the label text
 	set text(val) {
 		const oldVal = this._text;
 		if (oldVal !== val) {
