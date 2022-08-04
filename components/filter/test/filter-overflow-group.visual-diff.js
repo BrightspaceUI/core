@@ -27,7 +27,7 @@ describe('d2l-filter-overflow-group', () => {
 	].forEach((test) => {
 		it(test, async function() {
 			const containerSelector = `#${test}-container`;
-			await page.$eval(containerSelector || selector, (elem) => elem.scrollIntoView());
+			await page.$eval(containerSelector, (elem) => elem.scrollIntoView());
 			const rect = await visualDiff.getRect(page, containerSelector);
 			await visualDiff.screenshotAndCompare(page, `${this.test.fullTitle()}`, { captureBeyondViewport: false, clip: rect });
 		});
