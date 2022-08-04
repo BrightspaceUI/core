@@ -23,13 +23,20 @@ describe('d2l-dl-wrapper', () => {
 		'bulk-course-import',
 		'slotted',
 	].forEach((name) => {
+		const selector = `#${name}`;
 		[
-			{ name, selector: `#${name}` },
-			{ name: `${name} 300px`, selector: `#${name}-300` },
-			{ name: `${name} 200px`, selector: `#${name}-200` }
-		].forEach((info) => {
-			it(info.name, async function() {
-				const rect = await visualDiff.getRect(page, info.selector);
+			800,
+			600,
+			300,
+			200,
+		].forEach((width) => {
+			it(`${name} ${width}`, async function() {
+				await page.$eval (selector, async(elem, width)  => {
+					elem.style.width = `${width}px`;
+					await new Promise(resolve => requestAnimationFrame(resolve));
+				}, width);
+
+				const rect = await visualDiff.getRect(page, selector);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
