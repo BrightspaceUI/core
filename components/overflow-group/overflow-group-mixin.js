@@ -111,11 +111,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._slotItems = [];
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 
@@ -126,6 +121,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			this._resizeObserver = new ResizeObserver(this._throttledResize);
 			this._resizeObserver.observe(container);
 		});
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
 	async firstUpdated(changedProperties) {
