@@ -1,4 +1,3 @@
-import '../../icons/icon.js';
 import '../../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { descriptionListStyles } from '../description-list-wrapper.js';
