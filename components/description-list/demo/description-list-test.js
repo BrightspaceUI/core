@@ -1,4 +1,5 @@
 import '../../icons/icon.js';
+import '../../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { descriptionListStyles } from '../description-list-wrapper.js';
 
@@ -17,6 +18,24 @@ class TestDescriptionList extends LitElement {
 		return [descriptionListStyles, css`
 			:host {
 				display: block;
+			}
+
+			.user {
+				align-items: center;
+				display: flex;
+				gap: 0.5rem;
+			}
+			.avatar {
+				align-items: center;
+				background-color: var(--d2l-color-cinnabar-minus-1);
+				border-radius: 0.25rem;
+				color: white;
+				display: flex;
+				font-size: 0.7rem;
+				font-weight: 700;
+				height: 1.5rem;
+				justify-content: center;
+				width: 1.5rem;
 			}
 		`];
 	}
@@ -101,12 +120,12 @@ class TestDescriptionList extends LitElement {
 		if (this.type === 'slotted') {
 			return html`
 				<d2l-dl-wrapper>
-					<dl>
-						<dt><d2l-icon icon="tier1:time"></d2l-icon>Slotted Term</dt>
-						<dd>Slotted details <d2l-button-icon icon="tier1:edit" text="edit"></d2l-button-icon></dd>
+					<dl style="align-items: center">
+						<dt>User</dt>
+						<dd><div class="user"><div class="avatar">JS</div>John Smith</div></dd>
 
-						<dt><d2l-icon icon="tier1:user-progress"></d2l-icon>Slotted term</dt>
-						<dd>Text-only details</dd>
+						<dt>Submitted</dt>
+						<dd>Dec 30, 2021 5:34 PM</dd>
 					</dl>
 				</d2l-dl-wrapper>
 			`;
