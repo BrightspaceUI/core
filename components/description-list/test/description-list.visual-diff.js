@@ -25,10 +25,10 @@ describe('d2l-dl-wrapper', () => {
 	].forEach((name) => {
 		const selector = `#${name}`;
 		[
-			800,
-			600,
-			300,
-			200,
+			799,
+			599,
+			299,
+			199,
 		].forEach((width) => {
 			it(`${name} ${width}`, async function() {
 				await page.$eval (selector, async(elem, width)  => {
