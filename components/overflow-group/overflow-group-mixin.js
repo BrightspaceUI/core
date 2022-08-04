@@ -96,42 +96,29 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	constructor() {
 		super();
+
 		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
+		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
-		this._throttledResize = (entries) => requestAnimationFrame(() => this._handleResize(entries));
-
+		this._isObserving = false;
 		this._overflowHidden = false;
+		this._slotItems = [];
+
 		this.autoShow = false;
 		this.maxToShow = -1;
 		this.minToShow = 1;
 		this.mini = this.openerType === OPENER_TYPE.ICON;
 		this.openerType = OPENER_TYPE.DEFAULT;
-		this._resizeObserver = null;
-		this._slotItems = [];
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		requestAnimationFrame(async() => {
-			await this.updateComplete;
-
-			const container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
-			this._resizeObserver = new ResizeObserver(this._throttledResize);
-			this._resizeObserver.observe(container);
-		});
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
-	}
 
-	async firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this._buttonSlot = this.shadowRoot.querySelector('slot');
+		if (this._isObserving) {
+			this._isObserving = false;
+			this._resizeObserver.disconnect();
+		}
 	}
 
 	render() {
@@ -155,6 +142,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	update(changedProperties) {
 		super.update(changedProperties);
+
+		if (!this._isObserving) {
+			this._isObserving = true;
+			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
+		}
 
 		if (changedProperties.has('autoShow') && this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
@@ -305,7 +297,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	async _getSlotItems() {
-		const filteredNodes = await filterAsync(this._buttonSlot.assignedNodes({ flatten: true }), async(node) => {
+		const filteredNodes = await filterAsync(this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }), async(node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			if (node.updateComplete) await node.updateComplete;
 			return node.tagName.toLowerCase() !== 'template';
