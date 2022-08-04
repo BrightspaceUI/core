@@ -58,7 +58,7 @@ class DescriptionListWrapper extends LitElement {
 
 	constructor() {
 		super();
-		this.breakpoint = 350;
+		this.breakpoint = 200;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 		this._stacked = false;
 	}
