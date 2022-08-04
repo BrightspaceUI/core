@@ -6,7 +6,7 @@
 		import '../../typography/typography.js';
 		import '../demo/description-list-test.js';
 	</script>
-	<title>d2l-description-list</title>
+	<title>d2l-dl-wrapper</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<style>
@@ -14,7 +14,13 @@
 			margin: 0;
 		}
 		.visual-diff {
-			width: 300px;
+			width: 600px;
+		}
+		.size-s {
+			width: 299px;
+		}
+		.size-xs {
+			width: 199px;
 		}
 	</style>
 </head>
@@ -23,7 +29,23 @@
 		<d2l-test-dl></d2l-test-dl>
 	</div>
 
+	<div class="visual-diff size-s" id="default-300">
+		<d2l-test-dl></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-xs" id="default-200">
+		<d2l-test-dl></d2l-test-dl>
+	</div>
+
 	<div class="visual-diff" id="long">
+		<d2l-test-dl type="long"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-s" id="long-300">
+		<d2l-test-dl type="long"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-xs" id="long-200">
 		<d2l-test-dl type="long"></d2l-test-dl>
 	</div>
 
@@ -31,11 +53,35 @@
 		<d2l-test-dl type="activity-display"></d2l-test-dl>
 	</div>
 
+	<div class="visual-diff size-s" id="activity-display-300">
+		<d2l-test-dl type="activity-display"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-xs" id="activity-display-200">
+		<d2l-test-dl type="activity-display"></d2l-test-dl>
+	</div>
+
 	<div class="visual-diff" id="bulk-course-import">
 		<d2l-test-dl type="bulk-course-import"></d2l-test-dl>
 	</div>
 
+	<div class="visual-diff size-s" id="bulk-course-import-300">
+		<d2l-test-dl type="bulk-course-import"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-xs" id="bulk-course-import-200">
+		<d2l-test-dl type="bulk-course-import"></d2l-test-dl>
+	</div>
+
 	<div class="visual-diff" id="slotted">
+		<d2l-test-dl type="slotted"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-s" id="slotted-300">
+		<d2l-test-dl type="slotted"></d2l-test-dl>
+	</div>
+
+	<div class="visual-diff size-xs" id="slotted-200">
 		<d2l-test-dl type="slotted"></d2l-test-dl>
 	</div>
 

@@ -29,7 +29,7 @@ class TestDescriptionList extends LitElement {
 	render() {
 		if (this.type === 'default') {
 			return html`
-				<d2l-dl-wrapper breakpoint="200">
+				<d2l-dl-wrapper>
 					<dl>
 						<dt>Course Name</dt>
 						<dd>Brightspace 101B</dd>
@@ -49,7 +49,7 @@ class TestDescriptionList extends LitElement {
 
 		if (this.type === 'long') {
 			return html`
-				<d2l-dl-wrapper>
+				<d2l-dl-wrapper breakpoint="300">
 					<dl>
 						<dt>Course Code That Represents The Course as a Short String</dt>
 						<dd>A short string that represents the course, often with important information such as section or room number.</dd>

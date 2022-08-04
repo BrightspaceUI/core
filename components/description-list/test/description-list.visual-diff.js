@@ -17,16 +17,21 @@ describe('d2l-dl-wrapper', () => {
 	after(async() => await browser.close());
 
 	[
-		{ name: 'default', selector: '#default' },
-		{ name: 'long', selector: '#long' },
-		{ name: 'activity-display', selector: '#activity-display' },
-		{ name: 'bulk-course-import', selector: '#bulk-course-import' },
-		{ name: 'slotted', selector: '#slotted' },
-	].forEach((info) => {
-		it(info.name, async function() {
-			const rect = await visualDiff.getRect(page, info.selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		'default',
+		'long',
+		'activity-display',
+		'bulk-course-import',
+		'slotted',
+	].forEach((name) => {
+		[
+			{ name, selector: `#${name}` },
+			{ name: `${name} 300px`, selector: `#${name}-300` },
+			{ name: `${name} 200px`, selector: `#${name}-200` }
+		].forEach((info) => {
+			it(info.name, async function() {
+				const rect = await visualDiff.getRect(page, info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
 	});
-
 });
