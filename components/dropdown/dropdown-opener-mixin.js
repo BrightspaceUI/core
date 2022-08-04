@@ -174,6 +174,13 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.dropdownOpened = !this.dropdownOpened;
 	}
 
+	__dispatchOpenerClickEvent() {
+		/** Dispatched when the opener is clicked, useful for when no-auto-open is enabled */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-dropdown-opener-click', { bubbles: false, composed: false }
+		));
+	}
+
 	__getContentElement() {
 		if (!this.shadowRoot) return undefined;
 		return this.shadowRoot.querySelector('slot:not([name])').assignedNodes()
@@ -202,6 +209,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__onKeypress(e) {
 		if (e.srcElement === this || isComposedAncestor(this.getOpenerElement(), e.srcElement)) {
 			if (e.keyCode !== 13 && e.keyCode !== 32) return;
+			this.__dispatchOpenerClickEvent();
 			if (this.noAutoOpen) return;
 			if (!this.openOnHover) {
 				this.toggleOpen(true);
@@ -256,6 +264,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onOpenerMouseUp(e) {
+		this.__dispatchOpenerClickEvent();
 		if (this.noAutoOpen) return;
 		if (this.openOnHover) {
 			// prevent propogation to window and triggering _onOutsideClick
