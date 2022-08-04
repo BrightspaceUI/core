@@ -15,10 +15,6 @@ class TestDescriptionList extends LitElement {
 
 	static get styles() {
 		return [descriptionListStyles, css`
-			:host {
-				display: block;
-			}
-
 			.user {
 				align-items: center;
 				display: flex;
