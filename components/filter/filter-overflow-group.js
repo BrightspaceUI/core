@@ -10,15 +10,15 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 	static get styles() {
 		return [super.styles, css`
 			::slotted(d2l-filter) {
-				margin-right: 0.5rem;
+				margin-right: 0.3rem;
 			}
 		`];
 	}
 
-	convertToOverflowItem() {
+	getOverflowContainer() {
 	}
 
-	getOverflowMenu() {
+	convertToOverflowItem() {
 	}
 
 }
