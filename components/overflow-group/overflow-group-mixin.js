@@ -199,7 +199,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		} else if (this._overflowContainer) {
 			this._overflowContainerWidth = this._overflowContainer.offsetWidth;
 		}
-		this._overflowMenuWidth = this._overflowMenuWidth || 0;
+		this._overflowContainerWidth = this._overflowContainerWidth || 0;
 
 		const showing = {
 			count: 0,
