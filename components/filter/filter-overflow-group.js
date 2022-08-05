@@ -15,10 +15,10 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		`];
 	}
 
-	getOverflowContainer() {
+	convertToOverflowItem() {
 	}
 
-	convertToOverflowItem() {
+	getOverflowContainer() {
 	}
 
 }
