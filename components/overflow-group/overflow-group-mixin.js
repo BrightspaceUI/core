@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -39,7 +39,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			 * @ignore
 			 */
 			chompIndex: {
-				type: Number,
+				state: true
 			},
 			/**
 			 * minimum amount of buttons to show
@@ -63,12 +63,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			 * @ignore
 			 */
 			mini: {
-				type: Boolean,
-				reflect: true
+				state: true
 			},
 			/**
-			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
-			 * @type {'default'|'icon'}
+			 * @ignore
 			 */
 			openerType: {
 				type: String,
@@ -98,43 +96,36 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	constructor() {
 		super();
+
 		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
+		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
-		this._throttledResize = (entries) => requestAnimationFrame(() => this._handleResize(entries));
+		this._isObserving = false;
+		this._overflowContainerHidden = false;
+		this._slotItems = [];
 
-		this._overflowHidden = false;
 		this.autoShow = false;
 		this.maxToShow = -1;
 		this.minToShow = 1;
 		this.mini = this.openerType === OPENER_TYPE.ICON;
 		this.openerType = OPENER_TYPE.DEFAULT;
-		this._resizeObserver = null;
-		this._slotItems = [];
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
-	}
 
-	async firstUpdated() {
-		super.firstUpdated();
-
-		// selected elements
-		this._buttonSlot = this.shadowRoot.querySelector('slot');
-
-		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
-
-		this._resizeObserver = new ResizeObserver(this._throttledResize);
-		this._resizeObserver.observe(this._container);
+		if (this._isObserving) {
+			this._isObserving = false;
+			this._resizeObserver.disconnect();
+		}
 	}
 
 	render() {
-		const overflowMenu = this.getOverflowMenu();
+		const overflowContainer = !this._overflowContainerHidden ? this.getOverflowContainer() : nothing;
 
 		this._slotItems.forEach((element, index) => {
-			if (!this.overflowMenuHidden && index >= this.chompIndex) {
+			if (!this._overflowContainerHidden && index >= this.chompIndex) {
 				element.setAttribute('data-is-chomped', '');
 			} else {
 				element.removeAttribute('data-is-chomped');
@@ -144,7 +135,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		return html`
 			<div class="d2l-overflow-group-container">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
-				${overflowMenu}
+				${overflowContainer}
 			</div>
 		`;
 	}
@@ -152,18 +143,22 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	update(changedProperties) {
 		super.update(changedProperties);
 
-		if (changedProperties.get('autoShow')) {
-			this._getItemLayouts(this._slotItems);
-			this._autoDetectBoundaries(this._itemLayouts);
+		if (!this._isObserving) {
+			this._isObserving = true;
+			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
 		}
 
-		if (changedProperties.get('minToShow')
-			|| changedProperties.get('maxToShow')) {
+		if (changedProperties.has('autoShow') && this.autoShow) {
+			this._autoDetectBoundaries(this._slotItems);
+		}
+
+		if (changedProperties.has('minToShow')
+			|| changedProperties.has('maxToShow')) {
 			this._chomp();
 		}
 
-		// Slight hack to get the overflow menu width the first time it renders
-		if (!this._overflowMenuWidth) {
+		// Slight hack to get the overflow container width the first time it renders
+		if (!this._overflowContainerWidth) {
 			// this action needs to be deferred until first render of our overflow button
 			requestAnimationFrame(() => {
 				this._chomp();
@@ -172,9 +167,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	_autoDetectBoundaries(items) {
+		if (!items) return;
 
 		let minToShow, maxToShow;
 		for (let i = 0; i < items.length; i++) {
+			if (!items[i].classList) continue;
+
 			if (items[i].classList.contains(AUTO_SHOW_CLASS)) {
 				minToShow = i + 1;
 			}
@@ -194,12 +192,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	_chomp() {
 		if (!this.shadowRoot || !this._itemLayouts) return;
 
-		this._overflowMenu = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
-		this._overflowMenuMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
-		if (this.openerType === OPENER_TYPE.ICON && this._overflowMenuMini) {
-			this._overflowMenuWidth = this._overflowMenuMini.offsetWidth;
-		} else if (this._overflowMenu) {
-			this._overflowMenuWidth = this._overflowMenu.offsetWidth;
+		this._overflowContainer = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
+		this._overflowContainerMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
+		if (this.openerType === OPENER_TYPE.ICON && this._overflowContainerMini) {
+			this._overflowContainerWidth = this._overflowContainerMini.offsetWidth;
+		} else if (this._overflowContainer) {
+			this._overflowContainerWidth = this._overflowContainer.offsetWidth;
 		}
 		this._overflowMenuWidth = this._overflowMenuWidth || 0;
 
@@ -245,10 +243,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		this.overflowMenuHidden = this._itemLayouts.length === showing.count;
-		if (!this.overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
+		this._overflowContainerHidden = this._itemLayouts.length === showing.count;
+		if (!this._overflowContainerHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._itemLayouts.length; j--;) {
-				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
+				if (showing.width + this._overflowContainerWidth < this._availableWidth) {
 					break;
 				}
 				const itemLayoutOverflowing = this._itemLayouts[j];
@@ -262,11 +260,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				itemLayoutOverflowing.isChomped = true;
 			}
 		}
-		const overflowDropdownOverflowing = (showing.width + this._overflowMenuWidth >= this._availableWidth);
-		const swapToMiniButton = overflowDropdownOverflowing && !this.overflowMenuHidden;
+		const overflowDropdownOverflowing = (showing.width + this._overflowContainerWidth >= this._availableWidth);
+		const swapToMiniButton = overflowDropdownOverflowing && !this._overflowContainerHidden;
 
 		this.mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
-		this.chompIndex = this.overflowMenuHidden ? null : showing.count;
+		this.chompIndex = this._overflowContainerHidden ? null : showing.count;
 
 		/** Dispatched when there is an update performed to the overflow group */
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
@@ -295,14 +293,14 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._slotItems = await this._getSlotItems();
 		// convert them to layout items (calculate widths)
 		this._itemLayouts = this._getItemLayouts(this._slotItems);
-		// convert to dropdown items (for overflow menu)
+		// convert to dropdown items (for overflow container)
 		this.dropdownItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
 	}
 
 	async _getSlotItems() {
-		const filteredNodes = await filterAsync(this._buttonSlot.assignedNodes({ flatten: true }), async(node) => {
+		const filteredNodes = await filterAsync(this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }), async(node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
-			await node.updateComplete;
+			if (node.updateComplete) await node.updateComplete;
 			return node.tagName.toLowerCase() !== 'template';
 		});
 

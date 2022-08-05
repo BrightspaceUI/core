@@ -49,8 +49,6 @@ describe('d2l-overflow-group', () => {
 	const autoShow = [
 		{
 			name: 'auto-show-small',
-			selector: '#auto-show-small',
-			containerSelector: '#auto-show-small-container',
 			action: async(selector) => {
 				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
 				await overflowMenu.click();
@@ -58,13 +56,20 @@ describe('d2l-overflow-group', () => {
 		},
 		{
 			name: 'auto-show',
-			selector: '#auto-show',
-			containerSelector: '#auto-show-container',
 			action: async(selector) => {
 				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
 				await overflowMenu.click();
 			}
 		},
+		{
+			name: 'auto-show-add-later',
+			action: async(selector) => {
+				await page.$eval(selector, async(elem) => {
+					elem.setAttribute('auto-show', 'auto-show');
+					await elem.updateComplete;
+				});
+			}
+		}
 	];
 	const iconType = [
 		{
