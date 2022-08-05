@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -122,10 +122,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	render() {
-		const overflowMenu = this.getOverflowMenu();
+		const overflowContainer = !this._overflowContainerHidden ? this.getOverflowContainer() : nothing;
 
 		this._slotItems.forEach((element, index) => {
-			if (!this.overflowMenuHidden && index >= this.chompIndex) {
+			if (!this._overflowContainerHidden && index >= this.chompIndex) {
 				element.setAttribute('data-is-chomped', '');
 			} else {
 				element.removeAttribute('data-is-chomped');
@@ -135,7 +135,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		return html`
 			<div class="d2l-overflow-group-container">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
-				${overflowMenu}
+				${overflowContainer}
 			</div>
 		`;
 	}
@@ -157,8 +157,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			this._chomp();
 		}
 
-		// Slight hack to get the overflow menu width the first time it renders
-		if (!this._overflowMenuWidth) {
+		// Slight hack to get the overflow container width the first time it renders
+		if (!this._overflowContainerWidth) {
 			// this action needs to be deferred until first render of our overflow button
 			requestAnimationFrame(() => {
 				this._chomp();
@@ -192,12 +192,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	_chomp() {
 		if (!this.shadowRoot || !this._itemLayouts) return;
 
-		this._overflowMenu = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
-		this._overflowMenuMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
-		if (this.openerType === OPENER_TYPE.ICON && this._overflowMenuMini) {
-			this._overflowMenuWidth = this._overflowMenuMini.offsetWidth;
-		} else if (this._overflowMenu) {
-			this._overflowMenuWidth = this._overflowMenu.offsetWidth;
+		this._overflowContainer = this.shadowRoot.querySelector(`.${OVERFLOW_DROPDOWN_CLASS}`);
+		this._overflowContainerMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_DROPDOWN_CLASS}`);
+		if (this.openerType === OPENER_TYPE.ICON && this._overflowContainerMini) {
+			this._overflowContainerWidth = this._overflowContainerMini.offsetWidth;
+		} else if (this._overflowContainer) {
+			this._overflowContainerWidth = this._overflowContainer.offsetWidth;
 		}
 
 		const showing = {
@@ -242,10 +242,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		this.overflowMenuHidden = this._itemLayouts.length === showing.count;
-		if (!this.overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
+		this._overflowContainerHidden = this._itemLayouts.length === showing.count;
+		if (!this._overflowContainerHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._itemLayouts.length; j--;) {
-				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
+				if (showing.width + this._overflowContainerWidth < this._availableWidth) {
 					break;
 				}
 				const itemLayoutOverflowing = this._itemLayouts[j];
@@ -259,11 +259,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				itemLayoutOverflowing.isChomped = true;
 			}
 		}
-		const overflowDropdownOverflowing = (showing.width + this._overflowMenuWidth >= this._availableWidth);
-		const swapToMiniButton = overflowDropdownOverflowing && !this.overflowMenuHidden;
+		const overflowDropdownOverflowing = (showing.width + this._overflowContainerWidth >= this._availableWidth);
+		const swapToMiniButton = overflowDropdownOverflowing && !this._overflowContainerHidden;
 
 		this.mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
-		this.chompIndex = this.overflowMenuHidden ? null : showing.count;
+		this.chompIndex = this._overflowContainerHidden ? null : showing.count;
 
 		/** Dispatched when there is an update performed to the overflow group */
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
@@ -292,7 +292,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._slotItems = await this._getSlotItems();
 		// convert them to layout items (calculate widths)
 		this._itemLayouts = this._getItemLayouts(this._slotItems);
-		// convert to dropdown items (for overflow menu)
+		// convert to dropdown items (for overflow container)
 		this.dropdownItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
 	}
 

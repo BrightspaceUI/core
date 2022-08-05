@@ -157,10 +157,7 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	getOverflowMenu() {
-		if (this.overflowMenuHidden) {
-			return;
-		}
+	getOverflowContainer() {
 		const moreActionsText = this.localize('components.overflow-group.moreActions');
 		const overflowItems = this.dropdownItems ? this.dropdownItems.slice(this.chompIndex) : [];
 		const menu = html`<d2l-dropdown-menu>
