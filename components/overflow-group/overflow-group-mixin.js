@@ -102,7 +102,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
 		this._isObserving = false;
-		this._overflowHidden = false;
+		this._overflowContainerHidden = false;
 		this._slotItems = [];
 
 		this.autoShow = false;
