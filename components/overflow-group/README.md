@@ -97,13 +97,14 @@ static get styles() {
 The functions `getOverflowContainer` and `convertToOverflowItem` need to be implemented by consumers of the mixin.
 
 ```javascript
-getOverflowContainer() {
-  // return html of overflow menu. For example:
-  return html`<d2l-menu text="Overflow Menu"></d2l-menu>`;
-}
-
 convertToOverflowItem(node) {
   // return html of overflow item. For example:
   return html`<d2l-menu-item text="${node.text}"></d2l-menu-item>`;
+}
+
+getOverflowContainer(overflowItems, mini) {
+  // return html of overflow menu. "mini" specifies if smaller menu option should be used, where applicable. For example:
+  if (mini) html`<d2l-dropdown-context-menu text="Overflow Menu"><d2l-dropdown-menu>${overflowItems}</d2l-dropdown-menu></d2l-dropdown-context-menu>`;
+  else return html`<d2l-dropdown-button text="Overflow Menu"><d2l-dropdown-menu>${overflowItems}</d2l-dropdown-menu></d2l-dropdown-button>`;
 }
 ```

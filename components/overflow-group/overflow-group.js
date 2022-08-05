@@ -11,7 +11,7 @@ import '../menu/menu-item.js';
 import '../menu/menu-item-separator.js';
 import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit';
-import { OVERFLOW_DROPDOWN_CLASS, OVERFLOW_MINI_DROPDOWN_CLASS, OverflowGroupMixin } from './overflow-group-mixin.js';
+import { OVERFLOW_CLASS, OVERFLOW_MINI_CLASS, OverflowGroupMixin } from './overflow-group-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -157,28 +157,27 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	getOverflowContainer() {
+	getOverflowContainer(overflowItems, mini) {
 		const moreActionsText = this.localize('components.overflow-group.moreActions');
-		const overflowItems = this.dropdownItems ? this.dropdownItems.slice(this.chompIndex) : [];
 		const menu = html`<d2l-dropdown-menu>
 			<d2l-menu label="${moreActionsText}">
 				${overflowItems}
 			</d2l-menu>
 		</d2l-dropdown-menu>`;
 
-		if (this.mini) {
-			return html`<d2l-dropdown-more class="${OVERFLOW_MINI_DROPDOWN_CLASS}" text="${moreActionsText}">
+		if (mini) {
+			return html`<d2l-dropdown-more class="${OVERFLOW_MINI_CLASS} d2l-overflow-dropdown-mini" text="${moreActionsText}">
 				${menu}
 			</d2l-dropdown-more>`;
 		}
 
 		if (this.openerStyle === OPENER_STYLE.SUBTLE) {
-			return html`<d2l-dropdown-button-subtle class="${OVERFLOW_DROPDOWN_CLASS}" text="${moreActionsText}">
+			return html`<d2l-dropdown-button-subtle class="${OVERFLOW_CLASS} d2l-overflow-dropdown" text="${moreActionsText}">
 				${menu}
 			</d2l-dropdown-button-subtle>`;
 		}
 
-		return html`<d2l-dropdown-button class="${OVERFLOW_DROPDOWN_CLASS}" text="${moreActionsText}">
+		return html`<d2l-dropdown-button class="${OVERFLOW_CLASS} d2l-overflow-dropdown" text="${moreActionsText}">
 			${menu}
 		</d2l-dropdown-button>`;
 	}
