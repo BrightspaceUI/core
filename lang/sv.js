@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "mer",
 	"components.overflow-group.moreActions": "Fler åtgärder",
 	"components.pager-load-more.action": "Läs in {count} till",
-	"components.pager-load-more.info": "{showingCount} av {totalCount} objekt",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Läser in fler objekt",
 	"components.selection.action-hint": "Välj ett objekt för att utföra åtgärden.",
 	"components.selection.select-all": "Välj alla",

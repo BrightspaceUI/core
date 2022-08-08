@@ -24,6 +24,11 @@ describe('d2l-filter-tags', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 	});
 
+	it('flex-end is correct', async function() {
+		const rect = await visualDiff.getRect(page, '#flex-end');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+	});
+
 	[1500, 980, 969, 601, 599, 400, 320].forEach((width) => {
 		describe(`basic at width ${width}`, () => {
 			const selector = '#basic';

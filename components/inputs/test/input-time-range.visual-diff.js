@@ -1,4 +1,4 @@
-import { getRectTooltip } from './input-helper.js';
+import { getRectTooltip, resetInnerTimeInput } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -147,17 +147,18 @@ describe('d2l-input-time-range', () => {
 			}
 
 			describe('function', () => {
-				before(async() => {
+				beforeEach(async() => {
 					await page.$eval('#basic', (elem) => elem.blur());
 					await changeInnerInputTextDate(page, '#basic', startTimeSelector, laterTime);
 					await changeInnerInputTextDate(page, '#basic', endTimeSelector, time);
 				});
 
-				after(async() => {
+				afterEach(async() => {
 					await page.$eval('#basic', (elem) => elem.shadowRoot.querySelectorAll('d2l-input-time')[1].opened = false);
 				});
 
 				it('open start', async function() {
+					await resetInnerTimeInput(page, '#basic'); // Needed for retries
 					await page.$eval('#basic', (elem) => {
 						elem.focus();
 					});
@@ -167,20 +168,7 @@ describe('d2l-input-time-range', () => {
 				});
 
 				it('open end', async function() {
-					await page.$eval('#basic', (elem) => {
-						const timeInput = elem.shadowRoot.querySelector('d2l-input-time');
-						const dropdown = timeInput.shadowRoot.querySelector('d2l-dropdown');
-						return new Promise((resolve) => {
-							const content = dropdown.querySelector('[dropdown-content]');
-							content.scrollTo(0);
-							if (content.opened) {
-								content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
-								content.opened = false;
-							} else {
-								resolve();
-							}
-						});
-					});
+					await resetInnerTimeInput(page, '#basic'); // Needed for retries
 					await page.$eval('#basic', (elem) => {
 						elem.focus();
 					});

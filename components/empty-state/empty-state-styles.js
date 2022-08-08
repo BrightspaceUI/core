@@ -4,10 +4,7 @@ import { css } from 'lit';
 export const emptyStateStyles = css`
 
 	:host {
-		border: 1px solid var(--d2l-color-mica);
-		border-radius: 0.3rem;
 		display: block;
-		padding: 1.2rem 1.5rem;
 	}
 
 	:host([hidden]) {
@@ -20,12 +17,18 @@ export const emptyStateStyles = css`
 
 	.action-slot::slotted(d2l-empty-state-action-button:first-child),
 	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
-		display: inline-block;
+		display: inline;
 	}
 
 `;
 
 export const emptyStateSimpleStyles = css`
+
+	:host {
+		border: 1px solid var(--d2l-color-mica);
+		border-radius: 0.3rem;
+		padding: 1.2rem 1.5rem;
+	}
 
 	:host([dir="rtl"]) .d2l-empty-state-description {
 		padding-left: 0.5rem;

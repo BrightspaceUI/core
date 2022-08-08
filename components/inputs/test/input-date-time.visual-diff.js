@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { resetInnerTimeInput } from './input-helper.js';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, tag) {
@@ -105,6 +106,7 @@ describe('d2l-input-date-time', () => {
 	});
 
 	it('required focus then blur then fix', async function() {
+		await changeInnerElem(page, '#required', 'd2l-input-date', ''); // reset width change event
 		await page.$eval('#required', (elem) => elem.focus());
 		await page.$eval('#required', (elem) => elem.blur());
 		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20', true);
@@ -112,14 +114,19 @@ describe('d2l-input-date-time', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('timezone change', async function() {
-		await page.evaluate(() => {
-			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+	describe('timezone', () => {
+		afterEach(async() => {
+			await page.evaluate(() => {
+				document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+			});
 		});
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await page.evaluate(() => {
-			document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Toronto", "identifier":"America/Toronto"}');
+
+		it('change', async function() {
+			await page.evaluate(() => {
+				document.querySelector('html').setAttribute('data-timezone', '{"name":"Canada - Vancouver", "identifier":"America/Vancouver"}');
+			});
+			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
@@ -187,6 +194,7 @@ describe('d2l-input-date-time', () => {
 		});
 
 		it('open time', async function() {
+			await resetInnerTimeInput(page, '#basic'); // Needed for retries
 			await page.$eval('#basic', async(elem) => {
 				const timeInput = elem.shadowRoot.querySelector('d2l-input-time');
 				const input = timeInput.shadowRoot.querySelector('input');
@@ -281,6 +289,7 @@ describe('d2l-input-date-time', () => {
 		});
 
 		it('select date after clear', async function() {
+			await changeInnerElem(page, '#basic', 'd2l-input-date', ''); // reset width change event
 			await changeInnerElem(page, '#basic', 'd2l-input-date', '2018-01-20', true);
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

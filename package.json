@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "2.37.0",
+  "version": "2.38.3",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -47,7 +47,7 @@
     "@brightspace-ui/stylelint-config": "^0.6",
     "@open-wc/testing": "^3",
     "@web/dev-server": "^0.1",
-    "@web/test-runner": "^0.13",
+    "@web/test-runner": "^0.14",
     "@web/test-runner-playwright": "^0.8",
     "axe-core": "^4",
     "chalk": "^5",
