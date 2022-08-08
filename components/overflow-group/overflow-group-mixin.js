@@ -64,8 +64,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				type: Number
 			},
 			_mini: {
-				type: Boolean,
-				reflect: true
+				state: true
 			}
 		};
 	}

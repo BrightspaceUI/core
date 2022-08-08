@@ -24,6 +24,10 @@ describe('d2l-async-container-mixin', function() {
 		await page.bringToFront();
 	});
 
+	afterEach(async() => {
+		await page.reload(); // Needed for retries
+	});
+
 	after(async() => await browser.close());
 
 	it('initial', async function() {

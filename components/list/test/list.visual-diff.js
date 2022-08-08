@@ -172,7 +172,16 @@ describe('d2l-list', () => {
 		describe(info.category, () => {
 
 			info.tests.forEach((info) => {
+				afterEach(async function() {
+					if (this.currentTest.value) {
+						await this.currentTest.value();
+					}
+				});
+
 				it(info.name, async function() {
+					if (info.after) {
+						this.test.value = info.after;
+					}
 					if (info.action) {
 						await info.action();
 					}
@@ -181,9 +190,6 @@ describe('d2l-list', () => {
 					});
 					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector, 24));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-					if (info.after) {
-						await info.after();
-					}
 				});
 			});
 
