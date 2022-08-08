@@ -4,8 +4,6 @@ import { css } from 'lit';
 export const emptyStateStyles = css`
 
 	:host {
-		border: 1px solid var(--d2l-color-mica);
-		border-radius: 0.3rem;
 		display: block;
 		padding: 1.2rem 1.5rem;
 	}
@@ -26,6 +24,11 @@ export const emptyStateStyles = css`
 `;
 
 export const emptyStateSimpleStyles = css`
+
+	:host {
+		border: 1px solid var(--d2l-color-mica);
+		border-radius: 0.3rem;
+	}
 
 	:host([dir="rtl"]) .d2l-empty-state-description {
 		padding-left: 0.5rem;
