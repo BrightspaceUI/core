@@ -61,7 +61,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				attribute: 'opener-type'
 			},
 			_chompIndex: {
-				type: Number
+				state: true
 			},
 			_mini: {
 				state: true
