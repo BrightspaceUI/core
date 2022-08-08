@@ -5,7 +5,6 @@ export const emptyStateStyles = css`
 
 	:host {
 		display: block;
-		padding: 1.2rem 1.5rem;
 	}
 
 	:host([hidden]) {
@@ -28,6 +27,7 @@ export const emptyStateSimpleStyles = css`
 	:host {
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 0.3rem;
+		padding: 1.2rem 1.5rem;
 	}
 
 	:host([dir="rtl"]) .d2l-empty-state-description {
