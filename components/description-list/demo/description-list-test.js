@@ -7,7 +7,7 @@ class TestDescriptionList extends LitElement {
 		return {
 			/**
 			 * Type of test
-			 * @type {'default'|'long'|'activity-display'|'slotted'}
+			 * @type {'default'|'long'|'activity-display'|'slotted'|'bulk-course-import'}
 			 */
 			type: { type: String, reflect: true },
 		};
