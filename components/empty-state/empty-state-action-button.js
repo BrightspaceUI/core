@@ -1,6 +1,7 @@
 import '../button/button.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * `d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component.
@@ -70,6 +71,7 @@ class EmptyStateActionButton extends LitElement {
 				: html`<d2l-button-subtle
 							class="d2l-empty-state-action"
 							@click=${this._handleActionClick}
+							h-align="${ifDefined(!this._illustrated ? 'text' : undefined)}"
 							?slim=${!this._illustrated}
 							text=${this.text}>
 						</d2l-button-subtle>`;
