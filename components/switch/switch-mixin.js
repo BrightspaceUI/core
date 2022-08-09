@@ -196,7 +196,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			? this.textPosition : 'end');
 
 		return html`
-			${textPosition === 'start' || textPosition === 'hidden' ? switchLabel : ''}
+			${textPosition === 'start' ? switchLabel : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
