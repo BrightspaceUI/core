@@ -1,5 +1,5 @@
 # Overflow Groups
-The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. 
+The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. The `OverflowGroupMixin` allows for using the chomping logic without having to use those specific element types.
 
 <!-- docs: demo autoSize:false display:block size:medium -->
 ```html
@@ -70,3 +70,41 @@ Items added to this container element will no longer wrap onto a second line whe
 
 Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
+
+## OverflowGroupMixin
+This mixin allows for creation of an overflow group that handles chomping when using elements that are not buttons, links, or menus, or when wanting an overflow container that is not a `d2l-dropdown`.
+
+### How to Use
+
+**Import:**
+```javascript
+import { OverflowGroupMixin } from '@brightspace-ui/core/components/overflow-group/overflow-group-mixin.js';
+
+class OtherOverflowGroup extends OverflowGroupMixin(LitElement) {
+...
+```
+
+**Styles:**
+
+```javascript
+static get styles() {
+  return [ super.styles ];
+}
+```
+
+**Functionality:**
+
+The functions `getOverflowContainer` and `convertToOverflowItem` need to be implemented by consumers of the mixin.
+
+```javascript
+convertToOverflowItem(node) {
+  // return html of overflow item. For example:
+  return html`<d2l-menu-item text="${node.text}"></d2l-menu-item>`;
+}
+
+getOverflowContainer(overflowItems, mini) {
+  // return html of overflow menu. "mini" specifies if smaller menu option should be used, where applicable. For example:
+  if (mini) html`<d2l-dropdown-context-menu text="Overflow Menu"><d2l-dropdown-menu>${overflowItems}</d2l-dropdown-menu></d2l-dropdown-context-menu>`;
+  else return html`<d2l-dropdown-button text="Overflow Menu"><d2l-dropdown-menu>${overflowItems}</d2l-dropdown-menu></d2l-dropdown-button>`;
+}
+```
