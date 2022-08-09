@@ -195,6 +195,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
 
+		// Note: we render the switchLabel in the case of textPosition === 'hidden' so that any slot handlers can pick up on content being passed in
 		return html`
 			${textPosition === 'start' ? switchLabel : ''}
 			<div
