@@ -148,6 +148,9 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
+			:host([text-position="hidden"]) .d2l-switch-text {
+				display: none;
+			}
 			.d2l-switch-inner:hover, .switch-hover {
 				border-color: var(--d2l-color-celestine);
 				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
@@ -193,7 +196,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			? this.textPosition : 'end');
 
 		return html`
-			${textPosition === 'start' ? switchLabel : ''}
+			${textPosition === 'start' || textPosition === 'hidden' ? switchLabel : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
@@ -210,7 +213,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? switchLabel : ''}
+			${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
 		`;
 	}
 

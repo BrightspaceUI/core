@@ -36,7 +36,10 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 	get text() {
 		if (this._text) return this._text;
 
-		if (this.on && this._hasConditions) {
+		if (this.on && this._hasConditions && this.textPosition === 'hidden') {
+			return `${this.localize('components.switch.visibleWithPeriod')} ${this.localize('components.switch.conditions')}`;
+		}
+		else if (this.on && this._hasConditions) {
 			return this.localize('components.switch.visibleWithPeriod');
 		}
 		else if (this.on) {
