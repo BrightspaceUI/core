@@ -15,7 +15,9 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		`];
 	}
 
-	convertToOverflowItem() {
+	convertToOverflowItem(node) {
+		const tagName = node.tagName.toLowerCase();
+		if (tagName !== 'd2l-filter') console.warn(`d2l-filter-overflow-group: ${tagName} is invalid in this group. This group should only contain d2l-filter direct child elements.`);
 	}
 
 	getOverflowContainer() {

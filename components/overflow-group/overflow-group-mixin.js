@@ -163,6 +163,14 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		}
 	}
 
+	convertToOverflowItem() {
+		throw new Error('OverflowGroupMixin.convertToOverflowItem must be overridden');
+	}
+
+	getOverflowContainer() {
+		throw new Error('OverflowGroupMixin.getOverflowContainer must be overridden');
+	}
+
 	_autoDetectBoundaries(items) {
 		if (!items) return;
 
