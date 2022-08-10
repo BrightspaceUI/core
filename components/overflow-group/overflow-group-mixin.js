@@ -148,7 +148,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		super.update(changedProperties);
 
 		if (!this._isObserving) {
-			await (document.fonts ? document.fonts.ready : Promise.resolve());
 			this._isObserving = true;
 			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
 		}
@@ -338,6 +337,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	async _handleResize(entries) {
+		await (document.fonts ? document.fonts.ready : Promise.resolve());
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 
 		if (!this._hasResized) {
