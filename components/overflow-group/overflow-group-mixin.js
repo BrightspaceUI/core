@@ -95,6 +95,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._handleResize = this._handleResize.bind(this);
 		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
+		this._hasResized = false;
 		this._isObserving = false;
 		this._itemHeight = 0;
 		this._mini = this.openerType === OPENER_TYPE.ICON;
@@ -143,10 +144,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		`;
 	}
 
-	update(changedProperties) {
+	async update(changedProperties) {
 		super.update(changedProperties);
 
 		if (!this._isObserving) {
+			await (document.fonts ? document.fonts.ready : Promise.resolve());
 			this._isObserving = true;
 			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
 		}
@@ -335,12 +337,19 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		}, 0);
 	}
 
-	_handleResize(entries) {
+	async _handleResize(entries) {
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-		this._chomp();
+
+		if (!this._hasResized) {
+			this._hasResized = true;
+			await this._handleSlotChange();
+		} else {
+			this._chomp();
+		}
 	}
 
 	_handleSlotChange() {
+		if (!this._hasResized) return;
 		requestAnimationFrame(async() => {
 			await this._getItems();
 
