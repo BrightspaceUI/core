@@ -98,6 +98,15 @@ The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styli
 <d2l-test-dl></d2l-test-dl>
 ```
 
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description | Default Value
+|---|---|---|---|
+| `breakpoint` | Number | Width for component to use a stacked layout. | 200 |
+
+<!-- docs: end hidden content -->
+
 ## Slotted Content [slotted-content]
 The `dt` and `dd` elements can contain any html content.
 
