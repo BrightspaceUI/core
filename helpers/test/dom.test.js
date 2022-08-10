@@ -1,3 +1,4 @@
+import '../../components/button/button-icon.js';
 import { css, html, LitElement } from 'lit';
 import {
 	cssEscape,
@@ -10,7 +11,8 @@ import {
 	getNextAncestorSibling,
 	getOffsetParent,
 	isComposedAncestor,
-	isVisible
+	isVisible,
+	querySelectorComposed
 } from '../dom.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 
@@ -753,6 +755,56 @@ describe('dom', () => {
 			const elem = await fixture(mixedFixture);
 			expect(isComposedAncestor(elem, elem.querySelector('#light2')))
 				.to.be.true;
+		});
+
+	});
+
+	describe('querySelectorComposed', () => {
+
+		const slottedElement = defineCE(
+			class extends LitElement {
+				render() {
+					return html`<div class="shadowDiv"><slot></slot></div>`;
+				}
+			},
+		);
+
+		const nestedElement = defineCE(
+			class extends LitElement {
+				render() {
+					return html`<d2l-button-icon icon="tier1:delete" text="delete"></d2l-button-icon>`;
+				}
+			},
+		);
+
+		it('should find element in the root document', async() => {
+			await fixture(html`<h1>heading</h1><button>button</button>`);
+			const result = querySelectorComposed(document, 'button');
+			expect(result.tagName).to.equal('BUTTON');
+		});
+
+		it('should return null if no element is found in root document', async() => {
+			await fixture(html`<h1>heading</h1><button>button</button>`);
+			const result = querySelectorComposed(document, 'a');
+			expect(result).to.be.null;
+		});
+
+		it('should find slotted element', async() => {
+			await fixture(`<${slottedElement}><h2 class="h">heading</h2></${slottedElement}>`);
+			const result = querySelectorComposed(document, '.h');
+			expect(result.tagName).to.equal('H2');
+		});
+
+		it('should find element in shadow root', async() => {
+			await fixture(`<${slottedElement}></${slottedElement}>`);
+			const result = querySelectorComposed(document, '.shadowDiv');
+			expect(result.tagName).to.equal('DIV');
+		});
+
+		it('should find element in nested shadow root', async() => {
+			await fixture(`<${nestedElement}></${nestedElement}>`);
+			const result = querySelectorComposed(document, '.d2l-button-icon');
+			expect(result.tagName).to.equal('D2L-ICON');
 		});
 
 	});

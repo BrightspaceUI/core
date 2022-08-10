@@ -227,3 +227,19 @@ export function isVisible(node) {
 	return true;
 
 }
+
+export function querySelectorComposed(node, selector) {
+
+	const elem = node.querySelector(selector);
+	if (elem) return elem;
+
+	const allElems = node.querySelectorAll('*');
+	for (let i = 0; i < allElems.length; i++) {
+		if (allElems[i].shadowRoot) {
+			const nestedElem = querySelectorComposed(allElems[i].shadowRoot, selector);
+			if (nestedElem) return nestedElem;
+		}
+	}
+
+	return null;
+}
