@@ -51,7 +51,7 @@ describe('d2l-switch-visibility', () => {
 				const rect = await visualDiff.getRect(page, selector);
 
 				if (dir === 'rtl') {
-					rect.x -= 120;
+					rect.x -= 100;
 				}
 				rect.width += 120;
 				rect.height += 170;
