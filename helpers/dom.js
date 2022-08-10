@@ -234,9 +234,9 @@ export function querySelectorComposed(node, selector) {
 	if (elem) return elem;
 
 	const allElems = node.querySelectorAll('*');
-	for (let i = 0; i < allElems.length; i++) {
-		if (allElems[i].shadowRoot) {
-			const nestedElem = querySelectorComposed(allElems[i].shadowRoot, selector);
+	for (const elem of allElems) {
+		if (elem.shadowRoot) {
+			const nestedElem = querySelectorComposed(elem.shadowRoot, selector);
 			if (nestedElem) return nestedElem;
 		}
 	}
