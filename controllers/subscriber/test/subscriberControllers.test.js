@@ -322,7 +322,7 @@ describe('IdSubscriberController', () => {
 		</${separateRegistries}>
 		<${separateRegistries} id="registry-2"></${separateRegistries}>
 		<${idSubscriber} id="single" for="registry-1"></${idSubscriber}>
-		<${idSubscriber} id="multiple" for="registry-1 registry-2 non-existant"></${idSubscriber}>
+		<${idSubscriber} id="multiple" for="registry-1 registry-2 non-existant "></${idSubscriber}>
 		<${idSubscriber} id="error" for="non-existant"></${idSubscriber}>
 	</div>`;
 

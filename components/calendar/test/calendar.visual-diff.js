@@ -60,8 +60,12 @@ describe('d2l-calendar', () => {
 				await page.evaluate((lang, firstCalendarOfPage) => {
 					const calendar = document.querySelector(firstCalendarOfPage);
 					return new Promise((resolve) => {
-						calendar.addEventListener('d2l-localize-resources-change', resolve, { once: true });
-						document.querySelector('html').setAttribute('lang', lang);
+						if (document.querySelector('html').getAttribute('lang') !== lang) { // Needed for retries
+							calendar.addEventListener('d2l-localize-resources-change', resolve, { once: true });
+							document.querySelector('html').setAttribute('lang', lang);
+						} else {
+							resolve();
+						}
 					});
 				}, lang, firstCalendarOfPage);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -146,15 +150,25 @@ describe('d2l-calendar', () => {
 	});
 
 	describe('interaction', () => {
-		afterEach(async() => {
-			await page.$eval(firstCalendarOfPage, async(calendar) => {
-				calendar.selectedValue = '2018-02-14';
+		afterEach(async function() {
+			let opts = {
+				calendar: firstCalendarOfPage,
+				selected: '2018-02-14',
+				focus: true
+			};
+			const testOpts = this.currentTest.value;
+			if (testOpts) opts = Object.assign(opts, testOpts);
+
+			await page.$eval(opts.calendar, async(calendar, selected, focus) => {
+				calendar.selectedValue = selected;
 				await calendar.reset();
-				calendar.focus();
-			});
+				if (focus) calendar.focus();
+			}, opts.selected, opts.focus);
+			if (!opts.focus) await visualDiff.resetFocus(page);
 		});
 
 		it('click left arrow', async function() {
+			this.test.value = { focus: false }; // Needed for retries
 			await page.$eval(firstCalendarOfPage, (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
@@ -164,6 +178,7 @@ describe('d2l-calendar', () => {
 		});
 
 		it('click right arrow', async function() {
+			this.test.value = { calendar: '#dec-2019', selected: '2019-12-01', focus: false }; // Needed for retries
 			await page.$eval('#dec-2019', (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
@@ -199,6 +214,7 @@ describe('d2l-calendar', () => {
 			});
 
 			it('click disabled', async function() {
+				this.test.value = { calendar: '#min-max' }; // Needed for retries
 				await page.$eval('#min-max', (calendar) => {
 					const dateFocusable = calendar.shadowRoot.querySelector('td[data-date="1"] button');
 					dateFocusable.click();

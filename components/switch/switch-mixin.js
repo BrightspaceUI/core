@@ -148,6 +148,9 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
+			:host([text-position="hidden"]) .d2l-switch-text {
+				display: none;
+			}
 			.d2l-switch-inner:hover, .switch-hover {
 				border-color: var(--d2l-color-celestine);
 				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
@@ -192,6 +195,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
 
+		// Note: we render the switchLabel in the case of textPosition === 'hidden' so that any slot handlers can pick up on content being passed in
 		return html`
 			${textPosition === 'start' ? switchLabel : ''}
 			<div
@@ -210,7 +214,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? switchLabel : ''}
+			${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
 		`;
 	}
 

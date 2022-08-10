@@ -1,4 +1,4 @@
-import { open } from './dropdown-helper.js';
+import { open, reset } from './dropdown-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -16,6 +16,11 @@ describe('d2l-dropdown-content', () => {
 	});
 
 	after(async() => await browser.close());
+
+	afterEach(async function() {
+		const dropdown = this.currentTest.value;
+		if (dropdown) await reset(page, dropdown);
+	});
 
 	[
 		'default-width',
@@ -54,6 +59,7 @@ describe('d2l-dropdown-content', () => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
+			this.test.value = selector; // Needed for retries
 			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
@@ -66,6 +72,7 @@ describe('d2l-dropdown-content', () => {
 		// for flaky tests, add a 50ms delay before screenshot
 		it(testName, async function() {
 			const selector = `#${testName}`;
+			this.test.value = selector; // Needed for retries
 			await open(page, selector);
 			await page.waitForTimeout(50);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
@@ -88,6 +95,7 @@ describe('d2l-dropdown-content', () => {
 		it(testName, async function() {
 			await page.setViewport({ width: 600, height: 500 });
 			const selector = `#${testName}`;
+			this.test.value = selector; // Needed for retries
 			await open(page, selector);
 			await page.waitForTimeout(50);
 			await page.$eval (selector, async(elem)  => {
