@@ -13,11 +13,14 @@ vertical list of key-value pairs. Common usages could include terms & definition
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Do this
+* Terms and descriptions are 1-to-1
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't do this
+* Don't have a term without a description
+* Don't have a description without a term
+* Don't have multiple terms for a description
+* Don't have multiple descriptions for a term
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -33,7 +36,6 @@ When the component width is less than the `breakpoint` property, the side-by-sid
   class TestDescriptionList extends LitElement {
 
     static get styles() {
-      // return [ descriptionListStyles, css`:host { width: 500px }`];
       return descriptionListStyles;
     }
 
@@ -61,7 +63,7 @@ When the component width is less than the `breakpoint` property, the side-by-sid
 
 The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styling and resize behavior to native `dl` elements.
 
-<!-- docs: demo live name:d2l-test-dl display:block -->
+<!-- docs: demo live name:d2l-test-dl -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
