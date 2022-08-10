@@ -351,6 +351,14 @@ class Tooltip extends RtlMixin(LitElement) {
 				padding-right: 1rem;
 			}
 
+			::slotted(p:first-child) {
+				margin-top: 0 !important;
+			}
+
+			::slotted(p:last-child) {
+    			margin-bottom: 0 !important;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				:host([_open-dir="bottom"]) .d2l-tooltip-container,
 				:host([_open-dir="top"]) .d2l-tooltip-container,
