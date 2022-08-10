@@ -1,4 +1,3 @@
-import '../../components/button/button-icon.js';
 import { css, html, LitElement } from 'lit';
 import {
 	cssEscape,
@@ -105,6 +104,13 @@ const visibilityFixture = html`
 		<div style="visibility:hidden;"><div id="parentVisibilityNone"></div></div>
 	</div>
 `;
+
+class TestElement extends LitElement {
+	render() {
+		return html`<div class="nested"></div>`;
+	}
+}
+customElements.define('test-elem', TestElement);
 
 describe('dom', () => {
 
@@ -772,7 +778,7 @@ describe('dom', () => {
 		const nestedElement = defineCE(
 			class extends LitElement {
 				render() {
-					return html`<d2l-button-icon icon="tier1:delete" text="delete"></d2l-button-icon>`;
+					return html`<test-elem></test-elem>`;
 				}
 			},
 		);
@@ -803,8 +809,8 @@ describe('dom', () => {
 
 		it('should find element in nested shadow root', async() => {
 			await fixture(`<${nestedElement}></${nestedElement}>`);
-			const result = querySelectorComposed(document, '.d2l-button-icon');
-			expect(result.tagName).to.equal('D2L-ICON');
+			const result = querySelectorComposed(document, '.nested');
+			expect(result.tagName).to.equal('DIV');
 		});
 
 	});
