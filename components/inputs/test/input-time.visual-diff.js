@@ -69,6 +69,10 @@ describe('d2l-input-time', () => {
 		});
 
 		it('opened-disabled remove disabled', async function() {
+			// Needed for retries
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+
 			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('disabled'));
 			const rect = await getRect(page, '#opened-disabled');
@@ -76,6 +80,11 @@ describe('d2l-input-time', () => {
 		});
 
 		it('opened-skeleton remove skeleton', async function() {
+			// Needed for retries
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
+
 			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('opened'));
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('skeleton'));
 			const rect = await getRect(page, '#opened-skeleton');
@@ -107,10 +116,14 @@ describe('d2l-input-time', () => {
 					const input = document.querySelector('#localizationAM');
 					const timeout = lang === 'da' ? 1000 : 100;
 					return new Promise((resolve) => {
-						input.addEventListener('d2l-localize-resources-change', () => {
-							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
-						}, { once: true });
-						document.querySelector('html').setAttribute('lang', lang);
+						if (document.querySelector('html').getAttribute('lang') !== lang) { // Needed for retries
+							input.addEventListener('d2l-localize-resources-change', () => {
+								input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
+							}, { once: true });
+							document.querySelector('html').setAttribute('lang', lang);
+						} else {
+							resolve();
+						}
 					});
 				}, lang);
 
@@ -129,9 +142,13 @@ describe('d2l-input-time', () => {
 
 		afterEach(async() => {
 			await reset(page, '#dropdown');
+			await reset(page, '#enforce');
 		});
 
 		it('dropdown open top', async function() {
+			await page.reload(); // Needed for retries
+			await page.$eval('#opened', async(elem) => { elem.removeAttribute('opened'); await elem.updateComplete; }); // Needed for retries
+
 			await open(page, '#dropdown');
 			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#dropdown');
@@ -170,7 +187,6 @@ describe('d2l-input-time', () => {
 			await page.waitForTimeout(100);
 			const rect = await getRect(page, '#enforce');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
-			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 	});
 });

@@ -298,6 +298,10 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
 | `label` | String | The text displayed in this component's label |
 <!-- docs: end hidden content -->
 
+## Filter Overflow Group [d2l-filter-overflow-group]
+
+**Coming Soon!**
+
 ## Filter Dimension: Date [d2l-filter-dimension-date]
 
 **Coming Soon!**

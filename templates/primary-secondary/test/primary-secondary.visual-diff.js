@@ -53,13 +53,20 @@ describe('d2l-template-primary-secondary', () => {
 
 		after(async() => await browser.close());
 
+		afterEach(async function() {
+			const reset = this.currentTest.value;
+			if (reset) {
+				await moveDivider(page, reset.sel, reset.dir, reset.steps);
+			}
+		});
+
 		[
 			{ testName: 'default', options: {} },
 			{ testName: 'focus', options: { focus: true } },
 			{ testName: 'rtl', options: {} },
 			{ testName: 'focus-rtl', options: { focus: true } },
 			{ testName: 'expanded', options: { position: { dir: directions.UP, steps: 5 } } },
-			{ testName: 'middle', options: { position: { dir: directions.UP, steps: 1 } } },
+			{ testName: 'middle', options: { position: { dir: directions.UP, steps: 1 }, resetDir: directions.DOWN } },
 			{ testName: 'collapsed', options: { position: { dir: directions.DOWN, steps: 5 } } },
 			{ testName: 'hidden-footer', options: {} },
 			{ testName: 'hidden-footer-expanded', options: { position: { dir: directions.UP, steps: 5 } } },
@@ -71,6 +78,9 @@ describe('d2l-template-primary-secondary', () => {
 				if (test.options.position) {
 					const pos = test.options.position;
 					await moveDivider(page, sel, pos.dir, pos.steps);
+					if (test.options.resetDir) { // Needed for retries
+						this.test.value = { sel: sel, dir: test.options.resetDir, steps: pos.steps };
+					}
 				}
 				if (test.options.focus) {
 					await focusHandle(page, sel);

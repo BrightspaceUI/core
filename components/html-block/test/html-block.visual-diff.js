@@ -27,6 +27,7 @@ describe('d2l-html-block', () => {
 		{ name: 'typography-screen', selector: '#typography' },
 		{ name: 'compact', selector: '#compact' },
 		{ name: 'inline', selector: '#inline' },
+		{ name: 'inline-no-deferred-rendering', selector: '#inline-no-deferred-rendering' },
 		{ name: 'large-font-size', selector: '#large-font-size' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
 		{ name: 'math (block)', selector: '#math-block' },

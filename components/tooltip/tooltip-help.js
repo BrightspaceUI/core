@@ -49,6 +49,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				background: none;
 				border: none;
 				cursor: inherit;
+				font-family: inherit;
 				padding: 0;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
