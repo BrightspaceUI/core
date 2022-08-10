@@ -198,19 +198,27 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 
-		if (!this._contentObserver || this.noDeferredRendering) return;
+		if (this.noDeferredRendering || (!this._contentObserver && !this._templateObserver)) return;
 
 		const slot = this.shadowRoot.querySelector('slot');
 		if (slot) {
-			slot.assignedNodes({ flatten: true }).forEach(
-				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
-			);
+			const slottedNodes = slot.assignedNodes({ flatten: true });
+
+			const template = this._findTemplate(slottedNodes);
+			if (template && this._templateObserver) {
+				this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			} else if (this._contentObserver) {
+				slottedNodes.forEach(
+					node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
+				);
+			}
 		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._contentObserver) this._contentObserver.disconnect();
+		if (this._templateObserver) this._templateObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -247,6 +255,11 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			if (this._contextObserverController.values.get(attr) !== val) return true;
 		}
 		return false;
+	}
+
+	_findTemplate(nodes) {
+		return nodes
+			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
 	}
 
 	async _handleSlotChange(e) {
@@ -288,29 +301,50 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	_stamp(slot) {
-		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-
-		const stampHTML = async nodes => {
-			renderContainer.innerHTML = '';
-			if (!nodes || nodes.length === 0) return;
-
-			// Nodes must be cloned into the render container before processing, as
-			// some renderers require connected nodes (e.g. MathJax).
-			nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
-			await this._processRenderers(renderContainer);
-		};
-
-		if (this._contentObserver) this._contentObserver.disconnect();
-
 		if (!slot) slot = this.shadowRoot.querySelector('slot');
 		const slottedNodes = slot.assignedNodes({ flatten: true });
 
-		this._contentObserver = new MutationObserver(() => stampHTML(slottedNodes));
+		const template = this._findTemplate(slottedNodes);
+
+		if (template) {
+			if (this._templateObserver) this._templateObserver.disconnect();
+
+			this._templateObserver = new MutationObserver(() => this._stampTemplate(template));
+			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+
+			this._stampTemplate(template);
+			return;
+		}
+
+		if (this._contentObserver) this._contentObserver.disconnect();
+		this._contentObserver = new MutationObserver(() => this._stampNodes(slottedNodes));
 		slottedNodes.forEach(
 			node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
 		);
 
-		stampHTML(slottedNodes);
+		this._stampNodes(slottedNodes);
+	}
+
+	async _stampNodes(nodes) {
+		if (!nodes || nodes.length === 0) return;
+
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		renderContainer.innerHTML = '';
+
+		// Nodes must be cloned into the render container before processing, as
+		// some renderers require connected nodes (e.g. MathJax).
+		nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
+		await this._processRenderers(renderContainer);
+	}
+
+	async _stampTemplate(template) {
+		if (!template || !template.content) return;
+
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		renderContainer.innerHTML = '';
+
+		renderContainer.appendChild(document.importNode(template.content, true));
+		await this._processRenderers(renderContainer);
 	}
 
 	_updateContextKeys() {

@@ -34,7 +34,8 @@ describe('d2l-html-block', () => {
 		{ name: 'math (inline)', selector: '#math-inline' },
 		{ name: 'code (block)', selector: '#code-block' },
 		{ name: 'code (inline)', selector: '#code-inline' },
-		{ name: 'math (block) and code (block)', selector: '#math-block-and-code-block' }
+		{ name: 'math (block) and code (block)', selector: '#math-block-and-code-block' },
+		{ name: 'math and code (template)', selector: '#math-and-code-template' }
 	].forEach((info) => {
 
 		it(info.name, async function() {
