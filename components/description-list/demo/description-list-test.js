@@ -6,8 +6,12 @@ class TestDescriptionList extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Type of test
-			 * @type {'default'|'long'|'activity-display'|'slotted'|'bulk-course-import'}
+			 * Width for component to use a stacked layout
+			 * @type {number}
+			 */
+			breakpoint: { type: Number, reflect: true },
+			/**
+			 * @ignore
 			 */
 			type: { type: String, reflect: true },
 		};

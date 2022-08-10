@@ -36,6 +36,10 @@ export const descriptionListStyles = [
 class DescriptionListWrapper extends LitElement {
 	static get properties() {
 		return {
+			/**
+			 * Width for component to use a stacked layout
+			 * @type {number}
+			 */
 			breakpoint: { type: Number, reflect: true },
 			_stacked: { state: true },
 		};
