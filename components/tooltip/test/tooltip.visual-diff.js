@@ -51,7 +51,8 @@ describe('d2l-tooltip', () => {
 		'align-end',
 		'align-end-narrow',
 		'align-end-rtl',
-		'bounded'
+		'bounded',
+		'paragraph-content'
 	].forEach((testName) => {
 
 		it(testName, async function() {
