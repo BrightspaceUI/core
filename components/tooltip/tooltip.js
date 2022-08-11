@@ -356,7 +356,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			::slotted(p:last-child) {
-    			margin-bottom: 0 !important;
+				margin-bottom: 0 !important;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
