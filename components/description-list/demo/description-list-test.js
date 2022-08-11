@@ -1,6 +1,7 @@
 import '../../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { descriptionListStyles } from '../description-list-wrapper.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 class TestDescriptionList extends LitElement {
 	static get properties() {
@@ -42,12 +43,11 @@ class TestDescriptionList extends LitElement {
 	constructor() {
 		super();
 		this.type = 'default';
-		this.breakpoint = 200;
 	}
 
 	render() {
 		return html`
-			<d2l-dl-wrapper breakpoint="${this.breakpoint}">
+			<d2l-dl-wrapper breakpoint="${ifDefined(this.breakpoint)}">
 				${this._renderExample()}
 			</d2l-dl-wrapper>
 		`;
