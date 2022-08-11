@@ -48,7 +48,14 @@ describe('d2l-switch-visibility', () => {
 
 			it('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
+				const openEvent = page.$eval(selector, async(elem) => {
+					return new Promise((resolve) => {
+						elem.shadowRoot.querySelector('#conditions-help').addEventListener('d2l-tooltip-show', resolve);
+					});
+				});
+
 				await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('#conditions-help').focus());
+				await openEvent;
 
 				const rect = await visualDiff.getRect(page, selector);
 
