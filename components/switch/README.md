@@ -61,7 +61,8 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 ## Visibility Switch [d2l-switch-visibility]
 
-The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".  
+The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
+
 It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions ("Visible. Conditions must be met.").
 
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
@@ -92,7 +93,8 @@ It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions 
 <!-- docs: end hidden content -->
 
 ### Visibility Switch with Conditions
-It may be helpful to have visibility be dependent on additional conditions being met outside of the Visibility Switch.  
+It may be helpful to have visibility be dependent on additional conditions being met outside of the Visibility Switch.
+
 Additional information can be added to the label by passing it into the `d2l-switch-visibility` element.
 
 <!-- docs: demo code autoSize:false size:large -->
