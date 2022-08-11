@@ -107,6 +107,10 @@ isComposedAncestor(ancestorNode, node);
 
 // returns true/false whether the element is visible regardless of positioning
 isVisible(node);
+
+// similar to document.querySelector or element.querySelector,
+// except it queries not just the light DOM but also shadow DOM
+querySelectorComposed(node, selector)
 ```
 
 ## Focus

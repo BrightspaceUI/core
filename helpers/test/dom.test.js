@@ -10,7 +10,8 @@ import {
 	getNextAncestorSibling,
 	getOffsetParent,
 	isComposedAncestor,
-	isVisible
+	isVisible,
+	querySelectorComposed
 } from '../dom.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 
@@ -103,6 +104,13 @@ const visibilityFixture = html`
 		<div style="visibility:hidden;"><div id="parentVisibilityNone"></div></div>
 	</div>
 `;
+
+class TestElement extends LitElement {
+	render() {
+		return html`<div class="nested"></div>`;
+	}
+}
+customElements.define('test-elem', TestElement);
 
 describe('dom', () => {
 
@@ -753,6 +761,82 @@ describe('dom', () => {
 			const elem = await fixture(mixedFixture);
 			expect(isComposedAncestor(elem, elem.querySelector('#light2')))
 				.to.be.true;
+		});
+
+	});
+
+	describe('querySelectorComposed', () => {
+
+		const slottedElement = defineCE(
+			class extends LitElement {
+				render() {
+					return html`<div class="shadowDiv"><slot></slot></div>`;
+				}
+			},
+		);
+
+		const nestedElement = defineCE(
+			class extends LitElement {
+				render() {
+					return html`<test-elem></test-elem>`;
+				}
+			},
+		);
+
+		const expectedNodeErrorMsg = 'Invalid node. Must be nodeType document, element or document fragment';
+		const expectedSelectorErrorMsg = 'Invalid selector';
+
+		it('should throw on undefined node type', () => {
+			expect(() => querySelectorComposed(undefined)).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on null node type', () => {
+			expect(() => querySelectorComposed(null)).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on invalid node type', () => {
+			expect(() => querySelectorComposed({ nodeType: 3 })).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on invalid selector', () => {
+			expect(() => querySelectorComposed(document, null)).to.throw(expectedSelectorErrorMsg);
+		});
+
+		it('should find element in the root document', async() => {
+			await fixture(html`<div><h1>heading</h1><button>button</button></div>`);
+			const result = querySelectorComposed(document, 'button');
+			expect(result.tagName).to.equal('BUTTON');
+		});
+
+		it('should find element in an element subtree', async() => {
+			const elem = await fixture(html`<div><h2 id="one">heading 1</h2><div class="subtree"><h2 id="two">heading 2</h2></div></div>`);
+			const subtree = elem.querySelector('.subtree');
+			const result = querySelectorComposed(subtree, 'h2');
+			expect(result.id).to.equal('two');
+		});
+
+		it('should return null if no element is found in root document', async() => {
+			await fixture(html`<div><h1>heading</h1><button>button</button></div>`);
+			const result = querySelectorComposed(document, 'a');
+			expect(result).to.be.null;
+		});
+
+		it('should find slotted element', async() => {
+			await fixture(`<${slottedElement}><h2 class="h">heading</h2></${slottedElement}>`);
+			const result = querySelectorComposed(document, '.h');
+			expect(result.tagName).to.equal('H2');
+		});
+
+		it('should find element in shadow root', async() => {
+			await fixture(`<${slottedElement}></${slottedElement}>`);
+			const result = querySelectorComposed(document, '.shadowDiv');
+			expect(result.tagName).to.equal('DIV');
+		});
+
+		it('should find element in nested shadow root', async() => {
+			await fixture(`<${nestedElement}></${nestedElement}>`);
+			const result = querySelectorComposed(document, '.nested');
+			expect(result.tagName).to.equal('DIV');
 		});
 
 	});
