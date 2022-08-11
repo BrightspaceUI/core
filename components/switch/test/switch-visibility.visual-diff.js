@@ -48,7 +48,7 @@ describe('d2l-switch-visibility', () => {
 
 			it('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
-				await page.$eval(selector, (elem) => {
+				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
 						elem.shadowRoot.querySelector('#conditions-help').addEventListener('d2l-tooltip-show', resolve);
 						elem.shadowRoot.querySelector('#conditions-help').focus();
