@@ -110,7 +110,7 @@ The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styli
 <!-- docs: end hidden content -->
 
 ## Slotted Content [slotted-content]
-The `dt` and `dd` elements can contain any html content.
+The `dt` and `dd` elements can contain non-text content such as links or profile images.
 
 <!-- docs: demo -->
 ```html
