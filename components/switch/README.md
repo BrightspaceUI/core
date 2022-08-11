@@ -99,7 +99,7 @@ It may be helpful, depending on the use case, to include additional information 
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
-<d2l-switch-visibility>
+<d2l-switch-visibility on>
   These are some conditions that must be met for the activity to be visible.
   <ul>
     <li> Condition 1 </li>
