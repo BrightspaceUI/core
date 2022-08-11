@@ -42,6 +42,7 @@ class TestDescriptionList extends LitElement {
 	constructor() {
 		super();
 		this.type = 'default';
+		this.breakpoint = 200;
 	}
 
 	render() {
