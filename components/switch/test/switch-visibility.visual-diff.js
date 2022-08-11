@@ -29,6 +29,8 @@ describe('d2l-switch-visibility', () => {
 				{ name: 'off with conditions', selector: '#off-with-conditions' },
 				{ name: 'on with conditions', selector: '#on-with-conditions' },
 				{ name: 'on with conditions text position start', selector: '#on-with-conditions-text-position-start' },
+				{ name: 'on text-position hidden', selector: '#on-text-position-hidden' },
+				{ name: 'on with conditions text-position hidden', selector: '#on-with-conditions-text-position-hidden' },
 				{ name: 'off text overridden', selector: '#off-text-overridden' },
 				{ name: 'on text overridden', selector: '#on-text-overridden' },
 				{ name: 'off with conditons text overridden', selector: '#off-with-conditions-text-overridden' },

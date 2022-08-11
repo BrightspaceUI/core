@@ -26,6 +26,15 @@ describe('d2l-more-less', () => {
 		return resize;
 	};
 
+	const reset = async(page, selector, expanded) => {
+		const shouldToggle = await page.evaluate((selector, expanded) => {
+			const moreLess = document.querySelector(selector);
+			return moreLess.expanded !== expanded;
+		}, selector, expanded);
+
+		if (shouldToggle) await click(page, selector);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
@@ -36,6 +45,20 @@ describe('d2l-more-less', () => {
 	});
 
 	after(async() => await browser.close());
+
+	afterEach(async function() {
+		if (this.currentTest.value) {
+			await page.$eval('#expanded', async(elem, previousText) => { // Reset more-less text
+				const p = elem.querySelector('p');
+				p.textContent = previousText;
+			}, this.currentTest.value);
+			await click(page, '#expanded'); // Retrigger height calculation
+		}
+		await reset(page, '#collapsed', false);
+		await reset(page, '#expanded', true);
+		await reset(page, '#auto-expand', false);
+		await visualDiff.resetFocus(page);
+	});
 
 	it('collapsed', async function() {
 		const rect = await visualDiff.getRect(page, '#collapsed');
@@ -48,6 +71,11 @@ describe('d2l-more-less', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('expanded', async function() {
+		const rect = await visualDiff.getRect(page, '#expanded');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	it('collapses on click', async function() {
 		await click(page, '#expanded');
 		const rect = await visualDiff.getRect(page, '#expanded');
@@ -56,12 +84,24 @@ describe('d2l-more-less', () => {
 
 	it('grows with content when expanded', async function() {
 		const resize = contentResize(page, '#expanded');
-		await page.evaluate(() => {
+		this.test.value = await page.evaluate(() => {
 			const elem = document.querySelector('#expanded').querySelector('p');
+			const previousText = elem.textContent;
 			elem.textContent += 'Some content appended after component first render.';
+			return previousText;
 		});
 		await resize;
 		const rect = await visualDiff.getRect(page, '#expanded');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('does not grow with content when collapsed', async function() {
+		await page.evaluate(() => {
+			const elem = document.querySelector('#collapsed').querySelector('p');
+			elem.textContent += 'Some content appended after component first render.';
+		});
+
+		const rect = await visualDiff.getRect(page, '#collapsed');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -74,7 +114,11 @@ describe('d2l-more-less', () => {
 	});
 
 	it('auto-collapses on focus-out', async function() {
-		const resize = contentResize(page, '#auto-expand');
+		let resize = contentResize(page, '#auto-expand');
+		await page.evaluate(() => document.querySelector('#auto-expand').querySelector('a').focus());
+		await resize;
+
+		resize = contentResize(page, '#auto-expand');
 		await visualDiff.resetFocus(page);
 		await resize;
 		const rect = await visualDiff.getRect(page, '#auto-expand');
