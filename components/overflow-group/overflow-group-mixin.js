@@ -326,10 +326,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		if (!mutations || mutations.length === 0) return;
 		if (this._updateOverflowItemsRequested) return;
 
-		let isSelectedMutation = false;
+		let isWidthModifyingMutation = false;
 		for (const mutation of mutations) {
-			if (mutation.attributeName && mutation.attributeName === 'selected') {
-				isSelectedMutation = true;
+			if (mutation.attributeName
+				&& (mutation.attributeName === 'selected' || mutation.attributeName === 'text')
+			) {
+				isWidthModifyingMutation = true;
 				break;
 			}
 		}
@@ -337,7 +339,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._updateOverflowItemsRequested = true;
 		setTimeout(() => {
 			this._overflowItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
-			if (isSelectedMutation) {
+
+			// when certain attributes change the corresponding item width can also change and so we need to re-get the layouts and chomp
+			if (isWidthModifyingMutation) {
 				this._itemLayouts = this._getItemLayouts(this._slotItems);
 				this._chomp();
 			}
