@@ -783,14 +783,40 @@ describe('dom', () => {
 			},
 		);
 
+		const expectedNodeErrorMsg = 'Invalid node. Must be nodeType document, element or document fragment';
+		const expectedSelectorErrorMsg = 'Invalid selector';
+
+		it('should throw on undefined node type', () => {
+			expect(() => querySelectorComposed(undefined)).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on null node type', () => {
+			expect(() => querySelectorComposed(null)).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on invalid node type', () => {
+			expect(() => querySelectorComposed({ nodeType: 3 })).to.throw(expectedNodeErrorMsg);
+		});
+
+		it('should throw on invalid selector', () => {
+			expect(() => querySelectorComposed(document, null)).to.throw(expectedSelectorErrorMsg);
+		});
+
 		it('should find element in the root document', async() => {
-			await fixture(html`<h1>heading</h1><button>button</button>`);
+			await fixture(html`<div><h1>heading</h1><button>button</button></div>`);
 			const result = querySelectorComposed(document, 'button');
 			expect(result.tagName).to.equal('BUTTON');
 		});
 
+		it('should find element in an element subtree', async() => {
+			const elem = await fixture(html`<div><h2 id="one">heading 1</h2><div class="subtree"><h2 id="two">heading 2</h2></div></div>`);
+			const subtree = elem.querySelector('.subtree');
+			const result = querySelectorComposed(subtree, 'h2');
+			expect(result.id).to.equal('two');
+		});
+
 		it('should return null if no element is found in root document', async() => {
-			await fixture(html`<h1>heading</h1><button>button</button>`);
+			await fixture(html`<div><h1>heading</h1><button>button</button></div>`);
 			const result = querySelectorComposed(document, 'a');
 			expect(result).to.be.null;
 		});

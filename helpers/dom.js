@@ -230,6 +230,13 @@ export function isVisible(node) {
 
 export function querySelectorComposed(node, selector) {
 
+	if (!node || (node.nodeType !== 1 && node.nodeType !== 9 && node.nodeType !== 11)) {
+		throw new TypeError('Invalid node. Must be nodeType document, element or document fragment');
+	}
+	if (typeof selector !== 'string') {
+		throw new TypeError('Invalid selector');
+	}
+
 	const elem = node.querySelector(selector);
 	if (elem) return elem;
 
