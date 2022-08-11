@@ -92,7 +92,8 @@ It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions 
 <!-- docs: end hidden content -->
 
 ### Visibility Switch with Conditions
-It may be helpful, depending on the use case, to include additional information in the label, relating to other factors that may affect the availability that the Visibility Switch represents.
+It may be helpful to have visibility be dependent on additional conditions being met outside of the Visibility Switch.  
+Additional information can be added to the label by passing it into the `d2l-switch-visibility` element.
 
 <!-- docs: demo code autoSize:false size:large -->
 ```html
