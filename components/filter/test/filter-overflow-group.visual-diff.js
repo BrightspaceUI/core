@@ -52,9 +52,9 @@ describe('d2l-filter-overflow-group', () => {
 		});
 	});
 
-	it.skip('click dropdown opener', async function() {
+	it('click dropdown opener', async function() {
 		const overflowContainer = await page.evaluateHandle(
-			'document.querySelector("#more-than-max-to-show").shadowRoot.querySelector(".d2l-overflow-dropdown")'
+			'document.querySelector("#more-than-max-to-show").shadowRoot.querySelector(".d2l-overflow-container")'
 		);
 		await overflowContainer.click();
 		const rect = await visualDiff.getRect(page, '#more-than-max-to-show-container');
