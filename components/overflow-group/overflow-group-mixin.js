@@ -132,8 +132,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		});
 
 		const containerStyles = {
-			minHeight: `${this._itemHeight}px`,
-			maxHeight: `${this._itemHeight}px`
+			minHeight: this.autoShow ? 'none' : `${this._itemHeight}px`,
+			maxHeight: this.autoShow ? 'none' : `${this._itemHeight}px`
 		};
 
 		return html`
@@ -144,7 +144,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		`;
 	}
 
-	async update(changedProperties) {
+	update(changedProperties) {
 		super.update(changedProperties);
 
 		if (!this._isObserving) {
@@ -326,18 +326,28 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		if (!mutations || mutations.length === 0) return;
 		if (this._updateOverflowItemsRequested) return;
 
+		let isSelectedMutation = false;
+		for (const mutation of mutations) {
+			if (mutation.attributeName && mutation.attributeName === 'selected') {
+				isSelectedMutation = true;
+				break;
+			}
+		}
+
 		this._updateOverflowItemsRequested = true;
 		setTimeout(() => {
-			this._itemLayouts = this._getItemLayouts(this._slotItems);
 			this._overflowItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
-			this._chomp();
+			if (isSelectedMutation) {
+				this._itemLayouts = this._getItemLayouts(this._slotItems);
+				this._chomp();
+			}
 			this._updateOverflowItemsRequested = false;
 			this.requestUpdate();
 		}, 0);
 	}
 
 	async _handleResize(entries) {
-		await (document.fonts ? document.fonts.ready : Promise.resolve());
+		await (document.fonts ? document.fonts.ready : Promise.resolve()); // computed widths can be incorrect if we don't wait for fonts to load
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 
 		if (!this._hasResized) {
