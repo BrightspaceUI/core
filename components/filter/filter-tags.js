@@ -58,7 +58,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}
 
 			.d2l-filter-tags-none-label {
-				color: var(--d2l-color-corundum);
+				color: var(--d2l-color-galena);
 				display: inline-block;
 				font-style: italic;
 				padding-top: 0.15rem;

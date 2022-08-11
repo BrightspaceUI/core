@@ -25,6 +25,17 @@ const basicFixture = html`
 	</div>
 `;
 
+const emptyFixture = html`
+	<div>
+		<d2l-filter id="empty-filter">
+			<d2l-filter-dimension-set key="1" text="Category 1">
+				<d2l-filter-dimension-set-value text="Value 1 - 5" key="5"></d2l-filter-dimension-set-value>
+			</d2l-filter-dimension-set>
+			</d2l-filter>
+		<d2l-filter-tags filter-ids="empty-filter" label="The applied filters"></d2l-filter-tags>
+	</div>
+`;
+
 describe('d2l-filter-tags', () => {
 
 	it('basic', async() => {
@@ -32,6 +43,14 @@ describe('d2l-filter-tags', () => {
 		const filterTags = elem.querySelector('d2l-filter-tags');
 		await filterTags.updateComplete;
 		await waitUntil(() => filterTags._allActiveFilters.get('filter').length === 4, 'Active filters were not set');
+
+		await expect(elem).to.be.accessible();
+	});
+
+	it('empty', async() => {
+		const elem = await fixture(emptyFixture);
+		const filterTags = elem.querySelector('d2l-filter-tags');
+		await filterTags.updateComplete;
 
 		await expect(elem).to.be.accessible();
 	});
