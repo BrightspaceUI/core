@@ -355,10 +355,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		if (!this._hasResized) {
 			this._hasResized = true;
-			await this._handleSlotChange();
+			this._handleSlotChange();
 		} else {
 			this._chomp();
-			this.requestUpdate();
 		}
 	}
 

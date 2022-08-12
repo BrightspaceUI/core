@@ -46,15 +46,25 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		this._filterIds = '';
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-filter-change', this._handleFilterChange);
+	connectedCallback() {
+		super.connectedCallback();
 
 		if (!this.tags) return;
 
 		this._filterTags = document.createElement('d2l-filter-tags');
 		this.insertAdjacentElement('afterend', this._filterTags);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+
+		if (this._filterTags) this._filterTags.remove();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('d2l-filter-change', this._handleFilterChange);
 	}
 
 	updated(changedProperties) {

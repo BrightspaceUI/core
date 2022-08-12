@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-overflow-group.js';
-import { fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-filter-overflow-group', () => {
@@ -56,6 +56,52 @@ describe('d2l-filter-overflow-group', () => {
 			await oneEvent(container, 'd2l-overflow-group-updated');
 		});
 
+	});
+
+	describe('tags', () => {
+		let elem, filterOverflowGroup, filterTags;
+
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<div>
+					<d2l-filter-overflow-group tags>
+						<d2l-filter>
+							<d2l-filter-dimension-set key="skill1" text="Skill1">
+								<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
+							</d2l-filter-dimension-set>
+						</d2l-filter>
+						<d2l-filter id="filter-2">
+							<d2l-filter-dimension-set key="skill2" text="Skill2">
+								<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
+							</d2l-filter-dimension-set>
+						</d2l-filter>
+					</d2l-filter-overflow-group>
+				</div>
+			`);
+			filterOverflowGroup = elem.querySelector('d2l-filter-overflow-group');
+			await filterOverflowGroup.updateComplete;
+			filterTags = elem.querySelector('d2l-filter-tags');
+			await waitUntil(() => filterTags.filterIds, 'Filter Ids not set');
+		});
+
+		it('should be correct when filter has id', async() => {
+			const filterIds = filterTags.getAttribute('filter-ids');
+			const filtersSplit = filterIds.split(' ');
+			expect(filtersSplit.length).to.equal(2);
+			expect(filtersSplit[1]).to.equal('filter-2');
+		});
+
+		it('should be correct when new filter appended', async() => {
+			const newFilter = document.createElement('d2l-filter');
+			filterOverflowGroup.appendChild(newFilter);
+			await oneEvent(filterOverflowGroup, 'd2l-overflow-group-updated');
+
+			const filterIds = filterTags.getAttribute('filter-ids');
+			const filtersSplit = filterIds.split(' ');
+			expect(filtersSplit.length).to.equal(3);
+		});
 	});
 
 });
