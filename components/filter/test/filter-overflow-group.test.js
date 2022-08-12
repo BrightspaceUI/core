@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-overflow-group.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-filter-overflow-group', () => {
@@ -98,6 +98,8 @@ describe('d2l-filter-overflow-group', () => {
 			filterOverflowGroup.appendChild(newFilter);
 			await oneEvent(filterOverflowGroup, 'd2l-overflow-group-updated');
 			await waitUntil(() => filterTags.filterIds, 'Filter Ids not set');
+			await filterTags.updateComplete;
+			await aTimeout(500); // test is flaky without timeout
 			const filtersSplit = filterTags.getAttribute('filter-ids').split(' ');
 			await waitUntil(() => filtersSplit.length === 3, 'Filter Ids not updated');
 
