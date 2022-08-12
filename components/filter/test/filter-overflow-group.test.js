@@ -97,10 +97,11 @@ describe('d2l-filter-overflow-group', () => {
 			const newFilter = document.createElement('d2l-filter');
 			filterOverflowGroup.appendChild(newFilter);
 			await oneEvent(filterOverflowGroup, 'd2l-overflow-group-updated');
+			await waitUntil(() => filterTags.filterIds, 'Filter Ids not set');
+			const filtersSplit = filterTags.getAttribute('filter-ids').split(' ');
+			await waitUntil(() => filtersSplit.length === 3, 'Filter Ids not updated');
 
-			const filterIds = filterTags.getAttribute('filter-ids');
-			const filtersSplit = filterIds.split(' ');
-			expect(filtersSplit.length).to.equal(3);
+			expect(filtersSplit[1]).to.equal('filter-2');
 		});
 	});
 
