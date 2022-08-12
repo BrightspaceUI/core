@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -21,8 +22,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 */
 			on: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: The text that is displayed for the switch label.
-			 * @type {string}
+			 * @ignore - Need to add documentation in each component that uses this mixin.
 			 */
 			text: { type: String, reflect: true },
 			/**
@@ -30,7 +30,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			 * @type {'start'|'end'|'hidden'}
 			 * @default end
 			 */
-			textPosition: { type: String, attribute: 'text-position', reflect: true }
+			textPosition: { type: String, attribute: 'text-position', reflect: true },
+			_hovering: { state: true }
 		};
 	}
 
@@ -49,7 +50,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				border: 2px solid transparent;
 				border-radius: 1rem;
 				box-sizing: border-box;
-				cursor: pointer;
+				cursor: default;
 				display: inline-block;
 				font-size: 0;
 				line-height: 0;
@@ -59,10 +60,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 			}
 			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
-			}
-			.d2l-switch-container:hover > .d2l-switch-inner {
-				border-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
@@ -147,8 +144,16 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				transform: scale(0.35);
 			}
 			.d2l-switch-text {
+				cursor: default;
 				font-size: 0.8rem;
 				font-weight: 400;
+			}
+			:host([text-position="hidden"]) .d2l-switch-text {
+				display: none;
+			}
+			.d2l-switch-inner:hover, .switch-hover {
+				border-color: var(--d2l-color-celestine);
+				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-switch-toggle,
@@ -167,6 +172,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		this.on = false;
 		this.textPosition = 'end';
 		this._textId = getUniqueId();
+		this._hovering = false;
 	}
 
 	static get focusElementSelector() {
@@ -182,11 +188,17 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
-		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
+		const innerSwitchClasses = {
+			'switch-hover': this._hovering,
+			'd2l-switch-inner': true
+		};
+		const switchLabel = html`<span id="${this._textId}" class="d2l-switch-text">${this._labelContent}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
+
+		// Note: we render the switchLabel in the case of textPosition === 'hidden' so that any slot handlers can pick up on content being passed in
 		return html`
-			${textPosition === 'start' ? text : ''}
+			${textPosition === 'start' ? switchLabel : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
@@ -197,14 +209,23 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				@keyup="${this._handleKeyUp}"
 				role="switch"
 				tabindex="${ifDefined(tabindex)}">
-				<div class="d2l-switch-inner">
+				<div class="${classMap(innerSwitchClasses)}">
 					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? text : ''}
+			${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
 		`;
+	}
+
+	get _labelContent() {
+		return html`<span 
+						@click='${this._handleClick}' 
+						@mouseenter='${this._handleSwitchHover}' 
+						@mouseleave='${this._handleSwitchHoverLeave}'>
+						${this.text}
+					</span>`;
 	}
 
 	_handleClick() {
@@ -219,6 +240,14 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 	_handleKeyUp(e) {
 		// space pressed... toggle state
 		if (e.keyCode === 32) this._toggleState();
+	}
+
+	_handleSwitchHover() {
+		this._hovering = true;
+	}
+
+	_handleSwitchHoverLeave() {
+		this._hovering = false;
 	}
 
 	_toggleState() {

@@ -63,6 +63,8 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
 
+It consists of 3 states: On ("Visible"), Off ("Hidden"), and On with Conditions ("Visible. Conditions must be met.").
+
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
 <script type="module">
@@ -76,12 +78,36 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 | Property | Type | Description |
 |---|---|---|
-| `text`| String, required | Accessible text for the switch; defaults to "Visibility" |
 | `disabled` | Boolean | Disabled the switch |
-| `on` | Boolean | Whether the switch is "on" or "off" |
+| `on` | Boolean | Whether the switch is "on" or "off". If content is passed into the switch slot, the switch will be "on with conditions". |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 
 ### Events
 
 - `change`: dispatched when the `on` property is updated
+
+### Slots
+
+- Optional default slot content - Content that will be displayed within the "conditions" opener tooltip when the switch is on.
+  
 <!-- docs: end hidden content -->
+
+### Visibility Switch with Conditions
+It may be helpful to have visibility be dependent on additional conditions being met outside of the Visibility Switch.
+
+Additional information can be added to the label by passing it into the `d2l-switch-visibility` element.
+
+<!-- docs: demo code autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/switch/switch-visibility.js';
+</script>
+<d2l-switch-visibility on>
+  These are some conditions that must be met for the activity to be visible.
+  <ul>
+    <li> Condition 1 </li>
+    <li> Condition 2 </li>
+    <li> Condition 3 </li>
+  </ul>
+</d2l-switch-visibility>
+```
