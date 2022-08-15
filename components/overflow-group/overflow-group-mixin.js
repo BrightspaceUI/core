@@ -2,6 +2,7 @@ import { css, html, nothing } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 export const OVERFLOW_CLASS = 'd2l-overflow-container';
 export const OVERFLOW_MINI_CLASS = 'd2l-overflow-container-mini';
@@ -28,8 +29,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	static get properties() {
 		return {
 			/**
-			 * Use predefined classes on slot elements to set min and max slotted items to show
-			 * @type {boolean}
+			 * @ignore
 			 */
 			autoShow: {
 				type: Boolean,
@@ -95,7 +95,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._handleResize = this._handleResize.bind(this);
 		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
+		this._hasResized = false;
 		this._isObserving = false;
+		this._itemHeight = 0;
 		this._mini = this.openerType === OPENER_TYPE.ICON;
 		this._overflowContainerHidden = false;
 		this._slotItems = [];
@@ -129,8 +131,13 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 		});
 
+		const containerStyles = {
+			minHeight: this.autoShow ? 'none' : `${this._itemHeight}px`,
+			maxHeight: this.autoShow ? 'none' : `${this._itemHeight}px`
+		};
+
 		return html`
-			<div class="d2l-overflow-group-container">
+			<div class="d2l-overflow-group-container" style="${styleMap(containerStyles)}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowContainer}
 			</div>
@@ -277,12 +284,15 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
+			node.removeAttribute('data-is-chomped');
 			const computedStyles = window.getComputedStyle(node);
+			const itemHidden = computedStyles.display === 'none';
+			this._itemHeight = !itemHidden ? Math.max(this._itemHeight, Math.ceil(parseFloat(computedStyles.height))) : this._itemHeight;
 
 			return {
 				type: node.tagName.toLowerCase(),
 				isChomped: false,
-				isHidden: computedStyles.display === 'none',
+				isHidden: itemHidden,
 				width: Math.ceil(parseFloat(computedStyles.width) || 0)
 					+ parseInt(computedStyles.marginRight) || 0
 					+ parseInt(computedStyles.marginLeft) || 0,
@@ -316,20 +326,44 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		if (!mutations || mutations.length === 0) return;
 		if (this._updateOverflowItemsRequested) return;
 
+		let isWidthModifyingMutation = false;
+		for (const mutation of mutations) {
+			if (mutation.attributeName
+				&& (mutation.attributeName === 'selected' || mutation.attributeName === 'text')
+			) {
+				isWidthModifyingMutation = true;
+				break;
+			}
+		}
+
 		this._updateOverflowItemsRequested = true;
 		setTimeout(() => {
-			this._overflowItems = this._slotItems.map(node => this.convertToOverflowItem(node));
+			this._overflowItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
+
+			// when certain attributes change the corresponding item width can also change and so we need to re-get the layouts and chomp
+			if (isWidthModifyingMutation) {
+				this._itemLayouts = this._getItemLayouts(this._slotItems);
+				this._chomp();
+			}
 			this._updateOverflowItemsRequested = false;
 			this.requestUpdate();
 		}, 0);
 	}
 
-	_handleResize(entries) {
+	async _handleResize(entries) {
+		await (document.fonts ? document.fonts.ready : Promise.resolve()); // computed widths can be incorrect if we don't wait for fonts to load
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-		this._chomp();
+
+		if (!this._hasResized) {
+			this._hasResized = true;
+			await this._handleSlotChange();
+		} else {
+			this._chomp();
+		}
 	}
 
 	_handleSlotChange() {
+		if (!this._hasResized) return;
 		requestAnimationFrame(async() => {
 			await this._getItems();
 

@@ -70,12 +70,13 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 		if (this._text) return super._labelContent;
 
 		const tooltipHelpClasses = {
-			'switch-visibility-conditions-show': this.on && this._hasConditions
+			'switch-visibility-conditions-show': this.on && this._hasConditions,
+			'd2l-switch-text': true
 		};
 
 		const conditions = html`
 			<d2l-tooltip-help 
-				class="${classMap(tooltipHelpClasses)} d2l-switch-text" 
+				class="${classMap(tooltipHelpClasses)}" 
 				id="conditions-help" 
 				inherit-font-style
 				text="${this.localize('components.switch.conditions')}">
