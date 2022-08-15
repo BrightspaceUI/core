@@ -450,8 +450,6 @@ export async function formatCodeElement(elem) {
 
 	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
 	Prism.highlightElement(code);
-
-	return elem;
 }
 
 export class HtmlBlockCodeRenderer {

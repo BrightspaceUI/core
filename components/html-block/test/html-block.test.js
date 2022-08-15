@@ -52,7 +52,7 @@ class TestAsyncRenderer {
 
 class TestNoInlineRenderer {
 	async render(elem, options) {
-		if (options.noDeferredRendering) return;
+		if (options.noDeferredRendering) return elem;
 
 		const elemsToReplace = elem.querySelectorAll('[data-no-inline-replace-id]');
 		if (elemsToReplace.length === 0) return elem;
@@ -68,10 +68,31 @@ class TestNoInlineRenderer {
 	}
 }
 
+class TestSecondaryRenderer {
+	async render(elem) {
+		const elemsToReplace = elem.querySelectorAll('[data-secondary-replace-id]');
+		if (elemsToReplace.length === 0) return elem;
+
+		elemsToReplace.forEach(elemToReplace => {
+			const someId = elemToReplace.getAttribute('data-secondary-replace-id');
+			if (!someId) return;
+			elemToReplace.innerText = `${someId}: secondary`;
+		});
+
+		// just for test so it can wait
+		setTimeout(() => {
+			document.dispatchEvent(new CustomEvent('d2l-test-secondary-replacement-complete'));
+		}, 0);
+
+		return elem;
+	}
+}
+
 provideInstance(document, 'html-block-renderers', [
 	new TestRenderer(),
 	new TestAsyncRenderer(),
-	new TestNoInlineRenderer()
+	new TestNoInlineRenderer(),
+	new TestSecondaryRenderer()
 ]);
 
 describe('d2l-html-block', () => {
@@ -92,6 +113,11 @@ describe('d2l-html-block', () => {
 	const noDeferredRenderingReplacementFixture = html`
 		<d2l-html-block no-deferred-rendering>
 			<div><span data-replace-id="1">first</span><span data-no-inline-replace-id="2">second</span></div>
+		</d2l-html-block>
+	`;
+	const multipleRendererReplacementsFixture = html`
+		<d2l-html-block>
+			<span data-replace-id="1">first</span><span data-secondary-replace-id="2">second</span>
 		</d2l-html-block>
 	`;
 
@@ -133,6 +159,18 @@ describe('d2l-html-block', () => {
 		const spans = htmlBlock.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1');
 		expect(spans[1].innerHTML).to.equal('second');
+	});
+
+	it('should do multiple renderer replacements', async() => {
+		const replacementComplete = Promise.all([
+			oneEvent(document, 'd2l-test-replacement-complete'),
+			oneEvent(document, 'd2l-test-secondary-replacement-complete')
+		]);
+		const htmlBlock = await fixture(multipleRendererReplacementsFixture);
+		await replacementComplete;
+		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
+		expect(spans[0].innerHTML).to.equal('1');
+		expect(spans[1].innerHTML).to.equal('2: secondary');
 	});
 
 });
