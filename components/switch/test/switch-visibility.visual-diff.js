@@ -1,7 +1,8 @@
+/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-switch-visibility', () => {
+describe.only('d2l-switch-visibility', () => {
 
 	const visualDiff = new VisualDiff('switch-visibility', import.meta.url);
 
@@ -46,12 +47,12 @@ describe('d2l-switch-visibility', () => {
 				});
 			});
 
-			it('on with conditions and conditions focused', async function() {
+			it.only('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
 				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
 						elem.shadowRoot.querySelector('#conditions-help').addEventListener('d2l-tooltip-show', resolve);
-						elem.shadowRoot.querySelector('#conditions-help').focus();
+						forceFocusVisible(elem.shadowRoot.querySelector('#conditions-help'));
 					});
 				});
 
