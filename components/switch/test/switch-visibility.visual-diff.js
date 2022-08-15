@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.only('d2l-switch-visibility', () => {
+describe('d2l-switch-visibility', () => {
 
 	const visualDiff = new VisualDiff('switch-visibility', import.meta.url);
 
@@ -47,7 +47,7 @@ describe.only('d2l-switch-visibility', () => {
 				});
 			});
 
-			it.only('on with conditions and conditions focused', async function() {
+			it('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
 				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
