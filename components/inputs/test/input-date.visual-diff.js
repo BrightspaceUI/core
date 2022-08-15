@@ -118,8 +118,12 @@ describe('d2l-input-date', () => {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#placeholder');
 					return new Promise((resolve) => {
-						input.addEventListener('d2l-localize-resources-change', resolve, { once: true });
-						document.querySelector('html').setAttribute('lang', lang);
+						if (document.querySelector('html').getAttribute('lang') !== lang) { // Needed for retries
+							input.addEventListener('d2l-localize-resources-change', resolve, { once: true });
+							document.querySelector('html').setAttribute('lang', lang);
+						} else {
+							resolve();
+						}
 					});
 				}, lang);
 				const rect = await visualDiff.getRect(page, '#placeholder');

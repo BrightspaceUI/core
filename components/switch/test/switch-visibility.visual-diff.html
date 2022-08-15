@@ -15,6 +15,7 @@
 	<meta charset="UTF-8">
 	<style>
 		.visual-diff {
+			padding-bottom: 150px;
 			width: 300px;
 		}
 	</style>
@@ -27,6 +28,112 @@
 
 	<div class="visual-diff">
 		<d2l-switch-visibility id="on" on></d2l-switch-visibility>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions" on>
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="off-with-conditions">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-start" on text-position="start">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-text-position-hidden" on text-position="hidden">
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-hidden" on text-position="hidden">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="off-text-overridden" text="Label text has been overridden."></d2l-switch-visibility>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-text-overridden" on text="Label text has been overridden."></d2l-switch-visibility>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="off-with-conditions-text-overridden" text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+	
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-overridden" on text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-start-text-overridden" on text-position="start" text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-text-position-hidden-text-overridden" on text-position="hidden" text="Label text has been overridden.">
+		</d2l-switch-visibility> 
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch-visibility id="on-with-conditions-text-position-hidden-text-overridden" on text-position="hidden" text="Label text has been overridden.">
+			These are some conditions that must be met for the activity to be visible.
+			<ul>
+				<li> Condition 1 </li>
+				<li> Condition 2 </li>
+				<li> Condition 3 </li>
+			</ul>
+		</d2l-switch-visibility> 
 	</div>
 
 </body>

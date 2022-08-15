@@ -254,7 +254,7 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
         display: block;
         max-width: 100%;
       }
-	}
+  }
 </style>
 <div class="filter-wrapper">
   <d2l-filter-tags filter-ids="core-filter core-filter-2"></d2l-filter-tags>
@@ -296,6 +296,81 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
 |---|---|---|
 | `filter-ids` | String, required | Id(s) (space-delimited) of the filter component(s) to subscribe to |
 | `label` | String | The text displayed in this component's label |
+<!-- docs: end hidden content -->
+
+## Filter Overflow Group [d2l-filter-overflow-group]
+
+The `d2l-filter-overflow-group` is a container for multiple filters that handles overflow on smaller screens. Overflowing filters are displayed in a single filter.
+
+<!-- docs: demo live name:d2l-filter-overflow-group align:start display:block autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+  import '@brightspace-ui/core/components/filter/filter-overflow-group.js';
+</script>
+<d2l-filter-overflow-group>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="skill" text="Skill">
+      <d2l-filter-dimension-set-value key="communication" text="Fall"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="leadership" text="Winter"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="management" text="Spring"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="planning" text="Summer"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="type" text="Type" selection-single>
+      <d2l-filter-dimension-set-value key="certificate" text="Certificate"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="degree" text="Degree"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="diploma" text="Diploma"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="course" text="Course"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="course" text="Course" select-all>
+      <d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+    <d2l-filter-dimension-set key="duration" text="Duration">
+      <d2l-filter-dimension-set-value key="lessthanthree" text="< 3 months"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="threetosix" text="3-6 months"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="sixtotwelve" text="6-12 months"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="provider" text="Semester3">
+      <d2l-filter-dimension-set-value key="mcmaster" text="McMaster"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="powered" text="PowerED"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="guelph" text="University of Guelph"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="manitoba" text="University of Manitoba"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="format" text="Format">
+      <d2l-filter-dimension-set-value key="selfpaced" text="Self-Paced"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="instructor" text="Instructor Lead" selected></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+  <d2l-filter>
+    <d2l-filter-dimension-set key="language" text="Language" selection-single>
+      <d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="french" text="French"></d2l-filter-dimension-set-value>
+      <d2l-filter-dimension-set-value key="spanish" text="Spanish"></d2l-filter-dimension-set-value>
+    </d2l-filter-dimension-set>
+  </d2l-filter>
+</d2l-filter-overflow-group>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
+| `max-to-show` | Number | The maximum number of elements to show |
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Date [d2l-filter-dimension-date]
