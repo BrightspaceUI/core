@@ -271,7 +271,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		const slot = this.shadowRoot.querySelector('slot');
 		const slottedNodes = slot.assignedNodes({ flatten: true });
 
-		if (this._hasSlottedElements(slottedNodes)) {
+		if (!this.html && this._hasSlottedElements(slottedNodes)) {
 			this._hasSlottedContent = true;
 			await this._render(e.target);
 		} else {
