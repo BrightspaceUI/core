@@ -243,16 +243,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this._hasSlottedContent) {
-			const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-			renderContainer.innerHTML = this.html;
-			await this._processRenderers(renderContainer);
+			await this._updateRenderContainer();
 		}
 		if (this._contextChanged()) {
 			if (this._hasSlottedContent) this._render();
 			else if (this.html !== undefined && this.html !== null) {
-				const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-				renderContainer.innerHTML = this.html;
-				await this._processRenderers(renderContainer);
+				await this._updateRenderContainer();
 			}
 
 			this._updateContextKeys();
@@ -277,7 +273,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 		if (this._hasSlottedElements(slottedNodes)) {
 			this._hasSlottedContent = true;
-			await this.updateComplete;
 			await this._render(e.target);
 		} else {
 			this._hasSlottedContent = false;
@@ -355,6 +350,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		this._contextObserverController.values.forEach((val, attr) => {
 			this._contextKeys.set(attr, val);
 		});
+	}
+
+	async _updateRenderContainer() {
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		renderContainer.innerHTML = this.html;
+		await this._processRenderers(renderContainer);
 	}
 
 }
