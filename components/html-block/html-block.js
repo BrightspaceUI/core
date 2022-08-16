@@ -271,7 +271,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		const slot = this.shadowRoot.querySelector('slot');
 		const slottedNodes = slot.assignedNodes({ flatten: true });
 
-		if (!this.html && this._hasSlottedElements(slottedNodes)) {
+		if (this._hasSlottedElements(slottedNodes)) {
 			this._hasSlottedContent = true;
 			await this._render(e.target);
 		} else {
@@ -281,7 +281,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 	_hasSlottedElements(slottedNodes) {
 		if (!slottedNodes || slottedNodes.length === 0) return false;
-		return slottedNodes.filter(node => node.nodeType === Node.ELEMENT_NODE).length > 0;
+		if (slottedNodes.filter(node => node.nodeType === Node.ELEMENT_NODE || node.textContent).length === 0) return false;
+		return true;
 	}
 
 	async _processRenderers(elem) {
