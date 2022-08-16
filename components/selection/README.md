@@ -289,6 +289,9 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
 </script>
 <!-- docs: start hidden content -->
 <style>
+  body {
+    overflow-y: hidden;
+  }
   .container {
     justify-content: center;
   }
@@ -313,9 +316,6 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
     margin-right: 10px;
   }
   @media only screen and (max-width: 350px) {
-    body {
-      overflow-y: scroll;
-    }
     .container {
       align-items: flex-start;
       flex-direction: column;
@@ -373,6 +373,9 @@ The `d2l-selection-summary` component may be placed inside the selection control
 </script>
 <!-- docs: start hidden content -->
 <style>
+  body {
+    overflow-y: hidden;
+  }
   .container {
     display: flex;
     justify-content: center;
@@ -398,9 +401,6 @@ The `d2l-selection-summary` component may be placed inside the selection control
     margin-right: 10px;
   }
   @media only screen and (max-width: 350px) {
-    body {
-      overflow-y: scroll;
-    }
     .container {
       align-items: flex-start;
       flex-direction: column;

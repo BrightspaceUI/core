@@ -11,7 +11,7 @@ Empty state components are used to convey that there is no data available to be 
 </script>
 <style>
 	body {
-		overflow-y: scroll;
+		overflow-y: hidden;
 	}
 	d2l-empty-state-illustrated,
 	d2l-empty-state-simple {
@@ -72,7 +72,10 @@ The `illustration-name` property can be set to use one of the preset illustratio
 <!-- docs: start hidden content -->
 <style>
 	body {
-		overflow-y: scroll;
+		overflow-y: hidden;
+	}
+	d2l-empty-state-illustrated {
+		width: 100%;
 	}
 </style>
 <!-- docs: end hidden content -->
@@ -95,7 +98,7 @@ The `primary` attribute can be set to render a primary button in place of the de
 <!-- docs: start hidden content -->
 <style>
 	body {
-		overflow-y: scroll;
+		overflow-y: hidden;
 	}
 	d2l-empty-state-illustrated,
 	d2l-empty-state-simple {
@@ -126,7 +129,7 @@ The `primary` attribute can be set to render a primary button in place of the de
 <!-- docs: start hidden content -->
 <style>
 	body {
-		overflow-y: scroll;
+		overflow-y: hidden;
 	}
 	d2l-empty-state-illustrated,
 	d2l-empty-state-simple {
