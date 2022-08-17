@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+// import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { TagListItemMixin } from './tag-list-item-mixin.js';
 
 class TagListItem extends TagListItemMixin(LitElement) {
@@ -33,10 +33,10 @@ class TagListItem extends TagListItemMixin(LitElement) {
 
 	firstUpdated() {
 		// observe resize events so we can update tooltip text when truncated
-		const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
+		// const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
 		this._onListItemResize();
-		this._resizeObserver = new ResizeObserver(() => this._onListItemResize());
-		this._resizeObserver.observe(itemContent);
+		// this._resizeObserver = new ResizeObserver(() => this._onListItemResize());
+		// this._resizeObserver.observe(itemContent);
 	}
 
 	render() {
