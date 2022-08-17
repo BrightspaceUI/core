@@ -331,7 +331,7 @@ describe('d2l-dropdown', () => {
 			content.setAttribute('opened', true);
 
 			await oneEvent(content, 'd2l-dropdown-open');
-			const contentContainer = content.__getContentContainer();
+			const contentContainer = content.getContentContainer();
 			expect(contentContainer.getAttribute('tabindex')).to.equal('-1');
 			if (content.shadowRoot) {
 				expect(document.activeElement).to.equal(content);
