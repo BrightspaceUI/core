@@ -27,12 +27,11 @@ class TagListItem extends TagListItemMixin(LitElement) {
 	}
 
 	disconnectedCallback() {
-		super.disconnectedCallback();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
+		super.disconnectedCallback();
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	firstUpdated() {
 		// observe resize events so we can update tooltip text when truncated
 		const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
 		this._onListItemResize();
