@@ -88,7 +88,7 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 	}
 
 	_handleConditionsSlotChange(e) {
-		this._hasConditions = e.target.assignedNodes({ flatten: true }).length > 0;
+		this._hasConditions = e.target.assignedNodes({ flatten: true }).trim().length > 0;
 	}
 }
 
