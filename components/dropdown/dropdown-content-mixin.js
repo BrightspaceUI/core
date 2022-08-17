@@ -320,7 +320,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.__content = this.__getContentContainer();
+		this.__content = this.getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
@@ -362,6 +362,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	 * forceRender are removed.
 	 */
 	forceRender() {}
+
+	getContentContainer() {
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
+	}
 
 	/**
 	 * Private.
@@ -435,10 +439,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
-	__getContentContainer() {
-		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-container');
-	}
-
 	__getContentTop() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-top');
 	}
@@ -473,7 +473,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			return;
 		}
 		const rootTarget = e.composedPath()[0];
-		const clickInside = isComposedAncestor(this.__getContentContainer(), rootTarget) ||
+		const clickInside = isComposedAncestor(this.getContentContainer(), rootTarget) ||
 			isComposedAncestor(this.__getContentTop(), rootTarget) ||
 			isComposedAncestor(this.__getContentBottom(), rootTarget);
 		if (clickInside) {
@@ -533,7 +533,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	async __openedChanged(newValue) {
 
 		// DE44538: wait for dropdown content to fully render,
-		// otherwise this.__getContentContainer() can return null.
+		// otherwise this.getContentContainer() can return null.
 		await this.updateComplete;
 
 		this.__previousFocusableAncestor =
@@ -543,7 +543,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const doOpen = async() => {
 
-			const content = this.__getContentContainer();
+			const content = this.getContentContainer();
 
 			if (!this.noAutoFit) {
 				content.scrollTop = 0;
@@ -611,7 +611,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			return;
 		}
 
-		const content = this.__getContentContainer();
+		const content = this.getContentContainer();
 		const header = this.__getContentTop();
 		const footer = this.__getContentBottom();
 
@@ -1043,7 +1043,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	_handleFocusTrapEnter() {
 		if (this.__applyFocus && !this.noAutoFocus) {
-			const content = this.__getContentContainer();
+			const content = this.getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
 				// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
