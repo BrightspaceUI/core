@@ -200,7 +200,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		));
 	}
 
-	_renderTag(tagContent, hasTruncationTooltip = false, description = '') {
+	_renderTag(tagContent, hasTruncationTooltip, description) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });

@@ -17,8 +17,7 @@ class TagListItem extends TagListItemMixin(LitElement) {
 			 * @type {string}
 			 */
 			description: { type: String },
-			_isTruncated: { attribute: false },
-			_resizeObserver: { attribute: false }
+			_isTruncated: { attribute: false }
 		};
 	}
 
