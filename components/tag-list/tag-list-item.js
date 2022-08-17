@@ -33,18 +33,19 @@ class TagListItem extends TagListItemMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.description) {
-			// observe resize events so we can update tooltip text when truncated
-			const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
-			this._onListItemResize();
-			this._resizeObserver = new ResizeObserver(() => this._onListItemResize());
-			this._resizeObserver.observe(itemContent);
-		}
+		// observe resize events so we can update tooltip text when truncated
+		const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
+		this._onListItemResize();
+		this._resizeObserver = new ResizeObserver(() => this._onListItemResize());
+		this._resizeObserver.observe(itemContent);
 	}
 
 	render() {
-		const description = this._isTruncated ? `${this.text} ${this.description}` : this.description;
-		return this._renderTag(this.text, true, description);
+		let description =  null;
+		if (this.description) {
+			description = this._isTruncated ? `${this.text} ${this.description}` : this.description;
+		}
+		return this._renderTag(this.text, this._isTruncated, description);
 	}
 
 	_onListItemResize() {

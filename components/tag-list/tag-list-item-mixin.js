@@ -200,13 +200,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		));
 	}
 
-	_renderTag(tagContent, hasTruncationTooltip, description) {
+	_renderTag(tagContent, isTruncated, description) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 		const hasDescription = !!description;
-		const tooltipTagOverflow = hasTruncationTooltip ? html`
-				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
+		const tooltipTagOverflow = isTruncated || hasDescription ? html`
+				<d2l-tooltip for="${this._id}">
 					${hasDescription ? description : tagContent}
 				</d2l-tooltip>
 			` : null;
