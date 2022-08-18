@@ -82,4 +82,4 @@ The `d2l-tag-list-item` provides the appropriate `listitem` semantics and stylin
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | Text displayed on the tag item. Will truncate automatically if text exceeds a certain width and will display full `text` value in a tooltip. |
-| `description` | String, optional | Text displayed in tag item tooltip. Setting this property will make tooltip available at all times when hovering. If tooltip `text` is truncated, it will be included in the `text` value before the `description` string in the tooltip. |
+| `description` | String, optional | Additional text to display in tag item tooltip. Setting this property will make tooltip available at all times when hovering. |
