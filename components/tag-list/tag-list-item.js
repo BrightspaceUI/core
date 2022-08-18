@@ -9,12 +9,18 @@ class TagListItem extends TagListItemMixin(LitElement) {
 			 * REQUIRED: Text to display
 			 * @type {string}
 			 */
-			text: { type: String }
+			text: { type: String },
+			/**
+			 * Optional: Text to display in tooltip.
+			 * Tooltip will also include text property value if truncated.
+			 * @type {string}
+			 */
+			description: { type: String }
 		};
 	}
 
 	render() {
-		return this._renderTag(this.text, true);
+		return this._renderTag(this.text, true, this.description);
 	}
 }
 
