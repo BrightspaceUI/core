@@ -22,11 +22,6 @@ class TagListItem extends TagListItemMixin(LitElement) {
 	render() {
 		return this._renderTag(this.text, true, this.description);
 	}
-
-	_onListItemResize() {
-		const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
-		this._isTruncated = itemContent.scrollWidth > itemContent.offsetWidth;
-	}
 }
 
 customElements.define('d2l-tag-list-item', TagListItem);
