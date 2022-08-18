@@ -39,8 +39,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 		return css`
 			:host {
 				display: inline-block;
-				white-space: nowrap;
 				user-select: none;
+				white-space: nowrap;
 			}
 			:host([hidden]) {
 				display: none;
