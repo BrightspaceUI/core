@@ -2,11 +2,11 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, nothing } from 'lit';
+import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -39,7 +39,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	static get styles() {
-		return [labelStyles, css`
+		return [labelStyles, heading4Styles, css`
 			:host {
 				display: grid;
 				max-width: 100%;
@@ -120,8 +120,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			.d2l-tag-list-item-tooltip-title-key {
 				font-weight: 600;
 			}
-			d2l-tooltip h4 {
-				margin-top: 0;
+			.d2l-heading-4 {
+				margin: 0 0 0.5rem 0;
 			}
 		`];
 	}
@@ -208,7 +208,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 		const hasDescription = !!description;
-		const tooltipHeader = hasDescription ? html`<h4>${tagContent}</h4>` : tagContent;
+		const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
 		const tooltipTagOverflow = hasTruncationTooltip ? html`
 				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
 					${tooltipHeader}
