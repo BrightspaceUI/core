@@ -1,5 +1,4 @@
 import { LitElement } from 'lit';
-// import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { TagListItemMixin } from './tag-list-item-mixin.js';
 
 class TagListItem extends TagListItemMixin(LitElement) {
@@ -16,35 +15,12 @@ class TagListItem extends TagListItemMixin(LitElement) {
 			 * Tooltip will also include text property value if truncated.
 			 * @type {string}
 			 */
-			description: { type: String },
-			_isTruncated: { state: true }
+			description: { type: String }
 		};
 	}
 
-	constructor() {
-		super();
-		this._isTruncated = false;
-	}
-
-	disconnectedCallback() {
-		if (this._resizeObserver) this._resizeObserver.disconnect();
-		super.disconnectedCallback();
-	}
-
-	firstUpdated() {
-		// observe resize events so we can update tooltip text when truncated
-		// const itemContent = this.shadowRoot.querySelector('.tag-list-item-content');
-		this._onListItemResize();
-		// this._resizeObserver = new ResizeObserver(() => this._onListItemResize());
-		// this._resizeObserver.observe(itemContent);
-	}
-
 	render() {
-		let description =  null;
-		if (this.description) {
-			description = this._isTruncated ? `${this.text} ${this.description}` : this.description;
-		}
-		return this._renderTag(this.text, this._isTruncated, description);
+		return this._renderTag(this.text, true, this.description);
 	}
 
 	_onListItemResize() {

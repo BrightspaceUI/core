@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
@@ -120,6 +120,9 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			.d2l-tag-list-item-tooltip-title-key {
 				font-weight: 600;
 			}
+			d2l-tooltip h4 {
+				margin-top: 0;
+			}
 		`];
 	}
 
@@ -200,14 +203,16 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		));
 	}
 
-	_renderTag(tagContent, isTruncated, description) {
+	_renderTag(tagContent, hasTruncationTooltip, description) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 		const hasDescription = !!description;
-		const tooltipTagOverflow = isTruncated || hasDescription ? html`
-				<d2l-tooltip for="${this._id}">
-					${hasDescription ? description : tagContent}
+		const tooltipHeader = hasDescription ? html`<h4>${tagContent}</h4>` : tagContent;
+		const tooltipTagOverflow = hasTruncationTooltip ? html`
+				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
+					${tooltipHeader}
+					${hasDescription ? description : nothing}
 				</d2l-tooltip>
 			` : null;
 		const tooltipKeyboardInstructions = this._displayKeyboardTooltip ? html`
