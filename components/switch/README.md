@@ -61,13 +61,9 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 ## Visibility Switch [d2l-switch-visibility]
 
-The `d2l-switch-visibility` component is a special variant for toggling the visibility of activities. Activities can be set to "visible" but still not appear for users due to availability conditions, so the Visibility Switch has three states instead of just two:
+The d2l-switch-visibility component is a special variant for toggling the visibility of activities. Activities can be set to "on" but still not appear for users due to availability conditions. Therefore, the d2l-switch-visibility can display as "Hidden", "Visible", or "Visible. Conditions must be met" if a description of the conditions is provided.
 
-- Hidden
-- Visible
-- Visible. Conditions must be met
-
-See [Visibility Switch with Conditions](https://daylight.d2l.dev/components/switch/#visibility-switch-with-conditions) for information about the special third state.
+See also [Visibility Switch with Conditions](https://daylight.d2l.dev/components/switch/#visibility-switch-with-conditions).
 
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
