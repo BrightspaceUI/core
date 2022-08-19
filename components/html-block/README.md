@@ -44,7 +44,7 @@ Place the user-authored HTML within the `d2l-html-block` and the component will 
 </d2l-html-block>
 ```
 
-To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https://lit-html.polymer-project.org/guide/template-reference#unsafehtml) directive to avoid escaping the HTML.
+To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https://lit.dev/docs/api/directives/#unsafeHTML) directive to avoid escaping the HTML.
 
 ```html
 <script type="module">
