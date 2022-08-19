@@ -1,4 +1,4 @@
-import { css, unsafeCSS } from 'lit-element/lit-element.js';
+import { css, unsafeCSS } from 'lit';
 
 window.Prism = window.Prism || {};
 Prism.manual = true;
