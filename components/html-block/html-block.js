@@ -140,6 +140,11 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 */
 			compact: { type: Boolean },
 			/**
+			 * The HTML to be rendered. Ignored if slotted content is provided.
+			 * @type {String}
+			 */
+			html: { type: String },
+			/**
 			 * Whether to display the HTML in inline mode
 			 * @type {Boolean}
 			 */
@@ -183,8 +188,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.compact = false;
+		this.html = '';
 		this.inline = false;
 		this.noDeferredRendering = false;
+		this._hasSlottedContent = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
@@ -202,7 +209,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 		const slot = this.shadowRoot.querySelector('slot');
 		if (slot) {
-			slot.assignedNodes({ flatten: true }).forEach(
+			const slottedNodes = slot.assignedNodes({ flatten: true });
+			this._hasSlottedContent = this._hasSlottedElements(slottedNodes);
+
+			slottedNodes.forEach(
 				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
 			);
 		}
@@ -230,10 +240,17 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		`;
 	}
 
-	updated(changedProperties) {
+	async updated(changedProperties) {
 		super.updated(changedProperties);
+		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this._hasSlottedContent) {
+			await this._updateRenderContainer();
+		}
 		if (this._contextChanged()) {
-			this._render();
+			if (this._hasSlottedContent) this._render();
+			else if (this.html !== undefined && this.html !== null) {
+				await this._updateRenderContainer();
+			}
+
 			this._updateContextKeys();
 		}
 	}
@@ -250,8 +267,22 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	async _handleSlotChange(e) {
-		if (!e.target) return;
-		await this._render(e.target);
+		if (!e.target || !this.shadowRoot) return;
+		const slot = this.shadowRoot.querySelector('slot');
+		const slottedNodes = slot.assignedNodes({ flatten: true });
+
+		if (!this.html && this._hasSlottedElements(slottedNodes)) {
+			this._hasSlottedContent = true;
+			await this._render(e.target);
+		} else {
+			this._hasSlottedContent = false;
+		}
+	}
+
+	_hasSlottedElements(slottedNodes) {
+		if (!slottedNodes || slottedNodes.length === 0) return false;
+		if (slottedNodes.filter(node => node.nodeType === Node.ELEMENT_NODE || node.textContent).length === 0) return false;
+		return true;
 	}
 
 	async _processRenderers(elem) {
@@ -320,6 +351,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		this._contextObserverController.values.forEach((val, attr) => {
 			this._contextKeys.set(attr, val);
 		});
+	}
+
+	async _updateRenderContainer() {
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		renderContainer.innerHTML = this.html;
+		await this._processRenderers(renderContainer);
 	}
 
 }
