@@ -50,8 +50,9 @@ describe('d2l-switch-visibility', () => {
 				const selector = '#on-with-conditions';
 				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
-						elem.shadowRoot.querySelector('#conditions-help').addEventListener('d2l-tooltip-show', resolve);
-						elem.shadowRoot.querySelector('#conditions-help').focus();
+						const conditionsHelpTooltip = elem.shadowRoot.querySelector('#conditions-help');
+						conditionsHelpTooltip.addEventListener('d2l-tooltip-show', resolve);
+						conditionsHelpTooltip.focus();
 					});
 				});
 
