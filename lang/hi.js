@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "अधिक",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.pager-load-more.action": "{count} और लोड करें",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{totalCountFormatted} में से {showingCount} आइटम} other {{totalCountFormatted} में से {showingCount} आइटम}}",
 	"components.pager-load-more.status-loading": "और आइटम लोड करना",
 	"components.selection.action-hint": "यह कार्रवाई निष्पादित करने के लिए कोई आइटम का चयन करें।",
 	"components.selection.select-all": "सभी का चयन करें",
