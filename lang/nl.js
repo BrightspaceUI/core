@@ -20,7 +20,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters",
+	"components.filter.filters": "Filters", // mfv-translated
 	"components.filter.noActiveFilters": "Geen actieve filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "meer",
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.pager-load-more.action": "Laad nog {count} extra",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} van {totalCountFormatted} item} other {{showingCount} van {totalCountFormatted} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} van {totalCountFormatted} artikel} other {{showingCount} van {totalCountFormatted} artikelen}}",
 	"components.pager-load-more.status-loading": "Er worden meer items geladen",
 	"components.selection.action-hint": "Selecteer een item om deze actie uit te voeren.",
 	"components.selection.select-all": "Alles selecteren",

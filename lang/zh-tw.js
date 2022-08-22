@@ -92,7 +92,7 @@ export default {
 	"components.more-less.more": "較多",
 	"components.overflow-group.moreActions": "其他動作",
 	"components.pager-load-more.action": "再載入 {count} 個",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} 項，共 {totalCountFormatted} 項} other {{showingCount} 項，共 {totalCountFormatted} 項}}",
+	"components.pager-load-more.info": "{totalCount, plural, other {{showingCount} 項，共 {totalCountFormatted} 項}}",
 	"components.pager-load-more.status-loading": "正在載入更多項目",
 	"components.selection.action-hint": "選取項目以執行此動作。",
 	"components.selection.select-all": "全選",

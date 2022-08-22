@@ -92,14 +92,14 @@ export default {
 	"components.more-less.more": "más",
 	"components.overflow-group.moreActions": "Más acciones",
 	"components.pager-load-more.action": "Cargar {count} más",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} de {totalCountFormatted} elemento} other {{showingCount} de {totalCountFormatted} elemento}}",
 	"components.pager-load-more.status-loading": "Cargando más elementos",
 	"components.selection.action-hint": "Seleccione un elemento para realizar esta acción.",
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione todos los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.switch.visible": "Visible",
-	"components.switch.visibleWithPeriod": "Visible.",
+	"components.switch.visible": "Visible", // mfv-translated
+	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.tabs.next": "Desplazarse hacia adelante",
