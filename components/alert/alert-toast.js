@@ -15,7 +15,7 @@ const states = {
 /**
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
  * @slot - Default content placed inside of the component
- * @fires d2l-alert-button-press - Dispatched when the alert's action button is clicked
+ * @fires d2l-alert-toast-button-press - Dispatched when the toast's action button is clicked
  * @fires d2l-alert-toast-close - Dispatched when the toast is closed
  */
 class AlertToast extends LitElement {
@@ -150,6 +150,7 @@ class AlertToast extends LitElement {
 				<d2l-alert
 					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
+					@d2l-alert-button-press=${this._handleButtonPress}
 					@d2l-alert-close=${this._onCloseClicked}
 					@focus=${this._onFocus}
 					?has-close-button="${!this.hideCloseButton}"
@@ -197,6 +198,11 @@ class AlertToast extends LitElement {
 
 	_closeTimerStop() {
 		clearTimeout(this._setTimeoutId);
+	}
+
+	_handleButtonPress(e) {
+		e.stopPropagation();
+		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
 	}
 
 	_onBlur() {
