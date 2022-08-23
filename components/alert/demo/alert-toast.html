@@ -40,7 +40,7 @@
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>With Subtext</h2>
+		<h2>With Subtext and Button</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-alert-toast id="toast4" type="success" button-text="Do it!" has-close-button
@@ -66,6 +66,11 @@
 				openToast(toast);
 			});
 		});
+	});
+
+	const buttonAlertToast = document.querySelector('#toast4');
+	buttonAlertToast.addEventListener('d2l-alert-toast-button-press', (e) => {
+		console.log('d2l-alert-toast-button-press', e);
 	});
 
 	document.body.addEventListener('d2l-alert-toast-close', (e) => {
