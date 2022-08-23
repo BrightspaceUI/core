@@ -141,16 +141,6 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('d2l-alert-button-press', this._handleButtonPress);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('d2l-alert-button-press', this._handleButtonPress);
-	}
-
 	render() {
 		return html`
 			<div
@@ -160,6 +150,7 @@ class AlertToast extends LitElement {
 				<d2l-alert
 					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
+					@d2l-alert-button-press=${this._handleButtonPress}
 					@d2l-alert-close=${this._onCloseClicked}
 					@focus=${this._onFocus}
 					?has-close-button="${!this.hideCloseButton}"
@@ -209,7 +200,8 @@ class AlertToast extends LitElement {
 		clearTimeout(this._setTimeoutId);
 	}
 
-	_handleButtonPress() {
+	_handleButtonPress(e) {
+		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
 	}
 
