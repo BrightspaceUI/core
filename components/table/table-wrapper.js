@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SelectionMixin } from '../selection/selection-mixin.js';
 
 export const tableStyles = css`
 	.d2l-table {
@@ -167,7 +168,7 @@ export const tableStyles = css`
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
  */
-export class TableWrapper extends RtlMixin(LitElement) {
+export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -245,11 +246,13 @@ export class TableWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const inner = html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+		`;
 		if (this.stickyHeaders) {
-			return slot;
+			return inner;
 		} else {
-			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
+			return html`<d2l-scroll-wrapper>${inner}</d2l-scroll-wrapper>`;
 		}
 	}
 
