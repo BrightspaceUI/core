@@ -49,6 +49,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				background: none;
 				border: none;
 				cursor: inherit;
+				font-family: inherit;
 				padding: 0;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
@@ -102,7 +103,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			'd2l-body-small': !this.inheritFontStyle
 		};
 		return html`
-			<button id="d2l-tooltip-help-text" class="${classMap(classes)}">
+			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" type="button">
 				${this.text}
 			</button>
 			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">

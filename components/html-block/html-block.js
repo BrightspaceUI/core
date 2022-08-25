@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { codeStyles, HtmlBlockCodeRenderer } from '../../helpers/prism.js';
-import { css, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
@@ -139,7 +140,13 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			 */
 			compact: { type: Boolean },
 			/**
+			 * The HTML to be rendered. Ignored if slotted content is provided.
+			 * @type {String}
+			 */
+			html: { type: String },
+			/**
 			 * Whether to display the HTML in inline mode
+			 * @type {Boolean}
 			 */
 			inline: { type: Boolean },
 			/**
@@ -160,13 +167,17 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				overflow-y: hidden;
 				text-align: left;
 			}
+			:host([inline]),
+			:host([inline]) .d2l-html-block-rendered {
+				display: inline;
+			}
 			:host([hidden]),
-			:host([no-deferred-rendering]) div.d2l-html-block-rendered {
+			:host([no-deferred-rendering]) .d2l-html-block-rendered,
+			slot {
 				display: none;
 			}
-			:host([inline]),
-			:host([inline]) div.d2l-html-block-rendered {
-				display: inline;
+			:host([no-deferred-rendering]) slot {
+				display: contents;
 			}
 			:host([dir="rtl"]) {
 				text-align: right;
@@ -177,8 +188,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.compact = false;
+		this.html = '';
 		this.inline = false;
 		this.noDeferredRendering = false;
+		this._hasSlottedContent = false;
 
 		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
@@ -196,7 +209,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 		const slot = this.shadowRoot.querySelector('slot');
 		if (slot) {
-			slot.assignedNodes({ flatten: true }).forEach(
+			const slottedNodes = slot.assignedNodes({ flatten: true });
+			this._hasSlottedContent = this._hasSlottedElements(slottedNodes);
+
+			slottedNodes.forEach(
 				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
 			);
 		}
@@ -209,33 +225,64 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
-		if (this._renderContainer) return;
-
-		// The d2l-html-block-rendered class is used to apply CSS outside of the html-block component. Do not change lightly.
-		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered'
-			+ `${this.compact ? ' d2l-html-block-compact' : ''}`
-			+ '"></div><slot'
-			+ `${!this.noDeferredRendering ? ' style="display: none"' : ''}`
-			+ '></slot>';
-
-		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => await this._render(e.target));
-		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		this._context = this._contextObserverController ? { ...this._contextObserverController.values } : {};
+		this._updateContextKeys();
 	}
 
-	updated() {
-		super.updated();
-		if (this._contextObserverController && this._contextObjectHasChanged()) this._render();
+	render() {
+		const renderContainerClasses = {
+			'd2l-html-block-rendered': true,
+			'd2l-html-block-compact': this.compact
+		};
+
+		return html`
+			<div class="${classMap(renderContainerClasses)}"></div>
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+		`;
 	}
 
-	_contextObjectHasChanged() {
-		if (this._context.size !== this._contextObserverController.values.size) return true;
-		for (const [attr, val] of this._context) {
+	async updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this._hasSlottedContent) {
+			await this._updateRenderContainer();
+		}
+		if (this._contextChanged()) {
+			if (this._hasSlottedContent) this._render();
+			else if (this.html !== undefined && this.html !== null) {
+				await this._updateRenderContainer();
+			}
+
+			this._updateContextKeys();
+		}
+	}
+
+	_contextChanged() {
+		if (!this._contextObserverController) return false;
+
+		if (this._contextKeys.size !== this._contextObserverController.values.size) return true;
+		for (const [attr, val] of this._contextKeys) {
 			if (!this._contextObserverController.values.has(attr)) return true;
 			if (this._contextObserverController.values.get(attr) !== val) return true;
 		}
 		return false;
+	}
+
+	async _handleSlotChange(e) {
+		if (!e.target || !this.shadowRoot) return;
+		const slot = this.shadowRoot.querySelector('slot');
+		const slottedNodes = slot.assignedNodes({ flatten: true });
+
+		if (!this.html && this._hasSlottedElements(slottedNodes)) {
+			this._hasSlottedContent = true;
+			await this._render(e.target);
+		} else {
+			this._hasSlottedContent = false;
+		}
+	}
+
+	_hasSlottedElements(slottedNodes) {
+		if (!slottedNodes || slottedNodes.length === 0) return false;
+		if (slottedNodes.filter(node => node.nodeType === Node.ELEMENT_NODE || node.textContent).length === 0) return false;
+		return true;
 	}
 
 	async _processRenderers(elem) {
@@ -243,18 +290,16 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			if (this._contextObserverController && renderer.contextAttributes) {
 				const contextValues = new Map();
 				renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
-				elem = await renderer.render(elem, {
+				await renderer.render(elem, {
 					contextValues: contextValues,
 					noDeferredRendering: this.noDeferredRendering
 				});
 			} else {
-				elem = await renderer.render(elem, {
+				await renderer.render(elem, {
 					noDeferredRendering: this.noDeferredRendering
 				});
 			}
 		}
-
-		return elem;
 	}
 
 	async _render(slot) {
@@ -274,20 +319,16 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	_stamp(slot) {
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+
 		const stampHTML = async nodes => {
-			if (nodes && nodes.length > 0) {
+			renderContainer.innerHTML = '';
+			if (!nodes || nodes.length === 0) return;
 
-				let temp = document.createElement('div');
-				temp.style.display = 'none';
-				nodes.forEach(node => temp.appendChild(node.cloneNode(true)));
-
-				this._renderContainer.appendChild(temp);
-				temp = await this._processRenderers(temp);
-				this._renderContainer.innerHTML = temp.innerHTML;
-
-			} else {
-				this._renderContainer.innerHTML = '';
-			}
+			// Nodes must be cloned into the render container before processing, as
+			// some renderers require connected nodes (e.g. MathJax).
+			nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
+			await this._processRenderers(renderContainer);
 		};
 
 		if (this._contentObserver) this._contentObserver.disconnect();
@@ -301,6 +342,21 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		);
 
 		stampHTML(slottedNodes);
+	}
+
+	_updateContextKeys() {
+		if (!this._contextObserverController) return;
+		if (!this._contextKeys) this._contextKeys = new Map();
+
+		this._contextObserverController.values.forEach((val, attr) => {
+			this._contextKeys.set(attr, val);
+		});
+	}
+
+	async _updateRenderContainer() {
+		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		renderContainer.innerHTML = this.html;
+		await this._processRenderers(renderContainer);
 	}
 
 }

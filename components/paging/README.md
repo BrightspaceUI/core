@@ -15,6 +15,7 @@ The paging components and mixins can be used to provide consistent paging functi
 <!-- docs: start dos -->
 * Consider the performance impact of acquiring the optional total `item-count`. The `item-count` provides useful context for the user, but counting large numbers of rows can be detrimental to performance. As a very general guide, when the total number of rows that needs to be counted is < 50,000, it's not a performance concern.
 <!-- docs: end dos -->
+<!-- docs: end best practices -->
 
 ## Load More Paging [d2l-pager-load-more]
 
@@ -39,7 +40,6 @@ pager.addEventListener('d2l-pager-load-more', e => {
 });
 ```
 
-<!-- docs: start hidden content -->
 ### Properties
 | Property | Type | Description |
 |---|---|---|
@@ -52,4 +52,3 @@ pager.addEventListener('d2l-pager-load-more', e => {
 | Event | Description |
 |---|---|
 | `d2l-pager-load-more` | Dispatched when the user clicks the Load More button. The `pageSize` can be accessed from the event `target`. The consumer must call the `complete()` method on the event detail to signal completion after the new items have been loaded. |
-<!-- docs: end hidden content -->

@@ -27,6 +27,23 @@ export async function reset(page, selector) {
 	});
 }
 
+export async function resetInnerTimeInput(page, selector) {
+	await page.$eval(selector, (elem) => {
+		const timeInput = elem.shadowRoot.querySelector('d2l-input-time');
+		const dropdown = timeInput.shadowRoot.querySelector('d2l-dropdown');
+		return new Promise((resolve) => {
+			const content = dropdown.querySelector('[dropdown-content]');
+			content.scrollTo(0);
+			if (content.opened) {
+				content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
+				content.opened = false;
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
 export function getRect(page, selector) {
 	return page.$eval(selector, (elem) => {
 		const content = elem.shadowRoot.querySelector('[dropdown-content]');

@@ -4,7 +4,7 @@
  */
 
 const mathjaxContextAttribute = 'data-mathjax-context';
-const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.1.2';
+const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.2.2';
 
 const mathjaxFontMappings = new Map([
 	['MJXTEX', 'MathJax_Main-Regular'],
@@ -31,6 +31,7 @@ const mathjaxFontMappings = new Map([
 ]);
 
 let mathJaxLoaded;
+let renderingPromise = Promise.resolve();
 
 export class HtmlBlockMathRenderer {
 
@@ -60,32 +61,18 @@ export class HtmlBlockMathRenderer {
 		// This work-around should be removed when linebreaks are natively supported.
 		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
 		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-		const lineBreakStyle = 'display: block; height: 0.5rem;';
+		elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+			elm.style.display = 'block';
+			elm.style.height = '0.5rem';
+		});
 
-		// If we're opting out of deferred rendering, we need to rely
-		// on the global MathJax install for rendering.
-		if (options.noDeferredRendering) {
-			elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
-				elm.setAttribute('style', lineBreakStyle);
-			});
+		// If we're using deferred rendering, we need to create a document structure
+		// within the element so MathJax can appropriately process math.
+		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
 
-			await window.MathJax.startup.promise;
-			window.MathJax.typesetShadow(elem.getRootNode(), elem);
-			return elem;
-		}
-
-		const inner = elem.innerHTML.replace(/<mspace linebreak="newline">/gi, `<mspace linebreak="newline" style="${lineBreakStyle}">`);
-
-		const temp = document.createElement('div');
-		temp.style.display = 'none';
-		temp.attachShadow({ mode: 'open' });
-		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${inner}</mjx-body></mjx-doc></div>`;
-
-		elem.appendChild(temp);
 		await window.MathJax.startup.promise;
-		window.MathJax.typesetShadow(temp.shadowRoot);
-
-		return temp.shadowRoot.firstChild;
+		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
+		await renderingPromise;
 	}
 
 }
@@ -94,13 +81,9 @@ export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;
 
-	const loadOptions = ['ui/menu'];
-	if (mathJaxConfig && mathJaxConfig.renderLatex) {
-		loadOptions.push('[tex]/all-packages');
-	}
-
 	window.MathJax = {
 		chtml: {
+			adaptiveCSS: false,
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
 		},
 		options: {
@@ -108,7 +91,7 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: loadOptions },
+		loader: { load: ['ui/menu'] },
 		startup: {
 			ready: () => {
 
@@ -129,12 +112,18 @@ export function loadMathJax(mathJaxConfig) {
 				const AbstractHandler = window.MathJax._.core.Handler.AbstractHandler.prototype;
 				const startup = window.MathJax.startup;
 
+				const getFirstChild = doc => {
+					const child = doc.firstChild;
+					if (!child || child.nodeType === Node.ELEMENT_NODE) return child;
+					else return child.nextElementSibling;
+				};
+
 				//
 				//  Extend HTMLAdaptor to handle shadowDOM as the document
 				//
 				class ShadowAdaptor extends HTMLAdaptor {
 					body(doc) {
-						return doc.body || (doc.firstChild || {}).lastChild || doc;
+						return doc.body || (getFirstChild(doc) || {}).lastChild || doc;
 					}
 					create(kind, ns) {
 						const document = (this.document.createElement ? this.document : this.window.document);
@@ -143,10 +132,10 @@ export function loadMathJax(mathJaxConfig) {
 							document.createElement(kind));
 					}
 					head(doc) {
-						return doc.head || (doc.firstChild || {}).firstChild || doc;
+						return doc.head || (getFirstChild(doc) || {}).firstChild || doc;
 					}
 					root(doc) {
-						return doc.documentElement || doc.firstChild || doc;
+						return doc.documentElement || getFirstChild(doc) || doc;
 					}
 					text(text) {
 						const document = (this.document.createTextNode ? this.document : this.window.document);
@@ -188,15 +177,15 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = function(root, elem) {
+				window.MathJax.typesetShadow = async function(root, elem) {
 					const InputJax = startup.getInputJax();
 					const OutputJax = startup.getOutputJax();
 					const html = mathjax.document(root, { InputJax, OutputJax });
 
 					if (elem) html.options.elements = [elem];
 
-					html.render().typeset();
-					return html;
+					await mathjax.handleRetriesFor(() => html.render());
+					html.typeset();
 				};
 
 				//

@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { BACKDROP_ROLE } from '../backdrop/backdrop.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
@@ -129,19 +130,19 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		const clearButton = this.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 		this._clearButtonResizeObserver = new ResizeObserver(() => {
-			this._clearButtonWidth = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('width')));
+			this._clearButtonWidth = parseFloat(getComputedStyle(clearButton).getPropertyValue('width'));
 			this._clearButtonHeight = Math.ceil(parseFloat(getComputedStyle(clearButton).getPropertyValue('height')));
 		});
 		this._clearButtonResizeObserver.observe(clearButton);
 
 		let container = getOffsetParent(this);
-		if (!container || container.tagName === 'BODY') container = this.shadowRoot.querySelector('.tag-list-outer-container');
+		if (!container) container = this.shadowRoot.querySelector('.tag-list-outer-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(container);
 
-		const listContainer = this.shadowRoot.querySelector('.tag-list-container');
+		this._listContainer = this.shadowRoot.querySelector('.tag-list-container');
 		this._listContainerObserver = new ResizeObserver(() => requestAnimationFrame(() => this._handleSlotChange()));
-		this._listContainerObserver.observe(listContainer);
+		this._listContainerObserver.observe(this._listContainer);
 	}
 
 	render() {
@@ -247,6 +248,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		 */
 		let isOverflowing = false;
 		let overflowingIndex = 0;
+
 		for (let k = 1; k <= this._lines; k++) {
 			showing.width = 0;
 
@@ -268,7 +270,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			}
 		}
 
-		if (!isOverflowing && !this.clearable) {
+		if (!isOverflowing && (!this.clearable || this._items.length < CLEAR_ALL_THRESHOLD)) {
 			this._chompIndex = showing.count;
 			return;
 		}
@@ -296,7 +298,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 			return {
 				isHidden: computedStyles.display === 'none',
-				width: Math.ceil(parseFloat(computedStyles.width) || 0)
+				width: parseFloat(computedStyles.width) || 0
 			};
 		});
 
@@ -312,7 +314,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			await node.updateComplete;
 
 			const role = node.getAttribute('role');
-			if (role !== 'listitem') return false;
+			const backdropRole = node.getAttribute(BACKDROP_ROLE);
+			if (role !== 'listitem' && backdropRole !== 'listitem') return false;
 
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.removeAttribute('data-is-chomped');
@@ -351,7 +354,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	_handleItemDeleted(e) {
-		if (!this.clearable) return;
 		if (!e || !e.detail || !e.detail.handleFocus) return;
 
 		const rootTarget = e.composedPath()[0];
@@ -368,8 +370,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._hasShownKeyboardTooltip = true;
 	}
 
-	async _handleResize(entries) {
-		this._availableWidth = Math.floor(entries[0].contentRect.width);
+	async _handleResize() {
+		this._contentReady = false;
+		this._chompIndex = 10000;
+		await this.updateComplete;
+
+		this._availableWidth = Math.ceil(this._listContainer.getBoundingClientRect().width);
 		if (this._availableWidth >= PAGE_SIZE.large) this._lines = PAGE_SIZE_LINES.large;
 		else if (this._availableWidth < PAGE_SIZE.large && this._availableWidth >= PAGE_SIZE.medium) this._lines = PAGE_SIZE_LINES.medium;
 		else this._lines = PAGE_SIZE_LINES.small;
@@ -379,6 +385,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		} else {
 			this._chomp();
 		}
+		this._contentReady = true;
 	}
 
 	async _handleSlotChange() {
@@ -387,17 +394,21 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		await this.updateComplete;
 
 		this._items = await this._getTagListItems();
+		this._chompIndex = 10000;
 		if (!this._items || this._items.length === 0) {
-			this._chompIndex = 10000;
 			return;
 		}
+		await this.updateComplete;
 
 		this._itemLayouts = this._getItemLayouts(this._items);
 		this._itemHeight = this._items[0].offsetHeight;
 		this._items.forEach((item, index) => {
 			item.setAttribute('tabIndex', index === 0 ? 0 : -1);
 		});
+
+		this._availableWidth = Math.ceil(this._listContainer.getBoundingClientRect().width);
 		this._chomp();
+
 		this._contentReady = true;
 		if (!this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-item', 'keyboard-tooltip-item');
 	}
@@ -414,7 +425,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			if (button) button.focus();
 		}
 	}
-
 }
 
 customElements.define('d2l-tag-list', TagList);

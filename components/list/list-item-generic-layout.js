@@ -208,17 +208,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);
-		if (!firstFocusable) {
-			const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
-			if (listItem) {
-				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
-				if (nextFocusable) nextFocusable.focus();
-			}
-			return;
-		}
+		if (!firstFocusable) return;
 
-		if (itemNum === 1 || !this._focusNextWithinCell(firstFocusable, itemNum)) {
+		if (itemNum === 1) {
 			firstFocusable.focus();
+			return firstFocusable;
+		} else {
+			return this._focusNextWithinCell(firstFocusable, itemNum);
 		}
 	}
 
@@ -290,7 +286,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		if (!listItem) return;
 		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		listItemRow._focusCellItem(previous, this._cellNum, this._cellFocusedItem);
+		const focusedCellItem = listItemRow._focusCellItem(previous, this._cellNum, this._cellFocusedItem);
+
+		if (!focusedCellItem) {
+			// could not focus on same cell in adjacent list-item so try general focus on item
+			if (!listItem._tryFocus()) {
+				// ultimate fallback to generic method for getting next/previous focusable
+				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
+				if (nextFocusable) nextFocusable.focus();
+			}
+		}
 
 	}
 

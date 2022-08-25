@@ -61,7 +61,9 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 ## Visibility Switch [d2l-switch-visibility]
 
-The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
+The d2l-switch-visibility component is a special variant for toggling the visibility of activities. Activities can be set to "on" but still not appear for users due to availability conditions. Therefore, the d2l-switch-visibility can display as "Hidden", "Visible", or "Visible. Conditions must be met" if a description of the conditions is provided.
+
+See also [Visibility Switch with Conditions](https://daylight.d2l.dev/components/switch/#visibility-switch-with-conditions).
 
 <!-- docs: demo live name:d2l-switch-visibility autoSize:false size:small -->
 ```html
@@ -76,12 +78,34 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 | Property | Type | Description |
 |---|---|---|
-| `text`| String, required | Accessible text for the switch; defaults to "Visibility" |
 | `disabled` | Boolean | Disabled the switch |
-| `on` | Boolean | Whether the switch is "on" or "off" |
+| `on` | Boolean | Whether the switch is "on" or "off". If content is passed into the switch slot, the switch will be "on with conditions". |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 
 ### Events
 
 - `change`: dispatched when the `on` property is updated
+
+### Slots
+
+- Optional default slot content - Content that will be displayed within the "conditions" opener tooltip when the switch is on.
+  
 <!-- docs: end hidden content -->
+
+### Visibility Switch with Conditions
+If an activity is set to `Visible` but also has other conditions affecting its visibility, information about the conditions can be passed in the default slot so it will be available in a tooltip.
+
+<!-- docs: demo code autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/switch/switch-visibility.js';
+</script>
+<d2l-switch-visibility on>
+  These are some conditions that must be met for the activity to be visible.
+  <ul>
+    <li> Condition 1 </li>
+    <li> Condition 2 </li>
+    <li> Condition 3 </li>
+  </ul>
+</d2l-switch-visibility>
+```

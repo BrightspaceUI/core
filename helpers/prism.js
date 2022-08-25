@@ -1,4 +1,4 @@
-import { css, unsafeCSS } from 'lit-element/lit-element.js';
+import { css, unsafeCSS } from 'lit';
 
 window.Prism = window.Prism || {};
 Prism.manual = true;
@@ -41,7 +41,7 @@ const darkColors = Object.freeze({
 	background: '#202122',
 	language: '#90989d',
 	lineNumbers: '#9ea5a9',
-	lineNumbersBackground: '#6e747733', // galena 20%
+	lineNumbersBackground: '#303133',
 	tokenDefault: '#cdd5dc',
 	tokenComment: '#81898d',
 	tokenPunctuation: '#cdd5dc',
@@ -450,8 +450,6 @@ export async function formatCodeElement(elem) {
 
 	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
 	Prism.highlightElement(code);
-
-	return elem;
 }
 
 export class HtmlBlockCodeRenderer {

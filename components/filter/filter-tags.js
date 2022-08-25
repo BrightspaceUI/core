@@ -22,8 +22,8 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			filterIds: { type: String, attribute: 'filter-ids' },
 			/**
-			 * The text displayed in this component's label
-			 * @default "Applied Filters:"
+			 * The text displayed in this component's label (hidden when default is used)
+			 * @default "Active Filters:"
 			 * @type {string}
 			 */
 			label: { type: String }
@@ -58,7 +58,7 @@ class FilterTags extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}
 
 			.d2l-filter-tags-none-label {
-				color: var(--d2l-color-corundum);
+				color: var(--d2l-color-galena);
 				display: inline-block;
 				font-style: italic;
 				padding-top: 0.15rem;

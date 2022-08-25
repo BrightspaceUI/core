@@ -12,6 +12,17 @@ describe('d2l-alert-toast', () => {
 
 	});
 
+	describe('button-press', () => {
+
+		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
+			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
+			const alert = el.shadowRoot.querySelector('d2l-alert');
+			setTimeout(() => alert.dispatchEvent(new CustomEvent('d2l-alert-button-press', { bubbles: true, composed: true })));
+			await oneEvent(el, 'd2l-alert-toast-button-press');
+		});
+
+	});
+
 	describe('close', () => {
 
 		it('should close when close button is clicked', async() => {

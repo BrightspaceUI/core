@@ -199,6 +199,10 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 </d2l-list>
 ```
 
+## Pageable Lists
+
+Load-More paging functionality can be implemented in lists by placing a `d2l-pager-load-more` in `d2l-list`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
+
 ## Drag & Drop Lists
 
 The `d2l-list` supports drag & drop.
