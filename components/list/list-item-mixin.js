@@ -398,8 +398,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	focus() {
-		const node = getFirstFocusableDescendant(this);
-		if (node) node.focus();
+		this._tryFocus();
 	}
 
 	async highlight() {
@@ -621,6 +620,13 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
 			</ul>
 		`;
+	}
+
+	_tryFocus() {
+		const node = getFirstFocusableDescendant(this);
+		if (!node) return false;
+		node.focus();
+		return true;
 	}
 
 };
