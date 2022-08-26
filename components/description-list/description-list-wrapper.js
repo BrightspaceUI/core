@@ -15,7 +15,7 @@ export const descriptionListStyles = [
 		dl {
 			align-items: baseline;
 			display: var(--d2l-dl-wrapper-dl-display, grid);
-			gap: 0.6rem 1.5rem;
+			gap: 0.3rem 1.5rem;
 			grid-auto-flow: row;
 			grid-template-columns: minmax(var(--d2l-dl-wrapper-dt-min-width), auto) minmax(var(--d2l-dl-wrapper-dd-min-width), 1fr);
 		}
@@ -64,7 +64,8 @@ class DescriptionListWrapper extends LitElement {
 
 	constructor() {
 		super();
-		this.breakpoint = 200;
+		// TODO: can this be REM?
+		this.breakpoint = 240;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 		this._stacked = false;
 	}
