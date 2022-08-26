@@ -64,7 +64,6 @@ class DescriptionListWrapper extends LitElement {
 
 	constructor() {
 		super();
-		// TODO: can this be REM?
 		this.breakpoint = 240;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 		this._stacked = false;
