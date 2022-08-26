@@ -28,7 +28,7 @@ describe('d2l-dl-wrapper', () => {
 			799,
 			599,
 			299,
-			199,
+			239,
 		].forEach((width) => {
 			it(`${name} ${width}`, async function() {
 				await page.$eval (selector, async(elem, width)  => {
