@@ -105,7 +105,7 @@ The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styli
 
 | Property | Type | Description | Default Value
 |---|---|---|---|
-| `breakpoint` | Number | Width for component to use a stacked layout. | 200 |
+| `breakpoint` | Number | Width for component to use a stacked layout. | 240 |
 
 <!-- docs: end hidden content -->
 

@@ -12,7 +12,7 @@ describe('d2l-dl-wrapper', () => {
 	});
 
 	describe('layout breakpoint', () => {
-		it('has a default value of 200', async() => {
+		it('has a default value of 240', async() => {
 			const elem = await fixture(html`
 				<d2l-dl-wrapper>
 					<dl>
@@ -22,7 +22,7 @@ describe('d2l-dl-wrapper', () => {
 				</d2l-dl-wrapper>
 			`);
 
-			expect(elem.breakpoint).to.equal(200);
+			expect(elem.breakpoint).to.equal(240);
 		});
 
 		it('can be overridden by consumers', async() => {
