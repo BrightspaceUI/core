@@ -1,6 +1,5 @@
 # Description List
-A Description List displays information in a
-vertical list of key-value pairs. Common usages could include terms & definitions, or fields & values.
+A Description List displays information in a vertical list of key-value pairs. Common usages could include terms & definitions, or fields & values.
 
 <!-- docs: demo -->
 ```html
