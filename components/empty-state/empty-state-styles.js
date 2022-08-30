@@ -48,15 +48,6 @@ export const emptyStateIllustratedStyles = css`
 		text-align: center;
 	}
 
-	.illustration-slot::slotted(*) {
-		display: none;
-	}
-
-	.illustration-slot::slotted(img:first-of-type),
-	.illustration-slot::slotted(svg:first-of-type) {
-		display: inline-block;
-	}
-
 	svg {
 		height: 100%;
 		max-width: 500px;
