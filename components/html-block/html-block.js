@@ -120,12 +120,8 @@ let renderers;
 
 const getRenderers = async() => {
 	if (renderers) return renderers;
-	let tempRenderers = requestInstance(document, 'html-block-renderers');
-	if (!tempRenderers) {
-		const tempRendererLoader = requestInstance(document, 'html-block-renderer-loader');
-		tempRenderers = await tempRendererLoader.renderers();
-	}
-
+	const rendererLoader = requestInstance(document, 'html-block-renderer-loader');
+	const tempRenderers = await rendererLoader.renderers();
 	const defaultRenderers = [ createMathRenderer(), createCodeRenderer() ];
 	renderers = (tempRenderers ? [ ...defaultRenderers, ...tempRenderers ] : defaultRenderers);
 	return renderers;
