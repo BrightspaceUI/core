@@ -42,7 +42,7 @@ describe('d2l-html-block', () => {
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
 			if (info.action) await info.action(info.selector);
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await new Promise(resolve => setTimeout(resolve, 100));
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
