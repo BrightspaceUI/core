@@ -52,13 +52,8 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		if (!this.tags) return;
 
 		this._filterTags = document.createElement('d2l-filter-tags');
-		this.insertAdjacentElement('afterend', this._filterTags);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-
-		if (this._filterTags) this._filterTags.remove();
+		this._filterTags.setAttribute('slot', 'adjacent');
+		this.appendChild(this._filterTags);
 	}
 
 	firstUpdated(changedProperties) {
