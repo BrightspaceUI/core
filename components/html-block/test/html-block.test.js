@@ -144,7 +144,7 @@ describe('d2l-html-block', () => {
 		expect(spans[1].innerHTML).to.equal('2');
 	});
 
-	it.only('should do async replacements', async() => {
+	it('should do async replacements', async() => {
 		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
 		const htmlBlock = await fixture(asyncReplacementFixture);
 		await replacementComplete;
