@@ -41,11 +41,8 @@ class TestAsyncRenderer {
 			elemToReplace.innerText = `${someId}: ${asyncValue}`;
 		});
 
-		// just for test so it can wait
-		setTimeout(() => {
-			document.dispatchEvent(new CustomEvent('d2l-test-replacement-complete'));
-		}, 0);
-
+		// Don't need a setTimeout because this renderer is already async.
+		document.dispatchEvent(new CustomEvent('d2l-test-replacement-complete'));
 		return elem;
 	}
 }
@@ -88,12 +85,16 @@ class TestSecondaryRenderer {
 	}
 }
 
-provideInstance(document, 'html-block-renderers', [
-	new TestRenderer(),
-	new TestAsyncRenderer(),
-	new TestNoInlineRenderer(),
-	new TestSecondaryRenderer()
-]);
+provideInstance(document, 'html-block-renderer-loader', {
+	getRenderers() {
+		return [
+			new TestRenderer(),
+			new TestAsyncRenderer(),
+			new TestNoInlineRenderer(),
+			new TestSecondaryRenderer()
+		];
+	}
+});
 
 describe('d2l-html-block', () => {
 
@@ -143,7 +144,7 @@ describe('d2l-html-block', () => {
 		expect(spans[1].innerHTML).to.equal('2');
 	});
 
-	it('should do async replacements', async() => {
+	it.only('should do async replacements', async() => {
 		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
 		const htmlBlock = await fixture(asyncReplacementFixture);
 		await replacementComplete;
