@@ -1,9 +1,9 @@
 import '../colors/colors.js';
-import { codeStyles, HtmlBlockCodeRenderer } from '../../helpers/prism.js';
+import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
-import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -118,10 +118,15 @@ export const htmlBlockContentStyles = css`
 
 let renderers;
 
-const getRenderers = () => {
+const getRenderers = async() => {
 	if (renderers) return renderers;
-	const tempRenderers = requestInstance(document, 'html-block-renderers');
-	const defaultRenderers = [ new HtmlBlockMathRenderer(), new HtmlBlockCodeRenderer() ];
+	let tempRenderers = requestInstance(document, 'html-block-renderers');
+	if (!tempRenderers) {
+		const tempRendererLoader = requestInstance(document, 'html-block-renderer-loader');
+		tempRenderers = await tempRendererLoader.renderers();
+	}
+
+	const defaultRenderers = [ createMathRenderer(), createCodeRenderer() ];
 	renderers = (tempRenderers ? [ ...defaultRenderers, ...tempRenderers ] : defaultRenderers);
 	return renderers;
 };
@@ -193,13 +198,12 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		this.noDeferredRendering = false;
 		this._hasSlottedContent = false;
 
-		const rendererContextAttributes = getRenderers().reduce((attrs, currentRenderer) => {
+		getRenderers().then(renderers => renderers.reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
 			return attrs;
-		}, []);
-
-		if (rendererContextAttributes.length === 0) return;
-		this._contextObserverController = new HtmlAttributeObserverController(this, ...rendererContextAttributes);
+		}, [])).then(rendererContextAttributes => {
+			this._contextObserverController = new HtmlAttributeObserverController(this, ...rendererContextAttributes);
+		});
 	}
 
 	connectedCallback() {
@@ -257,6 +261,10 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 	_contextChanged() {
 		if (!this._contextObserverController) return false;
+		if (!this._contextKeys) {
+			this._updateContextKeys();
+			return true;
+		}
 
 		if (this._contextKeys.size !== this._contextObserverController.values.size) return true;
 		for (const [attr, val] of this._contextKeys) {
@@ -286,7 +294,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	async _processRenderers(elem) {
-		for (const renderer of getRenderers()) {
+		const renderers = await getRenderers();
+		for (const renderer of renderers) {
 			if (this._contextObserverController && renderer.contextAttributes) {
 				const contextValues = new Map();
 				renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
