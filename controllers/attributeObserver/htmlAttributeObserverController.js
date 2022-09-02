@@ -14,9 +14,9 @@ export class HtmlAttributeObserverController {
 		);
 
 		this._host = host;
-		host.addController(this);
 		this._attributes = attributes;
 		this.values = new Map();
+		host.addController(this);
 	}
 
 	hostConnected() {
