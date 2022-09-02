@@ -35,18 +35,18 @@ describe('d2l-alert', () => {
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
-		it('should fire "d2l-alert-closed" event when close button is clicked', async() => {
+		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
-			await oneEvent(alert, 'd2l-alert-closed');
+			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
-		it('should fire "d2l-alert-closed" event when close is called', async() => {
+		it('should fire "d2l-alert-close" event when close is called', async() => {
 			const alert = await fixture(alertFixture);
 			setTimeout(() => alert.close());
-			await oneEvent(alert, 'd2l-alert-closed');
+			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
@@ -61,7 +61,7 @@ describe('d2l-alert', () => {
 			const alert = await fixture(alertFixture);
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
-			alert.addEventListener('d2l-alert-closed', (e) => {
+			alert.addEventListener('d2l-alert-close', (e) => {
 				e.preventDefault();
 			});
 			expect(alert.hasAttribute('hidden')).to.be.false;
