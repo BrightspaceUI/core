@@ -452,7 +452,7 @@ export async function formatCodeElement(elem) {
 	Prism.highlightElement(code);
 }
 
-export class HtmlBlockCodeRenderer {
+class HtmlBlockCodeRenderer {
 
 	get canRenderInline() {
 		return true;
@@ -470,4 +470,8 @@ export class HtmlBlockCodeRenderer {
 		return elem;
 	}
 
+}
+
+export function createHtmlBlockRenderer() {
+	return new HtmlBlockCodeRenderer();
 }

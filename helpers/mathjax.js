@@ -33,7 +33,7 @@ const mathjaxFontMappings = new Map([
 let mathJaxLoaded;
 let renderingPromise = Promise.resolve();
 
-export class HtmlBlockMathRenderer {
+class HtmlBlockMathRenderer {
 
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
@@ -75,6 +75,10 @@ export class HtmlBlockMathRenderer {
 		await renderingPromise;
 	}
 
+}
+
+export function createHtmlBlockRenderer() {
+	return new HtmlBlockMathRenderer();
 }
 
 export function loadMathJax(mathJaxConfig) {
