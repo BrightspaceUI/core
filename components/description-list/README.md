@@ -10,16 +10,20 @@ A Description List displays information in a vertical list of key-value pairs. C
 ```
 
 ## Best Practices
+Use a Description List to display static information that pairs property names and values. In the standard HTML description list `<dl>` element these are called terms `<dt>` and definitions `<dd>`.
+
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Terms and descriptions are 1-to-1
+* Keep terms short and scannable
+* Use terms of similar lengths since definitions are aligned to the longest term
+* Use title case for terms and sentence case for definitions
+* Adjust the [responsive breakpoint](#responsive-behavior) to suit your content since longer values may need a higher breakpoint
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't have a term without a description
-* Don't have a description without a term
-* Don't have multiple terms for a description
-* Don't have multiple descriptions for a term
+* Avoid using multiple description lists on one page
+* Don't use empty terms or definitions, both are required
+* Don't end a definition with a period unless it has multiple sentences
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -42,11 +46,14 @@ When the component width is less than the `breakpoint` property, the side-by-sid
       return html`
         <d2l-dl-wrapper breakpoint="600">
           <dl>
-            <dt>Course Code That Represents The Course as a Short String</dt>
-            <dd>A short string that represents the course, often with important information such as section or room number.</dd>
+            <dt>Active Course</dt>
+            <dd>Inactive courses are invisible, regardless of start or end dates unless the user’s role has the permission "Can View Inactive Courses"</dd>
 
-            <dt>Availability Dates</dt>
-            <dd>The start and end date for the course. Learners can't access courses outside these dates.</dd>
+            <dt>Start Date</dt>
+            <dd>The start date determines when a course becomes available to learners. Users with the "Can View Course Before Start Date" permission are excluded from this restriction.</dd>
+
+            <dt>End Date</dt>
+            <dd>The end date determines when a course becomes unavailable to learners. Users with the "Can View Course After End Date" permission are excluded from this restriction.</dd>
           </dl>
         </d2l-dl-wrapper>
       `;
@@ -60,9 +67,9 @@ When the component width is less than the `breakpoint` property, the side-by-sid
 
 ## Description List Wrapper [d2l-dl-wrapper]
 
-The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styling and resize behavior to native `dl` elements.
+The `d2l-dl-wrapper` component can be combined with `descriptionListStyles` to apply styling and resize behavior to native `dl` elements.
 
-<!-- docs: demo live name:d2l-test-dl -->
+<!-- docs: demo live name:d2l-test-dl display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -84,11 +91,17 @@ The `d2l-dl-wrapper` can be combined with `descriptionListStyles` to apply styli
       return html`
         <d2l-dl-wrapper breakpoint="${this.breakpoint}">
           <dl>
-            <dt>Course Code That Represents The Course as a Short String</dt>
-            <dd>A short string that represents the course, often with important information such as section or room number.</dd>
+            <dt>Course Name</dt>
+            <dd>Brightspace 101B</dd>
 
-            <dt>Availability Dates</dt>
-            <dd>The start and end date for the course. Learners can't access courses outside these dates.</dd>
+            <dt>Course Code</dt>
+            <dd>BSPC 101B</dd>
+
+            <dt>Start Date</dt>
+            <dd>June 14 2022</dd>
+
+            <dt>Semester</dt>
+            <dd>2022 Summer</dd>
           </dl>
         </d2l-dl-wrapper>
       `;
