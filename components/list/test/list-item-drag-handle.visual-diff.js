@@ -1,6 +1,13 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
+function itWithReload(name, test, getPage) {
+	return it(name, async function() {
+		try { await test.call(this); }
+		finally { await getPage().reload(); }
+	});
+}
+
 describe('d2l-list-item-drag-handle', () => {
 
 	const visualDiff = new VisualDiff('list-item-drag-handle', import.meta.url);
@@ -34,14 +41,14 @@ describe('d2l-list-item-drag-handle', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('keyboard-mode', async function() {
+		itWithReload('keyboard-mode', async function() {
 			await focusMethod('d2l-list-item-drag-handle');
 			await page.$eval('d2l-list-item-drag-handle', (item) => { item._keyboardActive = true; });
 			const rect = await visualDiff.getRect(page, '#drag-handle');
 			rect.width = 320;
 			rect.height = 200;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
+		}, () => page);
 
 	});
 
