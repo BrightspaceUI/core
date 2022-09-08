@@ -62,21 +62,23 @@ describe('d2l-tooltip', () => {
 
 	});
 
-	[
-		'position-top',
-		'position-bottom',
-		'position-right',
-		'position-left'
-	].forEach((testName) => {
+	describe('dark-background', () => {
+		beforeEach(async() => await page.addStyleTag({ content: 'body { background-color: black }' }));
 
-		it(`dark-background-${testName}`, async function() {
-			await page.addStyleTag({ content: 'body { background-color: black }' });
+		[
+			'position-top',
+			'position-bottom',
+			'position-right',
+			'position-left'
+		].forEach((testName) => {
 
-			const selector = `#${testName}`;
-			await show(page, selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			it(testName, async function() {
+				const selector = `#${testName}`;
+				await show(page, selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			});
+
 		});
-
 	});
 
 });
