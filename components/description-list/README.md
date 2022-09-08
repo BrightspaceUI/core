@@ -23,6 +23,7 @@ Use a Description List to display static information that pairs property names a
 <!-- docs: start donts -->
 * Avoid using multiple description lists on one page
 * Don't use empty terms or definitions, both are required
+* Don't use colons in the labels, they're unnecessary
 * Don't end a definition with a period unless it has multiple sentences
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
