@@ -1,7 +1,7 @@
 import { _isValidCssSelector } from '../styles.js';
 import { expect } from '@open-wc/testing';
 
-describe.only('_isValidCssSelector', () => {
+describe('_isValidCssSelector', () => {
 
 	it('should support simple tag names', () => {
 		expect(_isValidCssSelector('a')).to.be.true;
@@ -25,12 +25,14 @@ describe.only('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('p[loading]')).to.be.true;
 	});
 
-	it('should not support complex selectors', () => {
-		expect(_isValidCssSelector('dl dd')).to.be.false;
-		expect(_isValidCssSelector('dt.class')).to.be.false;
-		expect(_isValidCssSelector('dt#id')).to.be.false;
-		expect(_isValidCssSelector('dl .class')).to.be.false;
-		expect(_isValidCssSelector('dl #id')).to.be.false;
+	it('should support complex selectors', () => {
+		expect(_isValidCssSelector('dl dd')).to.be.true;
+		expect(_isValidCssSelector('dt.class')).to.be.true;
+		expect(_isValidCssSelector('dt#id')).to.be.true;
+		expect(_isValidCssSelector('dl .class')).to.be.true;
+		expect(_isValidCssSelector('dl #id')).to.be.true;
+		expect(_isValidCssSelector('dl > dt')).to.be.true;
+		expect(_isValidCssSelector('dl > dt > dd')).to.be.true;
 	});
 
 	it('should not support invalid selectors', () => {
