@@ -195,7 +195,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		this._hasSlottedContent = false;
 
 		this._contextObserverControllerResolve = undefined;
-		this._contextObserverControllerLoaded = new Promise(resolve => {
+		this._contextObserverControllerInitialized = new Promise(resolve => {
 			this._contextObserverControllerResolve = resolve;
 		});
 
@@ -262,7 +262,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	async _contextChanged() {
-		await this._contextObserverControllerLoaded;
+		await this._contextObserverControllerInitialized;
 		if (!this._contextKeys) {
 			this._updateContextKeys();
 			return true;
@@ -296,7 +296,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	}
 
 	async _processRenderers(elem) {
-		await this._contextObserverControllerLoaded;
+		await this._contextObserverControllerInitialized;
 		const renderers = await getRenderers();
 		for (const renderer of renderers) {
 			if (renderer.contextAttributes) {
