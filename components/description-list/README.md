@@ -1,5 +1,5 @@
 # Description List
-A Description List displays information in a vertical list of key-value pairs. Common usages could include terms & definitions, or fields & values.
+A Description List displays static pairs of terms and definitions in a vertical list. In the standard HTML element `dl` these are called "terms" `dt` and "definitions" `dd`.
 
 <!-- docs: demo -->
 ```html
@@ -10,7 +10,6 @@ A Description List displays information in a vertical list of key-value pairs. C
 ```
 
 ## Best Practices
-Use a Description List to display static information that pairs property names and values. In the standard HTML description list `<dl>` element these are called terms `<dt>` and definitions `<dd>`.
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
