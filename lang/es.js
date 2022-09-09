@@ -98,8 +98,8 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione todos los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.switch.visible": "Visible",
-	"components.switch.visibleWithPeriod": "Visible.",
+	"components.switch.visible": "Visible", // mfv-translated
+	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.tabs.next": "Desplazarse hacia adelante",
