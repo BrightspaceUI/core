@@ -37,6 +37,7 @@ class TestTable extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
+			stickyHeadersHorizontalScroll: { attribute: 'sticky-headers-horizontal-scroll', type: Boolean },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
 		};
@@ -68,18 +69,26 @@ class TestTable extends RtlMixin(LitElement) {
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}" ?sticky-headers-horizontal-scroll="${this.stickyHeadersHorizontalScroll}">
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th sticky>Country</th>
+							<th scope="col">Order</th>
+							<th sticky scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 					</thead>
 					<tbody>
-						${sorted.map((row) => html`
+						${sorted.map((row, index) => html`
 							<tr ?selected="${row.selected}">
-								<th sticky><d2l-input-checkbox ?checked="${row.selected}" @change="${this._selectRow}">${row.name}</d2l-input-checkbox></th>
+								<td>${++index}</td>
+								<th sticky scope="row">
+									<d2l-input-checkbox
+										?checked="${row.selected}"
+										@change="${this._selectRow}"
+										style="margin-bottom: 0;">
+											${row.name}
+									</d2l-input-checkbox></th>
 								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
@@ -99,7 +108,7 @@ class TestTable extends RtlMixin(LitElement) {
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th>
+			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"

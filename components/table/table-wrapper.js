@@ -161,6 +161,63 @@ export const tableStyles = css`
 		position: sticky;
 		z-index: 1;
 	}
+
+
+	/*sticky-headers-horizontal-scroll*/
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table {
+		table-layout: fixed;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
+		display: block;
+		overflow-x: hidden;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody {
+		display: block;
+		overflow-x: auto;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr,
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr {
+		width: inherit;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody,
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tfoot {
+		background-color: inherit;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > * > tr:not([selected]) {
+		background-color: #ffffff; /* white background so sticky cells layer on top of non-sticky cells */
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+		z-index: 2;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr > th[sticky]  {
+		position: -webkit-sticky;
+		position: sticky;
+		left: 0;
+		z-index: 3;
+	}
+
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky]  {
+		position: -webkit-sticky;
+		position: sticky;
+		left: 0;
+		z-index: 1;
+		background-color:inherit;
+	}
+
+	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"] .d2l-table > thead{
+		top: -5px;
+	}
 `;
 
 /**
@@ -196,7 +253,12 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			type: {
 				reflect: true,
 				type: String
-			}
+			},
+			stickyHeadersHorizontalScroll: {
+				attribute: 'sticky-headers-horizontal-scroll',
+				reflect: true,
+				type: Boolean
+			},
 		};
 	}
 
@@ -248,7 +310,10 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		if (this.stickyHeaders) {
 			return slot;
-		} else {
+		} else if (this.stickyHeadersHorizontalScroll) {
+			return slot;
+		}
+		else {
 			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
 		}
 	}
@@ -315,7 +380,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		});
 
-		if (this.stickyHeaders && topHeaderHeight > -1) {
+		if ((this.stickyHeaders || this.stickyHeadersHorizontalScroll) && topHeaderHeight > -1) {
 			const offset = this.type === 'default' ? -3 : 1; // default: -5px top + 2px border, light: 0 top + 1px border
 			const ths = Array.from(table.querySelectorAll('tr.d2l-table-header:not(:first-child) th, tr[header]:not(:first-child) th, thead tr:not(:first-child) th'));
 			ths.forEach((th) => {
@@ -323,6 +388,12 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			});
 		}
 
+		if (this.stickyHeadersHorizontalScroll) {
+			const head = table.querySelector('thead');
+			const body = table.querySelector('tbody');
+			this._syncColumnWidths(head, body);
+			this._syncScrollers(head, body);
+		}
 	}
 
 	_handleSlotChange(e) {
@@ -366,6 +437,59 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		this._applyClassNames(table);
 
+	}
+
+	_syncColumnWidths(head, body) {
+
+		const firstRowHead = head.rows.length > 0 ? head.rows[0] : undefined;
+		const firstRowBody = body.rows.length > 0 ? body.rows[0] : undefined;
+
+		if (!firstRowHead
+			|| !firstRowBody
+			|| firstRowHead.cells.length !== firstRowBody.cells.length) {
+			return;
+		}
+
+		const setWidth = function(cell1, cell2) {
+			const elementStyles = getComputedStyle(cell1);
+			const padding = parseFloat(elementStyles.paddingLeft) + parseFloat(elementStyles.paddingRight);
+			cell2.style.minWidth = `${(cell1.clientWidth - padding)}px`;
+		};
+
+		for (let i = 0; i < firstRowHead.cells.length; i++) {
+			const headCell = firstRowHead.cells[i];
+			const bodyCell = firstRowBody.cells[i];
+
+			if (headCell.clientWidth > bodyCell.clientWidth) {
+				setWidth(headCell, bodyCell);
+			} else if (headCell.clientWidth < bodyCell.clientWidth) {
+				setWidth(bodyCell, headCell);
+			}
+		}
+	}
+
+	_syncScrollers(scroller1, scroller2) {
+
+		let isSyncingScroll1 = false;
+		let isSyncingScroll2 = false;
+
+		scroller1.addEventListener('scroll', (event) => {
+
+			if (!isSyncingScroll1) {
+				isSyncingScroll2 = true;
+				scroller2.scrollLeft = event.target.scrollLeft;
+			}
+			isSyncingScroll1 = false;
+		});
+
+		scroller2.addEventListener('scroll', (event) => {
+
+			if (!isSyncingScroll2) {
+				isSyncingScroll1 = true;
+				scroller1.scrollLeft = event.target.scrollLeft;
+			}
+			isSyncingScroll2 = false;
+		});
 	}
 }
 
