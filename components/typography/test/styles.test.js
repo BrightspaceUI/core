@@ -35,6 +35,13 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('dl > dt > dd')).to.be.true;
 	});
 
+	it('should not support valid :host selectors', () => {
+		expect(_isValidCssSelector(':host')).to.be.false;
+		expect(_isValidCssSelector(':host p')).to.be.false;
+		expect(_isValidCssSelector(':host([hidden])')).to.be.false;
+		expect(_isValidCssSelector(':host([dir="rtl"])')).to.be.false;
+	});
+
 	it('should not support invalid selectors', () => {
 		expect(_isValidCssSelector('a[b[c]]')).to.be.false;
 		expect(_isValidCssSelector('abc$')).to.be.false;
