@@ -152,7 +152,7 @@ describe('focus', () => {
 
 		it('returns focusable not tabblable child', async() => {
 			const elem = await fixture(focusableNotTabbableFixture);
-			expect(getFirstFocusableDescendant(elem.getContent(), false, true, false))
+			expect(getFirstFocusableDescendant(elem, false, true, false))
 				.to.equal(elem.querySelector('#focusable'));
 		});
 
@@ -195,7 +195,7 @@ describe('focus', () => {
 
 		it('returns focusable not tabblable child', async() => {
 			const elem = await fixture(focusableNotTabbableFixture);
-			expect(getFirstFocusableDescendant(elem.getContent(), false, classPredicate, false))
+			expect(getFirstFocusableDescendant(elem, false, classPredicate, false))
 				.to.equal(elem.querySelector('#focusable'));
 		});
 
