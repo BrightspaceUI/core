@@ -91,6 +91,12 @@ const parentSiblingFocusableAncestorFixture = html`
 		</div>
 	</div>
 `;
+const focusableNotTabbableFixture = html`
+	<div>
+		<div id="not-focusable" class="same-class"></div>
+		<div id="focusable" class="same-class" tabindex="-1"></div>
+	</div>
+`
 
 describe('focus', () => {
 
@@ -144,11 +150,18 @@ describe('focus', () => {
 				.to.equal(elem.querySelector('#light1'));
 		});
 
+		it('returns focusable not tabblable child', async() => {
+			const elem = await fixture(focusableNotTabbableFixture);
+			expect(getFirstFocusableDescendant(elem.getContent(), false, true, false))
+				.to.equal(elem.querySelector('#focusable'));
+		});
+
 	});
 
 	describe('getFirstFocusableDescendant with predicate', () => {
 		const lightPredicate = node => node.id === 'light2';
 		const shadowPredicate = node => node.id === 'shadow2';
+		const classPredicate = node => node.class === 'same-class';
 
 		it('returns focusable child', async() => {
 			const elem = await fixture(simpleFixture);
@@ -178,6 +191,12 @@ describe('focus', () => {
 			const elem = await fixture(wcFixture);
 			expect(getFirstFocusableDescendant(elem.getContent(), false, lightPredicate))
 				.to.equal(elem.querySelector('#light2'));
+		});
+
+		it('returns focusable not tabblable child', async() => {
+			const elem = await fixture(focusableNotTabbableFixture);
+			expect(getFirstFocusableDescendant(elem.getContent(), false, classPredicate, false))
+				.to.equal(elem.querySelector('#focusable'));
 		});
 
 	});
