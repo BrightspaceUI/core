@@ -152,7 +152,7 @@ describe('focus', () => {
 
 		it('returns focusable not tabblable child', async() => {
 			const elem = await fixture(focusableNotTabbableFixture);
-			expect(getFirstFocusableDescendant(elem, false, true, false))
+			expect(getFirstFocusableDescendant(elem, false, node => true, false))
 				.to.equal(elem.querySelector('#focusable'));
 		});
 
@@ -161,7 +161,7 @@ describe('focus', () => {
 	describe('getFirstFocusableDescendant with predicate', () => {
 		const lightPredicate = node => node.id === 'light2';
 		const shadowPredicate = node => node.id === 'shadow2';
-		const classPredicate = node => node.class === 'same-class';
+		const classPredicate = node => node.class.includes('same-class');
 
 		it('returns focusable child', async() => {
 			const elem = await fixture(simpleFixture);
