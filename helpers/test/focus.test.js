@@ -96,7 +96,7 @@ const focusableNotTabbableFixture = html`
 		<div id="not-focusable" class="same-class"></div>
 		<div id="focusable" class="same-class" tabindex="-1"></div>
 	</div>
-`
+`;
 
 describe('focus', () => {
 
