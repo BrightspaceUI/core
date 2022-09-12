@@ -161,7 +161,7 @@ describe('focus', () => {
 	describe('getFirstFocusableDescendant with predicate', () => {
 		const lightPredicate = node => node.id === 'light2';
 		const shadowPredicate = node => node.id === 'shadow2';
-		const classPredicate = node => node.class.includes('same-class');
+		const classPredicate = node => node.classList.contains('same-class');
 
 		it('returns focusable child', async() => {
 			const elem = await fixture(simpleFixture);
