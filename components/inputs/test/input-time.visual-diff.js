@@ -145,7 +145,7 @@ describe('d2l-input-time', () => {
 			await reset(page, '#enforce');
 		});
 
-		it('dropdown open top', async function() {
+		it.skip('dropdown open top', async function() {
 			await page.reload(); // Needed for retries
 			await page.$eval('#opened', async(elem) => { elem.removeAttribute('opened'); await elem.updateComplete; }); // Needed for retries
 
