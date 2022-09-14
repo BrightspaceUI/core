@@ -28,7 +28,7 @@ A Description List displays static pairs of terms and definitions in a vertical 
 <!-- docs: end best practices -->
 
 ## Responsive Behavior
-When the component width is less than the `breakpoint` property, the side-by-side pairs will appear in a stacked layout.
+For very long values, or very small container sizes, the description list can use a vertically stacked layout. By default this happens at a container-width breakpoint of `240px`, but the `breakpoint` property provides flexibility so it can be adjusted to suit your content.
 
 <!-- docs: demo -->
 ```html
