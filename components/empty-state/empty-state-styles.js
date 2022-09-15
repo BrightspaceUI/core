@@ -15,8 +15,8 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
-	.action-slot::slotted(d2l-empty-state-action-button:first-child),
-	.action-slot::slotted(d2l-empty-state-action-link:first-child) {
+	.action-slot::slotted(d2l-empty-state-action-button:first-of-type),
+	.action-slot::slotted(d2l-empty-state-action-link:first-of-type) {
 		display: inline;
 	}
 
@@ -52,6 +52,7 @@ export const emptyStateIllustratedStyles = css`
 		display: none;
 	}
 
+	.illustration-slot::slotted(img:first-of-type),
 	.illustration-slot::slotted(svg:first-of-type) {
 		display: inline-block;
 	}

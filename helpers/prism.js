@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit-element/lit-element.js';
-
-window.Prism = window.Prism || {};
-Prism.manual = true;
+import { css, unsafeCSS } from 'lit';
 
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
 //const prismLocation = '/node_modules/prismjs'; // for local debugging
@@ -407,6 +404,12 @@ let prismLoaded;
 const loadPrism = () => {
 	if (prismLoaded) return prismLoaded;
 
+	// Set Prism to manual mode before loading to make sure
+	// we don't automatically highlight before we finish
+	// configuring it.
+	window.Prism = window.Prism || {};
+	Prism.manual = true;
+
 	prismLoaded = Promise.all([
 		new Promise(resolve => {
 			const script = document.createElement('script');
@@ -450,11 +453,9 @@ export async function formatCodeElement(elem) {
 
 	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
 	Prism.highlightElement(code);
-
-	return elem;
 }
 
-export class HtmlBlockCodeRenderer {
+class HtmlBlockCodeRenderer {
 
 	get canRenderInline() {
 		return true;
@@ -472,4 +473,8 @@ export class HtmlBlockCodeRenderer {
 		return elem;
 	}
 
+}
+
+export function createHtmlBlockRenderer() {
+	return new HtmlBlockCodeRenderer();
 }

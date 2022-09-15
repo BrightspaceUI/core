@@ -196,23 +196,12 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	close() {
-		// deprecated - event names should be present tense
-		/** @ignore */
-		const didDispatch = this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }));
-		if (didDispatch) {
-			this.hidden = true;
-		}
 		if (this.dispatchEvent(new CustomEvent('d2l-alert-close', { bubbles: true, composed: true, cancelable: true }))) {
 			this.hidden = true;
 		}
 	}
 
 	_onButtonClick() {
-		// deprecated - event names should be present tense
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-alert-button-pressed', { bubbles: true, composed: true }
-		));
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-button-press', { bubbles: true, composed: true }
 		));

@@ -33,12 +33,16 @@ describe('d2l-html-block', () => {
 		{ name: 'math (block)', selector: '#math-block' },
 		{ name: 'math (inline)', selector: '#math-inline' },
 		{ name: 'code (block)', selector: '#code-block' },
-		{ name: 'code (inline)', selector: '#code-inline' }
+		{ name: 'code (inline)', selector: '#code-inline' },
+		{ name: 'math (block) and code (block)', selector: '#math-block-and-code-block' },
+		{ name: 'using html property', selector: '#html-property' },
+		{ name: 'using both html property and slot', selector: '#html-property-and-slot' }
 	].forEach((info) => {
 
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
 			if (info.action) await info.action(info.selector);
+			await new Promise(resolve => setTimeout(resolve, 0));
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

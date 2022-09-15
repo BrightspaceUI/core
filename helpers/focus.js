@@ -37,15 +37,15 @@ export function getComposedActiveElement() {
 	return node;
 }
 
-export function getFirstFocusableDescendant(node, includeHidden, predicate) {
+export function getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly) {
 	if (predicate === undefined) predicate = () => true;
 
 	const composedChildren = getComposedChildren(node);
 
 	for (let i = 0; i < composedChildren.length; i++) {
-		if (isFocusable(composedChildren[i], includeHidden) && predicate(composedChildren[i])) return composedChildren[i];
+		if (isFocusable(composedChildren[i], includeHidden, includeTabbablesOnly) && predicate(composedChildren[i])) return composedChildren[i];
 
-		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate);
+		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly);
 		if (focusable) return focusable;
 	}
 

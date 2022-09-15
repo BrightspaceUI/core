@@ -23,6 +23,7 @@ const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
+const outlineSize = 1;
 
 /* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
 let delayTimeoutId;
@@ -179,6 +180,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host {
 				--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 				--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+				--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
 				box-sizing: border-box;
 				color: white;
 				display: none;
@@ -273,6 +275,26 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: ${pointerLength}px;
 			}
 
+			:host([_open-dir="top"]) .d2l-tooltip-pointer-outline {
+				clip: rect(${pointerOverhang + contentBorderSize + outlineSize * 2}px, 21px, 22px, -3px);
+			}
+
+			:host([_open-dir="bottom"]) .d2l-tooltip-pointer-outline {
+				clip: rect(-4px, 21px, ${pointerOverhang + contentBorderSize - outlineSize * 2}px, -7px);
+			}
+
+			:host([_open-dir="left"]) .d2l-tooltip-pointer-outline {
+				clip: rect(-3px, 21px, 21px, ${pointerOverhang + contentBorderSize + outlineSize * 2}px);
+			}
+
+			:host([_open-dir="right"]) .d2l-tooltip-pointer-outline {
+				clip: rect(-3px, ${pointerOverhang + contentBorderSize - outlineSize * 2}px, 21px, -4px);
+			}
+
+			.d2l-tooltip-pointer-outline > div {
+				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
+			}
+
 			.d2l-tooltip-position {
 				display: inline-block;
 				height: 0;
@@ -295,6 +317,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				max-width: 17.5rem;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
+				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
@@ -466,12 +489,18 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 
+		// Note: role="text" is a workaround for Safari. Otherwise, list-item content is not announced with VoiceOver
 		return html`
 			<div class="d2l-tooltip-container">
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
 					<div class="d2l-body-small d2l-tooltip-content">
-						<slot></slot>
+						<div role="text">
+							<slot></slot>
+						</div>
 					</div>
+				</div>
+				<div class="d2l-tooltip-pointer d2l-tooltip-pointer-outline">
+					<div></div>
 				</div>
 				<div class="d2l-tooltip-pointer">
 					<div></div>

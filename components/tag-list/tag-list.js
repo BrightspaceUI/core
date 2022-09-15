@@ -425,7 +425,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			if (button) button.focus();
 		}
 	}
-
 }
 
 customElements.define('d2l-tag-list', TagList);

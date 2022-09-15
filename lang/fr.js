@@ -92,13 +92,16 @@ export default {
 	"components.more-less.more": "plus",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} de plus",
-	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} of {totalCountFormatted} item} other {{showingCount} of {totalCountFormatted} items}}",
+	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} de {totalCountFormatted} élément} other {{showingCount} de {totalCountFormatted} éléments}}",
 	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",
 	"components.selection.action-hint": "Sélectionner un élément pour exécuter cette action.",
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
-	"components.switch.visibility": "Visibilité",
+	"components.switch.visible": "Visible", // mfv-translated
+	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.hidden": "Masqué(e)",
+	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.tabs.next": "Défilement avant",
 	"components.tabs.previous": "Défilement arrière",
 	"components.tag-list.clear": "Cliquez sur le bouton, appuyez sur retour arrière ou appuyez sur la touche de suppression pour supprimer l’élément {value}",

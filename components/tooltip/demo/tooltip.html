@@ -14,13 +14,6 @@
 		import '../tooltip-help.js';
 	</script>
 	<style>
-		p {
-			padding-top: 1rem;
-		}
-
-		p:nth-child(3) {
-			padding-top: 0;
-		}
 
 		.boundary {
 			background-color: var(--d2l-color-citrine);
@@ -61,6 +54,12 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+
+		.dark-background {
+			background-color: black;
+			padding: 20px;
+		}
+
 	</style>
 </head>
 
@@ -159,11 +158,23 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Tooltip (dark background)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="dark-background">
+					<d2l-button id="tooltip-dark-background">Dark Background</d2l-button>
+					<d2l-tooltip for="tooltip-dark-background">
+						All tooltips have an outline.
+					</d2l-tooltip>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
 		<h2>Help Tooltip</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-tooltip-help text="Helpful label">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
-				<p class="d2l-body-small">
+				<p class="d2l-body-small" style="padding-top: 20px;">
 					This is some sample text.
 					<d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 				</p>
