@@ -53,7 +53,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 			 * Number of selected items. Optional parameter used to override existing count.
 			 * @type {number}
 			 */
-			selectedCount: { type: Number, attribute: 'selected-count' }
+			selectionCountOverride: { type: Number, attribute: 'selection-count-override' }
 		};
 	}
 

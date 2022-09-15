@@ -39,9 +39,9 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
 		let count;
 		let summary;
-		if (this._provider && this._provider.selectedCount !== undefined) {
-			count = this._provider.selectedCount;
-			summary = (this._provider.selectedCount === 0 && this.noSelectionText ?
+		if (this._provider && this._provider.selectionCountOverride !== undefined) {
+			count = this._provider.selectionCountOverride;
+			summary = (this._provider.selectionCountOverride === 0 && this.noSelectionText ?
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count));
 		} else {
 			count = (this.selectionInfo.state === SelectionInfo.states.allPages ?
