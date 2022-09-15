@@ -48,7 +48,12 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 			 * Whether to render with single selection behaviour. If `selection-single` is specified, the nested `d2l-selection-input` elements will render radios instead of checkboxes, and the selection component will maintain a single selected item.
 			 * @type {boolean}
 			 */
-			selectionSingle: { type: Boolean, attribute: 'selection-single' }
+			selectionSingle: { type: Boolean, attribute: 'selection-single' },
+			/**
+			 * Number of selected items. Optional parameter used to override existing count.
+			 * @type {number}
+			 */
+			selectionCountOverride: { type: Number, attribute: 'selection-count-override' }
 		};
 	}
 
