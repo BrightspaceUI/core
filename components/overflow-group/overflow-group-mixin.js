@@ -141,6 +141,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowContainer}
 			</div>
+			<slot name="adjacent"></slot>	
 		`;
 	}
 

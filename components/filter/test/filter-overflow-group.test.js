@@ -59,30 +59,27 @@ describe('d2l-filter-overflow-group', () => {
 	});
 
 	describe('tags', () => {
-		let elem, filterOverflowGroup, filterTags;
+		let filterOverflowGroup, filterTags;
 
 		beforeEach(async() => {
-			elem = await fixture(html`
-				<div>
-					<d2l-filter-overflow-group tags>
-						<d2l-filter>
-							<d2l-filter-dimension-set key="skill1" text="Skill1">
-								<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
-								<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
-							</d2l-filter-dimension-set>
-						</d2l-filter>
-						<d2l-filter id="filter-2">
-							<d2l-filter-dimension-set key="skill2" text="Skill2">
-								<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
-								<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
-							</d2l-filter-dimension-set>
-						</d2l-filter>
-					</d2l-filter-overflow-group>
-				</div>
+			filterOverflowGroup = await fixture(html`
+				<d2l-filter-overflow-group tags>
+					<d2l-filter>
+						<d2l-filter-dimension-set key="skill1" text="Skill1">
+							<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
+						</d2l-filter-dimension-set>
+					</d2l-filter>
+					<d2l-filter id="filter-2">
+						<d2l-filter-dimension-set key="skill2" text="Skill2">
+							<d2l-filter-dimension-set-value key="communication1" text="Fall"></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="leadership1" text="Winter"></d2l-filter-dimension-set-value>
+						</d2l-filter-dimension-set>
+					</d2l-filter>
+				</d2l-filter-overflow-group>
 			`);
-			filterOverflowGroup = elem.querySelector('d2l-filter-overflow-group');
 			await filterOverflowGroup.updateComplete;
-			filterTags = elem.querySelector('d2l-filter-tags');
+			filterTags = filterOverflowGroup.querySelector('d2l-filter-tags');
 			await waitUntil(() => filterTags.filterIds, 'Filter Ids not set');
 		});
 
