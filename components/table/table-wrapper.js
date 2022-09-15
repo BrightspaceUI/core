@@ -1,7 +1,11 @@
 import '../colors/colors.js';
+import '../icons/icon.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
+const SCROLL_AMOUNT = 0.8;
 
 export const tableStyles = css`
 	.d2l-table {
@@ -218,6 +222,18 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"] .d2l-table > thead{
 		top: -5px;
 	}
+
+	/* hide wrapper visuals from print view */
+	@media print {
+		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody {
+			overflow-x: hidden;
+		}
+
+		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead,
+		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky]  {
+			position: static;
+		}
+	}
 `;
 
 /**
@@ -259,6 +275,21 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				reflect: true,
 				type: Boolean
 			},
+			_hScrollbar: {
+				attribute: 'h-scrollbar',
+				reflect: true,
+				type: Boolean
+			},
+			_scrollbarLeft: {
+				attribute: 'scrollbar-left',
+				reflect: true,
+				type: Boolean
+			},
+			_scrollbarRight: {
+				attribute: 'scrollbar-right',
+				reflect: true,
+				type: Boolean
+			}
 		};
 	}
 
@@ -287,6 +318,80 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
+
+			/*scroll-wrapper*/
+
+			.d2l-scroll-wrapper-actions {
+				position: -webkit-sticky;
+				position: sticky;
+				top: 0;
+				bottom: 100px;
+				z-index: 4;
+			}
+
+			:host([dir="rtl"]) .d2l-scroll-wrapper-button-left,
+			.d2l-scroll-wrapper-button-right {
+				left: auto;
+				right: -10px;
+			}
+
+			:host([dir="rtl"]) .d2l-scroll-wrapper-button-right,
+			.d2l-scroll-wrapper-button-left {
+				left: -10px;
+				right: auto;
+			}
+
+			.d2l-scroll-wrapper-button {
+				background-color: var(--d2l-color-regolith);
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 50%;
+				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+				cursor: pointer;
+				display: inline-block;
+				height: 18px;
+				line-height: 0;
+				padding: 10px;
+				position: absolute;
+				top: 4px;
+				width: 18px;
+			}
+
+			.d2l-scroll-wrapper-button:hover {
+				background-color: var(--d2l-color-sylvite);
+			}
+
+			:host([scrollbar-right]) .d2l-scroll-wrapper-button-right {
+				display: none;
+			}
+
+			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
+				display: none;
+			}
+
+			:host([h-scrollbar][sticky-headers-horizontal-scroll]) {
+				border-left: 1px dashed var(--d2l-color-mica);
+				border-right: 1px dashed var(--d2l-color-mica);
+			}
+
+			:host(:not([dir="rtl"])[scrollbar-left]) {
+				border-left: none;
+			}
+
+			:host(:not([dir="rtl"])[scrollbar-right]) {
+				border-right: none;
+			}
+
+			/* hide wrapper visuals from print view */
+			@media print {
+				.d2l-scroll-wrapper-actions {
+					display: none;
+				}
+
+				:host([h-scrollbar][sticky-headers-horizontal-scroll]) {
+					border-left: none;
+					border-right: none;
+				}
+			}
 		`;
 	}
 
@@ -294,9 +399,15 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		super();
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
+		this.stickyHeadersHorizontalScroll = false;
 		this.type = 'default';
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
+		this._container = null;
+		this._hScrollbar = false;
+		this._resizeObserver = null;
+		this._scrollbarLeft = false;
+		this._scrollbarRight = false;
 	}
 
 	disconnectedCallback() {
@@ -304,6 +415,29 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
 		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
+		if (this._resizeObserver) this._resizeObserver.disconnect();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (this.stickyHeadersHorizontalScroll) {
+			const head =  this.querySelector('thead');
+			const body = this.querySelector('tbody');
+			this._container = head ?? body;
+			this._hScrollbar = true;
+
+			if (head && body) {
+				this._syncScrollers(head, body);
+			}
+
+			if (this._container) {
+				this._container.addEventListener('scroll', () => this._checkScrollThresholds());
+			}
+
+			this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
+			this._resizeObserver.observe(this._container);
+		}
 	}
 
 	render() {
@@ -311,7 +445,18 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		if (this.stickyHeaders) {
 			return slot;
 		} else if (this.stickyHeadersHorizontalScroll) {
-			return slot;
+			const actions = html`
+				<div class="d2l-scroll-wrapper-actions">
+					<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
+						<d2l-icon icon="tier1:chevron-left"></d2l-icon>
+					</div>
+					<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}">
+						<d2l-icon icon="tier1:chevron-right"></d2l-icon>
+					</div>
+				</div>`;
+			return html`
+				${actions}
+				${slot}`;
 		}
 		else {
 			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
@@ -326,6 +471,23 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
+		}
+	}
+
+	checkScrollbar() {
+		if (!this._container) return;
+		this._hScrollbar = this._container.offsetWidth !== this._container.scrollWidth;
+		this._checkScrollThresholds();
+	}
+
+	scrollDistance(distance, smooth) {
+		if (!this._container) return;
+		if (this.dir === 'rtl') distance = distance * RTL_MULTIPLIER;
+		if (this._container.scrollBy) {
+			this._container.scrollBy({ left: distance, behavior: smooth ? 'smooth' : 'auto' });
+		} else {
+			// legacy-Edge doesn't support scrollBy
+			this._container.scrollLeft = distance;
 		}
 	}
 
@@ -389,11 +551,21 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		}
 
 		if (this.stickyHeadersHorizontalScroll) {
-			const head = table.querySelector('thead');
+			const head =  table.querySelector('thead');
 			const body = table.querySelector('tbody');
-			this._syncColumnWidths(head, body);
-			this._syncScrollers(head, body);
+
+			if (head && body) {
+				this._syncColumnWidths(head, body);
+			}
 		}
+	}
+
+	_checkScrollThresholds() {
+		if (!this._container) return;
+		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.abs(this._container.scrollLeft);
+		this._scrollbarLeft = (this._container.scrollLeft === 0);
+		this._scrollbarRight = (lowerScrollValue <= 0);
+
 	}
 
 	_handleSlotChange(e) {
@@ -439,6 +611,18 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	}
 
+	_scrollLeft() {
+		if (!this._container) return;
+		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
+		this.scrollDistance(scrollDistance, true);
+	}
+
+	_scrollRight() {
+		if (!this._container) return;
+		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT;
+		this.scrollDistance(scrollDistance, true);
+	}
+
 	_syncColumnWidths(head, body) {
 
 		const firstRowHead = head.rows.length > 0 ? head.rows[0] : undefined;
@@ -452,8 +636,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		const setWidth = function(cell1, cell2) {
 			const elementStyles = getComputedStyle(cell1);
-			const padding = parseFloat(elementStyles.paddingLeft) + parseFloat(elementStyles.paddingRight);
-			cell2.style.minWidth = `${(cell1.clientWidth - padding)}px`;
+			cell2.style.minWidth = elementStyles.width;
 		};
 
 		for (let i = 0; i < firstRowHead.cells.length; i++) {
