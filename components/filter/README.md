@@ -371,6 +371,7 @@ The `d2l-filter-overflow-group` is a container for multiple filters that handles
 |---|---|---|
 | `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
 | `max-to-show` | Number | The maximum number of elements to show |
+| `tags` | Boolean, default: `false` | Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group. |
 <!-- docs: end hidden content -->
 
 ## Filter Dimension: Date [d2l-filter-dimension-date]

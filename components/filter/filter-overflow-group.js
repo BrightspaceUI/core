@@ -1,6 +1,8 @@
 import './filter.js';
+import './filter-tags.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OverflowGroupMixin } from '../overflow-group/overflow-group-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 function createFilterItem(node) {
@@ -15,6 +17,17 @@ function createFilterItem(node) {
 */
 class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
+	static get properties() {
+		return {
+			/**
+			 * Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group.
+			 * @type {boolean}
+			 */
+			tags: { type: Boolean },
+			_filterIds: { state: true }
+		};
+	}
+
 	static get styles() {
 		return [super.styles, css`
 			::slotted(d2l-filter) {
@@ -27,16 +40,51 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
+	constructor() {
+		super();
+
+		this._filterIds = '';
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		if (!this.tags) return;
+
+		this._filterTags = document.createElement('d2l-filter-tags');
+		this._filterTags.setAttribute('slot', 'adjacent');
+		this.appendChild(this._filterTags);
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this.addEventListener('d2l-filter-change', this._handleFilterChange);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('_filterIds') && this.tags) {
+			this._filterTags.setAttribute('filter-ids', this._filterIds.trim());
+		}
+	}
+
 	convertToOverflowItem(node) {
 		const tagName = node.tagName.toLowerCase();
-		if (tagName !== 'd2l-filter') console.warn(`d2l-filter-overflow-group: ${tagName} is invalid in this group. This group should only contain d2l-filter direct child elements.`);
-		else return createFilterItem(node);
+		if (tagName !== 'd2l-filter') {
+			console.warn(`d2l-filter-overflow-group: ${tagName} is invalid in this group. This group should only contain d2l-filter direct child elements.`);
+			return;
+		}
+
+		if (this.tags && !node.hasAttribute('data-filter-tags-subscribed')) {
+			const filterId = node.id || getUniqueId();
+			node.id = filterId;
+			this._filterIds += ` ${filterId}`;
+			node.setAttribute('data-filter-tags-subscribed', 'data-filter-tags-subscribed');
+		}
+
+		return createFilterItem(node);
 	}
 
 	getOverflowContainer(overflowItems) {

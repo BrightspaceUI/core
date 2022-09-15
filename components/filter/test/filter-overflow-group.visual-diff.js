@@ -50,6 +50,23 @@ describe('d2l-filter-overflow-group', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 			});
 		});
+
+		describe(`tags at width ${width}`, () => {
+			const selector = '#tags';
+
+			before(async() => {
+				await page.$eval(selector, async(elem, width) => {
+					elem.parentNode.style.width = `${width}px`;
+					await elem.updateComplete;
+				}, width);
+				await page.waitForTimeout(200);
+			});
+
+			it('is correct', async function() {
+				const rect = await visualDiff.getRect(page, `${selector}-container`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+			});
+		});
 	});
 
 	it('click dropdown opener', async function() {
