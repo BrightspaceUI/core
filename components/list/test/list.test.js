@@ -49,6 +49,7 @@ describe('d2l-list', () => {
 			await elem.updateComplete;
 			await elem.querySelector('[key="L1-1"]').updateComplete;
 			await elem.querySelector('[key="L1-2"]').updateComplete;
+			await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable item is clicked', async() => {
@@ -97,6 +98,7 @@ describe('d2l-list', () => {
 			await elem.querySelector('[slot="nested"]').updateComplete;
 			await elem.querySelector('[key="L2-1"]').updateComplete;
 			await elem.querySelector('[key="L2-2"]').updateComplete;
+			await new Promise(resolve => requestAnimationFrame(resolve)); // US143322: Needed by Firefox
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable leaf item is clicked', async() => {
