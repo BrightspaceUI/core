@@ -62,8 +62,9 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
-	const wait = (milliseconds) => {
-		return page.evaluate((milliseconds) => {
+	const wait = (selector, milliseconds) => {
+		return page.$eval(selector, async(elem, milliseconds) => {
+			await elem.updateComplete;
 			return new Promise(resolve => setTimeout(resolve, milliseconds));
 		}, milliseconds);
 	};
@@ -84,21 +85,9 @@ describe('d2l-list', () => {
 
 	[
 		{ category: 'nested', tests: [
-			{ name: 'all-selected-1', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
-				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
-				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
-				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
-			}) },
-			{ name: 'all-selected-2', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
-				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
-				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
-				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
-			}) },
-			{ name: 'all-selected-3', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
-				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
-				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
-				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
-			}) },
+			{ name: 'all-selected-1', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
+			{ name: 'all-selected-2', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
+			{ name: 'all-selected-3', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
 			{ name: 'all-selected-4', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
 				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
 				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
