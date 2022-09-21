@@ -63,7 +63,7 @@ describe('d2l-list', () => {
 	};
 
 	const wait = (selector, milliseconds) => {
-		return page.$eval(selector, async(elem, milliseconds) => {
+		return page.$eval('body', async(elem, milliseconds) => {
 			//await elem.updateComplete;
 			await new Promise(resolve => setTimeout(resolve, milliseconds));
 		}, milliseconds);
