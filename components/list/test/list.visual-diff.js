@@ -62,9 +62,10 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
-	const wait = (milliseconds) => {
-		return page.evaluate((milliseconds) => {
-			return new Promise(resolve => setTimeout(resolve, milliseconds));
+	const wait = (selector, milliseconds) => {
+		return page.$eval(selector, async(elem, milliseconds) => {
+			await elem.updateComplete;
+			await new Promise(resolve => setTimeout(resolve, milliseconds));
 		}, milliseconds);
 	};
 
@@ -165,7 +166,7 @@ describe('d2l-list', () => {
 		{ category: 'nested', tests: [
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
-			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait(100) }
+			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) }
 		] }
 	].forEach((info) => {
 
