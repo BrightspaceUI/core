@@ -97,13 +97,7 @@ describe('d2l-list', () => {
 				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
 				//await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
 				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
-			}) },
-			{ name: 'all-selected-6', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
-			{ name: 'all-selected-7', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
-			{ name: 'all-selected-8', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
-			{ name: 'all-selected-9', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 0) },
-			{ name: 'all-selected-10', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 0) },
-			{ name: 'all-selected-11', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 0) }
+			}) }
 		] }
 	].forEach((info) => {
 
