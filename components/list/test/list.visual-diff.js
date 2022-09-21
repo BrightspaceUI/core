@@ -63,7 +63,7 @@ describe('d2l-list', () => {
 	};
 
 	const wait = (selector, milliseconds) => {
-		return page.evaluate(async(elem, milliseconds) => {
+		return page.evaluate(async(milliseconds) => {
 			//await elem.updateComplete;
 			await new Promise(resolve => setTimeout(resolve, milliseconds));
 		}, milliseconds);
@@ -90,12 +90,12 @@ describe('d2l-list', () => {
 			{ name: 'all-selected-3', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
 			{ name: 'all-selected-4', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
 				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
-				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
+				//await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
 				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
 			}) },
 			{ name: 'all-selected-5', selector: '#nested-all-selected', action: () => page.waitForFunction(async() => {
 				console.log(document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length);
-				await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
+				//await document.querySelector('#nested-all-selected d2l-list-header').updateComplete;
 				return document.querySelector('#nested-all-selected d2l-list').getSelectionInfo(true).keys.length === 5;
 			}) },
 			{ name: 'all-selected-6', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) },
