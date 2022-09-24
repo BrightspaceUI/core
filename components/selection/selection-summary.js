@@ -37,11 +37,19 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	render() {
 		if (this._provider && this._provider.selectionSingle) return;
 
-		const count = (this.selectionInfo.state === SelectionInfo.states.allPages ?
-			this._provider.itemCount : this.selectionInfo.keys.length);
+		let count;
+		let summary;
+		if (this._provider && this._provider.selectionCountOverride !== undefined) {
+			count = this._provider.selectionCountOverride;
+			summary = (this._provider.selectionCountOverride === 0 && this.noSelectionText ?
+				this.noSelectionText : this.localize('components.selection.selected', 'count', count));
+		} else {
+			count = (this.selectionInfo.state === SelectionInfo.states.allPages ?
+				this._provider.itemCount : this.selectionInfo.keys.length);
 
-		const summary = (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText ?
-			this.noSelectionText : this.localize('components.selection.selected', 'count', count));
+			summary = (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText ?
+				this.noSelectionText : this.localize('components.selection.selected', 'count', count));
+		}
 
 		return html`
 			<p class="d2l-body-compact">${summary}</p>

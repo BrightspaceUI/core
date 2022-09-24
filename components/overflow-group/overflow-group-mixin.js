@@ -141,6 +141,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowContainer}
 			</div>
+			<slot name="adjacent"></slot>	
 		`;
 	}
 
@@ -211,7 +212,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		} else if (this._overflowContainer) {
 			this._overflowContainerWidth = this._overflowContainer.offsetWidth;
 		}
-		this._overflowContainerWidth = this._overflowContainerWidth || 0;
 
 		const showing = {
 			count: 0,
@@ -356,7 +356,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		if (!this._hasResized) {
 			this._hasResized = true;
-			await this._handleSlotChange();
+			this._handleSlotChange();
 		} else {
 			this._chomp();
 		}
@@ -382,6 +382,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 
 			this._chomp();
+			this.requestUpdate();
 		});
 	}
 };

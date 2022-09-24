@@ -4,26 +4,26 @@ import { classMap } from 'lit/directives/class-map.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
-	_generateLabelStyles('dt'),
-	_generateBodyCompactStyles('dd'),
+	_generateLabelStyles('d2l-dl-wrapper > dl > dt'),
+	_generateBodyCompactStyles('d2l-dl-wrapper > dl > dd'),
 	css`
-		:host {
+		d2l-dl-wrapper {
 			--d2l-dl-wrapper-dt-min-width: min-content;
 			--d2l-dl-wrapper-dt-max-width: 10rem;
 			--d2l-dl-wrapper-dd-min-width: 50%;
 		}
-		dl {
+		d2l-dl-wrapper > dl {
 			align-items: baseline;
 			display: var(--d2l-dl-wrapper-dl-display, grid);
 			gap: 0.3rem 1.5rem;
 			grid-auto-flow: row;
 			grid-template-columns: minmax(var(--d2l-dl-wrapper-dt-min-width), auto) minmax(var(--d2l-dl-wrapper-dd-min-width), 1fr);
 		}
-		dt {
+		d2l-dl-wrapper > dl > dt {
 			margin: var(--d2l-dl-wrapper-dt-margin, 0);
 			max-width: var(--d2l-dl-wrapper-dt-max-width);
 		}
-		dd {
+		d2l-dl-wrapper > dl > dd {
 			margin: var(--d2l-dl-wrapper-dd-margin, 0);
 		}
 	`,

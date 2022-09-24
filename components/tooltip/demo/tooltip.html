@@ -54,6 +54,12 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+
+		.dark-background {
+			background-color: black;
+			padding: 20px;
+		}
+
 	</style>
 </head>
 
@@ -147,6 +153,18 @@
 					<d2l-button id="tooltip-long"><span>Very Very Very Very Long Tooltip</span></d2l-button>
 					<d2l-tooltip for="tooltip-long" show-truncated-only>
 						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
+					</d2l-tooltip>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (dark background)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="dark-background">
+					<d2l-button id="tooltip-dark-background">Dark Background</d2l-button>
+					<d2l-tooltip for="tooltip-dark-background">
+						All tooltips have an outline.
 					</d2l-tooltip>
 				</div>
 			</template>
