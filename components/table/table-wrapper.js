@@ -352,7 +352,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				line-height: 0;
 				padding: 10px;
 				position: absolute;
-				top: 4px;
+				top:4px;
 				width: 18px;
 			}
 
@@ -408,6 +408,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		this._resizeObserver = null;
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+		this._scrollActionsIntersectionObserver = null;
 	}
 
 	disconnectedCallback() {
@@ -416,6 +417,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
 		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
 		if (this._resizeObserver) this._resizeObserver.disconnect();
+		if (this._scrollActionsIntersectionObserver) this._scrollActionsIntersectionObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
@@ -428,15 +430,22 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			this._hScrollbar = true;
 
 			if (head && body) {
-				this._syncScrollers(head, body);
+				this._syncHorisontalScrollers(head, body);
 			}
 
 			if (this._container) {
 				this._container.addEventListener('scroll', () => this._checkScrollThresholds());
-			}
+				this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
+				this._resizeObserver.observe(this._container);
 
-			this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
-			this._resizeObserver.observe(this._container);
+				const options = {
+					root: this,
+					rootMargin: '0px 0px -40px 0px',
+					threshold: 0.5
+				};
+				this._scrollActionsIntersectionObserver = new IntersectionObserver(this._handleIntersectActions, options);
+				this._scrollActionsIntersectionObserver.observe(this.shadowRoot.querySelector('.d2l-scroll-wrapper-actions'));
+			}
 		}
 	}
 
@@ -562,10 +571,20 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	_checkScrollThresholds() {
 		if (!this._container) return;
+
 		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.abs(this._container.scrollLeft);
 		this._scrollbarLeft = (this._container.scrollLeft === 0);
-		this._scrollbarRight = (lowerScrollValue <= 0);
+		this._scrollbarRight = (lowerScrollValue < 1);
 
+	}
+
+	_handleIntersectActions(entries) {
+		entries.forEach((entry) => {
+
+			for (let i = 0; i < entry.target.children.length; i++) {
+				entry.target.children[i].style.display = entry.isIntersecting ? '' : 'none';
+			}
+		});
 	}
 
 	_handleSlotChange(e) {
@@ -651,7 +670,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		}
 	}
 
-	_syncScrollers(scroller1, scroller2) {
+	_syncHorisontalScrollers(scroller1, scroller2) {
 
 		let isSyncingScroll1 = false;
 		let isSyncingScroll2 = false;
