@@ -167,7 +167,7 @@ export const tableStyles = css`
 	}
 
 
-	/*sticky-headers-horizontal-scroll*/
+	/* sticky-headers-horizontal-scroll */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table {
 		table-layout: fixed;
 	}
@@ -175,6 +175,10 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
 		display: block;
 		overflow-x: hidden;
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+		z-index: 2;
 	}
 
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody {
@@ -196,30 +200,23 @@ export const tableStyles = css`
 		background-color: #ffffff; /* white background so sticky cells layer on top of non-sticky cells */
 	}
 
-	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
-		position: -webkit-sticky;
-		position: sticky;
-		top: 0;
-		z-index: 2;
-	}
-
-	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr > th[sticky]  {
-		position: -webkit-sticky;
-		position: sticky;
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr > th[sticky] {
 		left: 0;
+		position: -webkit-sticky;
+		position: sticky;
 		z-index: 3;
 	}
 
-	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky]  {
+	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky] {
+		background-color:inherit;
+		left: 0;
 		position: -webkit-sticky;
 		position: sticky;
-		left: 0;
 		z-index: 1;
-		background-color:inherit;
 	}
 
 	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"] .d2l-table > thead{
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"] .d2l-table > thead {
 		top: -5px;
 	}
 
@@ -230,7 +227,7 @@ export const tableStyles = css`
 		}
 
 		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead,
-		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky]  {
+		d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky] {
 			position: static;
 		}
 	}
@@ -319,13 +316,12 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				--d2l-table-header-background-color: #ffffff;
 			}
 
-			/*scroll-wrapper*/
+			/* scroll-wrapper */
 
 			.d2l-scroll-wrapper-actions {
 				position: -webkit-sticky;
 				position: sticky;
 				top: 0;
-				bottom: 100px;
 				z-index: 4;
 			}
 
@@ -352,7 +348,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				line-height: 0;
 				padding: 10px;
 				position: absolute;
-				top:4px;
+				top: 4px;
 				width: 18px;
 			}
 
