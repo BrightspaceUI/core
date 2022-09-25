@@ -208,7 +208,7 @@ export const tableStyles = css`
 	}
 
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky] {
-		background-color:inherit;
+		background-color: inherit;
 		left: 0;
 		position: -webkit-sticky;
 		position: sticky;
