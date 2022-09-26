@@ -5,7 +5,6 @@ import { css, html, nothing } from 'lit';
 import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -131,8 +130,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;
-		/** @ignore */
-		this.role = 'listitem';
 		this._displayKeyboardTooltip = false;
 		this._id = getUniqueId();
 		this._tooltipShown = false;
@@ -160,21 +157,15 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
-	_handleClearItem(e) {
+	_handleClearItem() {
 		if (!this.clearable) return;
-
-		let handleFocus = false;
-		if (e) {
-			const listItemParent = findComposedAncestor(e.composedPath()[0], (node) => node.role === 'listitem');
-			handleFocus = listItemParent ? true : false;
-		}
 
 		announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
 
 		/** Dispatched when a user selects to delete an individual tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-clear',
-			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
+			{ bubbles: true, composed: true, detail: { value: this.text } }
 		));
 	}
 

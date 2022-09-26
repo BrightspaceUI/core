@@ -38,7 +38,7 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
 
   document.addEventListener('d2l-tag-list-item-clear', (e) => {
     e.target.parentNode.removeChild(e.target);
-    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
   });
 
   document.addEventListener('d2l-tag-list-clear', (e) => {

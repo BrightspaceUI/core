@@ -2,7 +2,6 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
-import { BACKDROP_ROLE } from '../backdrop/backdrop.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
@@ -196,16 +195,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				role="group"
 				aria-roledescription="${this.localize('components.tag-list.role-description')}"
 				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
-				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}"
-			>
+				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
 					class="${classMap(clearableClasses)}"
 					@click="${this._handleClearAll}"
 					slim
-					text="${this.localize('components.tag-list.clear-all')}"
-				>
+					text="${this.localize('components.tag-list.clear-all')}">
 				</d2l-button-subtle>
 			</div>
 		`;
@@ -314,10 +311,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 			await node.updateComplete;
 
-			const role = node.getAttribute('role');
-			const backdropRole = node.getAttribute(BACKDROP_ROLE);
-			if (role !== 'listitem' && backdropRole !== 'listitem') return false;
-
 			if (this.clearable) node.setAttribute('clearable', 'clearable');
 			node.removeAttribute('data-is-chomped');
 			node.removeAttribute('keyboard-tooltip-item');
@@ -351,8 +344,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	_handleItemDeleted(e) {
-		if (!e || !e.detail || !e.detail.handleFocus) return;
-
 		const rootTarget = e.composedPath()[0];
 		const children = this._getVisibleEffectiveChildren();
 		const itemIndex = children.indexOf(rootTarget);
