@@ -338,7 +338,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return items.concat(showMoreButton).concat(clearButton);
 	}
 
-	_handleClearAll(e) {
+	_handleClearAll() {
 		if (!this._items) return;
 
 		/** Dispatched when a user selects to delete all tag list items. The consumer must handle the actual element deletion and focus behaviour. */
@@ -348,10 +348,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		));
 
 		announce(this.localize('components.tag-list.cleared-all'));
-
-		this._items.forEach((item) => {
-			item.handleClearItem(e, true);
-		});
 	}
 
 	_handleItemDeleted(e) {

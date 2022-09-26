@@ -67,10 +67,22 @@
 					<d2l-tag-list-item text="Example 8"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
-				<script>
+				<script type="module">
+					import { forceFocusVisible, getNextFocusable } from '../../../helpers/focus.js';
+
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
 						e.target.parentNode.removeChild(e.target);
 						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+					});
+
+					document.addEventListener('d2l-tag-list-clear', (e) => {
+						console.log('d2l-tag-list-clear event dispatched.', e.target);
+						const nextFocusable = getNextFocusable(e.target, true, true, true);
+						[...e.target.children].forEach(tag => {
+							e.target.removeChild(tag);
+						});
+						// consumer must move focus someplace logical
+						forceFocusVisible(nextFocusable);
 					});
 				</script>
 			</d2l-demo-snippet>

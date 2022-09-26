@@ -160,7 +160,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
-	handleClearItem(e, clearAll) {
+	_handleClearItem(e) {
 		if (!this.clearable) return;
 
 		let handleFocus = false;
@@ -168,8 +168,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			const listItemParent = findComposedAncestor(e.composedPath()[0], (node) => node.role === 'listitem');
 			handleFocus = listItemParent ? true : false;
 		}
-
-		if (clearAll) return;
 
 		announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
 
@@ -187,7 +185,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
 		e.preventDefault();
-		this.handleClearItem(e);
+		this._handleClearItem(e);
 	}
 
 	_handleTooltipHide() {
@@ -238,7 +236,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				${this.clearable ? html`
 					<d2l-button-icon
 						class="d2l-tag-list-item-clear-button"
-						@click="${this.handleClearItem}"
+						@click="${this._handleClearItem}"
 						icon="tier1:close-small"
 						tabindex="-1"
 						text="${buttonText}">
