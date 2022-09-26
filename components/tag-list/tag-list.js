@@ -193,7 +193,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			<div
 				aria-label="${this.description}"
 				class="${classMap(containerClasses)}"
-				role="list"
+				role="group"
+				aria-roledescription="${this.localize('components.tag-list.role-description')}"
 				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
 				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}"
 			>

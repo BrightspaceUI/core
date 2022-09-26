@@ -76,12 +76,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
-			:host(:focus-visible) .tag-list-item-container,
-			:host(:focus-visible:hover) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container,
+			:host(:focus-within:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			:host(:focus-visible) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
@@ -142,6 +142,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		super.firstUpdated(changedProperties);
 
 		const container = this.shadowRoot.querySelector('.tag-list-item-content');
+
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
@@ -149,14 +150,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			this._displayKeyboardTooltip = (this.keyboardTooltipItem && !this._tooltipShown);
 			await this.updateComplete;
 
-			/** @ignore */
-			container.dispatchEvent(new FocusEvent('focus', { bubbles: false, cancelable: true }));
+			container.focus();
 		});
+
 		this.addEventListener('blur', () => {
 			this._displayKeyboardTooltip = false;
-			/** @ignore */
-			container.dispatchEvent(new FocusEvent('blur', { bubbles: false, cancelable: true }));
 		});
+
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
@@ -207,7 +207,9 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
+
 		const hasDescription = !!description;
+
 		const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
 		const tooltipTagOverflow = hasTruncationTooltip ? html`
 				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
@@ -223,6 +225,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				for="${this._id}">
 					${this._renderTooltipContent()}
 			</d2l-tooltip>` : null;
+
 		const containerClasses = {
 			'd2l-label-text': true,
 			'tag-list-item-container': true,
@@ -231,7 +234,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		return html`
 			${tooltipKeyboardInstructions || tooltipTagOverflow}
 			<div class="${classMap(containerClasses)}">
-				<div class="tag-list-item-content" id="${this._id}" tabindex="-1">${tagContent}</div>
+				<div class="tag-list-item-content" id="${this._id}" tabindex="-1" aria-roledescription="${this.localize('components.tag-list-item.role-description')}" role="button">${tagContent}</div>
 				${this.clearable ? html`
 					<d2l-button-icon
 						class="d2l-tag-list-item-clear-button"
