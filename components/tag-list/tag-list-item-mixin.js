@@ -192,7 +192,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		));
 	}
 
-	_renderTag(tagContent, hasTruncationTooltip, description) {
+	_renderTag(tagContent, hasTruncationTooltip, description, focusableClass) {
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
@@ -220,10 +220,15 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			'tag-list-item-container': true,
 			'tag-list-item-container-clearable': this.clearable
 		};
+		const focusableClasses = {
+			'tag-list-item-content': true
+		};
+		if (focusableClass) focusableClasses[focusableClass] = true;
+
 		return html`
 			${tooltipKeyboardInstructions || tooltipTagOverflow}
 			<div class="${classMap(containerClasses)}">
-				<div class="tag-list-item-content" id="${this._id}" tabindex="-1" aria-roledescription="${this.localize('components.tag-list-item.role-description')}" role="button">${tagContent}</div>
+				<div class="${classMap(focusableClasses)}" id="${this._id}" tabindex="-1" aria-roledescription="${this.localize('components.tag-list-item.role-description')}" role="button">${tagContent}</div>
 				${this.clearable ? html`
 					<d2l-button-icon
 						class="d2l-tag-list-item-clear-button"
