@@ -30,11 +30,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			 * @ignore
 			 */
 			keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
-			/**
-			 * @ignore
-			 */
-			role: { type: String, reflect: true },
-			_displayKeyboardTooltip: { type: Boolean }
+			_displayKeyboardTooltip: { state: true }
 		};
 	}
 
@@ -190,7 +186,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
 		e.preventDefault();
-		this._handleClearItem(e);
+		this._handleClearItem();
 	}
 
 	_renderKeyboardTooltipContent() {
