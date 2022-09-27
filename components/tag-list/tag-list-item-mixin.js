@@ -6,6 +6,7 @@ import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -232,7 +233,14 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		return html`
 			${tooltipKeyboardInstructions || tooltipTagOverflow}
 			<div class="${classMap(containerClasses)}">
-				<div class="${classMap(focusableClasses)}" id="${this._id}" tabindex="-1" aria-roledescription="${this.localize('components.tag-list-item.role-description')}" role="button">${tagContent}</div>
+				<div aria-label="${ifDefined(options.label)}"
+					aria-roledescription="${this.localize('components.tag-list-item.role-description')}"
+					class="${classMap(focusableClasses)}"
+					id="${this._id}"
+					role="button"
+					tabindex="-1">
+					${tagContent}
+				</div>
 				${this.clearable ? html`
 					<d2l-button-icon
 						class="d2l-tag-list-item-clear-button"
