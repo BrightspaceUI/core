@@ -192,20 +192,24 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		));
 	}
 
-	_renderTag(tagContent, hasTruncationTooltip, description, focusableClass) {
+	_renderTag(tagContent, options) {
+		if (!options) options = {};
+
 		const buttonText = typeof tagContent === 'object'
 			? this.localize('components.tag-list.clear', { value: '' })
 			: this.localize('components.tag-list.clear', { value: tagContent });
 
-		const hasDescription = !!description;
+		const hasDescription = !!options.description;
 
 		const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
-		const tooltipTagOverflow = hasTruncationTooltip ? html`
+
+		const tooltipTagOverflow = options.hasTruncationTooltip ? html`
 				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
 					${tooltipHeader}
-					${hasDescription ? description : nothing}
+					${hasDescription ? options.description : nothing}
 				</d2l-tooltip>
 			` : null;
+
 		const tooltipKeyboardInstructions = this._displayKeyboardTooltip ? html`
 			<d2l-tooltip
 				align="start"
@@ -223,7 +227,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const focusableClasses = {
 			'tag-list-item-content': true
 		};
-		if (focusableClass) focusableClasses[focusableClass] = true;
+		if (options.focusableClass) focusableClasses[options.focusableClass] = true;
 
 		return html`
 			${tooltipKeyboardInstructions || tooltipTagOverflow}
