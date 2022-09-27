@@ -75,9 +75,8 @@
 				e.target.parentNode.removeChild(e.target);
 			});
 			document.addEventListener('d2l-tag-list-clear', (e) => {
-				const items = e.target.querySelectorAll('[role="listitem"]');
-				items.forEach((item) => {
-					item.parentNode.removeChild(item);
+				[...e.target.children].forEach(tag => {
+					e.target.removeChild(tag);
 				});
 			});
 		</script>
