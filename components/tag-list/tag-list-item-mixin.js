@@ -76,12 +76,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
-			:host(.focus-visible) .tag-list-item-container,
-			:host(.focus-visible:hover) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container,
+			:host(:focus-within:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			:host(.focus-visible) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
