@@ -159,6 +159,21 @@ export function getPreviousAncestorSibling(node, predicate = () => true) {
 	return null;
 }
 
+export function getFirstDescendant(node, predicate) {
+	if (predicate === undefined) predicate = () => true;
+
+	const composedChildren = getComposedChildren(node);
+
+	for (let i = 0; i < composedChildren.length; i++) {
+		if (predicate(composedChildren[i])) return composedChildren[i];
+
+		const found = getFirstDescendant(composedChildren[i], predicate);
+		if (found) return found;
+	}
+
+	return null;
+}
+
 export function getOffsetParent(node) {
 
 	if (!window.ShadowRoot) {

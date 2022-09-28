@@ -7,6 +7,7 @@ import {
 	getBoundingAncestor,
 	getComposedChildren,
 	getComposedParent,
+	getFirstDescendant,
 	getNextAncestorSibling,
 	getOffsetParent,
 	isComposedAncestor,
@@ -722,6 +723,43 @@ describe('dom', () => {
 			`);
 			expect(getNextAncestorSibling(elem.querySelector('#target')))
 				.to.be.equal(elem.querySelector('#expected'));
+		});
+	});
+
+	describe('getFirstDescendant', () => {
+
+		const childFixture = html`
+		<div>
+			<div id="outer">
+				<div>
+					<div id="child1"></div>
+				</div>
+				<div id="child2"></div>
+			</div>
+			<div id="child3"></div>
+		</div>
+		`;
+
+		it('finds descendant with specified id', async() => {
+			const elem = await fixture(childFixture);
+			const predicate = (node) => { return node.id === 'child2'; };
+			const expected = elem.querySelector('#child2');
+			expect(getFirstDescendant(elem.querySelector('#outer'), predicate))
+				.to.equal(expected);
+		});
+
+		it('does not find descendant with specified id', async() => {
+			const elem = await fixture(childFixture);
+			const predicate = (node) => { return node.id === 'x'; };
+			expect(getFirstDescendant(elem.querySelector('#outer'), predicate))
+				.to.be.null;
+		});
+
+		it('does not find descendant when node has no children', async() => {
+			const elem = await fixture(childFixture);
+			const predicate = (node) => { return node.id === 'child2'; };
+			expect(getFirstDescendant(elem.querySelector('#child3'), predicate))
+				.to.be.null;
 		});
 	});
 
