@@ -8,14 +8,11 @@ import { bodySmallStyles } from '../typography/styles.js';
 class ObjectPropertyList extends LitElement {
 	static get styles() {
 		return [bodySmallStyles, css`
-			:host {
-				display: contents;
+			:host, slot {
+				display: block;
 			}
 			:host([hidden]) {
 				display: none;
-			}
-			slot {
-				display: block;
 			}
 			::slotted(:last-child) {
 				--d2l-object-property-list-item-separator-display: none;
