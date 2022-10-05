@@ -98,9 +98,12 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 
 	render() {
 		if (!this.hasMore) return;
-		return html`<button ?disabled="${this._loading}" class="d2l-label-text" @click="${this._handleClick}" type="button">
+		return html`
 			${this._loading ? html`
 				<span class="d2l-offscreen" role="alert">${this.localize('components.pager-load-more.status-loading')}</span>
+			` : nothing}
+			<button class="d2l-label-text" @click="${this._handleClick}" type="button">
+			${this._loading ? html`
 				<d2l-loading-spinner size="24"></d2l-loading-spinner>
 			` : html`
 				<span class="action">${this.localize('components.pager-load-more.action', { count: formatNumber(this.pageSize) })}</span>
@@ -115,6 +118,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 	}
 
 	async _handleClick() {
+		if (this._loading) return;
 		const pageable = findComposedAncestor(this, node => node._pageable);
 		if (!pageable) return;
 		const lastItemIndex = pageable._getLastItemIndex();
