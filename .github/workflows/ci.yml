@@ -3,7 +3,7 @@ on: pull_request
 jobs:
   lint:
     name: Lint
-    timeout-minutes: 2
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
