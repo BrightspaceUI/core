@@ -157,6 +157,23 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 				grid-row: 1 / 2;
 			}
+
+			::slotted([slot="add-after-1"]) {
+				bottom: -10px;
+				grid-column: start / end;
+				justify-self: center;
+				position: absolute;
+				z-index: 4;
+			}
+			::slotted([slot="add-after-2"]) {
+				bottom: -10px;
+				grid-column: start / end;
+				grid-row: 1 / 2;
+				justify-self: center;
+				position: absolute;
+				z-index: 4;
+			}
+
 		`;
 	}
 
@@ -189,6 +206,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<slot name="add-after-1"></slot>
+			<slot name="add-after-2"></slot>
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
 			<slot name="drop-target"></slot>

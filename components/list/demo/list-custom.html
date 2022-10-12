@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../list-item-custom.js';
+			import '../list.js';
+			import '../list-header.js';
+		</script>
+		<style>
+			/*
+			img {
+				height: 500px;
+				object-fit: cover;
+			}
+			*/
+			.status-open, .status-closed {
+				margin-right: 0.5rem;
+				width: 0.25rem;
+			}
+			.status-open {
+				background-color: var(--d2l-color-celestine);
+			}
+			.status-closed {
+				background-color: var(--d2l-color-citrine);
+			}
+			svg {
+				width: 2.4rem;
+			}
+			.progress-circle {
+				fill: none;
+				stroke: var(--d2l-color-gypsum);
+				stroke-linecap: round;
+				stroke-width: 6;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list-custom">
+
+			<h2>Custom List 1 (complete custom)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-header slot="header" select-all-pages-allowed>
+							<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+						</d2l-list-header>
+						<d2l-list-item-custom-1 key="a" label="Introductory Earth Sciences" selectable status="open">
+							Introductory Earth Sciences
+						</d2l-list-item-custom-1>
+						<d2l-list-item-custom-1 key="b" label="Analytical Chemistry" selectable status="closed">
+							Analytical Chemistry
+						</d2l-list-item-custom-1>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 2 (using generic layout)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-header slot="header" select-all-pages-allowed>
+							<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+						</d2l-list-header>
+						<d2l-list-item-custom-2 key="a" label="Introductory Earth Sciences" selectable status="open">
+							Introductory Earth Sciences
+						</d2l-list-item-custom-2>
+						<d2l-list-item-custom-2 key="b" label="Analytical Chemistry" selectable status="closed">
+							Analytical Chemistry
+						</d2l-list-item-custom-2>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 3 (using list-item mixin)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-header slot="header" select-all-pages-allowed>
+							<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+						</d2l-list-header>
+						<d2l-list-item-custom-3 key="a" label="Introductory Earth Sciences" selectable status="open">
+							Introductory Earth Sciences
+						</d2l-list-item-custom-3>
+						<d2l-list-item-custom-3 key="b" label="Analytical Chemistry" selectable status="closed">
+							Analytical Chemistry
+						</d2l-list-item-custom-3>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 4 (using list-item-link mixin, status in content, with no selection)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-custom-4 action-href="https://www.d2l.com" status="open">
+							<div class="status-open"></div>
+							Introductory Earth Sciences
+						</d2l-list-item-custom-4>
+						<d2l-list-item-custom-4 action-href="https://www.d2l.com" status="closed">
+							<div class="status-closed"></div>
+							Analytical Chemistry
+						</d2l-list-item-custom-4>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 5 (using list-item-link mixin, progress in content, with no selection)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com">
+							<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Introductory Earth Sciences
+						</d2l-list-item-custom-5>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com">
+							<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Analytical Chemistry
+						</d2l-list-item-custom-5>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 6 (using list-item-link mixin with illustration slot, progress in content, with no selection)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com">
+							<svg slot="illustration" viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Introductory Earth Sciences
+						</d2l-list-item-custom-5>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com">
+							<svg slot="illustration" viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Analytical Chemistry
+						</d2l-list-item-custom-5>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom List 7 (using list-item-link mixin with illustration slot, padding-type none, progress in content, with no selection)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com" padding-type="none">
+							<svg slot="illustration" viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Introductory Earth Sciences
+						</d2l-list-item-custom-5>
+						<d2l-list-item-custom-5 action-href="https://www.d2l.com" padding-type="none">
+							<svg slot="illustration" viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+								<circle class="progress-circle" cx="24" cy="24" r="21"></circle>
+							</svg>
+							Analytical Chemistry
+						</d2l-list-item-custom-5>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

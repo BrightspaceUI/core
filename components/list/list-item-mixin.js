@@ -340,6 +340,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-tooltip-key {
 				font-weight: 700;
 			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -583,6 +584,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
+				<!--<button slot="add-after-1">add item</button>-->
+				<button slot="add-after-2">add item</button>
 				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
 					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
 				</div>
