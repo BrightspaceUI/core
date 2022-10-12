@@ -32,11 +32,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 	static get styles() {
 		return css`
 			button {
+				align-items: center;
 				background-color: transparent;
 				border: none;
 				color: inherit;
 				cursor: pointer;
-				display: inline-block;
+				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
 				letter-spacing: inherit;
