@@ -16,10 +16,11 @@ import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -120,12 +121,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				white-space: nowrap;
 			}
 
-			.d2l-filter-dimension-set-value-text {
+			.d2l-filter-dimension-set-value {
 				color: var(--d2l-color-ferrite);
+				display: flex;
+				gap: 0.45rem;
 				line-height: unset;
+				overflow: hidden;
 			}
 
-			d2l-list-item[disabled] .d2l-filter-dimension-set-value-text {
+			d2l-list-item[disabled] .d2l-filter-dimension-set-value {
 				color: var(--d2l-color-chromite);
 			}
 
@@ -415,9 +419,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						?hidden="${item.hidden}"
 						key="${item.key}"
 						label="${item.text}"
+						number="${item.count}"
 						selectable
 						?selected="${item.selected}">
-						<div class="d2l-filter-dimension-set-value-text d2l-body-compact">${item.text}</div>
+						<div class="d2l-filter-dimension-set-value d2l-body-compact">
+							<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+							${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+						</div>
 					</d2l-list-item>
 				`)}
 			</d2l-list>

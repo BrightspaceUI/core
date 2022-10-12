@@ -9,6 +9,11 @@ class FilterDimensionSetValue extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * The count that is displayed for the filter count results
+			 * @type {number}
+			 */
+			count: { type: Number },
+			/**
 			 * Whether this value in the filter is disabled or not
 			 * @type {boolean}
 			 */
@@ -45,11 +50,10 @@ class FilterDimensionSetValue extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'disabled' || prop === 'selected' || prop === 'text') {
+			if (prop === 'count' || prop === 'disabled' || prop === 'selected' || prop === 'text') {
 				changes.set(prop, this[prop]);
 			}
 		});
-
 		if (changes.size > 0) {
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-value-data-change', {
