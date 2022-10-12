@@ -129,7 +129,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				overflow: hidden;
 			}
 
-			d2l-list-item[disabled] .d2l-filter-dimension-set-value {
+			d2l-list-item[disabled] .d2l-filter-dimension-set-value,
+			d2l-list-item[disabled] .d2l-body-small {
 				color: var(--d2l-color-chromite);
 			}
 
