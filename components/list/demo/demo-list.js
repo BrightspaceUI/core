@@ -117,6 +117,7 @@ class DemoList extends LitElement {
 	static get properties() {
 		return {
 			grid: { type: Boolean },
+			headerRequiresSelection: { type: Boolean, attribute: 'header-requires-selection' },
 			_lastItemLoadedIndex: { state: true }
 		};
 	}
@@ -148,7 +149,7 @@ class DemoList extends LitElement {
 		const remainingItemCount = this.items.length - loadedItems.length;
 		return html`
 			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}">
-				<d2l-list-header slot="header" select-all-pages-allowed>
+				<d2l-list-header ?requires-selection="${this.headerRequiresSelection}" slot="header" select-all-pages-allowed>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
 						<d2l-dropdown-menu>

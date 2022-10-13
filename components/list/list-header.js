@@ -7,12 +7,15 @@ import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SelectionObserverMixin } from '../selection/selection-observer-mixin.js';
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
  * A header for list components containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
-class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
+class ListHeader extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -27,12 +30,18 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			noSticky: { type: Boolean, attribute: 'no-sticky' },
 			/**
+			 * Whether selection is required to show the bulk-action header
+			 * @type {boolean}
+			 */
+			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
+			/**
 			 * Whether all pages can be selected
 			 * @type {boolean}
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
 			_hasActions: { state: true },
-			_scrolled: { type: Boolean, reflect: true }
+			_scrolled: { type: Boolean, reflect: true },
+			_state: { state: true }
 		};
 	}
 
@@ -66,14 +75,32 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-			.d2l-list-header-container {
+			:host([requires-selection]) .d2l-list-header-container {
+				display: none;
+				max-height: 0;
+				opacity: 0;
+				/* transform: translate(0, -10px); */
+				transition: opacity 100ms linear, max-height 100ms linear;
+			}
+			:host([requires-selection]) .d2l-list-header-container-pre-showing,
+			:host([requires-selection]) .d2l-list-header-container-hiding {
+				display: block;
+			}
+			:host([requires-selection]) .d2l-list-header-container-showing {
+				display: block;
+				max-height: 70px;
+				opacity: 1;
+				/* transform: translate(0, 0); */
+			}
+
+			.d2l-list-header-container-inner {
 				align-items: center;
 				display: flex;
 				margin-bottom: 6px;
 				margin-top: 6px;
 				min-height: 54px;
 			}
-			.d2l-list-header-container-slim {
+			.d2l-list-header-slim {
 				min-height: 36px;
 			}
 			.d2l-list-header-extend-separator {
@@ -106,6 +133,12 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([dir="rtl"]) .d2l-list-header-actions {
 				text-align: left;
 			}
+
+			/*
+			:host([_state="pre-showing"]), :host([_state="hiding"]) {
+				display: block;
+			}
+			*/
 		`;
 	}
 
@@ -115,6 +148,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
 		this._extendSeparator = false;
+		this._state = 'hidden';
 	}
 
 	connectedCallback() {
@@ -129,26 +163,86 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const classes = {
 			'd2l-list-header-container': true,
-			'd2l-list-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed),
+			'd2l-list-header-container-pre-showing': (this.requiresSelection && this._state === 'pre-showing'),
+			'd2l-list-header-container-showing': (this.requiresSelection && this._state === 'showing'),
+			'd2l-list-header-container-hiding': (this._state === 'hiding')
+		};
+		const classesInner = {
+			'd2l-list-header-container-inner': true,
+			'd2l-list-header-slim': (!this._hasActions && !this.selectAllPagesAllowed),
 			'd2l-list-header-extend-separator': this._extendSeparator
 		};
 		return html`
 			<div class="${classMap(classes)}">
-				${this.noSelection ? null : html`
-					<d2l-selection-select-all></d2l-selection-select-all>
-					<d2l-selection-summary
-						aria-hidden="true"
-						class="d2l-list-header-summary"
-						no-selection-text="${this.localize('components.selection.select-all')}">
-					</d2l-selection-summary>
-					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
-				`}
-				<div class="d2l-list-header-actions">
-					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
+				<div class="${classMap(classesInner)}">
+					${this.noSelection ? null : html`
+						<d2l-selection-select-all></d2l-selection-select-all>
+						<d2l-selection-summary
+							aria-hidden="true"
+							class="d2l-list-header-summary"
+							no-selection-text="${this.localize('components.selection.select-all')}">
+						</d2l-selection-summary>
+						${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
+					`}
+					<div class="d2l-list-header-actions">
+						<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
+					</div>
 				</div>
 			</div>
 			${!this.noSticky ? html`<div class="d2l-list-header-shadow"></div>` : null}
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (!this.requiresSelection || !changedProperties.has('selectionInfo')) return;
+
+		const hasSelection = (this.selectionInfo.state !== 'none');
+
+		if (hasSelection) {
+			if (this._state === 'hiding') {
+				this._state = 'showing';
+			} else if (this._state === 'hidden') {
+				if (!reduceMotion) {
+					this._state = 'pre-showing';
+					// pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
+					//this._preopenFrame = requestAnimationFrame(() => {
+					//	this._preopenFrame = requestAnimationFrame(() => {
+					//		this._state = 'showing';
+					//	});
+					//});
+
+					// todo: we might want to hide the overflow during the animation... really depends on the animation that Design wants
+
+					requestAnimationFrame(() => {
+						requestAnimationFrame(() => {
+							this._state = 'showing';
+						});
+					});
+				} else {
+					this._state = 'showing';
+				}
+			}
+		} else {
+			const hide = () => {
+				this._state = 'hidden';
+				// todo: where should focus go if select-all was unchecked?
+			};
+			if (reduceMotion || this._state === 'pre-showing') {
+				hide();
+			} else if (this._state === 'showing') {
+				this.shadowRoot.querySelector('.d2l-list-header-container').addEventListener('transitionend', hide, { once: true });
+				this._state = 'hiding';
+			}
+
+			//if (reduceMotion || this._state === 'pre-showing') {
+			//	cancelAnimationFrame(this._preopenFrame);
+			//	this._state = 'hidden';
+			//} else if (this._state === 'showing') {
+			//	this._state = 'hiding';
+			//}
+		}
+
 	}
 
 	_handleSlotChange(e) {
