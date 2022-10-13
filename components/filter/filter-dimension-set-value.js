@@ -43,6 +43,19 @@ class FilterDimensionSetValue extends LitElement {
 		this.text = '';
 	}
 
+	get count() {
+		return this._count;
+	}
+
+	set count(val) {
+		if (Number.isNaN(val)) val = undefined;
+		const oldVal = this._count;
+		if (oldVal !== val) {
+			this._count = val;
+			this.requestUpdate('count', oldVal);
+		}
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -63,7 +76,6 @@ class FilterDimensionSetValue extends LitElement {
 			}));
 		}
 	}
-
 }
 
 customElements.define('d2l-filter-dimension-set-value', FilterDimensionSetValue);
