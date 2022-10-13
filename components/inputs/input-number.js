@@ -438,7 +438,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		}
 
 		if (dispatchEvent) {
-			await this.updateComplete; // wait for validity logic to re-run
+			await this.requestValidate(true); // wait for validity logic to re-run
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{ bubbles: true, composed: false }
