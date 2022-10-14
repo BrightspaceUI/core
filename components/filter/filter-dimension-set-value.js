@@ -48,6 +48,8 @@ class FilterDimensionSetValue extends LitElement {
 	}
 
 	set count(val) {
+		if (val < 0) val = 0;
+		if (!Number.isInteger(val)) val = Math.floor(val);
 		if (Number.isNaN(val)) val = undefined;
 		const oldVal = this._count;
 		if (oldVal !== val) {

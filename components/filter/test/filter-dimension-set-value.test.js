@@ -4,7 +4,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { spy } from 'sinon';
 
 const valuefixture = html`
-	<d2l-filter-dimension-set-value key="value" text="Value" count="0"></d2l-filter-dimension-set-value>
+	<d2l-filter-dimension-set-value key="value" text="Value" count="100"></d2l-filter-dimension-set-value>
 `;
 
 describe('d2l-filter-dimension-set-value', () => {
@@ -24,10 +24,35 @@ describe('d2l-filter-dimension-set-value', () => {
 				const elem = await fixture(valuefixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 
+				if (condition.property === 'count') elem.count = condition.value;
+				else if (condition.property === 'disabled') elem.disabled = condition.value;
+				else if (condition.property === 'selected') elem.selected = condition.value;
+				else if (condition.property === 'text') elem.text = condition.value;
+
 				const e = await oneEvent(elem, 'd2l-filter-dimension-set-value-data-change');
 				expect(e.detail.valueKey).to.equal('value');
 				expect(e.detail.changes.size).to.equal(1);
 				expect(e.detail.changes.get(condition.property)).to.equal(condition.value);
+				expect(eventSpy).to.be.calledOnce;
+			});
+		});
+	});
+
+	describe('validation of invalid data inputs for count', () => {
+		[
+			{ type: 'negative', value: -12, result: 0 },
+			{ type: 'decimal', value: 12.35, result: 12 },
+			{ type: 'string', value: 'Test', result: undefined }
+		].forEach(condition => {
+			it(`checks validation for ${condition.type} inputs`, async() => {
+				const elem = await fixture(valuefixture);
+				const eventSpy = spy(elem, 'dispatchEvent');
+				elem.count = condition.value;
+
+				const e = await oneEvent(elem, 'd2l-filter-dimension-set-value-data-change');
+				expect(e.detail.valueKey).to.equal('value');
+				expect(e.detail.changes.size).to.equal(1);
+				expect(e.detail.changes.get('count')).to.equal(condition.result);
 				expect(eventSpy).to.be.calledOnce;
 			});
 		});
