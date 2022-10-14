@@ -133,12 +133,6 @@ class ListHeader extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(Lit
 			:host([dir="rtl"]) .d2l-list-header-actions {
 				text-align: left;
 			}
-
-			/*
-			:host([_state="pre-showing"]), :host([_state="hiding"]) {
-				display: block;
-			}
-			*/
 		`;
 	}
 
