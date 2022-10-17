@@ -212,7 +212,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
   <d2l-filter-dimension-set key="course" text="Course" >
     <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
     <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" disabled></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -242,16 +242,16 @@ The "count" property will give the count for each filter value, indicating the i
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
     <d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" selected></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="biology" text="Biology" count="30"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="chemistry" text="Chemistry" disabled></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="drama" text="Drama" count="15"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="english" text="English" count="1000"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="100"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="math" text="Math" count="10000"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="stats" text="Statistics" count="2"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology" count="30"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="chemistry" text="Chemistry" disabled></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="drama" text="Drama" count="15"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="english" text="English" count="1000"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="100"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="math" text="Math" count="10000"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="stats" text="Statistics" count="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
