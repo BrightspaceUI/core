@@ -210,8 +210,9 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" count="25" selected></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology" count="1000"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" disabled></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -225,6 +226,35 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+<!-- docs: end hidden content -->
+<!-- docs: start hidden content -->
+### Property: count
+
+The "count" property will give the count for each filter value, indicating the impact each selection will have on the overall result set while still allowing users to select & deselect empty buckets (filters that have a count of 0).
+
+<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="course" text="Course" >
+    <d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" selected></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="biology" text="Biology" count="30"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="chemistry" text="Chemistry" disabled></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="drama" text="Drama" count="15"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="english" text="English" count="1000"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="100"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="math" text="Math" count="10000"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="stats" text="Statistics" count="2"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
 <!-- docs: end hidden content -->
 
 ## Tags for Applied Filters [d2l-filter-tags]
