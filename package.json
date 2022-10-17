@@ -64,7 +64,7 @@
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
     "focus-visible": "^5",
-    "ifrau": "^0.39",
+    "ifrau": "^0.40",
     "intl-messageformat": "^7",
     "lit": "^2",
     "prismjs": "^1",
