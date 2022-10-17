@@ -9,7 +9,7 @@ class FilterDimensionSetValue extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * The count that is displayed for the filter count results
+			 * Count for the value in the list. If no count is provided, no count will be displayed
 			 * @type {number}
 			 */
 			count: { type: Number },
