@@ -159,7 +159,7 @@ The filter will announce changes to filter selections, search results, and when 
 
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Set [d2l-filter-dimension-set]
+## Dimension Set [d2l-filter-dimension-set]
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#d2l-filter-dimension-set-value), this will give you a selectable list of filter values.
 
@@ -197,7 +197,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `value-only-active-filter-text` | Boolean | Whether to hide the dimension in the text sent to active filter subscribers |
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Set Value [d2l-filter-dimension-set-value]
+## Dimension Set Value [d2l-filter-dimension-set-value]
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
 
@@ -210,8 +210,9 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" count="1" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="3" disabled></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology" count="5"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -220,11 +221,42 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 
 | Property | Type | Description |
 |---|---|---|
+| `count` | Number | Count for the value in the list. If no count is provided, no count will be displayed |
 | `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
+
+## Counts [d2l-filter-dimension-set-value]
+
+The `count` property displays a count next to each filter value to indicate the number of results a value will yield. This helps users more effectively explore data and make selections, so it’s a good idea to provide these counts if it can be done performantly.
+
+Note that when using multiple filter dimensions, the counts should be updated when selections are made across dimensions so that they always reflect the number of results a filter will yield.
+
+<!-- docs: demo code align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="course" text="Course" >
+    <d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology" count="1024"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="chemistry" text="Chemistry" count="25" disabled></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="drama" text="Drama" count="362"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="english" text="English" count="881"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="212"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="math" text="Math" count="22365"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="physics" text="Physics" count="27"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="stats" text="Statistics" count="2"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft" count="96"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
 
 ## Tags for Applied Filters [d2l-filter-tags]
 
@@ -374,13 +406,10 @@ The `d2l-filter-overflow-group` is a container for multiple filters that handles
 | `tags` | Boolean, default: `false` | Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group. |
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Date [d2l-filter-dimension-date]
-
-**Coming Soon!**
-
 <!-- docs: start hidden content -->
 ## Future Improvements
 
+* Date Dimension - Ability to filter by dates
 * ability to delay change events until the user has pressed an apply button (see [#341](https://github.com/BrightspaceUI/core/issues/341))
 
 Looking for an enhancement not listed here? Create a GitHub issue!
