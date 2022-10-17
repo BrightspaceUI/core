@@ -23,11 +23,7 @@ describe('d2l-filter-dimension-set-value', () => {
 			it(`fires data change event when its ${condition.property} data changes`, async() => {
 				const elem = await fixture(valuefixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
-
-				if (condition.property === 'count') elem.count = condition.value;
-				else if (condition.property === 'disabled') elem.disabled = condition.value;
-				else if (condition.property === 'selected') elem.selected = condition.value;
-				else if (condition.property === 'text') elem.text = condition.value;
+				if (condition.property === 'count' || condition.property === 'disabled' || condition.property === 'selected' || condition.property === 'text') elem[condition.property] = condition.value;
 
 				const e = await oneEvent(elem, 'd2l-filter-dimension-set-value-data-change');
 				expect(e.detail.valueKey).to.equal('value');
