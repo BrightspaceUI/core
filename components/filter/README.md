@@ -228,7 +228,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
 
-## Counts
+## Counts [d2l-filter-dimension-set-value]
 
 The `count` property displays a count next to each filter value to indicate the number of results a value will yield. This helps users more effectively explore data and make selections, so it’s a good idea to provide these counts if it can be done performantly.
 
