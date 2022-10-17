@@ -234,7 +234,7 @@ The `count` property displays a count next to each filter value to indicate the 
 
 Note that when using multiple filter dimensions, the counts should be updated when selections are made across dimensions so that they always reflect the number of results a filter will yield.
 
-<!-- docs: demo live align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
