@@ -159,7 +159,7 @@ The filter will announce changes to filter selections, search results, and when 
 
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Set [d2l-filter-dimension-set]
+## Dimension Set [d2l-filter-dimension-set]
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#d2l-filter-dimension-set-value), this will give you a selectable list of filter values.
 
@@ -197,7 +197,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `value-only-active-filter-text` | Boolean | Whether to hide the dimension in the text sent to active filter subscribers |
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Set Value [d2l-filter-dimension-set-value]
+## Dimension Set Value [d2l-filter-dimension-set-value]
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
 
@@ -210,9 +210,9 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
-    <d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" disabled></d2l-filter-dimension-set-value>
-    <d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="art" text="Art" count="1" selected></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="3" disabled></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology" count="5"></d2l-filter-dimension-set-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
@@ -227,12 +227,14 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
-<!-- docs: start hidden content -->
-### Property: count
 
-The "count" property will give the count for each filter value, indicating the impact each selection will have on the overall result set while still allowing users to select & deselect empty buckets (filters that have a count of 0).
+## Counts
 
-<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+The `count` property displays a count next to each filter value to indicate the number of results a value will yield. This helps users more effectively explore data and make selections, so it’s a good idea to provide these counts if it can be done performantly.
+
+Note that when using multiple filter dimensions, the counts should be updated when selections are made across dimensions so that they always reflect the number of results a filter will yield.
+
+<!-- docs: demo live align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -255,7 +257,6 @@ The "count" property will give the count for each filter value, indicating the i
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
-<!-- docs: end hidden content -->
 
 ## Tags for Applied Filters [d2l-filter-tags]
 
@@ -405,13 +406,10 @@ The `d2l-filter-overflow-group` is a container for multiple filters that handles
 | `tags` | Boolean, default: `false` | Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group. |
 <!-- docs: end hidden content -->
 
-## Filter Dimension: Date [d2l-filter-dimension-date]
-
-**Coming Soon!**
-
 <!-- docs: start hidden content -->
 ## Future Improvements
 
+* Date Dimension - Ability to filter by dates
 * ability to delay change events until the user has pressed an apply button (see [#341](https://github.com/BrightspaceUI/core/issues/341))
 
 Looking for an enhancement not listed here? Create a GitHub issue!
