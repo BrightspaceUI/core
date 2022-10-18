@@ -76,7 +76,7 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
-const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+const Test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 	static get localizeConfig() {
 		return {
 			importFunc: () => {
@@ -90,7 +90,7 @@ const test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 	}
 };
 
-const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+const Test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 	static get localizeConfig() {
 		return {
 			importFunc: () => {
@@ -104,6 +104,27 @@ const test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 	}
 };
 
+const Test3LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+
+	static get localizeConfig() {
+		return {
+			importFunc: (lang) => {
+				return new Promise((resolve) => {
+					setTimeout(() => {
+						resolve(translations[lang]);
+					}, 50);
+				});
+			}
+		};
+	}
+
+	static translations = {
+		'en': { laborDay: 'Labor Day' },
+		'en-ca': { laborDay: 'Labour Day' },
+		'fr': { laborDay: 'Fête du travail'}
+	};
+};
+
 const multiMixinTag = defineCE(
 	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
 
@@ -111,7 +132,13 @@ const multiMixinTag = defineCE(
 );
 
 const multiMixinTagDynamic = defineCE(
-	class extends test1LocalizeDynamicMixn(test2LocalizeDynamicMixn((LitElement))) {
+	class extends Test1LocalizeDynamicMixn(Test2LocalizeDynamicMixn((LitElement))) {
+
+	}
+);
+
+const browserLangsTag = defineCE(
+	class extends Test3LocalizeDynamicMixn((LitElement)) {
 
 	}
 );
@@ -268,6 +295,48 @@ describe('LocalizeMixin', () => {
 		});
 
 	});
+
+	describe('browser language settings in dynamic mixin', () => {
+
+		const browserLangsFixture = `<${browserLangsTag}></${browserLangsTag}>`;
+
+		beforeEach(async() => {
+			elem = await fixture(browserLangsFixture);
+		});
+
+		it('should localize text based on browser settings', () => {
+			Object.defineProperty(navigator, 'languages', { value: ['en-CA'] });
+
+			const laborDay = elem.localize('laborDay');
+
+			expect(laborDay).to.equal('Labour Day');
+		});
+
+		it('should not fall back to base 2-character language code not included in browser settings', () => {
+			Object.defineProperty(navigator, 'languages', { value: ['fr-CA'] });
+
+			const laborDay = elem.localize('laborDay');
+
+			expect(laborDay).to.equal('Labor Day');
+		});
+
+		it('should loop until an alternative is found', () => {
+			Object.defineProperty(navigator, 'languages', { value: ['fr-CA', 'fr-BE', 'fr-FR', 'fr'] });
+
+			const laborDay = elem.localize('laborDay');
+
+			expect(laborDay).to.equal('Fête du travail');
+		});
+
+		it('should fall back to en if nothing else is found', () => {
+			Object.defineProperty(navigator, 'languages', { value: ['fr-CA', 'fr-BE', 'fr-FR'] });
+
+			const laborDay = elem.localize('laborDay');
+
+			expect(laborDay).to.equal('Labor Day');
+		});
+
+	})
 
 	describe('multiple localize and localize static mixin', () => {
 

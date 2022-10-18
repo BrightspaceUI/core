@@ -130,7 +130,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	static _generatePossibleLanguages(config) {
 
-		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase());
+		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase()).concat('en');
 
 		const { language, fallbackLanguage } = this.documentLocaleSettings;
 		const langs = [ language, fallbackLanguage ]
