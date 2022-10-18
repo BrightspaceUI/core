@@ -5,6 +5,8 @@ import IntlMessageFormat from 'intl-messageformat';
 
 export const LocalizeMixin = dedupeMixin(superclass => class extends superclass {
 
+	static documentLocaleSettings = getDocumentLocaleSettings();
+
 	static get properties() {
 		return {
 			__resources: { type: Object, attribute: false  }
@@ -13,14 +15,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	constructor() {
 		super();
-
-		this.__documentLocaleSettings = getDocumentLocaleSettings();
 		this.__resourcesLoadedPromise = new Promise((resolve) => {
 			let first = true;
 			this.__languageChangeCallback = () => {
 				if (!this._hasResources()) return;
-				const possibleLanguages = this._generatePossibleLanguages();
-				const localizeResources = this.constructor._getAllLocalizeResources(possibleLanguages);
+				const localizeResources = this.constructor._getAllLocalizeResources();
 				const resourcesLoadedPromise = Promise.all(localizeResources);
 				resourcesLoadedPromise
 					.then((results) => {
@@ -50,13 +49,13 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.__documentLocaleSettings.addChangeListener(this.__languageChangeCallback);
+		this.constructor.documentLocaleSettings.addChangeListener(this.__languageChangeCallback);
 		this.__languageChangeCallback();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.__documentLocaleSettings.removeChangeListener(this.__languageChangeCallback);
+		this.constructor.documentLocaleSettings.removeChangeListener(this.__languageChangeCallback);
 		this.__updatedProperties.clear();
 	}
 
@@ -130,48 +129,29 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	}
 
-	_generatePossibleLanguages() {
-		const langs = new Set();
+	static _generatePossibleLanguages(config) {
 
-		let docLang = this.__documentLocaleSettings.language;
-		if (docLang) {
-			docLang = docLang.toLowerCase();
-			langs.add(docLang);
+		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase());
+		
+		const { language, fallbackLanguage } = this.documentLocaleSettings;
+		const langs = [ language, fallbackLanguage ]
+			.filter(e => e)
+			.map(e => [ e.toLowerCase(), e.split('-')[0] ])
+			.flat();
 
-			if (docLang.indexOf('-') !== -1) {
-				const baseDocLang = docLang.split('-')[0];
-				langs.add(baseDocLang);
-			}
-		}
-
-		let docFallbackLang = this.__documentLocaleSettings.fallbackLanguage;
-		if (docFallbackLang) {
-			docFallbackLang = docFallbackLang.toLowerCase();
-			langs.add(docFallbackLang);
-
-			if (docFallbackLang.indexOf('-') !== -1) {
-				const baseDocFallbackLang = docFallbackLang.split('-')[0];
-				langs.add(baseDocFallbackLang);
-			}
-		}
-
-		langs.add('en-us');
-		langs.add('en');
-
-		return Array.from(langs);
+		return Array.from(new Set([ ...langs, 'en-us', 'en' ]));
 	}
 
-	static _getAllLocalizeResources(possibleLanguages, config = this.localizeConfig) {
+	static _getAllLocalizeResources(config = this.localizeConfig) {
 		let resourcesLoadedPromises = [];
 		const superCtor = Object.getPrototypeOf(this);
 		// get imported terms for each config, head up the chain to get them all
 		if ('_getAllLocalizeResources' in superCtor) {
-			// eslint-disable-next-line no-prototype-builtins
-			const superConfig = superCtor.hasOwnProperty('localizeConfig') && superCtor.localizeConfig.importFunc ? superCtor.localizeConfig : config;
-			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages, superConfig);
+			const superConfig = Object.hasOwn(superCtor, 'localizeConfig') && superCtor.localizeConfig.importFunc ? superCtor.localizeConfig : config;
+			resourcesLoadedPromises = superCtor._getAllLocalizeResources(superConfig);
 		}
-		// eslint-disable-next-line no-prototype-builtins
-		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
+		if (Object.hasOwn(this, 'getLocalizeResources') || Object.hasOwn(this, 'resources')) {
+			const possibleLanguages = this._generatePossibleLanguages(config);
 			const res = this.getLocalizeResources([...possibleLanguages], config);
 			resourcesLoadedPromises.push(res);
 		}
