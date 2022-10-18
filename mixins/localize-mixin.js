@@ -5,13 +5,13 @@ import IntlMessageFormat from 'intl-messageformat';
 
 export const LocalizeMixin = dedupeMixin(superclass => class extends superclass {
 
-	static documentLocaleSettings = getDocumentLocaleSettings();
-
 	static get properties() {
 		return {
 			__resources: { type: Object, attribute: false  }
 		};
 	}
+
+	static documentLocaleSettings = getDocumentLocaleSettings();
 
 	constructor() {
 		super();
@@ -44,7 +44,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		});
 
 		this.__updatedProperties = new Map();
-
 	}
 
 	connectedCallback() {
@@ -132,7 +131,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	static _generatePossibleLanguages(config) {
 
 		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase());
-		
+
 		const { language, fallbackLanguage } = this.documentLocaleSettings;
 		const langs = [ language, fallbackLanguage ]
 			.filter(e => e)
@@ -152,7 +151,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		}
 		if (Object.hasOwn(this, 'getLocalizeResources') || Object.hasOwn(this, 'resources')) {
 			const possibleLanguages = this._generatePossibleLanguages(config);
-			const res = this.getLocalizeResources([...possibleLanguages], config);
+			const res = this.getLocalizeResources(possibleLanguages, config);
 			resourcesLoadedPromises.push(res);
 		}
 		return resourcesLoadedPromises;
