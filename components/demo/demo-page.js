@@ -1,6 +1,7 @@
 import './demo-snippet.js';
 import './code-view.js';
 import '../colors/colors.js';
+import '../heading/heading-stack.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
 import { heading2Styles } from '../typography/styles.js';
@@ -59,7 +60,9 @@ class DemoPage extends LitElement {
 		return html`
 			<main>
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<div class="d2l-demo-page-content"><slot></slot></div>
+				<d2l-heading-stack>
+					<div class="d2l-demo-page-content"><slot></slot></div>
+				</d2l-heading-stack>
 			</main>
 		`;
 	}
