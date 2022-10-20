@@ -321,13 +321,13 @@ describe('LocalizeMixin', () => {
 			localizedTerm: 'Labour Day',
 			it: 'should localize text based on browser settings'
 		},
-	  {
+		{
 			browserLangs: ['fr-CA', 'fr-BE', 'fr-FR', 'fr'],
 			resolvedLang: 'fr',
 			localizedTerm: 'Fête du travail',
 			it: 'should loop until an alternative is found'
 		},
-	  {
+		{
 			browserLangs: ['fr-CA', 'fr-BE', 'fr-FR'],
 			resolvedLang: 'en',
 			localizedTerm: 'Labor Day',
@@ -335,7 +335,6 @@ describe('LocalizeMixin', () => {
 		}].forEach(test => {
 
 			it(test.it, async() => {
-
 				setBrowserLangs(test.browserLangs);
 				const elem = await fixture(browserLangsFixture);
 
