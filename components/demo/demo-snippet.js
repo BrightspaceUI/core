@@ -8,8 +8,8 @@ class DemoSnippet extends LitElement {
 	static get properties() {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
-			fullscreen: { type: Boolean, reflect: true },
-			fullscreenView: { type: Boolean, reflect: true, attribute: 'fullscreen-view' },
+			fullWidth: { type: Boolean, reflect: true },
+			_fullscreen: { state: true },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
@@ -32,13 +32,13 @@ class DemoSnippet extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([fullscreen]) {
+			:host([full-width]) {
 				max-width: unset;
 			}
 			.d2l-demo-snippet-demo-wrapper {
 				display: flex;
 			}
-			:host([fullscreen-view]) .d2l-demo-snippet-demo-wrapper {
+			.d2l-demo-snippet-demo-wrapper.fullscreen {
 				background-color: white;
 				inset: 0;
 				overflow: auto;
@@ -56,7 +56,7 @@ class DemoSnippet extends LitElement {
 				padding: 18px;
 			}
 			:host([no-padding]) .d2l-demo-snippet-demo-padding,
-			:host([fullscreen-view]) .d2l-demo-snippet-demo-padding {
+			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo-padding {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
@@ -64,7 +64,7 @@ class DemoSnippet extends LitElement {
 				flex: 0 0 auto;
 				padding: 6px;
 			}
-			:host([fullscreen-view]) .d2l-demo-snippet-settings {
+			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-settings {
 				position: sticky;
 				top: 0;
 			}
@@ -83,9 +83,9 @@ class DemoSnippet extends LitElement {
 
 	constructor() {
 		super();
-		this.fullscreen = false;
-		this.fullscreenView = false;
+		this.fullWidth = false;
 		this._dir = document.documentElement.dir;
+		this._fullscreen = false;
 		this._hasSkeleton = false;
 		this._skeletonOn = false;
 	}
@@ -96,10 +96,9 @@ class DemoSnippet extends LitElement {
 
 	render() {
 		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
-		const fullscreen = this.fullscreen ? html`<d2l-switch text="Fullscreen" ?on="${this.fullscreenView}" @change="${this._handleFullscreenViewChange}"></d2l-switch><br />` : null;
 		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		return html`
-			<div class="d2l-demo-snippet-demo-wrapper">
+			<div class="d2l-demo-snippet-demo-wrapper ${this._fullscreen ? 'fullscreen' : ''}">
 				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
 					<div class="d2l-demo-snippet-demo-padding">
 						<slot name="_demo"></slot>
@@ -108,7 +107,7 @@ class DemoSnippet extends LitElement {
 				</div>
 				<div class="d2l-demo-snippet-settings">
 					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br />
-					${fullscreen}
+					<d2l-switch text="Fullscreen" ?on="${this._fullscreen}" @change="${this._handleFullscreenChange}"></d2l-switch><br />
 					${skeleton}
 				</div>
 			</div>
@@ -202,8 +201,8 @@ class DemoSnippet extends LitElement {
 		this._applyAttr('dir', this._dir, true);
 	}
 
-	_handleFullscreenViewChange(e) {
-		this.fullscreenView = e.target.on;
+	_handleFullscreenChange(e) {
+		this._fullscreen = e.target.on;
 		const event = new CustomEvent('fullscreen-toggle', { bubbles: true, composed: true });
 		this.dispatchEvent(event);
 	}
