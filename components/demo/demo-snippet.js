@@ -203,7 +203,7 @@ class DemoSnippet extends LitElement {
 
 	_handleFullscreenChange(e) {
 		this._fullscreen = e.target.on;
-		const event = new CustomEvent('fullscreen-toggle', { bubbles: true, composed: true });
+		const event = new CustomEvent('d2l-demo-snippet-fullscreen-toggle', { bubbles: true, composed: true });
 		this.dispatchEvent(event);
 	}
 

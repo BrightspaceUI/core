@@ -66,7 +66,7 @@ class DemoPage extends LitElement {
 		return html`
 			<main>
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<div class="d2l-demo-page-content" @fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
+				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
 		`;
 	}
