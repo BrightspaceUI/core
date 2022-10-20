@@ -20,7 +20,8 @@ class DemoPage extends LitElement {
 
 	static get properties() {
 		return {
-			pageTitle: { type: String, attribute: 'page-title' }
+			pageTitle: { type: String, attribute: 'page-title' },
+			noScroll: { type: Boolean, reflect: true, attribute: 'no-scroll' }
 		};
 	}
 
@@ -31,7 +32,7 @@ class DemoPage extends LitElement {
 				display: block;
 				padding: 30px;
 			}
-			:host(.no-scroll) {
+			:host([no-scroll]) {
 				height: 0;
 				overflow: hidden;
 				padding: 0;
@@ -70,10 +71,17 @@ class DemoPage extends LitElement {
 		`;
 	}
 
-	_handleFullscreenToggle() {
-		this.classList.toggle('no-scroll');
+	async _handleFullscreenToggle() {
+		if (this.noScroll) {
+			this.noScroll = false;
+			await this.updateComplete;
+			document.documentElement.scrollTop = this._previousScrollTop;
+		}
+		else {
+			this._previousScrollTop = document.documentElement.scrollTop;
+			this.noScroll = true;
+		}
 	}
-
 }
 
 customElements.define('d2l-demo-page', DemoPage);
