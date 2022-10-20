@@ -33,8 +33,8 @@ class DemoPage extends LitElement {
 			}
 			:host(.no-scroll) {
 				height: 0;
-				padding: 0;
 				overflow: hidden;
+				padding: 0;
 			}
 			.d2l-heading-2 {
 				margin-top: 0;
@@ -51,7 +51,7 @@ class DemoPage extends LitElement {
 			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
 				margin-bottom: 36px;
 			}
-		`];
+`];
 	}
 
 	connectedCallback() {

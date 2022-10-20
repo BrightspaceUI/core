@@ -39,10 +39,10 @@ class DemoSnippet extends LitElement {
 				display: flex;
 			}
 			:host([fullscreen-view]) .d2l-demo-snippet-demo-wrapper {
-				position: fixed;
+				background-color: white;
 				inset: 0;
 				overflow: auto;
-				background-color: white;
+				position: fixed;
 				z-index: 2;
 			}
 			.d2l-demo-snippet-demo {
@@ -56,7 +56,7 @@ class DemoSnippet extends LitElement {
 				padding: 18px;
 			}
 			:host([no-padding]) .d2l-demo-snippet-demo-padding,
-			:host([fullscreen-view]) .d2l-demo-snippet-demo-padding	{
+			:host([fullscreen-view]) .d2l-demo-snippet-demo-padding {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
@@ -66,7 +66,7 @@ class DemoSnippet extends LitElement {
 			}
 			:host([fullscreen-view]) .d2l-demo-snippet-settings {
 				position: sticky;
-				top: 0px;
+				top: 0;
 			}
 			d2l-code-view {
 				border: none;
@@ -78,7 +78,7 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-		`;
+`;
 	}
 
 	constructor() {
