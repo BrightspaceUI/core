@@ -117,10 +117,7 @@ const Test3LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 			importFunc: (lang) => {
 				return new Promise((resolve) => {
 					setTimeout(() => {
-						switch (lang) {
-							default:
-								resolve(this.translations[lang]);
-						}
+						resolve(this.translations[lang]);
 					}, 50);
 				});
 			},

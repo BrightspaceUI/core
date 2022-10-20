@@ -6,10 +6,10 @@ const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'es', 'es-es', 'fr', '
 
 export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(superclass) {
 
-	static async getLocalizeResources(langs, { importFunc, osloCollection }) {
+	static async getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
 
 		// in dev, don't request unsupported langpacks
-		if (!importFunc.toString().includes('switch')) {
+		if (!importFunc.toString().includes('switch') && !useBrowserLangs) {
 			langs = langs.filter(lang => supportedLangpacks.includes(lang));
 		}
 
