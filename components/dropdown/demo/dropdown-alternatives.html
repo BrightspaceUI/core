@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script type="module">
+		import '../../demo/demo-page.js';
+
+		import './dropdown-alternatives.js';
+		import '../../button/button.js';
+		import '../dropdown.js';
+		import '../dropdown-content.js';
+	</script>
+
+	<style>
+		div[slot="_demo"] {
+			position: relative;
+		}
+		.scroll-container {
+			height: 100px;
+			overflow: auto;
+		}
+		.scroll-container > div {
+			padding: 100px 0;
+			position: relative;
+		}
+	</style>
+
+	<script src="./popup-polyfill/index.iife.min.js" type="module" defer></script>
+	<link rel="stylesheet" href="./popup-polyfill/popup.css" />
+
+	<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+	<link rel="stylesheet" href="./popper-setup/index.css" />
+
+	<link rel="stylesheet" href="./floating-ui-setup/index.css" />
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-dropdown-alternatives">
+
+		<h2>Popup API with polyfill (polyfill applies styles for dark mode, Chrome experimental does not)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<button popuptoggletarget="popup-api" id="popup-api-button">Open it! (Popup API)</button>
+				<div popup="auto" id="popup-api" anchor="popup-api-button">
+					<a href="https://youtu.be/9ze87zQFSak">Google</a>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+						anim id est laborum.</p>
+					<a href="http://www.desire2learn.com">D2L</a>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popup API in shadow DOM (works in Chrome experimental, not in polyfill)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<popup-api-demo></popup-api-demo>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popper default strategy (requires relative position on parent?)</h2>
+		<d2l-demo-snippet id="popper-demo-1">
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<button id="popper-button-1" aria-describedby="popper-tooltip-1">Open it! (Popper)</button>
+				<div id="popper-tooltip-1" role="tooltip" class="popper-tooltip">
+					<div class="popper-arrow" data-popper-arrow></div>
+					<a href="https://youtu.be/9ze87zQFSak">Google</a>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+						anim id est laborum.</p>
+					<a href="http://www.desire2learn.com">D2L</a>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popper fixed strategy</h2>
+		<d2l-demo-snippet id="popper-demo-2">
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<button id="popper-button-2" aria-describedby="popper-tooltip-2">Open it! (Popper)</button>
+				<div id="popper-tooltip-2" role="tooltip" class="popper-tooltip">
+					<div class="popper-arrow" data-popper-arrow></div>
+					<a href="https://youtu.be/9ze87zQFSak">Google</a>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+						anim id est laborum.</p>
+					<a href="http://www.desire2learn.com">D2L</a>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popper web-component</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<popper-demo></popper-demo>
+				<popper-demo fixed></popper-demo>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popper web-component in scroll container</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="scroll-container"><div>
+					<d2l-dropdown>
+						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+						<d2l-dropdown-content max-width="400">
+							<a href="https://youtu.be/9ze87zQFSak">Google</a>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+								magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+								commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+								nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+								anim id est laborum.</p>
+							<a href="http://www.desire2learn.com">D2L</a>
+						</d2l-dropdown-content>
+					</d2l-dropdown>
+	
+					<popper-demo></popper-demo>
+					<popper-demo fixed></popper-demo>
+					<popper-demo fixed placement="right"></popper-demo>
+				</div></div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Floating-UI default strategy (requires relative position on parent?)</h2>
+		<d2l-demo-snippet id="floating-ui-demo-1">
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+
+				<button id="floating-ui-button-1" aria-describedby="floating-ui-tooltip-1">Open it! (Floating-UI)</button>
+				<div id="floating-ui-tooltip-1" role="tooltip" class="floating-ui-tooltip">
+					<div id="floating-ui-arrow-1" class="floating-ui-arrow"></div>
+					<a href="https://youtu.be/9ze87zQFSak">Google</a>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+						anim id est laborum.</p>
+					<a href="http://www.desire2learn.com">D2L</a>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Floating-UI web-component in scroll container</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="scroll-container"><div>
+					<d2l-dropdown>
+						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+						<d2l-dropdown-content max-width="400">
+							<a href="https://youtu.be/9ze87zQFSak">Google</a>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+								magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+								commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+								nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+								anim id est laborum.</p>
+							<a href="http://www.desire2learn.com">D2L</a>
+						</d2l-dropdown-content>
+					</d2l-dropdown>
+	
+					<floating-ui-demo></floating-ui-demo>
+					<floating-ui-demo fixed></floating-ui-demo>
+					<floating-ui-demo fixed placement="right"></floating-ui-demo>
+					<p>placement="right" has troubles if the element is too far right (probably fixable).</p>
+					<floating-ui-demo fixed placement="right"></floating-ui-demo>
+				</div></div>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+	<script type="module">
+		import { initFloatingUI } from './floating-ui-setup/index.js';
+		import { initPopper } from './popper-setup/index.js';
+
+		document.getElementById('popper-demo-1').updateComplete.then(() => {
+			initPopper(document.getElementById('popper-button-1'), document.getElementById('popper-tooltip-1'));
+		});
+		document.getElementById('popper-demo-2').updateComplete.then(() => {
+			initPopper(document.getElementById('popper-button-2'), document.getElementById('popper-tooltip-2'), { strategy: 'fixed' });
+		});
+
+		document.getElementById('floating-ui-demo-1').updateComplete.then(() => {
+			initFloatingUI(document.getElementById('floating-ui-button-1'), document.getElementById('floating-ui-tooltip-1'), document.getElementById('floating-ui-arrow-1'));
+		});
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+import { css } from 'lit';
+
+export const floatingUIStyles = css`
+	.floating-ui-tooltip {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: #ddd;
+		font-weight: bold;
+		padding: 5px;
+		border-radius: 4px;
+		font-size: 90%;
+		pointer-events: none;
+		z-index: 10000;
+	}
+
+	.floating-ui-arrow {
+		position: absolute;
+		background: #ddd;
+		width: 8px;
+		height: 8px;
+		transform: rotate(45deg);
+	}
+`;
