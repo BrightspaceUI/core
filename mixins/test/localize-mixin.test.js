@@ -106,23 +106,27 @@ const Test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 
 const Test3LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
 
+	static translations = {
+		'en': { laborDay: 'Labor Day' },
+		'en-ca': { laborDay: 'Labour Day' },
+		'fr': { laborDay: 'Fête du travail' }
+	};
+
 	static get localizeConfig() {
 		return {
 			importFunc: (lang) => {
 				return new Promise((resolve) => {
 					setTimeout(() => {
-						resolve(translations[lang]);
+						switch(lang) {
+							default:
+							resolve(this.translations[lang]);
+						}
 					}, 50);
 				});
-			}
+			},
+			useBrowserLangs: true,
 		};
 	}
-
-	static translations = {
-		'en': { laborDay: 'Labor Day' },
-		'en-ca': { laborDay: 'Labour Day' },
-		'fr': { laborDay: 'Fête du travail'}
-	};
 };
 
 const multiMixinTag = defineCE(
@@ -299,44 +303,49 @@ describe('LocalizeMixin', () => {
 	describe('browser language settings in dynamic mixin', () => {
 
 		const browserLangsFixture = `<${browserLangsTag}></${browserLangsTag}>`;
+		const initialBrowserLangs = navigator.languages;
+		const setBrowserLangs = langs => {
+			Object.defineProperty(navigator, 'languages', {
+				get: () => langs,
+				configurable: true
+			});
+		};
 
-		beforeEach(async() => {
-			elem = await fixture(browserLangsFixture);
+		after(() => {
+			setBrowserLangs(initialBrowserLangs);
 		});
 
-		it('should localize text based on browser settings', () => {
-			Object.defineProperty(navigator, 'languages', { value: ['en-CA'] });
+		[{
+			browserLangs: ['en-CA'],
+			resolvedLang: 'en-ca',
+			localizedTerm: 'Labour Day',
+			it: 'should localize text based on browser settings'
+		},
+	  {
+			browserLangs: ['fr-CA', 'fr-BE', 'fr-FR', 'fr'],
+			resolvedLang: 'fr',
+			localizedTerm: 'Fête du travail',
+			it: 'should loop until an alternative is found'
+		},
+	  {
+			browserLangs: ['fr-CA', 'fr-BE', 'fr-FR'],
+			resolvedLang: 'en',
+			localizedTerm: 'Labor Day',
+			it: 'should fall back to en if nothing else is found'
+		}].forEach(test => {
 
-			const laborDay = elem.localize('laborDay');
+			it(test.it, async() => {
 
-			expect(laborDay).to.equal('Labour Day');
+				setBrowserLangs(test.browserLangs);
+				const elem = await fixture(browserLangsFixture);
+
+				const laborDay = elem.localize('laborDay');
+				expect(navigator.languages).to.deep.equal(test.browserLangs);
+				expect(elem.__resources.laborDay.language).to.equal(test.resolvedLang);
+				expect(laborDay).to.equal(test.localizedTerm);
+			});
 		});
-
-		it('should not fall back to base 2-character language code not included in browser settings', () => {
-			Object.defineProperty(navigator, 'languages', { value: ['fr-CA'] });
-
-			const laborDay = elem.localize('laborDay');
-
-			expect(laborDay).to.equal('Labor Day');
-		});
-
-		it('should loop until an alternative is found', () => {
-			Object.defineProperty(navigator, 'languages', { value: ['fr-CA', 'fr-BE', 'fr-FR', 'fr'] });
-
-			const laborDay = elem.localize('laborDay');
-
-			expect(laborDay).to.equal('Fête du travail');
-		});
-
-		it('should fall back to en if nothing else is found', () => {
-			Object.defineProperty(navigator, 'languages', { value: ['fr-CA', 'fr-BE', 'fr-FR'] });
-
-			const laborDay = elem.localize('laborDay');
-
-			expect(laborDay).to.equal('Labor Day');
-		});
-
-	})
+	});
 
 	describe('multiple localize and localize static mixin', () => {
 
