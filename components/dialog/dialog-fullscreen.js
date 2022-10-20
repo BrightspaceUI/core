@@ -1,4 +1,5 @@
 import '../button/button-icon.js';
+import '../heading/heading-stack.js';
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit';
@@ -242,7 +243,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
+				<d2l-heading-stack override-level="3" class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}" style="display: block;">${content}</d2l-heading-stack>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>

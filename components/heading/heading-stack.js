@@ -21,10 +21,21 @@ export class HeadingLevelController {
 
 class HeadingStack extends ProviderMixin(LitElement) {
 
+	static properties = {
+		/**
+		 * Override the heading level this stack returns.
+		 * @type {boolean}
+		 */
+		overrideLevel: { attribute: 'override-level', type: Number }
+	};
+
 	constructor() {
 		super();
 		const headingLevelController = new HeadingLevelController(this);
 		this.provideInstance('d2l-heading-level', () => {
+			if (this.overrideLevel !== undefined && this.overrideLevel > 0 && this.overrideLevel <= 6) {
+				return this.overrideLevel;
+			}
 			let level = headingLevelController.level;
 			if (level < 6) {
 				level++;
