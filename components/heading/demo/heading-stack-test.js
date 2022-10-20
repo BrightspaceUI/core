@@ -1,3 +1,5 @@
+/* eslint-disable lit/no-invalid-html */
+/* eslint-disable lit/binding-positions */
 import { html, literal } from 'lit/static-html.js';
 import { HeadingLevelController } from '../heading-stack.js';
 import { LitElement } from 'lit';
