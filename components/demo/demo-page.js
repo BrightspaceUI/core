@@ -31,6 +31,11 @@ class DemoPage extends LitElement {
 				display: block;
 				padding: 30px;
 			}
+			:host(.no-scroll) {
+				height: 0;
+				padding: 0;
+				overflow: hidden;
+			}
 			.d2l-heading-2 {
 				margin-top: 0;
 			}
@@ -41,6 +46,7 @@ class DemoPage extends LitElement {
 				line-height: 1.2rem;
 				margin: 1.5rem 0 1.5rem 0;
 			}
+
 			.d2l-demo-page-content > ::slotted(d2l-code-view),
 			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
 				margin-bottom: 36px;
@@ -59,9 +65,13 @@ class DemoPage extends LitElement {
 		return html`
 			<main>
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<div class="d2l-demo-page-content"><slot></slot></div>
+				<div class="d2l-demo-page-content" @fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
 		`;
+	}
+
+	_handleFullscreenToggle() {
+		this.classList.toggle('no-scroll');
 	}
 
 }
