@@ -9,11 +9,11 @@ class DemoSnippet extends LitElement {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			fullWidth: { type: Boolean, reflect: true },
-			_fullscreen: { state: true },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
+			_fullscreen: { state: true },
 			_hasSkeleton: { type: Boolean, attribute: false },
 			_skeletonOn: { type: Boolean, reflect: false }
 		};
@@ -78,7 +78,7 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-`;
+		`;
 	}
 
 	constructor() {
