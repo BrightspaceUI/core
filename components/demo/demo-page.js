@@ -2,7 +2,7 @@ import './demo-snippet.js';
 import './code-view.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { heading2Styles } from '../typography/styles.js';
 
 document.body.classList.add('d2l-typography');
@@ -21,7 +21,7 @@ class DemoPage extends LitElement {
 	static get properties() {
 		return {
 			pageTitle: { type: String, attribute: 'page-title' },
-			noScroll: { type: Boolean, reflect: true, attribute: 'no-scroll' }
+			_noScroll: { state: true }
 		};
 	}
 
@@ -32,7 +32,7 @@ class DemoPage extends LitElement {
 				display: block;
 				padding: 30px;
 			}
-			:host([no-scroll]) {
+			main.no-scroll {
 				height: 0;
 				overflow: hidden;
 				padding: 0;
@@ -64,7 +64,7 @@ class DemoPage extends LitElement {
 
 	render() {
 		return html`
-			<main>
+			<main class="${this._noScroll ? 'no-scroll' : nothing}">
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
 				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
@@ -72,14 +72,14 @@ class DemoPage extends LitElement {
 	}
 
 	async _handleFullscreenToggle() {
-		if (this.noScroll) {
-			this.noScroll = false;
+		if (this._noScroll) {
+			this._noScroll = false;
 			await this.updateComplete;
 			document.documentElement.scrollTop = this._previousScrollTop;
 		}
 		else {
 			this._previousScrollTop = document.documentElement.scrollTop;
-			this.noScroll = true;
+			this._noScroll = true;
 		}
 	}
 }
