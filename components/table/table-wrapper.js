@@ -176,6 +176,7 @@ export const tableStyles = css`
 		table-layout: fixed;
 	}
 
+	/*sticky header for vertical scrolling and also it is a horizontal scrolling container for sticky cells*/
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
 		display: block;
 		overflow-x: hidden;
@@ -185,14 +186,10 @@ export const tableStyles = css`
 		z-index: 2;
 	}
 
+	/*horizontal scrolling container for sticky cells*/
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody {
 		display: block;
 		overflow-x: auto;
-	}
-
-	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr,
-	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr {
-		width: inherit;
 	}
 
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody,
@@ -204,24 +201,44 @@ export const tableStyles = css`
 		background-color: #ffffff; /* white background so sticky cells layer on top of non-sticky cells */
 	}
 
+	/* header cells that are also sticky */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead > tr > th[sticky] {
-		left: 0;
 		position: -webkit-sticky;
 		position: sticky;
 		z-index: 3;
 	}
+	d2l-table-wrapper[sticky-headers-horizontal-scroll]:not([dir="rtl"]) .d2l-table > thead > tr > th[sticky] {
+		left: 0;
+	}
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][dir="rtl"] .d2l-table > thead > tr > th[sticky] {
+		right: 0;
+	}
 
+	/* body cells that are also sticky */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody > tr > th[sticky] {
 		background-color: inherit;
-		left: 0;
 		position: -webkit-sticky;
 		position: sticky;
 		z-index: 1;
 	}
+	d2l-table-wrapper[sticky-headers-horizontal-scroll]:not([dir="rtl"]) .d2l-table > tbody > tr > th[sticky] {
+		left: 0;
+	}
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][dir="rtl"] .d2l-table > tbody > tr > th[sticky] {
+		right: 0;
+	}
 
-	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
+	/* first row: offset by size of border-radius so top border doesn't show through (default style only) */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"] .d2l-table > thead {
 		top: -5px;
+	}
+
+	/* first column that's sticky: offset by size of border-radius so left/right border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
+		left: -5px;
+	}
+	d2l-table-wrapper[sticky-headers-horizontal-scroll][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
+		right: -5px;
 	}
 
 	/* hide wrapper visuals from print view */
@@ -368,7 +385,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				display: none;
 			}
 
-			:host([h-scrollbar][sticky-headers-horizontal-scroll]) {
+			:host([h-scrollbar]) {
 				border-left: 1px dashed var(--d2l-color-mica);
 				border-right: 1px dashed var(--d2l-color-mica);
 			}
@@ -376,9 +393,14 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			:host(:not([dir="rtl"])[scrollbar-left]) {
 				border-left: none;
 			}
-
 			:host(:not([dir="rtl"])[scrollbar-right]) {
 				border-right: none;
+			}
+			:host([dir="rtl"][scrollbar-left]) {
+				border-right: none;
+			}
+			:host([dir="rtl"][scrollbar-right]) {
+				border-left: none;
 			}
 
 			/* hide wrapper visuals from print view */
@@ -572,9 +594,9 @@ export class TableWrapper extends RtlMixin(LitElement) {
 	_checkScrollThresholds() {
 		if (!this._container) return;
 
-		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.abs(this._container.scrollLeft);
-		this._scrollbarLeft = (this._container.scrollLeft === 0);
-		this._scrollbarRight = (lowerScrollValue < 1);
+		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.floor(Math.abs(this._container.scrollLeft));
+		this._scrollbarLeft = this._container.scrollLeft === 0;
+		this._scrollbarRight = lowerScrollValue <= 0;
 
 	}
 
