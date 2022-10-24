@@ -176,7 +176,7 @@ export const tableStyles = css`
 		table-layout: fixed;
 	}
 
-	/*sticky header for vertical scrolling and also it is a horizontal scrolling container for sticky cells*/
+	/* sticky header for vertical scrolling and also it is a horizontal scrolling container for sticky cells */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > thead {
 		display: block;
 		overflow-x: hidden;
@@ -186,7 +186,7 @@ export const tableStyles = css`
 		z-index: 2;
 	}
 
-	/*horizontal scrolling container for sticky cells*/
+	/* horizontal scrolling container for sticky cells */
 	d2l-table-wrapper[sticky-headers-horizontal-scroll] .d2l-table > tbody {
 		display: block;
 		overflow-x: auto;
