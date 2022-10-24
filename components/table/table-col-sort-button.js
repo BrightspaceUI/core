@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
@@ -32,11 +33,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 	static get styles() {
 		return css`
 			button {
+				align-items: center;
 				background-color: transparent;
 				border: none;
 				color: inherit;
 				cursor: pointer;
-				display: inline-block;
+				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
 				letter-spacing: inherit;
@@ -50,10 +52,13 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:disabled {
 				opacity: 0.5;
 			}
-			button:hover,
-			button:focus {
-				outline-style: none;
+			button:hover {
 				text-decoration: underline;
+			}
+			button:focus-visible {
+				border-radius: 0.2rem;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				outline-style: none;
 			}
 		`;
 	}

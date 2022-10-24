@@ -57,7 +57,7 @@ class TagListItemMixinConsumer extends TagListItemMixin(LitElement) {
 
 		return html`
 			<d2l-dropdown open-on-hover>
-				<div role="button" class="d2l-dropdown-opener">${this._renderTag(tagContent)}</div>
+				${this._renderTag(tagContent, { focusableClass: 'd2l-dropdown-opener' })}
 				<d2l-dropdown-content no-auto-focus>Custom</d2l-dropdown-content>
 			</d2l-dropdown>
 		`;

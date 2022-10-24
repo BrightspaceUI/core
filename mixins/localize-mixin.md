@@ -77,13 +77,12 @@ class MyComponent extends LocalizeDynamicMixin(LitElement) {
        // Import path must be relative
       importFunc: async lang => (await import(`../lang/${lang}.js`)).default,
       // Optionally enable OSLO
-      osloCollection: 'my-project\\myComponent',
+      osloCollection: '@d2l\\my-project\\myComponent',
     };
   }
 }
 ```
-
-When using this method, depending on various user settings, it's possible that a language file that does not exist will be requested, resulting in a network error (404). In production, your build system should prevent this by transpiling the variable dynamic import into a `switch` statement.
+Occasionally, it may be desirable to localize based on the user's browser settings. To do this, add `useBrowserLangs: true` to your `localizeConfig` object. This option should only be used if *all* supported *locales* have corresponding files named with their 4-character locale code, and all supported *languages*, in addition, have 2-character files. (e.g. `en-us.js`, `en-ca.js` and `en.js`)
 
 If your build system does not support variable dynamic imports, you'll need to manually set up imports for each supported language:
 

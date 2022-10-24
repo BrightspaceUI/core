@@ -5,8 +5,8 @@ import { css, html, nothing } from 'lit';
 import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -30,11 +30,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			 * @ignore
 			 */
 			keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
-			/**
-			 * @ignore
-			 */
-			role: { type: String, reflect: true },
-			_displayKeyboardTooltip: { type: Boolean }
+			_displayKeyboardTooltip: { state: true }
 		};
 	}
 
@@ -76,12 +72,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
-			:host(:focus-visible) .tag-list-item-container,
-			:host(:focus-visible:hover) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container,
+			:host(:focus-within:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
 			:host(:hover) .tag-list-item-container,
-			:host(:focus-visible) .tag-list-item-container {
+			:host(:focus-within) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);
 			}
 			:host(:hover) .tag-list-item-container {
@@ -131,52 +127,55 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;
-		/** @ignore */
-		this.role = 'listitem';
 		this._displayKeyboardTooltip = false;
 		this._id = getUniqueId();
-		this._tooltipShown = false;
+		this._keyboardTooltipShown = false;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		const container = this.shadowRoot.querySelector('.tag-list-item-content');
+
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
 
-			this._displayKeyboardTooltip = (this.keyboardTooltipItem && !this._tooltipShown);
+			this._displayKeyboardTooltip = (this.keyboardTooltipItem && !this._keyboardTooltipShown);
 			await this.updateComplete;
 
-			/** @ignore */
-			container.dispatchEvent(new FocusEvent('focus', { bubbles: false, cancelable: true }));
+			container.focus();
 		});
+
 		this.addEventListener('blur', () => {
 			this._displayKeyboardTooltip = false;
-			/** @ignore */
-			container.dispatchEvent(new FocusEvent('blur', { bubbles: false, cancelable: true }));
 		});
+
 		this.addEventListener('keydown', this._handleKeydown);
 	}
 
-	handleClearItem(e, clearAll) {
+	_handleClearItem() {
 		if (!this.clearable) return;
-
-		let handleFocus = false;
-		if (e) {
-			const listItemParent = findComposedAncestor(e.composedPath()[0], (node) => node.role === 'listitem');
-			handleFocus = listItemParent ? true : false;
-		}
-
-		if (clearAll) return;
 
 		announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
 
 		/** Dispatched when a user selects to delete an individual tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-clear',
-			{ bubbles: true, composed: true, detail: { value: this.text, handleFocus } }
+			{ bubbles: true, composed: true, detail: { value: this.text } }
+		));
+	}
+
+	_handleKeyboardTooltipHide() {
+		if (this._keyboardTooltipShown) this._displayKeyboardTooltip = false;
+	}
+
+	_handleKeyboardTooltipShow() {
+		this._keyboardTooltipShown = true;
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tag-list-item-tooltip-show',
+			{ bubbles: true, composed: true }
 		));
 	}
 
@@ -187,70 +186,77 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
 		e.preventDefault();
-		this.handleClearItem(e);
+		this._handleClearItem();
 	}
 
-	_handleTooltipHide() {
-		if (this._tooltipShown) this._displayKeyboardTooltip = false;
-	}
-
-	_handleTooltipShow() {
-		this._tooltipShown = true;
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tag-list-item-tooltip-show',
-			{ bubbles: true, composed: true }
-		));
-	}
-
-	_renderTag(tagContent, hasTruncationTooltip, description) {
-		const buttonText = typeof tagContent === 'object'
-			? this.localize('components.tag-list.clear', { value: '' })
-			: this.localize('components.tag-list.clear', { value: tagContent });
-		const hasDescription = !!description;
-		const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
-		const tooltipTagOverflow = hasTruncationTooltip ? html`
-				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
-					${tooltipHeader}
-					${hasDescription ? description : nothing}
-				</d2l-tooltip>
-			` : null;
-		const tooltipKeyboardInstructions = this._displayKeyboardTooltip ? html`
-			<d2l-tooltip
-				align="start"
-				@d2l-tooltip-hide="${this._handleTooltipHide}"
-				@d2l-tooltip-show="${this._handleTooltipShow}"
-				for="${this._id}">
-					${this._renderTooltipContent()}
-			</d2l-tooltip>` : null;
-		const containerClasses = {
-			'd2l-label-text': true,
-			'tag-list-item-container': true,
-			'tag-list-item-container-clearable': this.clearable
-		};
-		return html`
-			${tooltipKeyboardInstructions || tooltipTagOverflow}
-			<div class="${classMap(containerClasses)}">
-				<div class="tag-list-item-content" id="${this._id}" tabindex="-1">${tagContent}</div>
-				${this.clearable ? html`
-					<d2l-button-icon
-						class="d2l-tag-list-item-clear-button"
-						@click="${this.handleClearItem}"
-						icon="tier1:close-small"
-						tabindex="-1"
-						text="${buttonText}">
-					</d2l-button-icon>` : null}
-			</div>
-		`;
-	}
-
-	_renderTooltipContent() {
+	_renderKeyboardTooltipContent() {
 		return html`
 			<div class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-title')}</div>
 			<ul>
 				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-arrow-keys')}</span> - ${this.localize('components.tag-list-item.tooltip-arrow-keys-desc')}</li>
 				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-delete-key')}</span> - ${this.localize('components.tag-list-item.tooltip-delete-key-desc')}</li>
 			</ul>
+		`;
+	}
+
+	_renderTag(tagContent, options) {
+		if (!options) options = {};
+
+		const buttonText = typeof tagContent === 'object'
+			? this.localize('components.tag-list.clear', { value: '' })
+			: this.localize('components.tag-list.clear', { value: tagContent });
+
+		const hasDescription = !!options.description;
+
+		let tooltip = nothing;
+		if (this._displayKeyboardTooltip) {
+			tooltip = html`
+				<d2l-tooltip
+					align="start"
+					@d2l-tooltip-hide="${this._handleKeyboardTooltipHide}"
+					@d2l-tooltip-show="${this._handleKeyboardTooltipShow}"
+					for="${this._id}">
+						${this._renderKeyboardTooltipContent()}
+				</d2l-tooltip>`;
+		} else if (options.hasTruncationTooltip || hasDescription) {
+			const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
+			tooltip = html`
+				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
+					${tooltipHeader}
+					${hasDescription ? options.description : nothing}
+				</d2l-tooltip>`;
+		}
+
+		const containerClasses = {
+			'd2l-label-text': true,
+			'tag-list-item-container': true,
+			'tag-list-item-container-clearable': this.clearable
+		};
+		const focusableClasses = {
+			'tag-list-item-content': true
+		};
+		if (options.focusableClass) focusableClasses[options.focusableClass] = true;
+
+		return html`
+			${tooltip}
+			<div class="${classMap(containerClasses)}">
+				<div aria-label="${ifDefined(options.label)}"
+					aria-roledescription="${this.localize('components.tag-list-item.role-description')}"
+					class="${classMap(focusableClasses)}"
+					id="${this._id}"
+					role="button"
+					tabindex="-1">
+					${tagContent}
+				</div>
+				${this.clearable ? html`
+					<d2l-button-icon
+						class="d2l-tag-list-item-clear-button"
+						@click="${this._handleClearItem}"
+						icon="tier1:close-small"
+						tabindex="-1"
+						text="${buttonText}">
+					</d2l-button-icon>` : null}
+			</div>
 		`;
 	}
 

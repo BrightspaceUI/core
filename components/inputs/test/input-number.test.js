@@ -387,6 +387,14 @@ describe('d2l-input-number', () => {
 			await aTimeout(1);
 
 			expect(fired).to.be.false;
+
+		});
+
+		it('should have correct "invalid" state when change event fires', async() => {
+			const elem = await fixture(minMaxFixture);
+			setTimeout(() => setInnerInputValue(elem, '0'));
+			await oneEvent(elem, 'change');
+			expect(elem.invalid).to.be.true;
 		});
 	});
 

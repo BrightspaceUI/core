@@ -65,7 +65,7 @@ describe('d2l-tag-list', () => {
 				dispatchKeydownEvent(startItem, testcase.key);
 
 				await nextFrame();
-				expect(getComposedActiveElement()).to.equal(list._items[testcase.result]);
+				expect(getComposedActiveElement()).to.equal(list._items[testcase.result].shadowRoot.querySelector('.tag-list-item-content'));
 			});
 		});
 	});
@@ -101,7 +101,6 @@ describe('d2l-tag-list-item', () => {
 			setTimeout(() => childButtonIcon.click());
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.equal('Tag');
-			expect(detail.handleFocus).to.be.true;
 		});
 
 		it('should dispatch expected event when backspace pressed', async() => {
@@ -113,7 +112,6 @@ describe('d2l-tag-list-item', () => {
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.BACKSPACE));
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.equal('Another Tag');
-			expect(detail.handleFocus).to.be.true;
 		});
 
 		it('should dispatch expected event when delete pressed', async() => {
@@ -125,8 +123,6 @@ describe('d2l-tag-list-item', () => {
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.DELETE));
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
 			expect(detail.value).to.be.undefined;
-			expect(detail.handleFocus).to.be.true;
-
 		});
 	});
 

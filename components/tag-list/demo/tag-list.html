@@ -42,31 +42,47 @@
 			</script>
 			<d2l-demo-snippet fullscreen>
 				<d2l-tag-list description="A bunch of example tags">
-					<d2l-tag-list-item text="Example Tag"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 1"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 3"></d2l-tag-list-item>
 					<d2l-tag-list-item-mixin-consumer name="Custom Tag List Item"></d2l-tag-list-item-mixin-consumer>
-					<d2l-tag-list-item text="Example Tag 5"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example Tag 6"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 5"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 6" description="this is a description"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 7"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 8"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
 			</d2l-demo-snippet>
 
 			<h2>Clearable Tag List</h2>
 			<d2l-demo-snippet fullscreen>
 				<d2l-tag-list description="A bunch of example tags" clearable>
-					<d2l-tag-list-item text="Example Tag"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Longer Example Tag - much much much much much longer"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 1"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 3"></d2l-tag-list-item>
 					<d2l-tag-list-item-mixin-consumer name="Custom Tag List Item"></d2l-tag-list-item-mixin-consumer>
-					<d2l-tag-list-item text="Example Tag 5"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example Tag 6"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example Tag 7"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 5"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 6" description="this is a description"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 7"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 8"></d2l-tag-list-item>
+					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
-				<script>
+				<script type="module">
+					import { forceFocusVisible, getNextFocusable } from '../../../helpers/focus.js';
+
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
 						e.target.parentNode.removeChild(e.target);
-						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}, handleFocus: ${e.detail.handleFocus}`);
+						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
+					});
+
+					document.addEventListener('d2l-tag-list-clear', (e) => {
+						console.log('d2l-tag-list-clear event dispatched.', e.target);
+						const nextFocusable = getNextFocusable(e.target, true, true, true);
+						[...e.target.children].forEach(tag => {
+							e.target.removeChild(tag);
+						});
+						// consumer must move focus someplace logical
+						forceFocusVisible(nextFocusable);
 					});
 				</script>
 			</d2l-demo-snippet>

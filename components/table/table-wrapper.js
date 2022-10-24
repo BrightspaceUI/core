@@ -102,11 +102,15 @@ export const tableStyles = css`
 
 	/* no-column-border */
 	d2l-table-wrapper[type="default"][no-column-border]:not([dir="rtl"]) .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"][no-column-border]:not([dir="rtl"]) .d2l-table > thead > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > thead > tr > *:not(.d2l-table-cell-last) {
 		border-right: none;
 	}
 	d2l-table-wrapper[type="default"][no-column-border][dir="rtl"] .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"][no-column-border][dir="rtl"] .d2l-table > thead > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > thead > tr > *:not(.d2l-table-cell-last) {
 		border-left: none;
 	}
 
