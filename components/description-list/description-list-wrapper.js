@@ -91,12 +91,15 @@ class DescriptionListWrapper extends LitElement {
 	}
 
 	updated(changedProperties) {
-		if (changedProperties.get('forceStacked')) {
+		if (changedProperties.has('forceStacked')) {
 			if (!this.forceStacked) {
 				this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 				this._resizeObserver.observe(this);
 			} else {
-				this._resizeObserver = undefined;
+				if (this._resizeObserver) {
+					this._resizeObserver.disconnect();
+					this._resizeObserver = undefined;
+				}
 				this._stacked = true;
 			}
 		}
