@@ -184,11 +184,13 @@ class Tooltip extends RtlMixin(LitElement) {
 				box-sizing: border-box;
 				color: white;
 				display: inline-block;
+				height: 0;
 				overflow: hidden;
 				position: absolute;
 				text-align: left;
 				visibility: hidden;
 				white-space: normal;
+				width: 0;
 				z-index: 1001; /* position on top of floating buttons */
 			}
 
@@ -201,9 +203,12 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
+			:host([force-show]),
 			:host([showing]) {
+				height: auto;
 				overflow: visible;
 				visibility: visible;
+				width: auto;
 			}
 
 			.d2l-tooltip-pointer {
@@ -544,7 +549,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async updatePosition() {
-
+		console.log(this.style.height, this.style.width);
 		if (!this._target) {
 			return;
 		}
