@@ -183,10 +183,14 @@ class Tooltip extends RtlMixin(LitElement) {
 				--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
 				box-sizing: border-box;
 				color: white;
-				display: none;
+				display: inline-block;
+				height: 0;
+				overflow: hidden;
 				position: absolute;
 				text-align: left;
+				visibility: hidden;
 				white-space: normal;
+				width: 0;
 				z-index: 1001; /* position on top of floating buttons */
 			}
 
@@ -199,8 +203,12 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
+			:host([force-show]),
 			:host([showing]) {
-				display: inline-block;
+				height: auto;
+				overflow: visible;
+				visibility: visible;
+				width: auto;
 			}
 
 			.d2l-tooltip-pointer {
