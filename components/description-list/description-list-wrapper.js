@@ -71,18 +71,8 @@ class DescriptionListWrapper extends LitElement {
 	constructor() {
 		super();
 		this.breakpoint = 240;
-		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+		this.forceStacked = false;
 		this._stacked = false;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		if (!this.forceStacked) {
-			this._resizeObserver.observe(this);
-		} else {
-			this._stacked = true;
-		}
 	}
 
 	disconnectedCallback() {
@@ -98,6 +88,18 @@ class DescriptionListWrapper extends LitElement {
 			'stacked': this._stacked,
 		};
 		return html`<slot class="${classMap(classes)}"></slot>`;
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.get('forceStacked')) {
+			if (!this.forceStacked) {
+				this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+				this._resizeObserver.observe(this);
+			} else {
+				this._resizeObserver = undefined;
+				this._stacked = true;
+			}
+		}
 	}
 
 	_onResize(entries) {
