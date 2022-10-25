@@ -549,7 +549,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async updatePosition() {
-		console.log(this.style.height, this.style.width);
 		if (!this._target) {
 			return;
 		}
