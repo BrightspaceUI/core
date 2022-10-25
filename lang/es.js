@@ -98,8 +98,8 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione todos los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.tabs.next": "Desplazarse hacia adelante",
@@ -110,10 +110,10 @@ export default {
 	"components.tag-list.cleared-item": "Se eliminó el elemento {value} de la lista de etiquetas",
 	"components.tag-list.interactive-label": "Lista de etiquetas, {count} elementos",
 	"components.tag-list.num-hidden": "+ {count} más",
-	"components.tag-list.role-description": "Tag List",
+	"components.tag-list.role-description": "Lista de etiquetas",
 	"components.tag-list.show-less": "Mostrar menos",
 	"components.tag-list.show-more-description": "Seleccione para mostrar los elementos ocultos de la lista de etiquetas",
-	"components.tag-list-item.role-description": "Tag",
+	"components.tag-list-item.role-description": "Etiqueta",
 	"components.tag-list-item.tooltip-arrow-keys": "Teclas de flecha",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Mover entre etiquetas",
 	"components.tag-list-item.tooltip-delete-key": "Retroceso/Suprimir",

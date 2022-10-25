@@ -110,7 +110,7 @@ export default {
 	"components.tag-list.cleared-item": "Fjernede taglisteelement {value}",
 	"components.tag-list.interactive-label": "Tagliste, {count} elementer",
 	"components.tag-list.num-hidden": "+ {count} mere",
-	"components.tag-list.role-description": "Tag List",
+	"components.tag-list.role-description": "Tagliste",
 	"components.tag-list.show-less": "Vis færre",
 	"components.tag-list.show-more-description": "Vælg for at få vist skjulte taglisteelementer",
 	"components.tag-list-item.role-description": "Tag",

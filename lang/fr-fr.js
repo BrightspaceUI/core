@@ -42,7 +42,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-date-time-range.startDate": "Date de début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -98,8 +98,8 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionnés",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.tabs.next": "Faire défiler vers l'avant",
@@ -110,10 +110,10 @@ export default {
 	"components.tag-list.cleared-item": "Suppression de l’élément de liste d’étiquettes {value}",
 	"components.tag-list.interactive-label": "Liste d’étiquettes, {count} éléments",
 	"components.tag-list.num-hidden": "{count} de plus",
-	"components.tag-list.role-description": "Tag List",
+	"components.tag-list.role-description": "Liste d’étiquettes",
 	"components.tag-list.show-less": "Afficher moins",
 	"components.tag-list.show-more-description": "Sélectionnez cette option pour afficher les éléments de la liste d’étiquettes masquées",
-	"components.tag-list-item.role-description": "Tag",
+	"components.tag-list-item.role-description": "Étiquette",
 	"components.tag-list-item.tooltip-arrow-keys": "Touches fléchées",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Passez d’une étiquette à l’autre",
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/Supprimer",

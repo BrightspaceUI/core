@@ -42,7 +42,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -98,8 +98,8 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.tabs.next": "Défilement avant",
@@ -110,10 +110,10 @@ export default {
 	"components.tag-list.cleared-item": "Élément {value} de la liste des balises supprimé",
 	"components.tag-list.interactive-label": "Liste des balises, {count} éléments",
 	"components.tag-list.num-hidden": "+ {count} de plus",
-	"components.tag-list.role-description": "Tag List",
+	"components.tag-list.role-description": "Liste des balises",
 	"components.tag-list.show-less": "Afficher moins",
 	"components.tag-list.show-more-description": "Sélectionnez cette option pour afficher les éléments de la liste des balises cachées",
-	"components.tag-list-item.role-description": "Tag",
+	"components.tag-list-item.role-description": "Marquer",
 	"components.tag-list-item.tooltip-arrow-keys": "Touches fléchées",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Passer d’une balise à l’autre",
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/suppression",
