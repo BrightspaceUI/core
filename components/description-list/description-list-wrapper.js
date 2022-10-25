@@ -42,8 +42,7 @@ class DescriptionListWrapper extends LitElement {
 			 */
 			breakpoint: { type: Number, reflect: true },
 			/**
-			 * Force the component to always use a stacked layout
-			 * This will override the breakpoint attribute
+			 * Force the component to always use a stacked layout; will override breakpoint attribute
 			 * @type {boolean}
 			 */
 			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
