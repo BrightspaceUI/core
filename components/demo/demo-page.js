@@ -2,7 +2,8 @@ import './demo-snippet.js';
 import './code-view.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { heading2Styles } from '../typography/styles.js';
 
 document.body.classList.add('d2l-typography');
@@ -63,8 +64,11 @@ class DemoPage extends LitElement {
 	}
 
 	render() {
+		const classes = {
+			'no-scroll': this._noScroll
+		};
 		return html`
-			<main class="${this._noScroll ? 'no-scroll' : nothing}">
+			<main class="${classMap(classes)}">
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
 				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
