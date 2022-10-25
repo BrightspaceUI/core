@@ -60,7 +60,7 @@ class DescriptionListWrapper extends LitElement {
 			}
 			.stacked {
 				--d2l-dl-wrapper-dl-display: block;
-				--d2l-dl-wrapper-dt-max-width: unset;
+				--d2l-dl-wrapper-dt-max-width: none;
 				--d2l-dl-wrapper-dt-margin: 0 0 0.3rem 0;
 				--d2l-dl-wrapper-dd-margin: 0 0 0.9rem 0;
 			}
