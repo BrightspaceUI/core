@@ -78,7 +78,7 @@ class DescriptionListWrapper extends LitElement {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (!this.forceStacked) {
+		if (this._resizeObserver) {
 			this._resizeObserver.disconnect();
 		}
 	}
