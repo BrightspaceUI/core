@@ -41,6 +41,12 @@ class DescriptionListWrapper extends LitElement {
 			 * @type {number}
 			 */
 			breakpoint: { type: Number, reflect: true },
+			/**
+			 * Force the component to always use a stacked layout
+			 * This will override the breakpoint attribute
+			 * @type {boolean}
+			 */
+			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
 			_stacked: { state: true },
 		};
 	}
@@ -71,12 +77,20 @@ class DescriptionListWrapper extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._resizeObserver.observe(this);
+
+		if (!this.forceStacked) {
+			this._resizeObserver.observe(this);
+		} else {
+			this._stacked = true;
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._resizeObserver.disconnect();
+
+		if (!this.forceStacked) {
+			this._resizeObserver.disconnect();
+		}
 	}
 
 	render() {
