@@ -12,6 +12,11 @@ class TestDescriptionList extends LitElement {
 			 */
 			breakpoint: { type: Number, reflect: true },
 			/**
+			 * Force the component to always use a stacked layout; will override breakpoint attribute
+			 * @type {boolean}
+			 */
+			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
+			/**
 			 * @ignore
 			 */
 			type: { type: String, reflect: true },
@@ -47,7 +52,10 @@ class TestDescriptionList extends LitElement {
 
 	render() {
 		return html`
-			<d2l-dl-wrapper breakpoint="${ifDefined(this.breakpoint)}">
+			<d2l-dl-wrapper
+				breakpoint="${ifDefined(this.breakpoint)}"
+				?force-stacked="${this.forceStacked}"
+			>
 				${this._renderExample()}
 			</d2l-dl-wrapper>
 		`;
