@@ -19,6 +19,8 @@ describe('d2l-dl-wrapper', () => {
 	[
 		'default',
 		'long',
+		'stacked',
+		'stacked-with-breakpoint',
 		'activity-display',
 		'bulk-course-import',
 		'slotted',

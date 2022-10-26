@@ -41,6 +41,11 @@ class DescriptionListWrapper extends LitElement {
 			 * @type {number}
 			 */
 			breakpoint: { type: Number, reflect: true },
+			/**
+			 * Force the component to always use a stacked layout; will override breakpoint attribute
+			 * @type {boolean}
+			 */
+			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
 			_stacked: { state: true },
 		};
 	}
@@ -55,7 +60,7 @@ class DescriptionListWrapper extends LitElement {
 			}
 			.stacked {
 				--d2l-dl-wrapper-dl-display: block;
-				--d2l-dl-wrapper-dt-max-width: unset;
+				--d2l-dl-wrapper-dt-max-width: none;
 				--d2l-dl-wrapper-dt-margin: 0 0 0.3rem 0;
 				--d2l-dl-wrapper-dd-margin: 0 0 0.9rem 0;
 			}
@@ -65,18 +70,16 @@ class DescriptionListWrapper extends LitElement {
 	constructor() {
 		super();
 		this.breakpoint = 240;
-		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+		this.forceStacked = false;
 		this._stacked = false;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._resizeObserver.disconnect();
+
+		if (this._resizeObserver) {
+			this._resizeObserver.disconnect();
+		}
 	}
 
 	render() {
@@ -84,6 +87,21 @@ class DescriptionListWrapper extends LitElement {
 			'stacked': this._stacked,
 		};
 		return html`<slot class="${classMap(classes)}"></slot>`;
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('forceStacked')) {
+			if (!this.forceStacked) {
+				this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+				this._resizeObserver.observe(this);
+			} else {
+				if (this._resizeObserver) {
+					this._resizeObserver.disconnect();
+					this._resizeObserver = undefined;
+				}
+				this._stacked = true;
+			}
+		}
 	}
 
 	_onResize(entries) {
