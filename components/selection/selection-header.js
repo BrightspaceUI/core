@@ -172,6 +172,7 @@ export class SelectionHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (this._stickyIntersectionObserver) {
 			this._stickyIntersectionObserver.disconnect();
 			this._stickyIntersectionObserver = undefined;
+			this._scrolled = false;
 		}
 	}
 
