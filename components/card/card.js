@@ -218,7 +218,6 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 			:host(:not([href])),
 			:host([subtle]:not([href])) {
 				box-shadow: none;
-				transform: none;
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host {
@@ -230,6 +229,11 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				:host([_active]:hover),
 				:host([subtle][_active]:hover) {
 					transform: translateY(-4px);
+				}
+
+				:host(:not([href])),
+				:host([subtle]:not([href])) {
+					transform: none;
 				}
 			}
 		`];
