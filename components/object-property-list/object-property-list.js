@@ -13,7 +13,7 @@ class ObjectPropertyList extends SkeletonMixin(LitElement) {
 			 * Number of skeleton items to insert
 			 * @type {number}
 			 */
-			 skeletonCount: { type: Number, attribute: 'skeleton-count' },
+			skeletonCount: { type: Number, attribute: 'skeleton-count' },
 		};
 	}
 
