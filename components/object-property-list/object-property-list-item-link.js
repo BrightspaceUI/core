@@ -36,7 +36,7 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	}
 
 	render() {
-		return html`
+		return !this.skeleton ? html`
 			${this._renderIcon()}
 			<a
 				?download="${this.download}"
@@ -47,6 +47,8 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 				${this.text}
 			</a>
 			${this._renderSeparator()}
+		` : html`
+			<div class="d2l-skeletize"></div>
 		`;
 	}
 }

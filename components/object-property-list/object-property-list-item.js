@@ -4,12 +4,13 @@ import { css, html, LitElement, nothing } from 'lit';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A single object property, to be used within an object-property-list,
  * with an optional icon.
  */
-export class ObjectPropertyListItem extends RtlMixin(LitElement) {
+export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -26,7 +27,7 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [offscreenStyles, css`
+		return [super.styles, offscreenStyles, css`
 			d2l-icon {
 				height: 0.9rem;
 				width: 0.9rem;
@@ -44,14 +45,21 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) .item-icon {
 				margin: -0.1rem 0 0 0.3rem;
 			}
+			.d2l-skeletize {
+				display: inline-block;
+				width: 100px;
+				height: 0.7rem;
+			}
 		`];
 	}
 
 	render() {
-		return html`
+		return !this.skeleton ? html`
 			${this._renderIcon()}
 			<span>${this.text}</span>
 			${this._renderSeparator()}
+		` : html`
+			<div class="d2l-skeletize"></div>
 		`;
 	}
 
