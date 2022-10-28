@@ -47,8 +47,8 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 			}
 			.d2l-skeletize {
 				display: inline-block;
-				width: 100px;
 				height: 0.7rem;
+				width: 100px;
 			}
 		`];
 	}
