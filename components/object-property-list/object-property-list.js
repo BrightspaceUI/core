@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -33,7 +33,7 @@ class ObjectPropertyList extends SkeletonMixin(LitElement) {
 
 	render() {
 
-		return !this.skeleton || !this.skeletonCount ?
+		return !this.skeleton || !this.skeletonCount > 0 ?
 			html`<slot class="d2l-body-small"></slot>` :
 			[...Array(this.skeletonCount)].map(() => html`<d2l-object-property-list-item text='' skeleton></d2l-object-property-list-item>`);
 	}

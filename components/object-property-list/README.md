@@ -36,6 +36,12 @@ An object property list can be defined using `d2l-object-property-list` and a co
 </d2l-object-property-list>
 ```
 
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `skeleton-count` | Number | Number of skeleton items to insert if in skeleton mode |
+
 ### Word wrap
 
 The object property list is designed to wrap in an inline manner if the items are wider than the container.
