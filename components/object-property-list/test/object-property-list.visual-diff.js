@@ -21,6 +21,8 @@ describe('d2l-object-property-list', () => {
 		{ name: 'all-types', selector: '#all-types' },
 		{ name: 'word-wrap', selector: '#word-wrap' },
 		{ name: 'rtl', selector: '#rtl' },
+		{ name: 'list-skeleton', selector: '#list-skeleton' },
+		{ name: 'item-skeleton', selector: '#item-skeleton' },
 	].forEach((info) => {
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
