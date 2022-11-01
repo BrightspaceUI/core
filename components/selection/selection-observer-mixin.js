@@ -16,7 +16,12 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 			 * @type {object}
 			 */
 			selectionInfo: { type: Object },
-			_provider: { type: Object, attribute: false }
+			/**
+			 * HtmlElement of the `SelectionMixin` component this component wants to observe (alternative to selectionFor)
+			 * @type {string}
+			 */
+			selectionProvider: { attribute: false },
+			_provider: { state: true }
 		};
 	}
 
@@ -30,7 +35,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
-			if (this.selectionFor) return;
+			if (this.selectionFor || this.selectionProvider) return;
 
 			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
 				bubbles: true,
@@ -51,26 +56,27 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		if (!changedProperties.has('selectionFor')) return;
+		if (changedProperties.has('selectionFor')) {
+			if (this._selectionForObserver) this._selectionForObserver.disconnect();
+			this._updateProviderFor();
 
-		if (this._selectionForObserver) this._selectionForObserver.disconnect();
-		if (this._provider) this._provider.unsubscribeObserver(this);
+			if (this.selectionFor) {
+				this._selectionForObserver = new MutationObserver(() => this._updateProviderFor());
 
-		this._updateProvider();
-
-		this._selectionForObserver = new MutationObserver(() => {
-			this._updateProvider();
-		});
-
-		this._selectionForObserver.observe(this.getRootNode(), {
-			childList: true,
-			subtree: true
-		});
+				this._selectionForObserver.observe(this.getRootNode(), {
+					childList: true,
+					subtree: true
+				});
+			}
+		}
+		if (changedProperties.has('selectionProvider')) {
+			this._updateProvider(this.selectionProvider);
+		}
 	}
 
-	_updateProvider() {
-		const selectionComponent = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+	_updateProvider(selectionComponent) {
 		if (this._provider === selectionComponent) return;
+		if (this._provider) this._provider.unsubscribeObserver(this);
 
 		this._provider = selectionComponent;
 		if (this._provider) {
@@ -78,5 +84,10 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		} else {
 			this.selectionInfo = new SelectionInfo();
 		}
+	}
+
+	_updateProviderFor() {
+		const selectionComponent = this.selectionFor && this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+		this._updateProvider(selectionComponent);
 	}
 };
