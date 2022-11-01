@@ -407,7 +407,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (!activeElement
 			|| !isComposedAncestor(dialog, activeElement)
 			|| !activeElement.classList.contains('focus-visible')) {
-				this._focusInitial();
+				// wait till the dialog is visible for Safari
+				requestAnimationFrame(() => {
+					this._focusInitial();
+				});
 			}
 
 			if (!reduceMotion) await animPromise;
