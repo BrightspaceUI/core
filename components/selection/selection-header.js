@@ -7,12 +7,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A header for list components containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
-export class SelectionHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
+export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -142,11 +143,13 @@ export class SelectionHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			<div class="d2l-sticky-edge"></div>
 			<div class="${classMap(classes)}">
 				${this.noSelection ? null : html`
-					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-select-all .selectionProvider="${this._provider}"></d2l-selection-select-all>
 					<d2l-selection-summary
 						aria-hidden="true"
 						class="d2l-list-header-summary"
-						no-selection-text="${this.localize('components.selection.select-all')}">
+						no-selection-text="${this.localize('components.selection.select-all')}"
+						.selectionProvider="${this._provider}"
+					>
 					</d2l-selection-summary>
 					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
 				`}
