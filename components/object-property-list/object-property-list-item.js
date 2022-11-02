@@ -45,10 +45,15 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 			:host([dir="rtl"]) .item-icon {
 				margin: -0.1rem 0 0 0.3rem;
 			}
+			:host([skeleton]) d2l-icon {
+				color: var(--d2l-color-sylvite);
+			}
 			:host([skeleton]) .d2l-skeletize {
-				display: inline-flex;
-				height: 0.7rem;
-				width: 100px;
+				display: inline-block;
+				max-width: 80%;
+				overflow: hidden;
+				vertical-align: middle;
+				white-space: nowrap;
 			}
 		`];
 	}
@@ -56,7 +61,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 	render() {
 		return html`
 			${this._renderIcon()}
-			<span class="d2l-skeletize">${this.text}</span>
+			${this._renderText()}
 			${this._renderSeparator()}
 		`;
 	}
@@ -66,12 +71,16 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 	}
 
 	_renderSeparator() {
-		return !this.skeleton ? html`
+		return html`
 			<span class="separator">
 				<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
 				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
 			</span>
-		` : nothing;
+		`;
+	}
+
+	_renderText() {
+		return html`<span class="d2l-skeletize" aria-hidden=${this.skeleton ? 'true' : 'false'}>${this.text}</span>`;
 	}
 }
 

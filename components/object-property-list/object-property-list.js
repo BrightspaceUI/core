@@ -1,12 +1,14 @@
-import { css, html, LitElement } from 'lit';
+import './object-property-list-item.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A dot-separated list of object properties.
  * @slot - Items of the type d2l-object-property-list-item* to be added to the container
  */
-class ObjectPropertyList extends SkeletonMixin(LitElement) {
+class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -25,7 +27,7 @@ class ObjectPropertyList extends SkeletonMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			::slotted(:last-child) {
+			::slotted(:last-child), slot :last-child {
 				--d2l-object-property-list-item-separator-display: none;
 			}
 		`];
@@ -33,9 +35,11 @@ class ObjectPropertyList extends SkeletonMixin(LitElement) {
 
 	render() {
 
-		return !this.skeleton || !this.skeletonCount > 0 ?
-			html`<slot class="d2l-body-small"></slot>` :
-			[...Array(this.skeletonCount)].map(() => html`<d2l-object-property-list-item text='' skeleton></d2l-object-property-list-item>`);
+		const slotContents = this.skeleton && this.skeletonCount > 0 ? [...Array(this.skeletonCount)].map(() => html`
+			<d2l-object-property-list-item text=${this.localize('components.object-property-list.item-placeholder-text')} skeleton></d2l-object-property-list-item>
+		`) : nothing;
+
+		return html`<slot class="d2l-body-small">${slotContents}</slot>`;
 	}
 }
 
