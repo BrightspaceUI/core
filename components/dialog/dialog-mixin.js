@@ -407,14 +407,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (!activeElement
 			|| !isComposedAncestor(dialog, activeElement)
 			|| !activeElement.classList.contains('focus-visible')) {
-				this._focusInitial();
+				// wait till the dialog is visible for Safari
+				requestAnimationFrame(() => this._focusInitial());
 			}
 
-			if (!reduceMotion) await animPromise;
+			// if not animating, we need to wait a frame before dispatching due to focus rAF above
+			if (reduceMotion) await new Promise(resolve => requestAnimationFrame(resolve));
+			else await animPromise;
+
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
 			));
+
 		}, 0);
 
 	}
