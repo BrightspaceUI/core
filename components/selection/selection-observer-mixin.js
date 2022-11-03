@@ -52,7 +52,10 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super.updated(changedProperties);
 
 		if (changedProperties.has('selectionFor')) {
-			if (this._selectionForObserver) this._selectionForObserver.disconnect();
+			if (this._selectionForObserver) {
+				this._selectionForObserver.disconnect();
+				this._selectionForObserver = undefined;
+			}
 			this._updateProvider();
 
 			if (this.selectionFor) {
@@ -89,6 +92,6 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	}
 
 	_updateProvider() {
-		this._provider = this.selectionFor && this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+		this._provider = this.selectionFor ? this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`) : null;
 	}
 };

@@ -326,7 +326,7 @@ describe('SelectionObserverMixin', () => {
 		await collection.updateComplete;
 		expect(collection._selectionObservers.size).to.equal(1);
 
-		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection"';
+		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection';
 		await collection.updateComplete;
 		expect(collection._selectionObservers.size).to.equal(0);
 	});
@@ -349,7 +349,39 @@ describe('SelectionObserverMixin', () => {
 		await observer.updateComplete;
 		expect(observer._provider).to.equal(newProvider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
+	});
 
+	it('should unsubscribe and remove provider/observer when selectionFor is cleared', async() => {
+		const observer = el.querySelector('d2l-selection-action');
+		expect(collection._selectionObservers.size).to.equal(2);
+		expect(observer._provider).to.equal(collection);
+		expect(observer._selectionForObserver).not.to.be.undefined;
+
+		observer.selectionFor = '';
+		await observer.updateComplete;
+		expect(collection._selectionObservers.size).to.equal(1);
+		expect(observer._provider).to.be.null;
+		expect(observer._selectionForObserver).to.be.undefined;
+	});
+
+	describe('_provider', () => {
+		it('should update subscriptions when set externally', async() => {
+			const observer1 = el.querySelector('d2l-selection-summary');
+			const observer2 = el.querySelector('d2l-selection-action');
+			expect(collection._selectionObservers.size).to.equal(2);
+			expect(observer1._provider).to.be.null;
+			expect(observer2._provider).to.equal(collection);
+
+			observer1._provider = collection;
+			await observer1.updateComplete;
+			expect(collection._selectionObservers.size).to.equal(3);
+			expect(observer1._provider).to.equal(collection);
+
+			observer2._provider = null;
+			await observer2.updateComplete;
+			expect(collection._selectionObservers.size).to.equal(2);
+			expect(observer2._provider).to.be.null;
+		});
 	});
 
 });
