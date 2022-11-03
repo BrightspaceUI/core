@@ -16,11 +16,6 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 			 * @type {object}
 			 */
 			selectionInfo: { type: Object },
-			/**
-			 * HtmlElement of the `SelectionMixin` component this component wants to observe (alternative to selectionFor)
-			 * @type {string}
-			 */
-			selectionProvider: { attribute: false },
 			_provider: { state: true }
 		};
 	}
@@ -28,14 +23,14 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.selectionInfo = new SelectionInfo();
-		this._provider = null;
+		this.__provider = null;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
-			if (this.selectionFor || this.selectionProvider) return;
+			if (this.selectionFor || this._provider) return;
 
 			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
 				bubbles: true,
@@ -58,10 +53,10 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 		if (changedProperties.has('selectionFor')) {
 			if (this._selectionForObserver) this._selectionForObserver.disconnect();
-			this._updateProviderFor();
+			this._updateProvider();
 
 			if (this.selectionFor) {
-				this._selectionForObserver = new MutationObserver(() => this._updateProviderFor());
+				this._selectionForObserver = new MutationObserver(() => this._updateProvider());
 
 				this._selectionForObserver.observe(this.getRootNode(), {
 					childList: true,
@@ -69,25 +64,25 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 				});
 			}
 		}
-		if (changedProperties.has('selectionProvider')) {
-			this._updateProvider(this.selectionProvider);
-		}
 	}
 
-	_updateProvider(selectionComponent) {
-		if (this._provider === selectionComponent) return;
-		if (this._provider) this._provider.unsubscribeObserver(this);
-
-		this._provider = selectionComponent;
-		if (this._provider) {
-			this._provider.subscribeObserver(this);
-		} else {
-			this.selectionInfo = new SelectionInfo();
-		}
+	get _provider() {
+		return this.__provider;
 	}
 
-	_updateProviderFor() {
-		const selectionComponent = this.selectionFor && this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
-		this._updateProvider(selectionComponent);
+	set _provider(newProvider) {
+		const oldProvider = this.__provider;
+		if (newProvider === oldProvider) return;
+
+		this.__provider = newProvider;
+		if (oldProvider) oldProvider.unsubscribeObserver(this);
+		if (newProvider) newProvider.subscribeObserver(this);
+		else this.selectionInfo = new SelectionInfo();
+
+		this.requestUpdate('_provider', oldProvider);
+	}
+
+	_updateProvider() {
+		this._provider = this.selectionFor && this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
 	}
 };
