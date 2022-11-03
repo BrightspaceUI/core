@@ -7,6 +7,7 @@ describe('d2l-tooltip-help', () => {
 
 	const visualDiff = new VisualDiff('tooltip-help', import.meta.url);
 	const tooltipHelpSelector = '#help-tooltip-basic';
+	const tooltipHelpSelectorSkeleton = '#help-tooltip-skeleton';
 
 	let browser, page;
 
@@ -105,6 +106,27 @@ describe('d2l-tooltip-help', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
+		});
+	});
+
+	[
+		{ case: 'help tooltip skeleton' },
+		{ case: 'help tooltip skeleton and hovered', hover: true },
+		{ case: 'help tooltip skeleton and focused', focus: true },
+		{ case: 'help tooltip skeleton and hovered and focused', hover: true, focus: true }
+	].forEach((testCase) => {
+
+		it(testCase.case, async function() {
+
+			if (testCase.focus) {
+				await page.$eval(tooltipHelpSelectorSkeleton, (elem) => forceFocusVisible(elem));
+			}
+			if (testCase.hover) {
+				await page.hover(tooltipHelpSelectorSkeleton);
+			}
+
+			const rect = await visualDiff.getRect(page, tooltipHelpSelectorSkeleton);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
