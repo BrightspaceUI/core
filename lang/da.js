@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Statusindikator",
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.pager-load-more.action": "Indlæs {count} mere",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} af {totalCountFormatted} element} other {{showingCount} af {totalCountFormatted} elementer}}",

@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Dangosydd Cynnydd",
 	"components.more-less.less": "llai",
 	"components.more-less.more": "mwy",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.pager-load-more.action": "Lwytho {count} Arall",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} o {totalCountFormatted} eitem} other {{showingCount} o {totalCountFormatted} eitem}}",

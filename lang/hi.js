@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "प्रगति संकेतक",
 	"components.more-less.less": "कम",
 	"components.more-less.more": "अधिक",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.pager-load-more.action": "{count} और लोड करें",
 	"components.pager-load-more.info": "{totalCount, plural, one {{totalCountFormatted} में से {showingCount} आइटम} other {{totalCountFormatted} में से {showingCount} आइटम}}",
