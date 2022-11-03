@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Förloppsindikator",
 	"components.more-less.less": "mindre",
 	"components.more-less.more": "mer",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "Fler åtgärder",
 	"components.pager-load-more.action": "Läs in {count} till",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} av {totalCountFormatted} objekt} other {{showingCount} av {totalCountFormatted} objekt}}",

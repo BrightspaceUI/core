@@ -31,21 +31,23 @@ class ObjectPropertyListItemLink extends ObjectPropertyListItem {
 	static get styles() {
 		return [
 			...super.styles,
-			linkStyles,
+			linkStyles
 		];
 	}
 
 	render() {
 		return html`
 			${this._renderIcon()}
-			<a
-				?download="${this.download}"
-				class="d2l-link"
-				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}"
-			>
-				${this.text}
-			</a>
+			${!this.skeleton ? html`
+				<a
+					?download="${this.download}"
+					class="d2l-link"
+					href="${ifDefined(this.href)}"
+					target="${ifDefined(this.target)}"
+				>
+					${this._renderText()}
+				</a>
+			` : this._renderText()}
 			${this._renderSeparator()}
 		`;
 	}
