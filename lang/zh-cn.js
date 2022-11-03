@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "进度指示符",
 	"components.more-less.less": "更少",
 	"components.more-less.more": "更多",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "更多操作",
 	"components.pager-load-more.action": "再加载 {count} 个",
 	"components.pager-load-more.info": "{totalCount, plural, other {{showingCount}/{totalCountFormatted} 项}}",

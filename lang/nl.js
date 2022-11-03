@@ -90,6 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Voortgangsindicator",
 	"components.more-less.less": "minder",
 	"components.more-less.more": "meer",
+	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.pager-load-more.action": "Laad nog {count} extra",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} van {totalCountFormatted} artikel} other {{showingCount} van {totalCountFormatted} artikelen}}",
