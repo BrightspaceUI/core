@@ -36,7 +36,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 	render() {
 
 		const slotContents = this.skeleton && this.skeletonCount > 0 ? [...Array(this.skeletonCount)].map(() => html`
-			<d2l-object-property-list-item text=${this.localize('components.object-property-list.item-placeholder-text')} skeleton></d2l-object-property-list-item>
+			<d2l-object-property-list-item text="${this.localize('components.object-property-list.item-placeholder-text')}" skeleton></d2l-object-property-list-item>
 		`) : nothing;
 
 		return html`<slot class="d2l-body-small">${slotContents}</slot>`;

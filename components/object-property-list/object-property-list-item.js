@@ -80,7 +80,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 	}
 
 	_renderText() {
-		return html`<span class="d2l-skeletize" aria-hidden=${this.skeleton ? 'true' : 'false'}>${this.text}</span>`;
+		return html`<span class="d2l-skeletize" aria-hidden="${this.skeleton ? 'true' : 'false'}">${this.text}</span>`;
 	}
 }
 
