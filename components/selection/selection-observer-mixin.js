@@ -38,7 +38,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 				detail: {}
 			});
 			this.dispatchEvent(evt);
-			this._provider = evt.detail.provider;
+			this._setProvider(evt.detail.provider, false);
 		});
 	}
 
@@ -71,13 +71,19 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	}
 
 	set _provider(newProvider) {
+		this._setProvider(newProvider, true);
+	}
+
+	_setProvider(newProvider, updateSubscriptions) {
 		const oldProvider = this.__provider;
 		if (newProvider === oldProvider) return;
 
 		this.__provider = newProvider;
-		if (oldProvider) oldProvider.unsubscribeObserver(this);
-		if (newProvider) newProvider.subscribeObserver(this);
-		else this.selectionInfo = new SelectionInfo();
+		if (updateSubscriptions) {
+			if (oldProvider) oldProvider.unsubscribeObserver(this);
+			if (newProvider) newProvider.subscribeObserver(this);
+			else this.selectionInfo = new SelectionInfo();
+		}
 
 		this.requestUpdate('_provider', oldProvider);
 	}
