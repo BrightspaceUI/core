@@ -104,10 +104,11 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(FocusVisiblePolyfillMixin(Lit
 
 	render() {
 		const classes = {
-			'd2l-body-small': !this.inheritFontStyle
+			'd2l-body-small': !this.inheritFontStyle,
+			'd2l-skeletize': true
 		};
 		return html`
-			<button id="d2l-tooltip-help-text" class="${classMap(classes)} d2l-skeletize" type="button">
+			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" type="button">
 				${this.text}
 			</button>
 			${!this.skeleton ? html`
