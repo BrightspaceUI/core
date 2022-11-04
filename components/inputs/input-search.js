@@ -17,6 +17,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	static get properties() {
 		return {
 			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
+			 */
+			description: { type: String, reflect: true },
+			/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
@@ -115,6 +120,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			<d2l-input-text
 				label="${ifDefined(this.label)}"
 				label-hidden
+				description="${this.description}"
 				?disabled="${this.disabled}"
 				@input="${this._handleInput}"
 				@keypress="${this._handleInputKeyPress}"
