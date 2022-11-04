@@ -30,4 +30,9 @@ describe('d2l-input-search', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('description', async() => {
+		const elem = await fixture(html`<d2l-input-search label="search" description="description"></d2l-input-search>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });
