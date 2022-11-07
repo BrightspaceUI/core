@@ -143,12 +143,11 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			<div class="d2l-sticky-edge"></div>
 			<div class="${classMap(classes)}">
 				${this.noSelection ? null : html`
-					<d2l-selection-select-all .selectionProvider="${this._provider}"></d2l-selection-select-all>
+					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
 						aria-hidden="true"
 						class="d2l-list-header-summary"
 						no-selection-text="${this.localize('components.selection.select-all')}"
-						.selectionProvider="${this._provider}"
 					>
 					</d2l-selection-summary>
 					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
