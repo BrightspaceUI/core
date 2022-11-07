@@ -18,6 +18,7 @@ Tables are used to display tabular data in rows and columns. They can allow user
   * There are more than just a few dimensions
   * The dimensions need to be sortable
   * The dimensions need to be easily compared across rows (ie- scannable)
+* Specify [column and row headings](https://www.w3.org/WAI/tutorials/tables/) so data is meaningful to screen reader users
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
