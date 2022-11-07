@@ -296,6 +296,9 @@ describe('SelectionObserverMixin', () => {
 				<d2l-test-selection id="d2l-test-selection-3">
 					<d2l-selection-action></d2l-selection-action>
 				</d2l-test-selection>
+				<d2l-test-selection-observer selection-for="d2l-test-selection-2">
+					<d2l-test-selection-observer-shadow></d2l-test-selection-observer-shadow>
+				</d2l-test-selection-observer>
 			</div>
 		`);
 		await el.querySelector('#obs1').updateComplete;
@@ -388,17 +391,26 @@ describe('SelectionObserverMixin', () => {
 		expect(observer._provider).not.to.be.undefined;
 	});
 
+	it('should automatically subscribe any child selection-observers', async() => {
+		const collection2 = el.querySelector('#d2l-test-selection-2');
+		const observer = el.querySelector('d2l-test-selection-observer-shadow').shadowRoot.querySelector('d2l-test-selection-observer');
+		expect(observer._provider).to.equal(collection2);
+		expect(collection2._selectionObservers.size).to.equal(2);
+	});
+
 	it('should attach to a new provider when connected in a different context', async() => {
 		const collection2 = el.querySelector('#d2l-test-selection-2');
 		const collection3 = el.querySelector('#d2l-test-selection-3');
 		const observer = collection3.querySelector('d2l-selection-action');
+		expect(collection2._selectionObservers.size).to.equal(2);
+		expect(collection3._selectionObservers.size).to.equal(1);
 
 		collection2.appendChild(observer);
 		await nextFrame();
 		await nextFrame();
 		await collection2.updateComplete;
 		await collection3.updateComplete;
-		expect(collection2._selectionObservers.size).to.equal(1);
+		expect(collection2._selectionObservers.size).to.equal(3);
 		expect(collection3._selectionObservers.size).to.equal(0);
 		expect(observer._provider).to.equal(collection2);
 	});

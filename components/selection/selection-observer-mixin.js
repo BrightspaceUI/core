@@ -28,6 +28,8 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
+		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
+
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
 			if (this.selectionFor) {
@@ -49,6 +51,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super.disconnectedCallback();
 		this._disconnectSelectionForObserver();
 		this._disconnectProvider();
+		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 	}
 
 	updated(changedProperties) {
@@ -80,6 +83,15 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 				childList: true,
 				subtree: true
 			});
+		}
+	}
+
+	_handleSelectionObserverSubscribe(e) {
+		if (e.target !== this && this._provider) {
+			e.stopPropagation();
+			e.detail.provider = this._provider;
+			const target = e.composedPath()[0];
+			this._provider.subscribeObserver(target);
 		}
 	}
 
