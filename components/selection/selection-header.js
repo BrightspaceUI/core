@@ -4,13 +4,12 @@ import './selection-select-all-pages.js';
 import './selection-summary.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
- * A header for list components containing select-all, etc.
+ * A header for selection components (e.g. list, table-wrapper) containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
 export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
@@ -40,22 +39,20 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	static get styles() {
 		return css`
 			:host {
-				background-color: var(--d2l-list-header-background-color, white);
+				background-color: var(--d2l-selection-header-background-color, white);
 				display: block;
 				position: sticky;
 				top: 0;
-				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
 			:host([no-sticky]) {
 				background-color: transparent;
 				position: static;
-				z-index: auto;
 			}
-			.d2l-list-header-shadow {
+			.d2l-selection-header-shadow {
 				transition: box-shadow 200ms ease-out;
 			}
-			:host([_scrolled]) .d2l-list-header-shadow {
-				background-color: var(--d2l-list-header-background-color, white);
+			:host([_scrolled]) .d2l-selection-header-shadow {
+				background-color: var(--d2l-selection-header-background-color, white);
 				bottom: -4px;
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				clip: rect(30px, auto, 200px, auto);
@@ -67,18 +64,15 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			:host([hidden]) {
 				display: none;
 			}
-			.d2l-list-header-container {
+			.d2l-selection-header-container {
 				align-items: center;
 				display: flex;
 				margin-bottom: 6px;
 				margin-top: 6px;
 				min-height: 54px;
 			}
-			.d2l-list-header-container-slim {
+			.d2l-selection-header-container-slim {
 				min-height: 36px;
-			}
-			.d2l-list-header-extend-separator {
-				padding: 0 0.9rem;
 			}
 			d2l-selection-select-all {
 				flex: none;
@@ -99,12 +93,12 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				margin-left: 0;
 				margin-right: 0.45rem;
 			}
-			.d2l-list-header-actions {
+			.d2l-selection-header-actions {
 				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
 				text-align: right;
 			}
-			:host([dir="rtl"]) .d2l-list-header-actions {
+			:host([dir="rtl"]) .d2l-selection-header-actions {
 				text-align: left;
 			}
 		`;
@@ -115,17 +109,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		this.noSelection = false;
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
-		this._extendSeparator = false;
 		this._scrolled = false;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
-		if (!parent) return;
-
-		this._extendSeparator = parent.hasAttribute('extend-separators');
 	}
 
 	disconnectedCallback() {
@@ -134,11 +118,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	}
 
 	render() {
-		const classes = {
-			'd2l-list-header-container': true,
-			'd2l-list-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed),
-			'd2l-list-header-extend-separator': this._extendSeparator
-		};
+		const classes = this._getSelectionHeaderContainerClasses();
 		return html`
 			<div class="d2l-sticky-edge"></div>
 			<div class="${classMap(classes)}">
@@ -146,17 +126,16 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
 						aria-hidden="true"
-						class="d2l-list-header-summary"
 						no-selection-text="${this.localize('components.selection.select-all')}"
 					>
 					</d2l-selection-summary>
 					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
 				`}
-				<div class="d2l-list-header-actions">
+				<div class="d2l-selection-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</div>
-			${!this.noSticky ? html`<div class="d2l-list-header-shadow"></div>` : null}
+			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : null}
 		`;
 	}
 
@@ -164,6 +143,13 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
+	}
+
+	_getSelectionHeaderContainerClasses() {
+		return {
+			'd2l-selection-header-container': true,
+			'd2l-selection-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed)
+		};
 	}
 
 	_handleSlotChange(e) {
