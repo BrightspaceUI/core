@@ -30,7 +30,10 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
-			if (this.selectionFor) return;
+			if (this.selectionFor) {
+				this._handleSelectionFor();
+				return this._provider?.subscribeObserver(this);
+			}
 
 			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
 				bubbles: true,
@@ -44,34 +47,47 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._selectionForObserver) this._selectionForObserver.disconnect();
-		if (this._provider) this._provider.unsubscribeObserver(this);
+		this._disconnectSelectionForObserver();
+		this._disconnectProvider();
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		if (!changedProperties.has('selectionFor')) return;
+		if (changedProperties.has('selectionFor')) this._handleSelectionFor();
+	}
 
-		if (this._selectionForObserver) this._selectionForObserver.disconnect();
-		if (this._provider) this._provider.unsubscribeObserver(this);
+	_disconnectProvider() {
+		if (!this._provider) return;
+		this._provider.unsubscribeObserver(this);
+		this._provider = undefined;
+	}
 
+	_disconnectSelectionForObserver() {
+		if (!this._selectionForObserver) return;
+		this._selectionForObserver.disconnect();
+		this._selectionForObserver = undefined;
+	}
+
+	_handleSelectionFor() {
+		this._disconnectSelectionForObserver();
 		this._updateProvider();
 
-		this._selectionForObserver = new MutationObserver(() => {
-			this._updateProvider();
-		});
+		if (this.selectionFor) {
+			this._selectionForObserver = new MutationObserver(() => this._updateProvider());
 
-		this._selectionForObserver.observe(this.getRootNode(), {
-			childList: true,
-			subtree: true
-		});
+			this._selectionForObserver.observe(this.getRootNode(), {
+				childList: true,
+				subtree: true
+			});
+		}
 	}
 
 	_updateProvider() {
-		const selectionComponent = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`) : undefined;
 		if (this._provider === selectionComponent) return;
 
+		this._disconnectProvider();
 		this._provider = selectionComponent;
 		if (this._provider) {
 			this._provider.subscribeObserver(this);
