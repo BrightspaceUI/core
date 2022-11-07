@@ -76,14 +76,14 @@ class TestTable extends RtlMixin(LitElement) {
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th colspan="2">Country</th>
+							<th scope="col" colspan="2">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 					</thead>
 					<tbody>
 						${sorted.map((row) => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
-								<th>
+								<th scope="row">
 									<d2l-selection-input
 										@d2l-selection-change="${this._selectRow}"
 										?selected="${row.selected}"
@@ -91,7 +91,7 @@ class TestTable extends RtlMixin(LitElement) {
 										label="${row.name}">
 									</d2l-selection-input>
 								</th>
-								<th>${row.name}</th>
+								<th scope="row">${row.name}</th>
 								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
@@ -111,7 +111,7 @@ class TestTable extends RtlMixin(LitElement) {
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th>
+			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
