@@ -1,4 +1,5 @@
 import '../table-col-sort-button.js';
+import '../../selection/selection-header.js';
 import '../../selection/selection-input.js';
 
 import { css, html, LitElement } from 'lit';
@@ -71,6 +72,7 @@ class TestTable extends RtlMixin(LitElement) {
 		});
 		return html`
 			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+				<d2l-selection-header slot="header" no-sticky></d2l-selection-header>
 				<table class="d2l-table">
 					<thead>
 						<tr>

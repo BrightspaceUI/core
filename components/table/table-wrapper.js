@@ -251,11 +251,10 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
-		if (this.stickyHeaders) {
-			return slot;
-		} else {
-			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
-		}
+		return html`
+			<slot name="header"></slot>
+			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
+		`;
 	}
 
 	updated(changedProperties) {
