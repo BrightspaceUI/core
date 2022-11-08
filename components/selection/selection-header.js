@@ -101,6 +101,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			:host([dir="rtl"]) .d2l-selection-header-actions {
 				text-align: left;
 			}
+			.d2l-sticky-edge {
+				margin-top: -1px;
+				position: absolute;
+			}
 		`;
 	}
 
@@ -168,11 +172,9 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		this._stickyObserverDisconnect();
 
 		if (!this.noSticky && typeof(IntersectionObserver) === 'function') {
-			const rootMargin = '-1px 0px 0px 0px';
-
 			this._stickyIntersectionObserver = new IntersectionObserver(([e]) => {
 				this._scrolled = !e.isIntersecting;
-			}, { threshold: 1, rootMargin });
+			}, { threshold: 1 });
 
 			const target = this.shadowRoot.querySelector('.d2l-sticky-edge');
 			this._stickyIntersectionObserver.observe(target);
