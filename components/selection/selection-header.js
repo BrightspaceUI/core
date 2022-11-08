@@ -102,8 +102,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				text-align: left;
 			}
 			.d2l-sticky-edge {
+				left: 0;
 				margin-top: -1px;
 				position: absolute;
+				right: 0;
 			}
 		`;
 	}
@@ -174,7 +176,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		if (!this.noSticky && typeof(IntersectionObserver) === 'function') {
 			this._stickyIntersectionObserver = new IntersectionObserver(([e]) => {
 				this._scrolled = !e.isIntersecting;
-			}, { threshold: 1 });
+			});
 
 			const target = this.shadowRoot.querySelector('.d2l-sticky-edge');
 			this._stickyIntersectionObserver.observe(target);
