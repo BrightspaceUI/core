@@ -199,7 +199,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		}
 
 		if (this.expanded) {
-			this.__contentHeight = `unset`;
+			this.__contentHeight = 'unset';
 			return;
 		}
 
@@ -210,15 +210,15 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__adjustToContent_makeActive() {
 		this.inactive = false;
-		this.__contentHeight = `unset`;
+		this.__contentHeight = 'unset';
 		this.__maxHeight = this.height;
 	}
 
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__contentHeight = `unset`;
-		this.__maxHeight = `unset`;
+		this.__contentHeight = 'unset';
+		this.__maxHeight = 'unset';
 	}
 
 	__adjustToContent_resize(contentHeight) {
@@ -239,8 +239,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__expand() {
 		this.__transitionAdded = true;
-		this.__contentHeight = `unset`;
-		this.__maxHeight = `unset`;
+		this.__contentHeight = 'unset';
+		this.__maxHeight = 'unset';
 		this.expanded = true;
 	}
 
@@ -350,7 +350,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__shrink() {
 		this.__transitionAdded = true;
-		this.__contentHeight = `unset`;
+		this.__contentHeight = 'unset';
 		this.__maxHeight = this.height;
 		this.expanded = false;
 	}
