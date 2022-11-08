@@ -2,7 +2,7 @@ import '../overflow-group/overflow-group.js';
 import './selection-select-all.js';
 import './selection-select-all-pages.js';
 import './selection-summary.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -21,6 +21,11 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			 * @type {boolean}
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
+			/**
+			 * Whether to render select-all
+			 * @type {boolean}
+			 */
+			noSelectAll: { type: Boolean, attribute: 'no-select-all' },
 			/**
 			 * Disables sticky positioning for the header
 			 * @type {boolean}
@@ -76,14 +81,13 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			.d2l-selection-header-container-slim {
 				min-height: 36px;
 			}
-			d2l-selection-select-all {
+			d2l-selection-select-all, d2l-selection-summary {
 				flex: none;
 			}
-			d2l-selection-summary {
-				flex: none;
+			d2l-selection-select-all + d2l-selection-summary {
 				margin-left: 0.9rem;
 			}
-			:host([dir="rtl"]) d2l-selection-summary {
+			:host([dir="rtl"]) d2l-selection-select-all + d2l-selection-summary {
 				margin-left: 0;
 				margin-right: 0.9rem;
 			}
@@ -115,6 +119,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	constructor() {
 		super();
 		this.noSelection = false;
+		this.noSelectAll = false;
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
 		this._scrolled = false;
@@ -130,20 +135,20 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		return html`
 			<div class="d2l-sticky-edge"></div>
 			<div class="${classMap(classes)}">
-				${this.noSelection ? null : html`
-					<d2l-selection-select-all></d2l-selection-select-all>
+				${this.noSelection ? nothing : html`
+					${this.noSelectAll ? nothing : html`<d2l-selection-select-all></d2l-selection-select-all>`}
 					<d2l-selection-summary
 						aria-hidden="true"
 						no-selection-text="${this.localize('components.selection.select-all')}"
 					>
 					</d2l-selection-summary>
-					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
+					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
 				`}
 				<div class="d2l-selection-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</div>
-			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : null}
+			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : nothing}
 		`;
 	}
 
