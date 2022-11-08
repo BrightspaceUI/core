@@ -25,9 +25,13 @@ export function announce(message) {
 	/* Need to give browser enough time to create the live region so that it will
 	treat the change as an update. Firefox sometimes ignores changes if the region
 	and update are made too quickly in succession. RequestAnimationFrame is not
-	sufficient here. */
+	sufficient here. Also, for some strange reason, sometimes VO will not announce
+	duplicate messages even if we remove the child so we also append a non-breaking space. */
 	const elem = [...container.childNodes].find((c) => c.textContent === message);
-	if (elem) elem.parentNode.removeChild(elem);
+	if (elem) {
+		elem.parentNode.removeChild(elem);
+		message = message.concat('\u00A0');
+	}
 	setTimeout(() => {
 		container.appendChild(document.createTextNode(message));
 	}, 200);
