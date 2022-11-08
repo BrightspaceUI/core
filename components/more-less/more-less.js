@@ -48,8 +48,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			inactive: { type: Boolean, reflect: true },
 			__blurBackground: { type: String },
 			__contentHeight: { type: String },
-			__transitionAdded: { type: Boolean },
-			__maxHeight: { type: String }
+			__maxHeight: { type: String },
+			__transitionAdded: { type: Boolean }
 		};
 	}
 
@@ -218,6 +218,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.inactive = true;
 		this.expanded = false;
 		this.__contentHeight = `unset`;
+		this.__maxHeight = `unset`;
 	}
 
 	__adjustToContent_resize(contentHeight) {
@@ -239,6 +240,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	__expand() {
 		this.__transitionAdded = true;
 		this.__contentHeight = `unset`;
+		this.__maxHeight = `unset`;
 		this.expanded = true;
 	}
 
@@ -348,7 +350,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__shrink() {
 		this.__transitionAdded = true;
-		this.__contentHeight = this.height;
+		this.__contentHeight = `unset`;
+		this.__maxHeight = this.height;
 		this.expanded = false;
 	}
 
