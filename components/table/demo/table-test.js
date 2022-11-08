@@ -8,7 +8,7 @@ import { tableStyles } from '../table-wrapper.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
 
-const data = [
+const data = () => [
 	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
 	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
 	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
@@ -59,7 +59,7 @@ class TestTable extends RtlMixin(LitElement) {
 		this.sortDesc = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
-		this._data = [ ...data ];
+		this._data = data();
 	}
 
 	render() {
