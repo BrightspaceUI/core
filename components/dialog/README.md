@@ -32,7 +32,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 * Label primary actions with clear and predictable language. Use verbs like, “Add” or “Save” that indicate the outcome of a dialog rather than, “OK” or “Close”
 * Keep dialog titles concise
 * Maintain a language relationship between the action that triggered the dialog, dialog title, and dialog primary button.
-* Nest a dialog within the DOM of the dialog containing the opener when stacking dialogs
+* When it is necessary to stack multiple dialogs, ensure the stacked dialog is nested within the DOM of the dialog containing the opener
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
