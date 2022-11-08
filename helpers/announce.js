@@ -43,6 +43,6 @@ export function announce(message) {
 		container.parentNode.removeChild(container);
 		container = null;
 		timeoutId = null;
-	}, 20000);
+	}, 10000);
 
 }
