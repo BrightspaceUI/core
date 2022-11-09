@@ -5,6 +5,8 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 
 export const BACKDROP_ROLE = 'd2l-backdrop-role';
 
+const BACKDROP_ARIA_HIDDEN = 'd2l-backdrop-aria-hidden';
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollKeys = [];
@@ -166,7 +168,7 @@ function hideAccessible(target) {
 
 			if (child.nodeName === 'FORM' || child.nodeName === 'A') {
 				const ariaHidden = child.getAttribute('aria-hidden');
-				if (ariaHidden) child.setAttribute('d2l-backdrop-aria-hidden', ariaHidden);
+				if (ariaHidden) child.setAttribute(BACKDROP_ARIA_HIDDEN, ariaHidden);
 				child.setAttribute('aria-hidden', 'true');
 			}
 
@@ -210,10 +212,10 @@ function showAccessible(elems) {
 			elem.removeAttribute('role');
 		}
 		if (elem.nodeName === 'FORM' || elem.nodeName === 'A') {
-			const ariaHidden = elem.getAttribute('d2l-backdrop-aria-hidden');
+			const ariaHidden = elem.getAttribute(BACKDROP_ARIA_HIDDEN);
 			if (ariaHidden) {
 				elem.setAttribute('aria-hidden', ariaHidden);
-				elem.removeAttribute('d2l-backdrop-aria-hidden');
+				elem.removeAttribute(BACKDROP_ARIA_HIDDEN);
 			} else {
 				elem.removeAttribute('aria-hidden');
 			}
