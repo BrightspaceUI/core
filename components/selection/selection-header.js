@@ -48,8 +48,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				background-color: transparent;
 				position: static;
 			}
-			.d2l-selection-header-shadow {
-				transition: box-shadow 200ms ease-out;
+			@media (prefers-reduced-motion: no-preference) {
+				.d2l-selection-header-shadow {
+					transition: box-shadow 200ms ease-out;
+				}
 			}
 			:host([_scrolled]) .d2l-selection-header-shadow {
 				background-color: var(--d2l-selection-header-background-color, white);
@@ -103,9 +105,9 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			}
 			.d2l-sticky-edge {
 				left: 0;
-				margin-top: -1px;
 				position: absolute;
 				right: 0;
+				top: -1px;
 			}
 		`;
 	}
@@ -146,6 +148,8 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
+
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
