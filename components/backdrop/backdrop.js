@@ -209,12 +209,14 @@ function showAccessible(elems) {
 		} else {
 			elem.removeAttribute('role');
 		}
-		const ariaHidden = elem.getAttribute('d2l-backdrop-aria-hidden');
-		if (ariaHidden) {
-			elem.setAttribute('aria-hidden', ariaHidden);
-			elem.removeAttribute('d2l-backdrop-aria-hidden');
-		} else {
-			elem.removeAttribute('aria-hidden');
+		if (elem.nodeName === 'FORM' || elem.nodeName === 'A') {
+			const ariaHidden = elem.getAttribute('d2l-backdrop-aria-hidden');
+			if (ariaHidden) {
+				elem.setAttribute('aria-hidden', ariaHidden);
+				elem.removeAttribute('d2l-backdrop-aria-hidden');
+			} else {
+				elem.removeAttribute('aria-hidden');
+			}
 		}
 		elem.removeAttribute('d2l-backdrop-hidden');
 	}
