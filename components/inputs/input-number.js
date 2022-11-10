@@ -352,27 +352,35 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
+		let checkValidity = false;
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this.setFormValue(this.value);
-
-				let rangeUnderflowCondition = false;
-				if (typeof(this.min) === 'number') {
-					rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
-				}
-
-				let rangeOverflowCondition = false;
-				if (typeof(this.max) === 'number') {
-					rangeOverflowCondition = this.maxExclusive ? this.value >= this.max : this.value > this.max;
-				}
-
-				this.setValidity({
-					rangeUnderflow: rangeUnderflowCondition,
-					rangeOverflow: rangeOverflowCondition
-				});
-				this.requestValidate(true);
+				checkValidity = true;
+			} else if ((prop === 'min' && oldVal !== undefined)
+				|| (prop === 'max' && oldVal !== undefined)
+				|| (prop === 'minExclusive' && oldVal !== undefined)
+				|| (prop === 'maxExclusive' && oldVal !== undefined)) {
+				checkValidity = true;
 			}
 		});
+
+		if (checkValidity) {
+			let rangeUnderflowCondition = false;
+			if (typeof(this.min) === 'number') {
+				rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
+			}
+			let rangeOverflowCondition = false;
+			if (typeof(this.max) === 'number') {
+				rangeOverflowCondition = this.maxExclusive ? this.value >= this.max : this.value > this.max;
+			}
+
+			this.setValidity({
+				rangeUnderflow: rangeUnderflowCondition,
+				rangeOverflow: rangeOverflowCondition
+			});
+			this.requestValidate(true);
+		}
 	}
 
 	async validate() {
