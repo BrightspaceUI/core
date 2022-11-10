@@ -106,25 +106,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 		});
 
-		if (typeof(IntersectionObserver) === 'function') {
-			this._intersectionObserver = new IntersectionObserver(entries => {
-				const slot = this.shadowRoot.querySelector('slot[name="header"]');
-				const header = slot.assignedNodes({ flatten: true }).find(node => {
-					return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST-HEADER';
-				});
-				if (!header) return;
-				const entry = entries[0];
-				header._scrolled = !entry.isIntersecting;
-			});
-			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-list-top-sentinel'));
-		}
-
 	}
 
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<div class="d2l-list-top-sentinel"></div>
 			<div role="${role}" class="d2l-list-container">
 				<slot name="header"></slot>
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>

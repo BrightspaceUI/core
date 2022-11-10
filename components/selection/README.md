@@ -36,6 +36,7 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
 </script>
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-header.js';
   import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/selection-select-all.js';
   import '@brightspace-ui/core/components/selection/selection-summary.js';
@@ -50,8 +51,6 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
   }
   li {
     list-style-type: none;
-  }
-  li, .d2l-selection-header, .d2l-selection-header-wrapper {
     align-items: center;
     display: flex;
   }
@@ -62,26 +61,13 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
     margin-left: 10px;
     margin-right: 0;
   }
-  .d2l-selection-header-wrapper {
-    flex-wrap: wrap;
-  }
-  .d2l-selection-header {
-    flex: auto;
-  }
-  d2l-selection-summary {
-    flex: none;
-  }
 </style>
 <!-- docs: end hidden content -->
 <d2l-demo-selection>
-  <div class="d2l-selection-header-wrapper">
-    <div class="d2l-selection-header">
-      <d2l-selection-select-all></d2l-selection-select-all>
-      <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
-      <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-    </div>
-    <d2l-selection-summary></d2l-selection-summary>
-  </div>
+  <d2l-selection-header>
+    <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+    <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+  </d2l-selection-header>
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
@@ -440,4 +426,59 @@ The `d2l-selection-summary` component may be placed inside the selection control
 |---|---|---|
 | `no-selection-text` | String | Text to display if no items are selected. By default, the "0 selected" message is displayed. |
 | `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
+<!-- docs: end hidden content -->
+
+## Selection Header [d2l-selection-header]
+
+The `d2l-selection-header` provides a standardized wrapper to display selection information and actions. It includes a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+
+When using lists, use the list-specific `d2l-list-header` instead, which extends this component's behaviour.
+
+<!-- docs: demo live name:d2l-selection-header autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-header.js';
+  import '@brightspace-ui/core/components/selection/demo/demo-selection.js';
+</script>
+<!-- docs: start hidden content -->
+<style>
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
+    align-items: center;
+    display: flex;
+  }
+  d2l-selection-input {
+    margin-right: 10px;
+  }
+  [dir="rtl"] d2l-selection-input {
+    margin-left: 10px;
+    margin-right: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
+<d2l-demo-selection>
+  <d2l-selection-header>
+    <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+    <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+  </d2l-selection-header>
+  <ul>
+    <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
+    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+    <li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
+  </ul>
+</d2l-demo-selection>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `no-selection` | Boolean | Whether to render select-all and selection summary |
+| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
