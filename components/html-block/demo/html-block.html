@@ -39,7 +39,11 @@
 			}
 
 			// demo replacement renderer for html-block
-			provideInstance(document, 'html-block-renderers', [ new DemoReplacementRenderer() ]);
+			provideInstance(document, 'html-block-renderer-loader', {
+				async getRenderers() {
+					return [ new DemoReplacementRenderer() ];
+				}
+			});
 
 		</script>
 		<script type="module">
