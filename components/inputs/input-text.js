@@ -307,7 +307,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	/** @ignore */
 	get validity() {
 		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
-		if (!elem.validity.valid) {
+		if (elem && !elem.validity.valid) {
 			return elem.validity;
 		}
 		return super.validity;
