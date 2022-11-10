@@ -17,13 +17,9 @@ class TestSelection extends SelectionMixin(LitElement) {
 	}
 }
 
-class TestSelectionObserver extends SelectionObserverMixin(LitElement) {
-	render() {
-		return html`<slot></slot>`;
-	}
-}
+class TestSelectionObserver extends SelectionObserverMixin(LitElement) {}
 
-class TestSelectionObserverShadow extends LitElement {
+class TestSelectionObserverShadow extends SelectionObserverMixin(LitElement) {
 	render() {
 		return html`<d2l-test-selection-observer></d2l-test-selection-observer>`;
 	}

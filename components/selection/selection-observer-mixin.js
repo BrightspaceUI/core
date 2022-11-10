@@ -87,10 +87,12 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	}
 
 	_handleSelectionObserverSubscribe(e) {
-		if (e.target !== this && this._provider) {
+		if (this._provider) {
+			const target = e.composedPath()[0];
+			if (target === this) return;
+
 			e.stopPropagation();
 			e.detail.provider = this._provider;
-			const target = e.composedPath()[0];
 			this._provider.subscribeObserver(target);
 		}
 	}
