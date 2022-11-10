@@ -57,7 +57,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection>
-						<d2l-selection-header no-sticky>
+						<d2l-selection-header>
 							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
 							<d2l-selection-action-dropdown text="Actions 1" requires-selection>
@@ -84,6 +84,26 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection selection-single>
+						<d2l-selection-header>
+							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+						</d2l-selection-header>
+
+						<ul>
+							<li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
+							<li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+							<li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
+						</ul>
+					</d2l-demo-selection>
+				</template>
+			</d2l-demo-snippet>
+
+
+			<h2>None-sticky selection header</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-selection>
 						<d2l-selection-header no-sticky>
 							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
@@ -105,7 +125,7 @@
 					<div class="d2l-selection-collections">
 						<div class="d2l-selection-collection">
 							Pick Your Toppings
-							<d2l-selection-header no-sticky selection-for="collection-1">
+							<d2l-selection-header selection-for="collection-1">
 								<d2l-selection-action selection-for="collection-1" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
 							</d2l-selection-header>
 
@@ -121,7 +141,7 @@
 
 						<div class="d2l-selection-collection">
 							Pick Your Bread
-							<d2l-selection-header no-sticky selection-for="collection-2">
+							<d2l-selection-header selection-for="collection-2">
 								<d2l-selection-action selection-for="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
 							</d2l-selection-header>
 							<d2l-demo-selection id="collection-2" selection-single>

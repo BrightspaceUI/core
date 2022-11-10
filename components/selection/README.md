@@ -64,7 +64,7 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
 </style>
 <!-- docs: end hidden content -->
 <d2l-demo-selection>
-  <d2l-selection-header no-sticky>
+  <d2l-selection-header>
     <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
   </d2l-selection-header>
@@ -460,9 +460,8 @@ When using lists, use the list-specific `d2l-list-header` instead, which extends
   }
 </style>
 <!-- docs: end hidden content -->
-
 <d2l-demo-selection>
-  <d2l-selection-header no-sticky>
+  <d2l-selection-header>
     <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
   </d2l-selection-header>
