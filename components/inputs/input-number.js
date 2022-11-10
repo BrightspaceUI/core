@@ -306,6 +306,15 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		return super.validationMessage;
 	}
 
+	/** @ignore */
+	get validity() {
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-text');
+		if (elem && !elem.validity.valid) {
+			return elem.validity;
+		}
+		return super.validity;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-localize-resources-change', () => {
@@ -319,6 +328,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	render() {
 		return html`
 			<d2l-input-text
+				@invalid-change="${this._handleInvalidChange}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?noValidate="${this.noValidate}"
 				?autofocus="${this.autofocus}"
@@ -462,6 +472,10 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		if (e.inputType !== 'insertText') {
 			this._hintType = HINT_TYPES.NONE;
 		}
+	}
+
+	_handleInvalidChange() {
+		this.requestValidate(true);
 	}
 
 	_handleKeyPress(e) {

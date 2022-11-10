@@ -408,6 +408,7 @@ describe('d2l-input-number', () => {
 				const errors = await elem.validate();
 				if (test.expectedError) expect(errors).to.contain(test.expectedError);
 				else expect(errors).to.be.empty;
+				expect(elem.invalid).to.equal(!!test.expectedError);
 			});
 		});
 	});
