@@ -328,7 +328,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	render() {
 		return html`
 			<d2l-input-text
-				@invalid-change="${this._handleInvalidChange}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?noValidate="${this.noValidate}"
 				?autofocus="${this.autofocus}"
@@ -341,6 +340,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?hide-invalid-icon="${this.hideInvalidIcon}"
 				id="${this._inputId}"
 				input-width="${this.inputWidth}"
+				@invalid-change="${this._handleInvalidChange}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden || this.labelledBy}"
 				.labelRequired="${false}"
