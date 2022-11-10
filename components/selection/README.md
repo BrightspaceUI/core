@@ -430,7 +430,7 @@ The `d2l-selection-summary` component may be placed inside the selection control
 
 ## Selection Header [d2l-selection-header]
 
-The `d2l-selection-header` provides a standardized wrapper to display selection information and actions. It includes a a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+The `d2l-selection-header` provides a standardized wrapper to display selection information and actions. It includes a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
 When using lists, use the list-specific `d2l-list-header` instead, which extends this component's behaviour.
 
