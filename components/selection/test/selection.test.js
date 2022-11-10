@@ -298,7 +298,7 @@ describe('SelectionObserverMixin', () => {
 				</d2l-test-selection>
 				<d2l-test-selection id="d2l-test-selection-4"></d2l-test-selection>
 				<d2l-test-selection-observer-shadow selection-for="d2l-test-selection-2"></d2l-test-selection-observer-shadow>
-				</div>
+			</div>
 		`);
 		await el.querySelector('#obs1').updateComplete;
 		await el.querySelector('#obs2').updateComplete;
