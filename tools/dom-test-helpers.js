@@ -1,3 +1,4 @@
+import { getComposedChildren } from '../helpers/dom.js';
 
 export function keyDown(element, keycode) {
 	const event = new CustomEvent('keydown', {
