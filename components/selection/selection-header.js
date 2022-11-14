@@ -22,11 +22,6 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
-			 * Whether to render select-all
-			 * @type {boolean}
-			 */
-			noSelectAll: { type: Boolean, attribute: 'no-select-all' },
-			/**
 			 * Disables sticky positioning for the header
 			 * @type {boolean}
 			 */
@@ -119,7 +114,6 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	constructor() {
 		super();
 		this.noSelection = false;
-		this.noSelectAll = false;
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
 		this._scrolled = false;
@@ -135,15 +129,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		return html`
 			<div class="d2l-sticky-edge"></div>
 			<div class="${classMap(classes)}">
-				${this.noSelection ? nothing : html`
-					${this.noSelectAll ? nothing : html`<d2l-selection-select-all></d2l-selection-select-all>`}
-					<d2l-selection-summary
-						aria-hidden="true"
-						no-selection-text="${this.localize('components.selection.select-all')}"
-					>
-					</d2l-selection-summary>
-					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
-				`}
+				${this.noSelection ? nothing : this._renderSelection()}
 				<div class="d2l-selection-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
@@ -169,6 +155,18 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 
 	_handleSlotChange(e) {
 		this._hasActions = (e.target.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE).length > 0);
+	}
+
+	_renderSelection() {
+		return html`
+			<d2l-selection-select-all></d2l-selection-select-all>
+			<d2l-selection-summary
+				aria-hidden="true"
+				no-selection-text="${this.localize('components.selection.select-all')}"
+			>
+			</d2l-selection-summary>
+			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
+		`;
 	}
 
 	_stickyObserverDisconnect() {
