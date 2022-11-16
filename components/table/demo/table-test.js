@@ -1,5 +1,12 @@
 import '../table-col-sort-button.js';
 import '../table-header.js';
+import '../../dropdown/dropdown-button-subtle.js';
+import '../../dropdown/dropdown-menu.js';
+import '../../menu/menu.js';
+import '../../menu/menu-item.js';
+import '../../selection/selection-action.js';
+import '../../selection/selection-action-dropdown.js';
+import '../../selection/selection-action-menu-item.js';
 import '../../selection/selection-input.js';
 
 import { css, html, LitElement } from 'lit';
@@ -72,7 +79,33 @@ class TestTable extends RtlMixin(LitElement) {
 		});
 		return html`
 			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
-				<d2l-table-header slot="header" no-sticky></d2l-table-header>
+				<d2l-table-header slot="header" no-sticky>
+					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Move To" requires-selection>
+						<d2l-dropdown-menu>
+							<d2l-menu label="Move To Options">
+								<d2l-menu-item text="Top of Quiz"></d2l-menu-item>
+								<d2l-menu-item text="Bottom of Quiz"></d2l-menu-item>
+								<d2l-menu-item text="Section">
+									<d2l-menu>
+										<d2l-menu-item text="Option 1"></d2l-menu-item>
+										<d2l-menu-item text="Option 2"></d2l-menu-item>
+									</d2l-menu>
+								</d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-selection-action-dropdown>
+					<d2l-dropdown-button-subtle text="Actions">
+						<d2l-dropdown-menu>
+							<d2l-menu label="Actions">
+								<d2l-selection-action-menu-item text="Bookmark (requires selection)" requires-selection></d2l-selection-action-menu-item>
+								<d2l-selection-action-menu-item text="Advanced"></d2l-selection-action-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-button-subtle>
+					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+				</d2l-table-header>
+
 				<table class="d2l-table">
 					<thead>
 						<tr>
