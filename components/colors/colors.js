@@ -90,6 +90,18 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-feedback-success: var(--d2l-color-olivine);
 			--d2l-color-feedback-action: var(--d2l-color-celestine);
 		}
+
+		/* semantic palette */
+		html {
+			--d2l-color-background-base: #f6f7f8;
+			--d2l-color-background-elevated: #ffffff;
+		}
+		@media (prefers-color-scheme: dark) {
+			html {
+				--d2l-color-background-base: #000000;
+				--d2l-color-background-elevated: #18191a;
+			}
+		}
 	`;
 	document.head.appendChild(style);
 }
