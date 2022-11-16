@@ -81,7 +81,7 @@ export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact')
 
 export const bodySmallStyles = css`
 	.d2l-body-small {
-		color: var(--d2l-color-tungsten);
+		color: var(--d2l-color-text-minus-1);
 		font-size: 0.7rem;
 		font-weight: 400;
 		line-height: 1rem;

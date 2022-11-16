@@ -24,7 +24,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography {
-			color: var(--d2l-color-ferrite);
+			color: var(--d2l-color-text);
 			display: block;
 			font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 			letter-spacing: 0.01rem;
@@ -46,7 +46,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-body-small {
-			color: var(--d2l-color-tungsten);
+			color: var(--d2l-color-text-minus-1);
 			font-size: 0.7rem;
 			font-weight: 400;
 			line-height: 1rem;

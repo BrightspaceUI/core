@@ -104,14 +104,17 @@ if (!document.head.querySelector('#d2l-colors')) {
 		}
 
 		/* semantic palette */
-
 		html {
 			--d2l-color-background-base: #f6f7f8;
 			--d2l-color-background-elevated: #ffffff;
+			--d2l-color-text: var(--d2l-color-ferrite);
+			--d2l-color-text-minus-1: var(--d2l-color-tungsten);
 		}
 		html[data-theme="dark"] {
 			--d2l-color-background-base: #000000;
 			--d2l-color-background-elevated: #18191a;
+			--d2l-color-text: var(--d2l-color-mica);
+			--d2l-color-text-minus-1: var(--d2l-color-mica);
 		}
 	`;
 	document.head.appendChild(style);
