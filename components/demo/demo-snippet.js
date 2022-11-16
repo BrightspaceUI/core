@@ -45,7 +45,6 @@ class DemoSnippet extends LitElement {
 				background-color: white;
 				height: fit-content;
 				inset: 0;
-				overflow: auto;
 				position: absolute;
 				z-index: 2;
 			}
