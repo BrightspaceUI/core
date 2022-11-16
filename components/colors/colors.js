@@ -1,3 +1,15 @@
+const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+const setDarkMode = darkMode => {
+	const documentElement = document.documentElement;
+	documentElement.dataset.theme = (darkMode ? 'dark' : 'light');
+};
+if (darkModeQuery.addEventListenter) {
+	darkModeQuery.addEventListenter('change', e => setDarkMode(e.matches));
+} else if (darkModeQuery.addListener) {
+	darkModeQuery.addListener(e => setDarkMode(e.matches));
+}
+setDarkMode(darkModeQuery.matches);
+
 if (!document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-colors';
@@ -92,15 +104,14 @@ if (!document.head.querySelector('#d2l-colors')) {
 		}
 
 		/* semantic palette */
+
 		html {
 			--d2l-color-background-base: #f6f7f8;
 			--d2l-color-background-elevated: #ffffff;
 		}
-		@media (prefers-color-scheme: dark) {
-			html {
-				--d2l-color-background-base: #000000;
-				--d2l-color-background-elevated: #18191a;
-			}
+		html[data-theme="dark"] {
+			--d2l-color-background-base: #000000;
+			--d2l-color-background-elevated: #18191a;
 		}
 	`;
 	document.head.appendChild(style);
