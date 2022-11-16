@@ -53,6 +53,10 @@ class DemoPage extends LitElement {
 			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
 				margin-bottom: 36px;
 			}
+
+			.no-scroll ::slotted(d2l-demo-snippet) {
+				height: 0;
+			}
 		`];
 	}
 
