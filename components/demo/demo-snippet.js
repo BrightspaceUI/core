@@ -43,11 +43,11 @@ class DemoSnippet extends LitElement {
 			}
 			.d2l-demo-snippet-demo-wrapper.fullscreen {
 				background-color: white;
+				height: fit-content;
 				inset: 0;
 				overflow: auto;
 				position: absolute;
 				z-index: 2;
-				height: fit-content;
 			}
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
@@ -76,21 +76,21 @@ class DemoSnippet extends LitElement {
 				top: 0;
 			}
 			d2l-dropdown.settings-dropdown {
-				position: fixed;
-				top: -0.25rem;
-				right: 1rem;
-				translate: 0 -1.5rem;
-				transition: translate 0.15s, box-shadow .15s;
-				box-shadow: 0px 0px 0px 1px var(--d2l-color-celestine-minus-1);
-				border-radius: 6px;
 				background-color: white;
+				border-radius: 6px;
+				box-shadow: 0 0 0 1px var(--d2l-color-celestine-minus-1);
+				position: fixed;
+				right: 1rem;
+				top: -0.25rem;
+				transition: translate 0.15s, box-shadow 0.15s;
+				translate: 0 -1.5rem;
 			}
 			d2l-dropdown.settings-dropdown.peek,
 			d2l-dropdown.settings-dropdown:hover,
 			d2l-dropdown.settings-dropdown:focus-within,
 			d2l-dropdown.settings-dropdown:has(d2l-button-subtle[active]) {
+				box-shadow: 0 -1px 0 1px white;
 				translate: 0;
-				box-shadow: 0px -1px 0px 1px white;
 			}
 			d2l-code-view {
 				border: none;
@@ -102,7 +102,7 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-		`;
+`;
 	}
 
 	constructor() {

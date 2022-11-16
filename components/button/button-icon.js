@@ -121,8 +121,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 
 				.d2l-button-icon {
 					height: 0.9rem;
-					width: 0.9rem;
 					pointer-events: none;
+					width: 0.9rem;
 				}
 
 				:host([translucent]) button {
@@ -143,7 +143,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 						transition: none;
 					}
 				}
-			`
+`
 		];
 	}
 
