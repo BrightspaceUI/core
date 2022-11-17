@@ -236,7 +236,7 @@ class DemoSnippet extends LitElement {
 		this._settingsPeek = this._fullscreen;
 		const event = new CustomEvent('d2l-demo-snippet-fullscreen-toggle', { bubbles: true, composed: true });
 		this.dispatchEvent(event);
-		await this.update;
+		await this.updateComplete;
 		await new Promise(r => setTimeout(r, 1000));
 		this._settingsPeek = false;
 	}
