@@ -109,13 +109,18 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-background-elevated: #ffffff;
 			--d2l-color-text: var(--d2l-color-ferrite);
 			--d2l-color-text-minus-1: var(--d2l-color-tungsten);
+			--d2l-color-container-border: var(--d2l-color-tungsten);
 		}
 		html[data-theme="dark"] {
 			--d2l-color-background-base: #000000;
 			--d2l-color-background-elevated: #18191a;
 			--d2l-color-text: var(--d2l-color-mica);
 			--d2l-color-text-minus-1: var(--d2l-color-mica);
+			--d2l-color-container-border: #262829;
 		}
 	`;
+	/* Component colors
+		--d2l-color-icon
+	*/
 	document.head.appendChild(style);
 }
