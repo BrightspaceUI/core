@@ -16,4 +16,11 @@ export const ThemeMixin = superclass => class extends superclass {
 		};
 	}
 
+	constructor() {
+		super();
+		const theme = document.documentElement.dataset.theme;
+		// todo: dark-mode - maybe observe changes to the html element's theme attribute
+		this.theme = theme;
+	}
+
 };
