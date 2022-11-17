@@ -142,7 +142,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 						transition: none;
 					}
 				}
-`
+			`
 		];
 	}
 
