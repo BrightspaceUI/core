@@ -238,7 +238,7 @@ export async function typesetMath(elem, options) {
 
 	// If we're using deferred rendering, we need to create a document structure
 	// within the element so MathJax can appropriately process math.
-	//if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
+	if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
 
 	await win.MathJax.startup.promise;
 	if (!win.renderingPromise) win.renderingPromise = Promise.resolve();
