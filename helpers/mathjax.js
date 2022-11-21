@@ -60,7 +60,9 @@ export function createHtmlBlockRenderer() {
 export function loadMathJax(mathJaxConfig) {
 
 	const win = (mathJaxConfig && mathJaxConfig.window) || window;
-	if (win.mathJaxLoaded) return win.mathJaxLoaded;
+
+	win.D2L = win.D2L || {};
+	if (win.D2L.mathJaxLoaded) return win.D2L.mathJaxLoaded;
 
 	win.MathJax = {
 		chtml: {
@@ -196,7 +198,7 @@ export function loadMathJax(mathJaxConfig) {
 		win.document.head.appendChild(styleElem);
 	}
 
-	win.mathJaxLoaded = new Promise(resolve => {
+	win.D2L.mathJaxLoaded = new Promise(resolve => {
 		const script = win.document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
@@ -209,7 +211,7 @@ export function loadMathJax(mathJaxConfig) {
 		win.document.head.appendChild(script);
 	});
 
-	return win.mathJaxLoaded;
+	return win.D2L.mathJaxLoaded;
 
 }
 
@@ -241,7 +243,9 @@ export async function typesetMath(elem, options) {
 	if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
 
 	await win.MathJax.startup.promise;
-	if (!win.renderingPromise) win.renderingPromise = Promise.resolve();
-	win.renderingPromise = win.renderingPromise.then(() => win.MathJax.typesetShadow(elem.getRootNode(), elem));
-	await win.renderingPromise;
+	win.D2L = win.D2L || {};
+
+	if (!win.D2L.renderingPromise) win.D2L.renderingPromise = Promise.resolve();
+	win.D2L.renderingPromise = win.D2L.renderingPromise.then(() => win.MathJax.typesetShadow(elem.getRootNode(), elem));
+	await win.D2L.renderingPromise;
 }
