@@ -23,7 +23,7 @@ class DemoSnippet extends LitElement {
 		return css`
 			:host {
 				background-color: var(--d2l-color-background-default);
-				border: 1px solid var(--d2l-color-container-border);
+				border: 1px solid var(--d2l-color-border-subtle);
 				border-radius: 6px;
 				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); /* todo: dark-mode */
 				display: block;
@@ -60,7 +60,7 @@ class DemoSnippet extends LitElement {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
-				border-left: 1px solid var(--d2l-color-container-border);
+				border-left: 1px solid var(--d2l-color-border-subtle);
 				flex: 0 0 auto;
 				padding: 6px;
 			}
