@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Gelişim Göstergesi",
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Yer Tutucu Öğesi",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.pager-load-more.action": "{count} Tane Daha Yükle",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} / {totalCountFormatted} öğe} other {{showingCount} / {totalCountFormatted} öğe}}",
