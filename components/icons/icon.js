@@ -5,10 +5,9 @@ import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
-import { ThemeMixin } from '../../mixins/theme-mixin.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
-class Icon extends ThemeMixin(RtlMixin(LitElement)) {
+class Icon extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {

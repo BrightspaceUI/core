@@ -118,6 +118,8 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-border-medium: var(--d2l-color-mica);             /* dropdowns */
 			--d2l-color-border-subtle: var(--d2l-color-gypsum);           /* card, list separators */
 			--d2l-color-border-extra-subtle: var(--d2l-color-sylvite);    /* menu separators (future) */
+
+			--d2l-color-icon: var(--d2l-color-tungsten);                  /* icons */
 		}
 		html[data-theme="dark"] {
 			--d2l-color-background-base: #000000;
@@ -133,6 +135,8 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-border-medium: var(--d2l-color-mica);             /* todo dropdowns */
 			--d2l-color-border-subtle: var(--d2l-color-ferrite);          /* card, list separators */
 			--d2l-color-border-extra-subtle: var(--d2l-color-sylvite);    /* todo menu separators (future) */
+
+			--d2l-color-icon: var(--d2l-color-regolith);                  /* icons */
 		}
 	`;
 	document.head.appendChild(style);
