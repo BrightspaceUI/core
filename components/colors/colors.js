@@ -104,14 +104,17 @@ if (!document.head.querySelector('#d2l-colors')) {
 		}
 
 		/* semantic palette */
-
 		html {
 			--d2l-color-background-base: #f6f7f8;
-			--d2l-color-background-elevated: #ffffff;
+			--d2l-color-background-emphasized: var(--d2l-color-gypsum);   /* face sidebar */
+			--d2l-color-background-subtle: var(--d2l-color-regolith);     /* switch, tags */
+			--d2l-color-background-default: #ffffff;                      /* default */
 		}
 		html[data-theme="dark"] {
 			--d2l-color-background-base: #000000;
-			--d2l-color-background-elevated: #18191a;
+			--d2l-color-background-emphasized: var(--d2l-color-gypsum);   /* face sidebar */
+			--d2l-color-background-subtle: var(--d2l-color-regolith);     /* switch, tags */
+			--d2l-color-background-default: #18191a;                      /* default */
 		}
 	`;
 	document.head.appendChild(style);
