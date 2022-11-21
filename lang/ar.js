@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "مؤشر التقدم",
 	"components.more-less.less": "أقل",
 	"components.more-less.more": "المزيد",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "عنصر نائب",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
 	"components.pager-load-more.action": "تحميل {count} إضافي",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} من أصل {totalCountFormatted} من العناصر} other {{showingCount} من أصل {totalCountFormatted} من العناصر}}",

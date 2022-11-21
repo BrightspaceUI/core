@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "進捗状況インジケータ",
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "プレースホルダの項目",
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.pager-load-more.action": "さらに {count} 件を読み込む",
 	"components.pager-load-more.info": "{totalCount, plural, other {{showingCount}/{totalCountFormatted} 個の項目}}",

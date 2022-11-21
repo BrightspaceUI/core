@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicateur de progrès",
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Élément d’espace réservé",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} supplémentaire(s)",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} sur {totalCountFormatted} élément} other {{showingCount} sur {totalCountFormatted} éléments}}",

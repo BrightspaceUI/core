@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "진도 표시기",
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "자리표시자 항목",
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.pager-load-more.action": "{count}개 더 로드",
 	"components.pager-load-more.info": "{totalCount, plural, other {{totalCountFormatted}개 항목 중 {showingCount}개}}",
