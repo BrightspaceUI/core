@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Dangosydd Cynnydd",
 	"components.more-less.less": "llai",
 	"components.more-less.more": "mwy",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Eitem Dalfan",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.pager-load-more.action": "Lwytho {count} Arall",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} o {totalCountFormatted} eitem} other {{showingCount} o {totalCountFormatted} eitem}}",
@@ -114,7 +114,7 @@ export default {
 	"components.tag-list.role-description": "Rhestr o Dagiau",
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Byselli Saeth",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Symud rhwng tagiau",
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",

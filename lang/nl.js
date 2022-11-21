@@ -20,7 +20,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "filters",
 	"components.filter.noActiveFilters": "Geen actieve filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Voortgangsindicator",
 	"components.more-less.less": "minder",
 	"components.more-less.more": "meer",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.pager-load-more.action": "Laad nog {count} extra",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} van {totalCountFormatted} artikel} other {{showingCount} van {totalCountFormatted} artikelen}}",

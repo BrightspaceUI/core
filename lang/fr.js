@@ -42,7 +42,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicateur de progrès",
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} de plus",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} de {totalCountFormatted} élément} other {{showingCount} de {totalCountFormatted} éléments}}",
@@ -99,8 +99,8 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.tabs.next": "Défilement avant",

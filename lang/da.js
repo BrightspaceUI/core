@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Statusindikator",
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Pladsholder-element",
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.pager-load-more.action": "Indlæs {count} mere",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} af {totalCountFormatted} element} other {{showingCount} af {totalCountFormatted} elementer}}",
@@ -114,7 +114,7 @@ export default {
 	"components.tag-list.role-description": "Tagliste",
 	"components.tag-list.show-less": "Vis færre",
 	"components.tag-list.show-more-description": "Vælg for at få vist skjulte taglisteelementer",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Piletaster",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Flyt mellem tags",
 	"components.tag-list-item.tooltip-delete-key": "Tilbage/Slet",

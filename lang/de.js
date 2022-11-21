@@ -90,7 +90,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Fortschrittsanzeige",
 	"components.more-less.less": "Weniger",
 	"components.more-less.more": "mehr",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
+	"components.object-property-list.item-placeholder-text": "Platzhalterelement",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
 	"components.pager-load-more.action": "{count} weitere laden",
 	"components.pager-load-more.info": "{totalCount, plural, one {{showingCount} von {totalCountFormatted} Element} other {{showingCount} von {totalCountFormatted} Elementen}}",
@@ -114,7 +114,7 @@ export default {
 	"components.tag-list.role-description": "Tag-Liste",
 	"components.tag-list.show-less": "Weniger anzeigen",
 	"components.tag-list.show-more-description": "Wählen Sie diese Option, um ausgeblendete Elemente der Tag-Liste anzuzeigen",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Pfeiltasten",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Zwischen Tags wechseln",
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",
