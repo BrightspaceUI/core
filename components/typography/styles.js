@@ -81,7 +81,7 @@ export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact')
 
 export const bodySmallStyles = css`
 	.d2l-body-small {
-		color: var(--d2l-color-text-minus-1);
+		color: var(--d2l-color-text-subtle);
 		font-size: 0.7rem;
 		font-weight: 400;
 		line-height: 1rem;
@@ -123,6 +123,7 @@ export const bodySmallStyles = css`
 
 export const heading1Styles = css`
 	.d2l-heading-1 {
+		color: var(--d2l-color-heading);
 		font-size: 2rem;
 		font-weight: 400;
 		line-height: 2.4rem;
@@ -153,6 +154,7 @@ export const heading1Styles = css`
 
 export const heading2Styles = css`
 	.d2l-heading-2 {
+		color: var(--d2l-color-heading);
 		font-size: 1.5rem;
 		font-weight: 400;
 		line-height: 1.8rem;
@@ -184,6 +186,7 @@ export const heading2Styles = css`
 
 export const heading3Styles = css`
 	.d2l-heading-3 {
+		color: var(--d2l-color-heading);
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.5rem;
@@ -214,6 +217,7 @@ export const heading3Styles = css`
 
 export const heading4Styles = css`
 	.d2l-heading-4 {
+		color: var(--d2l-color-heading);
 		font-size: 0.8rem;
 		font-weight: 700;
 		line-height: 1.2rem;

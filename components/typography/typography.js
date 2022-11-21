@@ -24,7 +24,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography {
-			color: var(--d2l-color-text);
+			color: var(--d2l-color-text-emphasized);
 			display: block;
 			font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
 			letter-spacing: 0.01rem;
@@ -46,7 +46,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-body-small {
-			color: var(--d2l-color-text-minus-1);
+			color: var(--d2l-color-text-subtle);
 			font-size: 0.7rem;
 			font-weight: 400;
 			line-height: 1rem;
@@ -85,6 +85,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-heading-1 {
+			color: var(--d2l-color-heading);
 			font-size: 2rem;
 			font-weight: 400;
 			line-height: 2.4rem;
@@ -92,6 +93,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-heading-2 {
+			color: var(--d2l-color-heading);
 			font-size: 1.5rem;
 			font-weight: 400;
 			line-height: 1.8rem;
@@ -99,6 +101,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-heading-3 {
+			color: var(--d2l-color-heading);
 			font-size: 1rem;
 			font-weight: 700;
 			line-height: 1.5rem;
@@ -106,6 +109,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		.d2l-typography .d2l-heading-4 {
+			color: var(--d2l-color-heading);
 			font-size: 0.8rem;
 			font-weight: 700;
 			line-height: 1.2rem;
