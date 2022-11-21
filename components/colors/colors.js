@@ -132,7 +132,7 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-heading: var(--d2l-color-regolith);               /* d2l-heading-1, etc. */
 
 			--d2l-color-border-emphasized: var(--d2l-color-galena);       /* todo inputs  */
-			--d2l-color-border-medium: var(--d2l-color-mica);             /* todo dropdowns */
+			--d2l-color-border-medium: var(--d2l-color-tungsten);         /* todo dropdowns */
 			--d2l-color-border-subtle: var(--d2l-color-ferrite);          /* card, list separators */
 			--d2l-color-border-extra-subtle: var(--d2l-color-sylvite);    /* todo menu separators (future) */
 
