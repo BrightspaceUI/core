@@ -53,8 +53,8 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			:host {
 				animation: 600ms ease drop-in;
-				background: white;
-				border: 1px solid var(--d2l-color-mica);
+				background: var(--d2l-color-background-default);
+				border: 1px solid var(--d2l-color-border-medium);
 				border-radius: 0.3rem;
 				box-sizing: border-box;
 				display: flex;
