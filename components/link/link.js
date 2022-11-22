@@ -6,7 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
-		color: var(--d2l-color-celestine);
+		color: var(--d2l-color-link);
 		cursor: pointer;
 		outline-style: none;
 		text-decoration: none;
@@ -16,7 +16,7 @@ export const linkStyles = css`
 		top: 0.2rem;
 	}
 	.d2l-link:hover, .d2l-link:focus {
-		color: var(--d2l-color-celestine-minus-1);
+		color: var(--d2l-color-link-active);
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
@@ -33,7 +33,7 @@ export const linkStyles = css`
 	}
 	@media print {
 		.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
-			color: var(--d2l-color-ferrite);
+			color: var(--d2l-color-ferrite); /* todo: dark-mode - this should probably stay ferrite */
 		}
 	}
 `;

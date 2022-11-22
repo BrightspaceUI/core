@@ -5,14 +5,14 @@
 	&:visited,
 	&:link,
 	&:active {
-		color: $d2l-color-celestine;
+		color: --d2l-color-link;
 		text-decoration: none;
 		cursor: pointer;
 	}
 	&:hover,
 	&:focus,
 	&.d2l-link-focus {
-		color: $d2l-color-celestine-minus-1;
+		color: --d2l-color-link-active;
 		text-decoration: underline;
 		outline-width: 0;
 	}
@@ -26,7 +26,7 @@
 	}
 	@media print {
 		&, &:visited, &:link, &:active {
-			color: $d2l-color-ferrite;
+			color: $d2l-color-ferrite; /* todo: dark-mode - this should probably stay ferrite */
 		}
 	}
 }
