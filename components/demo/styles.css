@@ -13,3 +13,9 @@ body {
 body[unresolved] {
 	opacity: 0;
 }
+a {
+	color: var(--d2l-color-link);
+}
+a:focus, a:hover {
+	color: var(--d2l-color-link-active);
+}
