@@ -77,8 +77,8 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 	static get styles() {
 		return [offscreenStyles, css`
 			:host {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-gypsum);
+				background-color: var(--d2l-color-background-default);
+				border: 1px solid var(--d2l-color-border-subtle);
 				border-radius: 6px;
 				box-sizing: border-box;
 				display: inline-block;
@@ -183,28 +183,25 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 
 			:host([subtle]) {
 				border: none;
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03); /* todo: dark-mode */
 			}
 			:host(:hover) {
-				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
+				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06); /* todo: dark-mode */
 			}
 			:host([subtle]:hover) {
-				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
+				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06); /* todo: dark-mode */
 			}
-			:host([_active]) {
-				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
+			:host([_active]),
 			:host([_active]:hover),
 			:host([subtle][_active]:hover) {
 				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				box-shadow: 0 0 0 2px var(--d2l-color-background-default), 0 0 0 4px var(--d2l-color-link-active);
 			}
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
 			:host([href][_active]) .d2l-card-content {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-color-link-active); /* todo: dark-mode - this was celestine in light mode before... which now becomes --d2l-color-celestine-minus-1 */
 				text-decoration: underline;
 			}
 			/* this is needed to ensure tooltip is not be clipped by adjacent cards */

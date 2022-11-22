@@ -24,9 +24,9 @@ class CardLoadingShimmer extends LitElement {
 			}
 
 			.d2l-card-loading-indicator {
-				background-color: var(--d2l-color-regolith);
+				background-color: var(--d2l-color-regolith); /* todo: dark-mode */
 				border-radius: 7px 7px 0 0;
-				box-shadow: inset 0 -1px 0 0 var(--d2l-color-gypsum);
+				box-shadow: inset 0 -1px 0 0 var(--d2l-color-gypsum); /* todo: dark-mode */
 				height: inherit;
 				overflow: hidden;
 				position: relative;
@@ -34,8 +34,8 @@ class CardLoadingShimmer extends LitElement {
 
 			.d2l-card-loading-indicator::after {
 				animation: loadingShimmer 1.5s ease-in-out infinite;
-				background: linear-gradient(90deg, rgba(249, 250, 251, 0.1), rgba(114, 119, 122, 0.1), rgba(249, 250, 251, 0.1));
-				background-color: var(--d2l-color-regolith);
+				background: linear-gradient(90deg, rgba(249, 250, 251, 0.1), rgba(114, 119, 122, 0.1), rgba(249, 250, 251, 0.1)); /* todo: dark-mode */
+				background-color: var(--d2l-color-regolith); /* todo: dark-mode */
 				content: '';
 				height: 100%;
 				left: 0;

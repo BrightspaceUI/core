@@ -120,6 +120,8 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-border-extra-subtle: var(--d2l-color-sylvite);    /* menu separators (future) */
 
 			--d2l-color-icon: var(--d2l-color-tungsten);                  /* icons */
+			--d2l-color-link: var(--d2l-color-celestine);                 /* links */
+			--d2l-color-link-active: var(--d2l-color-celestine-minus-1);  /* links */
 		}
 		html[data-theme="dark"] {
 			--d2l-color-background-base: #000000;
@@ -137,6 +139,8 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-border-extra-subtle: var(--d2l-color-sylvite);    /* todo menu separators (future) */
 
 			--d2l-color-icon: var(--d2l-color-regolith);                  /* icons */
+			--d2l-color-link: var(--d2l-color-celestine);                 /* links */
+			--d2l-color-link-active: var(--d2l-color-celestine-plus-1);   /* links */
 		}
 	`;
 	document.head.appendChild(style);
