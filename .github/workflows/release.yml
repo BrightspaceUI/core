@@ -68,5 +68,5 @@ jobs:
         with:
           AWS_ROLE: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
           BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/main
-          BUILD_DIRECTORY: ./build/
+          PUBLISH_DIRECTORY: ./build/
           COMPRESS: true
