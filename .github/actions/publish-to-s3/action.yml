@@ -1,0 +1,97 @@
+name: Publish to S3
+description: Publishes the specified directory using aws s3 sync
+
+inputs:
+  AWS_REGION:
+    description: The region of your AWS bucket
+    default: ca-central-1
+    required: false
+  AWS_ROLE:
+    description: The AWS role to assume. This role must have write permission for your bucket
+    required: true
+  BUCKET_PATH:
+    description: The full path of your bucket, including subdirectories, to which to publish
+    required: true
+  BUILD_DIRECTORY:
+    description: The directory within your repo to publish to S3 (e.g. "./build/")
+    required: true
+  CACHE:
+    description: An optional comma-separated list of all file extensions you wish to have cached for 1 year (e.g. "js,css")
+    default: ""
+    required: false
+  CACHE_DEFAULT:
+    description: An optional default caching policy to apply to all files (e.g. "--cache-control 'max-age=120'")
+    default: ""
+    required: false
+  COMPRESS:
+    description: Whether to compress eligible files (if "true", will compress all of html/css/js/json/svg/xml)
+    default: false
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Parse files
+      id: parse-files
+      env:
+        CACHE: ${{ inputs.CACHE }}
+        COMPRESS: ${{ inputs.COMPRESS }}
+      run: |
+        typesToCompress=()
+        [[ $COMPRESS != 'false' ]] && typesToCompress=("html" "css" "js" "json" "svg" "xml")
+        typesToCache=(${CACHE//,/ })
+
+        compressAndCache=""
+        compressOnly=""
+        cacheOnly=""
+        neither=""
+
+        for type in ${typesToCompress[@]}; do
+          if [[ " ${typesToCache[*]} " =~ " ${type} " ]]; then
+            compressAndCache+="--include '*.${type}' "
+          else
+            compressOnly+="--include '*.${type}' "
+          fi
+          neither+="--exclude '*.${type}' "
+        done
+
+        for type in ${typesToCache[@]}; do
+          if [[ ! " ${typesToCompress[*]} " =~ " ${type} " ]]; then
+            cacheOnly+="--include '*.${type}' "
+            neither+="--exclude '*.${type}' "
+          fi
+        done
+
+        echo "COMPRESS_AND_CACHE=$compressAndCache" >> $GITHUB_OUTPUT
+        echo "COMPRESS_ONLY=$compressOnly" >> $GITHUB_OUTPUT
+        echo "CACHE_ONLY=$cacheOnly" >> $GITHUB_OUTPUT
+        echo "DEFAULT=$neither" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Compress
+      id: compress
+      if: ${{ inputs.COMPRESS != 'false' }}
+      env:
+        BUILD_DIRECTORY: ${{ inputs.BUILD_DIRECTORY }}
+      run: |
+        echo "ENCODING=--content-encoding 'br'" >> $GITHUB_OUTPUT
+        find $BUILD_DIRECTORY \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.json' -o -iname '*.svg' -o -iname '*.xml' \) -exec brotli {} \; -exec mv {}.br {} \;
+      shell: bash
+
+    - name: Deploy
+      env:
+        BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
+        BUILD_DIRECTORY: ${{ inputs.BUILD_DIRECTORY }}
+        CACHE_POLICY: --cache-control 'public,max-age=31536000,immutable'
+        CACHE_DEFAULT: ${{ inputs.CACHE_DEFAULT }}
+        COMPRESS_ENCODING: ${{ steps.compress.outputs.ENCODING }}
+        FILES_CACHE_ONLY: ${{ steps.parse-files.outputs.CACHE_ONLY }}
+        FILES_COMPRESS_AND_CACHE: ${{ steps.parse-files.outputs.COMPRESS_AND_CACHE }}
+        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
+        FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
+      run: |
+        [[ $FILES_COMPRESS_AND_CACHE ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_POLICY --exclude '*.*' $FILES_COMPRESS_AND_CACHE
+        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_DEFAULT --exclude '*.*' $FILES_COMPRESS_ONLY
+        [[ $FILES_CACHE_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_POLICY --exclude '*.*' $FILES_CACHE_ONLY
+        aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_DEFAULT $FILES_DEFAULT
+      shell: bash
