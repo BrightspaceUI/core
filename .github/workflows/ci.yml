@@ -89,7 +89,7 @@ jobs:
 
             | URL |
             |---|
-            | https://pr-5-brightspace-ui-core.d2l.dev/ |
+            | https://pr-${{ github.event.number }}-brightspace-ui-core.d2l.dev/ |
 
             > **Note**
             > The build needs to finish before your changes are deployed.
