@@ -31,6 +31,16 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Assume role
+      uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        role-to-assume: ${{ inputs.AWS_ROLE }}
+        role-duration-seconds: 3600
+        aws-region: ${{ inputs.AWS_REGION }}
+
     - name: Parse files
       id: parse-files
       env:
@@ -90,9 +100,8 @@ runs:
         FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
         FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
       run: |
-        aws s3 sync --delete ./build/ s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}
-        # [[ $FILES_COMPRESS_AND_CACHE ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_POLICY --exclude '*.*' $FILES_COMPRESS_AND_CACHE
-        # [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_DEFAULT --exclude '*.*' $FILES_COMPRESS_ONLY
-        # [[ $FILES_CACHE_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_POLICY --exclude '*.*' $FILES_CACHE_ONLY
-        # aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_DEFAULT $FILES_DEFAULT
+        [[ $FILES_COMPRESS_AND_CACHE ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_POLICY --exclude '*.*' $FILES_COMPRESS_AND_CACHE
+        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_DEFAULT --exclude '*.*' $FILES_COMPRESS_ONLY
+        [[ $FILES_CACHE_ONLY ]] && aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_POLICY --exclude '*.*' $FILES_CACHE_ONLY
+        aws s3 sync --delete "$BUILD_DIRECTORY" "$BUCKET_PATH" $CACHE_DEFAULT $FILES_DEFAULT
       shell: bash
