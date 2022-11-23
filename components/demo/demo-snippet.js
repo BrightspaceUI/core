@@ -13,7 +13,7 @@ class DemoSnippet extends LitElement {
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
-			_isFrench: { type: Boolean, reflect: false},
+			_isFrench: { type: Boolean, reflect: false },
 			_fullscreen: { state: true },
 			_hasSkeleton: { type: Boolean, attribute: false },
 			_skeletonOn: { type: Boolean, reflect: false }
@@ -204,15 +204,15 @@ class DemoSnippet extends LitElement {
 		this._applyAttr('dir', this._dir, true);
 	}
 
-	_handleLanguageChange(e) {
-		this._isFrench = e.target.on;
-		document.documentElement.lang = this._isFrench ? 'fr-ca': 'en';
-	}
-
 	_handleFullscreenChange(e) {
 		this._fullscreen = e.target.on;
 		const event = new CustomEvent('d2l-demo-snippet-fullscreen-toggle', { bubbles: true, composed: true });
 		this.dispatchEvent(event);
+	}
+
+	_handleLanguageChange(e) {
+		this._isFrench = e.target.on;
+		document.documentElement.lang = this._isFrench ? 'fr-ca' : 'en';
 	}
 
 	_handleSkeletonChange(e) {
