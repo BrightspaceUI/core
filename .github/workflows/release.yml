@@ -53,6 +53,16 @@ jobs:
       - name: Build static
         run: npm run build-static
 
+      - name: Assume role
+        uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
+          role-duration-seconds: 3600
+          aws-region: ca-central-1
+
       - name: Publish
         uses: ./.github/actions/publish-to-s3/
         with:

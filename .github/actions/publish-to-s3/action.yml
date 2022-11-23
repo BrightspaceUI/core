@@ -2,13 +2,6 @@ name: Publish to S3
 description: Publishes the specified directory using aws s3 sync
 
 inputs:
-  AWS_REGION:
-    description: The region of your AWS bucket
-    default: ca-central-1
-    required: false
-  AWS_ROLE:
-    description: The AWS role to assume. This role must have write permission for your bucket
-    required: true
   BUCKET_PATH:
     description: The full path of your bucket, including subdirectories, to which to publish
     required: true
@@ -31,16 +24,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Assume role
-      uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        role-to-assume: ${{ inputs.AWS_ROLE }}
-        role-duration-seconds: 3600
-        aws-region: ${{ inputs.AWS_REGION }}
-
     - name: Parse files
       id: parse-files
       env:
