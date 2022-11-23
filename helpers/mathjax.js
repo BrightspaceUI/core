@@ -30,9 +30,6 @@ const mathjaxFontMappings = new Map([
 	['MJXTEX-VB', 'MathJax_Vector-Bold']
 ]);
 
-let mathJaxLoaded;
-let renderingPromise = Promise.resolve();
-
 class HtmlBlockMathRenderer {
 
 	get contextAttributes() {
@@ -45,34 +42,13 @@ class HtmlBlockMathRenderer {
 		if (contextVal === undefined) return elem;
 
 		const context = JSON.parse(contextVal) || {};
-		const isLatexSupported = context.renderLatex;
 
-		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
-
-		const mathJaxConfig = {
+		await typesetMath(elem, {
 			deferTypeset: true,
-			renderLatex: isLatexSupported,
-			outputScale: context.outputScale || 1
-		};
-
-		await loadMathJax(mathJaxConfig);
-
-		// MathJax 3 does not support newlines, but it does persist styles, so add custom styles to mimic a linebreak
-		// This work-around should be removed when linebreaks are natively supported.
-		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
-		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-		elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
-			elm.style.display = 'block';
-			elm.style.height = '0.5rem';
+			renderLatex: context.renderLatex,
+			outputScale: context.outputScale || 1,
+			window: window
 		});
-
-		// If we're using deferred rendering, we need to create a document structure
-		// within the element so MathJax can appropriately process math.
-		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
-
-		await window.MathJax.startup.promise;
-		renderingPromise = renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
-		await renderingPromise;
 	}
 
 }
@@ -83,9 +59,12 @@ export function createHtmlBlockRenderer() {
 
 export function loadMathJax(mathJaxConfig) {
 
-	if (mathJaxLoaded) return mathJaxLoaded;
+	const win = (mathJaxConfig && mathJaxConfig.window) || window;
 
-	window.MathJax = {
+	win.D2L = win.D2L || {};
+	if (win.D2L.mathJaxLoaded) return win.D2L.mathJaxLoaded;
+
+	win.MathJax = {
 		chtml: {
 			adaptiveCSS: false,
 			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
@@ -110,11 +89,11 @@ export function loadMathJax(mathJaxConfig) {
 				//  just an example and so we use an expedient method of
 				//  accessing these for now.)
 				//
-				const mathjax = window.MathJax._.mathjax.mathjax;
-				const HTMLAdaptor = window.MathJax._.adaptors.HTMLAdaptor.HTMLAdaptor;
-				const HTMLHandler = window.MathJax._.handlers.html.HTMLHandler.HTMLHandler;
-				const AbstractHandler = window.MathJax._.core.Handler.AbstractHandler.prototype;
-				const startup = window.MathJax.startup;
+				const mathjax = win.MathJax._.mathjax.mathjax;
+				const HTMLAdaptor = win.MathJax._.adaptors.HTMLAdaptor.HTMLAdaptor;
+				const HTMLHandler = win.MathJax._.handlers.html.HTMLHandler.HTMLHandler;
+				const AbstractHandler = win.MathJax._.core.Handler.AbstractHandler.prototype;
+				const startup = win.MathJax.startup;
 
 				const getFirstChild = doc => {
 					const child = doc.firstChild;
@@ -155,7 +134,7 @@ export function loadMathJax(mathJaxConfig) {
 						const adaptor = this.adaptor;
 						if (typeof(document) === 'string') {
 							document = adaptor.parse(document, 'text/html');
-						} else if ((document instanceof adaptor.window.HTMLElement || document instanceof adaptor.window.DocumentFragment) && !(document instanceof window.ShadowRoot)) {
+						} else if ((document instanceof adaptor.window.HTMLElement || document instanceof adaptor.window.DocumentFragment) && !(document instanceof win.ShadowRoot)) {
 							const child = document;
 							document = adaptor.parse('', 'text/html');
 							adaptor.append(adaptor.body(document), child);
@@ -173,7 +152,7 @@ export function loadMathJax(mathJaxConfig) {
 				//  Register the new handler and adaptor
 				//
 				startup.registerConstructor('HTMLHandler', ShadowHandler);
-				startup.registerConstructor('browserAdaptor', () => new ShadowAdaptor(window));
+				startup.registerConstructor('browserAdaptor', () => new ShadowAdaptor(win));
 
 				//
 				//  A service function that creates a new MathDocument from the
@@ -181,7 +160,7 @@ export function loadMathJax(mathJaxConfig) {
 				//  renders the document.  The MathDocument is returned in case
 				//  you need to rerender the shadowRoot later.
 				//
-				window.MathJax.typesetShadow = async function(root, elem) {
+				win.MathJax.typesetShadow = async function(root, elem) {
 					const InputJax = startup.getInputJax();
 					const OutputJax = startup.getOutputJax();
 					const html = mathjax.document(root, { InputJax, OutputJax });
@@ -195,15 +174,15 @@ export function loadMathJax(mathJaxConfig) {
 				//
 				//  Now do the usual startup now that the extensions are in place
 				//
-				window.MathJax.startup.defaultReady();
+				win.MathJax.startup.defaultReady();
 			},
 			// Defer typesetting if the config is present and deferring is set
 			typeset: !(mathJaxConfig && mathJaxConfig.deferTypeset)
 		}
 	};
 
-	if (mathJaxConfig && mathJaxConfig.deferTypeset && !document.head.querySelector('#d2l-mathjax-fonts') && !document.head.querySelector('#MJX-CHTML-styles')) {
-		const styleElem = document.createElement('style');
+	if (mathJaxConfig && mathJaxConfig.deferTypeset && !win.document.head.querySelector('#d2l-mathjax-fonts') && !win.document.head.querySelector('#MJX-CHTML-styles')) {
+		const styleElem = win.document.createElement('style');
 		styleElem.id = 'd2l-mathjax-fonts';
 
 		let fontImportStyles = '';
@@ -216,11 +195,11 @@ export function loadMathJax(mathJaxConfig) {
 		});
 
 		styleElem.textContent = fontImportStyles;
-		document.head.appendChild(styleElem);
+		win.document.head.appendChild(styleElem);
 	}
 
-	mathJaxLoaded = new Promise(resolve => {
-		const script = document.createElement('script');
+	win.D2L.mathJaxLoaded = new Promise(resolve => {
+		const script = win.document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
 
@@ -229,9 +208,44 @@ export function loadMathJax(mathJaxConfig) {
 			: 'mml-chtml';
 
 		script.src = `${mathjaxBaseUrl}/${component}.js`;
-		document.head.appendChild(script);
+		win.document.head.appendChild(script);
 	});
 
-	return mathJaxLoaded;
+	return win.D2L.mathJaxLoaded;
 
+}
+
+export async function typesetMath(elem, options) {
+	if (!elem.querySelector('math') && !(options.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
+
+	const win = options.window;
+
+	const mathJaxConfig = {
+		deferTypeset: options.deferTypeset,
+		renderLatex: options.renderLatex,
+		outputScale: options.outputScale || 1,
+		window: win
+	};
+
+	await loadMathJax(mathJaxConfig);
+
+	// MathJax 3 does not support newlines, but it does persist styles, so add custom styles to mimic a linebreak
+	// This work-around should be removed when linebreaks are natively supported.
+	// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
+	// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
+	elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+		elm.style.display = 'block';
+		elm.style.height = '0.5rem';
+	});
+
+	// If we're using deferred rendering, we need to create a document structure
+	// within the element so MathJax can appropriately process math.
+	if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
+
+	await win.MathJax.startup.promise;
+	win.D2L = win.D2L || {};
+
+	if (!win.D2L.renderingPromise) win.D2L.renderingPromise = Promise.resolve();
+	win.D2L.renderingPromise = win.D2L.renderingPromise.then(() => win.MathJax.typesetShadow(elem.getRootNode(), elem));
+	await win.D2L.renderingPromise;
 }
