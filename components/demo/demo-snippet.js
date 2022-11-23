@@ -250,7 +250,7 @@ class DemoSnippet extends LitElement {
 
 	_handleLanguageChange(e) {
 		this._isFrench = e.target.on;
-		document.documentElement.lang = this._isFrench ? 'fr-ca': 'en';
+		document.documentElement.lang = this._isFrench ? 'fr-ca' : 'en';
 	}
 
 	_handleSkeletonChange(e) {
