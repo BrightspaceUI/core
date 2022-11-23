@@ -13,6 +13,7 @@ class DemoSnippet extends LitElement {
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
+			_isFrench: { type: Boolean, reflect: false},
 			_fullscreen: { state: true },
 			_hasSkeleton: { type: Boolean, attribute: false },
 			_skeletonOn: { type: Boolean, reflect: false }
@@ -88,6 +89,7 @@ class DemoSnippet extends LitElement {
 		this._fullscreen = false;
 		this._hasSkeleton = false;
 		this._skeletonOn = false;
+		this._isFrench = false;
 	}
 
 	firstUpdated() {
@@ -108,6 +110,7 @@ class DemoSnippet extends LitElement {
 				<div class="d2l-demo-snippet-settings">
 					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br />
 					<d2l-switch text="Fullscreen" ?on="${this._fullscreen}" @change="${this._handleFullscreenChange}"></d2l-switch><br />
+					<d2l-switch text="French" ?on="${this._isFrench}" @change="${this._handleLanguageChange}"></d2l-switch><br />
 					${skeleton}
 				</div>
 			</div>
@@ -199,6 +202,11 @@ class DemoSnippet extends LitElement {
 	_handleDirChange(e) {
 		this._dir = e.target.on ? 'rtl' : 'ltr';
 		this._applyAttr('dir', this._dir, true);
+	}
+
+	_handleLanguageChange(e) {
+		this._isFrench = e.target.on;
+		document.documentElement.lang = this._isFrench ? 'fr-ca': 'en';
 	}
 
 	_handleFullscreenChange(e) {
