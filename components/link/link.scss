@@ -5,14 +5,14 @@
 	&:visited,
 	&:link,
 	&:active {
-		color: --d2l-color-link;
+		color: var(--d2l-color-link);
 		text-decoration: none;
 		cursor: pointer;
 	}
 	&:hover,
 	&:focus,
 	&.d2l-link-focus {
-		color: --d2l-color-link-active;
+		color: var(--d2l-color-link-active);
 		text-decoration: underline;
 		outline-width: 0;
 	}
