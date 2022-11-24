@@ -34,24 +34,24 @@ runs:
         [[ $COMPRESS != 'false' ]] && typesToCompress=("html" "css" "js" "json" "svg" "xml")
         typesToCache=(${CACHE//,/ })
 
-        compressAndCache=""
-        compressOnly=""
-        cacheOnly=""
-        neither=""
+        compressAndCache=()
+        compressOnly=()
+        cacheOnly=()
+        neither=()
 
         for type in ${typesToCompress[@]}; do
           if [[ " ${typesToCache[*]} " =~ " ${type} " ]]; then
-            compressAndCache+="--include '*.${type}' "
+            compressAndCache+=( --include '*.${type}' )
           else
-            compressOnly+="--include '*.${type}' "
+            compressOnly+=( --include '*.${type}' )
           fi
-          neither+="--exclude '*.${type}' "
+          neither+=( --exclude '*.${type}' )
         done
 
         for type in ${typesToCache[@]}; do
           if [[ ! " ${typesToCompress[*]} " =~ " ${type} " ]]; then
-            cacheOnly+="--include '*.${type}' "
-            neither+="--exclude '*.${type}' "
+            cacheOnly+=( --include '*.${type}' )
+            neither+=( --exclude '*.${type}' )
           fi
         done
 
@@ -80,11 +80,8 @@ runs:
       run: |
         set -x
 
-        filesCompressOnly=( $FILES_COMPRESS_ONLY )
-        filesDefault=( $FILES_DEFAULT )
-
         echo "!!! Running compress-only"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" $COMPRESS_ENCODING --exclude '*.*' "${filesCompressOnly[@]}"
+        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" $COMPRESS_ENCODING --exclude '*.*' "${FILES_COMPRESS_ONLY[@]}"
         echo "!!! Running default"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" "${filesDefault[@]}"
+        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" "${FILES_DEFAULT[@]}"
       shell: bash
