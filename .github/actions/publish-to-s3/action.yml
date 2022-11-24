@@ -73,7 +73,7 @@ runs:
       env:
         BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
         COMPRESS_ENCODING: --content-encoding br
-        FILES_COMPRESS_ONLY: --include '*.html' --include '*.css' --include '*.js' --include '*.json' --include '*.svg' --include '*.xml'
+        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
       run: |
         files_default="--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml'"
