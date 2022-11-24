@@ -75,8 +75,8 @@ runs:
         COMPRESS_ENCODING: --content-encoding br
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
       run: |
-        FILES_COMPRESS_ONLY="--include '*.html' --include '*.css' --include '*.js' --include '*.json' --include '*.svg' --include '*.xml'"
-        FILES_DEFAULT="--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml'"
+        FILES_COMPRESS_ONLY="--include *.html --include *.css --include *.js --include *.json --include *.svg --include *.xml"
+        FILES_DEFAULT="--exclude *.html --exclude *.css --exclude *.js --exclude *.json --exclude *.svg --exclude *.xml"
 
         echo "!!! Running compress-only"
         [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
