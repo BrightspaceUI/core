@@ -55,10 +55,10 @@ runs:
           fi
         done
 
-        echo "COMPRESS_AND_CACHE=$compressAndCache" >> $GITHUB_OUTPUT
-        echo "COMPRESS_ONLY=$compressOnly" >> $GITHUB_OUTPUT
-        echo "CACHE_ONLY=$cacheOnly" >> $GITHUB_OUTPUT
-        echo "DEFAULT=$neither" >> $GITHUB_OUTPUT
+        echo "COMPRESS_AND_CACHE=(${compressAndCache[@]})" >> $GITHUB_OUTPUT
+        echo "COMPRESS_ONLY=(${compressOnly[@]})" >> $GITHUB_OUTPUT
+        echo "CACHE_ONLY=(${cacheOnly[@]})" >> $GITHUB_OUTPUT
+        echo "DEFAULT=(${neither[@]})" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Compress
