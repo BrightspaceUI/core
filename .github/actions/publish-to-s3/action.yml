@@ -79,7 +79,7 @@ runs:
         FILES_DEFAULT="--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml'"
 
         echo "!!! Running compress-only"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
+        eval aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
         echo "!!! Running default"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $FILES_DEFAULT
+        eval aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $FILES_DEFAULT
       shell: bash
