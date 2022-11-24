@@ -1,5 +1,4 @@
 name: License Checker
-on: pull_request
 jobs:
   lint:
     name: License Checker

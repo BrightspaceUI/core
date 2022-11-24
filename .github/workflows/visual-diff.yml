@@ -1,5 +1,4 @@
 name: Visual Diff
-on: pull_request
 jobs:
   build:
     name: Visual Diff
