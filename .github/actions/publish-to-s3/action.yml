@@ -55,10 +55,10 @@ runs:
           fi
         done
 
-        echo "COMPRESS_AND_CACHE=$compressAndCache" >> $GITHUB_OUTPUT
-        echo "COMPRESS_ONLY=$compressOnly" >> $GITHUB_OUTPUT
-        echo "CACHE_ONLY=$cacheOnly" >> $GITHUB_OUTPUT
-        echo "DEFAULT=$neither" >> $GITHUB_OUTPUT
+        echo "COMPRESS_AND_CACHE=( $compressAndCache )" >> $GITHUB_OUTPUT
+        echo "COMPRESS_ONLY=( $compressOnly )" >> $GITHUB_OUTPUT
+        echo "CACHE_ONLY=( $cacheOnly )" >> $GITHUB_OUTPUT
+        echo "DEFAULT=( $neither )" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Compress
@@ -73,12 +73,12 @@ runs:
       env:
         BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
         COMPRESS_ENCODING: --content-encoding br
+        FILES_COMPRESS_ONLY: "${{ steps.parse-files.outputs.COMPRESS_ONLY }}"
+        FILES_DEFAULT: "${{ steps.parse-files.outputs.DEFAULT }}"
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
         PR_NUMBER: ${{ github.event.number }}
       run: |
         set -x
-        FILES_COMPRESS_ONLY=(--include '*.html' --include '*.css' --include '*.js' --include '*.json' --include '*.svg' --include '*.xml')
-        FILES_DEFAULT=(--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml')
 
         echo "!!! Running compress-only"
         aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" $COMPRESS_ENCODING --exclude '*.*' "${FILES_COMPRESS_ONLY[@]}"
