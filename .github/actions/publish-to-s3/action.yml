@@ -73,15 +73,18 @@ runs:
       env:
         BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
         COMPRESS_ENCODING: --content-encoding br
-        FILES_COMPRESS_ONLY: ( ${{ steps.parse-files.outputs.COMPRESS_ONLY }} )
-        FILES_DEFAULT: ( ${{ steps.parse-files.outputs.DEFAULT }} )
+        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
+        FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
         PR_NUMBER: ${{ github.event.number }}
       run: |
         set -x
 
+        filesCompressOnly=( $FILES_COMPRESS_ONLY )
+        filesDefault=( $FILES_DEFAULT )
+
         echo "!!! Running compress-only"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" $COMPRESS_ENCODING --exclude '*.*' "${FILES_COMPRESS_ONLY[@]}"
+        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" $COMPRESS_ENCODING --exclude '*.*' "${filesCompressOnly[@]}"
         echo "!!! Running default"
-        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" "${FILES_DEFAULT[@]}"
+        aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${PR_NUMBER}" "${filesDefault[@]}"
       shell: bash
