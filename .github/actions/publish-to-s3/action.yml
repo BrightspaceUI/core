@@ -83,9 +83,9 @@ runs:
         FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
         FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
       run: |
-        encoding="--content-encoding 'br'"
-        files_compress="--include '*.html' --include '*.css' --include '*.js' --include '*.json' --include '*.svg' --include '*.xml'"
-        files_default="--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml'"
+        encoding="--content-encoding \'br\'"
+        files_compress="--include \'*.html\' --include \'*.css\' --include \'*.js\' --include \'*.json\' --include \'*.svg\' --include \'*.xml\'"
+        files_default="--exclude \'*.html\' --exclude \'*.css\' --exclude \'*.js\' --exclude \'*.json\' --exclude \'*.svg\' --exclude \'*.xml\'"
         [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $encoding $files_compress
         aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $files_default
 
