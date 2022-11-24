@@ -77,6 +77,6 @@ runs:
         FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
       run: |
-        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING $FILES_COMPRESS_ONLY
+        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
         aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $FILES_DEFAULT
       shell: bash
