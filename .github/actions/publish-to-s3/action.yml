@@ -73,8 +73,8 @@ runs:
       env:
         BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
         COMPRESS_ENCODING: --content-encoding br
-        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
-        FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
+        FILES_COMPRESS_ONLY: "${{ steps.parse-files.outputs.COMPRESS_ONLY }}"
+        FILES_DEFAULT: "${{ steps.parse-files.outputs.DEFAULT }}"
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
       run: |
         [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "./build/" "s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
