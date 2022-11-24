@@ -73,17 +73,11 @@ runs:
       env:
         BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
         PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
-        CACHE_POLICY: --cache-control 'public,max-age=31536000,immutable'
-        CACHE_DEFAULT: ${{ inputs.CACHE_DEFAULT }}
-        FILES_CACHE_ONLY: ${{ steps.parse-files.outputs.CACHE_ONLY }}
-        FILES_COMPRESS_AND_CACHE: ${{ steps.parse-files.outputs.COMPRESS_AND_CACHE }}
-        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
-        FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
       run: |
         COMPRESS_ENCODING="--content-encoding br"
+        FILES_COMPRESS_ONLY="--include '*.html' --include '*.css' --include '*.js' --include '*.json' --include '*.svg' --include '*.xml'"
+        FILES_DEFAULT="--exclude '*.html' --exclude '*.css' --exclude '*.js' --exclude '*.json' --exclude '*.svg' --exclude '*.xml'"
 
-        [[ $FILES_COMPRESS_AND_CACHE ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_POLICY --exclude '*.*' $FILES_COMPRESS_AND_CACHE
-        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_DEFAULT --exclude '*.*' $FILES_COMPRESS_ONLY
-        [[ $FILES_CACHE_ONLY ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $CACHE_POLICY --exclude '*.*' $FILES_CACHE_ONLY
-        aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $CACHE_DEFAULT $FILES_DEFAULT
+        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING --exclude '*.*' $FILES_COMPRESS_ONLY
+        aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $FILES_DEFAULT
       shell: bash
