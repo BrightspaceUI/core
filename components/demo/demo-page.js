@@ -81,8 +81,11 @@ class DemoPage extends LitElement {
 			'no-scroll': this._noScroll
 		};
 		const selectedLanguageCode = getDocumentLocaleSettings().language;
+		let foundSelected = false;
 		const languageOptions = supportedLocalesDetails.map((l) => {
-			return html`<option value="${l.code}" ?selected="${l.code.startsWith(selectedLanguageCode)}">${l.code} - ${l.name}</option>`;
+			const selected = !foundSelected && l.code.startsWith(selectedLanguageCode);
+			foundSelected = foundSelected || selected;
+			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
 		});
 		return html`
 			<header>

@@ -123,9 +123,7 @@ class DemoSnippet extends LitElement {
 	render() {
 		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		const switches = html`
-			<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br />
 			<d2l-switch text="Fullscreen" ?on="${this._fullscreen}" @change="${this._handleFullscreenChange}"></d2l-switch><br />
-			<d2l-switch text="French" ?on="${this._isFrench}" @change="${this._handleLanguageChange}"></d2l-switch><br />
 			${skeleton}`;
 		const settings = this.fullWidth && this._fullscreen ? html`
 			<d2l-dropdown class="settings-dropdown ${this._settingsPeek ? 'peek' : ''}">
@@ -170,9 +168,6 @@ class DemoSnippet extends LitElement {
 		const doApply = (nodes, isRoot) => {
 			for (let i = 0; i < nodes.length; i++) {
 				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					/* only sprout dir on root or custom element so devs don't think that
-					[dir="rtl"].some-class will work. they must use :host([dir="rtl"]) in their
-					custom element's CSS since RTLMixin only sprouts [dir="rtl"] on host */
 					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
 						if (typeof(value) === 'boolean') {
 							if (value) {
@@ -226,11 +221,6 @@ class DemoSnippet extends LitElement {
 			.replace(/ class=""/g, '')      // replace empty class attributes (class="")
 			.replace(/_[^=]*="[^"]*"/, '')  // replace private reflected properties (_attr="value")
 			.replace(/=""/g, '');           // replace empty strings for boolean attributes (="")
-	}
-
-	_handleDirChange(e) {
-		this._dir = e.target.on ? 'rtl' : 'ltr';
-		this._applyAttr('dir', this._dir, true);
 	}
 
 	async _handleFullscreenChange(e) {
