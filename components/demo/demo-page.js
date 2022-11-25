@@ -3,7 +3,7 @@ import './code-view.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
-import { getDocumentLocaleSettings, supportedBaseLocales } from '@brightspace-ui/intl/lib/common.js';
+import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { heading2Styles } from '../typography/styles.js';
 import { inputLabelStyles } from '../inputs/input-label-styles.js';
@@ -81,8 +81,8 @@ class DemoPage extends LitElement {
 			'no-scroll': this._noScroll
 		};
 		const selectedLanguageCode = getDocumentLocaleSettings().language;
-		const languageOptions = supportedBaseLocales.map((code) => {
-			return html`<option value="${code}" ?selected="${code === selectedLanguageCode}">${code}</option>`;
+		const languageOptions = supportedLocalesDetails.map((l) => {
+			return html`<option value="${l.code}" ?selected="${l.code.startsWith(selectedLanguageCode)}">${l.code} - ${l.name}</option>`;
 		});
 		return html`
 			<header>
@@ -112,7 +112,7 @@ class DemoPage extends LitElement {
 
 	_handleLanguageChange(e) {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
-		document.documentElement.dir = newLanguageCode === 'ar' ? 'rtl' : 'ltr';
+		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
 		getDocumentLocaleSettings().language = newLanguageCode;
 	}
 
