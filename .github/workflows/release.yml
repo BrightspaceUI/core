@@ -66,6 +66,5 @@ jobs:
       - name: Publish
         uses: ./.github/actions/publish-to-s3/
         with:
-          AWS_ROLE: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
           BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/main
           PUBLISH_DIRECTORY: ./build/
