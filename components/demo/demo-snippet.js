@@ -51,7 +51,6 @@ class DemoSnippet extends LitElement {
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
 				position: relative;
-				translate: 0; /* create stacking context to prevent demos from leaking outside their containers */
 			}
 			:host([full-width]) .d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo {
 				width: 100vw;
@@ -83,6 +82,7 @@ class DemoSnippet extends LitElement {
 				right: 1rem;
 				top: -0.25rem;
 				translate: 0 -1.5rem;
+				z-index: 9999; /* stack on top of sticky headers */
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				d2l-dropdown.settings-dropdown {
