@@ -43,3 +43,54 @@ jobs:
         run: npm run test:axe
       - name: Unit Tests
         run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
+  publish:
+    name: Publish static site
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+
+      - name: Build static
+        run: npm run build-static
+
+      - name: Assume role
+        uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
+          role-duration-seconds: 3600
+          aws-region: ca-central-1
+
+      - name: Publish
+        uses: ./.github/actions/publish-to-s3/
+        with:
+          AWS_ROLE: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
+          BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}
+          PUBLISH_DIRECTORY: ./build/
+
+      - name: Notify
+        uses: ./.github/actions/comment-on-pr/
+        with:
+          MESSAGE: |
+            Thanks for the PR! 🎉
+
+            We've deployed an automatic preview for this PR - you can see your changes here:
+
+            | URL |
+            |---|
+            | https://pr-${{ github.event.number }}-brightspace-ui-core.d2l.dev/ |
+
+            > **Note**
+            > The build needs to finish before your changes are deployed.
+            > Changes to the PR will automatically update the instance.
+          ONLY_POST_ONCE: true

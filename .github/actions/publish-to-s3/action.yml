@@ -1,0 +1,84 @@
+name: Publish to S3
+description: Publishes the specified directory using aws s3 sync
+
+inputs:
+  BUCKET_PATH:
+    description: The full path of your bucket, including subdirectories, to which to publish
+    required: true
+  PUBLISH_DIRECTORY:
+    description: The directory within your repo to publish to S3 (e.g. "./build/")
+    required: true
+  CACHE:
+    description: An optional comma-separated list of all file extensions you wish to have cached for 1 year (e.g. "js,css")
+    default: ""
+    required: false
+  CACHE_DEFAULT:
+    description: An optional default caching policy to apply to all files (e.g. "--cache-control max-age=120")
+    default: ""
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Parse files
+      id: parse-files
+      env:
+        CACHE: ${{ inputs.CACHE }}
+      run: |
+        typesToCompress=("html" "css" "js" "json" "svg" "xml")
+        typesToCache=(${CACHE//,/ })
+
+        compressAndCache=""
+        compressOnly=""
+        cacheOnly=""
+        neither=""
+
+        for type in ${typesToCompress[@]}; do
+          if [[ " ${typesToCache[*]} " =~ " ${type} " ]]; then
+            compressAndCache+="--include *.${type} "
+          else
+            compressOnly+="--include *.${type} "
+          fi
+          neither+="--exclude *.${type} "
+        done
+
+        for type in ${typesToCache[@]}; do
+          if [[ ! " ${typesToCompress[*]} " =~ " ${type} " ]]; then
+            cacheOnly+="--include *.${type} "
+            neither+="--exclude *.${type} "
+          fi
+        done
+
+        echo "COMPRESS_AND_CACHE=$compressAndCache" >> $GITHUB_OUTPUT
+        echo "COMPRESS_ONLY=$compressOnly" >> $GITHUB_OUTPUT
+        echo "CACHE_ONLY=$cacheOnly" >> $GITHUB_OUTPUT
+        echo "DEFAULT=$neither" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Compress
+      env:
+        PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
+      run: find $PUBLISH_DIRECTORY \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.json' -o -iname '*.svg' -o -iname '*.xml' \) -exec brotli {} \; -exec mv {}.br {} \;
+      shell: bash
+
+    - name: Deploy
+      env:
+        BUCKET_PATH: ${{ inputs.BUCKET_PATH }}
+        PUBLISH_DIRECTORY: ${{ inputs.PUBLISH_DIRECTORY }}
+        CACHE_POLICY: --cache-control public,max-age=31536000,immutable
+        CACHE_DEFAULT: ${{ inputs.CACHE_DEFAULT }}
+        COMPRESS_ENCODING: --content-encoding br
+        FILES_CACHE_ONLY: ${{ steps.parse-files.outputs.CACHE_ONLY }}
+        FILES_COMPRESS_AND_CACHE: ${{ steps.parse-files.outputs.COMPRESS_AND_CACHE }}
+        FILES_COMPRESS_ONLY: ${{ steps.parse-files.outputs.COMPRESS_ONLY }}
+        FILES_DEFAULT: ${{ steps.parse-files.outputs.DEFAULT }}
+      run: |
+        # Disable globbing: We want arguments like '*.js' to be treated as string literals, without needing quotes
+        # (Passing quotes in strings does not work as expected during shell expansion)
+        set -f
+
+        [[ $FILES_COMPRESS_AND_CACHE ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_POLICY --exclude *.* $FILES_COMPRESS_AND_CACHE
+        [[ $FILES_COMPRESS_ONLY ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $COMPRESS_ENCODING $CACHE_DEFAULT --exclude *.* $FILES_COMPRESS_ONLY
+        [[ $FILES_CACHE_ONLY ]] && aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $CACHE_POLICY --exclude *.* $FILES_CACHE_ONLY
+        aws s3 sync --delete "$PUBLISH_DIRECTORY" "$BUCKET_PATH" $CACHE_DEFAULT $FILES_DEFAULT
+      shell: bash
