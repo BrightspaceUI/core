@@ -13,7 +13,7 @@
     "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass",
-    "build-static": "rollup -c",
+    "build-static": "rollup -c ./rollup/rollup.config.js",
     "lint": "npm run lint:eslint && npm run lint:style && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html --ignore-path .gitignore",
     "lint:lit": "lit-analyzer \"{components,controllers,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict --rules.no-unknown-tag-name off",

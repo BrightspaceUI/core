@@ -2,9 +2,9 @@ import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import glob from 'glob-all';
-import replace from './rollup/rollup-plugin-replace-simple.js';
+import replace from './rollup-plugin-replace-simple.js';
 import resolve from '@rollup/plugin-node-resolve';
-import { version } from './package.json';
+import { version } from '../package.json';
 
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates)/**/*.js',
