@@ -1,14 +1,4 @@
-const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-const setDarkMode = darkMode => {
-	const documentElement = document.documentElement;
-	documentElement.dataset.theme = (darkMode ? 'dark' : 'light');
-};
-if (darkModeQuery.addEventListenter) {
-	darkModeQuery.addEventListenter('change', e => setDarkMode(e.matches));
-} else if (darkModeQuery.addListener) {
-	darkModeQuery.addListener(e => setDarkMode(e.matches));
-}
-setDarkMode(darkModeQuery.matches);
+import '../../helpers/theme.js';
 
 if (!document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
