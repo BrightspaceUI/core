@@ -82,7 +82,7 @@ class DemoSnippet extends LitElement {
 				right: 1rem;
 				top: -0.25rem;
 				translate: 0 -1.5rem;
-				z-index: 10; /* stack on top of sticky headers */
+				z-index: 9999; /* stack on top of sticky headers */
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				d2l-dropdown.settings-dropdown {
