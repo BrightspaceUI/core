@@ -7,6 +7,8 @@ import { HtmlAttributeObserverController } from '../../controllers/attributeObse
 import { requestInstance } from '../../mixins/provider-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+import { formatHsl, getAlternateColor, parseRGB } from '../../helpers/color.js';
+
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
 		line-height: 1.47; /* 1.4rem / 0.95rem */
@@ -312,6 +314,26 @@ class HtmlBlock extends RtlMixin(LitElement) {
 				});
 			}
 		}
+
+		const theme = document.documentElement.dataset.theme;
+		if (theme === 'dark') {
+			const lightBackgroundColor = { r: 255, g: 255, b: 255 };
+			const darkBackgroundColor = theme === 'dark' ? { r: 24, g: 25, b: 26 } : { r: 255, g: 255, b: 255 };
+
+			const elems = elem.querySelectorAll('[style]');
+			elems.forEach(elem => {
+				const lightColor = elem.style.color;
+				if (lightColor && lightColor.length > 0) {
+					elem.dataset.lightcolor = lightColor;
+					//console.log('about to get color', color);
+					const darkColor = getAlternateColor(parseRGB(lightColor), lightBackgroundColor, darkBackgroundColor);
+					//console.log(formatHsl(altColor));
+					elem.style.color = formatHsl(darkColor);
+				}
+			});
+		}
+
+
 	}
 
 	async _render(slot) {

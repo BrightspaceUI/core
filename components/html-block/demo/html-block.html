@@ -54,6 +54,39 @@
 
 		<d2l-demo-page page-title="d2l-html-block">
 
+			<h2>HTML Block (custom colors)</h2>
+
+			<d2l-html-block>
+				Just a text node...
+				<h1>heading 1</h1>
+				<h2 id="color" style="color: #745db1;">heading 2</h2>
+				<h3 style="text-decoration: underline;">heading 3</h3>
+				<h4>heading 4</h4>
+				<h5>heading 5</h5>
+				<h6>heading 6</h6>
+				<div><strong>strong</strong></div>
+				<div><b>bold</b></div>
+				<div>text</div>
+				<pre>preformatted</pre>
+				<p>paragraph</p>
+				<ul>
+					<li>unordered item 1</li>
+					<li>unordered item 2</li>
+				</ul>
+				<ol>
+					<li>ordered item 1</li>
+					<li>ordered item 2</li>
+				</ol>
+				<div><a href="https://d2l.com">anchor</a></div>
+			</d2l-html-block>
+
+			<d2l-demo-snippet>
+				<template>
+
+				</template>
+			</d2l-demo-snippet>
+
+			<!--
 			<h2>HTML Block</h2>
 
 			<d2l-demo-snippet>
@@ -207,7 +240,7 @@
 								<mi>e</mi>
 								<mrow>
 									<mi>i</mi>
-									<mi>π<!-- π --></mi>
+									<mi>π</mi>
 								</mrow>
 							</msup>
 							<mo>+</mo>
@@ -221,7 +254,7 @@
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -246,12 +279,12 @@
 									<mn>2</mn>
 								</mrow>
 							</msup>
-							<mo>≤<!-- ≤ --></mo>
+							<mo>≤</mo>
 							<mrow>
 								<mo>(</mo>
 								<mrow>
 									<munderover>
-										<mo>∑<!-- ∑ --></mo>
+										<mo>∑</mo>
 										<mrow class="MJX-TeXAtom-ORD">
 											<mi>k</mi>
 											<mo>=</mo>
@@ -271,7 +304,7 @@
 								<mo>(</mo>
 								<mrow>
 									<munderover>
-										<mo>∑<!-- ∑ --></mo>
+										<mo>∑</mo>
 										<mrow class="MJX-TeXAtom-ORD">
 											<mi>k</mi>
 											<mo>=</mo>
@@ -332,7 +365,7 @@
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -357,12 +390,12 @@
 										<mn>2</mn>
 									</mrow>
 								</msup>
-								<mo>≤<!-- ≤ --></mo>
+								<mo>≤</mo>
 								<mrow>
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -382,7 +415,7 @@
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -435,7 +468,7 @@
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -460,12 +493,12 @@
 									<mn>2</mn>
 								</mrow>
 							</msup>
-							<mo>≤<!-- ≤ --></mo>
+							<mo>≤</mo>
 							<mrow>
 								<mo>(</mo>
 								<mrow>
 									<munderover>
-										<mo>∑<!-- ∑ --></mo>
+										<mo>∑</mo>
 										<mrow class="MJX-TeXAtom-ORD">
 											<mi>k</mi>
 											<mo>=</mo>
@@ -485,7 +518,7 @@
 								<mo>(</mo>
 								<mrow>
 									<munderover>
-										<mo>∑<!-- ∑ --></mo>
+										<mo>∑</mo>
 										<mrow class="MJX-TeXAtom-ORD">
 											<mi>k</mi>
 											<mo>=</mo>
@@ -682,7 +715,7 @@ helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 
 				customElements.define('d2l-some-component', SomeComponent);
 			</d2l-code-view>
-
+			-->
 		</d2l-demo-page>
 
 		<script type="module">
@@ -725,7 +758,7 @@ helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -750,12 +783,12 @@ helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 										<mn>2</mn>
 									</mrow>
 								</msup>
-								<mo>≤<!-- ≤ --></mo>
+								<mo>≤</mo>
 								<mrow>
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -775,7 +808,7 @@ helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
