@@ -82,8 +82,12 @@ class DemoSnippet extends LitElement {
 				position: fixed;
 				right: 1rem;
 				top: -0.25rem;
-				transition: translate 0.15s, box-shadow 0.15s;
 				translate: 0 -1.5rem;
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				d2l-dropdown.settings-dropdown {
+					transition: translate 0.15s, box-shadow 0.15s;
+				}
 			}
 			d2l-dropdown.settings-dropdown.peek,
 			d2l-dropdown.settings-dropdown:hover,
