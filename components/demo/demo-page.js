@@ -3,8 +3,11 @@ import './code-view.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
+import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { heading2Styles } from '../typography/styles.js';
+import { inputLabelStyles } from '../inputs/input-label-styles.js';
+import { selectStyles } from '../inputs/input-select-styles.js';
 
 document.body.classList.add('d2l-typography');
 
@@ -27,7 +30,7 @@ class DemoPage extends LitElement {
 	}
 
 	static get styles() {
-		return [ heading2Styles, css`
+		return [ heading2Styles, inputLabelStyles, selectStyles, css`
 			:host {
 				background-color: var(--d2l-color-sylvite);
 				display: block;
@@ -38,8 +41,18 @@ class DemoPage extends LitElement {
 				overflow: hidden;
 				padding: 0;
 			}
+			header {
+				align-items: center;
+				display: flex;
+				margin-bottom: 1.5rem;
+				max-width: 900px;
+			}
 			.d2l-heading-2 {
-				margin-top: 0;
+				flex-grow: 1;
+				margin: 0;
+			}
+			.d2l-input-label {
+				margin-bottom: 0;
 			}
 			.d2l-demo-page-content > ::slotted(h2),
 			.d2l-demo-page-content > ::slotted(h3) {
@@ -67,9 +80,22 @@ class DemoPage extends LitElement {
 		const classes = {
 			'no-scroll': this._noScroll
 		};
+		const selectedLanguageCode = getDocumentLocaleSettings().language;
+		let foundSelected = false;
+		const languageOptions = supportedLocalesDetails.map((l) => {
+			const selected = !foundSelected && l.code.startsWith(selectedLanguageCode);
+			foundSelected = foundSelected || selected;
+			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
+		});
 		return html`
-			<main class="${classMap(classes)}">
+			<header>
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
+				<label class="d2l-input-label">
+					Language: 
+					<select class="d2l-input-select" @change="${this._handleLanguageChange}">${languageOptions}</select>
+				</label>
+			</header>
+			<main class="${classMap(classes)}">
 				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
 		`;
@@ -86,6 +112,13 @@ class DemoPage extends LitElement {
 			this._noScroll = true;
 		}
 	}
+
+	_handleLanguageChange(e) {
+		const newLanguageCode = e.target[e.target.selectedIndex].value;
+		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
+		getDocumentLocaleSettings().language = newLanguageCode;
+	}
+
 }
 
 customElements.define('d2l-demo-page', DemoPage);
