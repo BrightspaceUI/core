@@ -6,6 +6,8 @@ import replace from './rollup-plugin-replace-simple.js';
 import resolve from '@rollup/plugin-node-resolve';
 import { version } from '../package.json';
 
+const buildDate = new Intl.DateTimeFormat().format(new Date());
+
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates)/**/*.js',
 	'!**/*@(test|axe|visual-diff).js',
@@ -36,7 +38,7 @@ export default {
 				transform: copyTransformReplace({
 					include: '**/index.html', // The copy plugin doesn't provide paths to the files, so need to match on '**/'.
 					values: {
-						'__buildDate__': new Date().toISOString().split('T')[0],
+						'__buildDate__': buildDate,
 						'__buildVersion__': version,
 					},
 				}),
