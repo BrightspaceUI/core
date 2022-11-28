@@ -8,6 +8,7 @@ import { requestInstance } from '../../mixins/provider-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 import { formatHsl, getAlternateColor, parseRGB } from '../../helpers/color.js';
+import { themeController } from '../../helpers/theme.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -195,6 +196,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		this.inline = false;
 		this.noDeferredRendering = false;
 		this._hasSlottedContent = false;
+		this._handleThemeChange = this._handleThemeChange.bind(this);
 
 		this._contextObserverControllerResolve = undefined;
 		this._contextObserverControllerInitialized = new Promise(resolve => {
@@ -213,6 +215,8 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 
+		themeController.addChangeListener(this._handleThemeChange);
+
 		if (!this._contentObserver || this.noDeferredRendering) return;
 
 		const slot = this.shadowRoot.querySelector('slot');
@@ -229,6 +233,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._contentObserver) this._contentObserver.disconnect();
+		themeController.removeChangeListener(this._handleThemeChange);
 	}
 
 	firstUpdated(changedProperties) {
@@ -280,6 +285,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 
 	async _handleSlotChange(e) {
 		if (!e.target || !this.shadowRoot) return;
+
 		const slot = this.shadowRoot.querySelector('slot');
 		const slottedNodes = slot.assignedNodes({ flatten: true });
 
@@ -289,6 +295,11 @@ class HtmlBlock extends RtlMixin(LitElement) {
 		} else {
 			this._hasSlottedContent = false;
 		}
+	}
+
+	_handleThemeChange(theme) {
+		// trick the html-block into a re-render to pick up the theme change
+		this.shadowRoot.querySelector('slot').dispatchEvent(new CustomEvent('slotchange'));
 	}
 
 	_hasSlottedElements(slottedNodes) {
@@ -315,24 +326,21 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			}
 		}
 
-		const theme = document.documentElement.dataset.theme;
-		if (theme === 'dark') {
+		if (themeController.theme === 'dark') {
 			const lightBackgroundColor = { r: 255, g: 255, b: 255 };
-			const darkBackgroundColor = theme === 'dark' ? { r: 24, g: 25, b: 26 } : { r: 255, g: 255, b: 255 };
+			const darkBackgroundColor = { r: 24, g: 25, b: 26 };
 
-			const elems = elem.querySelectorAll('[style]');
+			const elems = elem.querySelectorAll('[style]:not([data-light-color])');
 			elems.forEach(elem => {
 				const lightColor = elem.style.color;
 				if (lightColor && lightColor.length > 0) {
-					elem.dataset.lightcolor = lightColor;
-					//console.log('about to get color', color);
 					const darkColor = getAlternateColor(parseRGB(lightColor), lightBackgroundColor, darkBackgroundColor);
-					//console.log(formatHsl(altColor));
+					elem.dataset.lightColor = lightColor;
+					elem.dataset.darkColor = darkColor;
 					elem.style.color = formatHsl(darkColor);
 				}
 			});
 		}
-
 
 	}
 
