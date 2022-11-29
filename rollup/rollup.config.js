@@ -2,14 +2,15 @@ import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import glob from 'glob-all';
-import replace from './rollup-plugin-replace-simple.js';
+import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import { version } from '../package.json';
 
-const buildDate = new Intl.DateTimeFormat().format(new Date());
+const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).format(new Date());
 
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates)/**/*.js',
+	'./index.js',
 	'!**/*@(test|axe|visual-diff).js',
 ];
 const nonJsGlob = [
@@ -18,11 +19,6 @@ const nonJsGlob = [
 	'!**/*.@(js|md|json)',
 	'!**/screenshots/**/*',
 ];
-
-const copyTransformReplace = config => {
-	const replaceInstance = replace(config);
-	return (code, id) => replaceInstance.transform(code, id)?.code ?? code;
-};
 
 export default {
 	input: glob.sync(jsGlob),
@@ -35,14 +31,15 @@ export default {
 				src: nonJsGlob,
 				dest: 'build',
 				rename: (_name, _extension, fullpath) => fullpath,
-				transform: copyTransformReplace({
-					include: '**/index.html', // The copy plugin doesn't provide paths to the files, so need to match on '**/'.
-					values: {
-						'__buildDate__': buildDate,
-						'__buildVersion__': version,
-					},
-				}),
 			}],
+		}),
+		replace({
+			include: './index.js',
+			preventAssignment: false,
+			values: {
+				'window.__buildDate__': JSON.stringify(buildDate),
+				'window.__buildVersion__': JSON.stringify(version),
+			},
 		}),
 		resolve(),
 		dynamicImportVars(),
