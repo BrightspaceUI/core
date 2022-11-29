@@ -72,6 +72,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				cursor: pointer;
 				padding: 0.6rem 0;
 			}
+			:host(:not([expanded])[_hasSummary][type=inline]) .d2l-collapsible-panel-header {
+				padding-bottom: 0;
+			}
 			:host(:not([_hasSummary])) .d2l-collapsible-panel-header {
 				padding-bottom: 0.6rem;
 			}
