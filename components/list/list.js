@@ -111,7 +111,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<slot name="header"></slot>
+			<slot name="header" aria-description="List Toolbar"></slot>
 			<div role="${role}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 			</div>
