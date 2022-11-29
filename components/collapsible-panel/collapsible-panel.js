@@ -26,16 +26,44 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * REQUIRED:
-			 * TODO: write words
+			 * REQUIRED: The title of the panel
 			 * @type {string}
 			 */
 			title: { type: String },
+			/**
+			 * The semantic heading level (h1-h5)
+			 * @type {'1'|'2'|'3'|'4'|'5'}
+			 * @default "3"
+			 */
 			headingLevel: { attribute: 'heading-level', type: String, reflect: true },
+			/**
+			 * The heading style to use
+			 * @type {'1'|'2'|'3'|'4'|'5'}
+			 * @default "3"
+			 */
 			headingStyle: { attribute: 'heading-style', type: String, reflect: true },
+			/**
+			 * Whether or not the panel is expanded
+			 * @type {boolean}
+			 */
 			expanded: { type: Boolean, reflect: true },
+			/**
+			 * REQUIRED: Label describing the contents of the header.
+			 * Used for screen readers.
+			 * @type {string}
+			 */
 			expandCollapseLabel: { attribute: 'expand-collapse-label', type: String, reflect: true },
+			/**
+			 * Type of collapsible panel
+			 * @type {'default'|'subtle'|'inline'}
+			 * @default "default"
+			 */
 			type: { type: String, reflect: true },
+			/**
+			 * Whether or not the content should extend the full width.
+			 * This is only valid when using the "inline" panel style.
+			 * @type {boolean}
+			 */
 			fullWidth: { attribute: 'full-width', type: Boolean, reflect: true },
 			_hasSummary: { type: Boolean, reflect: true },
 			_scrolled: { type: Boolean, reflect: true }

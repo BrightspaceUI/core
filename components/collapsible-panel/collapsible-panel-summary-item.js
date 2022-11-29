@@ -2,11 +2,17 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 
-// TODO: class comment
+/**
+ * A component for a "summary item" child component that describes the content in a collapsible panel.
+ */
 class CollapsiblePanelSummaryItem extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * REQUIRED: Text that is displayed
+			 * @type {string}
+			 */
 			text: { type: String },
 		};
 	}
@@ -17,7 +23,6 @@ class CollapsiblePanelSummaryItem extends LitElement {
 				color: var(--d2l-color-galena);
 				display: block;
 			}
-
 			.d2l-body-small {
 				line-height: 1.2rem;
 			}
