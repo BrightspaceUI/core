@@ -36,6 +36,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			expanded: { type: Boolean, reflect: true },
 			expandCollapseLabel: { attribute: 'expand-collapse-label', type: String, reflect: true },
 			type: { type: String, reflect: true },
+			fullWidth: { attribute: 'full-width', type: Boolean, reflect: true },
 			_hasSummary: { type: Boolean, reflect: true },
 			_scrolled: { type: Boolean, reflect: true }
 		};
@@ -81,7 +82,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host(:not([_hasSummary])[type=inline]) .d2l-collapsible-panel-header {
 				padding-bottom: 0.6rem;
 			}
-			:host([type=inline]) .d2l-collapsible-panel-title {
+			:host([type=inline][full-width]) .d2l-collapsible-panel-title {
 				margin-inline-start: 0;
 			}
 			:host([_scrolled]) .d2l-collapsible-panel-header {
@@ -108,8 +109,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host(:not([_hasSummary])) .d2l-collapsible-panel-summary {
 				margin: 0;
 			}
-			:host([type=inline]) .d2l-collapsible-panel-body {
+			:host([type=inline][full-width]) .d2l-collapsible-panel-body {
 				padding-inline: 0;
+			}
+			:host([type=inline]) .d2l-collapsible-panel-body {
 				padding-top: 0;
 			}
 			.d2l-collapsible-panel-header:focus-visible {
@@ -166,6 +169,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.expanded = false;
 		this._hasSummary = false;
 		this.type = 'default';
+		this.fullWidth = false;
 	}
 
 	disconnectedCallback() {
