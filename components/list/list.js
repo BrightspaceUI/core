@@ -111,11 +111,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<div role="${role}" class="d2l-list-container">
-				<slot name="header"></slot>
+			<slot name="header"></slot>
+			<div role="${role}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-				${this._renderPagerContainer()}
 			</div>
+			${this._renderPagerContainer()}
 		`;
 	}
 
