@@ -2,10 +2,11 @@ import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import glob from 'glob-all';
+import { readFileSync } from 'fs';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
-import { version } from '../package.json';
 
+const { version } = JSON.parse(readFileSync('./package.json'));
 const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).format(new Date());
 
 const jsGlob = [
