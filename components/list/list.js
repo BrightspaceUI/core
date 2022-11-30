@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
 	TAB: 9
@@ -40,7 +41,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true }
+			separators: { type: String, reflect: true },
+			_childHasNestedItems: { type: Boolean }
 		};
 	}
 
@@ -66,11 +68,20 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._itemsShowingCount = 0;
 		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
+		this._childHasNestedItems = false;
+
+		// This controller only supports registering by id - no event is needed
+		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
+			this,
+			{ onSubscribe: this._updateActiveSubscriber.bind(this), updateSubscribers: this._updateActiveSubscribers.bind(this) },
+			{ eventName: 'd2l-list-child-status' }
+		);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
+		this.addEventListener('d2l-list-item-children-change', (e) => this._handleListIemChildrenChange(e));
 	}
 
 	disconnectedCallback() {
@@ -174,6 +185,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
 
+	getSubscriberController() {
+		return this._listChildrenUpdatedSubscribers;
+	}
+
 	_getItemByIndex(index) {
 		const items = this.getItems();
 		if (index > items.length - 1) return;
@@ -212,6 +227,22 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (focusable) focusable.focus();
 	}
 
+	_handleListIemChildrenChange(e) {
+		e.stopPropagation();
+		const items = this.getItems();
+		for (const item of items) {
+			if (item._hasChildren && !this._childHasNestedItems) {
+				this._childHasNestedItems = true;
+				this._listChildrenUpdatedSubscribers.updateSubscribers();
+				return;
+			}
+		}
+		if (this._childHasNestedItems) {
+			this._childHasNestedItems = false;
+			this._listChildrenUpdatedSubscribers.updateSubscribers();
+		}
+	}
+
 	_handleListItemsShowingCountChange() {
 		if (this.slot === 'nested') return;
 
@@ -240,6 +271,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			composed: true,
 			detail: { count: this._itemsShowingCount }
 		}));
+	}
+
+	_updateActiveSubscriber(subscriber) {
+		subscriber.updateSiblingHasChildren(this._childHasNestedItems);
+	}
+
+	_updateActiveSubscribers(subscribers) {
+		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasNestedItems));
 	}
 
 }

@@ -6,6 +6,7 @@ import '../button/button-icon.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -84,8 +85,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
-			_hasChildren: { type: Boolean, state: true },
-			_showChildren: { type: Boolean, attribute: '_show-children', reflect: true }
+			_hasChildren: { state: true },
+			_showChildren: { type: Boolean, attribute: '_show-children', reflect: true },
+			_siblingHasNestedItems: { state: true }
 		};
 	}
 
@@ -370,6 +372,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._fullscreenWithinCount = 0;
 		this._hasChildren = false;
 		this._showChildren = true;
+		this._siblingHasNestedItems = false;
+
+		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
 	get breakpoints() {
@@ -451,6 +456,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduceMotion) this.scrollIntoView(alignToTop);
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
+	}
+
+	updateSiblingHasChildren(siblingHasNestedItems) {
+		this._siblingHasNestedItems = siblingHasNestedItems;
 	}
 
 	_getNestedList() {
@@ -547,17 +556,20 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	_onNestedSlotChange() {
 		super._onNestedSlotChange();
 		const nestedList = this._getNestedList();
-		this._hasChildren = !!nestedList;
+		if (this._hasChildren !== !!nestedList) {
+			this._hasChildren = !!nestedList;
+			this.dispatchEvent(new CustomEvent('d2l-list-item-children-change', { bubbles: true, composed: true }));
+		}
 	}
 
 	_renderExpandCollapse() {
-		if (!this.expandCollapseEnabled || !this._hasChildren) {
+		if (!this.expandCollapseEnabled || (!this._hasChildren && !this._siblingHasNestedItems)) {
 			return nothing;
 		}
 
 		return html`
 		<div slot="expand-collapse">
-			<d2l-button-icon @click="${this._toggleExpandCollapse}" icon="${this._showChildren ? 'tier1:chevron-down' : 'tier1:chevron-right' }"></d2l-button-icon>
+			${this._hasChildren ? html`<d2l-button-icon @click="${this._toggleExpandCollapse}" icon="${this._showChildren ? 'tier1:chevron-down' : 'tier1:chevron-right' }"></d2l-button-icon>` : nothing}
 		</div>`;
 	}
 
