@@ -99,7 +99,8 @@ class ListDemoDragAndDrop extends LitElement {
 							?drop-nested="${item.dropNested}"
 							key="${item.key}"
 							label="${item.primaryText}"
-							selectable>
+							selectable
+							expand-collapse-enabled>
 								${item.imgSrc.length === 0 ? null : html`<img slot="illustration" src="${item.imgSrc}">`}
 								<d2l-list-item-content>
 									<div>${item.primaryText}</div>

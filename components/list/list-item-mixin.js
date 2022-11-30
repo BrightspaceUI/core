@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
+import '../button/button-icon.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -67,6 +68,11 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
+			/**
+			 * Whether to allow the item to expand and collapse children
+			 * @type {boolean}
+			 */
+			expandCollapseEnabled: { type: Boolean, attribute: 'expand-collapse-enabled' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -77,7 +83,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
+			_hasChildren: { type: Boolean, state: true },
+			_showChildren: { type: Boolean, state: true }
 		};
 	}
 
@@ -356,6 +364,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._displayKeyboardTooltip = false;
 		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
+		this._hasChildren = false;
+		this._showChildren = true;
 	}
 
 	get breakpoints() {
@@ -530,6 +540,25 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._hovering = false;
 	}
 
+	_onNestedSlotChange() {
+		super._onNestedSlotChange();
+		const nestedList = this._getNestedList();
+		if (nestedList) {
+			this._hasChildren = true;
+		}
+	}
+
+	_renderExpandCollapse() {
+		if (!this.expandCollapseEnabled || !this._hasChildren) {
+			return nothing;
+		}
+
+		return html`
+		<div slot="expand-collapse">
+			<d2l-button-icon @click="${this._toggleExpandCollapse}" icon="${this._showChildren ? 'tier1:chevron-down' : 'tier1:chevron-right' }"></d2l-button-icon>
+		</div>`;
+	}
+
 	_renderListItem({ illustration, content, actions, nested } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
@@ -539,7 +568,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
-
 		const innerView = html`
 			<d2l-list-item-generic-layout
 				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
@@ -556,6 +584,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
+				${this._renderExpandCollapse()}
 				${this.selectable ? html`
 				<div slot="control">${this._renderCheckbox()}</div>
 				<div slot="control-action"
@@ -583,9 +612,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-				</div>
+				${this._renderNested(nested)}
 			</d2l-list-item-generic-layout>
 		`;
 
@@ -596,6 +623,17 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
+	}
+
+	_renderNested(nested) {
+		if (!this._showChildren) {
+			return nothing;
+		}
+
+		return html`
+		<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+			<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
+		</div>`;
 	}
 
 	_renderOutsideControl(dragHandle) {
@@ -620,6 +658,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
 			</ul>
 		`;
+	}
+
+	_toggleExpandCollapse() {
+		this._showChildren = !this._showChildren;
 	}
 
 	_tryFocus() {
