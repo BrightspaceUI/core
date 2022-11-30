@@ -59,7 +59,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			fullWidth: { attribute: 'full-width', type: Boolean, reflect: true },
-			_hasSummary: { type: Boolean, reflect: true },
 			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
@@ -96,13 +95,13 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				cursor: pointer;
 				padding: 0.6rem 0;
 			}
-			:host(:not([expanded])[_hasSummary][type=inline]) .d2l-collapsible-panel-header {
+			:host(:not([expanded])[type=inline]) .d2l-collapsible-panel.has-summary .d2l-collapsible-panel-header {
 				padding-bottom: 0;
 			}
-			:host(:not([_hasSummary])) .d2l-collapsible-panel-header {
+			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-header {
 				padding-bottom: 0.6rem;
 			}
-			:host(:not([_hasSummary])[type=inline]) .d2l-collapsible-panel-header {
+			:host([type=inline]) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-header {
 				padding-bottom: 0.6rem;
 			}
 			:host([type=inline][full-width]) .d2l-collapsible-panel-title {
@@ -122,14 +121,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
 				cursor: default;
 			}
-			:host(:not([_hasSummary]):not([expanded])) .d2l-collapsible-panel-divider {
+			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
 				border: none;
 			}
-			:host(:not([_hasSummary]):not([expanded])) .d2l-collapsible-panel-body,
-			:host(:not([_hasSummary]):not([expanded])) .d2l-collapsible-panel-summary {
+			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-body,
+			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
 				padding: 0;
 			}
-			:host(:not([_hasSummary])) .d2l-collapsible-panel-summary {
+			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
 				margin: 0;
 			}
 			:host([type=inline][full-width]) .d2l-collapsible-panel-body {
@@ -294,7 +293,8 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	_handleSummarySlotChange() {
-		this._hasSummary = true;
+		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+		element.classList.add('has-summary');
 	}
 
 	_onBlur() {
