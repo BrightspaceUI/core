@@ -148,7 +148,34 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				outline: solid 2px var(--d2l-color-celestine);
 			}
 			.d2l-collapsible-panel-opener {
-				transition: transform 200ms ease-in-out;
+				transition: transform 0.2s ease-out;
+  				transform-origin: center;
+				position: relative;
+				/* stolen from d2l-button-icon */
+				min-height: calc(2rem + 2px);
+    			min-width: calc(2rem + 2px);
+			}
+			.d2l-collapsible-panel-opener .expand {
+				opacity: 1;
+			}
+			.d2l-collapsible-panel-opener .collapse {
+				opacity: 0;
+				transform: rotate(-90deg);
+				transform-origin: center;
+			}
+			:host([expanded]) .d2l-collapsible-panel-opener .expand {
+				opacity: 0;
+			}
+			:host([expanded]) .d2l-collapsible-panel-opener .collapse {
+				opacity: 1;
+			}
+			.d2l-collapsible-panel-opener > * {
+				transition: opacity 0.2s ease-in-out;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener {
 				transform: rotate(90deg);
@@ -169,9 +196,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				display: block;
 				margin-inline-end: 0.3rem;
 			}
-			.d2l-collapsible-panel-header d2l-button-icon {
+			/* TODO: better way of spacing */
+			/* .d2l-collapsible-panel-header d2l-button-icon {
 				margin-inline-end: 0.3rem;
-			}
+			} */
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-inline: 0.9rem;
@@ -292,7 +320,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
 					</div>
-					<d2l-button-icon class="d2l-collapsible-panel-opener" icon="${icon}" tabindex="-1"></d2l-button-icon>
+					<div class="d2l-collapsible-panel-opener">
+						<d2l-button-icon class="expand" icon="${icon}" tabindex="-1"></d2l-button-icon>
+						<d2l-button-icon class="collapse" icon="tier1:arrow-collapse" tabindex="-1"></d2l-button-icon>
+					</div>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
 					<slot name="header" @slotchange="${this._handleHeaderSlotChange}"></slot>
