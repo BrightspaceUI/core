@@ -85,7 +85,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
 			_hasChildren: { type: Boolean, state: true },
-			_showChildren: { type: Boolean, state: true }
+			_showChildren: { type: Boolean, attribute: '_show-children', reflect: true }
 		};
 	}
 
@@ -147,6 +147,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			:host([selected]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
+			}
+
+			:host(:not([_show-children])) [slot="nested"] {
+				display: none;
 			}
 
 			:host([padding-type="none"]) d2l-list-item-generic-layout {
@@ -543,9 +547,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	_onNestedSlotChange() {
 		super._onNestedSlotChange();
 		const nestedList = this._getNestedList();
-		if (nestedList) {
-			this._hasChildren = true;
-		}
+		this._hasChildren = !!nestedList;
 	}
 
 	_renderExpandCollapse() {
@@ -612,7 +614,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				${this._renderNested(nested)}
+				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
+				</div>
 			</d2l-list-item-generic-layout>
 		`;
 
@@ -623,17 +627,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
-	}
-
-	_renderNested(nested) {
-		if (!this._showChildren) {
-			return nothing;
-		}
-
-		return html`
-		<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-			<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-		</div>`;
 	}
 
 	_renderOutsideControl(dragHandle) {
