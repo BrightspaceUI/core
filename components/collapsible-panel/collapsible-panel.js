@@ -59,7 +59,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			fullWidth: { attribute: 'full-width', type: Boolean, reflect: true },
-			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -107,7 +106,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([type=inline][full-width]) .d2l-collapsible-panel-title {
 				margin-inline-start: 0;
 			}
-			:host([_scrolled]) .d2l-collapsible-panel-header {
+			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
 				background-color: white;
 				border-radius: 8px; /* TODO: not sure */
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
@@ -115,7 +114,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				top: 0;
 			}
 			/* TODO: Might not be necessary -- this allows the focus ring to be fully visible on a sticky header */
-			:host([_scrolled]) .d2l-collapsible-panel-header:focus-visible {
+			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
 				top: 2px;
 			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
@@ -240,7 +239,13 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				if (!this.expanded) return;
 
 				const entry = entries[0];
-				this._scrolled = !entry.isIntersecting;
+
+				const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+				if (entry.isIntersecting) {
+					element.classList.remove('scrolled');
+				} else {
+					element.classList.add('scrolled');
+				}
 			});
 			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-collapsible-panel-top-sentinel'));
 		}
