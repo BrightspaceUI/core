@@ -148,12 +148,12 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				outline: solid 2px var(--d2l-color-celestine);
 			}
 			.d2l-collapsible-panel-opener {
-				transition: transform 0.2s ease-out;
-  				transform-origin: center;
-				position: relative;
 				/* stolen from d2l-button-icon */
 				min-height: calc(2rem + 2px);
-    			min-width: calc(2rem + 2px);
+				min-width: calc(2rem + 2px);
+				position: relative;
+				transform-origin: center;
+				transition: transform 0.2s ease-out;
 			}
 			.d2l-collapsible-panel-opener .expand {
 				opacity: 1;
@@ -170,12 +170,12 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				opacity: 1;
 			}
 			.d2l-collapsible-panel-opener > * {
-				transition: opacity 0.2s ease-in-out;
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
 				bottom: 0;
+				left: 0;
+				position: absolute;
+				right: 0;
+				top: 0;
+				transition: opacity 0.2s ease-in-out;
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener {
 				transform: rotate(90deg);
