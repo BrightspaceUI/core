@@ -310,9 +310,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	_renderHeader() {
-		const icon = 'tier1:arrow-expand';
-		// const icon = `tier1:arrow-${this.expanded ? 'collapse' : 'expand'}`;
-
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}" @keydown="${this._onKeyDown}" tabindex="0">
 				<div class="d2l-collapsible-panel-header-primary">
@@ -321,7 +318,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
 					</div>
 					<div class="d2l-collapsible-panel-opener">
-						<d2l-button-icon class="expand" icon="${icon}" tabindex="-1"></d2l-button-icon>
+						<d2l-button-icon class="expand" icon="tier1:arrow-expand" tabindex="-1"></d2l-button-icon>
 						<d2l-button-icon class="collapse" icon="tier1:arrow-collapse" tabindex="-1"></d2l-button-icon>
 					</div>
 				</div>
