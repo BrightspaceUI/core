@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
-import { hide, show } from '../../directives/animate/animate.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -250,22 +249,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
-					<div class="d2l-collapsible-panel-body">
-						<div
-							class="d2l-collapsible-panel-content"
-							?hidden="${!this.expanded}"
-							.animate="${ this.expanded ? show() : hide()}"
-						>
-							<slot name="content"></slot>
-						</div>
-						<div
-							class="d2l-collapsible-panel-summary"
-							?hidden="${this.expanded}"
-							.animate="${ !this.expanded ? show() : hide()}"
-						>
-							<slot name="summary" @slotchange="${this._handleSummarySlotChange}"></slot>
-						</div>
+				<div class="d2l-collapsible-panel-body">
+					<div class="d2l-collapsible-panel-content" ?hidden="${!this.expanded}">
+						<slot name="content"></slot>
 					</div>
+					<div class="d2l-collapsible-panel-summary" ?hidden="${this.expanded}">
+						<slot name="summary" @slotchange="${this._handleSummarySlotChange}"></slot>
+					</div>
+				</div>
 			</div>
 		`;
 	}
