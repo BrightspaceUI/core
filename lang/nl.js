@@ -65,6 +65,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} moet voor {endLabel} liggen",
 	"components.input-time-range.startTime": "Starttijd",
 	"components.interactive.instructions": "Druk op Enter om te communiceren, druk op Escape om af te sluiten",
+	"components.list.toolbar": "List toolbar",
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",
 	"components.list-item-tooltip.title": "Toetsenbordnavigatie voor lijsten:",

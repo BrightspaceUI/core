@@ -65,6 +65,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} muss vor {endLabel} liegen",
 	"components.input-time-range.startTime": "Startzeit",
 	"components.interactive.instructions": "Drücken Sie die Eingabetaste zum Interagieren oder die Escape-Taste, um das Fenster zu schließen",
+	"components.list.toolbar": "List toolbar",
 	"components.list-item-drag-handle.default": "Elementaktion für {name} neu anordnen",
 	"components.list-item-drag-handle.keyboard": "Elemente neu anordnen; aktuelle Position: {currentPosition} von {size}. Drücken Sie zum Bewegen dieses Elements auf den Pfeil nach oben oder den Pfeil nach unten.",
 	"components.list-item-tooltip.title": "Tastaturnavigation für Listen:",

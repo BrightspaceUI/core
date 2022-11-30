@@ -65,6 +65,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",
 	"components.input-time-range.startTime": "Başlangıç Saati",
 	"components.interactive.instructions": "Etkileşim kurmak için Enter tuşuna, çıkmak için Escape tuşuna basın",
+	"components.list.toolbar": "List toolbar",
 	"components.list-item-drag-handle.default": "{name} için öğe eylemini yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeyi yeniden sırala, mevcut konum {currentPosition} / {size}. Bu öğeyi taşımak için yukarı veya aşağı oklara basın.",
 	"components.list-item-tooltip.title": "Listeler için Klavye ile Gezinme:",

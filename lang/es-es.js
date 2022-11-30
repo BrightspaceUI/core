@@ -65,6 +65,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Pulse Enter para interactuar y Escape para salir",
+	"components.list.toolbar": "List toolbar",
 	"components.list-item-drag-handle.default": "Reordenar acción de elemento para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos, posición actual {currentPosition} de {size}. Para mover este elemento, pulse las flechas arriba o abajo.",
 	"components.list-item-tooltip.title": "Navegación de listas con el teclado:",

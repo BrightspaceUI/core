@@ -65,6 +65,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel}은(는) {endLabel} 앞에 있어야 합니다",
 	"components.input-time-range.startTime": "시작 시각",
 	"components.interactive.instructions": "Enter를 눌러 상호 작용하고 Esc를 눌러 종료합니다",
+	"components.list.toolbar": "List toolbar",
 	"components.list-item-drag-handle.default": "{name}에 대한 항목 작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "전체 {size}에서 현재 위치 {currentPosition} 항목 재정렬 이 항목을 이동하라면 위쪽 또는 아래쪽 화살표를 누르십시오.",
 	"components.list-item-tooltip.title": "목록에 대한 키보드 탐색:",

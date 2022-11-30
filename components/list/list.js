@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 
 const keyCodes = {
@@ -16,7 +17,7 @@ export const listSelectionStates = SelectionInfo.states;
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
-class List extends PageableMixin(SelectionMixin(LitElement)) {
+class List extends PageableMixin(SelectionMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -111,7 +112,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<slot name="header"></slot>
+			<section aria-label="${this.localize('components.list.toolbar')}"><slot name="header"></slot></section>
 			<div role="${role}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 			</div>
