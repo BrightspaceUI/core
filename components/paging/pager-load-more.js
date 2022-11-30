@@ -60,6 +60,7 @@ class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(
 				background-color: var(--d2l-color-regolith);
 				border: 1px solid var(--d2l-color-sylvite);
 				display: flex;
+				font-family: inherit;
 				gap: 0.5rem;
 				justify-content: center;
 				width: 100%;
