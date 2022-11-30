@@ -1,15 +1,10 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
+import '../offscreen/offscreen.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-
-// TODO: should we export/share this? I stole this from calendar
-const keyCodes = {
-	ENTER: 13,
-	SPACE: 32,
-};
 
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
@@ -72,6 +67,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	static get styles() {
 		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
 			:host {
+				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				display: block;
 			}
 			.d2l-collapsible-panel {
@@ -142,9 +138,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([type=inline]) .d2l-collapsible-panel-body {
 				padding-top: 0;
 			}
-			.d2l-collapsible-panel-header:focus-visible {
+			:host(:not([expanded])) .d2l-collapsible-panel.focused {
 				border-radius: 8px;
-				outline: solid 2px var(--d2l-color-celestine);
+				outline: var(--d2l-collapsible-panel-focus-outline);
+			}
+			:host([expanded]) .d2l-collapsible-panel {
+				outline: none;
+			}
+			:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
+				border-radius: 8px;
+				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
 			.d2l-collapsible-panel-opener {
 				/* stolen from d2l-button-icon */
@@ -246,6 +249,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<d2l-offscreen><d2l-button @click="${this._toggleExpand}" @focus="${this._onFocus}" @blur="${this._onBlur}"></d2l-button></d2l-offscreen>
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
@@ -293,16 +297,19 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this._hasSummary = true;
 	}
 
-	_onKeyDown(e) {
-		if (e.target.classList.contains('d2l-collapsible-panel-header') && (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE)) {
-			this._toggleExpand();
-			e.preventDefault();
-		}
+	_onBlur() {
+		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+		element.classList.remove('focused');
+	}
+
+	_onFocus() {
+		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+		element.classList.add('focused');
 	}
 
 	_renderHeader() {
 		return html`
-			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}" @keydown="${this._onKeyDown}" tabindex="0">
+			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderHeading()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
