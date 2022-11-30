@@ -31,14 +31,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 */
 			title: { type: String },
 			/**
-			 * The semantic heading level (h1-h5)
-			 * @type {'1'|'2'|'3'|'4'|'5'}
+			 * The semantic heading level (h1-h4)
+			 * @type {'1'|'2'|'3'|'4'}
 			 * @default "3"
 			 */
 			headingLevel: { attribute: 'heading-level', type: String, reflect: true },
 			/**
 			 * The heading style to use
-			 * @type {'1'|'2'|'3'|'4'|'5'}
+			 * @type {'1'|'2'|'3'|'4'}
 			 * @default "3"
 			 */
 			headingStyle: { attribute: 'heading-style', type: String, reflect: true },
