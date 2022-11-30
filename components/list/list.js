@@ -41,8 +41,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true },
-			_childHasNestedItems: { type: Boolean }
+			separators: { type: String, reflect: true }
 		};
 	}
 
@@ -230,17 +229,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_handleListIemChildrenChange(e) {
 		e.stopPropagation();
 		const items = this.getItems();
+		let aChildHasNestedItems = false;
 		for (const item of items) {
-			if (item._hasChildren && !this._childHasNestedItems) {
-				this._childHasNestedItems = true;
-				this._listChildrenUpdatedSubscribers.updateSubscribers();
-				return;
+			if (item._hasChildren) {
+				aChildHasNestedItems = true;
+				break;
 			}
 		}
-		if (this._childHasNestedItems) {
-			this._childHasNestedItems = false;
-			this._listChildrenUpdatedSubscribers.updateSubscribers();
-		}
+		this._childHasNestedItems = aChildHasNestedItems;
+		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
 
 	_handleListItemsShowingCountChange() {
