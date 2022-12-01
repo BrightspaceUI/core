@@ -1,12 +1,13 @@
 import { css } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionHeader } from '../selection/selection-header.js';
 
 /**
  * A header for list components containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
-class ListHeader extends SelectionHeader {
+class ListHeader extends LocalizeCoreElement(SelectionHeader) {
 	static get properties() {
 		return {
 			_extendSeparator: { state: true }
@@ -45,6 +46,10 @@ class ListHeader extends SelectionHeader {
 			...super._getSelectionHeaderContainerClasses(),
 			'd2l-list-header-extend-separator': this._extendSeparator
 		};
+	}
+
+	_getSelectionHeaderLabel() {
+		return this.localize('components.list-header.label');
 	}
 }
 

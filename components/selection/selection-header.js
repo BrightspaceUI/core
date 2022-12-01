@@ -127,9 +127,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 
 	render() {
 		const classes = this._getSelectionHeaderContainerClasses();
+		const label = this._getSelectionHeaderLabel();
 		return html`
 			<div class="d2l-sticky-edge"></div>
-			<div class="${classMap(classes)}">
+			<section class="${classMap(classes)}" aria-label="${label}">
 				${this.noSelection ? null : html`
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
@@ -142,7 +143,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				<div class="d2l-selection-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
-			</div>
+			</section>
 			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : null}
 		`;
 	}
@@ -160,6 +161,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			'd2l-selection-header-container': true,
 			'd2l-selection-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed)
 		};
+	}
+
+	_getSelectionHeaderLabel() {
+		return this.localize('components.selection-header.label');
 	}
 
 	_handleSlotChange(e) {
