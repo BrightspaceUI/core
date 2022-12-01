@@ -50,6 +50,8 @@ class ColorCalc extends LitElement {
 		const color1Hsl = ColorHelper.convertRGBToHSL(this._rgbColor1);
 		const color1Contrast = ColorHelper.getColorContrast(this._rgbColor1, this._bgRgbColor1);
 
+		const color1aContrast = ColorHelper.getColorContrast(this._rgbColor1, this._bgRgbColor2);
+
 		const color2Hsl = ColorHelper.getApproxAlternateColor(this._rgbColor1, this._bgRgbColor1, this._bgRgbColor2);
 		const color2Rgb = ColorHelper.convertHSLToRGB(color2Hsl);
 		const color2Contrast = ColorHelper.getColorContrast(color2Rgb, this._bgRgbColor2);
@@ -61,6 +63,10 @@ class ColorCalc extends LitElement {
 		const color1Style = {
 			color: this.color1.startsWith('--') ? `var(${this.color1})` : this.color1,
 			backgroundColor: this.bgColor1.startsWith('--') ? `var(${this.bgColor1})` : this.bgColor1
+		};
+		const color1aStyle = {
+			color: this.color1.startsWith('--') ? `var(${this.color1})` : this.color1,
+			backgroundColor: this.bgColor2.startsWith('--') ? `var(${this.bgColor2})` : this.bgColor2
 		};
 		const color2Style = {
 			color: ColorHelper.formatHsl(color2Hsl),
@@ -80,6 +86,13 @@ class ColorCalc extends LitElement {
 					<div>${ColorHelper.formatHsl(color1Hsl)}</div>
 					<div>contrast: ${color1Contrast.toFixed(2)} : 1</div>
 				</div>
+				<div class="color1a" style="${styleMap(color1aStyle)}">
+					<div>no adjustment</div>
+					<div>${ColorHelper.formatHex(this._rgbColor1)}</div>
+					<div>${ColorHelper.formatRgb(this._rgbColor1)}</div>
+					<div>${ColorHelper.formatHsl(color1Hsl)}</div>
+					<div>contrast: ${color1aContrast.toFixed(2)} : 1</div>
+				</div>
 				<div class="color2" style="${styleMap(color2Style)}">
 					<div>L ➡️ L*</div>
 					<div>${ColorHelper.formatHex(color2Rgb)}</div>
@@ -88,7 +101,7 @@ class ColorCalc extends LitElement {
 					<div>contrast: ${color2Contrast.toFixed(2)} : 1</div>
 				</div>
 				<div class="color3" style="${styleMap(color3Style)}">
-					<div>C 🔄 L*</div>
+					<div>L ➡️ L* 🔄 L**</div>
 					<div>${ColorHelper.formatHex(color3Rgb)}</div>
 					<div>${ColorHelper.formatRgb(color3Rgb)}</div>
 					<div>${ColorHelper.formatHsl(color3Hsl)}</div>

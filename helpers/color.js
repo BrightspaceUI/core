@@ -164,8 +164,8 @@ export function getAlternateColor(rgb, rgbRef, altRgbRef) {
 		else increment = -1;
 	}
 
-	if (increment === 1) console.log('lighten, starting at: ', altHsl.l);
-	else console.log('darken, starting at: ', altHsl.l);
+	//if (increment === 1) console.log('lighten, starting at: ', altHsl.l);
+	//else console.log('darken, starting at: ', altHsl.l);
 
 	let iteration = 0;
 	let prevDiffContrast = null;
@@ -177,7 +177,7 @@ export function getAlternateColor(rgb, rgbRef, altRgbRef) {
 		altContrast = getColorContrast(convertHSLToRGB(altHsl), altRgbRef);
 		diffContrast = altContrast - contrast;
 
-		console.log('alternate contrast', iteration, altContrast, diffContrast.toFixed(3), altHsl.l.toFixed(3));
+		//console.log('alternate contrast', iteration, altContrast, diffContrast.toFixed(3), altHsl.l.toFixed(3));
 		if (Math.sign(diffContrast) !== Math.sign(prevDiffContrast)) {
 			if (altContrast < contrast) {
 				altHsl.l -= increment;
