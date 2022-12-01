@@ -105,7 +105,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="expand-collapse"]) {
 				grid-column: expand-collapse-start / expand-collapse-end;
-				min-width: 2.1rem;
+				min-width: 1.2rem;
 				z-index: 2;
 				cursor: pointer;
 			}

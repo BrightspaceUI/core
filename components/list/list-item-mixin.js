@@ -354,6 +354,20 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-tooltip-key {
 				font-weight: 700;
 			}
+
+			.d2l-list-expand-collapse {
+				padding: 0.4rem 0.4rem 0 0;
+			}
+
+			.d2l-list-expand-collapse d2l-button-icon {
+				--d2l-button-icon-min-height: 1.2rem;
+				--d2l-button-icon-min-width: 1.2rem;
+			}
+
+			.d2l-list-expand-collapse:hover d2l-button-icon {
+				border-radius: var(--d2l-button-icon-border-radius);
+				background-color: var(--d2l-button-icon-background-color-hover);
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -568,8 +582,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		}
 
 		return html`
-		<div slot="expand-collapse">
-			${this._hasChildren ? html`<d2l-button-icon @click="${this._toggleExpandCollapse}" icon="${this._showChildren ? 'tier1:chevron-down' : 'tier1:chevron-right' }"></d2l-button-icon>` : nothing}
+		<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
+			${this._hasChildren ? html`<d2l-button-icon icon="${this._showChildren ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"></d2l-button-icon>` : nothing}
 		</div>`;
 	}
 
