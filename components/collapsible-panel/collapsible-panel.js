@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
+import '../icons/icon-custom.js';
 import '../offscreen/offscreen.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
@@ -148,37 +149,22 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
 			.d2l-collapsible-panel-opener {
-				/* stolen from d2l-button-icon */
-				min-height: calc(2rem + 2px);
-				min-width: calc(2rem + 2px);
-				position: relative;
+				margin: 0.6rem;
 				transform-origin: center;
 				transition: transform 0.2s ease-out;
 			}
-			.d2l-collapsible-panel-opener .expand {
-				opacity: 1;
+			.d2l-collapsible-panel-opener svg {
+				fill: transparent;
+				transition: fill 0.2s ease-in-out;
 			}
-			.d2l-collapsible-panel-opener .collapse {
-				opacity: 0;
-				transform: rotate(-90deg);
-				transform-origin: center;
-			}
-			:host([expanded]) .d2l-collapsible-panel-opener .expand {
-				opacity: 0;
-			}
-			:host([expanded]) .d2l-collapsible-panel-opener .collapse {
-				opacity: 1;
-			}
-			.d2l-collapsible-panel-opener > * {
-				bottom: 0;
-				left: 0;
-				position: absolute;
-				right: 0;
-				top: 0;
-				transition: opacity 0.2s ease-in-out;
+			:host([expanded]) .d2l-collapsible-panel-opener svg {
+				fill: var(--d2l-color-tungsten);
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener {
 				transform: rotate(90deg);
+			}
+			:host([dir="rtl"][expanded]) .d2l-collapsible-panel-opener {
+				transform: rotate(-90deg);
 			}
 			:host([heading-style="4"]) .d2l-collapsible-panel-header {
 				padding: 0.45rem 0 0.15rem;
@@ -320,10 +306,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
 					</div>
-					<div class="d2l-collapsible-panel-opener">
-						<d2l-button-icon class="expand" icon="tier1:arrow-expand" tabindex="-1"></d2l-button-icon>
-						<d2l-button-icon class="collapse" icon="tier1:arrow-collapse" tabindex="-1"></d2l-button-icon>
-					</div>
+					<d2l-icon-custom class="d2l-collapsible-panel-opener" size="tier1">
+						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
+							<path stroke="#494c4e" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+						</svg>
+					</d2l-icon-custom>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
 					<slot name="header" @slotchange="${this._handleHeaderSlotChange}"></slot>
