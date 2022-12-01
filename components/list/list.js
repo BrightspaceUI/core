@@ -207,8 +207,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
 		if (!this.shadowRoot) return;
-		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
-			: getNextFocusable(this, false, true, true));
+		const listSlot = this.shadowRoot.querySelector('slot:not([name])');
+		const focusable = (e.shiftKey ? getPreviousFocusable(listSlot) : getNextFocusable(listSlot, false, true, true));
 		if (focusable) focusable.focus();
 	}
 
