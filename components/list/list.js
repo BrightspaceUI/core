@@ -55,9 +55,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
-			section {
-				display: unset;
-			}
 		`;
 	}
 
