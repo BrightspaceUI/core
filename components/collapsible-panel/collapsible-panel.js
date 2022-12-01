@@ -155,14 +155,20 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel-opener {
 				margin: 0.6rem;
 				transform-origin: center;
-				transition: transform 0.2s ease-out;
 			}
 			.d2l-collapsible-panel-opener svg {
 				fill: transparent;
-				transition: fill 0.2s ease-in-out;
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener svg {
 				fill: var(--d2l-color-tungsten);
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				.d2l-collapsible-panel-opener {
+					transition: transform 0.2s ease-out;
+				}
+				.d2l-collapsible-panel-opener svg {
+					transition: fill 0.2s ease-in-out;
+				}
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener {
 				transform: rotate(90deg);
