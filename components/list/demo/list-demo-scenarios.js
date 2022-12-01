@@ -68,4 +68,63 @@ export const listDemos = {
 			items: []
 		}]
 	}],
+	listWithNoImgs: [{
+		key: '1',
+		primaryText: 'Introductory Earth Sciences',
+		supportingText: 'This course explores the geological processes of the Earth\'s interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering.',
+		dropNested: true,
+		items: [{
+			key: '1-1',
+			primaryText: 'Glaciation',
+			supportingText: 'Nesting Allowed',
+			dropNested: true,
+			items: []
+		}, {
+			key: '1-2',
+			primaryText: 'Weathering',
+			supportingText: 'Nesting Allowed',
+			dropNested: true,
+			items: []
+		}, {
+			key: '1-3',
+			primaryText: 'Volcanism',
+			supportingText: 'Nesting Allowed',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '2',
+		primaryText: 'Flow and Transport Through Fractured Rocks',
+		supportingText: 'Fractures are ubiquitous in geologic media and important in disciplines such as physical and contaminant hydrogeology, geotechnical engineering, civil and environmental engineering, petroleum engineering among other areas.',
+		items: [{
+			key: '2-1',
+			primaryText: 'Contaminant Transport',
+			supportingText: 'No Nesting Allowed',
+			dropNested: false,
+			items: []
+		}, {
+			key: '2-2',
+			primaryText: 'Modelling Flow in Fractured Media',
+			supportingText: 'No Nesting Allowed',
+			dropNested: false,
+			items: []
+		}]
+	}, {
+		key: '3',
+		primaryText: 'Applied Wetland Science',
+		supportingText: 'Advanced concepts on wetland ecosystems in the context of regional and global earth systems processes such as carbon and nitrogen cycling and climate change, applications of wetland paleoecology, use of isotopes and other geochemical tools in wetland science, and wetland engineering in landscape rehabilitation and ecotechnology.',
+		items: [{
+			key: '3-1',
+			primaryText: 'Carbon & Nitrogen Cycling',
+			supportingText: 'Nesting Allowed',
+			dropNested: true,
+			items: []
+		}, {
+			key: '3-2',
+			primaryText: 'Wetland Engineering',
+			supportingText: 'Nesting Allowed',
+			dropNested: true,
+			items: []
+		}]
+	}],
 };

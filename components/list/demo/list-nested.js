@@ -15,6 +15,7 @@ class ListDemoNested extends LitElement {
 			draggable: { type: Boolean },
 			selectable: { type: Boolean },
 			expandCollapse: { type: Boolean, attribute: 'expand-collapse' },
+			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			_items: { state: true }
 		};
 	}
@@ -30,7 +31,7 @@ class ListDemoNested extends LitElement {
 				<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
 					${repeat(items, item => item.key, item => html`
 						<d2l-list-item
-							action-href="http://www.d2l.com"
+							action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
 							?draggable="${this.draggable}"
 							drag-handle-text="${item.primaryText}"
 							?drop-nested="${item.dropNested}"
@@ -38,12 +39,12 @@ class ListDemoNested extends LitElement {
 							label="${item.primaryText}"
 							?selectable="${this.selectable}"
 							?expand-collapse-enabled="${this.expandCollapse}">
-								${item.imgSrc.length === 0 ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
+								${item?.imgSrc?.length === 0 ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
 								<d2l-list-item-content>
 									<div>${item.primaryText}</div>
 									<div slot="supporting-info">${item.supportingText}</div>
 								</d2l-list-item-content>
-								${item.items.length > 0 ? renderList(item.items, true) : nothing}
+								${item?.items?.length > 0 ? renderList(item.items, true) : nothing}
 						</d2l-list-item>
 					`)}
 				</d2l-list>
