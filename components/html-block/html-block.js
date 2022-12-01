@@ -95,13 +95,13 @@ export const htmlBlockContentStyles = css`
 	a:visited,
 	a:link,
 	a:active {
-		color: var(--d2l-color-celestine, #006fbf);
+		color: var(--d2l-color-link, #006fbf);
 		cursor: pointer;
 		text-decoration: none;
 	}
 	a:hover,
 	a:focus {
-		color: var(--d2l-color-celestine-minus-1, #004489);
+		color: var(--d2l-color-link-active, #004489);
 		outline-width: 0;
 		text-decoration: underline;
 	}
@@ -326,10 +326,50 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			}
 		}
 
-		if (themeController.theme === 'dark') {
+		if (themeController.theme === 'dark' && window.location.search.indexOf('adapt-colors=true') !== -1) {
 			const lightBackgroundColor = { r: 255, g: 255, b: 255 };
 			const darkBackgroundColor = { r: 24, g: 25, b: 26 };
 
+			//elem.dataset.resolvedBackgroundColor = this._resolveBackgroundColor(this);
+			//elem.style.backgroundColor = elem.dataset.resolvedBackgroundColor;
+
+			//const adaptBackgroundColor = elem => {
+
+			//};
+
+			const elems = elem.querySelectorAll('[style]:not([data-dark-adapted])');
+			elems.forEach(elem => {
+
+				let lightColor = elem.style.backgroundColor;
+				if (lightColor && lightColor.length > 0) {
+					const darkColor = getAlternateColor(parseRGB(lightColor), lightBackgroundColor, darkBackgroundColor);
+					//elem.dataset.lightBackgroundColor = lightColor;
+					//elem.dataset.darkBackgroundColor = darkColor;
+					elem.style.backgroundColor = formatHsl(darkColor);
+				}
+
+				lightColor = elem.style.borderTopColor;
+				if (lightColor && lightColor.length > 0) {
+					const darkColor = getAlternateColor(parseRGB(lightColor), lightBackgroundColor, darkBackgroundColor);
+					//elem.dataset.lightBackgroundColor = lightColor;
+					//elem.dataset.darkBackgroundColor = darkColor;
+					elem.style.borderColor = formatHsl(darkColor);
+				}
+
+				elem.dataset.darkAdapted = 'true';
+			});
+
+			elems.forEach(elem => {
+				const lightColor = elem.style.color;
+				if (lightColor && lightColor.length > 0) {
+					const darkColor = getAlternateColor(parseRGB(lightColor), lightBackgroundColor, darkBackgroundColor);
+					elem.dataset.lightColor = lightColor;
+					elem.dataset.darkColor = darkColor;
+					elem.style.color = formatHsl(darkColor);
+				}
+			});
+
+			/*
 			const elems = elem.querySelectorAll('[style]:not([data-light-color])');
 			elems.forEach(elem => {
 				const lightColor = elem.style.color;
@@ -340,7 +380,48 @@ class HtmlBlock extends RtlMixin(LitElement) {
 					elem.style.color = formatHsl(darkColor);
 				}
 			});
+			*/
 		}
+
+	}
+
+	_resolveBackgroundColor(node) {
+
+		// todo replace with color.js helper
+		const parseColor = value => {
+			// parses rgb and rgba colors
+			if (!value.startsWith('rgb')) return;
+			value = value.replace('rgb(', '').replace('rgba(', '').replace(')', '');
+			value = value.split(',');
+			return {
+				r: parseInt(value[0]),
+				g: parseInt(value[1]),
+				b: parseInt(value[2]),
+				a: (value.length === 4 ? parseFloat(value[3]) : 1)
+			};
+		};
+
+		const getStyleValue = node => {
+			if (node.nodeType === Node.DOCUMENT_NODE) {
+				node = node.body;
+				return window.getComputedStyle(node, null).getPropertyValue('background-color');
+			}
+
+			let value = window.getComputedStyle(node, null).getPropertyValue('background-color');
+			if (node.parentNode) {
+				// ignore completely transparent (does not handle partial transparency)
+				if (value === 'transparent') {
+					value = getStyleValue(node.parentNode);
+				} else {
+					const color = parseColor(value);
+					if (color && color.a === 0) value = getStyleValue(node.parentNode);
+					// todo optomize - maybe store resolved color on node for future
+				}
+			}
+			return value;
+		};
+
+		return getStyleValue(node);
 
 	}
 
