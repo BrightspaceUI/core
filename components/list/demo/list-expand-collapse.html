@@ -6,31 +6,18 @@
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script type="module">
 		import '../../demo/demo-page.js';
-		import './list-drag-and-drop-position.js';
 		import './list-nested.js';
 	</script>
 </head>
 <body unresolved>
 
-	<d2l-demo-page page-title="d2l-list (with drag & drop)">
-
-		<h2>Position Change Event</h2>
-
+	<d2l-demo-page page-title="d2l-list (with expand/collapse)">
+		<h2>Draggable & Selectable</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-drag-and-drop-position grid selectable hrefs></d2l-demo-list-drag-and-drop-position>
+				<d2l-demo-list-nested demo-item-key="listWithImgs" draggable selectable expand-collapse></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
-
-		<h2>Move Event</h2>
-
-		<d2l-demo-snippet>
-			<template>
-				<d2l-demo-list-nested demo-item-key="listWithImgs" draggable selectable></d2l-demo-list-nested>
-			</template>
-		</d2l-demo-snippet>
-
-
 	</d2l-demo-page>
 
 	<script>
