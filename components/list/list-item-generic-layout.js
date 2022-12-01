@@ -98,9 +98,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-row: 1 / 2;
 			}
+			/* TODO - what should width of drag control be? */
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				width: 2.2rem;
+				width: fit-content;
 			}
 
 			::slotted([slot="expand-collapse"]) {

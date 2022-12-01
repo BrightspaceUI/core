@@ -276,14 +276,16 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				margin-left: 1rem;
 				margin-right: 0;
 			}
+			/* TODO - align to spec (or revert) */
 			d2l-selection-input {
-				margin: 0.55rem 0.9rem 0.55rem 0;
+				margin: 0.55rem 0.55rem 0.55rem 0;
 			}
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
+			/* TODO - align to spec (or revert) */
 			d2l-list-item-drag-handle {
-				margin: 0.25rem 0 0.25rem 0.4rem;
+				margin: 0.25rem 0.4rem 0.25rem 0.4rem;
 			}
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;

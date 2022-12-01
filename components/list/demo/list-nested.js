@@ -39,7 +39,7 @@ class ListDemoNested extends LitElement {
 							label="${item.primaryText}"
 							?selectable="${this.selectable}"
 							?expand-collapse-enabled="${this.expandCollapse}">
-								${item?.imgSrc?.length === 0 ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
+								${!item.imgSrc ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
 								<d2l-list-item-content>
 									<div>${item.primaryText}</div>
 									<div slot="supporting-info">${item.supportingText}</div>

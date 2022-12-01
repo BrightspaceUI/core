@@ -127,4 +127,39 @@ export const listDemos = {
 			items: []
 		}]
 	}],
+	listWithNoDescriptions: [{
+		key: '1',
+		primaryText: 'Introductory Earth Sciences',
+		dropNested: true,
+		items: [{
+			key: '1-1',
+			primaryText: 'Glaciation',
+			dropNested: true,
+			items: []
+		}, {
+			key: '1-2',
+			primaryText: 'Weathering',
+			dropNested: true,
+			items: []
+		}, {
+			key: '1-3',
+			primaryText: 'Volcanism',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '3',
+		primaryText: 'Applied Wetland Science',
+		items: [{
+			key: '3-1',
+			primaryText: 'Carbon & Nitrogen Cycling',
+			dropNested: true,
+			items: []
+		}, {
+			key: '3-2',
+			primaryText: 'Wetland Engineering',
+			dropNested: true,
+			items: []
+		}]
+	}]
 };
