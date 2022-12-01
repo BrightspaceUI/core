@@ -7,6 +7,8 @@ import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '
 import { classMap } from 'lit/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const defaultHeading = 3;
+
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
  * @slot header - Slot for header content, such as course image (no actionable elements)
@@ -207,11 +209,20 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.headingLevel = undefined;
+		this.headingLevel = defaultHeading;
+		this.headingStyle = defaultHeading;
 		this.expanded = false;
-		this._hasSummary = false;
 		this.type = 'default';
 		this.fullWidth = false;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.expandCollapseLabel = this.title;
+
+		if (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) {
+			this.headingStyle = this.headingLevel;
+		}
 	}
 
 	disconnectedCallback() {
@@ -323,23 +334,20 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	_renderHeading() {
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
-			[`d2l-heading-${this.headingLevel}`]: true,
+			[`d2l-heading-${this.headingStyle}`]: true,
 		};
 
-		if (!this.headingStyle) {
-			return html`<h3 class="${classMap(titleClasses)}">${this.title}</h3>`;
-		}
-
-		if (this.headingLevel === 1) {
+		const headingLevel = parseInt(this.headingLevel);
+		if (headingLevel === 1) {
 			return html`<h1 class="${classMap(titleClasses)}">${this.title}</h1>`;
 		}
-		if (this.headingLevel === 2) {
+		if (headingLevel === 2) {
 			return html`<h2 class="${classMap(titleClasses)}">${this.title}</h2>`;
 		}
-		if (this.headingLevel === 3) {
+		if (headingLevel === 3) {
 			return html`<h3 class="${classMap(titleClasses)}">${this.title}</h3>`;
 		}
-		if (this.headingLevel === 4) {
+		if (headingLevel === 4) {
 			return html`<h4 class="${classMap(titleClasses)}">${this.title}</h4>`;
 		}
 	}
