@@ -164,7 +164,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				background-color: transparent;
 				border: 1px solid transparent;
 				border-radius: 15px;
-				box-shadow: 0 0 0 4px rgba(0, 0, 0, 0);
 				box-sizing: border-box;
 				cursor: pointer;
 				display: inline-block;
@@ -191,7 +190,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				background-color: var(--d2l-color-gypsum);
 			}
 			.d2l-tabs-scroll-button.focus-visible {
-				border-color: var(--d2l-color-celestine);
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
 				margin-top: 0;
