@@ -3,6 +3,7 @@ import '../selection-action.js';
 import '../selection-action-dropdown.js';
 import '../selection-action-menu-item.js';
 import './selection-component.js';
+import '../selection-header.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
@@ -82,6 +83,20 @@ describe('d2l-selection-action-menu-item', () => {
 		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
 		item.click();
 		expect(dispatched).to.be.false;
+	});
+
+});
+
+describe('d2l-selection-header', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-selection-header');
+	});
+
+	it('should set default label', async() => {
+		const el = await fixture(html`<d2l-selection-header></d2l-selection-header>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.equal('Selection controls');
 	});
 
 });
