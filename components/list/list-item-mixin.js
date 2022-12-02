@@ -12,6 +12,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
+import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -45,7 +46,7 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
-export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass))))) {
+export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemExpandCollapseMixin(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass)))))) {
 
 	static get properties() {
 		return {
@@ -356,26 +357,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-tooltip-key {
 				font-weight: 700;
 			}
-
-			.d2l-list-expand-collapse {
-				padding: 0.4rem 0.4rem 0 0;
-			}
-
-			.d2l-list-expand-collapse d2l-button-icon {
-				--d2l-button-icon-min-height: 1.2rem;
-				--d2l-button-icon-min-width: 1.2rem;
-			}
-
-			.d2l-list-expand-collapse:hover d2l-button-icon {
-				border-radius: var(--d2l-button-icon-border-radius);
-				background-color: var(--d2l-button-icon-background-color-hover);
-			}
-
-			.d2l-list-expand-collapse-action {
-				cursor: pointer;
-				display: block;
-				height: 100%;
-			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -480,10 +461,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
 	}
 
-	updateSiblingHasChildren(siblingHasNestedItems) {
-		this._siblingHasNestedItems = siblingHasNestedItems;
-	}
-
 	_getNestedList() {
 		if (!this.shadowRoot) return;
 		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
@@ -576,31 +553,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 	}
 
 	_onNestedSlotChange() {
-		super._onNestedSlotChange();
-		const nestedList = this._getNestedList();
-		if (this._hasChildren !== !!nestedList) {
-			this._hasChildren = !!nestedList;
-			this.dispatchEvent(new CustomEvent('d2l-list-item-children-change', { bubbles: true, composed: true }));
+		if (this.selectable) {
+			this._onNestedSlotChangeCheckboxMixin();
 		}
-	}
-
-	_renderExpandCollapse() {
-		if (!this.expandCollapseEnabled || (!this._hasChildren && !this._siblingHasNestedItems)) {
-			return nothing;
+		if (this.expandCollapseEnabled) {
+			this._onNestedSlotChangeExpandCollapseMixin();
 		}
-
-		return html`
-		<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
-			${this._hasChildren ? html`<d2l-button-icon icon="${this._showChildren ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"></d2l-button-icon>` : nothing}
-		</div>`;
-	}
-
-	_renderExpandCollapseAction() {
-		if ((this.selectable && !this.disabled) || !(this.expandCollapseEnabled && this._hasChildren)) {
-			return nothing;
-		}
-
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}"></div>`;
 	}
 
 	_renderListItem({ illustration, content, actions, nested } = {}) {
@@ -693,10 +651,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
 			</ul>
 		`;
-	}
-
-	_toggleExpandCollapse() {
-		this._showChildren = !this._showChildren;
 	}
 
 	_tryFocus() {

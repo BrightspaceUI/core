@@ -130,7 +130,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		}
 	}
 
-	_onNestedSlotChange() {
+	_onNestedSlotChangeCheckboxMixin() {
 		this._updateNestedSelectionProvider();
 	}
 
