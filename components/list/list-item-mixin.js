@@ -370,6 +370,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-radius: var(--d2l-button-icon-border-radius);
 				background-color: var(--d2l-button-icon-background-color-hover);
 			}
+
+			.d2l-list-expand-collapse-action {
+				cursor: pointer;
+				display: block;
+				height: 100%;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -589,6 +595,14 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		</div>`;
 	}
 
+	_renderExpandCollapseAction() {
+		if ((this.selectable && !this.disabled) || !(this.expandCollapseEnabled && this._hasChildren)) {
+			return nothing;
+		}
+
+		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}"></div>`;
+	}
+
 	_renderListItem({ illustration, content, actions, nested } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
@@ -615,12 +629,12 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
 				${this._renderExpandCollapse()}
-				${this.selectable ? html`
-				<div slot="control">${this._renderCheckbox()}</div>
-				<div slot="control-action"
+				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
+				${this.selectable || (this.expandCollapseEnabled && this._hasChildren) ? html`<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}
+						${this._renderExpandCollapseAction()}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
