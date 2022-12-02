@@ -2,11 +2,9 @@ import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
-import '../button/button-icon.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -70,11 +68,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			/**
-			 * Whether to allow the item to expand and collapse children
-			 * @type {boolean}
-			 */
-			expandCollapseEnabled: { type: Boolean, attribute: 'expand-collapse-enabled' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -85,10 +78,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
-			_hasChildren: { state: true },
-			_showChildren: { type: Boolean, attribute: '_show-children', reflect: true },
-			_siblingHasNestedItems: { state: true }
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
 
@@ -373,11 +363,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._displayKeyboardTooltip = false;
 		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
-		this._hasChildren = false;
-		this._showChildren = true;
-		this._siblingHasNestedItems = false;
-
-		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
 	get breakpoints() {
