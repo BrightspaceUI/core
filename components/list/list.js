@@ -69,7 +69,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listItemChanges = [];
 		this._childHasNestedItems = false;
 
-		// This controller only supports registering by id - no event is needed
+		// TODO - all nested lists reserve space by default? (to be confirmed)
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
 			this,
 			{ onSubscribe: this._updateActiveSubscriber.bind(this), updateSubscribers: this._updateActiveSubscribers.bind(this) },
