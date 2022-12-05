@@ -27,8 +27,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				--d2l-button-icon-min-width: 1.2rem;
 			}
 			.d2l-list-expand-collapse:hover d2l-button-icon {
-				border-radius: var(--d2l-button-icon-border-radius);
 				background-color: var(--d2l-button-icon-background-color-hover);
+				border-radius: var(--d2l-button-icon-border-radius);
 			}
 			.d2l-list-expand-collapse-action {
 				cursor: pointer;
