@@ -1,4 +1,5 @@
 import '../list.js';
+import '../list-header.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
@@ -144,6 +145,20 @@ describe('d2l-list', () => {
 			expect(elem.getSelectedListItems(true).length).to.equal(1);
 		});
 
+	});
+
+});
+
+describe('d2l-list-header', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-list-header');
+	});
+
+	it('should override default SelectionHeader label', async() => {
+		const el = await fixture(html`<d2l-list-header></d2l-list-header>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.equal('Actions for list');
 	});
 
 });
