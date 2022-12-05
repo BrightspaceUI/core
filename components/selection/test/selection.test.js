@@ -99,6 +99,12 @@ describe('d2l-selection-header', () => {
 		expect(section.getAttribute('aria-label')).to.equal('Selection controls');
 	});
 
+	it('should not set action label if there are no actions or selection options', async() => {
+		const el = await fixture(html`<d2l-selection-header no-selection></d2l-selection-header>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.be.null;
+	});
+
 });
 
 describe('d2l-selection-input', () => {

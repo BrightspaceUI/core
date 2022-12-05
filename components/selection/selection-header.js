@@ -4,6 +4,7 @@ import './selection-select-all-pages.js';
 import './selection-summary.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
@@ -127,10 +128,10 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 
 	render() {
 		const classes = this._getSelectionHeaderContainerClasses();
-		const label = this._getSelectionHeaderLabel();
+		const label = (this._hasActions || !this.noSelection) ? this._getSelectionHeaderLabel() : null;
 		return html`
 			<div class="d2l-sticky-edge"></div>
-			<section class="${classMap(classes)}" aria-label="${label}">
+			<section class="${classMap(classes)}" aria-label="${ifDefined(label)}">
 				${this.noSelection ? null : html`
 					<d2l-selection-select-all></d2l-selection-select-all>
 					<d2l-selection-summary
