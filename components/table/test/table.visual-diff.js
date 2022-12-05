@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-async function getRect(page, id) {
-	return await page.$eval('d2l-test-table-visual-diff', (wrapper, id) => {
+async function getRect(page, id, wrapperId) {
+	return await page.$eval(wrapperId, (wrapper, id) => {
 		const elem = wrapper.shadowRoot.querySelector(`#${id}`);
 		const leftMargin = (elem.offsetLeft < 10 ? 0 : 10);
 		const topMargin = (elem.offsetTop < 10 ? 0 : 10);
@@ -46,6 +46,7 @@ describe('d2l-table', () => {
 						before(async() => {
 							await page.$eval('d2l-test-table-visual-diff', elem => elem.removeAttribute('hidden'));
 							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 						});
 
 						[
@@ -69,7 +70,7 @@ describe('d2l-table', () => {
 							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
-								const rect = await getRect(page, id);
+								const rect = await getRect(page, id, 'd2l-test-table-visual-diff');
 								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
@@ -86,7 +87,7 @@ describe('d2l-table', () => {
 							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
 								wrapper.shadowRoot.querySelector('d2l-table-col-sort-button').focus();
 							});
-							const rect = await getRect(page, 'col-sort-button');
+							const rect = await getRect(page, 'col-sort-button', 'd2l-test-table-visual-diff');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
@@ -97,6 +98,7 @@ describe('d2l-table', () => {
 						before(async() => {
 							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.removeAttribute('hidden'));
+							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 						});
 
 						[
@@ -120,6 +122,25 @@ describe('d2l-table', () => {
 									}, id, position);
 									await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 								});
+							});
+						});
+
+					});
+
+					describe('table-header', () => {
+
+						before(async() => {
+							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.removeAttribute('hidden'));
+						});
+
+						[
+							'no-sticky',
+						].forEach((id) => {
+							it(id, async function() {
+								const rect = await getRect(page, id, 'd2l-test-table-header-visual-diff');
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
 
