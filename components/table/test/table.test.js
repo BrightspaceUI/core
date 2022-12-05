@@ -1,3 +1,4 @@
+import '../table-header.js';
 import '../table-wrapper.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -27,5 +28,19 @@ describe('d2l-table-wrapper', () => {
 		});
 
 	});
+
+});
+
+describe('d2l-table-header', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-table-header');
+	});
+
+	// it('should override default SelectionHeader label', async() => {
+	// 	const el = await fixture(html`<d2l-table-header></d2l-table-header>`);
+	// 	const section = el.shadowRoot.querySelector('section');
+	// 	expect(section.getAttribute('aria-label')).to.equal('Table controls');
+	// });
 
 });
