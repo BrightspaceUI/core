@@ -96,7 +96,7 @@ describe('d2l-selection-header', () => {
 	it('should set default label', async() => {
 		const el = await fixture(html`<d2l-selection-header></d2l-selection-header>`);
 		const section = el.shadowRoot.querySelector('section');
-		expect(section.getAttribute('aria-label')).to.equal('Selection controls');
+		expect(section.getAttribute('aria-label')).to.equal('Actions for selection');
 	});
 
 	it('should not set action label if there are no actions or selection options', async() => {
