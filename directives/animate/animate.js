@@ -106,7 +106,7 @@ class AnimationState {
 			this.styleAttrUse = true;
 		}
 
-		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null ? true : false;
+		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null;
 		if (hasHiddenAttr) {
 			this.elem.removeAttribute('hidden');
 		}
