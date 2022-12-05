@@ -18,6 +18,7 @@
 			import '../list.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
+			import '../../paging/pager-load-more.js';
 			import '../../selection/selection-action.js';
 		</script>
 	</head>
@@ -111,6 +112,8 @@
 						<d2l-list-item selectable key="L1-3" label="Label for L1-3">
 							<div>Computer Science (L1)</div>
 						</d2l-list-item>
+						<d2l-pager-load-more slot="pager" has-more page-size="5">
+						</d2l-pager-load-more>
 					</d2l-list>
 				</template>
 			</d2l-demo-snippet>
@@ -137,6 +140,11 @@
 			setTimeout(() => {
 				document.querySelector('d2l-list').addEventListener('d2l-list-selection-changes', (e) => {
 					console.log('d2l-list-selection-changes', e.detail);
+				});
+
+				document.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more', (e) => {
+					console.log('Load more requested!');
+					setTimeout(() => e.detail.complete(), 2000);
 				});
 			}, 1000);
 		</script>

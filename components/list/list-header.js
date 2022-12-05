@@ -46,6 +46,10 @@ class ListHeader extends SelectionHeader {
 			'd2l-list-header-extend-separator': this._extendSeparator
 		};
 	}
+
+	_getSelectionHeaderLabel() {
+		return this.localize('components.list-header.label');
+	}
 }
 
 customElements.define('d2l-list-header', ListHeader);
