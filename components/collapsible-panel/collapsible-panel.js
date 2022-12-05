@@ -223,7 +223,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.expandCollapseLabel = this.title;
+
+		if (!this.expandCollapseLabel) {
+			this.expandCollapseLabel = this.title;
+		}
 
 		if (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) {
 			this.headingStyle = this.headingLevel;
@@ -255,7 +258,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-offscreen><d2l-button @click="${this._toggleExpand}" @focus="${this._onFocus}" @blur="${this._onBlur}"></d2l-button></d2l-offscreen>
+			<d2l-offscreen>
+				<button
+					aria-label="${this.expandCollapseLabel}"
+					aria-expanded="${this.expanded}"
+					type="button"
+					@click="${this._toggleExpand}"
+					@focus="${this._onFocus}"
+					@blur="${this._onBlur}"
+				></button>
+			</d2l-offscreen>
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
