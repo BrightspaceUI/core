@@ -98,6 +98,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel-header {
 				cursor: pointer;
 				padding: 0.6rem 0;
+				transition: padding 0.2s ease-out;
 			}
 			:host(:not([expanded])[type=inline]) .d2l-collapsible-panel.has-summary .d2l-collapsible-panel-header {
 				padding-bottom: 0;
@@ -122,15 +123,18 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
 				top: 2px;
 			}
+			.d2l-collapsible-panel-header .d2l-collapsible-panel-opener {
+				margin-inline-end: 0.3rem;
+			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
 				cursor: default;
 			}
 			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
 				border: none;
 			}
-			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-body,
-			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
-				padding: 0;
+			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-body {
+				padding-bottom: 0;
+				padding-top: 0;
 			}
 			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
 				margin: 0;
@@ -191,11 +195,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel-header-actions {
 				display: flex;
 			}
-			.d2l-collapsible-panel-header-actions:after {
+			.d2l-collapsible-panel-header-actions::after {
+				border-inline-end: 1px solid var(--d2l-color-mica);
 				content: '';
 				display: flex;
 				margin: 0.3rem;
-				border-inline-end: 1px solid var(--d2l-color-mica);
 			}
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
@@ -207,8 +211,8 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				justify-content: space-between;
 			}
 			.d2l-collapsible-panel-body {
-				margin-top: 0.6rem;
 				padding: 0.9rem;
+				transition: padding 0.2s ease-out;
 			}
 		`];
 	}
