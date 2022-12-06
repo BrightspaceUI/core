@@ -188,14 +188,15 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				display: flex;
 				margin-inline-start: 0.9rem;
 			}
-			.d2l-collapsible-panel-header .actions {
-				display: block;
-				margin-inline-end: 0.3rem;
+			.d2l-collapsible-panel-header-actions {
+				display: flex;
 			}
-			/* TODO: better way of spacing */
-			/* .d2l-collapsible-panel-header d2l-button-icon {
-				margin-inline-end: 0.3rem;
-			} */
+			.d2l-collapsible-panel-header-actions:after {
+				content: '';
+				display: flex;
+				margin: 0.3rem;
+				border-inline-end: 1px solid var(--d2l-color-mica);
+			}
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-inline: 0.9rem;
