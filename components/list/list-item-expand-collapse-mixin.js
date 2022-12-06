@@ -50,6 +50,14 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		// mixin requires key for events
+		if (!this.key) {
+			this.expandCollapseEnabled = false;
+		}
+	}
+
 	updateSiblingHasChildren(siblingHasNestedItems) {
 		this._siblingHasNestedItems = siblingHasNestedItems;
 	}
@@ -83,5 +91,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 
 	_toggleExpandCollapse() {
 		this._showChildren = !this._showChildren;
+		this.dispatchEvent(new CustomEvent('d2l-list-item-expand-collapse-toggled', {
+			detail: { key: this.key, showChildren: this._showChildren },
+			composed: true,
+			bubbles: true
+		}));
 	}
 };
