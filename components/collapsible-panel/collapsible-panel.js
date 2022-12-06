@@ -152,28 +152,28 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border-radius: 8px;
 				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
-			.d2l-collapsible-panel-opener {
+			.d2l-collapsible-panel-opener d2l-icon-custom {
 				margin: 0.6rem;
 				transform-origin: center;
 			}
-			.d2l-collapsible-panel-opener svg {
+			.d2l-collapsible-panel-opener d2l-icon-custom svg {
 				fill: transparent;
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener svg {
+			:host([expanded]) .d2l-collapsible-panel-opener d2l-icon-custom svg {
 				fill: var(--d2l-color-tungsten);
 			}
 			@media (prefers-reduced-motion: no-preference) {
-				.d2l-collapsible-panel-opener {
+				.d2l-collapsible-panel-opener d2l-icon-custom {
 					transition: transform 0.2s ease-out;
 				}
-				.d2l-collapsible-panel-opener svg {
+				.d2l-collapsible-panel-opener d2l-icon-custom svg {
 					transition: fill 0.2s ease-in-out;
 				}
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener {
+			:host([expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
 				transform: rotate(90deg);
 			}
-			:host([dir="rtl"][expanded]) .d2l-collapsible-panel-opener {
+			:host([dir="rtl"][expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
 				transform: rotate(-90deg);
 			}
 			:host([heading-style="4"]) .d2l-collapsible-panel-header {
@@ -339,11 +339,13 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
 					</div>
-					<d2l-icon-custom class="d2l-collapsible-panel-opener" size="tier1">
-						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
-							<path stroke="#494c4e" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
-						</svg>
-					</d2l-icon-custom>
+					<div class="d2l-collapsible-panel-opener">
+						<d2l-icon-custom size="tier1">
+							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
+								<path stroke="#494c4e" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+							</svg>
+						</d2l-icon-custom>
+					</div>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
 					<slot name="header" @slotchange="${this._handleHeaderSlotChange}"></slot>
