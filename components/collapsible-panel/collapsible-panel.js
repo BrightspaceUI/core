@@ -183,6 +183,15 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([heading-style="4"]) .d2l-collapsible-panel-header {
 				padding: 0.45rem 0 0.15rem;
 			}
+			:host([heading-style="1"]) .d2l-collapsible-panel-header {
+				padding: 1.2rem 0;
+			}
+			:host([heading-style="1"]) .d2l-collapsible-panel-title {
+				margin-inline-start: 1.2rem;
+			}
+			:host([heading-style="1"]) .d2l-collapsible-panel-body {
+				padding: 0.9rem 1.2rem;
+			}
 			.d2l-collapsible-panel-title {
 				flex: 1;
 				margin: 0;
