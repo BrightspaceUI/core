@@ -1,9 +1,11 @@
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit';
+import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 import { ListItemExpandCollapseMixin } from '../list-item-expand-collapse-mixin.js';
+import { ListItemMixin } from '../list-item-mixin.js';
 
 const tag = defineCE(
-	class extends ListItemExpandCollapseMixin(LitElement) {
+	class extends ListItemMixin(ListItemExpandCollapseMixin(ListItemCheckboxMixin(LitElement))) {
 		render() {
 			return html`
 				${this._renderExpandCollapse()}
@@ -48,7 +50,7 @@ describe('ListItemExpandCollapseMixin', () => {
 
 		for (const test of cases) {
 			it(`selectable: ${test.properties.selectable} disabled: ${test.properties.disabled} expandCollapseEnabled: ${test.properties.expandCollapseEnabled} _hasChildren: ${test.properties._hasChildren}`, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				const element = await fixture(`<${tag} key="1234"></${tag}>`);
 				for (const [key, value] of Object.entries(test.properties)) {
 					element[key] = value;
 				}
@@ -79,7 +81,7 @@ describe('ListItemExpandCollapseMixin', () => {
 
 		for (const test of cases) {
 			it(`expandCollapseEnabled: ${test.properties.expandCollapseEnabled} _hasChildren: ${test.properties._hasChildren} _siblingHasNestedItems: ${test.properties._siblingHasNestedItems}`, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				const element = await fixture(`<${tag} key="1234"></${tag}>`);
 				for (const [key, value] of Object.entries(test.properties)) {
 					element[key] = value;
 				}
@@ -98,5 +100,24 @@ describe('ListItemExpandCollapseMixin', () => {
 				}
 			});
 		}
+	});
+
+	describe('Fires appropriate event when clicking button or action area', () => {
+
+		it('Fires event on button click', async() => {
+			const element = await fixture(`<${tag} key="1234" expand-collapse-enabled></${tag}>`);
+			element._hasChildren = true;
+			await element.updateComplete;
+			const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
+			expect(button).to.exist;
+			// simulate a button click
+			setTimeout(() => {
+				button.click();
+			});
+
+			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
+			expect(detail.showChildren).to.equal(false);
+			expect(detail.key).to.equal('1234');
+		});
 	});
 });
