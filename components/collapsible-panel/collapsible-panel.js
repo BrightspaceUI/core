@@ -378,7 +378,8 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.expanded = !this.expanded;
 
 		if (!this.expanded) {
-			this._scrolled = false;
+			const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+			element.classList.remove('scrolled');
 		}
 
 		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
