@@ -119,5 +119,21 @@ describe('ListItemExpandCollapseMixin', () => {
 			expect(detail.showChildren).to.equal(false);
 			expect(detail.key).to.equal('1234');
 		});
+
+		it('Fires event on action area click', async() => {
+			const element = await fixture(`<${tag} key="1234" expand-collapse-enabled></${tag}>`);
+			element._hasChildren = true;
+			await element.updateComplete;
+			const actionControl = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
+			expect(actionControl).to.exist;
+			// simulate action control click
+			setTimeout(() => {
+				actionControl.click();
+			});
+
+			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
+			expect(detail.showChildren).to.equal(false);
+			expect(detail.key).to.equal('1234');
+		});
 	});
 });
