@@ -81,7 +81,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_renderExpandCollapseAction() {
-		if (this.selectable || !(this.expandable && this._hasChildren)) {
+		if (this.selectable || !(this.expandable && this._hasChildren) || this.noPrimaryAction) {
 			return nothing;
 		}
 

@@ -24,28 +24,28 @@ describe('ListItemExpandCollapseMixin', () => {
 
 	describe('Render expand/collapse action area when appropriate', () => {
 		const cases = [{
-			properties: { selectable: false, expandable: true, _hasChildren: true },
+			properties: { selectable: false, expandable: true, _hasChildren: true, noPrimaryAction: false },
 			actionAreaAvailable: true
 		},
 		{
-			properties: { selectable: false, expandable: false, _hasChildren: true },
+			properties: { selectable: false, expandable: false, _hasChildren: true, noPrimaryAction: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: false, expandable: false, _hasChildren: false },
+			properties: { selectable: false, expandable: false, _hasChildren: false, noPrimaryAction: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: true, expandable: false, _hasChildren: false },
+			properties: { selectable: true, expandable: true, _hasChildren: true, noPrimaryAction: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: true, expandable: true, _hasChildren: false },
+			properties: { selectable: false, expandable: true, _hasChildren: true, noPrimaryAction: true },
 			actionAreaAvailable: false
 		}];
 
 		for (const test of cases) {
-			it(`selectable: ${test.properties.selectable} expandable: ${test.properties.expandable} _hasChildren: ${test.properties._hasChildren}`, async() => {
+			it(`selectable: ${test.properties.selectable} expandable: ${test.properties.expandable} _hasChildren: ${test.properties._hasChildren} noPrimaryAction: ${test.properties.noPrimaryAction}`, async() => {
 				const element = await fixture(`<${tag} key="1234" expanded></${tag}>`);
 				for (const [key, value] of Object.entries(test.properties)) {
 					element[key] = value;
