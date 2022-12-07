@@ -353,6 +353,7 @@ The `d2l-selection-summary` component may be placed inside the selection control
 <!-- docs: demo live name:d2l-selection-summary display:block -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/selection/selection-action.js';
   import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/selection-summary.js';
   import '@brightspace-ui/core/components/selection/demo/demo-selection.js';
@@ -434,11 +435,12 @@ The `d2l-selection-header` provides a standardized wrapper to display selection 
 
 When using lists, use the list-specific `d2l-list-header` instead, which extends this component's behaviour.
 
-<!-- docs: demo live name:d2l-selection-header autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-selection-header display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
   import '@brightspace-ui/core/components/selection/selection-header.js';
+  import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/demo/demo-selection.js';
 </script>
 <!-- docs: start hidden content -->
