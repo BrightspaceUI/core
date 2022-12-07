@@ -142,7 +142,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-top-color: transparent;
 			}
 
-			:host(:not([_show-children])) [slot="nested"] {
+			:host(:not([expanded])) [slot="nested"] {
 				display: none;
 			}
 
@@ -541,7 +541,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		if (this.selectable) {
 			this._onNestedSlotChangeCheckboxMixin();
 		}
-		if (this.expandCollapseEnabled) {
+		if (this.expandable) {
 			this._onNestedSlotChangeExpandCollapseMixin();
 		}
 	}
@@ -573,7 +573,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				<div slot="control-container"></div>
 				${this._renderExpandCollapse()}
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
-				${this.selectable || (this.expandCollapseEnabled && this._hasChildren) ? html`<div slot="control-action"
+				${this.selectable || (this.expandable && this._hasChildren) ? html`<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}

@@ -14,7 +14,8 @@ class ListDemoNested extends LitElement {
 			demoItemKey: { type: String, attribute: 'demo-item-key' },
 			draggable: { type: Boolean },
 			selectable: { type: Boolean },
-			expandCollapse: { type: Boolean, attribute: 'expand-collapse' },
+			expandable: { type: Boolean },
+			expanded: { type: Boolean },
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			_items: { state: true }
 		};
@@ -38,7 +39,8 @@ class ListDemoNested extends LitElement {
 							key="${item.key}"
 							label="${item.primaryText}"
 							?selectable="${this.selectable}"
-							?expand-collapse-enabled="${this.expandCollapse}">
+							?expandable="${this.expandable}"
+							?expanded="${this.expanded}">
 								${!item.imgSrc ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
 								<d2l-list-item-content>
 									<div>${item.primaryText}</div>

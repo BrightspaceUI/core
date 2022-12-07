@@ -16,41 +16,41 @@ const tag = defineCE(
 );
 
 describe('ListItemExpandCollapseMixin', () => {
-	it('Sets expand-collapse-enabled to false when no key is given', async() => {
-		const element = await fixture(`<${tag} expand-collapse-enabled></${tag}>`);
+	it('Sets expandable to false when no key is given', async() => {
+		const element = await fixture(`<${tag} expandable></${tag}>`);
 		await element.updateComplete;
-		expect(element.expandCollapseEnabled).to.be.false;
+		expect(element.expandable).to.be.false;
 	});
 
 	describe('Render expand/collapse action area when appropriate', () => {
 		const cases = [{
-			properties: { selectable: false, disabled: false, expandCollapseEnabled: true, _hasChildren: true },
+			properties: { selectable: false, disabled: false, expandable: true, _hasChildren: true },
 			actionAreaAvailable: true
 		},
 		{
-			properties: { selectable: false, disabled: false, expandCollapseEnabled: false, _hasChildren: true },
+			properties: { selectable: false, disabled: false, expandable: false, _hasChildren: true },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: false, disabled: false, expandCollapseEnabled: false, _hasChildren: false },
+			properties: { selectable: false, disabled: false, expandable: false, _hasChildren: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: true, disabled: false, expandCollapseEnabled: false, _hasChildren: false },
+			properties: { selectable: true, disabled: false, expandable: false, _hasChildren: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: true, disabled: false, expandCollapseEnabled: true, _hasChildren: false },
+			properties: { selectable: true, disabled: false, expandable: true, _hasChildren: false },
 			actionAreaAvailable: false
 		},
 		{
-			properties: { selectable: true, disabled: true, expandCollapseEnabled: true, _hasChildren: true },
+			properties: { selectable: true, disabled: true, expandable: true, _hasChildren: true },
 			actionAreaAvailable: true
 		}];
 
 		for (const test of cases) {
-			it(`selectable: ${test.properties.selectable} disabled: ${test.properties.disabled} expandCollapseEnabled: ${test.properties.expandCollapseEnabled} _hasChildren: ${test.properties._hasChildren}`, async() => {
-				const element = await fixture(`<${tag} key="1234"></${tag}>`);
+			it(`selectable: ${test.properties.selectable} disabled: ${test.properties.disabled} expandable: ${test.properties.expandable} _hasChildren: ${test.properties._hasChildren}`, async() => {
+				const element = await fixture(`<${tag} key="1234" expanded></${tag}>`);
 				for (const [key, value] of Object.entries(test.properties)) {
 					element[key] = value;
 				}
@@ -67,21 +67,21 @@ describe('ListItemExpandCollapseMixin', () => {
 
 	describe('Render expand/collapse slot and button when appropriate', () => {
 		const cases = [{
-			properties: { expandCollapseEnabled: true, _hasChildren: true, _siblingHasNestedItems: false },
+			properties: { expandable: true, _hasChildren: true, _siblingHasNestedItems: false },
 			slotAvailable: true
 		},
 		{
-			properties: { expandCollapseEnabled: true, _hasChildren: false, _siblingHasNestedItems: true },
+			properties: { expandable: true, _hasChildren: false, _siblingHasNestedItems: true },
 			slotAvailable: true
 		},
 		{
-			properties: { expandCollapseEnabled: false, _hasChildren: true, _siblingHasNestedItems: true },
+			properties: { expandable: false, _hasChildren: true, _siblingHasNestedItems: true },
 			slotAvailable: false
 		}];
 
 		for (const test of cases) {
-			it(`expandCollapseEnabled: ${test.properties.expandCollapseEnabled} _hasChildren: ${test.properties._hasChildren} _siblingHasNestedItems: ${test.properties._siblingHasNestedItems}`, async() => {
-				const element = await fixture(`<${tag} key="1234"></${tag}>`);
+			it(`expandable: ${test.properties.expandable} _hasChildren: ${test.properties._hasChildren} _siblingHasNestedItems: ${test.properties._siblingHasNestedItems}`, async() => {
+				const element = await fixture(`<${tag} key="1234" expanded></${tag}>`);
 				for (const [key, value] of Object.entries(test.properties)) {
 					element[key] = value;
 				}
@@ -105,7 +105,7 @@ describe('ListItemExpandCollapseMixin', () => {
 	describe('Fires appropriate event when clicking button or action area', () => {
 
 		it('Fires event on button click', async() => {
-			const element = await fixture(`<${tag} key="1234" expand-collapse-enabled></${tag}>`);
+			const element = await fixture(`<${tag} key="1234" expandable expanded></${tag}>`);
 			element._hasChildren = true;
 			await element.updateComplete;
 			const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
@@ -116,12 +116,12 @@ describe('ListItemExpandCollapseMixin', () => {
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
-			expect(detail.showChildren).to.equal(false);
+			expect(detail.expanded).to.equal(false);
 			expect(detail.key).to.equal('1234');
 		});
 
 		it('Fires event on action area click', async() => {
-			const element = await fixture(`<${tag} key="1234" expand-collapse-enabled></${tag}>`);
+			const element = await fixture(`<${tag} key="1234" expandable></${tag}>`);
 			element._hasChildren = true;
 			await element.updateComplete;
 			const actionControl = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
@@ -132,7 +132,7 @@ describe('ListItemExpandCollapseMixin', () => {
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
-			expect(detail.showChildren).to.equal(false);
+			expect(detail.expanded).to.equal(true);
 			expect(detail.key).to.equal('1234');
 		});
 	});
