@@ -71,6 +71,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
 			:host {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
+				--d2l-collapsible-panel-spacing-inline: 0.9rem;
+				--d2l-collapsible-panel-header-spacing: 0.6rem;
+				--d2l-collapsible-panel-transition-time: 0.2s;
 				display: block;
 			}
 			.d2l-collapsible-panel {
@@ -92,69 +95,66 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border-radius: 0;
 				border-top: 1px solid var(--d2l-color-mica);
 			}
-			:host([type=inline]) .d2l-collapsible-panel-divider {
-				display: none;
+			:host([heading-style="1"]) {
+				--d2l-collapsible-panel-header-spacing: 1.2rem;
+			}
+			:host([heading-style="4"]) {
+				--d2l-collapsible-panel-header-spacing: 0.3rem;
+			}
+			:host([type=inline][full-width]) {
+				--d2l-collapsible-panel-spacing-inline: 0;
 			}
 			.d2l-collapsible-panel-header {
+				border-radius: 8px;
 				cursor: pointer;
-				padding: 0.6rem 0;
-				transition: padding 0.2s ease-out;
-			}
-			:host(:not([expanded])[type=inline]) .d2l-collapsible-panel.has-summary .d2l-collapsible-panel-header {
-				padding-bottom: 0;
-			}
-			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-header {
-				padding-bottom: 0.6rem;
-			}
-			:host([type=inline]) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-header {
-				padding-bottom: 0.6rem;
-			}
-			:host([type=inline][full-width]) .d2l-collapsible-panel-title {
-				margin-inline-start: 0;
+				padding: var(--d2l-collapsible-panel-header-spacing) 0;
 			}
 			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
 				background-color: white;
-				border-radius: 8px; /* TODO: not sure */
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				position: sticky;
 				top: 0;
 			}
-			/* TODO: Might not be necessary -- this allows the focus ring to be fully visible on a sticky header */
 			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
 				top: 2px;
 			}
-			.d2l-collapsible-panel-header .d2l-collapsible-panel-opener {
-				margin-inline-end: 0.3rem;
-			}
-			.d2l-collapsible-panel-header-secondary ::slotted(*) {
-				cursor: default;
-			}
-			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
-				border: none;
-			}
-			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-body {
-				padding-bottom: 0;
-				padding-top: 0;
-			}
-			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
+			.d2l-collapsible-panel-title {
+				flex: 1;
 				margin: 0;
+				margin-inline: var(--d2l-collapsible-panel-spacing-inline) 0.3rem;
 			}
-			:host([type=inline][full-width]) .d2l-collapsible-panel-body {
-				padding-inline: 0;
+			.d2l-collapsible-panel.focused {
+				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
-			:host([type=inline]) .d2l-collapsible-panel-body {
-				padding-top: 0;
-			}
-			:host(:not([expanded])) .d2l-collapsible-panel.focused {
-				border-radius: 8px;
+			:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
 				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
 			:host([expanded]) .d2l-collapsible-panel {
 				outline: none;
 			}
-			:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
-				border-radius: 8px;
-				outline: var(--d2l-collapsible-panel-focus-outline);
+			.d2l-collapsible-panel-header-primary {
+				align-items: center;
+				display: flex;
+				justify-content: space-between;
+			}
+			.d2l-collapsible-panel-header-secondary {
+				display: flex;
+				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
+			.d2l-collapsible-panel-header-secondary ::slotted(*) {
+				cursor: default;
+			}
+			.d2l-collapsible-panel-header-actions {
+				display: flex;
+			}
+			.d2l-collapsible-panel-header-actions::after {
+				border-inline-end: 1px solid var(--d2l-color-mica);
+				content: '';
+				display: flex;
+				margin: 0.3rem;
+			}
+			.d2l-collapsible-panel-opener {
+				margin-inline-end: 0.3rem;
 			}
 			.d2l-collapsible-panel-opener d2l-icon-custom {
 				margin: 0.6rem;
@@ -168,10 +168,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				.d2l-collapsible-panel-opener d2l-icon-custom {
-					transition: transform 0.2s ease-out;
+					transition: transform var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
 				.d2l-collapsible-panel-opener d2l-icon-custom svg {
-					transition: fill 0.2s ease-in-out;
+					transition: fill var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
@@ -180,49 +180,40 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([dir="rtl"][expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
 				transform: rotate(-90deg);
 			}
-			:host([heading-style="4"]) .d2l-collapsible-panel-header {
-				padding: 0.45rem 0 0.15rem;
-			}
-			:host([heading-style="1"]) .d2l-collapsible-panel-header {
-				padding: 1.2rem 0;
-			}
-			:host([heading-style="1"]) .d2l-collapsible-panel-title {
-				margin-inline-start: 1.2rem;
-			}
-			:host([heading-style="1"]) .d2l-collapsible-panel-body {
-				padding: 0.9rem 1.2rem;
-			}
-			.d2l-collapsible-panel-title {
-				flex: 1;
-				margin: 0;
-				margin-inline: 0.9rem 0.3rem;
-			}
-			.d2l-collapsible-panel-header-secondary {
-				display: flex;
-				margin-inline-start: 0.9rem;
-			}
-			.d2l-collapsible-panel-header-actions {
-				display: flex;
-			}
-			.d2l-collapsible-panel-header-actions::after {
-				border-inline-end: 1px solid var(--d2l-color-mica);
-				content: '';
-				display: flex;
-				margin: 0.3rem;
-			}
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
-				margin-inline: 0.9rem;
+				margin-inline: var(--d2l-collapsible-panel-spacing-inline);
+				opacity: 1;
+				transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
 			}
-			.d2l-collapsible-panel-header-primary {
-				align-items: center;
-				display: flex;
-				justify-content: space-between;
+			:host([type=inline]) .d2l-collapsible-panel-divider {
+				opacity: 0;
 			}
-			.d2l-collapsible-panel-body {
-				padding: 0.9rem;
-				transition: padding 0.2s ease-out;
+			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
+				opacity: 0;
 			}
+			d2l-expand-collapse-content {
+				opacity: 0;
+				transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
+			}
+			d2l-expand-collapse-content[expanded] {
+				opacity: 1;
+			}
+			.d2l-collapsible-panel-summary,
+			.d2l-collapsible-panel-content {
+				padding: 0.9rem var(--d2l-collapsible-panel-spacing-inline);
+			}
+			:host([type=inline]) .d2l-collapsible-panel-summary,
+			:host([type=inline]) .d2l-collapsible-panel-content {
+				padding-top: 0;
+			}
+			:host([type="inline"]) .d2l-collapsible-panel-summary {
+				margin-top: -0.3rem;
+			}
+			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
+				display: none;
+			}
+
 		`];
 	}
 
@@ -285,18 +276,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
-				<div class="d2l-collapsible-panel-body">
-					<d2l-expand-collapse-content ?expanded="${this.expanded}">
-						<div class="d2l-collapsible-panel-content">
-							<slot name="content"></slot>
-						</div>
-					</d2l-expand-collapse-content>
-					<d2l-expand-collapse-content ?expanded="${!this.expanded}">
-						<div class="d2l-collapsible-panel-summary">
-							<slot name="summary" @slotchange="${this._handleSummarySlotChange}"></slot>
-						</div>
-					</d2l-expand-collapse-content>
-				</div>
+				<d2l-expand-collapse-content ?expanded="${this.expanded}">
+					<div class="d2l-collapsible-panel-content">
+						<slot name="content"></slot>
+					</div>
+				</d2l-expand-collapse-content>
+				<d2l-expand-collapse-content ?expanded="${!this.expanded}">
+					<div class="d2l-collapsible-panel-summary">
+						<slot name="summary" @slotchange="${this._handleSummarySlotChange}"></slot>
+					</div>
+				</d2l-expand-collapse-content>
 			</div>
 		`;
 	}
