@@ -1,7 +1,13 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import { html, LitElement, nothing } from 'lit';
+import '../../dropdown/dropdown-menu.js';
+import '../../dropdown/dropdown-more.js';
+import '../../menu/menu.js';
+import '../../menu/menu-item.js';
+import '../list-header.js';
+import '../../selection/selection-action.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { listDemos } from './list-demo-scenarios.js';
 import { moveLocations } from '../list-item-drag-drop-mixin.js';
@@ -16,9 +22,21 @@ class ListDemoNested extends LitElement {
 			selectable: { type: Boolean },
 			expandable: { type: Boolean },
 			expanded: { type: Boolean },
+			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
+			includeListHeader: { type: Boolean, attribute: 'include-list-header' },
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			_items: { state: true }
 		};
+	}
+
+	static get styles() {
+		return [
+			css`
+				.secondary-actions {
+					padding-right: 6px;
+				}
+			`
+		];
 	}
 
 	constructor() {
@@ -27,35 +45,9 @@ class ListDemoNested extends LitElement {
 	}
 
 	render() {
-		const renderList = (items, nested) => {
-			return html`
-				<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
-					${repeat(items, item => item.key, item => html`
-						<d2l-list-item
-							action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
-							?draggable="${this.draggable}"
-							drag-handle-text="${item.primaryText}"
-							?drop-nested="${item.dropNested}"
-							key="${item.key}"
-							label="${item.primaryText}"
-							?selectable="${this.selectable}"
-							?expandable="${this.expandable}"
-							?expanded="${this.expanded}">
-								${!item.imgSrc ? nothing : html`<img slot="illustration" src="${item.imgSrc}">`}
-								<d2l-list-item-content>
-									<div>${item.primaryText}</div>
-									<div slot="supporting-info">${item.supportingText}</div>
-								</d2l-list-item-content>
-								${item?.items?.length > 0 ? renderList(item.items, true) : nothing}
-						</d2l-list-item>
-					`)}
-				</d2l-list>
-			`;
-		};
-
 		return html`
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
-				${renderList(this._items, false)}
+				${this._renderList(this._items, false, this.includeListHeader)}
 			</div>
 		`;
 	}
@@ -122,6 +114,80 @@ class ListDemoNested extends LitElement {
 			});
 		}
 
+	}
+
+	_renderIllustration(item) {
+		if (!item.imgSrc) {
+			return nothing;
+		}
+		return html`<img slot="illustration" src="${item.imgSrc}">`;
+	}
+
+	_renderItemContent(item) {
+		return html`
+			<d2l-list-item-content>
+				<div>${item.primaryText}</div>
+				<div slot="supporting-info">${item.supportingText}</div>
+			</d2l-list-item-content>`;
+	}
+
+	_renderList(items, nested, includeHeader = false) {
+		return html`
+			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
+				${ includeHeader ? this._renderListHeader() : nothing }
+				${repeat(items, item => item.key, item => html`
+					<d2l-list-item
+						action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
+						?draggable="${this.draggable}"
+						drag-handle-text="${item.primaryText}"
+						?drop-nested="${item.dropNested}"
+						key="${item.key}"
+						label="${item.primaryText}"
+						?selectable="${this.selectable}"
+						?expandable="${this.expandable}"
+						?expanded="${this.expanded}">
+							${this._renderIllustration(item)}
+							${this._renderItemContent(item)}
+							${this._renderSecondaryActions()}
+							${this._renderNestedList(item)}
+					</d2l-list-item>
+				`)}
+			</d2l-list>
+		`;
+	}
+
+	_renderListHeader() {
+		return html`
+			<d2l-list-header slot="header">
+				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+			</d2l-list-header>
+		`;
+	}
+
+	_renderNestedList(item) {
+		if (item?.items?.length <= 0) {
+			return nothing;
+		}
+		return this._renderList(item.items, true);
+	}
+
+	_renderSecondaryActions() {
+		if (!this.includeSecondaryActions) {
+			return nothing;
+		}
+		return html`
+			<div slot="actions" class="secondary-actions">
+				<d2l-dropdown-more text="Open!">
+					<d2l-dropdown-menu>
+						<d2l-menu label="More Actions">
+							<d2l-menu-item text="Action 1"></d2l-menu-item>
+							<d2l-menu-item text="Action 2"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
+			</div>
+		`;
 	}
 
 }

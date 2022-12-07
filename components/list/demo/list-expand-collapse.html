@@ -12,40 +12,57 @@
 <body unresolved>
 
 	<d2l-demo-page page-title="d2l-list (with expand/collapse)">
-		<h2>Draggable & Selectable (images)</h2>
+		<h2>Draggable & Selectable</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-nested demo-item-key="listWithImgs" draggable selectable expandable expanded include-action-href></d2l-demo-list-nested>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					expanded
+					include-action-href
+					include-secondary-actions
+					include-list-header></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" draggable selectable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryTextOnly" draggable selectable expandable></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Draggable & Selectable (no images)</h2>
+		<h2>Selectable</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-nested demo-item-key="listWithNoImgs" draggable selectable expandable include-action-href></d2l-demo-list-nested>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" selectable expandable expanded></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Selectable & NOT Draggable</h2>
+		<h2>Draggable</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-nested demo-item-key="listWithNoImgs" selectable expandable expanded></d2l-demo-list-nested>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" draggable expandable></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Draggable & NOT Selectable</h2>
+		<h2>Expandable</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-nested demo-item-key="listWithNoImgs" draggable expandable></d2l-demo-list-nested>
+				<d2l-demo-list-nested demo-item-key="primaryTextOnlyDeepNesting" expandable></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>No Description</h2>
-		<d2l-demo-snippet>
-			<template>
-				<d2l-demo-list-nested demo-item-key="listWithNoDescriptions" draggable expandable expanded></d2l-demo-list-nested>
-			</template>
-		</d2l-demo-snippet>
+		<!-- LIST OF DEMOS TODO -->
+		<!--
+			1. Button list
+			2. Load more (with view count)
+		-->
 	</d2l-demo-page>
 
 	<script>
