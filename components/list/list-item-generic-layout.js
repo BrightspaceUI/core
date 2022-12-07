@@ -164,7 +164,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="control-container"]) {
-				grid-column: control-start / end;
+				grid-column: expand-collapse-start / end;
 				grid-row: 1 / 2;
 			}
 		`;

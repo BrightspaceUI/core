@@ -20,7 +20,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	static get styles() {
 		const styles = [ css`
 			.d2l-list-expand-collapse {
-				padding: 0.4rem 0.4rem 0 0;
+				padding: 0.4rem 0.3rem 0 0;
 			}
 			.d2l-list-expand-collapse d2l-button-icon {
 				--d2l-button-icon-min-height: 1.2rem;
@@ -81,7 +81,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_renderExpandCollapseAction() {
-		if ((this.selectable && !this.disabled) || !(this.expandable && this._hasChildren)) {
+		if (this.selectable || !(this.expandable && this._hasChildren)) {
 			return nothing;
 		}
 

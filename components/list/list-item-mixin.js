@@ -142,6 +142,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				border-top-color: transparent;
 			}
 
+			/* TODO - add animations */
 			:host(:not([expanded])) [slot="nested"] {
 				display: none;
 			}
@@ -274,9 +275,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			/* TODO - align to spec (or revert) */
+
 			d2l-list-item-drag-handle {
-				margin: 0.25rem 0.4rem 0.25rem 0.4rem;
+				margin: 0.25rem 0.3rem;
 			}
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
