@@ -1,3 +1,13 @@
+/**
+ * Adapted from:
+ * 	https://github.com/josepharhar/offsetparent-polyfills
+ *
+ * More discussion:
+ * 	https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
+ * 	https://github.com/mjfroman/moz-libwebrtc-third-party/commit/047e8804fc9d871825c1005413610e934f0116d9
+ * 	https://github.com/WICG/webcomponents/issues/497
+ */
+
 const originalOffsetParent = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetParent').get;
 const originalOffsetTop = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetTop').get;
 const originalOffsetLeft = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetLeft').get;
