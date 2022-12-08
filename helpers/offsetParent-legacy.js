@@ -79,9 +79,9 @@ function isOffsetParentPatched() {
 	shadowroot.appendChild(shadowChild);
 
 	const originalValue = originalOffsetParent.apply(lightChild);
-	if (originalValue == container) {
+	if (originalValue === container) {
 		isOffsetParentPatchedCached = true;
-	} else if (originalValue == shadowChild) {
+	} else if (originalValue === shadowChild) {
 		isOffsetParentPatchedCached = false;
 	} else {
 		console.error('what ', originalValue);
