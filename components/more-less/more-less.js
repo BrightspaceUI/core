@@ -1,4 +1,5 @@
 import '../button/button-subtle.js';
+import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -276,6 +277,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__init_setBaseHeight() {
 		this.__contentHeight = this.height;
+		this.__maxHeight = 'unset';
 
 		requestAnimationFrame(() => {
 			this.__init_measureBaseHeight();
