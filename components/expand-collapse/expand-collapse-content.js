@@ -35,9 +35,8 @@ class ExpandCollapseContent extends LitElement {
 	static get styles() {
 		return css`
 			:host {
-				--d2l-expand-collapse-content-timing-function: cubic-bezier(0, 0.7, 0.5, 1);
-				--d2l-expand-collapse-content-transition-duration: 400ms;
 				display: block;
+				--d2l-expand-collapse-content-timing-function: cubic-bezier(0, 0.65, 0.18, 0.93);
 			}
 
 			:host([hidden]) {
@@ -47,7 +46,8 @@ class ExpandCollapseContent extends LitElement {
 			.d2l-expand-collapse-content-container {
 				display: none;
 				overflow: hidden;
-				transition: height var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-timing-function);
+				transition:
+					height var(--d2l-expand-collapse-content-transition-duration, 400ms) var(--d2l-expand-collapse-content-timing-function);
 			}
 
 			.d2l-expand-collapse-content-container:not([data-state="collapsed"]) {
