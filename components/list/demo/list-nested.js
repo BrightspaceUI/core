@@ -1,5 +1,6 @@
 import '../list-item-content.js';
 import '../list-item.js';
+import '../list-item-button.js';
 import '../list.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../dropdown/dropdown-more.js';
@@ -25,6 +26,7 @@ class ListDemoNested extends LitElement {
 			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
 			includeListHeader: { type: Boolean, attribute: 'include-list-header' },
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
+			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
 			_items: { state: true }
 		};
 	}
@@ -57,6 +59,11 @@ class ListDemoNested extends LitElement {
 		if (changedProperties.has('demoItemKey')) {
 			this._items = listDemos[this.demoItemKey] ?? [];
 		}
+	}
+
+	_handleButtonClick(e) {
+		// eslint-disable-next-line no-console
+		console.log('d2l-list-item-button clicked!', e);
 	}
 
 	async _handleListItemsMove(e) {
@@ -136,21 +143,8 @@ class ListDemoNested extends LitElement {
 			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
 				${ includeHeader ? this._renderListHeader() : nothing }
 				${repeat(items, item => item.key, item => html`
-					<d2l-list-item
-						action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
-						?draggable="${this.draggable}"
-						drag-handle-text="${item.primaryText}"
-						?drop-nested="${item.dropNested}"
-						key="${item.key}"
-						label="${item.primaryText}"
-						?selectable="${this.selectable}"
-						?expandable="${this.expandable}"
-						?expanded="${this.expanded}">
-							${this._renderIllustration(item)}
-							${this._renderItemContent(item)}
-							${this._renderSecondaryActions()}
-							${this._renderNestedList(item)}
-					</d2l-list-item>
+					${this._renderListItem(item)}
+					${this._renderListItemButton(item)}
 				`)}
 			</d2l-list>
 		`;
@@ -162,6 +156,53 @@ class ListDemoNested extends LitElement {
 				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 			</d2l-list-header>
+		`;
+	}
+
+	_renderListItem(item) {
+		if (this.useButtonListItem) {
+			return nothing;
+		}
+		return html`
+			<d2l-list-item
+				action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
+				?draggable="${this.draggable}"
+				drag-handle-text="${item.primaryText}"
+				?drop-nested="${item.dropNested}"
+				key="${item.key}"
+				label="${item.primaryText}"
+				?selectable="${this.selectable}"
+				?expandable="${this.expandable}"
+				?expanded="${this.expanded}">
+					${this._renderIllustration(item)}
+					${this._renderItemContent(item)}
+					${this._renderSecondaryActions()}
+					${this._renderNestedList(item)}
+			</d2l-list-item>
+		`;
+	}
+
+	_renderListItemButton(item) {
+		if (!this.useButtonListItem) {
+			return nothing;
+		}
+
+		return html`
+			<d2l-list-item-button
+				?draggable="${this.draggable}"
+				drag-handle-text="${item.primaryText}"
+				?drop-nested="${item.dropNested}"
+				key="${item.key}"
+				label="${item.primaryText}"
+				?selectable="${this.selectable}"
+				?expandable="${this.expandable}"
+				?expanded="${this.expanded}"
+				@d2l-list-item-button-click="${this._handleButtonClick}">
+					${this._renderIllustration(item)}
+					${this._renderItemContent(item)}
+					${this._renderSecondaryActions()}
+					${this._renderNestedList(item)}
+			</d2l-list-item-button>
 		`;
 	}
 
