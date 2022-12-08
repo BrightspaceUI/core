@@ -215,6 +215,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 				.d2l-input-inside-after {
 					right: 0;
 				}
+				.d2l-input-unit {
+					font-size: 0.8rem;
+				}
 				.d2l-input-inside-before .d2l-input-unit {
 					margin-left: 12px;
 					margin-right: 6px;
