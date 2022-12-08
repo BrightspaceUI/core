@@ -154,7 +154,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			unit: { type: String },
 			/**
-			 * Optional label for the unit which will not be visually rendered but replaces the unit in the label
+			 * Accessible label for the unit which will not be visually rendered
 			 * @type {string}
 			 */
 			unitLabel: { attribute: 'unit-label', type: String },
@@ -261,6 +261,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._lastSlotWidth = 0;
+		this._missingUnitLabelErrorHasBeenThrown = false;
 		this._prevValue = '';
 
 		this._handleBlur = this._handleBlur.bind(this);
@@ -268,6 +269,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._handleMouseEnter = this._handleMouseEnter.bind(this);
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
 		this._perfMonitor = new PerfMonitor(this);
+		this._validatingUnitTimeout = null;
 	}
 
 	get value() { return this._value; }
@@ -340,6 +342,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		super.firstUpdated(changedProperties);
 
 		this._setValue(this.value, true);
+		this._validateUnit();
 
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
@@ -459,7 +462,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'validationError') {
+			if (prop === 'unit' || prop === 'unitLabel') {
+				this._validateUnit();
+			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 					tooltip.updatePosition();
@@ -619,6 +624,20 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			this._lastSlotWidth = 0;
 		}
 
+	}
+
+	_validateUnit() {
+		clearTimeout(this._validatingUnitTimeout);
+		// don't error immediately in case it doesn't get set immediately
+		this._validatingUnitTimeout = setTimeout(() => {
+			this._validatingUnitTimeout = null;
+			const hasUnit = (typeof this.unit === 'string') && this.unit.length > 0;
+			const hasUnitLabel = (typeof this.unitLabel === 'string') && this.unitLabel.length > 0;
+			if (!this._missingUnitLabelErrorHasBeenThrown && hasUnit && this.unit !== '%' && !hasUnitLabel) {
+				this._missingUnitLabelErrorHasBeenThrown = true;
+				throw new Error(`<d2l-input-text>: missing required attribute "unit-label" for unit "${this.unit}"`);
+			}
+		}, 3000);
 	}
 
 }
