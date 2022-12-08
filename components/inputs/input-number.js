@@ -164,6 +164,11 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			unit: { type: String },
 			/**
+			 * Accessible label for the unit which will not be visually rendered
+			 * @type {string}
+			 */
+			unitLabel: { attribute: 'unit-label', type: String },
+			/**
 			 * Value of the input
 			 * @type {number}
 			 */
@@ -350,6 +355,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				unit="${ifDefined(this.unit)}"
+				unit-label="${ifDefined(this.unitLabel)}"
 				.value="${this._formattedValue}">
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
