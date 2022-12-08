@@ -158,29 +158,41 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel-opener {
 				margin-inline-end: 0.3rem;
 			}
-			.d2l-collapsible-panel-opener d2l-icon-custom {
+			.d2l-collapsible-panel-opener > d2l-icon-custom {
 				margin: 0.6rem;
 				transform-origin: center;
 			}
-			.d2l-collapsible-panel-opener d2l-icon-custom svg {
+			.d2l-collapsible-panel-opener > d2l-icon-custom svg {
 				fill: transparent;
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener d2l-icon-custom svg {
+			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 				fill: var(--d2l-color-tungsten);
 			}
 			@media (prefers-reduced-motion: no-preference) {
-				.d2l-collapsible-panel-opener d2l-icon-custom {
-					transition: transform var(--d2l-collapsible-panel-transition-time) ease-in-out;
+				.d2l-collapsible-panel-opener > d2l-icon-custom {
+					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
-				.d2l-collapsible-panel-opener d2l-icon-custom svg {
+				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
+					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-transition-time) ease-in-out;
+				}
+				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
 					transition: fill var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
+				@keyframes d2l-collapsible-panel-opener-open {
+					0% {transform: rotate(0deg);}
+					60% {transform: rotate(90deg);}
+					70% {transform: rotate(100deg);}
+					100% {transform: rotate(90deg);}
+				}
+				@keyframes d2l-collapsible-panel-opener-close {
+					0% {transform: rotate(90deg);}
+					60% {transform: rotate(0deg);}
+					70% {transform: rotate(-10deg);}
+					100% {transform: rotate(0deg);}
+				}
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
+			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
 				transform: rotate(90deg);
-			}
-			:host([dir="rtl"][expanded]) .d2l-collapsible-panel-opener d2l-icon-custom {
-				transform: rotate(-90deg);
 			}
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
@@ -215,17 +227,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
 				display: none;
 			}
-
 		`];
 	}
 
 	constructor() {
 		super();
+		this.expanded = false;
+		this.fullWidth = false;
 		this.headingLevel = defaultHeading;
 		this.headingStyle = defaultHeading;
-		this.expanded = false;
 		this.type = 'default';
-		this.fullWidth = false;
 	}
 
 	connectedCallback() {
@@ -251,7 +262,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				if (!this.expanded) return;
 
 				const entry = entries[0];
-
 				const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
 				if (entry.isIntersecting) {
 					element.classList.remove('scrolled');
