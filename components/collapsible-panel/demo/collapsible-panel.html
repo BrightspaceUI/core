@@ -8,8 +8,12 @@
 			import '../collapsible-panel.js';
 			import '../collapsible-panel-summary-item.js';
 			import '../../button/button-icon.js';
+			import '../../button/button-subtle.js';
 			import '../../dropdown/dropdown-more.js';
 			import '../../dropdown/dropdown-menu.js';
+			import '../../inputs/input-search.js';
+			import '../../filter/filter.js';
+			import '../../filter/filter-dimension-set.js';
 			import '../../link/link.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
@@ -104,18 +108,28 @@
 				</d2l-collapsible-panel>
 			</d2l-demo-snippet>
 
-			<h2>Multi-line summary</h2>
+			<h2>Multi-line summary and interactive content</h2>
 			<d2l-demo-snippet>
-					<d2l-collapsible-panel title="Availability Dates and Conditions">
-						<div slot="summary">
-							<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
-							<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
-							<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+				<d2l-collapsible-panel title="Availability Dates and Conditions">
+					<div slot="summary">
+						<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+						<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
+						<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+					</div>
+					<div slot="content">
+						<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
+							<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
+							<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
+							<d2l-filter>
+								<d2l-filter-dimension-set key="Filter" text="Filter">
+								</d2l-filter-dimension-set>
+							</d2l-filter>
 						</div>
-						<div slot="content">
+						<div>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
 						</div>
-					</d2l-collapsible-panel>
+					</div>
+				</d2l-collapsible-panel>
 			</d2l-demo-snippet>
 
 

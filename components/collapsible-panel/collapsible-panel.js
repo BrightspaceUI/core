@@ -179,16 +179,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					transition: fill var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
 				@keyframes d2l-collapsible-panel-opener-open {
-					0% {transform: rotate(0deg);}
-					60% {transform: rotate(90deg);}
-					70% {transform: rotate(100deg);}
-					100% {transform: rotate(90deg);}
+					0% { transform: rotate(0deg); }
+					60% { transform: rotate(90deg); }
+					70% { transform: rotate(100deg); }
+					100% { transform: rotate(90deg); }
 				}
 				@keyframes d2l-collapsible-panel-opener-close {
-					0% {transform: rotate(90deg);}
-					60% {transform: rotate(0deg);}
-					70% {transform: rotate(-10deg);}
-					100% {transform: rotate(0deg);}
+					0% { transform: rotate(90deg); }
+					60% { transform: rotate(0deg); }
+					70% { transform: rotate(-10deg); }
+					100% { transform: rotate(0deg); }
 				}
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
