@@ -48,6 +48,16 @@ describe('d2l-input-text', () => {
 			expect(getInput(elem).hasAttribute('aria-describedby')).to.be.false;
 		});
 
+		it('should append unit to the label without a space', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" label-hidden unit="px"></d2l-input-text>`);
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('labelpx');
+		});
+
+		it('should append unit-label to the label with a space', async() => {
+			const elem = await fixture(html`<d2l-input-text label="grade" label-hidden unit="/5" unit-label="out of 5"></d2l-input-text>`);
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('grade out of 5');
+		});
+
 	});
 
 	describe('constructor', () => {

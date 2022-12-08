@@ -154,6 +154,11 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			unit: { type: String },
 			/**
+			 * Optional label for the unit which will not be visually rendered but replaces the unit in the label
+			 * @type {string}
+			 */
+			unitLabel: { attribute: 'unit-label', type: String },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -454,12 +459,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'unit') {
-				if (this.unit && this.unit !== '%') {
-					throw new Error('Invalid unit value for d2l-input-text.');
-				}
-				this._updateInputLayout();
-			} else if (prop === 'validationError') {
+			if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 					tooltip.updatePosition();
@@ -476,7 +476,10 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			label = this.getAttribute('aria-label');
 		}
 		if (label) {
-			const unitLabel = this.unit ? ` ${this.unit}` : '';
+			let unitLabel = '';
+			if (this.unit) {
+				unitLabel = this.unitLabel ? ` ${this.unitLabel}` : this.unit;
+			}
 			return `${label}${unitLabel}`;
 		}
 		return undefined;
