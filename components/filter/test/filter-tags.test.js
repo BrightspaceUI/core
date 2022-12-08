@@ -23,7 +23,7 @@ const basic = html`
 				<d2l-filter-dimension-set-value text="Value 2 - 3" key="3"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set>
 		</d2l-filter>
-		<d2l-filter-tags filter-ids="filter" label="The applied filters"></d2l-filter-tags>
+		<d2l-filter-tags filter-ids="filter"></d2l-filter-tags>
 	</div>`;
 
 const twoFilters = html`
@@ -41,7 +41,7 @@ const twoFilters = html`
 				<d2l-filter-dimension-set-value selected text="Value" key="1"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set>
 		</d2l-filter>
-		<d2l-filter-tags filter-ids="filter-1 filter-2" label="The applied filters"></d2l-filter-tags>
+		<d2l-filter-tags filter-ids="filter-1 filter-2"></d2l-filter-tags>
 	</div>`;
 
 describe('d2l-filter-tags', () => {
@@ -70,7 +70,6 @@ describe('d2l-filter-tags', () => {
 		});
 		it('attributes are set correctly', () => {
 			expect(filterTags.filterIds).to.equal('filter');
-			expect(filterTags.label).to.equal('The applied filters');
 		});
 		it('instantiates with the selected filters added as tag-list items', async() => {
 			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
