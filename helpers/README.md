@@ -171,6 +171,19 @@ element.addEventListener('d2l-gesture-swipe', (e) => {
 });
 ```
 
+## offsetParent-legacy
+
+A ponyfill for [offsetParent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent) for "legacy" `offsetParent` behaviour, which will include any ancestor shadow DOMs when searching for the closest positioned ancestor. The native browser behaviour was changed in 2022 to not leak nodes within a shadow tree.
+
+To use the ponyfill, import `getLegacyOffsetParent` (and/or `getLegacyOffsetTop`, `getLegacyOffsetLeft`):
+
+```js
+import { getLegacyOffsetParent } from '@brightspace-ui/core/helpers/offsetParent-legacy.js';
+
+// Replace `element.offsetParent` with:
+const offsetParent = getLegacyOffsetParent(element);
+```
+
 ## queueMicrotask
 
 A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
