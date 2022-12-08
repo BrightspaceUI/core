@@ -633,13 +633,14 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_validateUnit() {
+		if (this._missingUnitLabelErrorHasBeenThrown) return;
 		clearTimeout(this._validatingUnitTimeout);
 		// don't error immediately in case it doesn't get set immediately
 		this._validatingUnitTimeout = setTimeout(() => {
 			this._validatingUnitTimeout = null;
 			const hasUnit = (typeof this.unit === 'string') && this.unit.length > 0;
 			const hasUnitLabel = (typeof this.unitLabel === 'string') && this.unitLabel.length > 0;
-			if (!this._missingUnitLabelErrorHasBeenThrown && hasUnit && this.unit !== '%' && !hasUnitLabel) {
+			if (hasUnit && this.unit !== '%' && !hasUnitLabel) {
 				this._missingUnitLabelErrorHasBeenThrown = true;
 				throw new Error(`<d2l-input-text>: missing required attribute "unit-label" for unit "${this.unit}"`);
 			}
