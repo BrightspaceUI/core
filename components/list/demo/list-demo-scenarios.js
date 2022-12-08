@@ -127,7 +127,7 @@ export const listDemos = {
 	}],
 	primaryTextOnlyDeepNesting: [{
 		key: '1',
-		primaryText: 'Deeply Nested Items',
+		primaryText: 'Item 1 - Deeply Nested',
 		dropNested: true,
 		items: [{
 			key: '1-1',
@@ -177,15 +177,127 @@ export const listDemos = {
 		}]
 	}, {
 		key: '2',
-		primaryText: 'Applied Wetland Science',
+		primaryText: 'Item 2',
 		items: [{
 			key: '2-1',
-			primaryText: 'Carbon & Nitrogen Cycling',
+			primaryText: '2-1',
 			dropNested: true,
 			items: []
 		}, {
 			key: '2-2',
-			primaryText: 'Wetland Engineering',
+			primaryText: '2-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '3',
+		primaryText: 'Item 3',
+		items: [{
+			key: '3-1',
+			primaryText: '3-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '3-2',
+			primaryText: '3-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '4',
+		primaryText: 'Item 4',
+		items: [{
+			key: '4-1',
+			primaryText: '4-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '4-2',
+			primaryText: '4-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '5',
+		primaryText: 'Item 5',
+		items: [{
+			key: '5-1',
+			primaryText: '5-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '5-2',
+			primaryText: '5-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '6',
+		primaryText: 'Item 6',
+		items:[{
+			key: '6-1',
+			primaryText: '6-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '6-2',
+			primaryText: '6-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '7',
+		primaryText: 'Item 7',
+		items: [{
+			key: '7-1',
+			primaryText: '7-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '7-2',
+			primaryText: '7-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '8',
+		primaryText: 'Item 8',
+		items: [{
+			key: '8-1',
+			primaryText: '8-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '8-2',
+			primaryText: '8-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '9',
+		primaryText: 'Item 9',
+		items: [{
+			key: '9-1',
+			primaryText: '9-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '9-2',
+			primaryText: '9-2',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '10',
+		primaryText: 'Item 10',
+		items: [{
+			key: '10-1',
+			primaryText: '10-1',
+			dropNested: true,
+			items: []
+		}, {
+			key: '10-2',
+			primaryText: '10-2',
 			dropNested: true,
 			items: []
 		}]

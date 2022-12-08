@@ -6,6 +6,7 @@ import '../../dropdown/dropdown-menu.js';
 import '../../dropdown/dropdown-more.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../paging/pager-load-more.js';
 import '../list-header.js';
 import '../../selection/selection-action.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -27,7 +28,11 @@ class ListDemoNested extends LitElement {
 			includeListHeader: { type: Boolean, attribute: 'include-list-header' },
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
-			_items: { state: true }
+			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
+			_items: { state: true },
+			_loadedItems: { state: true },
+			_remainingItemCount: { state: true },
+			_lastItemLoadedIndex: { state: true }
 		};
 	}
 
@@ -44,12 +49,16 @@ class ListDemoNested extends LitElement {
 	constructor() {
 		super();
 		this._items = [];
+		this._loadedItems = [];
+		this._remainingItemCount = 0;
+		this._lastItemLoadedIndex = 1;
+		this._pageSize = 1;
 	}
 
 	render() {
 		return html`
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
-				${this._renderList(this._items, false, this.includeListHeader)}
+				${this._renderList(this._loadedItems, false, this.includeListHeader, this.showLoadMore)}
 			</div>
 		`;
 	}
@@ -58,6 +67,11 @@ class ListDemoNested extends LitElement {
 		super.updated(changedProperties);
 		if (changedProperties.has('demoItemKey')) {
 			this._items = listDemos[this.demoItemKey] ?? [];
+			this._loadedItems = this._items;
+		}
+		if (changedProperties.has('demoItemKey') || changedProperties.has('showLoadMore') || changedProperties.has('_lastItemLoadedIndex')) {
+			this._loadedItems = this.showLoadMore ? this._items.slice(0, this._lastItemLoadedIndex + 1) : this._items;
+			this._remainingItemCount = this.showLoadMore ? this._items.length - this._loadedItems.length : 0;
 		}
 	}
 
@@ -123,6 +137,14 @@ class ListDemoNested extends LitElement {
 
 	}
 
+	_handlePagerLoadMore(e) {
+		// mock delay consumers might have
+		setTimeout(() => {
+			this._lastItemLoadedIndex += this._pageSize;
+			e.detail.complete();
+		}, 1000);
+	}
+
 	_renderIllustration(item) {
 		if (!item.imgSrc) {
 			return nothing;
@@ -138,7 +160,7 @@ class ListDemoNested extends LitElement {
 			</d2l-list-item-content>`;
 	}
 
-	_renderList(items, nested, includeHeader = false) {
+	_renderList(items, nested, includeHeader = false, showLoadMore = false) {
 		return html`
 			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
 				${ includeHeader ? this._renderListHeader() : nothing }
@@ -146,6 +168,7 @@ class ListDemoNested extends LitElement {
 					${this._renderListItem(item)}
 					${this._renderListItemButton(item)}
 				`)}
+				${ showLoadMore ? this._renderShowLoadMore() : nothing }
 			</d2l-list>
 		`;
 	}
@@ -228,6 +251,17 @@ class ListDemoNested extends LitElement {
 					</d2l-dropdown-menu>
 				</d2l-dropdown-more>
 			</div>
+		`;
+	}
+
+	_renderShowLoadMore() {
+		return html`
+			<d2l-pager-load-more slot="pager"
+				@d2l-pager-load-more="${this._handlePagerLoadMore}"
+				?has-more="${this._lastItemLoadedIndex < this._items.length - 1}"
+				item-count="${this._items.length}"
+				page-size="${this._remainingItemCount < this._pageSize ? this._remainingItemCount : this._pageSize}">
+			</d2l-pager-load-more>
 		`;
 	}
 
