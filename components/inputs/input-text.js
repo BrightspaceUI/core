@@ -454,8 +454,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			${offscreenContainer}
 		`;
 		if (this.label && !this.labelHidden && !this.labelledBy) {
+			const unitLabel = this._getUnitLabel();
 			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${this.unit ? html`<span class="d2l-offscreen"> ${this.unit}</span>` : ''}</label>
+				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>
 				${input}`;
 		}
 		return input;
@@ -484,11 +485,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			label = this.getAttribute('aria-label');
 		}
 		if (label) {
-			let unitLabel = '';
-			if (this.unit) {
-				unitLabel = this.unitLabel ? ` ${this.unitLabel}` : this.unit;
-			}
-			return `${label}${unitLabel}`;
+			return `${label}${this._getUnitLabel()}`;
 		}
 		return undefined;
 	}
@@ -498,6 +495,12 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			return this.type;
 		}
 		return 'text';
+	}
+
+	_getUnitLabel() {
+		if (!this.unit) return '';
+		const unitLabel = this.unitLabel || this.unit;
+		return ` ${unitLabel}`;
 	}
 
 	_handleAfterSlotChange(e) {
