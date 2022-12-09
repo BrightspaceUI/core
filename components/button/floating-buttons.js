@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
+import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -224,7 +225,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	_getBoundingAncestor() {
 
 		const boundingAncestor = getBoundingAncestor(this);
-		const offsetParent = this.offsetParent;
+		const offsetParent = getLegacyOffsetParent(this);
 		if (!offsetParent) {
 			return null;
 		}

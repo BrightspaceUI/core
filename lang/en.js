@@ -21,7 +21,6 @@ export default {
 	"components.filter.loading": "Loading filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {No filters applied.} one {{number} filter applied.} other {{number} filters applied.}}",
 	"components.filter.filters": "Filters",
-	"components.filter.noActiveFilters": "No active filters",
 	"components.filter.noFilters": "No available filters",
 	"components.filter.searchResults": "{number, plural, =0 {No search results} one {{number} search result} other {{number} search results}}",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
