@@ -21,7 +21,6 @@ export default {
 	"components.filter.loading": "Indlæser filtre",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Ingen filtre anvendt.} one {{number} filter anvendt.} other {{number} filtre anvendt.}}",
 	"components.filter.filters": "Filtre",
-	"components.filter.noActiveFilters": "Ingen aktive filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",
 	"components.filter.searchResults": "{number, plural, =0 {Ingen søgeresultater} one {{number} søgeresultat} other {{number} søgeresultater}}",
 	"components.filter.singleDimensionDescription": "Filtrer efter: {filterName}",

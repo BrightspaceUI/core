@@ -21,7 +21,6 @@ export default {
 	"components.filter.loading": "フィルタのロード中",
 	"components.filter.filterCountDescription": "{number, plural, =0 {フィルタは適用されていません。} other {{number} 個のフィルタが適用されています。}}",
 	"components.filter.filters": "フィルタ",
-	"components.filter.noActiveFilters": "アクティブフィルタなし",
 	"components.filter.noFilters": "使用可能なフィルタはありません",
 	"components.filter.searchResults": "{number, plural, =0 {検索結果なし} other {{number} 件の検索結果}}",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",

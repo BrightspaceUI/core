@@ -48,6 +48,21 @@ describe('d2l-input-text', () => {
 			expect(getInput(elem).hasAttribute('aria-describedby')).to.be.false;
 		});
 
+		it('should append unit to the label when label is visible', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" unit="%"></d2l-input-text>`);
+			expect(getLabel(elem).textContent).to.equal('label %');
+		});
+
+		it('should append unit to the aria-label when label is hidden', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" label-hidden unit="%"></d2l-input-text>`);
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('label %');
+		});
+
+		it('should prefer unit-label over unit', async() => {
+			const elem = await fixture(html`<d2l-input-text label="grade" label-hidden unit="/5" unit-label="out of 5"></d2l-input-text>`);
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('grade out of 5');
+		});
+
 	});
 
 	describe('constructor', () => {

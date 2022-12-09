@@ -35,7 +35,7 @@ describe('d2l-filter-tags', () => {
 
 			before(async() => {
 				await page.$eval(selector, async(elem, width) => {
-					elem.parentNode.style.width = `${width + 140}px`; // account for label
+					elem.parentNode.style.width = `${width + 140}px`; // account for filter
 				}, width);
 			});
 
@@ -110,7 +110,7 @@ describe('d2l-filter-tags', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 
-		it('is correct after clicking Clear All with label', async function() {
+		it('is correct after clicking Clear All with two filters', async function() {
 			await page.$eval('#two-filters', async(elem) => {
 				const filterTags = elem.querySelector('d2l-filter-tags');
 				const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
