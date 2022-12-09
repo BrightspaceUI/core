@@ -32,7 +32,8 @@ class ListDemoNested extends LitElement {
 			_items: { state: true },
 			_loadedItems: { state: true },
 			_remainingItemCount: { state: true },
-			_lastItemLoadedIndex: { state: true }
+			_lastItemLoadedIndex: { state: true },
+			_totalNestedListCount: { state: true }
 		};
 	}
 
@@ -53,6 +54,7 @@ class ListDemoNested extends LitElement {
 		this._remainingItemCount = 0;
 		this._lastItemLoadedIndex = 1;
 		this._pageSize = 1;
+		this._totalNestedListCount = 0;
 	}
 
 	render() {
@@ -67,12 +69,24 @@ class ListDemoNested extends LitElement {
 		super.updated(changedProperties);
 		if (changedProperties.has('demoItemKey')) {
 			this._items = listDemos[this.demoItemKey] ?? [];
+			this._totalNestedListCount = this._items.reduce((count, currentItem) => count + this._getListItemTotalCount(currentItem), 0);
 			this._loadedItems = this._items;
 		}
-		if (changedProperties.has('demoItemKey') || changedProperties.has('showLoadMore') || changedProperties.has('_lastItemLoadedIndex')) {
+		if (changedProperties.has('_items') || changedProperties.has('demoItemKey') || changedProperties.has('showLoadMore') || changedProperties.has('_lastItemLoadedIndex')) {
 			this._loadedItems = this.showLoadMore ? this._items.slice(0, this._lastItemLoadedIndex + 1) : this._items;
 			this._remainingItemCount = this.showLoadMore ? this._items.length - this._loadedItems.length : 0;
 		}
+	}
+
+	_getListItemTotalCount(item) {
+		let count = 1;
+		for (const nestedItem of item.items) {
+			count++;
+			for (const ultraNestedItem of nestedItem.items) {
+				count += this._getListItemTotalCount(ultraNestedItem);
+			}
+		}
+		return count;
 	}
 
 	_handleButtonClick(e) {
@@ -259,7 +273,7 @@ class ListDemoNested extends LitElement {
 			<d2l-pager-load-more slot="pager"
 				@d2l-pager-load-more="${this._handlePagerLoadMore}"
 				?has-more="${this._lastItemLoadedIndex < this._items.length - 1}"
-				item-count="${this._items.length}"
+				item-count="${this._totalNestedListCount}"
 				page-size="${this._remainingItemCount < this._pageSize ? this._remainingItemCount : this._pageSize}">
 			</d2l-pager-load-more>
 		`;
