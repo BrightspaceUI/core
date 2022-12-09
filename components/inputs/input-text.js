@@ -163,6 +163,11 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 * @type {string}
 			 */
 			value: { type: String },
+			/**
+			 * Alignment of the value text within the input
+			 * @type {'start'|'end'}
+			 */
+			valueAlign: { attribute: 'value-align', type: String },
 			_firstSlotWidth: { type: Number },
 			_hasAfterContent: { type: Boolean, attribute: false },
 			_focused: { type: Boolean },
@@ -180,6 +185,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				:host([value-align="end"]) {
+					--d2l-input-text-align: end;
 				}
 				.d2l-input-label {
 					display: inline-block;
@@ -253,6 +261,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this.readonly = false;
 		this.required = false;
 		this.type = 'text';
+		this.valueAlign = 'start';
 		this._value = '';
 
 		this._descriptionId = getUniqueId();
@@ -401,8 +410,8 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
 		const isValid = ariaInvalid !== 'true' || this.disabled;
-		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
-		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
+		const invalidIconSide = ((this.dir === 'rtl' && this.valueAlign === 'start') || (this.dir !== 'rtl' && this.valueAlign === 'end')) ? 'left' : 'right';
+		const invalidIconOffset = Math.max((invalidIconSide === 'left') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
