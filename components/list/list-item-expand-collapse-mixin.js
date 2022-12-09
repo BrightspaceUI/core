@@ -12,7 +12,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			 */
 			expandable: { type: Boolean },
 			expanded: { type: Boolean, reflect: true },
-			_hasChildren: { state: true },
 			_siblingHasNestedItems: { state: true }
 		};
 	}
@@ -43,7 +42,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 
 	constructor() {
 		super();
-		this._hasChildren = false;
 		this._siblingHasNestedItems = false;
 
 		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
@@ -59,14 +57,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 
 	updateSiblingHasChildren(siblingHasNestedItems) {
 		this._siblingHasNestedItems = siblingHasNestedItems;
-	}
-
-	_onNestedSlotChangeExpandCollapseMixin() {
-		const nestedList = this._getNestedList();
-		if (this._hasChildren !== !!nestedList) {
-			this._hasChildren = !!nestedList;
-			this.dispatchEvent(new CustomEvent('d2l-list-item-children-change', { bubbles: true, composed: true }));
-		}
 	}
 
 	_renderExpandCollapse() {

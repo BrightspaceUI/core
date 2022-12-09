@@ -78,7 +78,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
+			_hasChildren: { state: true }
 		};
 	}
 
@@ -364,6 +365,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._displayKeyboardTooltip = false;
 		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
+		this._hasChildren = false;
 	}
 
 	get breakpoints() {
@@ -542,8 +544,10 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		if (this.selectable) {
 			this._onNestedSlotChangeCheckboxMixin();
 		}
-		if (this.expandable) {
-			this._onNestedSlotChangeExpandCollapseMixin();
+		const nestedList = this._getNestedList();
+		if (this._hasChildren !== !!nestedList) {
+			this._hasChildren = !!nestedList;
+			this.dispatchEvent(new CustomEvent('d2l-list-item-children-change', { bubbles: true, composed: true }));
 		}
 	}
 

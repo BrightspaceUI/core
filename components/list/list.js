@@ -81,6 +81,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
 		this.addEventListener('d2l-list-item-children-change', (e) => this._handleListIemChildrenChange(e));
+		this.addEventListener('d2l-list-item-expand-collapse-toggled', this._handleListItemsShowingCountChange);
 	}
 
 	disconnectedCallback() {
@@ -207,8 +208,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (refresh) {
 			this._itemsShowingTotalCount = await this.getItems().reduce(async(count, item) => {
 				await item.updateComplete;
-				if (item._selectionProvider) {
-					return (await count + await item._selectionProvider._getListItemsShowingTotalCount(true));
+				if (item._hasChildren && (!item.expandable || item.expanded)) {
+					const nestedList = item._getNestedList();
+					return (await count + await nestedList._getListItemsShowingTotalCount(true));
 				} else {
 					return await count;
 				}
