@@ -74,7 +74,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
 				--d2l-collapsible-panel-header-spacing: 0.6rem;
 				--d2l-collapsible-panel-transition-time: 0.2s;
-				--d2l-collapsible-panel-arrow-time: calc(var(--d2l-collapsible-panel-transition-time) * 1.7);
+				--d2l-collapsible-panel-arrow-time: calc(var(--d2l-collapsible-panel-transition-time) * 1.4);
 				--d2l-expand-collapse-content-timing-function: cubic-bezier(0.22, 0.01, 0.26, 0.99);
 				--d2l-expand-collapse-content-transition-duration: var(--d2l-collapsible-panel-transition-time);
 				display: block;
