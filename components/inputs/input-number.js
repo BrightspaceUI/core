@@ -174,6 +174,11 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			value: { type: Number, converter: numberConverter },
 			/**
+			 * Alignment of the value text within the input
+			 * @type {'start'|'end'}
+			 */
+			valueAlign: { attribute: 'value-align', type: String },
+			/**
 			 * @ignore
 			 */
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
@@ -206,6 +211,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		this.maxExclusive = false;
 		this.minExclusive = false;
 		this.required = false;
+		this.valueAlign = 'start';
 
 		this._formattedValue = '';
 		this._hintType = HINT_TYPES.NONE;
@@ -331,6 +337,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	}
 
 	render() {
+		const valueAlign = (this.valueAlign === 'end') ? 'end' : 'start';
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
@@ -356,7 +363,8 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				title="${ifDefined(this.title)}"
 				unit="${ifDefined(this.unit)}"
 				unit-label="${ifDefined(this.unitLabel)}"
-				.value="${this._formattedValue}">
+				.value="${this._formattedValue}"
+				value-align="${valueAlign}">
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>

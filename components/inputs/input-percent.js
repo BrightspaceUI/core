@@ -74,7 +74,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		return [ super.styles,
 			css`
 				:host {
-					--d2l-input-text-align: end;
 					display: inline-block;
 					position: relative;
 					width: 100%;
@@ -130,7 +129,8 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				unit="%"
-				value="${ifDefined(this.value)}">
+				value="${ifDefined(this.value)}"
+				value-align="end">
 					<slot slot="after" name="after"></slot>
 			</d2l-input-number>
 		`;
