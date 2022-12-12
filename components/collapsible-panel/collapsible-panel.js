@@ -73,7 +73,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
 				--d2l-collapsible-panel-header-spacing: 0.6rem;
-				--d2l-collapsible-panel-transition-time: 0.2s;
+				--d2l-collapsible-panel-transition-time: 0.3s;
 				--d2l-expand-collapse-content-timing-function: cubic-bezier(0.22, 0.01, 0.26, 0.99);
 				--d2l-expand-collapse-content-transition-duration: var(--d2l-collapsible-panel-transition-time);
 				display: block;
@@ -180,14 +180,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				}
 				@keyframes d2l-collapsible-panel-opener-open {
 					0% { transform: rotate(0deg); }
-					60% { transform: rotate(90deg); }
-					70% { transform: rotate(120deg); }
+					35% { transform: rotate(90deg); }
+					55% { transform: rotate(117deg); }
+					87%{transform: rotate(70deg); }
 					100% { transform: rotate(90deg); }
 				}
 				@keyframes d2l-collapsible-panel-opener-close {
 					0% { transform: rotate(90deg); }
-					60% { transform: rotate(0deg); }
-					70% { transform: rotate(-30deg); }
+					35% { transform: rotate(0deg); }
+					55% { transform: rotate(-27deg); }
+					83%{transform: rotate(25deg); }
 					100% { transform: rotate(0deg); }
 				}
 			}
