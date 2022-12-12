@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
+import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -154,11 +155,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
-			}
-
-			/* TODO - add animations */
-			:host(:not([expanded])) [slot="nested"] {
-				display: none;
 			}
 
 			:host([padding-type="none"]) d2l-list-item-generic-layout {
@@ -620,9 +616,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-				</div>
+				${this._renderNested(nested)}
 			</d2l-list-item-generic-layout>
 		`;
 
@@ -633,6 +627,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
+	}
+
+	_renderNested(nested) {
+		const nestedSlot = html`<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>`;
+		return html`
+			<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
+			</div>
+		`;
 	}
 
 	_renderOutsideControl(dragHandle) {
