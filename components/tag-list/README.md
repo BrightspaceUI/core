@@ -49,7 +49,7 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
     console.log('d2l-tag-list-clear event dispatched');
   });
 </script>
-<d2l-tag-list description="Example Tags">
+<d2l-tag-list description="Example Tags" clearable>
   <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
   <d2l-tag-list-item text="Reprehenderit in voluptate velit esse lorem ipsum dolor"></d2l-tag-list-item>
   <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
