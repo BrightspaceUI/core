@@ -304,7 +304,7 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 
 The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `header` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-table-header autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-table-header -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
@@ -318,7 +318,7 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
 
     static get properties() {
       return {
-        _checked: { state: true }
+        _data: { state: true }
       }
     }
 
@@ -328,7 +328,10 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
 
     constructor() {
       super();
-      this._checked = [ true, false ];
+      this._data = {
+        a: { checked: true },
+        b: { checked: false },
+      };
     }
 
     render() {
@@ -346,26 +349,23 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
               </tr>
             </thead>
             <tbody>
-              <tr selected>
-                <td>
-                  <d2l-selection-input selected key="a" label="a" ?checked="${this._checked[0]}" @d2l-selection-change="${() => this._selectRow(0)}"></d2l-selection-input>
-                </td>
-                <td>this row is ${!this._checked[0] ? 'not' : ''} selected</td>
-              </tr>
-              <tr>
-                <td>
-                  <d2l-selection-input selected key="a" label="a" ?checked="${this._checked[1]}" @d2l-selection-change="${() => this._selectRow(1)}"></d2l-selection-input>
-                </td>
-                <td>this row is ${!this._checked[1] ? 'not' : ''} selected</td>
-              </tr>
+              ${Object.keys(this._data).map((key, i) => html`
+                <tr ?selected="${i === 0}">
+                  <td>
+                    <d2l-selection-input selected key="${key}" label="${key}" ?checked="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
+                </tr>
+              `)}
             </tbody>
           </table>
         </d2l-table-wrapper>
       `;
     }
 
-    _selectRow(i) {
-      this._checked[i] = !this._checked[i];
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = !this._data[key].checked;
     }
 
   }

@@ -171,6 +171,7 @@ export const tableStyles = css`
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
+ * @slot header - Slot for `d2l-table-header` to be rendered above the table
  */
 export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
