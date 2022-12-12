@@ -136,7 +136,7 @@ To run the tests locally to help troubleshoot or develop new tests, first instal
 npm install @brightspace-ui/visual-diff@X  --no-save
 ```
 
-Replace `X` with [the current versions](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
+Replace `X` with [the current version](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
 
 Then run the tests:
 
