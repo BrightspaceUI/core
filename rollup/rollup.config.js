@@ -12,7 +12,7 @@ const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates)/**/*.js',
 	'./index.js',
-	'!**/*@(test|axe|visual-diff).js',
+	'!**/*.@(test|axe|visual-diff).js',
 ];
 const nonJsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates)/**/*.*',

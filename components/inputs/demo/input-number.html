@@ -8,6 +8,11 @@
 			import '../../demo/demo-page.js';
 			import '../input-number.js';
 		</script>
+		<style>
+			#denominator {
+				--d2l-input-text-align: end;
+			}
+		</style>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-input-number">
@@ -95,6 +100,13 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-input-number label="Trailing Zeroes" value-trailing-zeroes="1.00" trailing-zeroes></d2l-input-number>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Denominator</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-number id="denominator" max="5" min="0" label="Grade" label-hidden required unit="/5" unit-label="out of 5" value="3"></d2l-input-number>
 				</template>
 			</d2l-demo-snippet>
 
