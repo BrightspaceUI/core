@@ -182,14 +182,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					0% { transform: rotate(0deg); }
 					35% { transform: rotate(90deg); }
 					55% { transform: rotate(117deg); }
-					87%{transform: rotate(70deg); }
+					87% { transform: rotate(70deg); }
 					100% { transform: rotate(90deg); }
 				}
 				@keyframes d2l-collapsible-panel-opener-close {
 					0% { transform: rotate(90deg); }
 					35% { transform: rotate(0deg); }
 					55% { transform: rotate(-27deg); }
-					83%{transform: rotate(25deg); }
+					83% { transform: rotate(25deg); }
 					100% { transform: rotate(0deg); }
 				}
 			}
