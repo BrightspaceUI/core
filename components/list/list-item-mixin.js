@@ -5,9 +5,11 @@ import '../tooltip/tooltip.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
@@ -44,7 +46,18 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
-export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemExpandCollapseMixin(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass)))))) {
+/**
+ * @property label - The hidden label for the checkbox and expand collapse control
+ */
+export const ListItemMixin = superclass => class extends composeMixins(
+	superclass,
+	LabelledMixin,
+	LocalizeCoreElement,
+	ListItemExpandCollapseMixin,
+	ListItemDragDropMixin,
+	ListItemCheckboxMixin,
+	ListItemRoleMixin,
+	RtlMixin) {
 
 	static get properties() {
 		return {
@@ -384,6 +397,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		ro.observe(this);
 		if (this.role === 'rowgroup') {
 			addTabListener();
+		}
+		if (!this.selectable && !this.expandable) {
+			this.labelRequired = false;
 		}
 	}
 

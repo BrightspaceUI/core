@@ -50,7 +50,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	connectedCallback() {
 		super.connectedCallback();
 		// mixin requires key for events
-		if (!this.key) {
+		if (!this.key && this.expandable) {
+			console.warn('ListItemExpandCollapseMixin requires a key.');
 			this.expandable = false;
 		}
 	}
@@ -66,7 +67,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 
 		return html`
 		<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
-			${this._hasChildren ? html`<d2l-button-icon icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"></d2l-button-icon>` : nothing}
+			${this._hasChildren ? html`<d2l-button-icon
+				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
+				aria-expanded="${this.expanded ? 'true' : 'false'}"
+				label="${this.label}"></d2l-button-icon>` : nothing}
 		</div>`;
 	}
 
