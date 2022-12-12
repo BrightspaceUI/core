@@ -70,9 +70,17 @@ The `d2l-tag-list-item` provides the appropriate `listitem` semantics and stylin
     e.target.parentNode.removeChild(e.target);
     console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
   });
+
+  document.addEventListener('d2l-tag-list-clear', (e) => {
+    const items = e.target.querySelectorAll('[role="listitem"]');
+    items.forEach((item) => {
+      item.parentNode.removeChild(item);
+    });
+    console.log('d2l-tag-list-clear event dispatched');
+  });
 </script>
 
-<d2l-tag-list description="Example Tags">
+<d2l-tag-list description="Example Tags" clearable>
   <d2l-tag-list-item text="Tag"></d2l-tag-list-item>
 </d2l-tag-list>
 ```
