@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -224,7 +225,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					right: 0;
 				}
 				.d2l-input-unit {
-					font-size: 0.8rem;
+					color: var(--d2l-color-galena);
+					font-size: 0.7rem;
+					margin-top: 0.05rem;
 				}
 				.d2l-input-inside-before .d2l-input-unit {
 					margin-left: 12px;
