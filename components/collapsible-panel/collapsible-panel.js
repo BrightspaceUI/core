@@ -73,7 +73,8 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
 				--d2l-collapsible-panel-header-spacing: 0.6rem;
-				--d2l-collapsible-panel-transition-time: 0.3s;
+				--d2l-collapsible-panel-transition-time: 0.2s;
+				--d2l-collapsible-panel-arrow-time: calc(var(--d2l-collapsible-panel-transition-time) * 1.7);
 				--d2l-expand-collapse-content-timing-function: cubic-bezier(0.22, 0.01, 0.26, 0.99);
 				--d2l-expand-collapse-content-transition-duration: var(--d2l-collapsible-panel-transition-time);
 				display: block;
@@ -170,13 +171,13 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				.d2l-collapsible-panel-opener > d2l-icon-custom {
-					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-transition-time) ease-in-out;
+					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
 				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
-					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-transition-time) ease-in-out;
+					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
 				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
-					transition: fill var(--d2l-collapsible-panel-transition-time) ease-in-out;
+					transition: fill var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
 				@keyframes d2l-collapsible-panel-opener-open {
 					0% { transform: rotate(0deg); }
