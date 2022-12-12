@@ -476,6 +476,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'unit' || prop === 'unitLabel') {
+				this._updateInputLayout();
 				this._validateUnit();
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
@@ -573,15 +574,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_handleSlotChange() {
-		// requestUpdate needed for legacy-Edge
-		if (navigator.userAgent.indexOf('Edge/') > -1) {
-			this.requestUpdate();
-			this.updateComplete.then(() => {
-				this._updateInputLayout();
-			});
-		} else {
-			this._updateInputLayout();
-		}
+		this._updateInputLayout();
 	}
 
 	_handleUnitClick() {
