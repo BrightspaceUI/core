@@ -167,6 +167,13 @@ describe('d2l-list', () => {
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
 			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) }
+		] },
+		{ category: 'expand-collapse', tests: [
+			{ name: 'default', selector: '#expand-collapse-default' },
+			{ name: 'default expanded', selector: '#expand-collapse-default-expanded' },
+			{ name: 'selectable', selector: '#expand-collapse-selectable' },
+			{ name: 'draggable', selector: '#expand-collapse-draggable' },
+			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' }
 		] }
 	].forEach((info) => {
 
