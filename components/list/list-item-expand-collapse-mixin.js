@@ -20,7 +20,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	static get styles() {
 		const styles = [ css`
 			:host {
-				--d2l-expand-collapse-slot-transition-duration: 0.2s;
+				--d2l-expand-collapse-slot-transition-duration: 0.3s;
 			}
 			.d2l-list-expand-collapse {
 				padding: 0.4rem 0.3rem 0 0;
