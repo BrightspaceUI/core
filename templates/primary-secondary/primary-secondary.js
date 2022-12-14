@@ -921,12 +921,13 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 	render() {
 		let tabindex;
+		const size = this._size ?? 0;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
-			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${this._size}px`;
+			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${size}px`;
 			tabindex = 0;
 		}
-		const separatorVal = this._size && Math.round(this._size);
+		const separatorVal = size && Math.round(size);
 		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
@@ -954,7 +955,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 								</d2l-icon-custom>
 							</div>
 							<div class="d2l-template-primary-secondary-divider-handle-mobile">
-								${this._size === 0 ? html`<d2l-icon icon="tier1:chevron-up"></d2l-icon>` : html`<d2l-icon icon="tier1:chevron-down"></d2l-icon>`}
+								${size === 0 ? html`<d2l-icon icon="tier1:chevron-up"></d2l-icon>` : html`<d2l-icon icon="tier1:chevron-down"></d2l-icon>`}
 							</div>
 						</div>
 					</div>
