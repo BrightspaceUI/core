@@ -45,14 +45,18 @@ class ExpandCollapseContent extends LitElement {
 
 			.d2l-expand-collapse-content-container {
 				display: none;
+				opacity: 0;
 				overflow: hidden;
 				transition:
 					height var(--d2l-expand-collapse-content-transition-duration) cubic-bezier(0, 0.7, 0.5, 1),
-					opacity calc(var(--d2l-expand-collapse-content-transition-duration) * 2) cubic-bezier(0, 0.7, 0.5, 1);
+					opacity var(--d2l-expand-collapse-content-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 			}
 
 			.d2l-expand-collapse-content-container:not([data-state="collapsed"]) {
 				display: block;
+			}
+
+			.d2l-expand-collapse-content-container[data-state="collapsed"] {
 				opacity: 0;
 			}
 
