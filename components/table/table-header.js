@@ -1,5 +1,5 @@
-import './selection-select-all-pages.js';
-import './selection-summary.js';
+import '../selection/selection-select-all-pages.js';
+import '../selection/selection-summary.js';
 import { html, nothing } from 'lit';
 import { SelectionHeader } from '../selection/selection-header.js';
 
