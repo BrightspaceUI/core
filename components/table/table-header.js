@@ -1,9 +1,10 @@
+import './selection-select-all-pages.js';
+import './selection-summary.js';
 import { html, nothing } from 'lit';
 import { SelectionHeader } from '../selection/selection-header.js';
 
 /**
  * A header for table components containing a selection summary and selection actions.
- * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
 class TableHeader extends SelectionHeader {
 	_renderSelection() {
