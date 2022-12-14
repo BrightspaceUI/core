@@ -12,12 +12,16 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			 */
 			expandable: { type: Boolean },
 			expanded: { type: Boolean, reflect: true },
-			_siblingHasNestedItems: { state: true }
+			_siblingHasNestedItems: { state: true },
+			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' }
 		};
 	}
 
 	static get styles() {
 		const styles = [ css`
+			:host {
+				--d2l-expand-collapse-slot-transition-duration: 0.2s;
+			}
 			.d2l-list-expand-collapse {
 				padding: 0.4rem 0.3rem 0 0;
 			}
@@ -34,6 +38,13 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				display: block;
 				height: 100%;
 			}
+			.d2l-list-expand-collapse {
+				width: 0;
+				transition:	width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
+			}
+			:host([_render-expand-collapse-slot]) .d2l-list-expand-collapse {
+				width: 1.2rem;
+			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -43,7 +54,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	constructor() {
 		super();
 		this._siblingHasNestedItems = false;
-
+		this._renderExpandCollapseSlot = false;
 		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
@@ -56,22 +67,24 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		}
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.has('_hasChildren') || changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
+			this._renderExpandCollapseSlot = this.expandable && (this._hasChildren || this._siblingHasNestedItems);
+		}
+	}
+
 	updateSiblingHasChildren(siblingHasNestedItems) {
 		this._siblingHasNestedItems = siblingHasNestedItems;
 	}
 
 	_renderExpandCollapse() {
-		if (!this.expandable || (!this._hasChildren && !this._siblingHasNestedItems)) {
-			return nothing;
-		}
-
 		return html`
-		<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
-			${this._hasChildren ? html`<d2l-button-icon
-				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
-				aria-expanded="${this.expanded ? 'true' : 'false'}"
-				text="${this.label}"></d2l-button-icon>` : nothing}
-		</div>`;
+			<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
+				${this._hasChildren ? html`<d2l-button-icon
+					icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
+					aria-expanded="${this.expanded ? 'true' : 'false'}"
+					text="${this.label}"></d2l-button-icon>` : nothing}
+			</div>`;
 	}
 
 	_renderExpandCollapseAction() {

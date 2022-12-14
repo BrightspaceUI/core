@@ -301,5 +301,21 @@ export const listDemos = {
 			dropNested: true,
 			items: []
 		}]
-	}]
+	}],
+	oneChild: [{
+		key: '1',
+		primaryText: 'Introductory Earth Sciences',
+		dropNested: true,
+		items: [{
+			key: '1-1',
+			primaryText: 'Glaciation',
+			dropNested: true,
+			items: []
+		}]
+	}, {
+		key: '2',
+		primaryText: 'Applied Wetland Science',
+		dropNested: true,
+		items: []
+	}],
 };
