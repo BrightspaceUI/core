@@ -69,6 +69,9 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		if (changedProperties.has('_hasChildren') || changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
 			this._renderExpandCollapseSlot = this.expandable && (this._hasChildren || this._siblingHasNestedItems);
 		}
+		if (changedProperties.has('_draggingOver') && this._draggingOver && !this.expanded) {
+			this._toggleExpandCollapse();
+		}
 	}
 
 	updateSiblingHasChildren(siblingHasNestedItems) {
