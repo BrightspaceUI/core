@@ -1,5 +1,4 @@
 import '../button/button-subtle.js';
-import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -64,7 +63,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				overflow: hidden;
 			}
 			.d2l-more-less-transition {
-				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition: max-height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.d2l-more-less-blur {
 				display: none;
@@ -200,7 +199,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		}
 
 		if (this.expanded) {
-			this.__contentHeight = 'unset';
+			this.__maxHeight = `${this.__content.scrollHeight}px`;
 			return;
 		}
 
@@ -223,7 +222,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		this.__contentHeight = `${contentHeight}px`;
+		this.__maxHeight = `${contentHeight}px`;
 	}
 
 	__computeAriaExpanded() {
@@ -240,8 +239,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__expand() {
 		this.__transitionAdded = true;
-		this.__contentHeight = 'unset';
-		this.__maxHeight = 'unset';
+		this.__contentHeight = `unset`;
+		this.__maxHeight = `${this.__content.scrollHeight}px`;
 		this.expanded = true;
 	}
 
@@ -277,7 +276,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__init_setBaseHeight() {
 		this.__contentHeight = this.height;
-		this.__maxHeight = 'unset';
+		this.__maxHeight = this.height;
 
 		requestAnimationFrame(() => {
 			this.__init_measureBaseHeight();
