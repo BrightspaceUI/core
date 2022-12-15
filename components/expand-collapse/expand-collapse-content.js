@@ -57,19 +57,16 @@ class ExpandCollapseContent extends LitElement {
 				display: block;
 			}
 
-			.d2l-expand-collapse-content-container[data-state="collapsed"] {
-				opacity: 0;
+			.d2l-expand-collapse-content-container[data-state="expanded"] {
+				overflow: visible;
 			}
 
+			.d2l-expand-collapse-content-container[data-state="collapsed"],
 			.d2l-expand-collapse-content-container[data-state="collapsing"] {
 				opacity: 0;
 			}
 
-			.d2l-expand-collapse-content-container[data-state="expanded"] {
-				opacity: 1;
-				overflow: visible;
-			}
-
+			.d2l-expand-collapse-content-container[data-state="expanded"],
 			.d2l-expand-collapse-content-container[data-state="expanding"] {
 				opacity: 1;
 			}
