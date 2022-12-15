@@ -363,6 +363,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	firstUpdated(changedProperties) {
 		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
+		this.addEventListener('dragleave', this._onHostDragLeave.bind(this));
 		super.firstUpdated(changedProperties);
 	}
 
@@ -697,6 +698,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		e.dataTransfer.dropEffect = 'move';
 	}
 
+	_onHostDragLeave() {
+		this._draggingOver = false;
+	}
+
 	_onTouchCancel() {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		this._touchStarted = false;
@@ -735,6 +740,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!listItem) return;
 		// simulate host dragenter
 		if (listItem !== this && this._currentTouchListItem !== listItem) {
+			this._currentTouchListItem.dispatchEvent(createDragEvent('dragleave'));
 			listItem.dispatchEvent(createDragEvent('dragenter'));
 			this._currentTouchListItem = listItem;
 		}

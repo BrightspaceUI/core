@@ -69,8 +69,26 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		if (changedProperties.has('_hasChildren') || changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
 			this._renderExpandCollapseSlot = this.expandable && (this._hasChildren || this._siblingHasNestedItems);
 		}
-		if (changedProperties.has('_draggingOver') && this._draggingOver && !this.expanded) {
-			this._toggleExpandCollapse();
+		if (changedProperties.has('_draggingOver') && this._draggingOver && this.dropNested && !this.expanded) {
+			let elapsedHoverTime = 0;
+			let dragIntervalId = null;
+			const dragIntervalDelay = 100;
+			const watchDraggingOver = () => {
+				if (elapsedHoverTime === 1000) {
+					if (this._draggingOver) {
+						this._toggleExpandCollapse();
+					}
+					clearInterval(dragIntervalId);
+				} else {
+					if (!this._draggingOver) {
+						clearInterval(dragIntervalId);
+					} else {
+						elapsedHoverTime += dragIntervalDelay;
+					}
+				}
+			};
+			// check if they are still hovered over same item every 100ms
+			dragIntervalId = setInterval(watchDraggingOver, dragIntervalDelay);
 		}
 	}
 
