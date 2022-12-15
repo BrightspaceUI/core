@@ -206,15 +206,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	async _getListItemsShowingTotalCount(refresh) {
 		if (refresh) {
-			this._itemsShowingTotalCount = await this.getItems().reduce(async(count, item) => {
-				await item.updateComplete;
-				if (item._hasChildren && (!item.expandable || item.expanded)) {
-					const nestedList = item._getNestedList();
-					return (await count + await nestedList._getListItemsShowingTotalCount(true));
-				} else {
-					return await count;
-				}
-			}, this._itemsShowingCount);
+			this._itemsShowingTotalCount = this.getItems().length;
 		}
 		return this._itemsShowingTotalCount;
 	}
