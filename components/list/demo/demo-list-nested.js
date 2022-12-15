@@ -117,8 +117,12 @@ class ListDemoNested extends LitElement {
 		// remove data elements from original locations
 		sourceListItems.forEach(sourceListItem => {
 			const info = getItemInfo(this._items, sourceListItem.key);
-			info.owner.splice(info.index, 1);
-			dataToMove.push(info.item);
+			if (info?.owner) {
+				info.owner.splice(info.index, 1);
+			}
+			if (info?.item) {
+				dataToMove.push(info.item);
+			}
 		});
 
 		// append data elements to new location
@@ -130,7 +134,8 @@ class ListDemoNested extends LitElement {
 			targetItems = targetInfo.item.items;
 			targetIndex = targetItems.length;
 		} else {
-			targetItems = targetInfo.owner;
+			targetItems = targetInfo?.owner;
+			if (!targetItems) return;
 			if (target.location === moveLocations.above) targetIndex = targetInfo.index;
 			else if (target.location === moveLocations.below) targetIndex = targetInfo.index + 1;
 		}

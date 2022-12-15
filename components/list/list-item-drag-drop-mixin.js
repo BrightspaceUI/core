@@ -411,6 +411,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemNest() {
 		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			this._dispatchListItemsMove([this], listItem, moveLocations.nest, true);
 		}
 	}
@@ -418,6 +419,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemNext() {
 		const listItem = this._getNextListItemSibling();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			const nestedList = listItem._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
@@ -436,6 +438,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemPrevious() {
 		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			const nestedList = listItem._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
@@ -454,7 +457,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemUnnest() {
 		const listItem = this._getParentListItem();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+		}
+	}
+
+	_expandListItemOnKeyboardMove(listItem) {
+		if (this._keyboardActive && listItem.expandable && !listItem.expanded) {
+			listItem._toggleExpandCollapse();
 		}
 	}
 

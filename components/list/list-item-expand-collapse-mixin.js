@@ -2,6 +2,9 @@ import '../button/button-icon.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 
+const dragIntervalDelay = 100;
+const dragHoverDropTime = 1000;
+
 export const ListItemExpandCollapseMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -72,9 +75,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		if (changedProperties.has('_draggingOver') && this._draggingOver && this.dropNested && !this.expanded) {
 			let elapsedHoverTime = 0;
 			let dragIntervalId = null;
-			const dragIntervalDelay = 100;
 			const watchDraggingOver = () => {
-				if (elapsedHoverTime === 1000) {
+				if (elapsedHoverTime === dragHoverDropTime) {
 					if (this._draggingOver) {
 						this._toggleExpandCollapse();
 					}
@@ -118,6 +120,9 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_toggleExpandCollapse() {
+		if (!this.expandable) {
+			return;
+		}
 		this.expanded = !this.expanded;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-expand-collapse-toggled', {
 			detail: { key: this.key, expanded: this.expanded },
