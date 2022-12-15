@@ -116,10 +116,10 @@ class DesktopKeyboardResizer extends Resizer {
 		if (e.keyCode !== keyCodes.LEFT && e.keyCode !== keyCodes.RIGHT) {
 			return;
 		}
+		e.preventDefault();
+
 		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
 		const isFlipped = this.isRtl ^ this.secondaryFirst;
-
-		e.preventDefault();
 		const direction = e.keyCode === keyCodes.LEFT && !isFlipped
 			|| e.keyCode === keyCodes.RIGHT && isFlipped ? 1 : -1;
 		let secondaryWidth;
@@ -492,7 +492,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			 */
 			resizable: { type: Boolean, reflect: true },
 			/**
-			 * When set to true, the
+			 * When set to true, the secondary panel will be displayed on the left (or the
+			 * right in RTL) in the desktop view. This attribute has no effect on the mobile view.
 			 * @type {boolean}
 			 */
 			secondaryFirst: { type: Boolean, attribute: 'secondary-first', reflect: true },
@@ -923,7 +924,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 		const isRtl = this.getAttribute('dir') === 'rtl';
 		for (const resizer of this._resizers) {
 			resizer.isRtl = isRtl;
-			resizer.secondaryFirst = this.secondaryFirst;
 		}
 		const contentArea = this.shadowRoot.querySelector('.d2l-template-primary-secondary-content');
 		this._resizeObserver = new ResizeObserver(this._onContentResize);
@@ -997,6 +997,10 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					// throws if storage is full or in private mode in mobile Safari
 				}
 			}
+		}
+		if (changedProperties.has('secondaryFirst')) {
+			this._desktopKeyboardResizer.secondaryFirst = this.secondaryFirst;
+			this._desktopMouseResizer.secondaryFirst = this.secondaryFirst;
 		}
 		if (!this._secondary) {
 			this._secondary = this.shadowRoot.querySelector('aside');
