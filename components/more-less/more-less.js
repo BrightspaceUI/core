@@ -83,12 +83,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 
-		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
-		this.__transitionAdded = false;
-
 		this.expanded = false;
 		this.height = '4em';
 		this.inactive = false;
+
+		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
+		this.__transitionAdded = false;
+		this.__maxHeight = this.height;
 
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
@@ -194,11 +195,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		if (this.expanded && contentHeight !== currentHeight) {
 			this.__adjustToContent_resize.bind(this, contentHeight)();
-			return;
-		}
-
-		if (this.expanded) {
-			this.__maxHeight = `${this.__content.scrollHeight}px`;
 			return;
 		}
 
