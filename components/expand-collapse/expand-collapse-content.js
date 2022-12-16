@@ -53,6 +53,12 @@ class ExpandCollapseContent extends LitElement {
 					opacity var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function);
 			}
 
+			.d2l-expand-collapse-content-container[data-state="expanding"],
+			.d2l-expand-collapse-content-container[data-state="expanded"],
+			.d2l-expand-collapse-content-container[data-state="collapsing"] {
+				display: block;
+			}
+
 			.d2l-expand-collapse-content-container:not([data-state="collapsed"]) {
 				display: block;
 			}
@@ -61,10 +67,6 @@ class ExpandCollapseContent extends LitElement {
 				overflow: visible;
 			}
 
-			.d2l-expand-collapse-content-container[data-state="collapsed"],
-			.d2l-expand-collapse-content-container[data-state="collapsing"] {
-				opacity: 0;
-			}
 
 			.d2l-expand-collapse-content-container[data-state="expanded"],
 			.d2l-expand-collapse-content-container[data-state="expanding"] {
