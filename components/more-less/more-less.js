@@ -46,10 +46,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			inactive: { type: Boolean, reflect: true },
-			__blurBackground: { type: String },
-			__contentHeight: { type: String },
-			__maxHeight: { type: String },
-			__transitionAdded: { type: Boolean }
+			__blurBackground: { state: true },
+			__maxHeight: { state: true },
+			__transitionAdded: { state: true }
 		};
 	}
 
@@ -161,7 +160,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			'd2l-more-less-transition': this.__transitionAdded
 		};
 		return html`
-			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}`, maxHeight: `${this.__maxHeight}` })}>
+			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ maxHeight: `${this.__maxHeight}` })}>
 				<slot></slot>
 			</div>
 			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}` })}></div>
@@ -210,15 +209,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__adjustToContent_makeActive() {
 		this.inactive = false;
-		this.__contentHeight = 'unset';
 		this.__maxHeight = this.height;
 	}
 
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__contentHeight = 'unset';
-		this.__maxHeight = 'unset';
+		this.__maxHeight = `${this.__content.scrollHeight}px`;
 	}
 
 	__adjustToContent_resize(contentHeight) {
@@ -239,7 +236,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__expand() {
 		this.__transitionAdded = true;
-		this.__contentHeight = `unset`;
 		this.__maxHeight = `${this.__content.scrollHeight}px`;
 		this.expanded = true;
 	}
@@ -275,7 +271,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__init_setBaseHeight() {
-		this.__contentHeight = this.height;
 		this.__maxHeight = this.height;
 
 		requestAnimationFrame(() => {
@@ -351,7 +346,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__shrink() {
 		this.__transitionAdded = true;
-		this.__contentHeight = 'unset';
 		this.__maxHeight = this.height;
 		this.expanded = false;
 	}

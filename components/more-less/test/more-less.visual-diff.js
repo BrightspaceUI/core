@@ -12,7 +12,7 @@ describe('d2l-more-less', () => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
 				elem.shadowRoot.querySelector('.d2l-more-less-content').addEventListener('transitionend', (e) => {
-					if (e.propertyName === 'height') resolve();
+					if (e.propertyName === 'max-height') resolve();
 				});
 			});
 		}, selector);
