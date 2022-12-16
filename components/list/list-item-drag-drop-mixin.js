@@ -396,6 +396,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
+	_dispatchMoveAroundCollapsedItem(listItem, moveAbove) {
+		const parentListItem = this._getParentList();
+		if (parentListItem) {
+			const parentItems = parentListItem.getItems();
+			const nextItemIdex = parentItems.indexOf(listItem);
+			this._dispatchListItemsMove([this], parentItems[nextItemIdex], moveAbove ? moveLocations.above : moveLocations.below, true);
+		} else {
+			this._dispatchMoveRootItem(moveAbove);
+		}
+	}
+
 	_dispatchMoveListItemFirst(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
@@ -417,39 +428,48 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_dispatchMoveListItemNext() {
-		const listItem = this._getNextListItemSibling();
-		if (listItem) {
-			this._expandListItemOnKeyboardMove(listItem);
-			const nestedList = listItem._getNestedList();
+		const nextListItemSibling = this._getNextListItemSibling();
+		// if next sibling is collapsed - move item below it
+		if (nextListItemSibling && nextListItemSibling.expandable && !nextListItemSibling.expanded) {
+			this._dispatchMoveAroundCollapsedItem(nextListItemSibling, false);
+		} else if (nextListItemSibling) {
+			this._expandListItemOnKeyboardMove(nextListItemSibling);
+			const nestedList = nextListItemSibling._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
 				this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+				this._dispatchListItemsMove([this], nextListItemSibling, moveLocations.below, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.below, true);
+			} else {
+				this._dispatchMoveRootItem(false);
 			}
 		}
 	}
 
 	_dispatchMoveListItemPrevious() {
-		const listItem = this._getPreviousListItemSibling();
-		if (listItem) {
-			this._expandListItemOnKeyboardMove(listItem);
-			const nestedList = listItem._getNestedList();
+		const previousListItemSibling = this._getPreviousListItemSibling();
+		// if previous sibling is collapsed - move item above it
+		if (previousListItemSibling && previousListItemSibling.expandable && !previousListItemSibling.expanded) {
+			this._dispatchMoveAroundCollapsedItem(previousListItemSibling, true);
+		} else if (previousListItemSibling) {
+			const nestedList = previousListItemSibling._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
 				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.above, true);
+				this._dispatchListItemsMove([this], previousListItemSibling, moveLocations.above, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.above, true);
+			} else {
+				this._dispatchMoveRootItem(true);
 			}
 		}
 	}
@@ -459,6 +479,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (listItem) {
 			this._expandListItemOnKeyboardMove(listItem);
 			this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+		}
+	}
+
+	_dispatchMoveRootItem(moveAbove) {
+		const rootList = this._getRootList();
+		const items = rootList.getItems();
+		const currentIndex = items.indexOf(this);
+		if (moveAbove && currentIndex !== 0) {
+			this._dispatchListItemsMove([this], items[currentIndex - 1], moveLocations.above, true);
+		} else if (!moveAbove && currentIndex !== items.length - 1) {
+			this._dispatchListItemsMove([this], items[currentIndex + 1], moveLocations.below, true);
 		}
 	}
 
@@ -570,7 +601,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 		const rootList = this._getRootList(this);
 		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
-
+		// TODO - figure out drag image count with collapsed items
 		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {

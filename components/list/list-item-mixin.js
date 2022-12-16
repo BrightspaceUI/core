@@ -480,6 +480,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 	}
 
+	_getParentList(node) {
+		if (!node) node = this;
+		let parentList;
+		while (parentList?.tagName !== 'D2L-LIST') {
+			node = getComposedParent(node);
+			if (node.tagName === 'D2L-LIST') parentList = node;
+		}
+		return parentList;
+	}
+
 	_getParentListItem() {
 		const parentListItem = findComposedAncestor(this.parentNode, node => this._isListItem(node));
 		return parentListItem;
