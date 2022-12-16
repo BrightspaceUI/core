@@ -42,7 +42,7 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
   });
 
   document.addEventListener('d2l-tag-list-clear', (e) => {
-    const items = e.target.querySelectorAll('[role="listitem"]');
+    const items = e.target.querySelectorAll('d2l-tag-list-item');
     items.forEach((item) => {
       item.parentNode.removeChild(item);
     });
@@ -58,7 +58,7 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
 ```
 
 ## Tag List Item [d2l-tag-list-item]
-The `d2l-tag-list-item` provides the appropriate `listitem` semantics and styling for children within a tag list. Tag List items do not work outside of a Tag List and should not be used on their own.
+The `d2l-tag-list-item` provides the appropriate semantics and styling for children within a tag list. Tag List items do not work outside of a Tag List and should not be used on their own.
 
 <!-- docs: demo live name:d2l-tag-list-item autoSize:false display:block size:small -->
 ```html
@@ -72,7 +72,7 @@ The `d2l-tag-list-item` provides the appropriate `listitem` semantics and stylin
   });
 
   document.addEventListener('d2l-tag-list-clear', (e) => {
-    const items = e.target.querySelectorAll('[role="listitem"]');
+    const items = e.target.querySelectorAll('d2l-tag-list-item');
     items.forEach((item) => {
       item.parentNode.removeChild(item);
     });
