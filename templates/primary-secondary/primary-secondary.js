@@ -155,17 +155,18 @@ class DesktopMouseResizer extends Resizer {
 		this._onMouseDown = this._onMouseDown.bind(this);
 		this._onTouchMove = this._onTouchMove.bind(this);
 		this._onMouseMove = this._onMouseMove.bind(this);
-		this._onResizeEnd = this._onResizeEnd.bind(this);
+		this._onMouseUp = this._onMouseUp.bind(this);
+		this._onTouchEnd = this._onTouchEnd.bind(this);
 		this._target = null;
 	}
 
 	connect(target) {
 		target.addEventListener('touchstart', this._onTouchStart);
 		target.addEventListener('touchmove', this._onTouchMove);
-		target.addEventListener('touchend', this._onResizeEnd);
+		target.addEventListener('touchend', this._onTouchEnd);
 		target.addEventListener('mousedown', this._onMouseDown);
 		window.addEventListener('mousemove', this._onMouseMove);
-		window.addEventListener('mouseup', this._onResizeEnd);
+		window.addEventListener('mouseup', this._onMouseUp);
 		this._target = target;
 	}
 
@@ -173,12 +174,16 @@ class DesktopMouseResizer extends Resizer {
 		if (this._target) {
 			this._target.removeEventListener('touchstart', this._onTouchStart);
 			this._target.removeEventListener('touchmove', this._onTouchMove);
-			this._target.removeEventListener('touchend', this._onResizeEnd);
+			this._target.removeEventListener('touchend', this._onTouchEnd);
 			this._target.removeEventListener('mousedown', this._onMouseDown);
 		}
 		window.removeEventListener('mousemove', this._onMouseMove);
-		window.removeEventListener('mouseup', this._onResizeEnd);
+		window.removeEventListener('mouseup', this._onMouseUp);
 		this._target = null;
+	}
+
+	_clampMaxWidth(width) {
+		return Math.min(width, this.contentBounds.maxWidth);
 	}
 
 	_computeContentX(clientX) {
@@ -201,11 +206,19 @@ class DesktopMouseResizer extends Resizer {
 		this._resize(e.clientX);
 	}
 
-	_onResizeEnd() {
-		if (this._isResizing) {
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+	_onMouseUp(e) {
+		if (!this._isResizing) {
+			return;
 		}
+		this._resizeEnd(e.clientX);
+	}
+
+	_onTouchEnd(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		const touch = e.changedTouches[0].clientX;
+		this._resizeEnd(touch);
 	}
 
 	_onTouchMove(e) {
@@ -215,27 +228,29 @@ class DesktopMouseResizer extends Resizer {
 		const touch = e.touches[0];
 		this._resize(touch.clientX);
 	}
-
 	_onTouchStart(e) {
 		if (!this.isMobile) {
-			e.preventDefault();
+			if (e.cancelable) e.preventDefault();
 			const touch = e.touches[0];
 			this._resizeStart(touch.clientX);
 		}
 	}
-
 	_resize(clientX) {
-		let actualSecondaryWidth;
 		const x = this._computeContentX(clientX);
-		const collapseThreshold = this.contentBounds.minWidth / 2;
+		const secondaryWidth = x + this._offset;
+
+		this.dispatchResize(this._clampMaxWidth(secondaryWidth), false);
+	}
+
+	_resizeEnd(clientX) {
+		const collapseThreshold = this.contentBounds.minWidth;
+		const x = this._computeContentX(clientX);
 		const desiredSecondaryWidth = x + this._offset;
 		if (desiredSecondaryWidth < collapseThreshold) {
-			actualSecondaryWidth = 0;
-		} else {
-			actualSecondaryWidth = this.clampWidth(desiredSecondaryWidth);
+			this.dispatchResize(0, true);
 		}
-		const animateResize = desiredSecondaryWidth < actualSecondaryWidth || actualSecondaryWidth === 0;
-		this.dispatchResize(actualSecondaryWidth, animateResize);
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 	_resizeStart(clientX) {
