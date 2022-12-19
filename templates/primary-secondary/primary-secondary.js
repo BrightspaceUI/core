@@ -49,6 +49,7 @@ class Resizer {
 		this.isMobile = false;
 		this.panelSize = 0;
 		this.isRtl = false;
+		this.secondaryFirst = false;
 	}
 
 	clampHeight(height) {
@@ -112,15 +113,18 @@ class DesktopKeyboardResizer extends Resizer {
 		if (this.isMobile) {
 			return;
 		}
-		const leftKeyCode = this.isRtl ? keyCodes.RIGHT : keyCodes.LEFT;
-		const rightKeyCode = this.isRtl ? keyCodes.LEFT : keyCodes.RIGHT;
-		if (e.keyCode !== leftKeyCode && e.keyCode !== rightKeyCode) {
+		if (e.keyCode !== keyCodes.LEFT && e.keyCode !== keyCodes.RIGHT) {
 			return;
 		}
 		e.preventDefault();
+
+		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
+		const isFlipped = this.isRtl ^ this.secondaryFirst;
+		const direction = e.keyCode === keyCodes.LEFT && !isFlipped
+			|| e.keyCode === keyCodes.RIGHT && isFlipped ? 1 : -1;
 		let secondaryWidth;
 		if (this.panelSize === 0) {
-			if (e.keyCode === leftKeyCode) {
+			if (direction === 1) {
 				secondaryWidth = this.contentBounds.minWidth;
 			} else {
 				secondaryWidth = 0;
@@ -129,7 +133,6 @@ class DesktopKeyboardResizer extends Resizer {
 			const steps = clamp(Math.round((this.contentBounds.maxWidth - this.contentBounds.minWidth) / desktopStepDelta), desktopMinSteps, desktopMaxSteps);
 			const delta = (this.contentBounds.maxWidth - this.contentBounds.minWidth) / steps;
 
-			const direction = e.keyCode === leftKeyCode ? 1 : -1;
 			const desiredWidth = this.panelSize + delta * direction;
 			const desiredSteppedWidth = this.contentBounds.minWidth + delta * Math.round((desiredWidth - this.contentBounds.minWidth) / delta);
 
@@ -180,7 +183,8 @@ class DesktopMouseResizer extends Resizer {
 
 	_computeContentX(clientX) {
 		const x = clientX - this.contentRect.left;
-		return this.isRtl ? x : this.contentRect.width - x;
+		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
+		return this.isRtl ^ this.secondaryFirst ? x : this.contentRect.width - x;
 	}
 
 	_onMouseDown(e) {
@@ -487,6 +491,12 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			 * @type {boolean}
 			 */
 			resizable: { type: Boolean, reflect: true },
+			/**
+			 * When set to true, the secondary panel will be displayed on the left (or the
+			 * right in RTL) in the desktop view. This attribute has no effect on the mobile view.
+			 * @type {boolean}
+			 */
+			secondaryFirst: { type: Boolean, attribute: 'secondary-first', reflect: true },
 			/**
 			 * The key used to persist the divider's position to local storage. This key
 			 * should not be shared between pages so that users can save different divider
@@ -887,6 +897,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 		this.backgroundShading = 'none';
 		this.resizable = false;
+		this.secondaryFirst = false;
 		this.widthType = 'fullscreen';
 
 		this._animateResize = false;
@@ -933,11 +944,19 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			'd2l-template-scroll': isWindows
 		};
 		const keyboardHelpText = this._isMobile ? this.localize('templates.primary-secondary.keyboardVertical') : this.localize('templates.primary-secondary.keyboardHorizontal');
+		const primarySection = html`<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>`;
+		const secondarySection = html`
+			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
+				<div class="d2l-template-primary-secondary-divider-shadow"></div>
+				<aside class="${classMap(scrollClasses)}">
+					<slot name="secondary"></slot>
+				</aside>
+			</div>`;
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
-					<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>
+					${this.secondaryFirst && !this._isMobile ? secondarySection : primarySection}
 					<d2l-offscreen id="${this._keyboardDescId}">${keyboardHelpText}</d2l-offscreen>
 					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator aria-label="${this.localize('templates.primary-secondary.adjustableSplitView')}" aria-describedby="${this._keyboardDescId}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
@@ -959,13 +978,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 							</div>
 						</div>
 					</div>
-					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
-						<div class="d2l-template-primary-secondary-divider-shadow">
-						</div>
-						<aside class="${classMap(scrollClasses)}">
-							<slot name="secondary"></slot>
-						</aside>
-					</div>
+					${this.secondaryFirst && !this._isMobile ? primarySection : secondarySection}
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
 					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
@@ -985,6 +998,10 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					// throws if storage is full or in private mode in mobile Safari
 				}
 			}
+		}
+		if (changedProperties.has('secondaryFirst')) {
+			this._desktopKeyboardResizer.secondaryFirst = this.secondaryFirst;
+			this._desktopMouseResizer.secondaryFirst = this.secondaryFirst;
 		}
 		if (!this._secondary) {
 			this._secondary = this.shadowRoot.querySelector('aside');
