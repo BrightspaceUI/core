@@ -66,6 +66,7 @@ describe('d2l-input-text', () => {
 		{ name: 'wc-unit-invalid-rtl', selector: '#wc-unit-invalid-rtl' },
 		{ name: 'wc-unit-invalid-rtl-focus', selector: '#wc-unit-invalid-rtl', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'wc-unit-init-hidden', selector: '#wc-unit-init-hidden', action: selector => page.$eval(selector, elem => elem.style.display = 'inline-block') },
+		{ name: 'wc-unit-change', selector: '#wc-unit-change', action: selector => page.$eval(selector, async(elem) => { elem.unit = '/5000'; await elem.updateComplete;}) },
 		{ name: 'wc-override-height', selector: '#wc-override-height' },
 		{ name: 'wc-override-padding', selector: '#wc-override-padding' },
 		{ name: 'wc-override-text-align', selector: '#wc-override-text-align' },

@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -163,6 +164,11 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 * @type {string}
 			 */
 			value: { type: String },
+			/**
+			 * Alignment of the value text within the input
+			 * @type {'start'|'end'}
+			 */
+			valueAlign: { attribute: 'value-align', type: String },
 			_firstSlotWidth: { type: Number },
 			_hasAfterContent: { type: Boolean, attribute: false },
 			_focused: { type: Boolean },
@@ -180,6 +186,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				:host([value-align="end"]) {
+					--d2l-input-text-align: end;
 				}
 				.d2l-input-label {
 					display: inline-block;
@@ -216,7 +225,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					right: 0;
 				}
 				.d2l-input-unit {
-					font-size: 0.8rem;
+					color: var(--d2l-color-galena);
+					font-size: 0.7rem;
+					margin-top: 0.05rem;
 				}
 				.d2l-input-inside-before .d2l-input-unit {
 					margin-left: 12px;
@@ -253,6 +264,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this.readonly = false;
 		this.required = false;
 		this.type = 'text';
+		this.valueAlign = 'start';
 		this._value = '';
 
 		this._descriptionId = getUniqueId();
@@ -401,8 +413,8 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
 		const isValid = ariaInvalid !== 'true' || this.disabled;
-		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
-		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
+		const invalidIconSide = ((this.dir === 'rtl' && this.valueAlign === 'start') || (this.dir !== 'rtl' && this.valueAlign === 'end')) ? 'left' : 'right';
+		const invalidIconOffset = Math.max((invalidIconSide === 'left') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
@@ -467,6 +479,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'unit' || prop === 'unitLabel') {
+				this._updateInputLayout();
 				this._validateUnit();
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
@@ -564,15 +577,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_handleSlotChange() {
-		// requestUpdate needed for legacy-Edge
-		if (navigator.userAgent.indexOf('Edge/') > -1) {
-			this.requestUpdate();
-			this.updateComplete.then(() => {
-				this._updateInputLayout();
-			});
-		} else {
-			this._updateInputLayout();
-		}
+		this._updateInputLayout();
 	}
 
 	_handleUnitClick() {
