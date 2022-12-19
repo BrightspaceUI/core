@@ -136,9 +136,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
 		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
-		if (this.__content.offsetParent !== null) {
-			this.__init_setBaseHeight();
-		}
 		this.__init_setupBlurColour();
 		this.__init_setupListeners();
 
