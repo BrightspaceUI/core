@@ -35,8 +35,8 @@ class ExpandCollapseContent extends LitElement {
 	static get styles() {
 		return css`
 			:host {
-				--d2l-expand-collapse-content-transition-duration: 0.4s;
-				--d2l-expand-collapse-content-transition-function: cubic-bezier(0, 0.7, 0.5, 1);
+				--d2l-expand-collapse-content-transition-duration: 0.2s;
+				--d2l-expand-collapse-content-transition-function: cubic-bezier(0.4, 0.4, 0.25, 1);
 				display: block;
 			}
 
