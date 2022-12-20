@@ -27,7 +27,13 @@ describe('d2l-collapsible-panel', () => {
 			const selector = `#${name}${hasSummary ? '-summary' : ''}`;
 
 			[true, false].forEach((expanded) => {
-				it(`${name} ${expanded}`, async function() {
+				it(`${name}${hasSummary ? '-summary' : ''}-${expanded ? 'expanded' : 'collapsed'}`, async function() {
+
+					await page.evaluate((selector, expanded) => {
+						const elem = document.querySelector(selector).querySelector('d2l-collapsible-panel');
+						elem.expanded = expanded;
+					}, selector, expanded);
+
 					const rect = await visualDiff.getRect(page, selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
