@@ -209,9 +209,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
 				opacity: 0;
 			}
-			d2l-expand-collapse-content {
-				--d2l-expand-collapse-content-transition-duration: var(--d2l-collapsible-panel-transition-time);
-			}
 			.d2l-collapsible-panel-summary,
 			.d2l-collapsible-panel-content {
 				padding: 0.9rem var(--d2l-collapsible-panel-spacing-inline);
