@@ -1,13 +1,23 @@
 import '../table-col-sort-button.js';
+import '../table-header.js';
+import '../../dropdown/dropdown-button-subtle.js';
+import '../../dropdown/dropdown-menu.js';
+import '../../menu/menu.js';
+import '../../menu/menu-item.js';
+import '../../selection/selection-action.js';
+import '../../selection/selection-action-dropdown.js';
+import '../../selection/selection-action-menu-item.js';
+import '../../selection/selection-input.js';
+
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { tableStyles } from '../table-wrapper.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
 
-const data = [
-	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: false },
-	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: false },
+const data = () => [
+	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
+	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
 	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
 	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
 	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
@@ -36,6 +46,7 @@ class TestTable extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
+			_data: { state: true },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
 		};
@@ -55,11 +66,12 @@ class TestTable extends RtlMixin(LitElement) {
 		this.sortDesc = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
+		this._data = data();
 	}
 
 	render() {
 		const type = this.type === 'light' ? 'light' : 'default';
-		const sorted = data.sort((a, b) => {
+		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
 				return b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
@@ -67,18 +79,53 @@ class TestTable extends RtlMixin(LitElement) {
 		});
 		return html`
 			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+				<d2l-table-header slot="header" no-sticky>
+					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
+					<d2l-selection-action-dropdown text="Move To" requires-selection>
+						<d2l-dropdown-menu>
+							<d2l-menu label="Move To Options">
+								<d2l-menu-item text="Top of Quiz"></d2l-menu-item>
+								<d2l-menu-item text="Bottom of Quiz"></d2l-menu-item>
+								<d2l-menu-item text="Section">
+									<d2l-menu>
+										<d2l-menu-item text="Option 1"></d2l-menu-item>
+										<d2l-menu-item text="Option 2"></d2l-menu-item>
+									</d2l-menu>
+								</d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-selection-action-dropdown>
+					<d2l-dropdown-button-subtle text="Actions">
+						<d2l-dropdown-menu>
+							<d2l-menu label="Actions">
+								<d2l-selection-action-menu-item text="Bookmark (requires selection)" requires-selection></d2l-selection-action-menu-item>
+								<d2l-selection-action-menu-item text="Advanced"></d2l-selection-action-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-button-subtle>
+					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+				</d2l-table-header>
+
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th colspan="2">Country</th>
+							<th scope="col"><d2l-selection-select-all></d2l-selection-select-all></th>
+							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 					</thead>
 					<tbody>
 						${sorted.map((row) => html`
-							<tr ?selected="${row.selected}">
-								<th><input type="checkbox" .checked="${row.selected}" @click="${this._selectRow}"></th>
-								<th>${row.name}</th>
+							<tr ?selected="${row.selected}" data-name="${row.name}">
+								<th scope="row">
+									<d2l-selection-input
+										@d2l-selection-change="${this._selectRow}"
+										?selected="${row.selected}"
+										key="${row.name}"
+										label="${row.name}">
+									</d2l-selection-input>
+								</th>
+								<th scope="row">${row.name}</th>
 								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
@@ -98,7 +145,7 @@ class TestTable extends RtlMixin(LitElement) {
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th>
+			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
@@ -108,13 +155,10 @@ class TestTable extends RtlMixin(LitElement) {
 	}
 
 	_selectRow(e) {
-		const country = e.target.parentNode.nextElementSibling.innerText;
-		data.forEach((row) => {
-			if (row.name === country) {
-				row.selected = e.target.checked;
-				this.requestUpdate();
-			}
-		});
+		const country = e.target.parentNode.parentNode.dataset.name;
+		const row = this._data.find(row => row.name === country);
+		row.selected = e.target.selected;
+		this.requestUpdate();
 	}
 
 }

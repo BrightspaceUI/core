@@ -299,3 +299,87 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
   <td>this row is selected</td>
 </tr>
 ```
+
+## Table Header [d2l-table-header]
+
+The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `header` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+
+<!-- docs: demo live name:d2l-table-header -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
+  import '@brightspace-ui/core/components/table/table-header.js';
+  import { html, LitElement } from 'lit';
+  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+
+  class MyTableWithHeaderElem extends LitElement {
+
+    static get properties() {
+      return {
+        _data: { state: true }
+      }
+    }
+
+    static get styles() {
+      return tableStyles;
+    }
+
+    constructor() {
+      super();
+      this._data = {
+        a: { checked: true },
+        b: { checked: false },
+      };
+    }
+
+    render() {
+      return html`
+        <d2l-table-wrapper>
+          <d2l-table-header slot="header" no-sticky>
+            <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+            <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+          </d2l-table-header>
+          <table class="d2l-table">
+            <thead>
+              <tr>
+                <th><d2l-selection-select-all></d2l-selection-select-all></th>
+                <th>Column B</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${Object.keys(this._data).map((key, i) => html`
+                <tr ?selected="${i === 0}">
+                  <td>
+                    <d2l-selection-input selected key="${key}" label="${key}" ?checked="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
+                </tr>
+              `)}
+            </tbody>
+          </table>
+        </d2l-table-wrapper>
+      `;
+    }
+
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = !this._data[key].checked;
+    }
+
+  }
+  customElements.define('d2l-my-table-with-header-elem', MyTableWithHeaderElem);
+</script>
+<d2l-my-table-with-header-elem></d2l-my-table-with-header-elem>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `no-selection` | Boolean | Whether to render the selection summary |
+| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
+<!-- docs: end hidden content -->
