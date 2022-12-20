@@ -284,6 +284,21 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.has('expanded')) {
+			if (!this.expanded) {
+				const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
+				element.classList.remove('scrolled');
+			}
+
+			const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
+
+			this.dispatchEvent(new CustomEvent(
+				event, { bubbles: false, composed: false }
+			));
+		}
+	}
+
 	_handleActionsClick(e) {
 		const actions = this.shadowRoot.querySelector('.d2l-collapsible-panel-header-actions');
 		if (e.target !== actions) {
@@ -375,17 +390,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	_toggleExpand() {
 		this.expanded = !this.expanded;
-
-		if (!this.expanded) {
-			const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-			element.classList.remove('scrolled');
-		}
-
-		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
-
-		this.dispatchEvent(new CustomEvent(
-			event, { bubbles: false, composed: false }
-		));
 	}
 }
 
