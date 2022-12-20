@@ -2,11 +2,11 @@ import '../button/button.js';
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../icons/icon-custom.js';
-import '../offscreen/offscreen.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const defaultHeading = 3;
@@ -68,7 +68,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
+		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
 			:host {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
@@ -273,16 +273,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-offscreen>
-				<button
-					aria-label="${this.expandCollapseLabel}"
-					aria-expanded="${this.expanded}"
-					type="button"
-					@click="${this._toggleExpand}"
-					@focus="${this._onFocus}"
-					@blur="${this._onBlur}"
-				></button>
-			</d2l-offscreen>
+			<button
+				aria-expanded="${this.expanded}"
+				class="d2l-offscreen"
+				type="button"
+				@click="${this._toggleExpand}"
+				@focus="${this._onFocus}"
+				@blur="${this._onBlur}"
+			>${this.expandCollapseLabel}</button>
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
