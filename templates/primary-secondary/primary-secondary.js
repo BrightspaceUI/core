@@ -238,16 +238,18 @@ class DesktopMouseResizer extends Resizer {
 	_resize(clientX) {
 		const x = this._computeContentX(clientX);
 		const secondaryWidth = x + this._offset;
-
 		this.dispatchResize(this._clampMaxWidth(secondaryWidth), false);
 	}
 
 	_resizeEnd(clientX) {
-		const collapseThreshold = this.contentBounds.minWidth;
+		const collapseThreshold = this.contentBounds.minWidth / 2;
 		const x = this._computeContentX(clientX);
 		const desiredSecondaryWidth = x + this._offset;
 		if (desiredSecondaryWidth < collapseThreshold) {
 			this.dispatchResize(0, true);
+		}
+		else if (desiredSecondaryWidth < this.contentBounds.minWidth) {
+			this.dispatchResize(this.contentBounds.minWidth, true);
 		}
 		this._isResizing = false;
 		this.dispatchResizeEnd();
