@@ -1,6 +1,4 @@
-import '../button/button.js';
 import '../colors/colors.js';
-import '../icons/icon.js';
 import '../icons/icon-custom.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
