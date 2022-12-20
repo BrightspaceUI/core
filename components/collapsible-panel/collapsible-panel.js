@@ -75,6 +75,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-arrow-time: 0.5s;
 				display: block;
 			}
+			:host([hidden]) {
+				display: none;
+			}
 			:host([padding="large"][type="inline"]) {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
