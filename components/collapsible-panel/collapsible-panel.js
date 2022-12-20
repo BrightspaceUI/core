@@ -233,18 +233,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.type = 'default';
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-
-		if (!this.expandCollapseLabel) {
-			this.expandCollapseLabel = this.panelTitle;
-		}
-
-		if (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) {
-			this.headingStyle = this.headingLevel;
-		}
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
@@ -268,6 +256,8 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
+
 		return html`
 			<button
 				aria-expanded="${this.expanded}"
@@ -276,7 +266,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				@click="${this._toggleExpand}"
 				@focus="${this._onFocus}"
 				@blur="${this._onBlur}"
-			>${this.expandCollapseLabel}</button>
+			>${expandCollapseLabel}</button>
 			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
@@ -362,9 +352,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	_renderPanelTitle() {
+		const headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
-			[`d2l-heading-${this.headingStyle}`]: true,
+			[`d2l-heading-${headingStyle}`]: true,
 		};
 
 		const headingLevel = parseInt(this.headingLevel);
