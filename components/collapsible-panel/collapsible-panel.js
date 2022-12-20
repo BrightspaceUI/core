@@ -166,11 +166,12 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				width: 0.9rem;
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom svg {
-				transform-origin: 0.4rem;
 				position: absolute;
+				transform-origin: 0.4rem;
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 				fill: var(--d2l-color-tungsten);
+				transform: rotate(90deg);
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
@@ -179,6 +180,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
+				/* stylelint-disable order/properties-alphabetical-order */
 				@keyframes d2l-collapsible-panel-opener-open {
 					0% { transform: rotate(0deg); }
 					25% { transform: rotate(105deg); animation-timing-function: ease-in-out; }
@@ -193,9 +195,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					75% { transform: rotate(-3deg); animation-timing-function: ease-in-out; }
 					100% { transform: rotate(0deg); animation-timing-function: ease-in-out; }
 				}
-			}
-			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
-				transform: rotate(90deg);
+				/* stylelint-enable */
 			}
 			.d2l-collapsible-panel-divider {
 				border-bottom: 1px solid var(--d2l-color-mica);
