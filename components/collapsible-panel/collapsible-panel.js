@@ -59,11 +59,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 */
 			type: { type: String, reflect: true },
 			/**
-			 * Whether or not the content should extend the full width.
-			 * This is only valid when using the "inline" panel style.
-			 * @type {boolean}
+			 * Horizontal padding of the panel
+			 * @type {'default'|'large'}
+			 * @default "default"
 			 */
-			fullWidth: { attribute: 'full-width', type: Boolean, reflect: true },
+			padding: { type: String, reflect: true },
 		};
 	}
 
@@ -81,6 +81,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.3rem;
 				display: block;
+			}
+			:host([padding=large]) .d2l-collapsible-panel {
+				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
 			:host(:not([expanded])) .d2l-collapsible-panel {
 				cursor: pointer;
@@ -102,9 +105,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([heading-style="4"]) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
-			:host([type=inline][full-width]) {
-				--d2l-collapsible-panel-spacing-inline: 0;
-			}
 			.d2l-collapsible-panel-header {
 				border-radius: 8px;
 				cursor: pointer;
@@ -121,8 +121,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			}
 			.d2l-collapsible-panel-title {
 				flex: 1;
-				margin: 0;
-				margin-inline: var(--d2l-collapsible-panel-spacing-inline) 0.3rem;
+				margin: 0.3rem;
+				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+				user-select: none;
 			}
 			.d2l-collapsible-panel.focused {
 				outline: var(--d2l-collapsible-panel-focus-outline);
@@ -155,7 +156,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				margin: 0.3rem;
 			}
 			.d2l-collapsible-panel-opener {
-				margin-inline-end: 0.3rem;
+				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom {
 				margin: 0.6rem;
@@ -230,9 +231,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.expanded = false;
-		this.fullWidth = false;
 		this.headingLevel = defaultHeading;
 		this.headingStyle = defaultHeading;
+		this.padding = 'default';
 		this.type = 'default';
 	}
 
