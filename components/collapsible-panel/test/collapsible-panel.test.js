@@ -19,7 +19,7 @@ describe('d2l-collapsible-panel', () => {
 			`);
 
 			const button = elem.shadowRoot.querySelector('d2l-offscreen button');
-			expect(button.ariaLabel).to.equal('Panel Title');
+			expect(button.getAttribute('aria-label')).to.equal('Panel Title');
 		});
 
 		it('should be expand-collapse-label if provided', async() => {
@@ -30,7 +30,7 @@ describe('d2l-collapsible-panel', () => {
 			`);
 
 			const button = elem.shadowRoot.querySelector('d2l-offscreen button');
-			expect(button.ariaLabel).to.equal('Label describing panel');
+			expect(button.getAttribute('aria-label')).to.equal('Label describing panel');
 		});
 	});
 
