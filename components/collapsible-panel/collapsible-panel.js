@@ -174,6 +174,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				transform: rotate(90deg);
 			}
 			@media (prefers-reduced-motion: no-preference) {
+				.d2l-collapsible-panel-divider {
+					transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
+				}
 				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
@@ -201,7 +204,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-inline: var(--d2l-collapsible-panel-spacing-inline);
 				opacity: 1;
-				transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
 			}
 			:host([type=inline]) .d2l-collapsible-panel-divider {
 				opacity: 0;
