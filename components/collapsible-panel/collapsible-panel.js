@@ -28,7 +28,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * REQUIRED: The title of the panel
 			 * @type {string}
 			 */
-			title: { type: String },
+			panelTitle: { attribute: 'panel-title', type: String, reflect: true },
 			/**
 			 * The semantic heading level (h1-h4)
 			 * @type {'1'|'2'|'3'|'4'}
@@ -241,7 +241,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		super.connectedCallback();
 
 		if (!this.expandCollapseLabel) {
-			this.expandCollapseLabel = this.title;
+			this.expandCollapseLabel = this.panelTitle;
 		}
 
 		if (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) {
@@ -345,7 +345,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-header-primary">
-					${this._renderHeading()}
+					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
 					</div>
@@ -365,7 +365,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_renderHeading() {
+	_renderPanelTitle() {
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
 			[`d2l-heading-${this.headingStyle}`]: true,
@@ -373,16 +373,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 		const headingLevel = parseInt(this.headingLevel);
 		if (headingLevel === 1) {
-			return html`<h1 class="${classMap(titleClasses)}">${this.title}</h1>`;
+			return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
 		}
 		if (headingLevel === 2) {
-			return html`<h2 class="${classMap(titleClasses)}">${this.title}</h2>`;
+			return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
 		}
 		if (headingLevel === 3) {
-			return html`<h3 class="${classMap(titleClasses)}">${this.title}</h3>`;
+			return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
 		}
 		if (headingLevel === 4) {
-			return html`<h4 class="${classMap(titleClasses)}">${this.title}</h4>`;
+			return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
 		}
 	}
 

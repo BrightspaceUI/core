@@ -6,7 +6,7 @@ describe('d2l-collapsible-panel', () => {
 
 	it('should pass all aXe tests', async() => {
 		const elem = await fixture(html`
-			<d2l-collapsible-panel title="Availability Dates and Conditions">
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
 				<div slot="summary">
 					<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
 					<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
