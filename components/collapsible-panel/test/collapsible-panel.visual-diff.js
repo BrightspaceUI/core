@@ -18,9 +18,11 @@ describe('d2l-collapsible-panel', () => {
 
 	[
 		'default',
+		'default-large-padding',
 		'subtle',
+		'subtle-large-padding',
 		'inline',
-		'large-padding',
+		'inline-large-padding',
 		'custom',
 	].forEach((name) => {
 		[true, false].forEach((hasSummary) => {

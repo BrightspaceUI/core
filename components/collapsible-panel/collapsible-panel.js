@@ -82,7 +82,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border-radius: 0.3rem;
 				display: block;
 			}
-			:host([padding=large]) .d2l-collapsible-panel {
+			:host([padding=large][type=inline]) .d2l-collapsible-panel {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
 			:host(:not([expanded])) .d2l-collapsible-panel {
