@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -29,15 +30,21 @@ describe('d2l-collapsible-panel', () => {
 			const selector = `#${name}${hasSummary ? '-summary' : ''}`;
 
 			[true, false].forEach((expanded) => {
-				it(`${name}${hasSummary ? '-summary' : ''}-${expanded ? 'expanded' : 'collapsed'}`, async function() {
+				[true, false].forEach((focused) => {
+					it(`${name}${hasSummary ? '-summary' : ''}-${expanded ? 'expanded' : 'collapsed'}${focused ? '-focused' : ''}`, async function() {
 
-					await page.evaluate((selector, expanded) => {
-						const elem = document.querySelector(selector).querySelector('d2l-collapsible-panel');
-						elem.expanded = expanded;
-					}, selector, expanded);
+						await page.evaluate((selector, expanded, focused) => {
+							const elem = document.querySelector(selector).querySelector('d2l-collapsible-panel');
 
-					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+							elem.blur();
+							if (focused) { forceFocusVisible(elem); }
+
+							elem.expanded = expanded;
+						}, selector, expanded, focused);
+
+						const rect = await visualDiff.getRect(page, selector);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
 				});
 			});
 		});
