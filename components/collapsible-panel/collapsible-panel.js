@@ -80,7 +80,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			}
 			.d2l-collapsible-panel {
 				border: 1px solid var(--d2l-color-mica);
-				border-radius: 0.3rem;
+				border-radius: 0.4rem;
 			}
 			:host(:not([expanded])) .d2l-collapsible-panel {
 				cursor: pointer;
@@ -102,7 +102,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
 			.d2l-collapsible-panel-header {
-				border-radius: 8px;
+				border-radius: 0.4rem;
 				cursor: pointer;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
 			}
