@@ -687,10 +687,12 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
-			:host(:not([dir="rtl"])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
+			:host(:not([dir="rtl"]):not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
+			:host([dir="rtl"][secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
 				display: none;
 			}
-			:host([dir="rtl"]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
+			:host(:not([dir="rtl"])[secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right,
+			:host([dir="rtl"]:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
 				display: none;
 			}
 			d2l-icon {
