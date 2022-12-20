@@ -74,7 +74,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
 				--d2l-collapsible-panel-header-spacing: 0.6rem;
 				--d2l-collapsible-panel-transition-time: 0.2s;
-				--d2l-collapsible-panel-arrow-time: calc(var(--d2l-collapsible-panel-transition-time) * 1.4);
+				--d2l-collapsible-panel-arrow-time: 0.5s;
 				display: block;
 			}
 			.d2l-collapsible-panel {
@@ -159,41 +159,42 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom {
+				height: 0.9rem;
 				margin: 0.6rem;
-				transform-origin: center;
+				margin-inline-end: 0;
+				position: relative;
+				width: 0.9rem;
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom svg {
-				fill: transparent;
+				transform-origin: 0.4rem;
+				position: absolute;
 			}
 			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 				fill: var(--d2l-color-tungsten);
 			}
 			@media (prefers-reduced-motion: no-preference) {
-				.d2l-collapsible-panel-opener > d2l-icon-custom {
+				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
-				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
+				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
-				}
-				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
-					transition: fill var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
 				@keyframes d2l-collapsible-panel-opener-open {
 					0% { transform: rotate(0deg); }
-					35% { transform: rotate(90deg); }
-					55% { transform: rotate(117deg); }
-					87% { transform: rotate(70deg); }
-					100% { transform: rotate(90deg); }
+					25% { transform: rotate(105deg); animation-timing-function: ease-in-out; }
+					50% { transform: rotate(82deg); animation-timing-function: ease-in-out; }
+					75% { transform: rotate(93deg); animation-timing-function: ease-in-out; }
+					100% { transform: rotate(90deg); animation-timing-function: ease-in-out; }
 				}
 				@keyframes d2l-collapsible-panel-opener-close {
 					0% { transform: rotate(90deg); }
-					35% { transform: rotate(0deg); }
-					55% { transform: rotate(-27deg); }
-					83% { transform: rotate(25deg); }
-					100% { transform: rotate(0deg); }
+					25% { transform: rotate(-15deg); animation-timing-function: ease-in-out; }
+					50% { transform: rotate(8deg); animation-timing-function: ease-in-out; }
+					75% { transform: rotate(-3deg); animation-timing-function: ease-in-out; }
+					100% { transform: rotate(0deg); animation-timing-function: ease-in-out; }
 				}
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom {
+			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
 				transform: rotate(90deg);
 			}
 			.d2l-collapsible-panel-divider {
