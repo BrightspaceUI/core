@@ -85,6 +85,7 @@ describe('d2l-collapsible-panel', () => {
 
 		it('level and style are normalized to valid values', async() => {
 			const elem = await fixture(html`
+				<!-- Ignore lit-analyzer - it prevents us from providing invalid property values -->
 				<!-- @ts-ignore -->
 				<d2l-collapsible-panel panel-title="Panel Title" heading-level="0" heading-style="5">
 					Panel Content
