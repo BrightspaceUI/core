@@ -56,6 +56,10 @@ class Resizer {
 		return clamp(height, this.contentBounds.minHeight, this.contentBounds.maxHeight);
 	}
 
+	clampMaxHeight(height) {
+		return Math.min(height, this.contentBounds.maxHeight);
+	}
+
 	clampWidth(width) {
 		return clamp(width, this.contentBounds.minWidth, this.contentBounds.maxWidth);
 	}
@@ -357,24 +361,25 @@ class MobileMouseResizer extends Resizer {
 			return;
 		}
 		const y = e.clientY - this.contentRect.top;
-
-		let actualSecondaryHeight;
-		const collapseThreshold = this.contentBounds.minHeight / 2;
-		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
-		if (desiredSecondaryHeight < collapseThreshold) {
-			actualSecondaryHeight = 0;
-		} else {
-			actualSecondaryHeight = this.clampHeight(desiredSecondaryHeight);
-		}
-		const animateResize = desiredSecondaryHeight < actualSecondaryHeight || actualSecondaryHeight === 0;
-		this.dispatchResize(actualSecondaryHeight, animateResize);
+		const secondaryHeight = this.clampMaxHeight(this.contentRect.height - y + this._offset);
+		this.dispatchResize(secondaryHeight, false);
 	}
 
-	_onMouseUp() {
-		if (this._isResizing) {
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+	_onMouseUp(e) {
+		if (!this._isResizing) {
+			return;
 		}
+		const collapseThreshold = this.contentBounds.minHeight / 2;
+		const y = e.clientY - this.contentRect.top;
+		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
+		if (desiredSecondaryHeight < collapseThreshold) {
+			this.dispatchResize(0, true);
+		}
+		else if (desiredSecondaryHeight < this.contentBounds.minWidth) {
+			this.dispatchResize(this.contentBounds.minHeight, true);
+		}
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 }
@@ -414,20 +419,32 @@ class MobileTouchResizer extends Resizer {
 	}
 
 	_onResizeEnd() {
-		if (this._isResizing) {
-			if (this.panelSize > this.contentBounds.minHeight && this.panelSize < this.contentBounds.maxHeight) {
-				let secondaryHeight;
-				const touchDirection = this._computeTouchDirection();
-				if (touchDirection >= 0) {
-					secondaryHeight = this.contentBounds.minHeight;
-				} else {
-					secondaryHeight = this.contentBounds.maxHeight;
-				}
-				this.dispatchResize(secondaryHeight, true);
-			}
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+		if (!this._isResizing) {
+			return;
 		}
+		let secondaryHeight;
+		const collapseThreshold = this.contentBounds.minHeight / 2;
+		if (this.panelSize < collapseThreshold) {
+			secondaryHeight = 0;
+		}
+		else if (this.panelSize < this.contentBounds.minHeight) {
+			secondaryHeight = this.contentBounds.minHeight;
+		}
+		else if (this.panelSize < this.contentBounds.maxHeight) {
+			const touchDirection = this._computeTouchDirection();
+			if (touchDirection >= 0) {
+				secondaryHeight = this.contentBounds.minHeight;
+			} else {
+				secondaryHeight = this.contentBounds.maxHeight;
+			}
+		}
+		else {
+			secondaryHeight = this.contentBounds.maxHeight;
+		}
+		this.dispatchResize(secondaryHeight, true);
+
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 	_onResizeStart(e) {
@@ -455,11 +472,11 @@ class MobileTouchResizer extends Resizer {
 		let secondaryHeight = this.panelSize;
 		if (delta > 0) {
 			if (curScroll === 0) {
-				secondaryHeight = this.clampHeight(this.panelSize - delta);
+				secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			}
 			isScrollable = curScroll > 0;
 		} else if (delta < 0) {
-			secondaryHeight = this.clampHeight(this.panelSize - delta);
+			secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			isScrollable = secondaryHeight === this.contentBounds.maxHeight;
 		}
 		if (!isScrollable && e.cancelable) {
@@ -611,7 +628,15 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				background-color: var(--d2l-color-gypsum);
 			}
 			:host([resizable]) [data-is-collapsed] aside {
-				display: none;
+				visibility: hidden;
+			}
+			:host([resizable]:not([dir="rtl"]):not([secondary-first])) aside,
+			:host([resizable][dir="rtl"][secondary-first]) aside {
+				float: left;
+			}
+			:host([resizable][dir="rtl"]:not([secondary-first])) aside,
+			:host([resizable]:not([dir="rtl"])[secondary-first]) aside {
+				float: right;
 			}
 			.d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-mica);
@@ -1156,6 +1181,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 	}
 
 	_onPanelResizeEnd() {
+		this._isHandleTap = true;
 		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-end', { bubbles: true, composed: true }));
 	}
 
