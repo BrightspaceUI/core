@@ -82,6 +82,18 @@ describe('d2l-collapsible-panel', () => {
 			expect(heading.tagName).to.equal('H1');
 			expect(heading.classList.contains('d2l-heading-3')).to.be.true;
 		});
+
+		it('level and style are normalized to valid values', async() => {
+			const elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title" heading-level="0" heading-style="5">
+					<div slot="content">Panel content</div>
+				</d2l-collapsible-panel>
+			`);
+
+			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
+			expect(heading.tagName).to.equal('H1');
+			expect(heading.classList.contains('d2l-heading-4')).to.be.true;
+		});
 	});
 
 });
