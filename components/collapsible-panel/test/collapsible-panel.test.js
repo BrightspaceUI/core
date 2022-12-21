@@ -14,7 +14,7 @@ describe('d2l-collapsible-panel', () => {
 		it('should default to the panel title', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -25,7 +25,7 @@ describe('d2l-collapsible-panel', () => {
 		it('should be expand-collapse-label if provided', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" expand-collapse-label="Label describing panel">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -38,7 +38,7 @@ describe('d2l-collapsible-panel', () => {
 		it('level should default to h3 and style to d2l-heading-3', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -50,7 +50,7 @@ describe('d2l-collapsible-panel', () => {
 		it('style alone should set style but not level', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" heading-style="2">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -62,7 +62,7 @@ describe('d2l-collapsible-panel', () => {
 		it('level alone should also set style', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" heading-level="2">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -74,7 +74,7 @@ describe('d2l-collapsible-panel', () => {
 		it('level and style can be set independently', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" heading-level="1" heading-style="3">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 
@@ -86,7 +86,7 @@ describe('d2l-collapsible-panel', () => {
 		it('level and style are normalized to valid values', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" heading-level="0" heading-style="5">
-					<div slot="content">Panel content</div>
+					Panel Content
 				</d2l-collapsible-panel>
 			`);
 

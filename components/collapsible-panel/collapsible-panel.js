@@ -275,7 +275,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				${this._renderHeader()}
 				<d2l-expand-collapse-content ?expanded="${this.expanded}">
 					<div class="d2l-collapsible-panel-content">
-						<slot name="content"></slot>
+						<slot></slot>
 					</div>
 				</d2l-expand-collapse-content>
 				<d2l-expand-collapse-content ?expanded="${!this.expanded}">
