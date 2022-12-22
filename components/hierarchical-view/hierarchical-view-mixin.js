@@ -179,7 +179,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	getActiveView() {
 		const rootView = this.getRootView();
-		const childViews = rootView.querySelectorAll('[child-view][shown]');
+		const childViews = rootView?.querySelectorAll('[child-view][shown]');
 		if (!childViews || childViews.length === 0) {
 			return rootView;
 		}
