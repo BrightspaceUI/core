@@ -2,7 +2,7 @@ import '../overflow-group/overflow-group.js';
 import './selection-select-all.js';
 import './selection-select-all-pages.js';
 import './selection-summary.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -77,14 +77,13 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			.d2l-selection-header-container-slim {
 				min-height: 36px;
 			}
-			d2l-selection-select-all {
+			d2l-selection-select-all, d2l-selection-summary {
 				flex: none;
 			}
-			d2l-selection-summary {
-				flex: none;
+			d2l-selection-select-all + d2l-selection-summary {
 				margin-left: 0.9rem;
 			}
-			:host([dir="rtl"]) d2l-selection-summary {
+			:host([dir="rtl"]) d2l-selection-select-all + d2l-selection-summary {
 				margin-left: 0;
 				margin-right: 0.9rem;
 			}
@@ -132,20 +131,12 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		return html`
 			<div class="d2l-sticky-edge"></div>
 			<section class="${classMap(classes)}" aria-label="${ifDefined(label)}">
-				${this.noSelection ? null : html`
-					<d2l-selection-select-all></d2l-selection-select-all>
-					<d2l-selection-summary
-						aria-hidden="true"
-						no-selection-text="${this.localize('components.selection.select-all')}"
-					>
-					</d2l-selection-summary>
-					${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : null}
-				`}
+				${this.noSelection ? nothing : this._renderSelection()}
 				<div class="d2l-selection-header-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</section>
-			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : null}
+			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : nothing}
 		`;
 	}
 
@@ -170,6 +161,18 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 
 	_handleSlotChange(e) {
 		this._hasActions = (e.target.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE).length > 0);
+	}
+
+	_renderSelection() {
+		return html`
+			<d2l-selection-select-all></d2l-selection-select-all>
+			<d2l-selection-summary
+				aria-hidden="true"
+				no-selection-text="${this.localize('components.selection.select-all')}"
+			>
+			</d2l-selection-summary>
+			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
+		`;
 	}
 
 	_stickyObserverDisconnect() {
