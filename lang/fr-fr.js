@@ -64,7 +64,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyer sur entrée pour interagir, sur Echap pour quitter",
-	"components.list-header.label": "Actions for list",
+	"components.list-header.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Action de réorganisation de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments, position actuelle {currentPosition} sur {size}. Pour déplacer cet élément, appuyez sur les flèches vers le haut ou vers le bas.",
 	"components.list-item-tooltip.title": "Navigation au clavier pour les listes :",
@@ -99,7 +99,7 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionnés",
-	"components.selection-header.label": "Actions for selection",
+	"components.selection-header.label": "Actions pour la sélection",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Masqué",
