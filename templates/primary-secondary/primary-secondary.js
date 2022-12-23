@@ -257,8 +257,10 @@ class DesktopMouseResizer extends Resizer {
 		const collapsedCollapseThreshold = this.contentBounds.minWidth * 0.1;
 		const x = this._computeContentX(clientX);
 		const desiredSecondaryWidth = x + this._offset;
-		if ((this._wasCollapsed && desiredSecondaryWidth < collapsedCollapseThreshold)
-			|| (!this._wasCollapsed && desiredSecondaryWidth < expandedCollapseThreshold)) {
+		if (
+			(this._wasCollapsed && desiredSecondaryWidth < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryWidth < expandedCollapseThreshold)
+		) {
 			this.dispatchResize(0, true);
 		}
 		else if (desiredSecondaryWidth < this.contentBounds.minWidth) {
@@ -383,8 +385,10 @@ class MobileMouseResizer extends Resizer {
 		const collapsedCollapseThreshold = this.contentBounds.minHeight * 0.1;
 		const y = e.clientY - this.contentRect.top;
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
-		if ((this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
-			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold)) {
+		if (
+			(this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold)
+		) {
 			if (desiredSecondaryHeight > 0) this.dispatchResize(0, true);
 		}
 		else if (desiredSecondaryHeight < this.contentBounds.minHeight) {
@@ -445,13 +449,17 @@ class MobileTouchResizer extends Resizer {
 		const expandThreshold = this.contentBounds.minHeight + (this.contentBounds.maxHeight - this.contentBounds.minHeight) * 0.1;
 		const collapseThreshold = this.contentBounds.minHeight * 0.9;
 		const collapsedExpandThreshold = this.contentBounds.minHeight * 0.1;
-		if ((!this._wasCollapsed && this.panelSize < collapseThreshold)
-			|| (this._wasCollapsed && this.panelSize < collapsedExpandThreshold)) {
+		if (
+			(!this._wasCollapsed && this.panelSize < collapseThreshold)
+			|| (this._wasCollapsed && this.panelSize < collapsedExpandThreshold)
+		) {
 			secondaryHeight = 0;
 		}
-		else if ((this._wasExpanded && this.panelSize < expandedShrinkThreshold)
+		else if (
+			(this._wasExpanded && this.panelSize < expandedShrinkThreshold)
 			|| (this._wasCollapsed && this.panelSize < expandThreshold)
-			|| (!this._wasExpanded && !this._wasCollapsed && this.panelSize < expandThreshold && this.panelSize > collapseThreshold)) {
+			|| (!this._wasExpanded && !this._wasCollapsed && this.panelSize < expandThreshold && this.panelSize > collapseThreshold)
+		) {
 			secondaryHeight = this.contentBounds.minHeight;
 		}
 		else {
