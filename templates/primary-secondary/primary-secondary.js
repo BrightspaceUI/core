@@ -253,7 +253,7 @@ class DesktopMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		const expandedCollapseThreshold = this.contentBounds.minWidth * 0.5;
+		const expandedCollapseThreshold = this.contentBounds.minWidth * 0.75;
 		const collapsedCollapseThreshold = this.contentBounds.minWidth * 0.1;
 		const x = this._computeContentX(clientX);
 		const desiredSecondaryWidth = x + this._offset;
@@ -379,7 +379,7 @@ class MobileMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		const expandedCollapseThreshold = this.contentBounds.minHeight * 0.5;
+		const expandedCollapseThreshold = this.contentBounds.minHeight * 0.75;
 		const collapsedCollapseThreshold = this.contentBounds.minHeight * 0.1;
 		const y = e.clientY - this.contentRect.top;
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
@@ -483,13 +483,14 @@ class MobileTouchResizer extends Resizer {
 		const touch = e.touches[0];
 		const curTouch = touch.screenY;
 		const delta = curTouch - this._prevTouch;
+		const isScrollingDivider = this._targetDivider.contains(e.target);
 		const curScroll = this._targetSecondary.scrollTop;
 		this._trackTouch(touch);
 
 		let isScrollable;
 		let secondaryHeight = this.panelSize;
 		if (delta > 0) {
-			if (curScroll === 0) {
+			if (isScrollingDivider ||  curScroll === 0) {
 				secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			}
 			isScrollable = curScroll > 0;
