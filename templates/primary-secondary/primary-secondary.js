@@ -46,10 +46,12 @@ class Resizer {
 	constructor() {
 		this.contentRect = null;
 		this.contentBounds = null;
+		this.isCollapsed = false;
 		this.isMobile = false;
-		this.panelSize = 0;
 		this.isRtl = false;
+		this.panelSize = 0;
 		this.secondaryFirst = false;
+		this._wasCollapsed = false;
 	}
 
 	clampHeight(height) {
@@ -199,6 +201,7 @@ class DesktopMouseResizer extends Resizer {
 	_onMouseDown(e) {
 		if (!this.isMobile) {
 			e.preventDefault();
+			this._wasCollapsed = this.isCollapsed;
 			this._resizeStart(e.clientX);
 		}
 	}
@@ -235,6 +238,7 @@ class DesktopMouseResizer extends Resizer {
 	_onTouchStart(e) {
 		if (!this.isMobile) {
 			if (e.cancelable) e.preventDefault();
+			this._wasCollapsed = this.isCollapsed;
 			const touch = e.touches[0];
 			this._resizeStart(touch.clientX);
 		}
@@ -246,10 +250,15 @@ class DesktopMouseResizer extends Resizer {
 	}
 
 	_resizeEnd(clientX) {
-		const collapseThreshold = this.contentBounds.minWidth / 2;
+		if (!this._isResizing) {
+			return;
+		}
+		const expandedCollapseThreshold = this.contentBounds.minWidth * 0.5;
+		const collapsedCollapseThreshold = this.contentBounds.minWidth * 0.1;
 		const x = this._computeContentX(clientX);
 		const desiredSecondaryWidth = x + this._offset;
-		if (desiredSecondaryWidth < collapseThreshold) {
+		if ((this._wasCollapsed && desiredSecondaryWidth < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryWidth < expandedCollapseThreshold)) {
 			this.dispatchResize(0, true);
 		}
 		else if (desiredSecondaryWidth < this.contentBounds.minWidth) {
@@ -347,6 +356,7 @@ class MobileMouseResizer extends Resizer {
 
 	_onMouseDown(e) {
 		if (this.isMobile) {
+			this._wasCollapsed = this.isCollapsed;
 			this.dispatchResizeStart();
 			e.preventDefault();
 			const y = e.clientY - this.contentRect.top;
@@ -369,10 +379,12 @@ class MobileMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		const collapseThreshold = this.contentBounds.minHeight / 2;
+		const expandedCollapseThreshold = this.contentBounds.minHeight * 0.5;
+		const collapsedCollapseThreshold = this.contentBounds.minHeight * 0.1;
 		const y = e.clientY - this.contentRect.top;
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
-		if (desiredSecondaryHeight < collapseThreshold) {
+		if ((this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold)) {
 			this.dispatchResize(0, true);
 		}
 		else if (desiredSecondaryHeight < this.contentBounds.minHeight) {
@@ -387,35 +399,41 @@ class MobileMouseResizer extends Resizer {
 class MobileTouchResizer extends Resizer {
 	constructor() {
 		super();
+		this.isExpanded = false;
+		this._wasExpanded = false;
 		this._onResizeStart = this._onResizeStart.bind(this);
 		this._onTouchMove = this._onTouchMove.bind(this);
 		this._onResizeEnd = this._onResizeEnd.bind(this);
-		this._target = null;
+		this._targetDivider = null;
+		this._targetSecondary = null;
 	}
 
-	connect(target) {
-		target.addEventListener('touchstart', this._onResizeStart);
-		target.addEventListener('touchmove', this._onTouchMove);
-		target.addEventListener('touchend', this._onResizeEnd);
-		this._target = target;
+	connect(targetDivider, targetSecondary) {
+		targetDivider.addEventListener('touchstart', this._onResizeStart);
+		targetDivider.addEventListener('touchmove', this._onTouchMove);
+		targetDivider.addEventListener('touchend', this._onResizeEnd);
+		this._targetDivider = targetDivider;
+
+		targetSecondary.addEventListener('touchstart', this._onResizeStart);
+		targetSecondary.addEventListener('touchmove', this._onTouchMove);
+		targetSecondary.addEventListener('touchend', this._onResizeEnd);
+		this._targetSecondary = targetSecondary;
 	}
 
 	disconnect() {
-		if (this._target) {
-			this._target.removeEventListener('touchstart', this._onResizeStart);
-			this._target.removeEventListener('touchmove', this._onTouchMove);
-			this._target.removeEventListener('touchend', this._onResizeEnd);
+		if (this._targetDivider) {
+			this._targetDivider.removeEventListener('touchstart', this._onResizeStart);
+			this._targetDivider.removeEventListener('touchmove', this._onTouchMove);
+			this._targetDivider.removeEventListener('touchend', this._onResizeEnd);
 		}
-		this._target = null;
-	}
+		this._targetDivider = null;
 
-	_computeTouchDirection() {
-		const oldest = this._touches[0];
-		const newest = this._touches[this._touches.length - 1];
-		if (oldest === newest) {
-			return 0;
+		if (this._targetSecondary) {
+			this._targetSecondary.removeEventListener('touchstart', this._onResizeStart);
+			this._targetSecondary.removeEventListener('touchmove', this._onTouchMove);
+			this._targetSecondary.removeEventListener('touchend', this._onResizeEnd);
 		}
-		return newest - oldest;
+		this._targetSecondary = null;
 	}
 
 	_onResizeEnd() {
@@ -423,20 +441,18 @@ class MobileTouchResizer extends Resizer {
 			return;
 		}
 		let secondaryHeight;
-		const collapseThreshold = this.contentBounds.minHeight / 2;
-		if (this.panelSize < collapseThreshold) {
+		const expandedShrinkThreshold = this.contentBounds.minHeight + (this.contentBounds.maxHeight - this.contentBounds.minHeight) * 0.9;
+		const expandThreshold = this.contentBounds.minHeight + (this.contentBounds.maxHeight - this.contentBounds.minHeight) * 0.1;
+		const collapseThreshold = this.contentBounds.minHeight * 0.9;
+		const collapsedExpandThreshold = this.contentBounds.minHeight * 0.1;
+		if ((!this._wasCollapsed && this.panelSize < collapseThreshold)
+			|| (this._wasCollapsed && this.panelSize < collapsedExpandThreshold)) {
 			secondaryHeight = 0;
 		}
-		else if (this.panelSize < this.contentBounds.minHeight) {
+		else if ((this._wasExpanded && this.panelSize < expandedShrinkThreshold)
+			|| (this._wasCollapsed && this.panelSize < expandThreshold)
+			|| (!this._wasExpanded && !this._wasCollapsed && this.panelSize < expandThreshold && this.panelSize > collapseThreshold)) {
 			secondaryHeight = this.contentBounds.minHeight;
-		}
-		else if (this.panelSize < this.contentBounds.maxHeight) {
-			const touchDirection = this._computeTouchDirection();
-			if (touchDirection >= 0) {
-				secondaryHeight = this.contentBounds.minHeight;
-			} else {
-				secondaryHeight = this.contentBounds.maxHeight;
-			}
 		}
 		else {
 			secondaryHeight = this.contentBounds.maxHeight;
@@ -455,6 +471,8 @@ class MobileTouchResizer extends Resizer {
 			this._isResizing = true;
 			this._touches = [];
 			this._trackTouch(touch);
+			this._wasCollapsed = this.isCollapsed;
+			this._wasExpanded = this.isExpanded;
 		}
 	}
 
@@ -465,7 +483,7 @@ class MobileTouchResizer extends Resizer {
 		const touch = e.touches[0];
 		const curTouch = touch.screenY;
 		const delta = curTouch - this._prevTouch;
-		const curScroll = this._target.scrollTop;
+		const curScroll = this._targetSecondary.scrollTop;
 		this._trackTouch(touch);
 
 		let isScrollable;
@@ -1018,7 +1036,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 								</d2l-icon-custom>
 							</div>
 							<div class="d2l-template-primary-secondary-divider-handle-mobile">
-								${size === 0 ? html`<d2l-icon icon="tier1:chevron-up"></d2l-icon>` : html`<d2l-icon icon="tier1:chevron-down"></d2l-icon>`}
+								<d2l-icon icon=${size === 0 ? 'tier1:chevron-up' : 'tier1:chevron-down'}></d2l-icon>
 							</div>
 						</div>
 					</div>
@@ -1033,6 +1051,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+		if (changedProperties.has('_isCollapsed')) {
+			this._desktopMouseResizer.isCollapsed = this._isCollapsed;
+			this._mobileMouseResizer.isCollapsed = this._isCollapsed;
+			this._mobileTouchResizer.isCollapsed = this._isCollapsed;
+		}
+		if (changedProperties.has('_isExpanded')) {
+			this._mobileTouchResizer.isExpanded = this._isExpanded;
+		}
 		if (changedProperties.has('_size')) {
 			if (this.storageKey) {
 				const key = computeSizeKey(this.storageKey);
@@ -1047,16 +1073,20 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			this._desktopKeyboardResizer.secondaryFirst = this.secondaryFirst;
 			this._desktopMouseResizer.secondaryFirst = this.secondaryFirst;
 		}
-		if (!this._secondary) {
-			this._secondary = this.shadowRoot.querySelector('aside');
+		if (!this._divider) {
 			this._divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+		}
+		if (changedProperties.has('_isMobile') && this._isMobile) {
+			this._secondary = this.shadowRoot.querySelector('aside');
+			if (this._divider.isConnected && this._secondary.isConnected) {
+				this._mobileTouchResizer.connect(this._divider, this._secondary);
+			}
 		}
 		if (this._divider.isConnected && !this._hasConnectedResizers) {
 			this._desktopKeyboardResizer.connect(this._divider);
 			this._desktopMouseResizer.connect(this._divider);
 			this._mobileKeyboardResizer.connect(this._divider);
 			this._mobileMouseResizer.connect(this._divider);
-			this._mobileTouchResizer.connect(this._secondary);
 			this._hasConnectedResizers = true;
 		}
 	}
