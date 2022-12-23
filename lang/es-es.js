@@ -64,7 +64,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Pulse Enter para interactuar y Escape para salir",
-	"components.list-header.label": "Actions for list",
+	"components.list-header.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Reordenar acción de elemento para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos, posición actual {currentPosition} de {size}. Para mover este elemento, pulse las flechas arriba o abajo.",
 	"components.list-item-tooltip.title": "Navegación de listas con el teclado:",
@@ -99,9 +99,9 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.selection-header.label": "Actions for selection",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.selection-header.label": "Acciones para la selección",
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.tabs.next": "Desplazarse hacia delante",
