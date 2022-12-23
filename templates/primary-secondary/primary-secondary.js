@@ -385,7 +385,7 @@ class MobileMouseResizer extends Resizer {
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
 		if ((this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
 			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold)) {
-			this.dispatchResize(0, true);
+			if (desiredSecondaryHeight > 0) this.dispatchResize(0, true);
 		}
 		else if (desiredSecondaryHeight < this.contentBounds.minHeight) {
 			this.dispatchResize(this.contentBounds.minHeight, true);
@@ -1197,7 +1197,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 		if (this._isResizable()) {
 			if (e.size > 0) {
 				this._isCollapsed = false;
-				this._isHandleTap = false;
 			} else if (reduceMotion) {
 				this._isCollapsed = true;
 			}
@@ -1207,6 +1206,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				this._isExpanded = e.size === this._contentBounds.maxWidth;
 			}
 			this._animateResize = !reduceMotion && e.animateResize;
+			this._isHandleTap = false;
 			this._size = e.size;
 		}
 	}
