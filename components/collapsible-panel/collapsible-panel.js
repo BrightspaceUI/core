@@ -69,6 +69,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @default "default"
 			 */
 			padding: { type: String, reflect: true },
+			_focused: { state: true },
 			_hasSummary: { state: true },
 			_isScrolled: { state: true },
 		};
@@ -243,6 +244,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.headingStyle = defaultHeading;
 		this.padding = 'default';
 		this.type = 'default';
+		this._focused = false;
+		this._hasSummary = false;
+		this._isScrolled = false;
 	}
 
 	disconnectedCallback() {
@@ -265,6 +269,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
+			'focused': this._focused,
 			'has-summary': this._hasSummary,
 			'scrolled': this._isScrolled,
 		};
@@ -338,13 +343,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	_onBlur() {
-		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-		element.classList.remove('focused');
+		this._focused = false;
 	}
 
 	_onFocus() {
-		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-		element.classList.add('focused');
+		this._focused = true;
 	}
 
 	_renderHeader() {
