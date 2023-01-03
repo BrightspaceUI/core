@@ -39,7 +39,7 @@ const getJavaScriptFiles = (paths) => {
 	return files;
 };
 
-const files = getJavaScriptFiles(join(__dirname, '../src'));
+const files = getJavaScriptFiles(join(__dirname, '../components'));
 const langTermsNotFound = [];
 
 console.info('Check for unused langterms\n');
