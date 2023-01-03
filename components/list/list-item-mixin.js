@@ -513,6 +513,34 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		return rootList;
 	}
 
+	_getVisibleItems(visibleItems, collapsedItems, listItem) {
+		if (!listItem) {
+			const rootList = this._getRootList();
+			const rootListItems = rootList.getItems();
+			rootListItems.forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
+		} else {
+			visibleItems.add(listItem.key);
+			if (!listItem.expandable && listItem._hasChildren) {
+				const nestedList = listItem._getNestedList();
+				nestedList.getItems().forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
+			} else if (listItem.expandable) {
+				if (listItem._hasChildren && !listItem.expanded) {
+					collapsedItems.add(listItem.key);
+				} else if (listItem.expanded && listItem._hasChildren) {
+					const nestedList = listItem._getNestedList();
+					nestedList.getItems().forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
+				}
+			}
+		}
+	}
+
+	_getVisibleListItems(listItem) {
+		const visibleItems = new Set();
+		const collapsedItems = new Set();
+		this._getVisibleItems(visibleItems, collapsedItems, listItem);
+		return { visibleItems, collapsedItems };
+	}
+
 	_isListItem(node) {
 		if (!node) node = this;
 		return node.role === 'rowgroup' || node.role === 'listitem';
