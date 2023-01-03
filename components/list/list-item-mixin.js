@@ -513,6 +513,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		return rootList;
 	}
 
+	_getVisibleAndCollapsedListItemState(listItem) {
+		const visibleItems = new Set();
+		const collapsedItems = new Set();
+		this._getVisibleItems(visibleItems, collapsedItems, listItem);
+		return { visibleItems, collapsedItems };
+	}
+
 	_getVisibleItems(visibleItems, collapsedItems, listItem) {
 		if (!listItem) {
 			const rootList = this._getRootList();
@@ -532,13 +539,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				}
 			}
 		}
-	}
-
-	_getVisibleListItems(listItem) {
-		const visibleItems = new Set();
-		const collapsedItems = new Set();
-		this._getVisibleItems(visibleItems, collapsedItems, listItem);
-		return { visibleItems, collapsedItems };
 	}
 
 	_isListItem(node) {
