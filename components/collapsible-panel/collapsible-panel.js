@@ -7,6 +7,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const normalizeHeadingNumber = (number) => {
+	number = parseInt(number);
+	if (number < 1) { return 1; }
+	if (number > 4) { return 4; }
+	return number;
+};
+
 const defaultHeading = 3;
 
 /**
@@ -334,13 +341,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		element.classList.add('has-summary');
 	}
 
-	_normalizeHeadingNumber(number) {
-		number = parseInt(number);
-		if (number < 1) { return 1; }
-		if (number > 4) { return 4; }
-		return number;
-	}
-
 	_onBlur() {
 		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
 		element.classList.remove('focused');
@@ -377,14 +377,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	_renderPanelTitle() {
 		let headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
-		headingStyle = this._normalizeHeadingNumber(headingStyle);
+		headingStyle = normalizeHeadingNumber(headingStyle);
 
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
 			[`d2l-heading-${headingStyle}`]: true,
 		};
 
-		const headingLevel = this._normalizeHeadingNumber(this.headingLevel);
+		const headingLevel = normalizeHeadingNumber(this.headingLevel);
 		if (headingLevel === 1) {
 			return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
 		}
