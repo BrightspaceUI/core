@@ -23,6 +23,9 @@ class CollapsiblePanelSummaryItem extends LitElement {
 				color: var(--d2l-color-galena);
 				display: block;
 			}
+			:host([hidden]) {
+				display: none;
+			}
 			.d2l-body-small {
 				line-height: 1.2rem;
 			}
