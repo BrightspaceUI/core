@@ -61,7 +61,7 @@
     "lit-analyzer": "^1",
     "messageformat-validator": "^2",
     "node-sass": "^8",
-    "rollup": "3.7.5",
+    "rollup": "3.9.0",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
     "sinon": "^15",
