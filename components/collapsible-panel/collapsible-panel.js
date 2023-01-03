@@ -384,17 +384,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		};
 
 		const headingLevel = normalizeHeadingNumber(this.headingLevel);
-		if (headingLevel === 1) {
-			return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
-		}
-		if (headingLevel === 2) {
-			return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
-		}
-		if (headingLevel === 3) {
-			return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
-		}
-		if (headingLevel === 4) {
-			return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
+		switch (headingLevel) {
+			case 1: return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
+			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
+			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
+			case 4: return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
 		}
 	}
 
