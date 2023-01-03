@@ -332,8 +332,9 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		}
 	}
 
-	_handleSummarySlotChange() {
-		this._hasSummary = true;
+	_handleSummarySlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+		this._hasSummary = content?.length > 0;
 	}
 
 	_onBlur() {
@@ -352,7 +353,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
-						<slot name="actions" @slotchange="${this._handleActionsSlotChange}"></slot>
+						<slot name="actions"></slot>
 					</div>
 					<div class="d2l-collapsible-panel-opener">
 						<d2l-icon-custom size="tier1">
@@ -363,7 +364,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					</div>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
-					<slot name="header" @slotchange="${this._handleHeaderSlotChange}"></slot>
+					<slot name="header"></slot>
 				</div>
 			</div>
 			<div class="d2l-collapsible-panel-divider"></div>
