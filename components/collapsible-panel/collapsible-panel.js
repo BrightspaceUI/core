@@ -299,12 +299,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			if (!this.expanded) {
 				this._isScrolled = false;
 			}
-
-			const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
-
-			this.dispatchEvent(new CustomEvent(
-				event, { bubbles: false, composed: false }
-			));
 		}
 	}
 
@@ -401,6 +395,12 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	_toggleExpand() {
 		this.expanded = !this.expanded;
+
+		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
+
+		this.dispatchEvent(new CustomEvent(
+			event, { bubbles: false, composed: false }
+		));
 	}
 }
 
