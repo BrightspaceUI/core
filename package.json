@@ -18,6 +18,7 @@
     "lint": "npm run lint:eslint && npm run lint:style && npm run lint:lit && npm run lint:lang",
     "lint:eslint": "eslint . --ext .js,.html --ignore-path .gitignore",
     "lint:lang": "mfv -e && npm run lint:lang-unused-check",
+    "lint:lang-unused-check": "node ./cli/check-unused-langterms.js",
     "lint:lit": "lit-analyzer \"{components,controllers,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict --rules.no-unknown-tag-name off",
     "lint:style": "stylelint \"**/*.{js,html}\" --ignore-path .gitignore",
     "start": "web-dev-server --node-resolve --watch --open",
