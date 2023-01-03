@@ -31,31 +31,29 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-subtle.js';
-  import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-  import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/inputs/input-search.js';
 	import '@brightspace-ui/core/components/filter/filter.js';
 	import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
 </script>
 
-<d2l-collapsible-panel title="Availability Dates and Conditions">
+<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
 	<div slot="summary">
 		<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
 		<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
 		<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
 	</div>
-	<div slot="content">
-		<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
-			<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
-			<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
-			<d2l-filter>
-				<d2l-filter-dimension-set key="Filter" text="Filter">
-				</d2l-filter-dimension-set>
-			</d2l-filter>
-		</div>
-		<div>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-		</div>
+	<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
+		<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
+		<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
+		<d2l-filter>
+			<d2l-filter-dimension-set key="Filter" text="Filter">
+			</d2l-filter-dimension-set>
+		</d2l-filter>
+	</div>
+	<div>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
 	</div>
 </d2l-collapsible-panel>
 ```
@@ -81,7 +79,8 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `full-width` | Boolean | Whether or not the content should extend to the full width (only valid when using "inline" panel type) |
 | `heading-style` | Number | The heading style to use |
 | `heading-level` | Number | Semantic heading level (h1-h4) |
-| `title` | String | The title of the panel |
+| `padding` | String | Optionally set Horizontal padding of the  |
+| `panel-title` | String | The title of the panel |
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
 
