@@ -361,7 +361,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 					<div class="d2l-collapsible-panel-opener">
 						<d2l-icon-custom size="tier1">
 							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
-								<path stroke="#494c4e" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
 						</d2l-icon-custom>
 					</div>
