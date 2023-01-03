@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
@@ -46,6 +46,9 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	}
 
 	render() {
+		if (!this._summary) {
+			return nothing;
+		}
 		return html`
 			<p class="d2l-body-compact">${this._summary}</p>
 		`;
@@ -64,8 +67,8 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 		let count;
 		if (this._provider && this._provider.selectionCountOverride !== undefined) {
 			count = this._provider.selectionCountOverride;
-			this._summary = (this._provider.selectionCountOverride === 0 && this.noSelectionText ?
-				this.noSelectionText : this.localize('components.selection.selected', 'count', count));
+			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
+				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
 		} else {
 			const visibleAndCollapsedRootState = this._provider.getItems()[0]._getVisibleAndCollapsedListItemState();
 			let includePlus = false;
