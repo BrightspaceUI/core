@@ -62,6 +62,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @default "default"
 			 */
 			padding: { type: String, reflect: true },
+			_isScrolled: { state: true },
 		};
 	}
 
@@ -247,18 +248,17 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				if (!this.expanded) return;
 
 				const entry = entries[0];
-				const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-				if (entry.isIntersecting) {
-					element.classList.remove('scrolled');
-				} else {
-					element.classList.add('scrolled');
-				}
+				this._isScrolled = !entry.isIntersecting;
 			});
 			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-collapsible-panel-top-sentinel'));
 		}
 	}
 
 	render() {
+		const classes = {
+			'd2l-collapsible-panel': true,
+			'scrolled': this._isScrolled,
+		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 
 		return html`
@@ -270,7 +270,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				@focus="${this._onFocus}"
 				@blur="${this._onBlur}"
 			>${expandCollapseLabel}</button>
-			<div class="d2l-collapsible-panel" @click="${this._handlePanelClick}">
+			<div class="${classMap(classes)}" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
 				<d2l-expand-collapse-content ?expanded="${this.expanded}">
@@ -290,8 +290,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	updated(changedProperties) {
 		if (changedProperties.has('expanded')) {
 			if (!this.expanded) {
-				const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-				element.classList.remove('scrolled');
+				this._isScrolled = false;
 			}
 
 			const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
