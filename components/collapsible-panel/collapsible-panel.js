@@ -69,6 +69,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @default "default"
 			 */
 			padding: { type: String, reflect: true },
+			_hasSummary: { state: true },
 			_isScrolled: { state: true },
 		};
 	}
@@ -264,6 +265,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
+			'has-summary': this._hasSummary,
 			'scrolled': this._isScrolled,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
@@ -331,8 +333,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	_handleSummarySlotChange() {
-		const element = this.shadowRoot.querySelector('.d2l-collapsible-panel');
-		element.classList.add('has-summary');
+		this._hasSummary = true;
 	}
 
 	_onBlur() {
