@@ -99,6 +99,8 @@ export default {
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items": "Alle {count} records selecteren",
 	"components.selection.selected": "{count} geselecteerd",
+	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.multiple-selected": "Multiple items selected",
 	"components.selection-header.label": "Acties voor selectie",
 	"components.switch.visible": "Zichtbaar",
 	"components.switch.visibleWithPeriod": "Zichtbaar.",
