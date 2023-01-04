@@ -317,16 +317,5 @@ export const listDemos = {
 		primaryText: 'Applied Wetland Science',
 		dropNested: true,
 		items: []
-	}],
-	noChildren: [{
-		key: 'a',
-		primaryText: 'Introductory Earth Sciences',
-		items: [],
-		expandOverride: 'closed'
-	}, {
-		key: 'b',
-		primaryText: 'Applied Wetland Science',
-		items: [],
-		expandOverride: 'closed'
-	}],
+	}]
 };

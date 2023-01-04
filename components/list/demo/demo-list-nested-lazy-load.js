@@ -4,21 +4,31 @@ import '../list.js';
 import { html, LitElement, nothing } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { listDemos } from './list-demo-scenarios.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoNestedLazyLoad extends LitElement {
 
 	static get properties() {
 		return {
-			demoItemKey: { type: String, attribute: 'demo-item-key' },
 			_items: { state: true },
 		};
 	}
 
 	constructor() {
 		super();
-		this._items = [];
+		this._items = new Map();
+		this._items.set('a', {
+			key: 'a',
+			primaryText: 'Item 1: Click Expand To Lazy Load Item',
+			items: [],
+			expandOverride: 'closed'
+		});
+		this._items.set('b', {
+			key: 'b',
+			primaryText: 'Item 2: Click Expand To Lazy Load Item',
+			items: [],
+			expandOverride: 'closed'
+		});
 	}
 
 	render() {
@@ -27,18 +37,6 @@ class ListDemoNestedLazyLoad extends LitElement {
 				${this._renderList(this._items.values(), false)}
 			</div>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('demoItemKey')) {
-			const itemMap = new Map();
-			const demoItems = listDemos[this.demoItemKey] ?? [];
-			demoItems.forEach(element => {
-				itemMap.set(element.key, element);
-			});
-			this._items = itemMap;
-		}
 	}
 
 	_handleListItemToggle(e) {
