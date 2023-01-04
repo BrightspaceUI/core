@@ -157,6 +157,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			}
 			.d2l-collapsible-panel-header-actions {
 				display: flex;
+				gap: 0.3rem;
 			}
 			.d2l-collapsible-panel-header-actions::after {
 				border-inline-end: 1px solid var(--d2l-color-mica);

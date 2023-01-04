@@ -121,16 +121,15 @@ When there are focusable elements in the `actions` or `header` slot, the focus o
 </script>
 
 <d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
-	<div slot="actions">
-		<d2l-button-icon icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon icon="tier1:download"></d2l-button-icon><d2l-dropdown-more>
-			<d2l-dropdown-menu>
-				<d2l-menu>
-					<d2l-menu-item text="Duplicate"></d2l-menu-item>
-					<d2l-menu-item text="Delete"></d2l-menu-item>
-				</d2l-menu>
-			</d2l-dropdown-menu>
-		</d2l-dropdown-more>
-	</div>
+	<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+	<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more>
+		<d2l-dropdown-menu>
+			<d2l-menu>
+				<d2l-menu-item text="Duplicate"></d2l-menu-item>
+				<d2l-menu-item text="Delete"></d2l-menu-item>
+			</d2l-menu>
+		</d2l-dropdown-menu>
+	</d2l-dropdown-more>
 	<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
 		<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
 		<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
