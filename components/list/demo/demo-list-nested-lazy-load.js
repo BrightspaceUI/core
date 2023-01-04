@@ -1,6 +1,8 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
+import '../list-header.js';
+import '../../selection/selection-action.js';
 import { html, LitElement, nothing } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -34,7 +36,7 @@ class ListDemoNestedLazyLoad extends LitElement {
 	render() {
 		return html`
 			<div>
-				${this._renderList(this._items.values(), false)}
+				${this._renderList(this._items.values(), false, true)}
 			</div>
 		`;
 	}
@@ -78,9 +80,10 @@ class ListDemoNestedLazyLoad extends LitElement {
 			</d2l-list-item-content>`;
 	}
 
-	_renderList(items, nested) {
+	_renderList(items, nested, includeHeader = false) {
 		return html`
 			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
+				${ includeHeader ? this._renderListHeader() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}
 				`)}
@@ -88,10 +91,20 @@ class ListDemoNestedLazyLoad extends LitElement {
 		`;
 	}
 
+	_renderListHeader() {
+		return html`
+			<d2l-list-header slot="header">
+				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+			</d2l-list-header>
+		`;
+	}
+
 	_renderListItem(item) {
 		return html`
 			<d2l-list-item
-				?draggable="${this.draggable}"
+				draggable
+				selectable
 				drag-handle-text="${item.primaryText}"
 				key="${item.key}"
 				label="${item.primaryText}"

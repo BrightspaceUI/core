@@ -461,6 +461,30 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
 	}
 
+	_getFlattenedListItems(listItem) {
+		const listItems = new Map();
+		const lazyLoadListItems = new Map();
+		this._getListItems(listItems, lazyLoadListItems, listItem);
+		return { listItems, lazyLoadListItems };
+	}
+
+	_getListItems(listItems, lazyLoadListItems, listItem) {
+		if (!listItem) {
+			const rootList = this._getRootList();
+			const rootListItems = rootList.getItems();
+			rootListItems.forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
+		} else {
+			listItems.set(listItem.key, listItem);
+			if (listItem.expandCollapseOverride === 'closed' && !listItem._hasChildren) {
+				lazyLoadListItems.set(listItem.key, listItem);
+			}
+			if (listItem._hasChildren) {
+				const nestedList = listItem._getNestedList();
+				nestedList.getItems().forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
+			}
+		}
+	}
+
 	_getNestedList() {
 		if (!this.shadowRoot) return;
 		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
@@ -511,34 +535,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			node = getComposedParent(node);
 		}
 		return rootList;
-	}
-
-	_getVisibleAndCollapsedListItemState(listItem) {
-		const visibleItems = new Set();
-		const collapsedItems = new Set();
-		this._getVisibleItems(visibleItems, collapsedItems, listItem);
-		return { visibleItems, collapsedItems };
-	}
-
-	_getVisibleItems(visibleItems, collapsedItems, listItem) {
-		if (!listItem) {
-			const rootList = this._getRootList();
-			const rootListItems = rootList.getItems();
-			rootListItems.forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
-		} else {
-			visibleItems.add(listItem.key);
-			if (!listItem.expandable && listItem._hasChildren) {
-				const nestedList = listItem._getNestedList();
-				nestedList.getItems().forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
-			} else if (listItem.expandable) {
-				if (listItem._hasChildren && !listItem.expanded) {
-					collapsedItems.add(listItem.key);
-				} else if (listItem.expanded && listItem._hasChildren) {
-					const nestedList = listItem._getNestedList();
-					nestedList.getItems().forEach(listItem => this._getVisibleItems(visibleItems, collapsedItems, listItem));
-				}
-			}
-		}
 	}
 
 	_isListItem(node) {

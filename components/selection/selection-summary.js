@@ -69,27 +69,23 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			count = this._provider.selectionCountOverride;
 			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
-		} else {
-			const visibleAndCollapsedRootState = this._provider.getItems()[0]._getVisibleAndCollapsedListItemState();
+		} else if (this._provider) {
+			const lazyLoadListItems = this._provider.getItems()[0]._getFlattenedListItems().lazyLoadListItems;
 			let includePlus = false;
-			let allSelectedItemsHidden = true;
-			const visibleSelectedItems = this.selectionInfo.keys.filter(item => visibleAndCollapsedRootState.visibleItems.has(item));
-			for (const selectedItem of this.selectionInfo.keys) {
-				if (visibleAndCollapsedRootState.visibleItems.has(selectedItem)) {
-					allSelectedItemsHidden = false;
-				}
-				if (visibleAndCollapsedRootState.collapsedItems.has(selectedItem) || !visibleAndCollapsedRootState.visibleItems.has(selectedItem)) {
-					includePlus = true;
+			if (lazyLoadListItems.size > 0) {
+				for (const selectedItemKey of this.selectionInfo.keys) {
+					if (lazyLoadListItems.has(selectedItemKey)) {
+						includePlus = true;
+						break;
+					}
 				}
 			}
 
 			count = this.selectionInfo.state === SelectionInfo.states.allPages ?
-				this._provider.itemCount : visibleSelectedItems.length;
+				this._provider.itemCount : this.selectionInfo.keys.length;
 
 			if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
 				this._summary = this.noSelectionText;
-			} else if (allSelectedItemsHidden) {
-				this._summary = this.localize('components.selection.multiple-selected');
 			} else if (includePlus) {
 				this._summary = this.localize('components.selection.selected-plus', 'count', count);
 			} else {

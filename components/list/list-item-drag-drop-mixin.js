@@ -602,32 +602,33 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const rootList = this._getRootList(this);
 		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
 		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
-			const visibleAndCollapsedRootState = this._getVisibleAndCollapsedListItemState();
+			const lazyLoadListItems = this._getFlattenedListItems().lazyLoadListItems;
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
 				this.shadowRoot.appendChild(dragImage);
 			}
-			const visibleSelectedItems = selectionInfo.keys.filter(item => visibleAndCollapsedRootState.visibleItems.has(item));
 			let includePlus = false;
-			for (const selectedItem of selectionInfo.keys) {
-				if (visibleAndCollapsedRootState.collapsedItems.has(selectedItem) || !visibleAndCollapsedRootState.visibleItems.has(selectedItem)) {
-					includePlus = true;
-					break;
+			if (lazyLoadListItems.size > 0) {
+				for (const selectedItemKey of selectionInfo.keys) {
+					if (lazyLoadListItems.has(selectedItemKey)) {
+						includePlus = true;
+						break;
+					}
 				}
 			}
-			dragImage.count = visibleSelectedItems.length;
+			dragImage.count = selectionInfo.keys.length;
 			dragImage.includePlusSign = includePlus;
 			e.dataTransfer.setDragImage(dragImage, 24, 26);
-		} else if (rootList.dragMultiple && this._hasChildren) {
-			const visibleAndCollapsedState = this._getVisibleAndCollapsedListItemState(this);
+		} else if (rootList.dragMultiple && (this._hasChildren || this.expandCollapseOverride === 'closed' || this.expandCollapseOverride === 'opened')) {
+			const flattenedListItems = this._getFlattenedListItems(this);
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
 				this.shadowRoot.appendChild(dragImage);
 			}
-			dragImage.count = visibleAndCollapsedState.visibleItems.size;
-			dragImage.includePlusSign = visibleAndCollapsedState.collapsedItems.size > 0;
+			dragImage.count = flattenedListItems.listItems.size;
+			dragImage.includePlusSign = flattenedListItems.lazyLoadListItems.size > 0;
 			e.dataTransfer.setDragImage(dragImage, 24, 26);
 		} else {
 			if (this.shadowRoot) {
