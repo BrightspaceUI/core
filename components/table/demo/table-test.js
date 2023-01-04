@@ -9,9 +9,10 @@ import '../../selection/selection-action-dropdown.js';
 import '../../selection/selection-action-menu-item.js';
 import '../../selection/selection-input.js';
 
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
+import { tableStyles, TableWrapper } from '../table-wrapper.js';
+import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
-import { tableStyles } from '../table-wrapper.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
 
@@ -27,25 +28,10 @@ const data = () => [
 
 const formatter = new Intl.NumberFormat('en-US');
 
-class TestTable extends RtlMixin(LitElement) {
+class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper')) {
 
 	static get properties() {
 		return {
-			/**
-			 * Hides the column borders on "default" table type
-			 * @type {boolean}
-			 */
-			noColumnBorder: { attribute: 'no-column-border', type: Boolean },
-			/**
-			 * Type of table style to apply
-			 * @type {'default'|'light'}
-			 */
-			type: { type: String },
-			/**
-			 * Whether header row is sticky
-			 * @type {boolean}
-			 */
-			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
 			_data: { state: true },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
@@ -62,15 +48,10 @@ class TestTable extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.noColumnBorder = false;
-		this.sortDesc = false;
-		this.stickyHeaders = false;
-		this.type = 'default';
 		this._data = data();
 	}
 
 	render() {
-		const type = this.type === 'light' ? 'light' : 'default';
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
 				return b.fruit[this._sortField] - a.fruit[this._sortField];
@@ -78,7 +59,7 @@ class TestTable extends RtlMixin(LitElement) {
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+			<d2l-table-wrapper>
 				<d2l-table-header slot="header" no-sticky>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
