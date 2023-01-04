@@ -7,6 +7,7 @@
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import './demo-list-nested.js';
+		import './demo-list-nested-lazy-load.js';
 	</script>
 </head>
 <body unresolved>
@@ -85,6 +86,13 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-demo-list-nested demo-item-key="oneChild" draggable selectable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Lazy Loaded Children</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested-lazy-load demo-item-key="noChildren"></d2l-demo-list-nested-lazy-load>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>

@@ -671,7 +671,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const nestedSlot = html`<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>`;
 		return html`
 			<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
+				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${this._renderChildrenLoadingSpinner()}${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
 			</div>
 		`;
 	}

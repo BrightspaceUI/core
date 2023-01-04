@@ -1,4 +1,5 @@
 import '../button/button-icon.js';
+import '../loading-spinner/loading-spinner.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 
@@ -14,9 +15,20 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			 * @type {boolean}
 			 */
 			expandable: { type: Boolean },
+			/**
+			 * Default state for expand collapse toggle - if not set, collapsed will be the default state
+			 * @type {boolean}
+			 */
 			expanded: { type: Boolean, reflect: true },
+			/**
+			 * Overridden expand collapse state - will force the toggle to be shown whether the item has children or not
+			 * @type {'opened'|'closed'}
+			 */
+			expandCollapseOverride: { type: String, attribute: 'expand-collapse-override' },
 			_siblingHasNestedItems: { state: true },
-			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' }
+			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
+			_renderExpandCollapseToggle: { state: true },
+			_showChildrenLoadingSpinner: {  state: true }
 		};
 	}
 
@@ -27,8 +39,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			}
 			.d2l-list-expand-collapse {
 				padding: 0.4rem 0.3rem 0 0;
-				transition:
-					width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
+				transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 				width: 0;
 			}
 			.d2l-list-expand-collapse d2l-button-icon {
@@ -47,6 +58,11 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				display: block;
 				height: 100%;
 			}
+			.d2l-list-children-loading {
+				display: flex;
+				justify-content: center;
+				padding: 0.4rem;
+			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -57,6 +73,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		super();
 		this._siblingHasNestedItems = false;
 		this._renderExpandCollapseSlot = false;
+		this._renderExpandCollapseToggle = false;
+		this._showChildrenLoadingSpinner = false;
 		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
@@ -70,10 +88,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	updated(changedProperties) {
-		if (changedProperties.has('_hasChildren') || changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
-			this._renderExpandCollapseSlot = this.expandable && (this._hasChildren || this._siblingHasNestedItems);
+		if (changedProperties.has('_renderExpandCollapseToggle') || changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
+			this._renderExpandCollapseSlot = this.expandable && (this._renderExpandCollapseToggle || this._siblingHasNestedItems);
 		}
-		if (changedProperties.has('_draggingOver') && this._draggingOver && this.dropNested && !this.expanded) {
+		if (changedProperties.has('_draggingOver') && this._draggingOver && this.dropNested && !this.expanded && this.expandable) {
 			let elapsedHoverTime = 0;
 			let dragIntervalId = null;
 			const watchDraggingOver = () => {
@@ -93,10 +111,31 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			// check if they are still hovered over same item every 100ms
 			dragIntervalId = setInterval(watchDraggingOver, dragIntervalDelay);
 		}
+		if (changedProperties.has('_hasChildren') || changedProperties.has('expandCollapseOverride') && this.expandable) {
+			this._renderExpandCollapseToggle = this.expandCollapseOverride === 'opened' || this.expandCollapseOverride === 'closed' || this._hasChildren;
+			this._showChildrenLoadingSpinner = this.expandCollapseOverride === 'opened' && !this._hasChildren;
+		}
+		if (changedProperties.has('expandCollapseOverride') && this.expandable) {
+			if (this.expandCollapseOverride === 'opened') {
+				this.expanded = true;
+			} else if (this.expandCollapseOverride === 'closed') {
+				this.expanded = false;
+			}
+		}
 	}
 
 	updateSiblingHasChildren(siblingHasNestedItems) {
 		this._siblingHasNestedItems = siblingHasNestedItems;
+	}
+
+	_renderChildrenLoadingSpinner() {
+		if (!this.expandable || !this._showChildrenLoadingSpinner) {
+			return nothing;
+		}
+		return html`
+			<div class="d2l-list-children-loading">
+				<d2l-loading-spinner size="40"></d2l-loading-spinner>
+			</div>`;
 	}
 
 	_renderExpandCollapse() {
@@ -105,7 +144,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		}
 		return html`
 			<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
-				${this._hasChildren ? html`<d2l-button-icon
+				${this._renderExpandCollapseToggle ? html`<d2l-button-icon
 					icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
 					aria-expanded="${this.expanded ? 'true' : 'false'}"
 					text="${this.label}"></d2l-button-icon>` : nothing}
@@ -113,7 +152,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_renderExpandCollapseAction() {
-		if (this.selectable || !(this.expandable && this._hasChildren) || this.noPrimaryAction) {
+		if (this.selectable || !(this.expandable && this._renderExpandCollapseToggle) || this.noPrimaryAction) {
 			return nothing;
 		}
 
@@ -124,7 +163,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		if (!this.expandable) {
 			return;
 		}
-		this.expanded = !this.expanded;
+		// do not toggle when override set - consumer has to set state
+		if (!(this.expandCollapseOverride === 'opened' || this.expandCollapseOverride === 'closed')) {
+			this.expanded = !this.expanded;
+		}
 		this.dispatchEvent(new CustomEvent('d2l-list-item-expand-collapse-toggled', {
 			detail: { key: this.key, expanded: this.expanded },
 			composed: true,
