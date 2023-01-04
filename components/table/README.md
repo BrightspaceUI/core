@@ -29,7 +29,7 @@ Tables are used to display tabular data in rows and columns. They can allow user
 ## Responsive Behavior
 If the browser window is too narrow to display the table’s contents, a scroll button appears. This alerts users to overflowing content and provides a way for users to scroll horizontally. The scroll button sticks to the top of the screen so that it's available as long as the table is in the viewport.
 
-<!-- docs: demo name:d2l-test-table size:large -->
+<!-- docs: demo size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
@@ -45,7 +45,7 @@ If the viewport is very narrow — for example, on a mobile device — it may be
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
-<!-- docs: demo live name:d2l-test-table display:block -->
+<!-- docs: demo live name:d2l-table-wrapper display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -63,15 +63,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
     { name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
   ];
 
-  class TestTable extends LitElement {
-
-    static get properties() {
-      return {
-        noColumnBorder: { attribute: 'no-column-border', type: Boolean },
-        type: { type: String },
-        stickyHeaders: { attribute: 'sticky-headers', type: Boolean }
-      };
-    }
+  class SampleTable extends LitElement {
 
     static get styles() {
       return tableStyles;
@@ -81,7 +73,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
       const type = this.type === 'light' ? 'light' : 'default';
 
       return html`
-        <d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+        <d2l-table-wrapper>
           <table class="d2l-table">
             <thead>
               <tr>
@@ -103,9 +95,9 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
     }
 
   }
-  customElements.define('d2l-test-table', TestTable);
+  customElements.define('d2l-sample-table', SampleTable);
 </script>
-<d2l-test-table></d2l-test-table>
+<d2l-sample-table></d2l-sample-table>
 ```
 
 <!-- docs: start hidden content -->
@@ -304,7 +296,7 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 
 The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `header` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-table-header -->
+<!-- docs: demo live name:d2l-table-header display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
@@ -314,7 +306,7 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
   import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
-  class MyTableWithHeaderElem extends LitElement {
+  class SampleTableWithHeader extends LitElement {
 
     static get properties() {
       return {
@@ -369,9 +361,9 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
     }
 
   }
-  customElements.define('d2l-my-table-with-header-elem', MyTableWithHeaderElem);
+  customElements.define('d2l-sample-table-with-header', SampleTableWithHeader);
 </script>
-<d2l-my-table-with-header-elem></d2l-my-table-with-header-elem>
+<d2l-sample-table-with-header></d2l-sample-table-with-header>
 ```
 
 <!-- docs: start hidden content -->
