@@ -100,7 +100,6 @@ export default {
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
 	"components.selection.selected-plus": "{count}+ sélectionné(s)",
-	"components.selection.multiple-selected": "Plusieurs éléments sélectionné(s)",
 	"components.selection-header.label": "Actions à sélectionner",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated

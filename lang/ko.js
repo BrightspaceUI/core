@@ -100,7 +100,6 @@ export default {
 	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection.multiple-selected": "Multiple items selected",
 	"components.selection-header.label": "선택 작업",
 	"components.switch.visible": "표시",
 	"components.switch.visibleWithPeriod": "표시.",

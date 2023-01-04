@@ -100,7 +100,6 @@ export default {
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection.multiple-selected": "Multiple items selected",
 	"components.selection-header.label": "Camau gweithredu ar gyfer detholiad",
 	"components.switch.visible": "Gweladwy",
 	"components.switch.visibleWithPeriod": "Gweladwy.",

@@ -100,7 +100,6 @@ export default {
 	"components.selection.select-all-items": "Vælg alle {count} elementer",
 	"components.selection.selected": "{count} valgt",
 	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection.multiple-selected": "Multiple items selected",
 	"components.selection-header.label": "Handlinger for valg",
 	"components.switch.visible": "Synlig",
 	"components.switch.visibleWithPeriod": "Synlig.",

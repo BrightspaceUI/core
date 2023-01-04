@@ -100,7 +100,6 @@ export default {
 	"components.selection.select-all-items": "Select All {count} Items",
 	"components.selection.selected": "{count} selected",
 	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection.multiple-selected": "Multiple items selected",
 	"components.selection-header.label": "Actions for selection",
 	"components.switch.visible": "Visible",
 	"components.switch.visibleWithPeriod": "Visible.",
