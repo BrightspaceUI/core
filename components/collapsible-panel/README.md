@@ -32,18 +32,12 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-subtle.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/inputs/input-search.js';
 	import '@brightspace-ui/core/components/filter/filter.js';
 	import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
 </script>
 
 <d2l-collapsible-panel panel-title="Availability Dates and Conditions">
-	<div slot="summary">
-		<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
-		<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
-		<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
-	</div>
 	<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
 		<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
 		<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
@@ -84,3 +78,67 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
 
+
+## Summary Items [d2l-collapsible-panel-summary-item]
+The summary area takes information from the expanded panel and summarizes it for the collapsed version.This can help the user understand what information is inside the panel without having to click on it.
+
+<!-- docs: demo live name:d2l-collapsible-panel-summary-item
+ size:large -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
+</script>
+
+<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+	<div slot="summary">
+		<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+		<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
+		<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+	</div>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+```
+
+## Slots
+
+When there are focusable elements in the `actions` or `header` slot, the focus order will be as follows:
+- `d2l-collapsible-panel`
+- focusable elements in `actions`
+- focusable elements in `header`
+
+<!-- docs: demo live name:d2l-collapsible-panel-slots size:large -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/button/button-icon.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
+	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+	import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+	import '@brightspace-ui/core/components/menu/menu.js';
+	import '@brightspace-ui/core/components/menu/menu-item.js';
+	import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
+</script>
+
+<d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
+	<div slot="actions">
+		<d2l-button-icon icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon icon="tier1:download"></d2l-button-icon><d2l-dropdown-more>
+			<d2l-dropdown-menu>
+				<d2l-menu>
+					<d2l-menu-item text="Duplicate"></d2l-menu-item>
+					<d2l-menu-item text="Delete"></d2l-menu-item>
+				</d2l-menu>
+			</d2l-dropdown-menu>
+		</d2l-dropdown-more>
+	</div>
+	<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+		<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
+		<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
+		<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+	</div>
+	<div slot="summary">
+		<d2l-collapsible-panel-summary-item text="Always available"></d2l-collapsible-panel-summary-item>
+	</div>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+</d2l-collapsible-panel>
+```
