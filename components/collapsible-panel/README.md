@@ -30,25 +30,19 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 <!-- docs: demo live name:d2l-collapsible-panel size:large -->
 ```html
 <script type="module">
-	import '@brightspace-ui/core/components/button/button-subtle.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/inputs/input-search.js';
-	import '@brightspace-ui/core/components/filter/filter.js';
-	import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
 </script>
 
 <d2l-collapsible-panel panel-title="Availability Dates and Conditions">
-	<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
-		<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
-		<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
-		<d2l-filter>
-			<d2l-filter-dimension-set key="Filter" text="Filter">
-			</d2l-filter-dimension-set>
-		</d2l-filter>
-	</div>
-	<div>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-	</div>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="subtle" panel-title="Availability Dates and Conditions">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="inline" panel-title="Availability Dates and Conditions">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
 </d2l-collapsible-panel>
 ```
 
