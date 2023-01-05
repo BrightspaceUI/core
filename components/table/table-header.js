@@ -6,7 +6,7 @@ import { SelectionHeader } from '../selection/selection-header.js';
 /**
  * A header for table components containing a selection summary and selection actions.
  */
-export class TableHeader extends SelectionHeader {
+class TableHeader extends SelectionHeader {
 	static get properties() {
 		return {
 			/**
