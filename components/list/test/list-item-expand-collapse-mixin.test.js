@@ -10,6 +10,7 @@ const tag = defineCE(
 			return html`
 				${this._renderExpandCollapse()}
 				${this._renderExpandCollapseAction()}
+				${this._renderChildrenLoadingSpinner()}
 			`;
 		}
 	}
@@ -131,5 +132,109 @@ describe('ListItemExpandCollapseMixin', () => {
 			expect(detail.expanded).to.equal(true);
 			expect(detail.key).to.equal('1234');
 		});
+	});
+
+	describe('Render expand/collapse toggle and action area when override set', () => {
+		const overrideCases = [{
+			value: 'closed',
+			btnAvailable: true
+		},
+		{
+			value: 'opened',
+			btnAvailable: true
+		},
+		{
+			value: '',
+			btnAvailable: false
+		}];
+
+		for (const test of overrideCases) {
+			it(`expandCollapseOverride: ${test.value}`, async() => {
+				const element = await fixture(`<${tag} key="1234" expandable expand-collapse-override="${test.value}"></${tag}>`);
+				await element.updateComplete;
+				const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
+				const actionArea = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
+				if (test.btnAvailable) {
+					expect(button).to.exist;
+					expect(actionArea).to.exist;
+					if (test.value === 'opened') {
+						expect(element.expanded).to.equal(true);
+					} else if (test.value === 'closed') {
+						expect(element.expanded).to.equal(false);
+					}
+				} else {
+					expect(button).to.not.exist;
+					expect(actionArea).to.not.exist;
+				}
+			});
+		}
+	});
+
+	describe('Render loading spinner when lazy loading children', () => {
+		const cases = [{
+			overrideValue: 'opened',
+			hasChildren: true,
+			spinnerLoaded: false
+		},
+		{
+			overrideValue: '',
+			hasChildren: false,
+			spinnerLoaded: false
+		},
+		{
+			overrideValue: 'closed',
+			hasChildren: false,
+			spinnerLoaded: false
+		},
+		{
+			overrideValue: 'opened',
+			hasChildren: false,
+			spinnerLoaded: true
+		}];
+
+		for (const test of cases) {
+			it(`expandCollapseOverride: ${test.overrideValue} hasChildren: ${test.hasChildren}`, async() => {
+				const element = await fixture(`<${tag} key="1234" expandable expand-collapse-override="${test.overrideValue}"></${tag}>`);
+				element['_hasChildren'] = test.hasChildren;
+				await element.updateComplete;
+				const spinner = element.shadowRoot.querySelector('.d2l-list-children-loading');
+				if (test.spinnerLoaded) {
+					expect(spinner).to.exist;
+				} else {
+					expect(spinner).to.not.exist;
+				}
+			});
+		}
+	});
+
+	describe('Does not toggle expanded property when clicking button or action area with override set', () => {
+		const overrideCases = ['closed', 'opened'];
+		for (const test of overrideCases) {
+			it(`override value: ${test}`, async() => {
+				const element = await fixture(`<${tag} key="1234" expandable expand-collapse-override="${test}"></${tag}>`);
+				await element.updateComplete;
+				if (test === 'opened') {
+					expect(element.expanded).to.equal(true);
+				} else {
+					expect(element.expanded).to.equal(false);
+				}
+				const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
+				expect(button).to.exist;
+				// simulate a button click
+				setTimeout(() => {
+					button.click();
+				});
+
+				const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
+				if (test === 'opened') {
+					expect(detail.expanded).to.equal(true);
+					expect(element.expanded).to.equal(true);
+				} else {
+					expect(detail.expanded).to.equal(false);
+					expect(element.expanded).to.equal(false);
+				}
+				expect(detail.key).to.equal('1234');
+			});
+		}
 	});
 });
