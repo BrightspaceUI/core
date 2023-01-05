@@ -81,7 +81,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
 		this.addEventListener('d2l-list-item-children-change', (e) => this._handleListIemChildrenChange(e));
-		this.addEventListener('d2l-list-item-expand-collapse-toggled', this._handleListItemsShowingCountChange);
 	}
 
 	disconnectedCallback() {
