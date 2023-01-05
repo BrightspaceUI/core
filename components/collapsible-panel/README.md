@@ -8,15 +8,15 @@ A collapsible panel is a container that can be expanded and collapsed to show/hi
 <!-- docs: start dos -->
 * Use for optional settings or additional information that you want to initially hide
 * Use when the user would benefit from progressively disclosed information
-* Always use this in the right hand panel FACE Activity Creation experience (FACE, First Use Activity Create & Edit)
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
 * Don't nest collapsible panels within each other
-* Avoid using a collapsible panel for required options in a form
-* Avoid long lists of collapsible panels; consider using the nested list in this case (exceptions may apply)
+* Don't change the header contents when the panel is expanded/collapsed
 * Don't have interactions or elements in the closed state that are different or disappear in the open state (exception: the summary)
 	* For example, don't have a button that's only available in the collapsed state of the panel
+* Avoid using a collapsible panel for required options in a form
+* Avoid long lists of collapsible panels; consider using a nested [list](https://daylight.d2l.dev/components/list/) in this case (exceptions may apply)
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
