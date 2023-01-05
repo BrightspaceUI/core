@@ -193,6 +193,67 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 </d2l-list>
 ```
 
+## Expandable Lists
+
+The `d2l-list` supports expandable items within a list. Expand and collapse toggle is enabled when `d2l-list-item`s have the `expandable` and `key` attributes set. When items are expandable the default state is collapsed when the item has children. If you would like the default state to be expanded, add the `expanded` attribute to the `d2l-list-item`. If you wish to add the toggle manually for the purposes of lazy loading nested items, set the `expand-collapse-override` attribute on `d2l-list-item` to `opened` or `closed` depending on your desired behavior. The consumer is responsible for listening to the `d2l-list-item-expand-collapse-toggled` and adding children to the appropriate item when implementing lazy load functionality.
+
+### Expandable List Accessibility Properties
+
+If a `d2l-list-item` is expandable then it should have a `label` attribute that corresponds to the hidden label for the expand/collapse toggle.
+
+### Expandable List Example
+
+<!-- docs: demo code autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+</script>
+
+<d2l-list grid drag-multiple style="width: 100%">
+  <d2l-list-header slot="header">
+    <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+  </d2l-list-header>
+  <d2l-list-item selectable draggable drop-nested expandable key="expand-1" label="Expandable item #1">
+    <d2l-list-item-content>
+      <div>Expandable item #1</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+    <d2l-list grid drag-multiple style="width: 100%" slot="nested">
+      <d2l-list-item selectable draggable drop-nested expandable key="nested-1" label="Nested 1">
+        <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+      </d2l-list-item>
+      <d2l-list-item selectable draggable drop-nested expandable key="nested-2" label="Nested 2">
+        <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+      </d2l-list-item>
+    </d2l-list>
+  </d2l-list-item>
+  <d2l-list-item selectable draggable drop-nested expandable expanded key="expand-2" label="Expandable item #2">
+    <d2l-list-item-content>
+      <div>Expandable Item #2</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+    <d2l-list grid drag-multiple style="width: 100%" slot="nested">
+      <d2l-list-item selectable draggable drop-nested expandable key="nested-3" label="Nested 3">
+        <d2l-list-item-content><div>Nested item #3</div></d2l-list-item-content>
+      </d2l-list-item>
+      <d2l-list-item selectable draggable drop-nested expandable key="nested-4" label="Nested 4">
+        <d2l-list-item-content><div>Nested item #4</div></d2l-list-item-content>
+      </d2l-list-item>
+    </d2l-list>
+  </d2l-list-item>
+  <d2l-list-item selectable draggable drop-nested expandable key="expand-3" label="Expandable item #3">
+    <d2l-list-item-content>
+      <div>Expandable Item #3 (no initial children)</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+</d2l-list>
+```
+
 ## Pageable Lists
 
 Load-More paging functionality can be implemented in lists by placing a `d2l-pager-load-more` in `d2l-list`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
@@ -347,6 +408,9 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
+| `expandable` | Boolean | Whether to allow the item to expand and collapse children |
+| `expanded` | Boolean | Default state for expand collapse toggle - if not set, collapsed will be the default state. Requires `expandable` to be set. |
+| `expanded-state-override` | String | Overridden expand collapse state. (`opened` or `closed`) Will force the toggle to be shown whether the item has children or not. Requires `expandable` to be set. |
 | `href` | String | Address of item link if navigable |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
@@ -366,6 +430,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ### Events
 
 - `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
+- `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
 ### Breakpoints Property
@@ -417,6 +482,9 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
+| `expandable` | Boolean | Whether to allow the item to expand and collapse children |
+| `expanded` | Boolean | Default state for expand collapse toggle - if not set, collapsed will be the default state. Requires `expandable` to be set. |
+| `expanded-state-override` | String | Overridden expand collapse state. (`opened` or `closed`) Will force the toggle to be shown whether the item has children or not. Requires `expandable` to be set. |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
@@ -428,6 +496,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 ### Events
 
 - `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
+- `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
 ## ListItemMixin
