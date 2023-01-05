@@ -34,7 +34,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		requestAnimationFrame(() => {
 			if (this.selectionFor) {
 				this._handleSelectionFor();
-				return this._provider?.subscribeObserver(this);
+				return this._provider ? this._provider.subscribeObserver(this) : undefined;
 			}
 
 			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
