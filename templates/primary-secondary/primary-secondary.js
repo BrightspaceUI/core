@@ -921,7 +921,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 	render() {
 		let tabindex;
-		const size = this._size ?? 0;
+		const size = this._size ? this._size : 0;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
 			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${size}px`;
