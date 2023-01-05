@@ -35,16 +35,6 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 		`];
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('d2l-list-item-expand-collapse-toggled', () => this._updateSelectSummary());
-	}
-
-	disconnectedCallback() {
-		window.removeEventListener('d2l-list-item-expand-collapse-toggled', () => this._updateSelectSummary());
-		super.disconnectedCallback();
-	}
-
 	render() {
 		if (!this._summary) {
 			return nothing;
