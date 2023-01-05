@@ -98,12 +98,10 @@ The summary area takes information from the expanded panel and summarizes it for
 </d2l-collapsible-panel>
 ```
 
-## Slots
+## Optional slots
 
-When there are focusable elements in the `actions` or `header` slot, the focus order will be as follows:
-- `d2l-collapsible-panel`
-- focusable elements in `actions`
-- focusable elements in `header`
+Collapsible panels have two optional slots, `actions` and `header` that can be used.
+
 
 <!-- docs: demo live name:d2l-collapsible-panel-slots size:large -->
 ```html
