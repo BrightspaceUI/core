@@ -57,23 +57,21 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 
 | Slot | Type | Description |
 |--|--|--|
-
 | `header` | optional | Supporting header content |
 | `actions` | optional | Buttons and dropdown openers to be placed in top right corner of header |
 | `summary` | optional | Summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item` |
 | `default` | required | Content that is rendered when the panel is expanded |
 
 
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |--|--|--|
 | `expanded` | Boolean | Whether or not the panel is expanded |
-| `expand-collapse-label` | String | Label describing the contents of the header (used by screen readers) |
-| `full-width` | Boolean | Whether or not the content should extend to the full width (only valid when using "inline" panel type) |
+| `expand-collapse-label` | String | Optional label describing the contents of the header (used by screen readers) |
 | `heading-style` | Number | The heading style to use |
 | `heading-level` | Number | Semantic heading level (h1-h4) |
-| `padding` | String | Optionally set Horizontal padding of the  |
+| `padding` | String | Optionally set horizontal padding of inline panels |
 | `panel-title` | String | The title of the panel |
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
