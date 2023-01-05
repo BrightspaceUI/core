@@ -42,6 +42,9 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 				width: 0;
 			}
+			:host([dir="rtl"]) .d2l-list-expand-collapse {
+				padding: 0.4rem 0 0 0.3rem;
+			}
 			.d2l-list-expand-collapse d2l-button-icon {
 				--d2l-button-icon-min-height: 1.2rem;
 				--d2l-button-icon-min-width: 1.2rem;
