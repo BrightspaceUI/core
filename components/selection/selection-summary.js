@@ -61,7 +61,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
 		} else {
 			let includePlus = false;
-			if (this._provider) {
+			if (this._provider && this._provider.getItems) {
 				const lazyLoadListItems = this._provider.getItems()[0]._getFlattenedListItems().lazyLoadListItems;
 				if (lazyLoadListItems.size > 0) {
 					for (const selectedItemKey of this.selectionInfo.keys) {
