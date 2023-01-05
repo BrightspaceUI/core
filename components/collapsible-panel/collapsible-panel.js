@@ -288,7 +288,11 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			<div class="${classMap(classes)}" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
-				<d2l-expand-collapse-content ?expanded="${this.expanded}">
+				<d2l-expand-collapse-content
+					?expanded="${this.expanded}"
+					@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
+					@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}"
+				>
 					<div class="d2l-collapsible-panel-content">
 						<slot></slot>
 					</div>
@@ -315,6 +319,15 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		if (e.target !== actions) {
 			e.stopPropagation();
 		}
+	}
+
+	_handleExpandCollapse(e) {
+		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
+		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
+
+		this.dispatchEvent(new CustomEvent(
+			event, { bubbles: false, composed: false, detail: { complete: eventPromise } }
+		));
 	}
 
 	_handleHeaderClick(e) {
@@ -395,12 +408,6 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 
 	_toggleExpand() {
 		this.expanded = !this.expanded;
-
-		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
-
-		this.dispatchEvent(new CustomEvent(
-			event, { bubbles: false, composed: false }
-		));
 	}
 }
 
