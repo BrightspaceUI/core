@@ -7,6 +7,16 @@ import { SelectionHeader } from '../selection/selection-header.js';
  * A header for table components containing a selection summary and selection actions.
  */
 class TableHeader extends SelectionHeader {
+	static get properties() {
+		return {
+			/**
+			 * Whether to render the selection summary
+			 * @type {boolean}
+			 */
+			noSelection: { type: Boolean, attribute: 'no-selection' }
+		};
+	}
+
 	_renderSelection() {
 		return html`
 			<d2l-selection-summary
