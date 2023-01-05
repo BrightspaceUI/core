@@ -139,3 +139,13 @@ When there are focusable elements in the `actions` or `header` slot, the focus o
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
 </d2l-collapsible-panel>
 ```
+
+## Accessibility
+
+### Panel label
+By default, the panel is described by screen readers with the `panel-title` attribute. There may be situations where the screen reader should read additional information. In this case, the aria label can be explicitly defined using the `expand-collapse-label` property.
+
+### Keyboard behaviour
+TODO:
+- focus order
+- arrow not being a button
