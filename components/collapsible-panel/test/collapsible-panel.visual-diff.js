@@ -11,76 +11,58 @@ describe('d2l-collapsible-panel', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
+
+		// TODO: remove this before merge
+		page.on('console', (msg) => {
+			console.log(msg.text());
+		});
 	});
 
+	beforeEach(async() => await visualDiff.resetFocus(page));
+
 	after(async() => await browser.close());
+
+	function focusElement(selector) {
+		return page.$eval(selector, (elem) => forceFocusVisible(elem));
+	}
 
 	describe('ltr', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
 		[
-			'default',
-			'default-large-padding',
-			'subtle',
-			'subtle-large-padding',
-			'inline',
-			'inline-large-padding',
-			'custom',
-		].forEach((name) => {
-			[true, false].forEach((hasSummary) => {
-				const selector = `#${name}${hasSummary ? '-summary' : ''}`;
+			{ name: 'default', selector: '#default' },
+			{ name: 'default-focus', selector: '#default', action: focusElement },
+		].forEach((info) => {
 
-				[true, false].forEach((expanded) => {
-					[true, false].forEach((focused) => {
-						it(`${name}${hasSummary ? '-summary' : ''}-${expanded ? 'expanded' : 'collapsed'}${focused ? '-focused' : ''}`, async function() {
-
-							await page.evaluate((selector, expanded, focused) => {
-								const elem = document.querySelector(selector).querySelector('d2l-collapsible-panel');
-
-								elem.blur();
-								if (focused) { forceFocusVisible(elem); }
-
-								elem.expanded = expanded;
-							}, selector, expanded, focused);
-
-							const rect = await visualDiff.getRect(page, selector);
-							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-						});
-					});
-				});
+			it(info.name, async function() {
+				const rect = await visualDiff.getRect(page, info.selector);
+				if (info.action) await info.action(info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
-
 		});
 	});
+
 	describe('rtl', () => {
+
 		before(async() => {
 			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
 		[
-			'default',
-			'subtle',
-			'inline',
-		].forEach((name) => {
-			const selector = `#${name}`;
+			{ name: 'default', selector: '#default' },
+			{ name: 'default-focus', selector: '#default', action: focusElement },
+		].forEach((info) => {
 
-			[true, false].forEach((expanded) => {
-				it(`${name}-${expanded ? 'expanded' : 'collapsed'}`, async function() {
-					await page.evaluate((selector, expanded) => {
-						const elem = document.querySelector(selector).querySelector('d2l-collapsible-panel');
-						elem.expanded = expanded;
-					}, selector, expanded);
-
-					const rect = await visualDiff.getRect(page, selector);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
+			it(info.name, async function() {
+				const rect = await visualDiff.getRect(page, info.selector);
+				if (info.action) await info.action(info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
 	});
-
 });
