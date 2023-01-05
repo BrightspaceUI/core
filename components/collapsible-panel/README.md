@@ -76,6 +76,26 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
 
+### Panel Types
+
+<!-- docs: demo live name:d2l-collapsible-panel size:large -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+</script>
+
+<d2l-collapsible-panel panel-title="Default panel">
+	This is the default collapsible panel style
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="subtle" panel-title="Subtle panel">
+	This is the "subtle" collapsible panel style
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="inline" panel-title="Inline panel">
+	This is the "inline" collapsible panel style
+</d2l-collapsible-panel>
+```
 
 ## Summary Items [d2l-collapsible-panel-summary-item]
 The summary area takes information from the expanded panel and summarizes it for the collapsed version.This can help the user understand what information is inside the panel without having to click on it.
