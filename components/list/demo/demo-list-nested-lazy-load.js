@@ -23,13 +23,15 @@ class ListDemoNestedLazyLoad extends LitElement {
 			key: 'a',
 			primaryText: 'Item 1: Click Expand To Lazy Load Item',
 			items: [],
-			expandOverride: 'closed'
+			expandOverride: 'closed',
+			selected: false
 		});
 		this._items.set('b', {
 			key: 'b',
 			primaryText: 'Item 2: Click Expand To Lazy Load Item',
 			items: [],
-			expandOverride: 'closed'
+			expandOverride: 'closed',
+			selected: false
 		});
 	}
 
@@ -46,11 +48,15 @@ class ListDemoNestedLazyLoad extends LitElement {
 		const itemKey = e.detail.key;
 		const itemToAddChildren = this._items.get(itemKey);
 		if (listItem.expandCollapseOverride === 'closed' && itemToAddChildren.items.length === 0) {
+			if (listItem.selected) {
+				itemToAddChildren.selected = true;
+			}
 			const uniqueId = getUniqueId();
 			itemToAddChildren.items = [{
 				key: uniqueId,
 				primaryText: `Lazy Loaded Item ${uniqueId}`,
-				items: []
+				items: [],
+				selected: listItem.selected
 			}];
 			listItem.expandCollapseOverride = 'opened';
 			setTimeout(() => {
@@ -105,6 +111,7 @@ class ListDemoNestedLazyLoad extends LitElement {
 			<d2l-list-item
 				draggable
 				selectable
+				?selected="${item.selected}"
 				drag-handle-text="${item.primaryText}"
 				key="${item.key}"
 				label="${item.primaryText}"
