@@ -85,7 +85,19 @@
 		<h2>One Child</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-demo-list-nested demo-item-key="oneChild" draggable selectable expandable></d2l-demo-list-nested>
+				<d2l-demo-list-nested demo-item-key="oneChild" expandable include-action-href></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>No Primary Action</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					no-primary-action></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 

@@ -29,6 +29,7 @@ class ListDemoNested extends LitElement {
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
 			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
+			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
 			_items: { state: true },
 			_loadedItems: { state: true },
 			_remainingItemCount: { state: true },
@@ -201,7 +202,8 @@ class ListDemoNested extends LitElement {
 				label="${item.primaryText}"
 				?selectable="${this.selectable}"
 				?expandable="${this.expandable}"
-				?expanded="${this.expanded}">
+				?expanded="${this.expanded}"
+				?no-primary-action="${this.noPrimaryAction}">
 					${this._renderIllustration(item)}
 					${this._renderItemContent(item)}
 					${this._renderSecondaryActions()}
