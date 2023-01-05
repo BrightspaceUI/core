@@ -59,14 +59,16 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			count = this._provider.selectionCountOverride;
 			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
-		} else if (this._provider) {
-			const lazyLoadListItems = this._provider.getItems()[0]._getFlattenedListItems().lazyLoadListItems;
+		} else {
 			let includePlus = false;
-			if (lazyLoadListItems.size > 0) {
-				for (const selectedItemKey of this.selectionInfo.keys) {
-					if (lazyLoadListItems.has(selectedItemKey)) {
-						includePlus = true;
-						break;
+			if (this._provider) {
+				const lazyLoadListItems = this._provider.getItems()[0]._getFlattenedListItems().lazyLoadListItems;
+				if (lazyLoadListItems.size > 0) {
+					for (const selectedItemKey of this.selectionInfo.keys) {
+						if (lazyLoadListItems.has(selectedItemKey)) {
+							includePlus = true;
+							break;
+						}
 					}
 				}
 			}
