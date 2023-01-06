@@ -47,7 +47,7 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'default-expanded', selector: '#default-expanded' },
 			{ name: 'default-expanded-sticky', selector: '#default-expanded-sticky' },
 			{ name: 'default-expanded-focus', selector: '#default-expanded', action: focusElement },
-			{ name: 'default-expand-event', selector: '#default', action: expandPanel },
+			{ name: 'default-expand-event', selector: '#default-expand-event', action: expandPanel },
 			{ name: 'default-summary', selector: '#default-summary' },
 			{ name: 'default-summary-expanded', selector: '#default-summary-expanded' },
 			{ name: 'default-summary-focus', selector: '#default-summary', action: focusElement },
