@@ -94,8 +94,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 ## Summary Items [d2l-collapsible-panel-summary-item]
 The summary area takes information from the expanded panel and summarizes it for the collapsed version.This can help the user understand what information is inside the panel without having to click on it.
 
-<!-- docs: demo live name:d2l-collapsible-panel-summary-item
- size:large -->
+<!-- docs: demo live name:d2l-collapsible-panel-summary-item size:large -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
@@ -114,7 +113,7 @@ The summary area takes information from the expanded panel and summarizes it for
 
 ## Optional slots
 
-Collapsible panels have two optional slots, `actions` and `header` that can be used.
+Collapsible panels have two optional slots, `actions` and `header` that can be used to add more information to the header area.
 
 
 <!-- docs: demo live name:d2l-collapsible-panel-slots size:large -->
@@ -158,6 +157,7 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 By default, the panel is described by screen readers with the `panel-title` attribute. There may be situations where the screen reader should read additional information. In this case, the aria label can be explicitly defined using the `expand-collapse-label` property.
 
 ### Keyboard behaviour
-TODO:
-- focus order
-- arrow not being a button
+
+When the component receives focus, the entire clickable area receives an outline. When collapsed, this is the entire panel. When expanded, this is only the header.
+
+Any focusable actions placed in the `actions` slot will receive focus after the panel recevies focus. The open/close icon beside the `actions` slot looks like a button, but is an indicator of component state. It will not receive focus like a typical button.
