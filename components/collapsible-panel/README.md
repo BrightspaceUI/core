@@ -155,7 +155,7 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 ## Accessibility
 
 ### Panel label
-By default, the panel is described by screen readers with the `panel-title` attribute. There may be situations where the screen reader should read additional information. In this case, the aria label can be explicitly defined using the `expand-collapse-label` property.
+By default, the panel is described by screen readers with the `panel-title` attribute. There may be situations where the screen reader should read additional information. In this case, a special label can be specified using the `expand-collapse-label` property.
 
 ### Keyboard behaviour
 
