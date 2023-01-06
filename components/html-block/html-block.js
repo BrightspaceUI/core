@@ -164,8 +164,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			:host {
 				display: block;
 				overflow-wrap: break-word;
-				overflow-x: auto;
-				overflow-y: hidden;
 				text-align: left;
 			}
 			:host([inline]),
