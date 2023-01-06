@@ -28,9 +28,6 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 			:host([hidden]) {
 				display: none;
 			}
-			::slotted(:last-child), slot :last-child {
-				--d2l-object-property-list-item-separator-display: none;
-			}
 			::slotted([slot="status"]) {
 				display: none;
 			}
@@ -39,6 +36,11 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 				margin-inline-end: 0.25rem; /* 10px desired margin, subtract 5px arbitrary whitespace. */
 			}
 		`];
+	}
+
+	firstUpdated() {
+		this._slot = this.shadowRoot.querySelector('slot:not([name])');
+		this.addEventListener('d2l-object-property-list-item-visibility-change', this._onItemsChanged);
 	}
 
 	render() {
@@ -50,9 +52,19 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 			<div class="d2l-body-small">
 				<slot name="status"></slot>
 				<d2l-screen-reader-pause></d2l-screen-reader-pause>
-				<slot>${slotContents}</slot>
+				<slot @slotchange="${this._onItemsChanged}">${slotContents}</slot>
 			</div>
 		`;
+	}
+
+	_onItemsChanged() {
+		this._setItemSeparatorVisibility();
+	}
+
+	_setItemSeparatorVisibility() {
+		const items = this._slot.assignedNodes().filter(item => item.tagName?.toLowerCase().includes('d2l-object-property-list-') && !item.hidden);
+		const lastIndex = items.length - 1;
+		items.forEach((item, i) => item._showSeparator = (i !== lastIndex));
 	}
 }
 

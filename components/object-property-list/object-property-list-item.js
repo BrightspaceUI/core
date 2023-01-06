@@ -12,6 +12,10 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			hidden: { type: Boolean },
+			/**
 			 * Name of an optional icon to display
 			 * @type {string}
 			 */
@@ -21,6 +25,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 			 * @type {string}
 			 */
 			text: { type: String },
+			_showSeparator: { state: true },
 		};
 	}
 
@@ -28,6 +33,9 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 		return [super.styles, css`
 			:host {
 				vertical-align: middle;
+			}
+			:host([hidden]) {
+				display: none;
 			}
 			d2l-icon {
 				height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
@@ -57,6 +65,11 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._showSeparator = true;
+	}
+
 	render() {
 		return html`
 			${this._renderIcon()}
@@ -65,17 +78,27 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('hidden')) this._onHidden();
+	}
+
+	_onHidden() {
+		/** Dispatched when the visibility of the item changes */
+		this.dispatchEvent(new CustomEvent('d2l-object-property-list-item-visibility-change', { bubbles: true, composed: true }));
+	}
+
 	_renderIcon() {
 		return this.icon && !this.skeleton ? html`<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>` : nothing;
 	}
 
 	_renderSeparator() {
-		return html`
+		return this._showSeparator ? html`
 			<span class="separator">
 				<d2l-screen-reader-pause></d2l-screen-reader-pause>
 				<d2l-icon icon="tier1:bullet"></d2l-icon>
 			</span>
-		`;
+		` : nothing;
 	}
 
 	_renderText() {
