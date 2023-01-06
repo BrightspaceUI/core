@@ -69,9 +69,14 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @default "default"
 			 */
 			padding: { type: String, reflect: true },
+			/**
+			 * Disables sticky positioning for the header
+			 * @type {boolean}
+			 */
+			noSticky: { attribute: 'no-sticky', type: Boolean },
 			_focused: { state: true },
 			_hasSummary: { state: true },
-			_isScrolled: { state: true },
+			_scrolled: { state: true },
 		};
 	}
 
@@ -245,9 +250,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.headingStyle = defaultHeading;
 		this.padding = 'default';
 		this.type = 'default';
+		this.noSticky = false;
 		this._focused = false;
 		this._hasSummary = false;
-		this._isScrolled = false;
+		this._scrolled = false;
 	}
 
 	disconnectedCallback() {
@@ -255,24 +261,12 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 	}
 
-	firstUpdated() {
-		if (typeof(IntersectionObserver) === 'function') {
-			this._intersectionObserver = new IntersectionObserver(entries => {
-				if (!this.expanded) return;
-
-				const entry = entries[0];
-				this._isScrolled = !entry.isIntersecting;
-			});
-			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-collapsible-panel-top-sentinel'));
-		}
-	}
-
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
 			'has-summary': this._hasSummary,
-			'scrolled': this._isScrolled,
+			'scrolled': this._scrolled,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 
@@ -307,10 +301,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
+
 		if (changedProperties.has('expanded')) {
 			if (!this.expanded) {
-				this._isScrolled = false;
+				this._scrolled = false;
 			}
+		}
+
+		if (changedProperties.has('noSticky')) {
+			this._stickyObserverUpdate();
 		}
 	}
 
@@ -403,6 +403,28 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
 			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
 			case 4: return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
+		}
+	}
+
+	_stickyObserverDisconnect() {
+		if (this._intersectionObserver) {
+			this._intersectionObserver.disconnect();
+			this._intersectionObserver = undefined;
+			this._scrolled = false;
+		}
+	}
+
+	_stickyObserverUpdate() {
+		this._stickyObserverDisconnect();
+
+		if (!this.noSticky && typeof(IntersectionObserver) === 'function') {
+			this._intersectionObserver = new IntersectionObserver(entries => {
+				if (!this.expanded) return;
+
+				const entry = entries[0];
+				this._scrolled = !entry.isIntersecting;
+			});
+			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-collapsible-panel-top-sentinel'));
 		}
 	}
 
