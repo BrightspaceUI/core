@@ -13,7 +13,10 @@ describe('d2l-collapsible-panel', () => {
 		page = await visualDiff.createPage(browser);
 	});
 
-	beforeEach(async() => await visualDiff.resetFocus(page));
+	beforeEach(async() => {
+		await page.reload();
+		await visualDiff.resetFocus(page);
+	});
 
 	after(async() => await browser.close());
 
