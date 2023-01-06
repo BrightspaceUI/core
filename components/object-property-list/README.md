@@ -20,6 +20,18 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
 </d2l-object-property-list>
 ```
 
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use object property lists to represent properties and/or metadata related to an object
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don't use this pattern to display more than 3-4 items
+* Don't put unsupported elements inside an object property list
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 ## List [d2l-object-property-list]
 
 An object property list can be defined using `d2l-object-property-list` and a combination of items (e.g., `d2l-object-property-list-item`, `d2l-object-property-list-item-link`).
