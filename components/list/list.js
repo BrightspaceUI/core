@@ -69,7 +69,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listItemChanges = [];
 		this._childHasNestedItems = false;
 
-		// TODO - all nested lists reserve space by default? (to be confirmed)
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
 			this,
 			{ onSubscribe: this._updateActiveSubscriber.bind(this), updateSubscribers: this._updateActiveSubscribers.bind(this) },

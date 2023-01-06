@@ -278,7 +278,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			/* TODO - align to spec (or revert) */
+
 			d2l-selection-input {
 				margin: 0.55rem 0.55rem 0.55rem 0;
 			}
@@ -624,7 +624,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-container"></div>
 				${this._renderExpandCollapse()}
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
-				${this.selectable || (this.expandable && this._hasChildren) ? html`<div slot="control-action"
+				${this.selectable || (this.expandable && this._renderExpandCollapseToggle) ? html`<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}
