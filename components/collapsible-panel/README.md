@@ -93,7 +93,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 ```
 
 ## Summary Items [d2l-collapsible-panel-summary-item]
-The summary area takes information from the expanded panel and summarizes it for the collapsed version.This can help the user understand what information is inside the panel without having to click on it.
+The summary area takes information from the expanded panel and summarizes it for the collapsed version. This can help the user understand what information is inside the panel without having to click on it.
 
 <!-- docs: demo live name:d2l-collapsible-panel-summary-item size:large -->
 ```html
