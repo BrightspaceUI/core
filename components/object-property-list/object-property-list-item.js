@@ -42,8 +42,8 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 				color: var(--d2l-color-galena);
 			}
 			.item-icon {
-				margin-top: -0.1rem;
 				margin-inline-end: 0.3rem;
+				margin-top: -0.1rem;
 			}
 			:host([skeleton]) d2l-icon {
 				color: var(--d2l-color-sylvite);
