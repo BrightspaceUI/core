@@ -10,6 +10,7 @@
 			import '../object-property-list.js';
 			import '../object-property-list-item.js';
 			import '../object-property-list-item-link.js';
+			import '../../status-indicator/status-indicator.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -30,6 +31,7 @@
 			<d2l-demo-snippet overflow-hidden>
 				<template>
 					<d2l-object-property-list>
+						<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 						<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 						<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
 						<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
@@ -53,7 +55,7 @@
 
 			<d2l-demo-snippet overflow-hidden>
 				<template>
-					<d2l-object-property-list skeleton-count=3></d2l-object-property-list>
+					<d2l-object-property-list skeleton-count="3"></d2l-object-property-list>
 				</template>
 			</d2l-demo-snippet>
 

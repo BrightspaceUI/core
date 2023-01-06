@@ -8,9 +8,11 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item-link.js';
+  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 
 <d2l-object-property-list>
+  <d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
   <d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
   <d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
   <d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
@@ -22,7 +24,7 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
 
 An object property list can be defined using `d2l-object-property-list` and a combination of items (e.g., `d2l-object-property-list-item`, `d2l-object-property-list-item-link`).
 
-<!-- docs: demo code -->
+<!-- docs: demo live name:d2l-object-property-list -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -36,17 +38,19 @@ An object property list can be defined using `d2l-object-property-list` and a co
 </d2l-object-property-list>
 ```
 
+<!-- docs: start hidden content -->
 ### Properties
 
 | Property | Type | Description |
 |--|--|--|
 | `skeleton-count` | Number | Number of skeleton items to insert if in skeleton mode |
+<!-- docs: end hidden content -->
 
 ### Word wrap
 
 The object property list is designed to wrap in an inline manner if the items are wider than the container.
 
-<!-- docs: demo code -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -63,8 +67,7 @@ The object property list is designed to wrap in an inline manner if the items ar
 
 The `d2l-object-property-list-item` component is the basic type of item for an object property list, displaying text and an optional leading icon.
 
-
-<!-- docs: demo code -->
+<!-- docs: demo live name:d2l-object-property-list-item -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -90,7 +93,7 @@ The `d2l-object-property-list-item` component is the basic type of item for an o
 
 The `d2l-object-property-list-item-link` component is a link item for the object property list. It displays text as a hyperlink, with an optional leading icon.
 
-<!-- docs: demo code -->
+<!-- docs: demo live name:d2l-object-property-list-item-link -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -114,6 +117,25 @@ The `d2l-object-property-list-item-link` component is a link item for the object
 | `href` | String, required | The URL the item link navigates to |
 | `target` | String | Where to display the linked URL |
 <!-- docs: end hidden content -->
+
+## Status Slot
+
+Object property lists can optionally contain a single `d2l-status-indicator` inserted into the `status` slot.
+
+<!-- docs: demo live name:d2l-status-indicator -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
+  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
+</script>
+
+<d2l-object-property-list>
+  <d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
+  <d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
+  <d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
+</d2l-object-property-list>
+```
 
 <!-- docs: start hidden content -->
 ## Future Improvements

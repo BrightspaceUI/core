@@ -3,14 +3,13 @@ import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A single object property, to be used within an object-property-list,
  * with an optional icon.
  */
-export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) {
+export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -28,22 +27,23 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 
 	static get styles() {
 		return [super.styles, offscreenStyles, css`
+			:host {
+				vertical-align: middle;
+			}
 			d2l-icon {
 				height: 0.9rem;
 				width: 0.9rem;
 			}
 			.separator {
 				display: var(--d2l-object-property-list-item-separator-display, inline);
-				margin: 0 0.05rem;
+				margin: 0 0.1rem;
 			}
 			.separator d2l-icon {
 				color: var(--d2l-color-galena);
 			}
 			.item-icon {
-				margin: -0.1rem 0.3rem 0 0;
-			}
-			:host([dir="rtl"]) .item-icon {
-				margin: -0.1rem 0 0 0.3rem;
+				margin-top: -0.1rem;
+				margin-inline-end: 0.3rem;
 			}
 			:host([skeleton]) d2l-icon {
 				color: var(--d2l-color-sylvite);

@@ -21,7 +21,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 
 	static get styles() {
 		return [super.styles, bodySmallStyles, css`
-			:host, slot {
+			:host {
 				display: block;
 			}
 			:host([hidden]) {
@@ -30,16 +30,23 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 			::slotted(:last-child), slot :last-child {
 				--d2l-object-property-list-item-separator-display: none;
 			}
+			::slotted([slot="status"]) {
+				margin-inline-end: 0.45rem;
+			}
 		`];
 	}
 
 	render() {
-
 		const slotContents = this.skeleton && this.skeletonCount > 0 ? [...Array(this.skeletonCount)].map(() => html`
 			<d2l-object-property-list-item text="${this.localize('components.object-property-list.item-placeholder-text')}" skeleton></d2l-object-property-list-item>
 		`) : nothing;
 
-		return html`<slot class="d2l-body-small">${slotContents}</slot>`;
+		return html`
+			<div class="d2l-body-small">
+				<slot name="status"></slot>
+				<slot>${slotContents}</slot>
+			</div>
+		`;
 	}
 }
 

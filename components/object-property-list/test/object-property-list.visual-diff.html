@@ -6,6 +6,7 @@
 		import '../object-property-list.js';
 		import '../object-property-list-item.js';
 		import '../object-property-list-item-link.js';
+		import '../../status-indicator/status-indicator.js';
 	</script>
 	<title>d2l-object-property-list</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +30,7 @@
 
 	<div class="visual-diff" id="all-types">
 		<d2l-object-property-list>
+			<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 			<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 			<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
 			<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
@@ -45,6 +47,7 @@
 
 	<div class="visual-diff" id="rtl">
 		<d2l-object-property-list dir="rtl">
+			<d2l-status-indicator slot="status" state="default" text="Status" dir="rtl"></d2l-status-indicator>
 			<d2l-object-property-list-item text="Example item" dir="rtl"></d2l-object-property-list-item>
 			<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade" dir="rtl"></d2l-object-property-list-item>
 			<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/" dir="rtl"></d2l-object-property-list-item-link>
