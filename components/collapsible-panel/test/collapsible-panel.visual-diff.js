@@ -21,6 +21,19 @@ describe('d2l-collapsible-panel', () => {
 		return page.$eval(selector, (elem) => forceFocusVisible(elem));
 	}
 
+	function expandPanel(selector) {
+		return page.$eval(selector, (elem) => {
+			return new Promise((resolve) => {
+				const panel = elem.querySelector('d2l-collapsible-panel');
+				panel.addEventListener('d2l-collapsible-panel-expand', async(e) => {
+					await e.detail.complete;
+					resolve();
+				});
+				panel.expanded = true;
+			});
+		});
+	}
+
 	describe('ltr', () => {
 
 		before(async() => {
@@ -33,6 +46,7 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'default-focus', selector: '#default', action: focusElement },
 			{ name: 'default-expanded', selector: '#default-expanded' },
 			{ name: 'default-expanded-focus', selector: '#default-expanded', action: focusElement },
+			{ name: 'default-expand-event', selector: '#default', action: expandPanel },
 			{ name: 'default-summary', selector: '#default-summary' },
 			{ name: 'default-summary-expanded', selector: '#default-summary-expanded' },
 			{ name: 'default-summary-focus', selector: '#default-summary', action: focusElement },
@@ -66,8 +80,8 @@ describe('d2l-collapsible-panel', () => {
 		].forEach((info) => {
 
 			it(info.name, async function() {
-				const rect = await visualDiff.getRect(page, info.selector);
 				if (info.action) await info.action(info.selector);
+				const rect = await visualDiff.getRect(page, info.selector);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
