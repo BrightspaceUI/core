@@ -13,7 +13,7 @@
 <body unresolved>
 
 	<d2l-demo-page page-title="d2l-list (with expand/collapse)">
-		<h2>Draggable & Selectable</h2>
+		<h2>Draggable & Selectable (with grid)</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-demo-list-nested
@@ -37,6 +37,21 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-demo-list-nested demo-item-key="primaryTextOnly" draggable selectable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Draggable & Selectable (without grid)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					expanded
+					include-secondary-actions
+					include-list-header
+					disable-list-grid></d2l-demo-list-nested>
 			</template>
 		</d2l-demo-snippet>
 

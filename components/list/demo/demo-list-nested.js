@@ -30,6 +30,7 @@ class ListDemoNested extends LitElement {
 			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
 			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
 			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
+			disableListGrid: { type: Boolean, attribute: 'disable-list-grid' },
 			_items: { state: true },
 			_loadedItems: { state: true },
 			_remainingItemCount: { state: true },
@@ -168,7 +169,7 @@ class ListDemoNested extends LitElement {
 
 	_renderList(items, nested, includeHeader = false, showLoadMore = false) {
 		return html`
-			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
+			<d2l-list ?grid="${!this.disableListGrid}" drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
 				${ includeHeader ? this._renderListHeader() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}
