@@ -187,7 +187,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
-			[slot="content"] .d2l-list-item-illustration * {
+			[slot="content"] .d2l-list-item-illustration > * {
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
@@ -197,7 +197,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				overflow: hidden;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration > * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -212,7 +212,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			::slotted([slot="actions"]),
-			.d2l-list-item-actions * {
+			.d2l-list-item-actions > * {
 				display: grid;
 				gap: 0.3rem;
 				grid-auto-columns: 1fr;
@@ -220,45 +220,45 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			.d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+			.d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-right: 0.9rem;
 			}
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
 
 			[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			[data-breakpoint="1"] .d2l-list-item-illustration * {
+			[data-breakpoint="1"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 			[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			[data-breakpoint="2"] .d2l-list-item-illustration * {
+			[data-breakpoint="2"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 			[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			[data-breakpoint="3"] .d2l-list-item-illustration * {
+			[data-breakpoint="3"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
