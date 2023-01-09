@@ -2,6 +2,25 @@
 
 A collapsible panel is a container that can be expanded and collapsed to show/hide additional content and form options. Content within the panel is flexible and customizable -- form controls, buttons, text, and more can be put in the expanded version of this panel for users to interact with or view.
 
+<!-- docs: demo -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+</script>
+
+<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="subtle" panel-title="Availability Dates and Conditions">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+
+<d2l-collapsible-panel type="inline" panel-title="Availability Dates and Conditions">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+</d2l-collapsible-panel>
+```
+
 ## Best Practices
 
 <!-- docs: start best practices -->
@@ -20,28 +39,18 @@ A collapsible panel is a container that can be expanded and collapsed to show/hi
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Composition
-
 
 ## Collapsible Panel [d2l-collapsible-panel]
 
 The `d2l-collapsible-panel` element is a container that provides specific layout slots such as `header`, `summary`, `actions`, and a default slot for the expanded content.
 
-<!-- docs: demo live name:d2l-collapsible-panel size:large -->
+<!-- docs: demo live name:d2l-collapsible-panel -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 </script>
 
 <d2l-collapsible-panel panel-title="Availability Dates and Conditions">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
-
-<d2l-collapsible-panel type="subtle" panel-title="Availability Dates and Conditions">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
-
-<d2l-collapsible-panel type="inline" panel-title="Availability Dates and Conditions">
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
 </d2l-collapsible-panel>
 ```
@@ -73,7 +82,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 
 ### Panel Types
 
-<!-- docs: demo live name:d2l-collapsible-panel size:large -->
+<!-- docs: demo -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
@@ -95,7 +104,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 ## Summary Items [d2l-collapsible-panel-summary-item]
 The summary area takes information from the expanded panel and summarizes it for the collapsed version. This can help the user understand what information is inside the panel without having to click on it.
 
-<!-- docs: demo live name:d2l-collapsible-panel-summary-item size:large -->
+<!-- docs: demo -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
@@ -117,7 +126,7 @@ The summary area takes information from the expanded panel and summarizes it for
 Collapsible panels have two optional slots, `actions` and `header` that can be used to add more information to the header area.
 
 
-<!-- docs: demo live name:d2l-collapsible-panel-slots size:large -->
+<!-- docs: demo -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-icon.js';
@@ -159,6 +168,6 @@ By default, the panel is described by screen readers with the `panel-title` attr
 
 ### Keyboard behaviour
 
-When the component receives focus, the entire clickable area receives an outline. When collapsed, this is the entire panel. When expanded, this is only the header.
+On focus, a focus ring (blue border) goes around the clickable area of the component. When collapsed, this area is the entire panel; when expanded, it's only the header.
 
 Any focusable actions placed in the `actions` slot will receive focus after the panel recevies focus. The open/close icon beside the `actions` slot looks like a button, but is an indicator of component state. It will not receive focus like a typical button.
