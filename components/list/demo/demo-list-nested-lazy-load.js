@@ -46,7 +46,7 @@ class ListDemoNestedLazyLoad extends LitElement {
 	_handleListItemToggle(e) {
 		const listItem = e.path[0];
 		const itemKey = e.detail.key;
-		const previouslyCollapsed = e.detail.oldState;
+		const previouslyCollapsed = e.detail.oldExpandedState;
 		const itemToAddChildren = this._items.get(itemKey);
 		if (!previouslyCollapsed && itemToAddChildren.items.length === 0) {
 			if (listItem.selected) {
