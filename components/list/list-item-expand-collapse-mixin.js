@@ -32,11 +32,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				--d2l-expand-collapse-slot-transition-duration: 0.3s;
 			}
 			.d2l-list-expand-collapse {
-				padding: 0.4rem 0.3rem 0 0;
 				transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 				width: 0;
 			}
-			:host([dir="rtl"]) .d2l-list-expand-collapse {
+			:host([dir="rtl"][_render-expand-collapse-slot]) .d2l-list-expand-collapse {
 				padding: 0.4rem 0 0 0.3rem;
 			}
 			.d2l-list-expand-collapse d2l-button-icon {
@@ -48,6 +47,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				border-radius: var(--d2l-button-icon-border-radius);
 			}
 			:host([_render-expand-collapse-slot]) .d2l-list-expand-collapse {
+				padding: 0.4rem 0.3rem 0 0;
 				width: 1.2rem;
 			}
 			.d2l-list-expand-collapse-action {
@@ -127,9 +127,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_renderExpandCollapse() {
-		if (!this._renderExpandCollapseSlot) {
-			return nothing;
-		}
 		return html`
 			<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 				${this.expandable ? html`<d2l-button-icon
