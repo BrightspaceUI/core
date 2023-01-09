@@ -60,6 +60,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 | `disabled` | Boolean | Disables the input |
 | `maxlength` | Number | Imposes an upper character limit |
 | `no-clear` | Boolean | Prevents the "clear" button from appearing |
+| `search-on-input` | Boolean | Dispatch search events after each input instead of after pressing `Enter` |
 | `placeholder` | String, default:`'Search...'` | Placeholder text |
 | `value` | String, default: `''` | Value of the input |
 

@@ -51,6 +51,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 */
 			placeholder: { type: String },
 			/**
+			 * Dispatch search events after each input instead of after pressing `Enter`
+			 * @type {boolean}
+			 */
+			searchOnInput: { type: Boolean, attribute: 'search-on-input' },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -84,6 +89,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		this._lastSearchValue = '';
 		this.disabled = false;
 		this.noClear = false;
+		this.searchOnInput = false;
 		this.value = '';
 	}
 
@@ -169,10 +175,14 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	_handleInput(e) {
 		this.value = e.target.value;
+		if (this.searchOnInput) {
+			this._setLastSearchValue(this.value);
+			this._dispatchEvent();
+		}
 	}
 
 	_handleInputKeyPress(e) {
-		if (e.keyCode !== 13) {
+		if (e.keyCode !== 13 || this.searchOnInput) {
 			return;
 		}
 		e.preventDefault();
