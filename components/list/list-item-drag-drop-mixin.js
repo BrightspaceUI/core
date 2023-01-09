@@ -620,7 +620,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			dragImage.count = selectionInfo.keys.length;
 			dragImage.includePlusSign = includePlus;
 			e.dataTransfer.setDragImage(dragImage, 24, 26);
-		} else if (rootList.dragMultiple && (this._hasChildren || this.expandCollapseOverride === 'closed' || this.expandCollapseOverride === 'opened')) {
+		} else if (rootList.dragMultiple && this.expandable) {
 			const flattenedListItems = this._getFlattenedListItems(this);
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {

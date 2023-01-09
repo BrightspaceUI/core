@@ -22,7 +22,7 @@ class ListDemoNested extends LitElement {
 			demoItemKey: { type: String, attribute: 'demo-item-key' },
 			draggable: { type: Boolean },
 			selectable: { type: Boolean },
-			expandable: { type: Boolean },
+			disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
 			expanded: { type: Boolean },
 			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
 			includeListHeader: { type: Boolean, attribute: 'include-list-header' },
@@ -193,6 +193,7 @@ class ListDemoNested extends LitElement {
 		if (this.useButtonListItem) {
 			return nothing;
 		}
+		const hasChildren = item?.items?.length > 0;
 		return html`
 			<d2l-list-item
 				action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
@@ -202,7 +203,7 @@ class ListDemoNested extends LitElement {
 				key="${item.key}"
 				label="${item.primaryText}"
 				?selectable="${this.selectable}"
-				?expandable="${this.expandable}"
+				?expandable="${this.disableExpandFeature ? false : hasChildren}"
 				?expanded="${this.expanded}"
 				?no-primary-action="${this.noPrimaryAction}">
 					${this._renderIllustration(item)}
@@ -217,7 +218,7 @@ class ListDemoNested extends LitElement {
 		if (!this.useButtonListItem) {
 			return nothing;
 		}
-
+		const hasChildren = item?.items?.length > 0;
 		return html`
 			<d2l-list-item-button
 				?draggable="${this.draggable}"
@@ -226,7 +227,7 @@ class ListDemoNested extends LitElement {
 				key="${item.key}"
 				label="${item.primaryText}"
 				?selectable="${this.selectable}"
-				?expandable="${this.expandable}"
+				?expandable="${this.disableExpandFeature ? false : hasChildren}"
 				?expanded="${this.expanded}"
 				@d2l-list-item-button-click="${this._handleButtonClick}">
 					${this._renderIllustration(item)}

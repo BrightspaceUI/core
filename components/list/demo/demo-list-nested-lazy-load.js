@@ -23,14 +23,14 @@ class ListDemoNestedLazyLoad extends LitElement {
 			key: 'a',
 			primaryText: 'Item 1: Click Expand To Lazy Load Item',
 			items: [],
-			expandOverride: 'closed',
+			expandable: true,
 			selected: false
 		});
 		this._items.set('b', {
 			key: 'b',
 			primaryText: 'Item 2: Click Expand To Lazy Load Item',
 			items: [],
-			expandOverride: 'closed',
+			expandable: true,
 			selected: false
 		});
 	}
@@ -46,8 +46,9 @@ class ListDemoNestedLazyLoad extends LitElement {
 	_handleListItemToggle(e) {
 		const listItem = e.path[0];
 		const itemKey = e.detail.key;
+		const previouslyCollapsed = e.detail.oldState;
 		const itemToAddChildren = this._items.get(itemKey);
-		if (listItem.expandCollapseOverride === 'closed' && itemToAddChildren.items.length === 0) {
+		if (!previouslyCollapsed && itemToAddChildren.items.length === 0) {
 			if (listItem.selected) {
 				itemToAddChildren.selected = true;
 			}
@@ -56,18 +57,15 @@ class ListDemoNestedLazyLoad extends LitElement {
 				key: uniqueId,
 				primaryText: `Lazy Loaded Item ${uniqueId}`,
 				items: [],
+				expandable: false,
 				selected: listItem.selected
 			}];
-			listItem.expandCollapseOverride = 'opened';
+
 			setTimeout(() => {
 				// fake lazy loading items
 				this._items.set(itemKey, itemToAddChildren);
 				this.requestUpdate();
 			}, 2000);
-		} else if (listItem.expandCollapseOverride === 'closed') {
-			listItem.expandCollapseOverride = 'opened';
-		} else if (listItem.expandCollapseOverride === 'opened') {
-			listItem.expandCollapseOverride = 'closed';
 		}
 	}
 
@@ -115,8 +113,7 @@ class ListDemoNestedLazyLoad extends LitElement {
 				drag-handle-text="${item.primaryText}"
 				key="${item.key}"
 				label="${item.primaryText}"
-				expandable
-				expand-collapse-override="${item.expandOverride || ''}"
+				?expandable="${item.expandable}"
 				@d2l-list-item-expand-collapse-toggled="${this._handleListItemToggle}">
 					${this._renderIllustration(item)}
 					${this._renderItemContent(item)}

@@ -223,7 +223,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const items = this.getItems();
 		let aChildHasNestedItems = false;
 		for (const item of items) {
-			if (item._hasChildren) {
+			if (item.expandable && item._hasChildren) {
 				aChildHasNestedItems = true;
 				break;
 			}

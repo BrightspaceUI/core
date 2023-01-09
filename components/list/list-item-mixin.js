@@ -475,7 +475,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			rootListItems.forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
 		} else {
 			listItems.set(listItem.key, listItem);
-			if (listItem.expandCollapseOverride === 'closed' && !listItem._hasChildren) {
+			if (listItem.expandable && !listItem._hasChildren) {
 				lazyLoadListItems.set(listItem.key, listItem);
 			}
 			if (listItem._hasChildren) {
