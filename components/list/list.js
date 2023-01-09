@@ -67,7 +67,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._itemsShowingCount = 0;
 		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
-		this._childHasNestedItems = false;
+		this._childHasExpandCollapseToggle = false;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
 			this,
@@ -89,7 +89,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
+		// check if list items are expandable on first render so we adjust sibling spacing appropriately
+		this._handleListIemChildrenChange();
 		this.addEventListener('d2l-list-item-selected', e => {
 
 			// batch the changes from select-all and nested lists
@@ -219,16 +220,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_handleListIemChildrenChange(e) {
-		e.stopPropagation();
+		if (e) {
+			e.stopPropagation();
+		}
 		const items = this.getItems();
-		let aChildHasNestedItems = false;
+		let aChildHasToggleEnabled = false;
 		for (const item of items) {
-			if (item.expandable && item._hasChildren) {
-				aChildHasNestedItems = true;
+			if (item.expandable) {
+				aChildHasToggleEnabled = true;
 				break;
 			}
 		}
-		this._childHasNestedItems = aChildHasNestedItems;
+		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
 
@@ -263,11 +266,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_updateActiveSubscriber(subscriber) {
-		subscriber.updateSiblingHasChildren(this._childHasNestedItems);
+		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
 	}
 
 	_updateActiveSubscribers(subscribers) {
-		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasNestedItems));
+		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle));
 	}
 
 }

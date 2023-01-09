@@ -195,7 +195,7 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 
 ## Expandable Lists
 
-The `d2l-list` supports expandable items within a list. Expand and collapse toggle is enabled when `d2l-list-item`s have the `expandable` and `key` attributes set. When items are expandable the default state is collapsed when the item has children. If you would like the default state to be expanded, add the `expanded` attribute to the `d2l-list-item`.
+The `d2l-list` supports expandable items within a list. Expand and collapse toggle is enabled when `d2l-list-item`s have the `expandable` and `key` attributes set. When items are expandable the default state is collapsed. If you would like the default state to be expanded, add the `expanded` attribute to the `d2l-list-item`.
 
 ### Expandable List Accessibility Properties
 
@@ -245,7 +245,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
       </d2l-list-item>
     </d2l-list>
   </d2l-list-item>
-  <d2l-list-item selectable key="expand-3" label="Expandable item #3">
+  <d2l-list-item selectable key="expand-3" label="Item with no children">
     <d2l-list-item-content>
       <div>Item with no children</div>
       <div slot="supporting-info">Supporting information</div>
