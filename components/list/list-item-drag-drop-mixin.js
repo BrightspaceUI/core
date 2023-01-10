@@ -599,15 +599,21 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		const rootList = this._getRootList(this);
-		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
-		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
-			const lazyLoadListItems = this._getFlattenedListItems().lazyLoadListItems;
+		const getDragImage = (count, includePlusSign) => {
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
 				this.shadowRoot.appendChild(dragImage);
 			}
+			dragImage.count = count;
+			dragImage.includePlusSign = includePlusSign;
+			return dragImage;
+		};
+
+		const rootList = this._getRootList(this);
+		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
+		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
+			const lazyLoadListItems = this._getFlattenedListItems().lazyLoadListItems;
 			let includePlus = false;
 			if (lazyLoadListItems.size > 0) {
 				for (const selectedItemKey of selectionInfo.keys) {
@@ -617,19 +623,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					}
 				}
 			}
-			dragImage.count = selectionInfo.keys.length;
-			dragImage.includePlusSign = includePlus;
-			e.dataTransfer.setDragImage(dragImage, 24, 26);
+			e.dataTransfer.setDragImage(getDragImage(selectionInfo.keys.length, includePlus), 24, 26);
 		} else if (rootList.dragMultiple && this.expandable) {
 			const flattenedListItems = this._getFlattenedListItems(this);
-			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
-			if (!dragImage) {
-				dragImage = document.createElement('d2l-list-item-drag-image');
-				this.shadowRoot.appendChild(dragImage);
-			}
-			dragImage.count = flattenedListItems.listItems.size;
-			dragImage.includePlusSign = flattenedListItems.lazyLoadListItems.size > 0;
-			e.dataTransfer.setDragImage(dragImage, 24, 26);
+			e.dataTransfer.setDragImage(getDragImage(flattenedListItems.listItems.size, flattenedListItems.lazyLoadListItems.size > 0), 24, 26);
 		} else {
 			if (this.shadowRoot) {
 				const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
