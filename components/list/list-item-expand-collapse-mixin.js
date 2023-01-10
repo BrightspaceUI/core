@@ -32,7 +32,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				--d2l-expand-collapse-slot-transition-duration: 0.3s;
 			}
 			.d2l-list-expand-collapse {
-				transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 				width: 0;
 			}
 			:host([dir="rtl"][_render-expand-collapse-slot]) .d2l-list-expand-collapse {
@@ -59,6 +58,12 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				display: flex;
 				justify-content: center;
 				padding: 0.4rem;
+			}
+
+			@media (prefers-reduced-motion: no-preference) {
+				.d2l-list-expand-collapse {
+					transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
+				}
 			}
 		` ];
 
@@ -91,7 +96,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			let elapsedHoverTime = 0;
 			let dragIntervalId = null;
 			const watchDraggingOver = () => {
-				if (elapsedHoverTime === dragHoverDropTime) {
+				if (elapsedHoverTime >= dragHoverDropTime) {
 					if (this._draggingOver) {
 						this._toggleExpandCollapse();
 					}
