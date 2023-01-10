@@ -409,7 +409,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
 | `expandable` | Boolean | Whether or not to show the expand/collapse toggle. |
-| `expanded` | Boolean | Default state for expand collapse toggle - if not set, collapsed will be the default state. Requires `expandable` to be set. |
+| `expanded` | Boolean | Whether the item is expanded. Requires `expandable` to be set. |
 | `href` | String | Address of item link if navigable |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
@@ -482,7 +482,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
 | `expandable` | Boolean | Whether or not to show the expand/collapse toggle. |
-| `expanded` | Boolean | Default state for expand collapse toggle - if not set, collapsed will be the default state. Requires `expandable` to be set. |
+| `expanded` | Boolean | Whether the item is expanded. Requires `expandable` to be set. |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
