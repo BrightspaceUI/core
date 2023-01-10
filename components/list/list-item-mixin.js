@@ -622,9 +622,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
-				${this._renderExpandCollapse()}
+				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
+					${this._renderExpandCollapse()}
+				</div>
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
-				${this.selectable || (this.expandable && this._renderExpandCollapseToggle) ? html`<div slot="control-action"
+				${this.selectable || this.expandable ? html`<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}

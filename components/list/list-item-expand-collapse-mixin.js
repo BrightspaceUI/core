@@ -122,13 +122,14 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 	}
 
 	_renderExpandCollapse() {
+		if (!this.expandable) {
+			return nothing;
+		}
 		return html`
-			<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
-				${this.expandable ? html`<d2l-button-icon
-					icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
-					aria-expanded="${this.expanded ? 'true' : 'false'}"
-					text="${this.label}"></d2l-button-icon>` : nothing}
-			</div>`;
+			<d2l-button-icon
+				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
+				aria-expanded="${this.expanded ? 'true' : 'false'}"
+				text="${this.label}"></d2l-button-icon>`;
 	}
 
 	_renderExpandCollapseAction() {
