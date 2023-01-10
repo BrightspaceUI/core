@@ -8,6 +8,8 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const KEYPRESS_TIMEOUT = 200;
+
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
@@ -59,7 +61,8 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
+			value: { type: String },
+			_searchInProgress: { state: true }
 		};
 	}
 
@@ -88,9 +91,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		super();
 		this._lastSearchValue = '';
 		this.disabled = false;
+		this._keypressTimeout = undefined;
 		this.noClear = false;
 		this.searchOnInput = false;
 		this.value = '';
+		this._searchInProgress = false;
 	}
 
 	/** @ignore */
@@ -173,11 +178,18 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
-	_handleInput(e) {
+	async _handleInput(e) {
 		this.value = e.target.value;
 		if (this.searchOnInput) {
+			if (this._keypressTimeout !== undefined) {
+				clearTimeout(this._keypressTimeout);
+				this._keypressTimeout = undefined;
+			}
+
 			this._setLastSearchValue(this.value);
-			this._dispatchEvent();
+			this._keypressTimeout = setTimeout(async() => {
+				this._dispatchEvent();
+			}, KEYPRESS_TIMEOUT);
 		}
 	}
 
