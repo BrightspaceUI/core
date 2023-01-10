@@ -93,7 +93,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
-			_hasChildren: { state: true }
+			_hasNestedList: { state: true }
 		};
 	}
 
@@ -374,7 +374,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._displayKeyboardTooltip = false;
 		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
-		this._hasChildren = false;
+		this._hasNestedList = false;
 	}
 
 	get breakpoints() {
@@ -475,10 +475,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			rootListItems.forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
 		} else {
 			listItems.set(listItem.key, listItem);
-			if (listItem.expandable && !listItem._hasChildren) {
+			if (listItem.expandable && !listItem._hasNestedList) {
 				lazyLoadListItems.set(listItem.key, listItem);
 			}
-			if (listItem._hasChildren) {
+			if (listItem._hasNestedList) {
 				const nestedList = listItem._getNestedList();
 				nestedList.getItems().forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
 			}
@@ -591,9 +591,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			this._onNestedSlotChangeCheckboxMixin();
 		}
 		const nestedList = this._getNestedList();
-		if (this._hasChildren !== !!nestedList) {
-			this._hasChildren = !!nestedList;
-			this.dispatchEvent(new CustomEvent('d2l-list-item-children-change', { bubbles: true, composed: true }));
+		if (this._hasNestedList !== !!nestedList) {
+			this._hasNestedList = !!nestedList;
+			this.dispatchEvent(new CustomEvent('d2l-list-item-nested-change', { bubbles: true, composed: true }));
 		}
 	}
 
@@ -667,7 +667,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const nestedSlot = html`<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>`;
 		return html`
 			<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${this._renderChildrenLoadingSpinner()}${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
+				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${this._renderNestedLoadingSpinner()}${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
 			</div>
 		`;
 	}

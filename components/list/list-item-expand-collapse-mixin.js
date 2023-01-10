@@ -22,7 +22,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			expanded: { type: Boolean, reflect: true },
 			_siblingHasNestedItems: { state: true },
 			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
-			_showChildrenLoadingSpinner: {  state: true }
+			_showNestedLoadingSpinner: {  state: true }
 		};
 	}
 
@@ -55,7 +55,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 				display: block;
 				height: 100%;
 			}
-			.d2l-list-children-loading {
+			.d2l-list-nested-loading {
 				display: flex;
 				justify-content: center;
 				padding: 0.4rem;
@@ -70,7 +70,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		super();
 		this._siblingHasNestedItems = false;
 		this._renderExpandCollapseSlot = false;
-		this._showChildrenLoadingSpinner = false;
+		this._showNestedLoadingSpinner = false;
 		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
 	}
 
@@ -107,23 +107,13 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			// check if they are still hovered over same item every 100ms
 			dragIntervalId = setInterval(watchDraggingOver, dragIntervalDelay);
 		}
-		if (changedProperties.has('expanded') || changedProperties.has('_hasChildren')) {
-			this._showChildrenLoadingSpinner = this.expanded && !this._hasChildren;
+		if (changedProperties.has('expanded') || changedProperties.has('_hasNestedList')) {
+			this._showNestedLoadingSpinner = this.expanded && !this._hasNestedList;
 		}
 	}
 
 	updateSiblingHasChildren(siblingHasNestedItems) {
 		this._siblingHasNestedItems = siblingHasNestedItems;
-	}
-
-	_renderChildrenLoadingSpinner() {
-		if (!this.expandable || !this._showChildrenLoadingSpinner) {
-			return nothing;
-		}
-		return html`
-			<div class="d2l-list-children-loading">
-				<d2l-loading-spinner size="40"></d2l-loading-spinner>
-			</div>`;
 	}
 
 	_renderExpandCollapse() {
@@ -142,6 +132,16 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		}
 
 		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}"></div>`;
+	}
+
+	_renderNestedLoadingSpinner() {
+		if (!this.expandable || !this._showNestedLoadingSpinner) {
+			return nothing;
+		}
+		return html`
+			<div class="d2l-list-nested-loading">
+				<d2l-loading-spinner size="40"></d2l-loading-spinner>
+			</div>`;
 	}
 
 	_toggleExpandCollapse() {

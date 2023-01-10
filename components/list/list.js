@@ -79,7 +79,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
-		this.addEventListener('d2l-list-item-children-change', (e) => this._handleListIemChildrenChange(e));
+		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 	}
 
 	disconnectedCallback() {
@@ -90,7 +90,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		// check if list items are expandable on first render so we adjust sibling spacing appropriately
-		this._handleListIemChildrenChange();
+		this._handleListIemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
 
 			// batch the changes from select-all and nested lists
@@ -219,7 +219,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (focusable) focusable.focus();
 	}
 
-	_handleListIemChildrenChange(e) {
+	_handleListIemNestedChange(e) {
 		if (e) {
 			e.stopPropagation();
 		}

@@ -10,7 +10,7 @@ const tag = defineCE(
 			return html`
 				${this._renderExpandCollapse()}
 				${this._renderExpandCollapseAction()}
-				${this._renderChildrenLoadingSpinner()}
+				${this._renderNestedLoadingSpinner()}
 			`;
 		}
 	}
@@ -130,9 +130,9 @@ describe('ListItemExpandCollapseMixin', () => {
 			it(`expandCollapseOverride: hasChildren: ${test}`, async() => {
 				const hasChildren = test;
 				const element = await fixture(`<${tag} key="1234" expandable expanded></${tag}>`);
-				element._hasChildren = hasChildren;
+				element._hasNestedList = hasChildren;
 				await element.updateComplete;
-				const spinner = element.shadowRoot.querySelector('.d2l-list-children-loading');
+				const spinner = element.shadowRoot.querySelector('.d2l-list-nested-loading');
 				if (!hasChildren) {
 					expect(spinner).to.exist;
 				} else {
