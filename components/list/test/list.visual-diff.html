@@ -599,31 +599,6 @@
 							<div>Level 1, Item 1</div>
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
-						<d2l-list slot="nested">
-							<d2l-list-item expandable key="L2-1">
-								<d2l-list-item-content>
-									<div>Level 2, Item 1</div>
-									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
-								</d2l-list-item-content>
-							</d2l-list-item>
-							<d2l-list-item expandable key="L2-2">
-								<d2l-list-item-content>
-									<div>Level 2, Item 2</div>
-									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
-								</d2l-list-item-content>
-								<d2l-list slot="nested">
-									<d2l-list-item expandable key="L3-1">
-										<d2l-list-item-content>
-											<div>Level 3, Item 1</div>
-										</d2l-list-item-content>
-									</d2l-list-item>
-									<d2l-list-item expandable key="L3-2">
-										<d2l-list-item-content>
-											<div>Level 3, Item 2</div>
-									</d2l-list-item>
-								</d2l-list>
-							</d2l-list-item>
-						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -638,7 +613,7 @@
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item expandable expanded key="L2-1">
+							<d2l-list-item key="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
@@ -650,12 +625,12 @@
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested">
-									<d2l-list-item expandable expanded key="L3-1">
+									<d2l-list-item key="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item expandable expanded key="L3-2">
+									<d2l-list-item key="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 									</d2l-list-item>
@@ -676,7 +651,7 @@
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item expandable expanded selectable key="L2-1">
+							<d2l-list-item selectable key="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
@@ -688,12 +663,12 @@
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested">
-									<d2l-list-item expandable expanded selectable key="L3-1">
+									<d2l-list-item selectable key="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item expandable expanded selectable key="L3-2">
+									<d2l-list-item selectable key="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 									</d2l-list-item>
@@ -714,7 +689,7 @@
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item expandable expanded draggable key="L2-1">
+							<d2l-list-item draggable key="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
@@ -726,12 +701,12 @@
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested">
-									<d2l-list-item expandable expanded draggable key="L3-1">
+									<d2l-list-item draggable key="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item expandable expanded draggable key="L3-2">
+									<d2l-list-item draggable key="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 									</d2l-list-item>
@@ -752,7 +727,7 @@
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item expandable expanded selectable draggable key="L2-1">
+							<d2l-list-item selectable draggable key="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
@@ -764,12 +739,12 @@
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested">
-									<d2l-list-item expandable expanded selectable draggable key="L3-1">
+									<d2l-list-item selectable draggable key="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item expandable expanded selectable draggable key="L3-2">
+									<d2l-list-item selectable draggable key="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 									</d2l-list-item>
