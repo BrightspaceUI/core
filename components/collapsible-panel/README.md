@@ -100,9 +100,10 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 		width: 500px;
 		margin-block: 2rem;
 	}
-  d2l-collapsible-panel:not([expanded]) {
-    margin-bottom: 8rem;
-  }
+	/* TODO: remove this when daylight demo resizing is fixed */
+	d2l-collapsible-panel:not([expanded]) {
+		margin-bottom: 8rem;
+	}
 </style>
 
 <d2l-collapsible-panel panel-title="Cake Decoration">
@@ -144,7 +145,6 @@ Use the default collapsible panel in most situations.
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 </script>
 
 <style>
@@ -154,7 +154,7 @@ Use the default collapsible panel in most situations.
 </style>
 
 <d2l-collapsible-panel panel-title="Default">
-	Use the default collapsible panel in most situations. The default panel type has a border.
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
@@ -165,7 +165,6 @@ Use the subtle collapsible panel on backgrounds that are not white.
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 </script>
 
 <style>
@@ -178,7 +177,7 @@ Use the subtle collapsible panel on backgrounds that are not white.
 </style>
 
 <d2l-collapsible-panel panel-title="Subtle" type="subtle">
-	Use the subtle collapsible panel on backgrounds that are not white. The subtle collapsible panel has a shadow instead of a border, making it stand out more on darker backgrounds.
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
@@ -189,7 +188,6 @@ Use an inline collapsible panel to progressively disclose sections of a complex 
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 </script>
 
 <style>
@@ -199,7 +197,7 @@ Use an inline collapsible panel to progressively disclose sections of a complex 
 </style>
 
 <d2l-collapsible-panel panel-title="Inline" type="inline">
-	Use an inline collapsible panel to progressively disclose sections of a complex page, or to allow users to simplify a complex page by hiding entire sections.
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
@@ -299,12 +297,11 @@ customElements.define('d2l-collapsible-panel-daylight-demo', CollapsiblePanelDay
 Collapsible panels have two optional slots, `actions` and `header` that can be used to add more information to the header area.
 
 
-<!-- docs: demo -->
+<!-- docs: demo live -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-icon.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
 	import '@brightspace-ui/core/components/link/link.js';
@@ -315,11 +312,15 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 
 <style>
 	d2l-collapsible-panel {
-		width: 700px;
+		width: 800px;
+	}
+	/* TODO: remove this when daylight demo resizing is fixed */
+	d2l-collapsible-panel:not([expanded]) {
+		margin-bottom: 4rem;
 	}
 </style>
 
-<d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
+<d2l-collapsible-panel panel-title="Submission 1">
 	<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
 	<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
 	<d2l-dropdown-more slot="actions">
@@ -331,14 +332,11 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 		</d2l-dropdown-menu>
 	</d2l-dropdown-more>
 	<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
-		<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
-		<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
-		<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+		<d2l-status-indicator state="none" text="Pending Evaluation"></d2l-status-indicator>
+		<p class="d2l-body-small">Submitted On: Jul 20, 2021 - 2:23 PM</p>
+		<d2l-link small href="https://www.d2l.com" target="blank">Link to post</d2l-link>
 	</div>
-	<div slot="summary">
-		<d2l-collapsible-panel-summary-item text="Always available"></d2l-collapsible-panel-summary-item>
-	</div>
-	Content
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
