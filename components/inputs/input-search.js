@@ -184,7 +184,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
-	async _handleInput(e) {
+	_handleInput(e) {
 		this.value = e.target.value;
 		if (this.searchOnInput) {
 			this._debounceInput();
