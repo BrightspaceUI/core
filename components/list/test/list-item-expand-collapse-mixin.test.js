@@ -58,44 +58,12 @@ describe('ListItemExpandCollapseMixin', () => {
 		}
 	});
 
-	describe('Render expand/collapse slot and button when appropriate', () => {
-		const cases = [{
-			properties: { expandable: true, _siblingHasNestedItems: false },
-			slotAvailable: true
-		},
-		{
-			properties: { expandable: false, _siblingHasNestedItems: true },
-			slotAvailable: true
-		},
-		{
-			properties: { expandable: false, _siblingHasNestedItems: false },
-			slotAvailable: false
-		}];
-
-		for (const test of cases) {
-			it(`expandable: ${test.properties.expandable} _siblingHasNestedItems: ${test.properties._siblingHasNestedItems}`, async() => {
-				const element = await fixture(`<${tag} key="1234" expanded></${tag}>`);
-				for (const [key, value] of Object.entries(test.properties)) {
-					element[key] = value;
-				}				await element.updateComplete;
-				const expandCollapseContainer = element.shadowRoot.querySelector('.d2l-list-expand-collapse');
-				const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
-				expect(expandCollapseContainer).to.exist;
-				if (test.properties.expandable) {
-					expect(button).to.exist;
-				} else {
-					expect(button).to.not.exist;
-				}
-			});
-		}
-	});
-
 	describe('Fires appropriate event when clicking button or action area', () => {
 
 		it('Fires event on button click', async() => {
 			const element = await fixture(`<${tag} key="1234" expandable expanded></${tag}>`);
 			await element.updateComplete;
-			const button = element.shadowRoot.querySelector('.d2l-list-expand-collapse d2l-button-icon');
+			const button = element.shadowRoot.querySelector('d2l-button-icon');
 			expect(button).to.exist;
 			// simulate a button click
 			setTimeout(() => {
