@@ -149,7 +149,8 @@ describe('d2l-list', () => {
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
 			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
 			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
-			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') }
+			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') },
+			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusMethod('#expand-collapse-default d2l-list-item') }
 		] },
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },
@@ -174,7 +175,7 @@ describe('d2l-list', () => {
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
-			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusButton('#expand-collapse-default [key="L1-1"] .d2l-expand-collapse-btn') }
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusButton('#expand-collapse-default d2l-list-item') }
 		] }
 	].forEach((info) => {
 
