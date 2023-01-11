@@ -127,7 +127,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		}
 		return html`
 			<d2l-button-icon
-				class="d2l-expand-collapse-btn"
 				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
 				aria-expanded="${this.expanded ? 'true' : 'false'}"
 				text="${this.label}"

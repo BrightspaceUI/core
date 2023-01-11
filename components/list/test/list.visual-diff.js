@@ -37,6 +37,12 @@ describe('d2l-list', () => {
 		});
 	};
 
+	const focusExpandCollapseButton = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('d2l-button-icon').focus();
+		});
+	};
+
 	const hideTooltip = (selector) => {
 		return hide(page, selector);
 	};
@@ -175,7 +181,7 @@ describe('d2l-list', () => {
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
-			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusButton('#expand-collapse-default d2l-list-item') }
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') }
 		] }
 	].forEach((info) => {
 
