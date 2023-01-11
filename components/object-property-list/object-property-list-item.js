@@ -1,8 +1,7 @@
+import './screen-reader-pause.js';
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
@@ -26,7 +25,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [super.styles, offscreenStyles, css`
+		return [super.styles, css`
 			:host {
 				vertical-align: middle;
 			}
@@ -73,7 +72,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	_renderSeparator() {
 		return html`
 			<span class="separator">
-				<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
+				<d2l-screen-reader-pause></d2l-screen-reader-pause>
 				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
 			</span>
 		`;

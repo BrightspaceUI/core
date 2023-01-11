@@ -1,4 +1,5 @@
 import './object-property-list-item.js';
+import './screen-reader-pause.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -44,6 +45,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 		return html`
 			<div class="d2l-body-small">
 				<slot name="status"></slot>
+				<d2l-screen-reader-pause></d2l-screen-reader-pause>
 				<slot>${slotContents}</slot>
 			</div>
 		`;
