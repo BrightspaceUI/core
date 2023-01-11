@@ -593,6 +593,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const nestedList = this._getNestedList();
 		if (this._hasNestedList !== !!nestedList) {
 			this._hasNestedList = !!nestedList;
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-nested-change', { bubbles: true, composed: true }));
 		}
 	}
