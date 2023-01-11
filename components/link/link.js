@@ -6,6 +6,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
+		border-radius: 3px;
 		color: var(--d2l-color-celestine);
 		cursor: pointer;
 		outline-style: none;
@@ -15,8 +16,13 @@ export const linkStyles = css`
 		bottom: 0.2rem;
 		top: 0.2rem;
 	}
-	.d2l-link:hover, .d2l-link:focus {
+	.d2l-link:hover {
 		color: var(--d2l-color-celestine-minus-1);
+		text-decoration: underline;
+	}
+	.d2l-link:focus {
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 3px;
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
