@@ -1,41 +1,86 @@
 # Collapsible Panel
 
-A collapsible panel is a container that can be expanded and collapsed to show/hide additional content and form options. Content within the panel is flexible and customizable -- form controls, buttons, text, and more can be put in the expanded version of this panel for users to interact with or view.
+The collapsible panel is a container that can show or hide additional content. It utilizes progressive disclosure by providing the option to hide content/controls until the user needs them.
 
 <!-- docs: demo -->
 ```html
 <script type="module">
+	import '@brightspace-ui/core/components/button/button-icon.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
+	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+	import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+	import '@brightspace-ui/core/components/menu/menu.js';
+	import '@brightspace-ui/core/components/menu/menu-item.js';
+	import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 
-<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
+<style>
+	.panel-container {
+		display: flex;
+		justify-content: center;
+		padding: 1rem;
+		width: 100%;
+	}
+	d2l-collapsible-panel {
+		width: 500px;
+	}
+	.subtle {
+		background: var(--d2l-color-gypsum);
+	}
+	.inline d2l-collapsible-panel {
+		width: 100%;
+	}
+</style>
 
-<d2l-collapsible-panel type="subtle" panel-title="Availability Dates and Conditions">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
-
-<d2l-collapsible-panel type="inline" panel-title="Availability Dates and Conditions">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
+<div class="panel-container">
+	<d2l-collapsible-panel panel-title="Default Collapsible Panel">
+		<d2l-collapsible-panel-summary-item slot="summary" text="Use in most situations"></d2l-collapsible-panel-summary-item>
+		<p>Use the default collapsible panel in most situations. The default panel type has a border.</p>
+		<p>For all the panel types, you can turn the summary off if you don't need it, add additional action buttons beside the expand/collapse arrow, and add HTML content under the header. See the other collapsible panel types below for examples of those options!</p>
+	</d2l-collapsible-panel>
+</div>
+<div class="panel-container subtle">
+	<d2l-collapsible-panel type="subtle" panel-title="Subtle Collapsible Panel">
+		<d2l-collapsible-panel-summary-item slot="summary" text="Use on backgrounds that are not white"></d2l-collapsible-panel-summary-item>
+		<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+			<d2l-status-indicator text="Reading Today"></d2l-status-indicator>
+			<p class="d2l-body-small">Nickname: caketray</p>
+		</div>
+		<p>Use the subtle collapsible panel on backgrounds that are not white. The subtle collapsible panel has a shadow instead of a border, making it stand out more on darker backgrounds.</p>
+		<p>This panel also has some HTML content in the header (including some information about our collapsible panel’s nickname, caketray).</p>
+	</d2l-collapsible-panel>
+</div>
+<div class="panel-container inline">
+	<d2l-collapsible-panel type="inline" panel-title="Inline Collapsible Panel">
+		<d2l-dropdown-more slot="actions">
+			<d2l-dropdown-menu>
+				<d2l-menu>
+					<d2l-menu-item text="Duplicate"></d2l-menu-item>
+					<d2l-menu-item text="Delete"></d2l-menu-item>
+				</d2l-menu>
+			</d2l-dropdown-menu>
+		</d2l-dropdown-more>
+		<d2l-collapsible-panel-summary-item slot="summary" text="Use to progressively disclose sections of a complex page, or simplify a complex page by hiding entire sections"></d2l-collapsible-panel-summary-item>
+		<p>Use an inline collapsible panel to progressively disclose sections of a complex page, or to allow users to simplify a complex page by hiding entire sections. The inline collapsible panel has only a top and bottom border, and the line between the header and summary is removed.</p>
+		<p>This panel also has an additional action (the menu). You can add more actions in that slot if you need them.</p>
+	</d2l-collapsible-panel>
+</div>
 ```
 
 ## Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use for optional settings or additional information that you want to initially hide
-* Use when the user would benefit from progressively disclosed information
+* Use to progressively disclose information or settings to simplify a complex workflow
+* Keep the header consistent across the collapsed and expanded states of the panel
+* Use the subtle collapsible panel for backgrounds that aren't white
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't nest collapsible panels within each other
-* Don't change the header contents when the panel is expanded/collapsed
-* Don't have interactions or elements in the closed state that are different or disappear in the open state (exception: the summary)
-	* For example, don't have a button that's only available in the collapsed state of the panel
-* Avoid using a collapsible panel for required options in a form
-* Avoid long lists of collapsible panels; consider using a nested [list](https://daylight.d2l.dev/components/list/) in this case (exceptions may apply)
+* Don't nest collapsible panels
+* Don't put required fields in a collapsible panel
+* Avoid long lists of collapsible panels. Consider using the nested [list](https://daylight.d2l.dev/components/list/) in this case (exceptions may apply)
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -50,7 +95,18 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 </script>
 
-<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+<style>
+	d2l-collapsible-panel {
+		width: 500px;
+		margin-block: 2rem;
+	}
+	/* TODO: remove this when daylight demo resizing is fixed */
+	d2l-collapsible-panel:not([expanded]) {
+		margin-bottom: 8rem;
+	}
+</style>
+
+<d2l-collapsible-panel panel-title="Cake Decoration">
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
 </d2l-collapsible-panel>
 ```
@@ -82,43 +138,158 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 
 ### Panel Types
 
+#### Default
+Use the default collapsible panel in most situations.
+
 <!-- docs: demo -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 </script>
 
-<d2l-collapsible-panel panel-title="Default panel">
-	This is the default collapsible panel style
-</d2l-collapsible-panel>
+<style>
+	d2l-collapsible-panel {
+		width: 500px;
+	}
+</style>
 
-<d2l-collapsible-panel type="subtle" panel-title="Subtle panel">
-	This is the "subtle" collapsible panel style
+<d2l-collapsible-panel panel-title="Default">
+	Expanded content
 </d2l-collapsible-panel>
+```
 
-<d2l-collapsible-panel type="inline" panel-title="Inline panel">
-	This is the "inline" collapsible panel style
+#### Subtle
+Use the subtle collapsible panel on backgrounds that are not white.
+
+<!-- docs: demo -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+</script>
+
+<style>
+	html {
+		background: var(--d2l-color-gypsum);
+	}
+	d2l-collapsible-panel {
+		width: 500px;
+	}
+</style>
+
+<d2l-collapsible-panel panel-title="Subtle" type="subtle">
+	Expanded content
+</d2l-collapsible-panel>
+```
+
+#### Inline
+Use an inline collapsible panel to progressively disclose sections of a complex page, or to allow users to simplify a complex page by hiding entire sections. The inline collapsible panel has only a top and bottom border, and the line between the header and summary is removed.
+
+<!-- docs: demo -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+</script>
+
+<style>
+	d2l-collapsible-panel {
+		width: 100%;
+	}
+</style>
+
+<d2l-collapsible-panel panel-title="Inline" type="inline">
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
 ## Summary Items [d2l-collapsible-panel-summary-item]
-The summary area takes information from the expanded panel and summarizes it for the collapsed version. This can help the user understand what information is inside the panel without having to click on it.
+An optional summary can help the user understand what’s inside the collapsible panel without having to expand it. This can be helpful if the user needs more than the heading to explain what’s inside.
 
-<!-- docs: demo -->
+More than one d2l-collapsible-panel-summary-item can be added to the summary slot, and each will appear on its own line.
+
+<!-- docs: demo live -->
 ```html
 <script type="module">
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
-</script>
+import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
+import '@brightspace-ui/core/components/inputs/input-checkbox.js';
+import '@brightspace-ui/core/components/form/form.js';
+import { css, html, LitElement } from 'lit';
+import { labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
 
-<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
-	<div slot="summary">
-		<d2l-collapsible-panel-summary-item text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
-		<d2l-collapsible-panel-summary-item text="1 release condition"></d2l-collapsible-panel-summary-item>
-		<d2l-collapsible-panel-summary-item text="Hidden by special access"></d2l-collapsible-panel-summary-item>
-	</div>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
-</d2l-collapsible-panel>
+class CollapsiblePanelDaylightDemo extends LitElement {
+
+	static get properties() {
+		return {
+      _addons: { state: true },
+			_icingType: { state: true },
+			_icingTypes: { state: true },
+		};
+	}
+
+	static get styles() {
+		return [labelStyles, selectStyles, css`
+			d2l-collapsible-panel {
+				width: 500px;
+			}
+			/* TODO: remove this when daylight demo resizing is fixed */
+			d2l-collapsible-panel:not([expanded]) {
+				margin-bottom: 13rem;
+			}
+		`];
+	}
+
+	constructor() {
+		super();
+		this._addons = [
+			{ id: 'name', text: 'Personalized name', checked: false },
+			{ id: 'candles', text: 'Candles', checked: false },
+			{ id: 'cutlery', text: 'Plates and forks', checked: false },
+		];
+		this._icingTypes = ['Buttercream frosting', 'Cream cheese frosting', 'Royal icing', 'Swiss meringue buttercream'];
+		this._icingType = this._icingTypes[0];
+	}
+
+	render() {
+		return html`
+			<d2l-collapsible-panel panel-title="Cake Decoration">
+				${this._renderSummaryItems()}
+
+				<p class="d2l-label-text">Icing type</p>
+				<select class="d2l-input-select" @change="${this._onChangeSelect}">
+					${this._icingTypes.map((option) => html`<option>${option}</option>`)}
+				</select>
+
+				<p class="d2l-label-text">Add-ons</p>
+				${this._addons.map((item) => (
+					html`<d2l-input-checkbox id="${item.id}" @change="${this._onChangeCheckbox}">${item.text}</d2l-input-checkbox>`
+				))}
+			</d2l-collapsible-panel>
+		`;
+	}
+
+	_onChangeCheckbox(e) {
+		const index = this._addons.findIndex((obj => obj.id === e.target.getAttribute('id')));
+		this._addons[index].checked = e.target.checked;
+		this.requestUpdate();
+	}
+
+	_onChangeSelect(e) {
+		this._icingType = e.target.value;
+	}
+
+	_renderSummaryItems() {
+		return html`
+			<d2l-collapsible-panel-summary-item slot="summary" text="${this._icingType}"></d2l-collapsible-panel-summary-item>
+			${this._addons.filter(item => item.checked).map((item) => (
+				html`<d2l-collapsible-panel-summary-item slot="summary" text="${item.text}"></d2l-collapsible-panel-summary-item>`
+			))}
+		`;
+	}
+}
+customElements.define('d2l-collapsible-panel-daylight-demo', CollapsiblePanelDaylightDemo);
+</script>
+<d2l-collapsible-panel-daylight-demo></d2l-collapsible-panel-daylight-demo>
 ```
 
 ## Optional slots
@@ -126,22 +297,33 @@ The summary area takes information from the expanded panel and summarizes it for
 Collapsible panels have two optional slots, `actions` and `header` that can be used to add more information to the header area.
 
 
-<!-- docs: demo -->
+<!-- docs: demo live -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-icon.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
-	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+	import '@brightspace-ui/core/components/link/link.js';
 	import '@brightspace-ui/core/components/menu/menu.js';
 	import '@brightspace-ui/core/components/menu/menu-item.js';
 	import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 
-<d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
+<style>
+	d2l-collapsible-panel {
+		width: 800px;
+	}
+	/* TODO: remove this when daylight demo resizing is fixed */
+	d2l-collapsible-panel:not([expanded]) {
+		margin-bottom: 4rem;
+	}
+</style>
+
+<d2l-collapsible-panel panel-title="Submission 1">
 	<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
-	<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more>
+	<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+	<d2l-dropdown-more slot="actions">
 		<d2l-dropdown-menu>
 			<d2l-menu>
 				<d2l-menu-item text="Duplicate"></d2l-menu-item>
@@ -150,14 +332,11 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 		</d2l-dropdown-menu>
 	</d2l-dropdown-more>
 	<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
-		<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
-		<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
-		<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+		<d2l-status-indicator state="none" text="Pending Evaluation"></d2l-status-indicator>
+		<p class="d2l-body-small">Submitted On: Jul 20, 2021 - 2:23 PM</p>
+		<d2l-link small href="https://www.d2l.com" target="blank">Link to post</d2l-link>
 	</div>
-	<div slot="summary">
-		<d2l-collapsible-panel-summary-item text="Always available"></d2l-collapsible-panel-summary-item>
-	</div>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+	Expanded content
 </d2l-collapsible-panel>
 ```
 
