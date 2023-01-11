@@ -22,8 +22,8 @@ export const menuItemStyles = css`
 
 	:host(:focus-visible),
 	:host([first]:focus-visible) {
-		color: var(--d2l-menu-foreground-color-hover);
 		border-top-color: transparent;
+		color: var(--d2l-menu-foreground-color-hover);
 		outline: 2px solid var(--d2l-menu-border-color-hover);
 		outline-offset: -3px;
 		z-index: 2;
