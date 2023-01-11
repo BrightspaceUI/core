@@ -16,8 +16,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			 * Text to display if no items are selected
 			 * @type {string}
 			 */
-			noSelectionText: { type: String, attribute: 'no-selection-text' },
-			_summary: { state: true }
+			noSelectionText: { type: String, attribute: 'no-selection-text' }
 		};
 	}
 
@@ -44,8 +43,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
 		if (changedProperties.has('_provider') || changedProperties.has('selectionInfo')) {
 			this._updateSelectSummary();
 		}
