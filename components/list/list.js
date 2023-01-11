@@ -203,6 +203,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return this._itemsShowingCount - 1;
 	}
 
+	_getLazyLoadItems() {
+		const items = this.getItems();
+		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
 	async _getListItemsShowingTotalCount(refresh) {
 		if (refresh) {
 			this._itemsShowingTotalCount = this.getItems().length;
