@@ -8,7 +8,7 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-const KEYPRESS_TIMEOUT = 200;
+const INPUT_TIMEOUT = 400;
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
@@ -53,7 +53,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 */
 			placeholder: { type: String },
 			/**
-			 * Dispatch search events after each input instead of after pressing `Enter`
+			 * Dispatch search events after each input event
 			 * @type {boolean}
 			 */
 			searchOnInput: { type: Boolean, attribute: 'search-on-input' },
@@ -61,8 +61,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
-			_searchInProgress: { state: true }
+			value: { type: String }
 		};
 	}
 
@@ -89,13 +88,12 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	constructor() {
 		super();
+		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
 		this.disabled = false;
-		this._keypressTimeout = undefined;
 		this.noClear = false;
 		this.searchOnInput = false;
 		this.value = '';
-		this._searchInProgress = false;
 	}
 
 	/** @ignore */
@@ -162,6 +160,14 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		return showSearch;
 	}
 
+	_debounceInput() {
+		clearTimeout(this._inputTimeout);
+		this._setLastSearchValue(this.value);
+		this._inputTimeout = setTimeout(async() => {
+			this._dispatchEvent();
+		}, INPUT_TIMEOUT);
+	}
+
 	_dispatchEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-search-searched',
@@ -181,20 +187,12 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	async _handleInput(e) {
 		this.value = e.target.value;
 		if (this.searchOnInput) {
-			if (this._keypressTimeout !== undefined) {
-				clearTimeout(this._keypressTimeout);
-				this._keypressTimeout = undefined;
-			}
-
-			this._setLastSearchValue(this.value);
-			this._keypressTimeout = setTimeout(async() => {
-				this._dispatchEvent();
-			}, KEYPRESS_TIMEOUT);
+			this._debounceInput();
 		}
 	}
 
 	_handleInputKeyPress(e) {
-		if (e.keyCode !== 13 || this.searchOnInput) {
+		if (e.keyCode !== 13) {
 			return;
 		}
 		e.preventDefault();
