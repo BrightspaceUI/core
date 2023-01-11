@@ -20,6 +20,7 @@ export const menuItemStyles = css`
 		color: var(--d2l-menu-foreground-color-hover);
 	}
 
+	/** separated from hover selectors because Safari <15.4 is having trouble parsing these */
 	:host(:focus-visible),
 	:host([first]:focus-visible) {
 		border-top-color: transparent;
