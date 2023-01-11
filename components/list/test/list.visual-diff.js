@@ -173,7 +173,8 @@ describe('d2l-list', () => {
 			{ name: 'default expanded', selector: '#expand-collapse-default-expanded' },
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },
-			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' }
+			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusButton('#expand-collapse-default [key="L1-1"] .d2l-expand-collapse-btn') }
 		] }
 	].forEach((info) => {
 
