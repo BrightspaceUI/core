@@ -213,4 +213,27 @@ describe('d2l-list', () => {
 
 	});
 
+	describe('rtl', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+		});
+
+		[
+			{ name: 'expandable selectable draggable', selector: '#expand-collapse-selectable-draggable' },
+		].forEach((info) => {
+			it(info.name, async function() {
+				if (info.action) {
+					await info.action();
+				}
+				await page.evaluate(() => {
+					return new Promise(resolve => setTimeout(resolve, 0));
+				});
+				const rect = await visualDiff.getRect(page, info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 });
