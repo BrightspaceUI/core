@@ -12,13 +12,12 @@ class ListItemContent extends LitElement {
 
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
-			:host {
-				overflow-x: hidden;
-			}
 			.d2l-list-item-content-text {
+				border-radius: var(--d2l-list-item-content-text-border-radius);
 				color: var(--d2l-list-item-content-text-color);
 				margin: 0;
-				overflow: hidden;
+				outline: var(--d2l-list-item-content-text-outline, none);
+				outline-offset: var(--d2l-list-item-content-text-outline-offset);
 				text-decoration: var(--d2l-list-item-content-text-decoration, none);
 			}
 
@@ -38,8 +37,6 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text-supporting-info ::slotted(*) {
 				margin-top: 0.15rem;
 			}
-
-
 		`];
 	}
 
