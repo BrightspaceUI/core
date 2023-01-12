@@ -163,9 +163,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	_debounceInput() {
 		clearTimeout(this._inputTimeout);
 		this._setLastSearchValue(this.value);
-		this._inputTimeout = setTimeout(() => {
-			this._dispatchEvent();
-		}, INPUT_TIMEOUT_MS);
+		this._inputTimeout = setTimeout(() => this._dispatchEvent(), INPUT_TIMEOUT_MS);
 	}
 
 	_dispatchEvent() {
