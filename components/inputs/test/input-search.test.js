@@ -106,6 +106,21 @@ describe('d2l-input-search', () => {
 			expect(detail.value).to.equal('foobar');
 		});
 
+		it('should fire "search" event only once after two consecutive input events', async() => {
+			const elem = await fixture(searchOnInputFixture);
+			let searchEventsFired = 0;
+			elem.addEventListener('d2l-input-search-searched', () => {
+				searchEventsFired += 1;
+			});
+			setTimeout(() => {
+				getTextInput(elem).dispatchEvent(new Event('input'));
+				getTextInput(elem).dispatchEvent(new Event('input'));
+			});
+			await oneEvent(elem, 'd2l-input-search-searched');
+			await new Promise(resolve => setTimeout(resolve, 50));
+			expect(searchEventsFired).to.equal(1);
+		});
+
 	});
 
 	describe('search & clear button visibility', () => {

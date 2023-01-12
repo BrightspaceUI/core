@@ -8,7 +8,7 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-const INPUT_TIMEOUT = 400;
+const INPUT_TIMEOUT_MS = 400;
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
@@ -163,9 +163,9 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	_debounceInput() {
 		clearTimeout(this._inputTimeout);
 		this._setLastSearchValue(this.value);
-		this._inputTimeout = setTimeout(async() => {
+		this._inputTimeout = setTimeout(() => {
 			this._dispatchEvent();
-		}, INPUT_TIMEOUT);
+		}, INPUT_TIMEOUT_MS);
 	}
 
 	_dispatchEvent() {
