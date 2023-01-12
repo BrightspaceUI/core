@@ -18,6 +18,7 @@ class ListItemContent extends LitElement {
 				margin: 0;
 				outline: var(--d2l-list-item-content-text-outline, none);
 				outline-offset: var(--d2l-list-item-content-text-outline-offset);
+				overflow-wrap: anywhere;
 				text-decoration: var(--d2l-list-item-content-text-decoration, none);
 			}
 
