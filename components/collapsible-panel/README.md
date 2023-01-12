@@ -97,17 +97,16 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 
 <style>
 	d2l-collapsible-panel {
-		width: 500px;
-		margin-block: 2rem;
+		width: 800px;
 	}
 	/* TODO: remove this when daylight demo resizing is fixed */
 	d2l-collapsible-panel:not([expanded]) {
-		margin-bottom: 8rem;
+		margin-bottom: 14rem;
 	}
 </style>
 
-<d2l-collapsible-panel panel-title="Cake Decoration">
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+<d2l-collapsible-panel panel-title="Cake Tray">
+	The collapsible panel is also nicknamed caketray! Team Polaris coined this nickname back in 2020 while creating a labs component for a tool called Learning Paths (which is now replaced with the collapsible panel). They wanted to distinguish this labs component from d2l-card, but they didn't know what to call it, so they named it caketray to serve as a reminder to change the name later. Caketray caught on around the company, so much so that we had to make it an official nickname so some teams could find it! You'll see some other cake-related examples throughout this documentation to pay tribute to the collapsible panel's heritage.
 </d2l-collapsible-panel>
 ```
 
@@ -206,7 +205,7 @@ An optional summary can help the user understand what’s inside the collapsible
 
 More than one d2l-collapsible-panel-summary-item can be added to the summary slot, and each will appear on its own line.
 
-<!-- docs: demo live -->
+<!-- docs: demo -->
 ```html
 <script type="module">
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
@@ -234,7 +233,7 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 			}
 			/* TODO: remove this when daylight demo resizing is fixed */
 			d2l-collapsible-panel:not([expanded]) {
-				margin-bottom: 13rem;
+				margin-bottom: 12rem;
 			}
 		`];
 	}
@@ -302,6 +301,7 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 <script type="module">
 	import '@brightspace-ui/core/components/button/button-icon.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
 	import '@brightspace-ui/core/components/link/link.js';
@@ -313,10 +313,6 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 <style>
 	d2l-collapsible-panel {
 		width: 800px;
-	}
-	/* TODO: remove this when daylight demo resizing is fixed */
-	d2l-collapsible-panel:not([expanded]) {
-		margin-bottom: 4rem;
 	}
 </style>
 
@@ -336,6 +332,8 @@ Collapsible panels have two optional slots, `actions` and `header` that can be u
 		<p class="d2l-body-small">Submitted On: Jul 20, 2021 - 2:23 PM</p>
 		<d2l-link small href="https://www.d2l.com" target="blank">Link to post</d2l-link>
 	</div>
+	<d2l-collapsible-panel-summary-item slot="summary" text="Always available"></d2l-collapsible-panel-summary-item>
+	<d2l-collapsible-panel-summary-item slot="summary" text="2 Submissions"></d2l-collapsible-panel-summary-item>
 	Expanded content
 </d2l-collapsible-panel>
 ```
