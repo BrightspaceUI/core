@@ -218,6 +218,8 @@ describe('d2l-list', () => {
 		before(async() => {
 			await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
+			await page.reload();
+			await visualDiff.resetFocus(page);
 		});
 
 		[
