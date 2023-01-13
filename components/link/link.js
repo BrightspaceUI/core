@@ -5,8 +5,12 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
+	:host(:focus-within) {
+		border-radius: 2px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 3px;
+	}
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
-		border-radius: 3px;
 		color: var(--d2l-color-celestine);
 		cursor: pointer;
 		outline-style: none;
@@ -21,8 +25,6 @@ export const linkStyles = css`
 		text-decoration: underline;
 	}
 	.d2l-link:focus {
-		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: 3px;
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
