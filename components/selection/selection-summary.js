@@ -58,6 +58,9 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
 		} else {
+			/* If lazy loading items is supported (ex. d2l-list) then check the keys to determine if the plus sign should be included.
+			 * If lazy loading is not supported (ex. d2l-table-wrapper), then skip this.
+			 */
 			let includePlus = false;
 			if (this._provider && this._provider._getLazyLoadItems) {
 				const lazyLoadListItems = this._provider._getLazyLoadItems();

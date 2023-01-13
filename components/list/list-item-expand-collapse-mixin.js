@@ -159,12 +159,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 			return;
 		}
 		this.expanded = !this.expanded;
-		/** Dispatched whenever the list item expand state is toggled. Dispatched with the list item key, previous expanded state, and current expanded state. */
+		/** Dispatched whenever the list item expand state is toggled. */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-expand-collapse-toggled', {
-			detail: {
-				key: this.key,
-				oldExpandedState: !this.expanded,
-				expanded: this.expanded },
 			composed: true,
 			bubbles: true
 		}));
