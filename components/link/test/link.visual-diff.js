@@ -52,17 +52,23 @@ describe('d2l-link', () => {
 
 	});
 
-	[
-		'wc-standard',
-		'wc-inline-paragraph',
-		'sass-standard'
-	].forEach((name) => {
-		it(`focus-${name}`, async function() {
-			await page.evaluate((name) => {
-				const elem = document.querySelector(`#${name}`);
+	const focus = selector => {
+		return page.$eval(selector, elem => {
+			return new Promise(resolve => {
 				elem.focus();
-			}, name);
-			const rect = await visualDiff.getRect(page, `#${name}`);
+				requestAnimationFrame(resolve);
+			});
+		});
+	};
+
+	[
+		{ name: 'wc-standard-focus', selector: '#wc-standard', action: selector => { return focus(`${selector}`); } },
+		{ name: 'wc-inline-paragraph-focus', selector: '#wc-inline-paragraph', action: selector => { return focus(`${selector} d2l-link`); } },
+		{ name: 'sass-standard-focus', selector: '#sass-standard', action: selector => { return focus(`${selector}`); } }
+	].forEach(info => {
+		it(info.name, async function() {
+			const rect = await visualDiff.getRect(page, info.selector);
+			if (info.action) await info.action(info.selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
