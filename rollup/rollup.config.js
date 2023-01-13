@@ -10,12 +10,12 @@ const { version } = JSON.parse(readFileSync('./package.json'));
 const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).format(new Date());
 
 const jsGlob = [
-	'@(components|controllers|directives|helpers|mixins|templates)/**/*.js',
+	'@(components|controllers|directives|helpers|mixins|templates|test)/**/*.js',
 	'./index.js',
 	'!**/*.@(test|axe|visual-diff).js',
 ];
 const nonJsGlob = [
-	'@(components|controllers|directives|helpers|mixins|templates)/**/*.*',
+	'@(components|controllers|directives|helpers|mixins|templates|test)/**/*.*',
 	'*.*',
 	'!**/*.@(js|md|json)',
 	'!**/screenshots/**/*',
