@@ -70,10 +70,10 @@ describe('ListItemExpandCollapseMixin', () => {
 				button.click();
 			});
 
-			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
-			expect(detail.oldExpandedState).to.equal(true);
-			expect(detail.expanded).to.equal(false);
-			expect(detail.key).to.equal('1234');
+			const e = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
+			expect(e).to.exist;
+			expect(e.target.key).to.equal('1234');
+			expect(e.target.expanded).to.equal(false);
 		});
 
 		it('Fires event on action area click', async() => {
@@ -86,10 +86,10 @@ describe('ListItemExpandCollapseMixin', () => {
 				actionControl.click();
 			});
 
-			const { detail } = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
-			expect(detail.oldExpandedState).to.equal(false);
-			expect(detail.expanded).to.equal(true);
-			expect(detail.key).to.equal('1234');
+			const e = await oneEvent(element, 'd2l-list-item-expand-collapse-toggled');
+			expect(e).to.exist;
+			expect(e.target.key).to.equal('1234');
+			expect(e.target.expanded).to.equal(true);
 		});
 	});
 
