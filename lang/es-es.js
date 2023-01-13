@@ -99,6 +99,7 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
+	"components.selection.selected-plus": "{count}+ selected",
 	"components.selection-header.label": "Acciones para la selección",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated

@@ -37,6 +37,12 @@ describe('d2l-list', () => {
 		});
 	};
 
+	const focusExpandCollapseButton = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('d2l-button-icon').focus();
+		});
+	};
+
 	const hideTooltip = (selector) => {
 		return hide(page, selector);
 	};
@@ -149,7 +155,8 @@ describe('d2l-list', () => {
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
 			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
 			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
-			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') }
+			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') },
+			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusMethod('#expand-collapse-default d2l-list-item') }
 		] },
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },
@@ -167,6 +174,14 @@ describe('d2l-list', () => {
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
 			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) }
+		] },
+		{ category: 'expand-collapse', tests: [
+			{ name: 'default', selector: '#expand-collapse-default' },
+			{ name: 'default expanded', selector: '#expand-collapse-default-expanded' },
+			{ name: 'selectable', selector: '#expand-collapse-selectable' },
+			{ name: 'draggable', selector: '#expand-collapse-draggable' },
+			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') }
 		] }
 	].forEach((info) => {
 
@@ -196,6 +211,31 @@ describe('d2l-list', () => {
 
 		});
 
+	});
+
+	describe('rtl', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+			await page.reload();
+			await visualDiff.resetFocus(page);
+		});
+
+		[
+			{ name: 'expandable selectable draggable', selector: '#expand-collapse-selectable-draggable' },
+		].forEach((info) => {
+			it(info.name, async function() {
+				if (info.action) {
+					await info.action();
+				}
+				await page.evaluate(() => {
+					return new Promise(resolve => setTimeout(resolve, 0));
+				});
+				const rect = await visualDiff.getRect(page, info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
 	});
 
 });

@@ -2,14 +2,10 @@ import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-/**
- * @property label - The hidden label for the checkbox if selectable
- */
-export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(LabelledMixin(superclass)) {
+export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -83,8 +79,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		super.connectedCallback();
 		if (this.selectable) {
 			if (!this.key) console.warn('ListItemCheckboxMixin requires a key.');
-		} else {
-			this.labelRequired = false;
 		}
 		if (!this.key) this.setSelected(undefined, true);
 	}
@@ -130,7 +124,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		}
 	}
 
-	_onNestedSlotChange() {
+	_onNestedSlotChangeCheckboxMixin() {
 		this._updateNestedSelectionProvider();
 	}
 

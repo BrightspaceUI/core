@@ -2,6 +2,11 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script>
+			if (window.location.search.includes('dir=rtl')) {
+				document.documentElement.setAttribute('dir', 'rtl');
+			}
+		</script>
 		<script type="module">
 			import '../../colors/colors.js';
 			import '../../button/button-icon.js';
@@ -591,5 +596,169 @@
 			</div>
 		</div>
 
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-default">
+				<d2l-list>
+					<d2l-list-item expandable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-default-expanded">
+				<d2l-list>
+					<d2l-list-item expandable expanded key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-selectable">
+				<d2l-list>
+					<d2l-list-item expandable expanded selectable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded selectable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item selectable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-draggable">
+				<d2l-list>
+					<d2l-list-item expandable expanded draggable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item draggable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded draggable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item draggable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item draggable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-selectable-draggable">
+				<d2l-list>
+					<d2l-list-item expandable expanded selectable draggable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable draggable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded selectable draggable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item selectable draggable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable draggable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
 	</body>
 </html>
