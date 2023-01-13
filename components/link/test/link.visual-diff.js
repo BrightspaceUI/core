@@ -54,6 +54,7 @@ describe('d2l-link', () => {
 
 	[
 		'wc-standard',
+		'wc-inline-paragraph',
 		'sass-standard'
 	].forEach((name) => {
 		it(`focus-${name}`, async function() {
