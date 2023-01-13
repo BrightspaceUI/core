@@ -15,6 +15,7 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text {
 				border-radius: var(--d2l-list-item-content-text-border-radius);
 				color: var(--d2l-list-item-content-text-color);
+				display: inline-block;
 				margin: 0;
 				outline: var(--d2l-list-item-content-text-outline, none);
 				outline-offset: var(--d2l-list-item-content-text-outline-offset);
