@@ -35,13 +35,13 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 			}
 			.separator {
 				display: var(--d2l-object-property-list-item-separator-display, inline);
-				margin: 0 0.1rem;
+				margin: 0 -0.1rem; /* 9px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
 				color: var(--d2l-color-galena);
 			}
 			.item-icon {
-				margin-inline-end: 0.3rem;
+				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
 				margin-top: -0.1rem;
 			}
 			:host([skeleton]) d2l-icon {

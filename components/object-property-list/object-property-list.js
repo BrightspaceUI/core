@@ -32,7 +32,8 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 				--d2l-object-property-list-item-separator-display: none;
 			}
 			::slotted([slot="status"]) {
-				margin-inline-end: 0.45rem;
+				margin-inline-end: 0.2rem; /* 9px desired margin, subtract 5px arbitrary whitespace. */
+				margin-top: 0.05rem;
 			}
 		`];
 	}
