@@ -37,6 +37,7 @@ describe('d2l-link', () => {
 				'wc-main',
 				'wc-small',
 				'wc-inline',
+				'wc-inline-paragraph',
 				'sass-standard',
 				'sass-main',
 				'sass-small'
