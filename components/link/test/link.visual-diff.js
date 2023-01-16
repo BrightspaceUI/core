@@ -1,5 +1,5 @@
+import { focus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-link', () => {
 
@@ -52,19 +52,10 @@ describe('d2l-link', () => {
 
 	});
 
-	const focus = selector => {
-		return page.$eval(selector, elem => {
-			return new Promise(resolve => {
-				elem.focus();
-				requestAnimationFrame(resolve);
-			});
-		});
-	};
-
 	[
-		{ name: 'wc-standard-focus', selector: '#wc-standard', action: selector => { return focus(`${selector}`); } },
-		{ name: 'wc-inline-paragraph-focus', selector: '#wc-inline-paragraph', action: selector => { return focus(`${selector} d2l-link`); } },
-		{ name: 'sass-standard-focus', selector: '#sass-standard', action: selector => { return focus(`${selector}`); } }
+		{ name: 'wc-standard-focus', selector: '#wc-standard', action: selector => { return focus(page, `${selector}`); } },
+		{ name: 'wc-inline-paragraph-focus', selector: '#wc-inline-paragraph', action: selector => { return focus(page, `${selector} d2l-link`); } },
+		{ name: 'sass-standard-focus', selector: '#sass-standard', action: selector => { return focus(page, `${selector}`); } }
 	].forEach(info => {
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);

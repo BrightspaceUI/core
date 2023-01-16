@@ -1,6 +1,7 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -8,7 +9,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 /**
  * An entry within a <d2l-breadcrumbs> parent.
  */
-class Breadcrumb extends RtlMixin(LitElement) {
+class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -89,6 +90,10 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		this._role = 'listitem';
 
 		this.text = '';
+	}
+
+	static get focusElementSelector() {
+		return 'a';
 	}
 
 	connectedCallback() {
