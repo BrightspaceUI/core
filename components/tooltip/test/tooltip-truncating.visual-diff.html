@@ -30,8 +30,7 @@
 			max-width: 100%;
 		}
 
-		.truncated d2l-button span,
-		.truncated d2l-link {
+		.truncated d2l-button span {
 			display: block;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -56,13 +55,13 @@
 				</d2l-tooltip>
 			</div>
 			<div id="link-not-truncating">
-				<d2l-link id="link-short" href="https://www.d2l.com">Short Text</d2l-link>
+				<d2l-link id="link-short" href="https://www.d2l.com" overflow-ellipsis>Short Text</d2l-link>
 				<d2l-tooltip for="link-short" show-truncated-only>
 					This tooltip will not show.
 				</d2l-tooltip>
 			</div>
 			<div id="link-truncating">
-				<d2l-link id="link-long" href="https://www.d2l.com">Very Very Very Very Long Text</d2l-link>
+				<d2l-link id="link-long" href="https://www.d2l.com" overflow-ellipsis>Very Very Very Very Long Text</d2l-link>
 				<d2l-tooltip for="link-long" show-truncated-only>
 					Very Very Very Very Long Text - this tooltip will show because the text is truncating.
 				</d2l-tooltip>

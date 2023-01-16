@@ -56,7 +56,7 @@ class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 			:host([data-compact]) {
 				flex-direction: row-reverse;
 			}
-			:host(:focus-within) {
+			.d2l-link:focus {
 				outline-offset: -2px;
 			}
 

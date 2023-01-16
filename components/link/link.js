@@ -5,11 +5,6 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
-	:host(:focus-within) {
-		border-radius: 3px;
-		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: 1px;
-	}
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
 		color: var(--d2l-color-celestine);
 		cursor: pointer;
@@ -25,6 +20,9 @@ export const linkStyles = css`
 		text-decoration: underline;
 	}
 	.d2l-link:focus {
+		border-radius: 3px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
@@ -75,6 +73,11 @@ class Link extends FocusMixin(LitElement) {
 			 */
 			main: { type: Boolean, reflect: true },
 			/**
+			 * Whether to truncate the link with ellipsis
+			 * @type {boolean}
+			 */
+			overflowEllipsis: { type: Boolean, attribute: 'overflow-ellipsis' },
+			/**
 			 * Whether to apply the "small" link style
 			 * @type {boolean}
 			 */
@@ -100,6 +103,17 @@ class Link extends FocusMixin(LitElement) {
 					/* needed to keep host element same height as link */
 					font-size: 0.7rem;
 					line-height: 1.05rem;
+				}
+				:host([overflow-ellipsis]) {
+					display: inline-block;
+					max-width: 100%;
+				}
+				:host([overflow-ellipsis]) .d2l-link {
+					display: inline-block;
+					max-width: 100%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 				}
 			`
 		];

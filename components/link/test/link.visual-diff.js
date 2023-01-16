@@ -38,6 +38,7 @@ describe('d2l-link', () => {
 				'wc-small',
 				'wc-inline',
 				'wc-inline-paragraph',
+				'wc-overflow-ellipsis',
 				'sass-standard',
 				'sass-main',
 				'sass-small'
@@ -55,6 +56,7 @@ describe('d2l-link', () => {
 	[
 		{ name: 'wc-standard-focus', selector: '#wc-standard', action: selector => { return focus(page, `${selector}`); } },
 		{ name: 'wc-inline-paragraph-focus', selector: '#wc-inline-paragraph', action: selector => { return focus(page, `${selector} d2l-link`); } },
+		{ name: 'wc-overflow-ellipsis-focus', selector: '#wc-overflow-ellipsis', action: selector => { return focus(page, `${selector}`); } },
 		{ name: 'sass-standard-focus', selector: '#sass-standard', action: selector => { return focus(page, `${selector}`); } }
 	].forEach(info => {
 		it(info.name, async function() {
