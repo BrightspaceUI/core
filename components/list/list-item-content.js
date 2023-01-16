@@ -13,10 +13,13 @@ class ListItemContent extends LitElement {
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
 			.d2l-list-item-content-text {
+				margin: 0;
+			}
+
+			.d2l-list-item-content-text > div {
 				border-radius: var(--d2l-list-item-content-text-border-radius);
 				color: var(--d2l-list-item-content-text-color);
 				display: inline-block;
-				margin: 0;
 				outline: var(--d2l-list-item-content-text-outline, none);
 				outline-offset: var(--d2l-list-item-content-text-outline-offset);
 				overflow-wrap: anywhere;
@@ -44,7 +47,7 @@ class ListItemContent extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-list-item-content-text d2l-body-compact"><slot></slot></div>
+			<div class="d2l-list-item-content-text d2l-body-compact"><div><slot></slot></div></div>
 			<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="secondary"></slot></div>
 			<div class="d2l-list-item-content-text-supporting-info d2l-body-small"><slot name="supporting-info"></slot></div>
 		`;
