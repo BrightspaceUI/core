@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
         with:
-          persist-credentials: false
+          token: ${{ secrets.CORE_GITHUB_TOKEN }}
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version-file: .nvmrc
@@ -20,6 +20,6 @@ jobs:
         uses: BrightspaceUI/actions/update-package-lock@main
         with:
           AUTO_MERGE_METHOD: squash
-          AUTO_MERGE_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}        
+          AUTO_MERGE_TOKEN: ${{ secrets.CORE_GITHUB_TOKEN }}        
           APPROVAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CORE_GITHUB_TOKEN }}

@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
 	TAB: 9
@@ -66,11 +67,19 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._itemsShowingCount = 0;
 		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
+		this._childHasExpandCollapseToggle = false;
+
+		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
+			this,
+			{ onSubscribe: this._updateActiveSubscriber.bind(this), updateSubscribers: this._updateActiveSubscribers.bind(this) },
+			{ eventName: 'd2l-list-child-status' }
+		);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
+		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 	}
 
 	disconnectedCallback() {
@@ -80,7 +89,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
+		// check if list items are expandable on first render so we adjust sibling spacing appropriately
+		this._handleListIemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
 
 			// batch the changes from select-all and nested lists
@@ -174,6 +184,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
 
+	getSubscriberController() {
+		return this._listChildrenUpdatedSubscribers;
+	}
+
 	_getItemByIndex(index) {
 		const items = this.getItems();
 		if (index > items.length - 1) return;
@@ -189,16 +203,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return this._itemsShowingCount - 1;
 	}
 
+	_getLazyLoadItems() {
+		const items = this.getItems();
+		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
 	async _getListItemsShowingTotalCount(refresh) {
 		if (refresh) {
-			this._itemsShowingTotalCount = await this.getItems().reduce(async(count, item) => {
-				await item.updateComplete;
-				if (item._selectionProvider) {
-					return (await count + await item._selectionProvider._getListItemsShowingTotalCount(true));
-				} else {
-					return await count;
-				}
-			}, this._itemsShowingCount);
+			this._itemsShowingTotalCount = this.getItems().length;
 		}
 		return this._itemsShowingTotalCount;
 	}
@@ -210,6 +222,22 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const listSlot = this.shadowRoot.querySelector('slot:not([name])');
 		const focusable = (e.shiftKey ? getPreviousFocusable(listSlot) : getNextFocusable(listSlot, false, true, true));
 		if (focusable) focusable.focus();
+	}
+
+	_handleListIemNestedChange(e) {
+		if (e) {
+			e.stopPropagation();
+		}
+		const items = this.getItems();
+		let aChildHasToggleEnabled = false;
+		for (const item of items) {
+			if (item.expandable) {
+				aChildHasToggleEnabled = true;
+				break;
+			}
+		}
+		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
+		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
 
 	_handleListItemsShowingCountChange() {
@@ -240,6 +268,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			composed: true,
 			detail: { count: this._itemsShowingCount }
 		}));
+	}
+
+	_updateActiveSubscriber(subscriber) {
+		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+	}
+
+	_updateActiveSubscribers(subscribers) {
+		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle));
 	}
 
 }

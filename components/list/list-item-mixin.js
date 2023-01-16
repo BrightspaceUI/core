@@ -2,14 +2,18 @@ import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
+import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
+import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -43,7 +47,18 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
-export const ListItemMixin = superclass => class extends LocalizeCoreElement(ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(superclass))))) {
+/**
+ * @property label - The hidden label for the checkbox and expand collapse control
+ */
+export const ListItemMixin = superclass => class extends composeMixins(
+	superclass,
+	LabelledMixin,
+	LocalizeCoreElement,
+	ListItemExpandCollapseMixin,
+	ListItemDragDropMixin,
+	ListItemCheckboxMixin,
+	ListItemRoleMixin,
+	RtlMixin) {
 
 	static get properties() {
 		return {
@@ -77,7 +92,8 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
+			_hasNestedList: { state: true }
 		};
 	}
 
@@ -192,7 +208,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
-			[slot="content"] .d2l-list-item-illustration * {
+			[slot="content"] .d2l-list-item-illustration > * {
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
@@ -202,7 +218,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				overflow: hidden;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration > * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -217,7 +233,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			::slotted([slot="actions"]),
-			.d2l-list-item-actions * {
+			.d2l-list-item-actions > * {
 				display: grid;
 				gap: 0.3rem;
 				grid-auto-columns: 1fr;
@@ -225,56 +241,58 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			}
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			.d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+			.d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-right: 0.9rem;
 			}
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions * {
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
 
 			[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			[data-breakpoint="1"] .d2l-list-item-illustration * {
+			[data-breakpoint="1"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 			[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			[data-breakpoint="2"] .d2l-list-item-illustration * {
+			[data-breakpoint="2"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 			[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			[data-breakpoint="3"] .d2l-list-item-illustration * {
+			[data-breakpoint="3"] .d2l-list-item-illustration > * {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration > * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
+
 			d2l-selection-input {
-				margin: 0.55rem 0.9rem 0.55rem 0;
+				margin: 0.55rem 0.55rem 0.55rem 0;
 			}
 			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
+
 			d2l-list-item-drag-handle {
-				margin: 0.25rem 0 0.25rem 0.4rem;
+				margin: 0.25rem 0.3rem;
 			}
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
@@ -361,6 +379,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._displayKeyboardTooltip = false;
 		this._fullscreenWithin = false;
 		this._fullscreenWithinCount = 0;
+		this._hasNestedList = false;
 	}
 
 	get breakpoints() {
@@ -379,6 +398,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		ro.observe(this);
 		if (this.role === 'rowgroup') {
 			addTabListener();
+		}
+		if (!this.selectable && !this.expandable) {
+			this.labelRequired = false;
 		}
 	}
 
@@ -444,6 +466,30 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
 	}
 
+	_getFlattenedListItems(listItem) {
+		const listItems = new Map();
+		const lazyLoadListItems = new Map();
+		this._getListItems(listItems, lazyLoadListItems, listItem);
+		return { listItems, lazyLoadListItems };
+	}
+
+	_getListItems(listItems, lazyLoadListItems, listItem) {
+		if (!listItem) {
+			const rootList = this._getRootList();
+			const rootListItems = rootList.getItems();
+			rootListItems.forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
+		} else {
+			listItems.set(listItem.key, listItem);
+			if (listItem.expandable && !listItem._hasNestedList) {
+				lazyLoadListItems.set(listItem.key, listItem);
+			}
+			if (listItem._hasNestedList) {
+				const nestedList = listItem._getNestedList();
+				nestedList.getItems().forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
+			}
+		}
+	}
+
 	_getNestedList() {
 		if (!this.shadowRoot) return;
 		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
@@ -461,6 +507,16 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			if (this._isListItem(nextElement)) return nextElement;
 			nextElement = nextElement.nextElementSibling;
 		}
+	}
+
+	_getParentList(node) {
+		if (!node) node = this;
+		let parentList;
+		while (parentList?.tagName !== 'D2L-LIST') {
+			node = getComposedParent(node);
+			if (node.tagName === 'D2L-LIST') parentList = node;
+		}
+		return parentList;
 	}
 
 	_getParentListItem() {
@@ -535,6 +591,18 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 		this._hovering = false;
 	}
 
+	_onNestedSlotChange() {
+		if (this.selectable) {
+			this._onNestedSlotChangeCheckboxMixin();
+		}
+		const nestedList = this._getNestedList();
+		if (this._hasNestedList !== !!nestedList) {
+			this._hasNestedList = !!nestedList;
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-nested-change', { bubbles: true, composed: true }));
+		}
+	}
+
 	_renderListItem({ illustration, content, actions, nested } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
@@ -544,7 +612,6 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
-
 		const innerView = html`
 			<d2l-list-item-generic-layout
 				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
@@ -561,12 +628,15 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
-				${this.selectable ? html`
-				<div slot="control">${this._renderCheckbox()}</div>
-				<div slot="control-action"
+				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
+					${this._renderExpandCollapse()}
+				</div>
+				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
+				${this.selectable || this.expandable ? html`<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}
+						${this._renderExpandCollapseAction()}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
@@ -588,9 +658,7 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
-					<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>
-				</div>
+				${this._renderNested(nested)}
 			</d2l-list-item-generic-layout>
 		`;
 
@@ -601,6 +669,15 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 
+	}
+
+	_renderNested(nested) {
+		const nestedSlot = html`<slot name="nested" @slotchange="${this._onNestedSlotChange}">${nested}</slot>`;
+		return html`
+			<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+				${this.expandable ? html`<d2l-expand-collapse-content ?expanded="${this.expanded}">${this._renderNestedLoadingSpinner()}${nestedSlot}</d2l-expand-collapse-content>` : nestedSlot}
+			</div>
+		`;
 	}
 
 	_renderOutsideControl(dragHandle) {

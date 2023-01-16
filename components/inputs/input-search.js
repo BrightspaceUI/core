@@ -8,6 +8,8 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const INPUT_TIMEOUT_MS = 400;
+
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
@@ -51,6 +53,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 */
 			placeholder: { type: String },
 			/**
+			 * Dispatch search events after each input event
+			 * @type {boolean}
+			 */
+			searchOnInput: { type: Boolean, attribute: 'search-on-input' },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -81,9 +88,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	constructor() {
 		super();
+		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
 		this.disabled = false;
 		this.noClear = false;
+		this.searchOnInput = false;
 		this.value = '';
 	}
 
@@ -151,6 +160,12 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		return showSearch;
 	}
 
+	_debounceInput() {
+		clearTimeout(this._inputTimeout);
+		this._setLastSearchValue(this.value);
+		this._inputTimeout = setTimeout(() => this._dispatchEvent(), INPUT_TIMEOUT_MS);
+	}
+
 	_dispatchEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-search-searched',
@@ -169,6 +184,9 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	_handleInput(e) {
 		this.value = e.target.value;
+		if (this.searchOnInput) {
+			this._debounceInput();
+		}
 	}
 
 	_handleInputKeyPress(e) {
