@@ -55,6 +55,9 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			:host([data-compact]) {
 				flex-direction: row-reverse;
 			}
+			:host(:focus-within) {
+				outline-offset: -2px;
+			}
 
 			d2l-icon {
 				height: 8px;

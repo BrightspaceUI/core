@@ -6,9 +6,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const linkStyles = css`
 	:host(:focus-within) {
-		border-radius: 2px;
+		border-radius: 3px;
 		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: 3px;
+		outline-offset: 1px;
 	}
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
 		color: var(--d2l-color-celestine);

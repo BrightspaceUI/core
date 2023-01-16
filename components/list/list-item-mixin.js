@@ -167,9 +167,9 @@ export const ListItemMixin = superclass => class extends LocalizeCoreElement(Lis
 				--d2l-list-item-content-text-decoration: underline;
 			}
 			:host([_focusing-primary-action]) .d2l-list-item-content {
-				--d2l-list-item-content-text-border-radius: 2px;
+				--d2l-list-item-content-text-border-radius: 3px;
 				--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
-				--d2l-list-item-content-text-outline-offset: 3px;
+				--d2l-list-item-content-text-outline-offset: 1px;
 			}
 			[slot="content-action"] {
 				height: 100%;

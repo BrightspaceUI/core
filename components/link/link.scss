@@ -5,7 +5,7 @@
 	&:visited,
 	&:link,
 	&:active {
-		border-radius: 2px;
+		border-radius: 3px;
 		color: $d2l-color-celestine;
 		text-decoration: none;
 		cursor: pointer;
@@ -17,7 +17,7 @@
 	&:focus,
 	&.d2l-link-focus {
 		outline: 2px solid $d2l-color-celestine;
-		outline-offset: 3px;
+		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	&[main] {
