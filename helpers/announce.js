@@ -1,5 +1,7 @@
 let timeoutId = null;
 let container = null;
+let messageQueueHead = null;
+let messageQueueTail = null;
 
 export function announce(message) {
 	if (!message) return;
@@ -8,10 +10,6 @@ export function announce(message) {
 	announcing at the same time will cause one or more messages to be ignored, regardless
 	of polite vs assertive when using VO. This will coelesce messages, however if a new
 	announce call is made while the browser is announcing, it will be interupted. */
-	if (timeoutId !== null) {
-		clearTimeout(timeoutId);
-		timeoutId = null;
-	}
 	if (!container) {
 		container = document.createElement('div');
 		container.setAttribute('aria-live', 'polite');
@@ -22,27 +20,35 @@ export function announce(message) {
 		document.body.appendChild(container);
 	}
 
-	/* Need to give browser enough time to create the live region so that it will
-	treat the change as an update. Firefox sometimes ignores changes if the region
-	and update are made too quickly in succession. RequestAnimationFrame is not
-	sufficient here. Also, for some strange reason, sometimes VO will not announce
-	duplicate messages even if we remove the child so we also append a non-breaking space. */
-	const elem = [...container.childNodes].find((c) => c.textContent === message);
-	if (elem) {
-		elem.parentNode.removeChild(elem);
-		message = message.concat('\u00A0');
-	}
-	setTimeout(() => {
-		container.appendChild(document.createTextNode(message));
-	}, 200);
+	const next = { next:null, message:message };
 
-	/* Need to purge old messages so that they are not discovered by screen readers
-	using virtual cursor, but we need to give the browser ample time to hand off
-	the change to the AT before removing it. ex. otherwise sometimes VO will not announce. */
-	timeoutId = setTimeout(() => {
-		container.parentNode.removeChild(container);
-		container = null;
+	if (!messageQueueHead) {
+		messageQueueHead = next;
+		messageQueueTail = next;
+		clearTimeout(timeoutId); // timeOut to remove element
 		timeoutId = null;
-	}, 10000);
+	} else {
+		messageQueueTail.next = next;
+		messageQueueTail = next;
+	}
 
+	if (!timeoutId) timeoutId = setTimeout(announceFromQueue, 200);
+}
+
+function announceFromQueue() {
+	// Clear old messages and announce
+	container.innerHTML = '';
+	container.appendChild(document.createTextNode(messageQueueHead.message));
+	messageQueueHead = messageQueueHead.next;
+
+	if (!messageQueueHead) {
+		messageQueueTail = null;
+		timeoutId = setTimeout(() => {
+			container.parentNode.removeChild(container);
+			container = null;
+			timeoutId = null;
+		}, 10000);
+	} else {
+		timeoutId = setTimeout(announceFromQueue, 200);
+	}
 }
