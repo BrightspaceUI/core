@@ -96,10 +96,14 @@ export const htmlBlockContentStyles = css`
 		cursor: pointer;
 		text-decoration: none;
 	}
-	a:hover,
-	a:focus {
+	a:hover {
 		color: var(--d2l-color-celestine-minus-1, #004489);
-		outline-width: 0;
+		text-decoration: underline;
+	}
+	a:focus {
+		border-radius: 3px;
+		outline: 2px solid var(--d2l-color-celestine, #006fbf);
+		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	@media print {
