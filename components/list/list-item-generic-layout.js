@@ -452,6 +452,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			case keyCodes.SPACE:
 				node = getComposedActiveElement();
 				node.click();
+				// mouseup event is necessary for components like d2l-dropdown-more that control state by listening to this event
+				node.dispatchEvent(new MouseEvent('mouseup', { composed: true }));
 				break;
 			case keyCodes.RIGHT:
 				node = getComposedActiveElement();
