@@ -76,7 +76,7 @@ class Link extends FocusMixin(LitElement) {
 			 * Whether to truncate the link with ellipsis
 			 * @type {boolean}
 			 */
-			overflowEllipsis: { type: Boolean, attribute: 'overflow-ellipsis' },
+			overflowEllipsis: { type: Boolean, attribute: 'overflow-ellipsis', reflect: true },
 			/**
 			 * Whether to apply the "small" link style
 			 * @type {boolean}
