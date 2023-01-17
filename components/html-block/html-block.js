@@ -5,7 +5,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -131,7 +130,7 @@ const getRenderers = async() => {
  * A component for displaying user-authored HTML.
  * @slot - Provide your user-authored HTML
  */
-class HtmlBlock extends RtlMixin(LitElement) {
+class HtmlBlock extends LitElement {
 
 	static get properties() {
 		return {
@@ -164,7 +163,7 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			:host {
 				display: block;
 				overflow-wrap: break-word;
-				text-align: left;
+				text-align: start;
 			}
 			:host([inline]),
 			:host([inline]) .d2l-html-block-rendered {
@@ -177,9 +176,6 @@ class HtmlBlock extends RtlMixin(LitElement) {
 			}
 			:host([no-deferred-rendering]) slot {
 				display: contents;
-			}
-			:host([dir="rtl"]) {
-				text-align: right;
 			}
 		`];
 	}
