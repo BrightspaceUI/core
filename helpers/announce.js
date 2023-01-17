@@ -2,7 +2,7 @@ let timeoutId = null;
 let container = null;
 let messageQueueHead = null;
 let messageQueueTail = null;
-let readMessages = [];
+let lastMessage = null;
 
 export function announce(message) {
 	if (!message) return;
@@ -41,9 +41,9 @@ function announceFromQueue() {
 	container.innerHTML = '';
 
 	let message = messageQueueHead.message;
-	if (readMessages.indexOf(message) > -1) message = message.concat('\u00A0');
+	if (lastMessage === message) message = message.concat('\u00A0');
 
-	readMessages.push(message);
+	lastMessage = message;
 	container.appendChild(document.createTextNode(message));
 	messageQueueHead = messageQueueHead.next;
 
@@ -53,7 +53,7 @@ function announceFromQueue() {
 			container.parentNode.removeChild(container);
 			container = null;
 			timeoutId = null;
-			readMessages = [];
+			lastMessage = null;
 		}, 10000);
 	} else {
 		timeoutId = setTimeout(announceFromQueue, 200);
