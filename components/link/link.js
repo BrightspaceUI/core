@@ -15,8 +15,14 @@ export const linkStyles = css`
 		bottom: 0.2rem;
 		top: 0.2rem;
 	}
-	.d2l-link:hover, .d2l-link:focus {
+	.d2l-link:hover {
 		color: var(--d2l-color-celestine-minus-1);
+		text-decoration: underline;
+	}
+	.d2l-link:focus {
+		border-radius: 3px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	.d2l-link.d2l-link-main {
@@ -67,6 +73,11 @@ class Link extends FocusMixin(LitElement) {
 			 */
 			main: { type: Boolean, reflect: true },
 			/**
+			 * Whether to truncate the link with ellipsis
+			 * @type {boolean}
+			 */
+			overflowEllipsis: { type: Boolean, attribute: 'overflow-ellipsis', reflect: true },
+			/**
 			 * Whether to apply the "small" link style
 			 * @type {boolean}
 			 */
@@ -92,6 +103,17 @@ class Link extends FocusMixin(LitElement) {
 					/* needed to keep host element same height as link */
 					font-size: 0.7rem;
 					line-height: 1.05rem;
+				}
+				:host([overflow-ellipsis]) {
+					display: inline-block;
+					max-width: 100%;
+				}
+				:host([overflow-ellipsis]) .d2l-link {
+					display: inline-block;
+					max-width: 100%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 				}
 			`
 		];

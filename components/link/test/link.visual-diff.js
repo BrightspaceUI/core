@@ -1,5 +1,5 @@
+import { focus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-link', () => {
 
@@ -37,6 +37,8 @@ describe('d2l-link', () => {
 				'wc-main',
 				'wc-small',
 				'wc-inline',
+				'wc-inline-paragraph',
+				'wc-overflow-ellipsis',
 				'sass-standard',
 				'sass-main',
 				'sass-small'
@@ -52,15 +54,14 @@ describe('d2l-link', () => {
 	});
 
 	[
-		'wc-standard',
-		'sass-standard'
-	].forEach((name) => {
-		it(`focus-${name}`, async function() {
-			await page.evaluate((name) => {
-				const elem = document.querySelector(`#${name}`);
-				elem.focus();
-			}, name);
-			const rect = await visualDiff.getRect(page, `#${name}`);
+		{ name: 'wc-standard-focus', selector: '#wc-standard', action: selector => { return focus(page, `${selector}`); } },
+		{ name: 'wc-inline-paragraph-focus', selector: '#wc-inline-paragraph', action: selector => { return focus(page, `${selector} d2l-link`); } },
+		{ name: 'wc-overflow-ellipsis-focus', selector: '#wc-overflow-ellipsis', action: selector => { return focus(page, `${selector}`); } },
+		{ name: 'sass-standard-focus', selector: '#sass-standard', action: selector => { return focus(page, `${selector}`); } }
+	].forEach(info => {
+		it(info.name, async function() {
+			const rect = await visualDiff.getRect(page, info.selector);
+			if (info.action) await info.action(info.selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
