@@ -30,12 +30,12 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 				vertical-align: middle;
 			}
 			d2l-icon {
-				height: 0.9rem;
-				width: 0.9rem;
+				height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
+				width: 1.2857em;
 			}
 			.separator {
 				display: var(--d2l-object-property-list-item-separator-display, inline);
-				margin: 0 -0.1rem; /* 9px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
+				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
 				color: var(--d2l-color-galena);
