@@ -108,6 +108,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
 				text-align: center;
+				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
 			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
@@ -118,7 +119,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			.d2l-filter-dimension-header-text,
 			.d2l-filter-dimension-set-value-text {
 				overflow: hidden;
-				text-overflow: ellipsis;
 			}
 
 			.d2l-filter-dimension-set-value {
@@ -130,11 +130,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 			
 			.d2l-filter-dimension-set-value-text {
-				display: -webkit-box;
-				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
-				word-break:break-word;
-				hyphens:auto;
+				display: -webkit-box;
+				hyphens: auto;
+				-webkit-line-clamp: 2;
+				word-break: break-word;
 			}
 
 			d2l-list-item[disabled] .d2l-filter-dimension-set-value,
