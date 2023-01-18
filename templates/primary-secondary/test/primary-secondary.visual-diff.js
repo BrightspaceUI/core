@@ -71,6 +71,7 @@ describe('d2l-template-primary-secondary', () => {
 			{ testName: 'hidden-footer', options: {} },
 			{ testName: 'hidden-footer-expanded', options: { position: { dir: directions.UP, steps: 5 } } },
 			{ testName: 'hidden-footer-collapsed', options: { position: { dir: directions.DOWN, steps: 5 } } },
+			{ testName: 'short-content', options: {} },
 		].forEach((test) => {
 			it(test.testName, async function() {
 				await page.bringToFront();
@@ -125,6 +126,7 @@ describe('d2l-template-primary-secondary', () => {
 			{ testName: 'width-fullscreen', options: {} },
 			{ testName: 'width-normal', options: {} },
 			{ testName: 'width-normal-collapsed', options: { focus: true, position: { dir: directions.RIGHT, steps: 5 } } },
+			{ testName: 'short-content', options: {} },
 		].forEach((test) => {
 			it(test.testName, async function() {
 				await page.bringToFront();
