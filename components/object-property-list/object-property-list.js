@@ -34,7 +34,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 			::slotted([slot="status"]) {
 				display: none;
 			}
-			::slotted(d2l-status-indicator[slot="status"]) {
+			::slotted(d2l-status-indicator[slot="status"]:first-of-type) {
 				display: inline-block;
 				margin-inline-end: 0.25rem; /* 10px desired margin, subtract 5px arbitrary whitespace. */
 			}
