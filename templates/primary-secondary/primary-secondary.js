@@ -334,6 +334,7 @@ class MobileMouseResizer extends Resizer {
 
 	constructor() {
 		super();
+		this._isDragging = false;
 		this._onMouseDown = this._onMouseDown.bind(this);
 		this._onMouseMove = this._onMouseMove.bind(this);
 		this._onMouseUp = this._onMouseUp.bind(this);
@@ -363,6 +364,7 @@ class MobileMouseResizer extends Resizer {
 			e.preventDefault();
 			const y = e.clientY - this.contentRect.top;
 			this._offset = y - (this.contentRect.height - this.panelSize);
+			this._isDragging = false;
 			this._isResizing = true;
 			this._target.focus();
 		}
@@ -374,6 +376,7 @@ class MobileMouseResizer extends Resizer {
 		}
 		const y = e.clientY - this.contentRect.top;
 		const secondaryHeight = this.clampMaxHeight(this.contentRect.height - y + this._offset);
+		this._isDragging = true;
 		this.dispatchResize(secondaryHeight, false);
 	}
 
@@ -386,12 +389,13 @@ class MobileMouseResizer extends Resizer {
 		const y = e.clientY - this.contentRect.top;
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
 		if (
-			(this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
-			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold)
+			this._isDragging
+			&& ((this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold))
 		) {
-			if (desiredSecondaryHeight > 0) this.dispatchResize(0, true);
+			if (desiredSecondaryHeight !== 0) this.dispatchResize(0, true);
 		}
-		else if (desiredSecondaryHeight < this.contentBounds.minHeight) {
+		else if (this._isDragging && desiredSecondaryHeight < this.contentBounds.minHeight) {
 			this.dispatchResize(this.contentBounds.minHeight, true);
 		}
 		this._isResizing = false;
