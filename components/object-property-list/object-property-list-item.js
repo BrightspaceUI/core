@@ -1,16 +1,14 @@
+import '../offscreen/screen-reader-pause.js';
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A single object property, to be used within an object-property-list,
  * with an optional icon.
  */
-export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) {
+export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -27,23 +25,24 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 	}
 
 	static get styles() {
-		return [super.styles, offscreenStyles, css`
+		return [super.styles, css`
+			:host {
+				vertical-align: middle;
+			}
 			d2l-icon {
-				height: 0.9rem;
-				width: 0.9rem;
+				height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
+				width: 1.2857em;
 			}
 			.separator {
 				display: var(--d2l-object-property-list-item-separator-display, inline);
-				margin: 0 0.05rem;
+				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
 				color: var(--d2l-color-galena);
 			}
 			.item-icon {
-				margin: -0.1rem 0.3rem 0 0;
-			}
-			:host([dir="rtl"]) .item-icon {
-				margin: -0.1rem 0 0 0.3rem;
+				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
+				margin-top: -0.1rem;
 			}
 			:host([skeleton]) d2l-icon {
 				color: var(--d2l-color-sylvite);
@@ -73,8 +72,8 @@ export class ObjectPropertyListItem extends SkeletonMixin(RtlMixin(LitElement)) 
 	_renderSeparator() {
 		return html`
 			<span class="separator">
-				<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
-				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
+				<d2l-screen-reader-pause></d2l-screen-reader-pause>
+				<d2l-icon icon="tier1:bullet"></d2l-icon>
 			</span>
 		`;
 	}

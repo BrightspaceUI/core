@@ -1,6 +1,7 @@
 import '../object-property-list.js';
 import '../object-property-list-item.js';
 import '../object-property-list-item-link.js';
+import '../../status-indicator/status-indicator.js';
 import { aTimeout, expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -26,6 +27,7 @@ describe('d2l-object-property-list', () => {
 		it('should not be visible for a single item', async() => {
 			const elem = await fixture(html`
 				<d2l-object-property-list>
+					<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 					<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 				</d2l-object-property-list>
 			`);
@@ -35,6 +37,7 @@ describe('d2l-object-property-list', () => {
 		it('should hide the final separator for multiple items', async() => {
 			const elem = await fixture(html`
 				<d2l-object-property-list>
+					<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 					<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 					<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
 					<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
@@ -47,6 +50,7 @@ describe('d2l-object-property-list', () => {
 		it('should update automatically as items are added/removed', async() => {
 			const elem = await fixture(html`
 				<d2l-object-property-list>
+					<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 					<d2l-object-property-list-item text="Example item 1"></d2l-object-property-list-item>
 					<d2l-object-property-list-item text="Example item 2"></d2l-object-property-list-item>
 				</d2l-object-property-list>
