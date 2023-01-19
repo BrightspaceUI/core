@@ -42,7 +42,6 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 				width: 1.2857em;
 			}
 			.separator {
-				display: var(--d2l-object-property-list-item-separator-display, inline);
 				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
