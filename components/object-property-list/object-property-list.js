@@ -41,6 +41,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 	firstUpdated() {
 		this._slot = this.shadowRoot.querySelector('slot:not([name])');
 		this.addEventListener('d2l-object-property-list-item-visibility-change', this._onItemsChanged);
+		if (this._slot.childElementCount) this._onItemsChanged();
 	}
 
 	render() {
@@ -62,9 +63,12 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 	}
 
 	_setItemSeparatorVisibility() {
-		const items = this._slot.assignedNodes().filter(item => item.tagName?.toLowerCase().includes('d2l-object-property-list-') && !item.hidden);
-		const lastIndex = items.length - 1;
-		items.forEach((item, i) => item._showSeparator = (i !== lastIndex));
+		const slottedElements = this._slot.assignedElements();
+		const elements = slottedElements.length ? slottedElements : [ ...this._slot.children ];
+		const filtered = elements.filter(item => item.tagName?.toLowerCase().includes('d2l-object-property-list-') && !item.hidden);
+
+		const lastIndex = filtered.length - 1;
+		filtered.forEach((item, i) => item._showSeparator = (i !== lastIndex));
 	}
 }
 
