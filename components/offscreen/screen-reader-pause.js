@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
+import { offscreenStyles } from './offscreen.js';
 
 export class ScreenReaderPause extends LitElement {
 	static get styles() {

@@ -1,4 +1,4 @@
-import './screen-reader-pause.js';
+import '../offscreen/screen-reader-pause.js';
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';

@@ -1,5 +1,5 @@
 import './object-property-list-item.js';
-import './screen-reader-pause.js';
+import '../offscreen/screen-reader-pause.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
