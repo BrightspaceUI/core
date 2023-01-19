@@ -59,7 +59,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}"></button>`;
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick} .disabled="${this.disabled}"></button>`;
 	}
 
 };
