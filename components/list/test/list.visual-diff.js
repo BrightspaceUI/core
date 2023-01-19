@@ -126,6 +126,7 @@ describe('d2l-list', () => {
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
 			{ name: 'not selected hover', selector: '#selectable', action: () => hover('#selectable [selectable]') },
+			{ name: 'not selected disabled hover', selector: '#selectable', action: () => hover('#selectable [selectable][disabled]') },
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
