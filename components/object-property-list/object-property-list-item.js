@@ -73,7 +73,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 		return html`
 			<span class="separator">
 				<d2l-screen-reader-pause></d2l-screen-reader-pause>
-				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
+				<d2l-icon icon="tier1:bullet"></d2l-icon>
 			</span>
 		`;
 	}
