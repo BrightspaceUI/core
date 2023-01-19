@@ -52,7 +52,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 */
 			expanded: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: Label describing the contents of the header.
+			 * Optional label describing the contents of the header.
 			 * Used for screen readers.
 			 * @type {string}
 			 */
