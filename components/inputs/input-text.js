@@ -272,6 +272,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._focused = false;
 		this._hasAfterContent = false;
 		this._hovered = false;
+		this._inputTextContainerId = getUniqueId();
 		this._inputId = getUniqueId();
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
@@ -425,7 +426,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 
 		const input = html`
 			<div class="d2l-input-container">
-				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
+				<div class="d2l-input-text-container d2l-skeletize" id="${this._inputTextContainerId}" style="${styleMap(inputContainerStyles)}">
 					<input aria-atomic="${ifDefined(this.atomic)}"
 						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
@@ -460,7 +461,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					<div class="d2l-input-inside-after" @keypress="${this._suppressEvent}">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
-					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
+					${ this.validationError && !this.skeleton ? html`<d2l-tooltip for=${this._inputTextContainerId} state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
 				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._handleAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
