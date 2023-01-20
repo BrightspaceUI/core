@@ -39,9 +39,10 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 	}
 
 	firstUpdated() {
-		this._slot = this.shadowRoot.querySelector('slot:not([name])');
-		this.addEventListener('d2l-object-property-list-item-visibility-change', this._onItemsChanged);
-		if (this._slot.childElementCount) this._onItemsChanged();
+		this.addEventListener('d2l-object-property-list-item-visibility-change', () => this._onItemsChanged());
+
+		const slot = this.shadowRoot.querySelector('slot:not([name])');
+		if (slot.childElementCount) this._setItemSeparatorVisibility(slot);
 	}
 
 	render() {
@@ -58,13 +59,14 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 		`;
 	}
 
-	_onItemsChanged() {
-		this._setItemSeparatorVisibility();
+	_onItemsChanged(e) {
+		const slot = e?.target || this.shadowRoot.querySelector('slot:not([name])');
+		this._setItemSeparatorVisibility(slot);
 	}
 
-	_setItemSeparatorVisibility() {
-		const slottedElements = this._slot.assignedElements();
-		const elements = slottedElements.length ? slottedElements : [ ...this._slot.children ];
+	_setItemSeparatorVisibility(slot) {
+		const slottedElements = slot.assignedElements();
+		const elements = slottedElements.length ? slottedElements : [ ...slot.children ];
 		const filtered = elements.filter(item => item.tagName?.toLowerCase().includes('d2l-object-property-list-') && !item.hidden);
 
 		const lastIndex = filtered.length - 1;
