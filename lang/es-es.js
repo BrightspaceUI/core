@@ -99,10 +99,10 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-header.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.tabs.next": "Desplazarse hacia delante",

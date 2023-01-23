@@ -20,7 +20,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
@@ -99,7 +99,7 @@ export default {
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items": "Alle {count} records selecteren",
 	"components.selection.selected": "{count} geselecteerd",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
 	"components.selection-header.label": "Acties voor selectie",
 	"components.switch.visible": "Zichtbaar",
 	"components.switch.visibleWithPeriod": "Zichtbaar.",

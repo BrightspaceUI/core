@@ -99,7 +99,7 @@ export default {
 	"components.selection.select-all": "Alle auswählen",
 	"components.selection.select-all-items": "Alle {count} Elemente auswählen",
 	"components.selection.selected": "{count} ausgewählt",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "{count}+ ausgewählt",
 	"components.selection-header.label": "Aktionen für Auswahl",
 	"components.switch.visible": "Sichtbar",
 	"components.switch.visibleWithPeriod": "Sichtbar.",
@@ -116,7 +116,7 @@ export default {
 	"components.tag-list.role-description": "Tag-Liste",
 	"components.tag-list.show-less": "Weniger anzeigen",
 	"components.tag-list.show-more-description": "Wählen Sie diese Option, um ausgeblendete Elemente der Tag-Liste anzuzeigen",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Pfeiltasten",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Zwischen Tags wechseln",
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",

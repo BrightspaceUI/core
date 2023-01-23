@@ -99,7 +99,7 @@ export default {
 	"components.selection.select-all": "Tümünü Seç",
 	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
 	"components.selection.selected": "{count} öğe seçildi",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "{count}+ öğe seçildi",
 	"components.selection-header.label": "Seçim için eylemler",
 	"components.switch.visible": "Görünür",
 	"components.switch.visibleWithPeriod": "Görünür.",
