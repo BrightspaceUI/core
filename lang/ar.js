@@ -99,7 +99,7 @@ export default {
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items": "تحديد كل المواد الـ {count}.",
 	"components.selection.selected": "تم تحديد {count}",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-header.label": "إجراءات التحديد",
 	"components.switch.visible": "مرئي",
 	"components.switch.visibleWithPeriod": "مرئي.",
