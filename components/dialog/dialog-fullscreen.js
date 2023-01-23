@@ -44,6 +44,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				text-align: center;
 			}
 
+			.d2l-dialog-outer {
+				max-width: calc(100% - 3em);
+			}
+
 			@media (min-width: 616px) {
 
 				.d2l-dialog-header {
@@ -78,7 +82,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					animation: d2l-dialog-fullscreen-close 200ms ease-out;
 					border-radius: 8px;
 					margin: 1.5rem;
-					max-width: 1170px;
 					top: 0;
 					width: auto;
 				}
@@ -196,7 +199,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-
+		if (this._width && this._width < 1170) this._width = 1170;
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
