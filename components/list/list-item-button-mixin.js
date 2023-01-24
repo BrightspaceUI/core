@@ -7,10 +7,10 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	static get properties() {
 		return {
 			/**
-			 * **Selection:** Disables the primary action button
+			 * Disables the primary action button
 			 * @type {boolean}
 			 */
-			buttonDisabled : { type: Boolean }
+			buttonDisabled : { type: Boolean, attribute: 'button-disabled' }
 		};
 	}
 
@@ -19,6 +19,16 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		const styles = [ css`
 			:host {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			:host([button-disabled][_hovering-primary-action]) .d2l-list-item-content,
+			:host([_focusing-primary-action]) .d2l-list-item-content {
+				--d2l-list-item-content-text-decoration: none;
+			}
+			:host([button-disabled]) .d2l-list-item-content {
+				opacity: 0.5;
+			}
+			:host([button-disabled]) button {
+				cursor: default;
 			}
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
@@ -60,6 +70,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	constructor() {
 		super();
 		this._primaryActionId = getUniqueId();
+		this.buttonDisabled = false;
 	}
 
 	_onButtonClick() {
@@ -68,7 +79,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" .disabled="${this.buttonDisabled}"></button>`;
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" ?disabled="${this.buttonDisabled}"></button>`;
 	}
 
 };
