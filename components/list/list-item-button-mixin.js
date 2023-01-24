@@ -4,6 +4,15 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
+	static get properties() {
+		return {
+			/**
+			 * **Selection:** Disables the primary action button
+			 * @type {boolean}
+			 */
+			buttonDisabled : { type: Boolean }
+		};
+	}
 
 	static get styles() {
 
@@ -59,7 +68,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" .disabled="${this.disabled}"></button>`;
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" .disabled="${this.buttonDisabled}"></button>`;
 	}
 
 };
