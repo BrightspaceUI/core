@@ -23,8 +23,8 @@ export const menuItemStyles = css`
 	/** separated from hover selectors because Safari <15.4 is having trouble parsing these */
 	:host(:focus-visible),
 	:host([first]:focus-visible) {
-		border-top-color: transparent;
 		border-radius: 6px;
+		border-top-color: transparent;
 		color: var(--d2l-menu-foreground-color-hover);
 		outline: 2px solid var(--d2l-menu-border-color-hover) !important; /* override reset styles */
 		outline-offset: -3px;
