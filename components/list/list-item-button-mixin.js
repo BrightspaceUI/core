@@ -22,6 +22,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			}
 			:host([button-disabled][_hovering-primary-action]) .d2l-list-item-content,
 			:host([_focusing-primary-action]) .d2l-list-item-content {
+				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 				--d2l-list-item-content-text-decoration: none;
 			}
 			:host([button-disabled]) button {
