@@ -29,7 +29,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			async: { type: Boolean },
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
-			_headerStyle: { type: String, attribute: false }
+			_headerStyle: { type: String, attribute: false },
+			width: { type: Number },
 		};
 	}
 
@@ -182,6 +183,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._headerStyle = 'd2l-heading-2';
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
+		this.width = 0;
 	}
 
 	get asyncContainerCustom() {
@@ -199,7 +201,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		if (this._width && this._width < 1170) this._width = 1170;
+		if (this.width) this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
