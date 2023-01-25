@@ -17,15 +17,12 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	static get styles() {
 
 		const styles = [ css`
-			:host {
+			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			:host([button-disabled][_hovering-primary-action]) .d2l-list-item-content,
 			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-decoration: none;
-			}
-			:host([button-disabled]) .d2l-list-item-content {
-				opacity: 0.5;
 			}
 			:host([button-disabled]) button {
 				cursor: default;
