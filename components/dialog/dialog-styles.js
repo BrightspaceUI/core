@@ -26,7 +26,7 @@ export const dialogStyles = css`
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		box-sizing: content-box;
+		box-sizing: border-box;
 		position: fixed; /* also required for native to override position: absolute */
 		top: 100px;
 	}
