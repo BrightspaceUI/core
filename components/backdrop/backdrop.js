@@ -162,8 +162,9 @@ function hideAccessible(target) {
 			if (path.indexOf(child) !== -1) continue;
 			if (child.hasAttribute(BACKDROP_HIDDEN)) continue;
 
-			const ariaHidden = child.getAttribute('aria-hidden');
-			if (ariaHidden) child.setAttribute(BACKDROP_ARIA_HIDDEN, ariaHidden);
+			if (child.hasAttribute('aria-hidden')) {
+				child.setAttribute(BACKDROP_ARIA_HIDDEN, child.getAttribute('aria-hidden'));
+			}
 			child.setAttribute('aria-hidden', 'true');
 
 			child.setAttribute(BACKDROP_HIDDEN, BACKDROP_HIDDEN);
@@ -196,9 +197,8 @@ export function preventBodyScroll() {
 function showAccessible(elems) {
 	for (let i = 0; i < elems.length; i++) {
 		const elem = elems[i];
-		const ariaHidden = elem.getAttribute(BACKDROP_ARIA_HIDDEN);
-		if (ariaHidden) {
-			elem.setAttribute('aria-hidden', ariaHidden);
+		if (elem.hasAttribute(BACKDROP_ARIA_HIDDEN)) {
+			elem.setAttribute('aria-hidden', elem.getAttribute(BACKDROP_ARIA_HIDDEN));
 			elem.removeAttribute(BACKDROP_ARIA_HIDDEN);
 		} else {
 			elem.removeAttribute('aria-hidden');
