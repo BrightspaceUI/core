@@ -121,6 +121,49 @@ If your localized string contains arguments, pass them as a key-value object as 
 
 ```javascript
 render() {
-  return html`<p>${this.localize('hello', {firstName: 'Mary'})}</p>`;
+  return html`<p>${this.localize('hello', { firstName: 'Mary' })}</p>`;
 }
+```
+
+## `localizeHTML()`
+
+You can include some basic markup in your localization resources and safely convert them to HTML with the `localizeHTML()` method
+
+### Simple Markup
+
+#### `[b]Bold[/b]`
+The `[b]` markup converts to the `<strong>` tag
+
+#### `[i]Italic[/i]`
+The `[i]` markup converts to the `<em>` tag
+
+#### `[br]`
+The `[br]` markup converts to the `<br />` tag
+
+
+### Complex markup
+
+Complex markup is more powerful, but requires passing additional information in the second parameter
+
+#### `[a]Linked[/a]`
+The `[a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_links` property
+
+#### `[tt]Tooltipped[/tt]`
+The `[tt]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltips` property
+
+Complex markup can be used multiple times by including an index and passing an array of its required information
+##### Example
+
+```javascript
+// en.js
+export default {
+  greetingLinks: `Hi {name}, here's [a]a link[/a]. Here's [a 1]another[/a].`
+};
+```
+```javascript
+this.localizeHTML('greetingLinks', { name: 'Mary', _links: ['href="a.html"', 'href="b.html" target="_blank"'] });
+```
+Output:
+```html
+Hi Mary, here's <d2l-link href="a.html">a link</d2l-link>. Here's <d2l-link href="b.html" target="_blank">another</d2l-link>.
 ```
