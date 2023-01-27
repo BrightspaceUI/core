@@ -126,6 +126,22 @@ const Test3LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 	}
 };
 
+const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superclass) {
+	static get resources() {
+		return {
+			en: {
+				test1: 'This is [b]important[/b], this is [b][i]very important[/i][/b], and this is [span]not[/span]',
+				test2: 'This is [a]a link[/a]',
+				test3: 'This is [a 1]a link[/a]. This is [a 0]another one[/a]',
+				test4: 'This is a [tt]tooltip helper[/tt] within a sentence',
+				test5: 'This is <script src="malicious.js"></script> fine',
+				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. [a]Checkout[/a]} other {Items in your cart:[html][a]Checkout[/a]}}'
+			}
+		};
+	}
+
+};
+
 const multiMixinTag = defineCE(
 	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
 
@@ -215,6 +231,12 @@ const asyncTag = defineCE(
 	}
 );
 
+const localizeHTMLTag = defineCE(
+	class extends Test1LocalizeHTML((LitElement)) {
+
+	}
+);
+
 describe('LocalizeMixin', () => {
 
 	const documentLocaleSettings = getDocumentLocaleSettings();
@@ -295,6 +317,35 @@ describe('LocalizeMixin', () => {
 			});
 		});
 
+	});
+
+	describe('localizeHTML', async() => {
+
+		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
+
+		it('should replace acceptable markup with correct HTML', () => {
+			const unsafeHTML = elem.localizeHTML('test1');
+			const val1 = unsafeHTML.values[0];
+			const val2 = elem.localizeHTML('test2', { _links: 'href="http://d2l.com"' }).values[0];
+			const val3 = elem.localizeHTML('test3', { _links: ['href="http://d2l.com/brightspace"', 'href="http://d2l.com" small aria-label="Test Label" target="_blank"'] }).values[0];
+			const val4 = elem.localizeHTML('test4', { _tooltips: 'Tooltip text' }).values[0];
+			const val5 = elem.localizeHTML('test5').values[0];
+
+			const items = ['milk'];
+			const val6 = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], _links: 'href="checkout"' }).values[0];
+
+			items.push('bread', 'eggs');
+			const val7 = elem.localizeHTML('pluralTest', { itemCount: items.length, _links: 'href="checkout"', _html: `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>` }).values[0];
+
+			expect(unsafeHTML).to.have.property('_$litDirective$').that.has.property('directiveName', 'unsafeHTML');
+			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
+			expect(val2).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
+			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank">a link</d2l-link>. This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
+			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(val5).to.equal('This is &lt;script src="malicious.js"&gt;&lt;/script&gt; fine');
+			expect(val6).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
+			expect(val7).to.equal('Items in your cart:<ul><li>milk</li><li>bread</li><li>eggs</li></ul><d2l-link href="checkout">Checkout</d2l-link>');
+		});
 	});
 
 	describe('browser language settings in dynamic mixin', () => {
