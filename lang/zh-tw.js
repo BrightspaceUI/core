@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "關閉警示",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",

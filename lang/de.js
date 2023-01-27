@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
