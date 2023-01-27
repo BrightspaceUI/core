@@ -49,29 +49,25 @@ describe('d2l-backdrop', () => {
 			backdrop.shown = true;
 			await backdrop.updateComplete;
 
-			expect(backdrop.getAttribute('role')).to.equal('presentation');
-			expect(elem.querySelector('#target').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target').parentNode.getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('script').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('style').getAttribute('role')).to.equal(null);
+			expect(backdrop.getAttribute('aria-hidden')).to.equal('true');
+			expect(elem.querySelector('#target').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target').parentNode.getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('script').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('style').getAttribute('aria-hidden')).to.equal(null);
 
-			expect(elem.querySelector('#targetSibling').getAttribute('role')).to.equal('presentation');
-			expect(elem.querySelector('#targetParentSibling').getAttribute('role')).to.equal('presentation');
+			expect(elem.querySelector('#targetSibling').getAttribute('aria-hidden')).to.equal('true');
+			expect(elem.querySelector('#targetParentSibling').getAttribute('aria-hidden')).to.equal('true');
 
 			const link = elem.querySelector('a');
-			expect(link.getAttribute('role')).to.equal('presentation');
 			expect(link.getAttribute('aria-hidden')).to.equal('true');
 
 			const form = elem.querySelector('form');
-			expect(form.getAttribute('role')).to.equal('presentation');
 			expect(form.getAttribute('aria-hidden')).to.equal('true');
 
 			const divAriaHidden = elem.querySelector('div[aria-hidden]');
-			expect(divAriaHidden.getAttribute('role')).to.equal('presentation');
 			expect(divAriaHidden.getAttribute('aria-hidden')).to.equal('true');
 
 			const linkAriaHidden = elem.querySelector('a[aria-hidden]');
-			expect(linkAriaHidden.getAttribute('role')).to.equal('presentation');
 			expect(linkAriaHidden.getAttribute('aria-hidden')).to.equal('true');
 		});
 
@@ -83,29 +79,25 @@ describe('d2l-backdrop', () => {
 			backdrop.shown = false;
 			await backdrop.updateComplete;
 
-			expect(backdrop.getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target').parentNode.getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('script').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('style').getAttribute('role')).to.equal(null);
+			expect(backdrop.getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target').parentNode.getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('script').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('style').getAttribute('aria-hidden')).to.equal(null);
 
-			expect(elem.querySelector('#targetSibling').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#targetParentSibling').getAttribute('role')).to.equal(null);
+			expect(elem.querySelector('#targetSibling').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#targetParentSibling').getAttribute('aria-hidden')).to.equal(null);
 
 			const link = elem.querySelector('a');
-			expect(link.getAttribute('role')).to.equal(null);
 			expect(link.getAttribute('aria-hidden')).to.equal(null);
 
 			const form = elem.querySelector('form');
-			expect(form.getAttribute('role')).to.equal(null);
 			expect(form.getAttribute('aria-hidden')).to.equal(null);
 
 			const divAriaHidden = elem.querySelector('div[aria-hidden]');
-			expect(divAriaHidden.getAttribute('role')).to.equal(null);
 			expect(divAriaHidden.getAttribute('aria-hidden')).to.equal('true');
 
 			const linkAriaHidden = elem.querySelector('a[aria-hidden]');
-			expect(linkAriaHidden.getAttribute('role')).to.equal(null);
 			expect(linkAriaHidden.getAttribute('aria-hidden')).to.equal('false');
 		});
 
@@ -123,15 +115,15 @@ describe('d2l-backdrop', () => {
 			backdrop2.shown = false;
 			await backdrop2.updateComplete;
 
-			expect(backdrop2.getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target2').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target2Sibling').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target2').parentNode.getAttribute('role')).to.equal(null);
+			expect(backdrop2.getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target2').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target2Sibling').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target2').parentNode.getAttribute('aria-hidden')).to.equal(null);
 
-			expect(backdrop1.getAttribute('role')).to.equal('presentation');
-			expect(elem.querySelector('#target1').getAttribute('role')).to.equal(null);
-			expect(elem.querySelector('#target1Sibling').getAttribute('role')).to.equal('presentation');
-			expect(elem.querySelector('#target1').parentNode.getAttribute('role')).to.equal(null);
+			expect(backdrop1.getAttribute('aria-hidden')).to.equal('true');
+			expect(elem.querySelector('#target1').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target1Sibling').getAttribute('aria-hidden')).to.equal('true');
+			expect(elem.querySelector('#target1').parentNode.getAttribute('aria-hidden')).to.equal(null);
 		});
 
 	});
