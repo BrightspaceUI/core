@@ -2,14 +2,18 @@ import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
+import { markupMap } from '../helpers/localize-markup-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-export const LocalizeMixin = dedupeMixin(superclass => class extends superclass {
+export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
 	static get properties() {
 		return {
 			__resources: { type: Object, attribute: false  }
 		};
 	}
+
+	static #markupRegex = new RegExp(Object.keys(markupMap).join('|').replace(/[[\]]/g, '\\$&'), 'g');
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 
@@ -44,6 +48,10 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		});
 
 		this.__updatedProperties = new Map();
+	}
+
+	static get markupRegex() {
+		return LocalizeMixinClass.#markupRegex;
 	}
 
 	connectedCallback() {
@@ -126,6 +134,28 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		}
 		return formattedMessage;
 
+	}
+
+	localizeHTML(key, { _links = '', _html = '', _tooltips = '', ...replacements } = {}) {
+		const links = [].concat(_links);
+		const tooltips = [].concat(_tooltips);
+		const html = [].concat(_html);
+		const localized = this.localize(key, replacements);
+		const sanitized = localized.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		const markedUp = sanitized
+			// replace [a], [a 0] ... [a 9], [/a]
+			.replace(/\[a( [0-9])?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${links[Number(n || 0)] || ''}>${t}</d2l-link>`)
+			// replace [tt], [tt 1] ... [tt 9], [/tt]
+			.replace(/\[tt( [0-9])?\]([^]*?)\[\/tt\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t}">${tooltips[Number(n || 0)] || ''}</d2l-tooltip-help>`)
+			// UNDOCUMENTED: replace [html], [html 0] ... [html 9]
+			.replace(/\[html( [0-9])?\]/g, (m, n) => html[Number(n || 0)] || '')
+			// replace good-listed markup
+			.replace(LocalizeMixinClass.markupRegex, k => markupMap[k] || k);
+
+		if (_links.length) import('../components/link/link.js');
+		if (_tooltips.length) import('../components/tooltip/tooltip-help.js');
+
+		return unsafeHTML(markedUp);
 	}
 
 	static _generatePossibleLanguages(config) {
