@@ -241,7 +241,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const availableHeight = this._ifrauContextInfo
 			? this._ifrauContextInfo.availableHeight - this._margin.top - this._margin.bottom
 			: window.innerHeight - this._margin.top - this._margin.bottom;
-		let preferredHeight = 0;
+		let preferredHeight = 2;
 
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
 		if (header) preferredHeight += Math.ceil(header.getBoundingClientRect().height);
