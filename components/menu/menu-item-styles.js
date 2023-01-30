@@ -23,7 +23,6 @@ export const menuItemStyles = css`
 		color: var(--d2l-menu-foreground-color-hover);
 	}
 
-	:host(.focus-visible),
 	:host(:${unsafeCSS(focusPseudoClass)}),
 	:host([first]:${unsafeCSS(focusPseudoClass)}) {
 		border-radius: 6px;

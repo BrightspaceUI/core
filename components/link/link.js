@@ -22,7 +22,6 @@ export const linkStyles = css`
 		color: var(--d2l-color-celestine-minus-1);
 		text-decoration: underline;
 	}
-	.d2l-link.focus-visible,
 	.d2l-link:${unsafeCSS(focusPseudoClass)} {
 		border-radius: 3px;
 		outline: 2px solid var(--d2l-color-celestine);
