@@ -182,6 +182,25 @@ export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDi
 
 }
 
+let _isFocusVisibleSupported;
+
+export function isFocusVisibleSupported() {
+	if (_isFocusVisibleSupported === undefined) {
+		const style = document.createElement('style');
+		try {
+			document.head.appendChild(style);
+			style.sheet.insertRule(':focus-visible { color: inherit; }');
+			_isFocusVisibleSupported = true;
+		} catch (error) {
+			_isFocusVisibleSupported = false;
+		} finally {
+			style.remove();
+		}
+	}
+
+	return _isFocusVisibleSupported;
+}
+
 export function tryApplyFocus(elem) {
 	if (isFocusable(elem)) {
 		forceFocusVisible(elem);
