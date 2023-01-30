@@ -1,5 +1,8 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { isFocusVisibleSupported } from '../../helpers/focus.js';
+
+const focusPseudoClass = isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 
 export const menuItemStyles = css`
 	:host {
@@ -20,9 +23,9 @@ export const menuItemStyles = css`
 		color: var(--d2l-menu-foreground-color-hover);
 	}
 
-	/** separated from hover selectors because Safari <15.4 is having trouble parsing these */
-	:host(:focus-visible),
-	:host([first]:focus-visible) {
+	:host(.focus-visible),
+	:host(:${unsafeCSS(focusPseudoClass)}),
+	:host([first]:${unsafeCSS(focusPseudoClass)}) {
 		border-radius: 6px;
 		border-top-color: transparent;
 		color: var(--d2l-menu-foreground-color-hover);
@@ -36,8 +39,7 @@ export const menuItemStyles = css`
 		opacity: 0.75;
 	}
 
-	/** separated because Safari <15.4 is having trouble parsing these */
-	:host([disabled]:focus-visible) {
+	:host([disabled]:${unsafeCSS(focusPseudoClass)}) {
 		cursor: default;
 		opacity: 0.75;
 	}

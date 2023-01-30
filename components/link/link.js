@@ -5,7 +5,7 @@ import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isFocusVisibleSupported } from '../../helpers/focus.js';
 
-const linkFocusPseudoClass = isFocusVisibleSupported() ? 'focus-visible' : 'focus';
+const focusPseudoClass = isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -22,7 +22,8 @@ export const linkStyles = css`
 		color: var(--d2l-color-celestine-minus-1);
 		text-decoration: underline;
 	}
-	.d2l-link:${unsafeCSS(linkFocusPseudoClass)} {
+	.d2l-link.focus-visible,
+	.d2l-link:${unsafeCSS(focusPseudoClass)} {
 		border-radius: 3px;
 		outline: 2px solid var(--d2l-color-celestine);
 		outline-offset: 1px;
