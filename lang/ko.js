@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "경보 닫기",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
