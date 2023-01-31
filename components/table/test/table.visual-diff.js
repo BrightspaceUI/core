@@ -46,7 +46,7 @@ describe('d2l-table', () => {
 						before(async() => {
 							await page.$eval('d2l-test-table-visual-diff', elem => elem.removeAttribute('hidden'));
 							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 						});
 
 						[
@@ -98,7 +98,7 @@ describe('d2l-table', () => {
 						before(async() => {
 							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.removeAttribute('hidden'));
-							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 						});
 
 						[
@@ -127,19 +127,19 @@ describe('d2l-table', () => {
 
 					});
 
-					describe('table-header', () => {
+					describe('table-controls', () => {
 
 						before(async() => {
 							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
 							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-header-visual-diff', elem => elem.removeAttribute('hidden'));
+							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.removeAttribute('hidden'));
 						});
 
 						[
 							'no-sticky',
 						].forEach((id) => {
 							it(id, async function() {
-								const rect = await getRect(page, id, 'd2l-test-table-header-visual-diff');
+								const rect = await getRect(page, id, 'd2l-test-table-controls-visual-diff');
 								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});

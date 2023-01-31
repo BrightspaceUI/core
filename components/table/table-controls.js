@@ -4,9 +4,9 @@ import { html, nothing } from 'lit';
 import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
- * A header for table components containing a selection summary and selection actions.
+ * Controls for table components containing a selection summary and selection actions.
  */
-class TableHeader extends SelectionControls {
+class TableControls extends SelectionControls {
 	static get properties() {
 		return {
 			/**
@@ -29,4 +29,4 @@ class TableHeader extends SelectionControls {
 	}
 }
 
-customElements.define('d2l-table-header', TableHeader);
+customElements.define('d2l-table-controls', TableControls);

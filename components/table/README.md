@@ -292,21 +292,21 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 </tr>
 ```
 
-## Table Header [d2l-table-header]
+## Table Controls [d2l-table-controls]
 
-The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `header` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `controls` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-table-header display:block -->
+<!-- docs: demo live name:d2l-table-controls display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
   import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/selection-select-all.js';
-  import '@brightspace-ui/core/components/table/table-header.js';
+  import '@brightspace-ui/core/components/table/table-controls.js';
   import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
-  class SampleTableWithHeader extends LitElement {
+  class SampleTableWithControls extends LitElement {
 
     static get properties() {
       return {
@@ -329,10 +329,10 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
     render() {
       return html`
         <d2l-table-wrapper>
-          <d2l-table-header slot="header" no-sticky>
+          <d2l-table-controls slot="controls" no-sticky>
             <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
             <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-          </d2l-table-header>
+          </d2l-table-controls>
           <table class="d2l-table">
             <thead>
               <tr>
@@ -361,9 +361,9 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
     }
 
   }
-  customElements.define('d2l-sample-table-with-header', SampleTableWithHeader);
+  customElements.define('d2l-sample-table-with-controls', SampleTableWithControls);
 </script>
-<d2l-sample-table-with-header></d2l-sample-table-with-header>
+<d2l-sample-table-with-controls></d2l-sample-table-with-controls>
 ```
 
 <!-- docs: start hidden content -->
@@ -372,6 +372,6 @@ The `d2l-table-header` component can be placed in the `d2l-table-wrapper`'s `hea
 | Property | Type | Description |
 |---|---|---|
 | `no-selection` | Boolean | Whether to render the selection summary |
-| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
