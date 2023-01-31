@@ -2,10 +2,8 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { isFocusVisibleSupported } from '../../helpers/focus.js';
-
-const focusPseudoClass = isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -22,7 +20,7 @@ export const linkStyles = css`
 		color: var(--d2l-color-celestine-minus-1);
 		text-decoration: underline;
 	}
-	.d2l-link:${unsafeCSS(focusPseudoClass)} {
+	.d2l-link:${unsafeCSS(getFocusPseudoClass())} {
 		border-radius: 3px;
 		outline: 2px solid var(--d2l-color-celestine);
 		outline-offset: 1px;

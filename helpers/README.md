@@ -129,6 +129,9 @@ getComposedActiveElement()
 // gets the first focusable descendant given a node, including those within the shadow DOM
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
 
+// gets the focus pseudo-class to used in selectors (focus-visible if supported, or focus)
+getFocusPseudoClass()
+
 // gets the last focusable descendant given a node, including those within the shadow DOM
 getLastFocusableDescendant(node, includeHidden)
 

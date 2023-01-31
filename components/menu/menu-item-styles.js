@@ -1,8 +1,6 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
-import { isFocusVisibleSupported } from '../../helpers/focus.js';
-
-const focusPseudoClass = isFocusVisibleSupported() ? 'focus-visible' : 'focus';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 export const menuItemStyles = css`
 	:host {
@@ -23,8 +21,8 @@ export const menuItemStyles = css`
 		color: var(--d2l-menu-foreground-color-hover);
 	}
 
-	:host(:${unsafeCSS(focusPseudoClass)}),
-	:host([first]:${unsafeCSS(focusPseudoClass)}) {
+	:host(:${unsafeCSS(getFocusPseudoClass())}),
+	:host([first]:${unsafeCSS(getFocusPseudoClass())}) {
 		border-radius: 6px;
 		border-top-color: transparent;
 		color: var(--d2l-menu-foreground-color-hover);
@@ -38,7 +36,7 @@ export const menuItemStyles = css`
 		opacity: 0.75;
 	}
 
-	:host([disabled]:${unsafeCSS(focusPseudoClass)}) {
+	:host([disabled]:${unsafeCSS(getFocusPseudoClass())}) {
 		cursor: default;
 		opacity: 0.75;
 	}

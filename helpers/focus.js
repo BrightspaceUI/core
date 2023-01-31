@@ -52,6 +52,10 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate, incl
 	return null;
 }
 
+export function getFocusPseudoClass() {
+	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
+}
+
 export function getLastFocusableDescendant(node, includeHidden) {
 	const composedChildren = getComposedChildren(node);
 
