@@ -8,8 +8,8 @@ export const inputLabelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 		line-height: 1rem;
-		margin: 0 0 7px 0;
-		padding: 0;
+		margin: 0;
+		padding: 0 0 7px 0;
 	}
 	:host([required]) .d2l-input-label::after,
 	.d2l-input-label-required::after {
