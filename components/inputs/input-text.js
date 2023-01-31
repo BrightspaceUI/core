@@ -426,7 +426,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 
 		const input = html`
 			<div class="d2l-input-container">
-				<div class="d2l-input-text-container d2l-skeletize" id="${this._inputTextContainerId}" style="${styleMap(inputContainerStyles)}">
+				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
 					<input aria-atomic="${ifDefined(this.atomic)}"
 						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
@@ -469,8 +469,10 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (this.label && !this.labelHidden && !this.labelledBy) {
 			const unitLabel = this._getUnitLabel();
 			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>
-				${input}`;
+				<div id="${this._inputTextContainerId}">
+					<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>
+					${input}
+				</div>`;
 		}
 		return input;
 	}
