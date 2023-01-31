@@ -272,8 +272,8 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._focused = false;
 		this._hasAfterContent = false;
 		this._hovered = false;
-		this._inputTextContainerId = getUniqueId();
 		this._inputId = getUniqueId();
+		this._inputTextContainerId = getUniqueId();
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._lastSlotWidth = 0;
@@ -469,7 +469,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (this.label && !this.labelHidden && !this.labelledBy) {
 			const unitLabel = this._getUnitLabel();
 			return html`
-				<div id="${this._inputTextContainerId}">
+				<div id="${this._inputTextContainerId}" >
 					<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>
 					${input}
 				</div>`;
