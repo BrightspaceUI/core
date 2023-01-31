@@ -98,7 +98,7 @@ export default {
 	"components.selection.select-all-items": "Vælg alle {count} elementer",
 	"components.selection.selected": "{count} valgt",
 	"components.selection.selected-plus": "{count}+ valgt",
-	"components.selection-header.label": "Handlinger for valg",
+	"components.selection-controls.label": "Handlinger for valg",
 	"components.switch.visible": "Synlig",
 	"components.switch.visibleWithPeriod": "Synlig.",
 	"components.switch.hidden": "Skjult",

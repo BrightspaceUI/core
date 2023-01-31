@@ -155,7 +155,7 @@ describe('d2l-list-header', () => {
 		runConstructor('d2l-list-header');
 	});
 
-	it('should override default SelectionHeader label', async() => {
+	it('should override default SelectionControls label', async() => {
 		const el = await fixture(html`<d2l-list-header></d2l-list-header>`);
 		const section = el.shadowRoot.querySelector('section');
 		expect(section.getAttribute('aria-label')).to.equal('Actions for list');

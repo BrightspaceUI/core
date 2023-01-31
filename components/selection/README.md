@@ -36,7 +36,7 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
 </script>
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
-  import '@brightspace-ui/core/components/selection/selection-header.js';
+  import '@brightspace-ui/core/components/selection/selection-controls.js';
   import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/selection-select-all.js';
   import '@brightspace-ui/core/components/selection/selection-summary.js';
@@ -64,10 +64,10 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
 </style>
 <!-- docs: end hidden content -->
 <d2l-demo-selection>
-  <d2l-selection-header>
+  <d2l-selection-controls>
     <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-  </d2l-selection-header>
+  </d2l-selection-controls>
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
@@ -308,7 +308,7 @@ The `d2l-selection-select-all` component may be placed inside the selection cont
       margin-right: 15px;
     }
     #other-list {
-      margin-left: 0;   
+      margin-left: 0;
     }
   }
 </style>
@@ -429,17 +429,17 @@ The `d2l-selection-summary` component may be placed inside the selection control
 | `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 <!-- docs: end hidden content -->
 
-## Selection Header [d2l-selection-header]
+## Selection Controls [d2l-selection-controls]
 
-The `d2l-selection-header` provides a standardized wrapper to display selection information and actions. It includes a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+The `d2l-selection-controls` provides a standardized wrapper to display selection information and actions. It includes a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
 When using lists, use the list-specific `d2l-list-header` instead, which extends this component's behaviour.
 
-<!-- docs: demo live name:d2l-selection-header display:block -->
+<!-- docs: demo live name:d2l-selection-controls display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
-  import '@brightspace-ui/core/components/selection/selection-header.js';
+  import '@brightspace-ui/core/components/selection/selection-controls.js';
   import '@brightspace-ui/core/components/selection/selection-input.js';
   import '@brightspace-ui/core/components/selection/demo/demo-selection.js';
 </script>
@@ -463,10 +463,10 @@ When using lists, use the list-specific `d2l-list-header` instead, which extends
 </style>
 <!-- docs: end hidden content -->
 <d2l-demo-selection>
-  <d2l-selection-header>
+  <d2l-selection-controls>
     <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-  </d2l-selection-header>
+  </d2l-selection-controls>
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>

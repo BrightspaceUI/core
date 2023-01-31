@@ -1,12 +1,12 @@
 import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
 import { html, nothing } from 'lit';
-import { SelectionHeader } from '../selection/selection-header.js';
+import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
  * A header for table components containing a selection summary and selection actions.
  */
-class TableHeader extends SelectionHeader {
+class TableHeader extends SelectionControls {
 	static get properties() {
 		return {
 			/**

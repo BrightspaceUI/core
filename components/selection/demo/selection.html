@@ -11,7 +11,7 @@
 			import '../selection-action.js';
 			import '../selection-action-dropdown.js';
 			import '../selection-action-menu-item.js';
-			import '../selection-header.js';
+			import '../selection-controls.js';
 			import '../selection-input.js';
 			import '../selection-select-all.js';
 			import '../selection-summary.js';
@@ -41,11 +41,6 @@
 				flex-basis: 45%;
 				flex-direction: column;
 			}
-			.d2l-selection-header {
-				align-items: center;
-				display: flex;
-				flex-wrap: wrap;
-			}
 		</style>
 	</head>
 	<body unresolved>
@@ -57,7 +52,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection>
-						<d2l-selection-header>
+						<d2l-selection-controls>
 							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
 							<d2l-selection-action-dropdown text="Actions 1" requires-selection>
@@ -68,7 +63,7 @@
 									</d2l-menu>
 								</d2l-dropdown-menu>
 							</d2l-selection-action-dropdown>
-						</d2l-selection-header>
+						</d2l-selection-controls>
 
 						<ul>
 							<li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
@@ -84,10 +79,10 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection selection-single>
-						<d2l-selection-header>
+						<d2l-selection-controls>
 							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-						</d2l-selection-header>
+						</d2l-selection-controls>
 
 						<ul>
 							<li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
@@ -99,15 +94,15 @@
 			</d2l-demo-snippet>
 
 
-			<h2>None-sticky selection header</h2>
+			<h2>No-sticky selection controls</h2>
 
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection>
-						<d2l-selection-header no-sticky>
+						<d2l-selection-controls no-sticky>
 							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
-						</d2l-selection-header>
+						</d2l-selection-controls>
 
 						<ul>
 							<li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
@@ -125,9 +120,9 @@
 					<div class="d2l-selection-collections">
 						<div class="d2l-selection-collection">
 							Pick Your Toppings
-							<d2l-selection-header selection-for="collection-1">
+							<d2l-selection-controls selection-for="collection-1">
 								<d2l-selection-action selection-for="collection-1" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
-							</d2l-selection-header>
+							</d2l-selection-controls>
 
 							<d2l-demo-selection id="collection-1">
 								<ul>
@@ -141,9 +136,9 @@
 
 						<div class="d2l-selection-collection">
 							Pick Your Bread
-							<d2l-selection-header selection-for="collection-2">
+							<d2l-selection-controls selection-for="collection-2">
 								<d2l-selection-action selection-for="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
-							</d2l-selection-header>
+							</d2l-selection-controls>
 							<d2l-demo-selection id="collection-2" selection-single>
 								<ul>
 									<li><d2l-selection-input key="it" label="Italian"></d2l-selection-input>Italian</li>

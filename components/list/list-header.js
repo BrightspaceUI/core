@@ -1,11 +1,11 @@
 import { css } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { SelectionHeader } from '../selection/selection-header.js';
+import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
  * A header for list components containing select-all, etc.
  */
-class ListHeader extends SelectionHeader {
+class ListHeader extends SelectionControls {
 	static get properties() {
 		return {
 			_extendSeparator: { state: true }
@@ -15,7 +15,7 @@ class ListHeader extends SelectionHeader {
 	static get styles() {
 		return [super.styles, css`
 			:host {
-				--d2l-selection-header-background-color: var(--d2l-list-header-background-color);
+				--d2l-selection-controls-background-color: var(--d2l-list-header-background-color);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
 			:host([no-sticky]) {
@@ -39,14 +39,14 @@ class ListHeader extends SelectionHeader {
 		if (parent) this._extendSeparator = parent.hasAttribute('extend-separators');
 	}
 
-	_getSelectionHeaderContainerClasses() {
+	_getSelectionControlsContainerClasses() {
 		return {
-			...super._getSelectionHeaderContainerClasses(),
+			...super._getSelectionControlsContainerClasses(),
 			'd2l-list-header-extend-separator': this._extendSeparator
 		};
 	}
 
-	_getSelectionHeaderLabel() {
+	_getSelectionControlsLabel() {
 		return this.localize('components.list-header.label');
 	}
 }

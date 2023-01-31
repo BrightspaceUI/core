@@ -98,7 +98,7 @@ export default {
 	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",
-	"components.selection-header.label": "선택 작업",
+	"components.selection-controls.label": "선택 작업",
 	"components.switch.visible": "표시",
 	"components.switch.visibleWithPeriod": "표시.",
 	"components.switch.hidden": "숨김",

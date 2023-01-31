@@ -37,7 +37,7 @@ describe('d2l-table-header', () => {
 		runConstructor('d2l-table-header');
 	});
 
-	// it('should override default SelectionHeader label', async() => {
+	// it('should override default SelectionControls label', async() => {
 	// 	const el = await fixture(html`<d2l-table-header></d2l-table-header>`);
 	// 	const section = el.shadowRoot.querySelector('section');
 	// 	expect(section.getAttribute('aria-label')).to.equal('Table controls');

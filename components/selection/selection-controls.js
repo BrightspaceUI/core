@@ -10,10 +10,10 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
- * A header for selection components (e.g. list, table-wrapper) containing select-all, etc.
+ * Controls for selection components (e.g. list, table-wrapper) containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
-export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -23,7 +23,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
-			 * Disables sticky positioning for the header
+			 * Disables sticky positioning for the controls
 			 * @type {boolean}
 			 */
 			noSticky: { type: Boolean, attribute: 'no-sticky' },
@@ -40,7 +40,7 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	static get styles() {
 		return css`
 			:host {
-				background-color: var(--d2l-selection-header-background-color, white);
+				background-color: var(--d2l-selection-controls-background-color, white);
 				display: block;
 				position: sticky;
 				top: 0;
@@ -50,12 +50,12 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				position: static;
 			}
 			@media (prefers-reduced-motion: no-preference) {
-				.d2l-selection-header-shadow {
+				.d2l-selection-controls-shadow {
 					transition: box-shadow 200ms ease-out;
 				}
 			}
-			:host([_scrolled]) .d2l-selection-header-shadow {
-				background-color: var(--d2l-selection-header-background-color, white);
+			:host([_scrolled]) .d2l-selection-controls-shadow {
+				background-color: var(--d2l-selection-controls-background-color, white);
 				bottom: -4px;
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				clip: rect(30px, auto, 200px, auto);
@@ -67,14 +67,14 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 			:host([hidden]) {
 				display: none;
 			}
-			.d2l-selection-header-container {
+			.d2l-selection-controls-container {
 				align-items: center;
 				display: flex;
 				margin-bottom: 6px;
 				margin-top: 6px;
 				min-height: 54px;
 			}
-			.d2l-selection-header-container-slim {
+			.d2l-selection-controls-container-slim {
 				min-height: 36px;
 			}
 			d2l-selection-select-all, d2l-selection-summary {
@@ -95,12 +95,12 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 				margin-left: 0;
 				margin-right: 0.45rem;
 			}
-			.d2l-selection-header-actions {
+			.d2l-selection-controls-actions {
 				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
 				text-align: right;
 			}
-			:host([dir="rtl"]) .d2l-selection-header-actions {
+			:host([dir="rtl"]) .d2l-selection-controls-actions {
 				text-align: left;
 			}
 			.d2l-sticky-edge {
@@ -126,17 +126,17 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 	}
 
 	render() {
-		const classes = this._getSelectionHeaderContainerClasses();
-		const label = (this._hasActions || !this.noSelection) ? this._getSelectionHeaderLabel() : null;
+		const classes = this._getSelectionControlsContainerClasses();
+		const label = (this._hasActions || !this.noSelection) ? this._getSelectionControlsLabel() : null;
 		return html`
 			<div class="d2l-sticky-edge"></div>
 			<section class="${classMap(classes)}" aria-label="${ifDefined(label)}">
 				${this.noSelection ? nothing : this._renderSelection()}
-				<div class="d2l-selection-header-actions">
+				<div class="d2l-selection-controls-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</section>
-			${!this.noSticky ? html`<div class="d2l-selection-header-shadow"></div>` : nothing}
+			${!this.noSticky ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
 		`;
 	}
 
@@ -148,15 +148,15 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 		}
 	}
 
-	_getSelectionHeaderContainerClasses() {
+	_getSelectionControlsContainerClasses() {
 		return {
-			'd2l-selection-header-container': true,
-			'd2l-selection-header-container-slim': (!this._hasActions && !this.selectAllPagesAllowed)
+			'd2l-selection-controls-container': true,
+			'd2l-selection-controls-container-slim': (!this._hasActions && !this.selectAllPagesAllowed)
 		};
 	}
 
-	_getSelectionHeaderLabel() {
-		return this.localize('components.selection-header.label');
+	_getSelectionControlsLabel() {
+		return this.localize('components.selection-controls.label');
 	}
 
 	_handleSlotChange(e) {
@@ -198,4 +198,4 @@ export class SelectionHeader extends SelectionObserverMixin(RtlMixin(LocalizeCor
 
 }
 
-customElements.define('d2l-selection-header', SelectionHeader);
+customElements.define('d2l-selection-controls', SelectionControls);

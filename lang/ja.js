@@ -98,7 +98,7 @@ export default {
 	"components.selection.select-all-items": "{count} 個の項目をすべて選択",
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
-	"components.selection-header.label": "選択のアクション",
+	"components.selection-controls.label": "選択のアクション",
 	"components.switch.visible": "表示",
 	"components.switch.visibleWithPeriod": "表示。",
 	"components.switch.hidden": "非表示",
