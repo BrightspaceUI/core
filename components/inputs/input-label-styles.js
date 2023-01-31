@@ -26,6 +26,10 @@ export const inputLabelStyles = css`
 		left: auto;
 		right: 0.15rem;
 	}
+	:host([skeleton]) .d2l-input-label.d2l-skeletize {
+		margin: 0 0 7px 0;
+		padding: 0;
+	}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
