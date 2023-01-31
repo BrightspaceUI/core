@@ -52,7 +52,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 */
 			expanded: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: Label describing the contents of the header.
+			 * Optional label describing the contents of the header.
 			 * Used for screen readers.
 			 * @type {string}
 			 */
@@ -68,7 +68,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			 * @type {'default'|'large'}
 			 * @default "default"
 			 */
-			padding: { type: String, reflect: true },
+			paddingType: { attribute: 'padding-type', type: String, reflect: true },
 			/**
 			 * Disables sticky positioning for the header
 			 * @type {boolean}
@@ -93,7 +93,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([padding="large"][type="inline"]) {
+			:host([padding-type="large"][type="inline"]) {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
 			.d2l-collapsible-panel {
@@ -248,7 +248,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this.expanded = false;
 		this.headingLevel = defaultHeading;
 		this.headingStyle = defaultHeading;
-		this.padding = 'default';
+		this.paddingType = 'default';
 		this.type = 'default';
 		this.noSticky = false;
 		this._focused = false;

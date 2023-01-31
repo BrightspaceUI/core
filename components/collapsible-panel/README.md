@@ -130,7 +130,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `heading-style` | Number | The heading style to use |
 | `heading-level` | Number | Semantic heading level (h1-h4) |
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
-| `padding` | String | Optionally set horizontal padding of inline panels |
+| `padding-type` | String | Optionally set horizontal padding of inline panels |
 | `panel-title` | String | The title of the panel |
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->

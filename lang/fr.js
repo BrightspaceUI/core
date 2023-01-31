@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Fermer l'alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
@@ -99,7 +97,7 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
-	"components.selection.selected-plus": "{count}+ sélectionné(s)",
+	"components.selection.selected-plus": "{count}+ sélectionné",
 	"components.selection-header.label": "Actions à sélectionner",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated

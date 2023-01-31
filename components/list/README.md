@@ -476,6 +476,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | Property | Type | Description |
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
+| `button-disabled` | Boolean | Disables the primary action button |
 | `disabled` | Boolean | Disables the input |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |

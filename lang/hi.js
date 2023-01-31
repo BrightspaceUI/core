@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
@@ -99,7 +97,7 @@ export default {
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",
 	"components.selection.selected": "{count} चयनित",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "{count} से अधिक चयनित",
 	"components.selection-header.label": "चयन के लिए क्रियाएँ",
 	"components.switch.visible": "दृश्यमान",
 	"components.switch.visibleWithPeriod": "दृश्यमान।",

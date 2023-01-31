@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
@@ -99,7 +97,7 @@ export default {
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
 	"components.selection.selected": "{count} wedi’u dewis.",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "{count}+ wedi’u dewis",
 	"components.selection-header.label": "Camau gweithredu ar gyfer detholiad",
 	"components.switch.visible": "Gweladwy",
 	"components.switch.visibleWithPeriod": "Gweladwy.",

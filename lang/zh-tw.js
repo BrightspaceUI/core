@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "關閉警示",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",
@@ -99,7 +97,7 @@ export default {
 	"components.selection.select-all": "全選",
 	"components.selection.select-all-items": "選取所有 {count} 個項目",
 	"components.selection.selected": "已選取 {count} 個",
-	"components.selection.selected-plus": "{count}+ selected",
+	"components.selection.selected-plus": "已選取 {count}+ 個",
 	"components.selection-header.label": "選擇的動作",
 	"components.switch.visible": "可見",
 	"components.switch.visibleWithPeriod": "可見。",

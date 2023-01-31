@@ -122,10 +122,16 @@ describe('d2l-list', () => {
 			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
 			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
 		] },
+		{ category: 'button-disabled', tests: [
+			{ name: 'default', selector: '#buttonDisabled' },
+			{ name: 'focus', selector: '#buttonDisabled', action: () => focusButton('#buttonDisabled d2l-list-item-button') },
+			{ name: 'hover', selector: '#buttonDisabled', action: () => hover('#buttonDisabled d2l-list-item-button') }
+		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
 			{ name: 'not selected hover', selector: '#selectable', action: () => hover('#selectable [selectable]') },
+			{ name: 'not selected disabled hover', selector: '#selectable', action: () => hover('#selectable [selectable][disabled]') },
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
