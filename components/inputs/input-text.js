@@ -471,10 +471,12 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			label = html`<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>`;
 		}
 
-		return html`
-			${ this.validationError && !this.skeleton ? html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : nothing }
-			${label}
-			${input}`;
+		let tooltip = nothing;
+		if (this.validationError && !this.skeleton) {
+			tooltip = html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
+		}
+
+		return html`${tooltip}${label}${input}`;
 	}
 
 	updated(changedProperties) {
