@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Fermer l'alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyez sur Entrée pour interagir, sur Échapper pour quitter",
-	"components.list-header.label": "Actions pour la liste",
+	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
 	"components.list-item-tooltip.title": "Navigation au clavier pour les listes :",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
 	"components.selection.selected": "{count} sélectionné(s)",
-	"components.selection.selected-plus": "{count}+ sélectionné(s)",
-	"components.selection-header.label": "Actions à sélectionner",
+	"components.selection.selected-plus": "{count}+ sélectionné",
+	"components.selection-controls.label": "Actions à sélectionner",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Masqué(e)",

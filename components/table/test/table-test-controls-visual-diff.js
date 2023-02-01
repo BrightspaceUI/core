@@ -1,14 +1,14 @@
 import '../../selection/selection-action.js';
 import '../../selection/selection-input.js';
 import '../../selection/selection-select-all.js';
-import '../table-header.js';
+import '../table-controls.js';
 import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
 const url = new URL(window.location.href);
 const type = url.searchParams.get('type') === 'light' ? 'light' : 'default';
 
-class TestTableVisualDiff extends LitElement {
+class TestTableControlsVisualDiff extends LitElement {
 
 	static get styles() {
 		return [tableStyles, css`
@@ -22,10 +22,10 @@ class TestTableVisualDiff extends LitElement {
 		return html`
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" id="no-sticky">
-					<d2l-table-header slot="header" no-sticky>
+					<d2l-table-controls slot="controls" no-sticky>
 						<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
 						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-					</d2l-table-header>
+					</d2l-table-controls>
 					<table class="d2l-table">
 						<thead>
 							<tr>
@@ -50,4 +50,4 @@ class TestTableVisualDiff extends LitElement {
 	}
 
 }
-customElements.define('d2l-test-table-header-visual-diff', TestTableVisualDiff);
+customElements.define('d2l-test-table-controls-visual-diff', TestTableControlsVisualDiff);

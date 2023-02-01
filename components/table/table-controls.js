@@ -1,12 +1,12 @@
 import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
 import { html, nothing } from 'lit';
-import { SelectionHeader } from '../selection/selection-header.js';
+import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
- * A header for table components containing a selection summary and selection actions.
+ * Controls for table components containing a selection summary and selection actions.
  */
-class TableHeader extends SelectionHeader {
+class TableControls extends SelectionControls {
 	static get properties() {
 		return {
 			/**
@@ -29,4 +29,4 @@ class TableHeader extends SelectionHeader {
 	}
 }
 
-customElements.define('d2l-table-header', TableHeader);
+customElements.define('d2l-table-controls', TableControls);

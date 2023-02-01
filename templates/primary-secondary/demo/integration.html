@@ -20,24 +20,24 @@
 			import '../../../components/selection/selection-action-dropdown.js';
 			import '../../../components/selection/selection-action-menu-item.js';
 			import '../../../components/tooltip/tooltip.js';
-			import '../../../components/list/list-header.js';
+			import '../../../components/list/list-controls.js';
 			import '../../../components/list/list-item-content.js';
 			import '../../../components/list/list-item.js';
 			import '../../../components/list/list.js';
 		</script>
 		<style>
 			html {
-				--d2l-list-header-background-color: #f1f5fb;
+				--d2l-list-controls-background-color: #f1f5fb;
 			}
 		</style>
 	</head>
 	<body>
 		<d2l-template-primary-secondary resizable storage-key="demo-index">
-			<div slot="header" style="background-color: #dddddd;">I'm in the <b>header</b> slot of the <b>d2l-template-primary-secondary</b> component!</div>
+			<div slot="controls" style="background-color: #dddddd;">I'm in the <b>controls</b> slot of the <b>d2l-template-primary-secondary</b> component!</div>
 			<div slot="primary">
 
 				<d2l-list item-count="50" extend-separators>
-					<d2l-list-header slot="header" select-all-pages-allowed>
+					<d2l-list-controls slot="controls" select-all-pages-allowed>
 						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
@@ -62,7 +62,7 @@
 							</d2l-dropdown-menu>
 						</d2l-dropdown-button-subtle>
 						<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 						<d2l-list-item-content>
@@ -183,7 +183,7 @@
 				<div style="height: 100px;"></div>
 
 				<d2l-list item-count="50">
-					<d2l-list-header slot="header" select-all-pages-allowed>
+					<d2l-list-controls slot="controls" select-all-pages-allowed>
 						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
@@ -208,7 +208,7 @@
 							</d2l-dropdown-menu>
 						</d2l-dropdown-button-subtle>
 						<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 						<d2l-list-item-content>

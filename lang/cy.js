@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",
 	"components.input-time-range.startTime": "Amser Dechrau",
 	"components.interactive.instructions": "Pwyswch Enter i ryngweithio, Escape i adael",
-	"components.list-header.label": "Camau gweithredu ar gyfer rhestr",
+	"components.list-controls.label": "Camau gweithredu ar gyfer rhestr",
 	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
 	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu'r saeth i lawr.",
 	"components.list-item-tooltip.title": "Llywio Bysellfwrdd ar gyfer Rhestrau:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
 	"components.selection.selected": "{count} wedi’u dewis.",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "Camau gweithredu ar gyfer detholiad",
+	"components.selection.selected-plus": "{count}+ wedi’u dewis",
+	"components.selection-controls.label": "Camau gweithredu ar gyfer detholiad",
 	"components.switch.visible": "Gweladwy",
 	"components.switch.visibleWithPeriod": "Gweladwy.",
 	"components.switch.hidden": "Cudd",

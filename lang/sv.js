@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Stängningsvarning",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} måste vara före {endLabel}",
 	"components.input-time-range.startTime": "Starttid",
 	"components.interactive.instructions": "Tryck på Enter för att interagera och Escape för att avsluta",
-	"components.list-header.label": "Åtgärder för lista",
+	"components.list-controls.label": "Åtgärder för lista",
 	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Flytta objekt. Aktuell position: {currentPosition} av {size}. Om du vill flytta det här objektet trycker du på uppåt- eller nedåtpilen.",
 	"components.list-item-tooltip.title": "Tangentbordsnavigering för listor:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Välj alla",
 	"components.selection.select-all-items": "Välj alla {count} objekt",
 	"components.selection.selected": "{count} valda",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "Åtgärder för val",
+	"components.selection.selected-plus": "Över {count} valda",
+	"components.selection-controls.label": "Åtgärder för val",
 	"components.switch.visible": "Synlig",
 	"components.switch.visibleWithPeriod": "Synlig.",
 	"components.switch.hidden": "Dold",

@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} debe estar antes de {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Presione Intro para interactuar y Escape para salir",
-	"components.list-header.label": "Acciones para la lista",
+	"components.list-controls.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Acción de reordenar elemento de {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elemento, posición actual {currentPosition} de {size}. Para mover este elemento, presione las flechas hacia arriba o hacia abajo.",
 	"components.list-item-tooltip.title": "Navegación con el teclado para listas:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione todos los {count} elementos",
 	"components.selection.selected": "{count} seleccionados",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "Acciones para la selección",
+	"components.selection.selected-plus": "Más de {count} seleccionados",
+	"components.selection-controls.label": "Acciones para la selección",
 	"components.switch.visible": "Visible", // mfv-translated
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",

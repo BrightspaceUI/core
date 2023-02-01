@@ -1,5 +1,5 @@
 import '../table-col-sort-button.js';
-import '../table-header.js';
+import '../table-controls.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
@@ -60,7 +60,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		});
 		return html`
 			<d2l-table-wrapper>
-				<d2l-table-header slot="header" no-sticky>
+				<d2l-table-controls slot="controls" no-sticky>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
 						<d2l-dropdown-menu>
@@ -85,7 +85,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						</d2l-dropdown-menu>
 					</d2l-dropdown-button-subtle>
 					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-				</d2l-table-header>
+				</d2l-table-controls>
 
 				<table class="d2l-table">
 					<thead>

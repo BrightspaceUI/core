@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
 	"components.breadcrumbs.breadcrumb": "Broodkruimel",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} moet voor {endLabel} liggen",
 	"components.input-time-range.startTime": "Starttijd",
 	"components.interactive.instructions": "Druk op Enter om te communiceren, druk op Escape om af te sluiten",
-	"components.list-header.label": "Acties voor lijst",
+	"components.list-controls.label": "Acties voor lijst",
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",
 	"components.list-item-tooltip.title": "Toetsenbordnavigatie voor lijsten:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items": "Alle {count} records selecteren",
 	"components.selection.selected": "{count} geselecteerd",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "Acties voor selectie",
+	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
+	"components.selection-controls.label": "Acties voor selectie",
 	"components.switch.visible": "Zichtbaar",
 	"components.switch.visibleWithPeriod": "Zichtbaar.",
 	"components.switch.hidden": "Verborgen",

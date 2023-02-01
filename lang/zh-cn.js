@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "关闭提醒",
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-time-range.startTime": "开始时间",
 	"components.interactive.instructions": "按 Enter 键进行交互，按 Esc 键退出",
-	"components.list-header.label": "针对列表的操作",
+	"components.list-controls.label": "针对列表的操作",
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",
 	"components.list-item-tooltip.title": "列表的键盘导航：",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "全选",
 	"components.selection.select-all-items": "选择全部 {count} 个项目",
 	"components.selection.selected": "已选 {count}",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "针对所选内容的操作",
+	"components.selection.selected-plus": "已选 + {count}",
+	"components.selection-controls.label": "针对所选内容的操作",
 	"components.switch.visible": "可见",
 	"components.switch.visibleWithPeriod": "可见。",
 	"components.switch.hidden": "隐藏",

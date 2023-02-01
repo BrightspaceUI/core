@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} {endLabel} से पहले का होना चाहिए",
 	"components.input-time-range.startTime": "प्रारंभ समय",
 	"components.interactive.instructions": "बातचीत करने के लिए Enter दबाएँ, बाहर निकलने के लिए Escape दबाएँ",
-	"components.list-header.label": "सूची के लिए क्रियाएँ",
+	"components.list-controls.label": "सूची के लिए क्रियाएँ",
 	"components.list-item-drag-handle.default": "{name} के लिए आइटम कार्रवाई का क्रम बदलें",
 	"components.list-item-drag-handle.keyboard": "आइटम का क्रम बदलें, {size} में से वर्तमान स्थिति {currentPosition} इस आइटम को ले जाने के लिए, ऊपर या नीचे तीर दबाएँ।",
 	"components.list-item-tooltip.title": "सूचियों के लिए कीबोर्ड नेविगेशन:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",
 	"components.selection.selected": "{count} चयनित",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "चयन के लिए क्रियाएँ",
+	"components.selection.selected-plus": "{count} से अधिक चयनित",
+	"components.selection-controls.label": "चयन के लिए क्रियाएँ",
 	"components.switch.visible": "दृश्यमान",
 	"components.switch.visibleWithPeriod": "दृश्यमान।",
 	"components.switch.hidden": "छुपा हुआ",

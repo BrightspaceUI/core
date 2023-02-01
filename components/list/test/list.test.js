@@ -1,5 +1,5 @@
 import '../list.js';
-import '../list-header.js';
+import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
@@ -149,14 +149,14 @@ describe('d2l-list', () => {
 
 });
 
-describe('d2l-list-header', () => {
+describe('d2l-list-controls', () => {
 
 	it('should construct', () => {
-		runConstructor('d2l-list-header');
+		runConstructor('d2l-list-controls');
 	});
 
-	it('should override default SelectionHeader label', async() => {
-		const el = await fixture(html`<d2l-list-header></d2l-list-header>`);
+	it('should override default SelectionControls label', async() => {
+		const el = await fixture(html`<d2l-list-controls></d2l-list-controls>`);
 		const section = el.shadowRoot.querySelector('section');
 		expect(section.getAttribute('aria-label')).to.equal('Actions for list');
 	});

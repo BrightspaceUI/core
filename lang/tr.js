@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",
 	"components.input-time-range.startTime": "Başlangıç Saati",
 	"components.interactive.instructions": "Etkileşim kurmak için Enter tuşuna, çıkmak için Escape tuşuna basın",
-	"components.list-header.label": "Liste için eylemler",
+	"components.list-controls.label": "Liste için eylemler",
 	"components.list-item-drag-handle.default": "{name} için öğe eylemini yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeyi yeniden sırala, mevcut konum {currentPosition} / {size}. Bu öğeyi taşımak için yukarı veya aşağı oklara basın.",
 	"components.list-item-tooltip.title": "Listeler için Klavye ile Gezinme:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "Tümünü Seç",
 	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
 	"components.selection.selected": "{count} öğe seçildi",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "Seçim için eylemler",
+	"components.selection.selected-plus": "{count}+ öğe seçildi",
+	"components.selection-controls.label": "Seçim için eylemler",
 	"components.switch.visible": "Görünür",
 	"components.switch.visibleWithPeriod": "Görünür.",
 	"components.switch.hidden": "Gizli",

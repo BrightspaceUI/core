@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
@@ -64,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-time-range.startTime": "وقت البدء",
 	"components.interactive.instructions": "اضغط على Enter للتفاعل، وEscape للخروج",
-	"components.list-header.label": "إجراءات القائمة",
+	"components.list-controls.label": "إجراءات القائمة",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
 	"components.list-item-tooltip.title": "التنقل عبر لوحة المفاتيح للقوائم:",
@@ -99,8 +97,8 @@ export default {
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items": "تحديد كل المواد الـ {count}.",
 	"components.selection.selected": "تم تحديد {count}",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-header.label": "إجراءات التحديد",
+	"components.selection.selected-plus": "تم تحديد {count}+‎",
+	"components.selection-controls.label": "إجراءات التحديد",
 	"components.switch.visible": "مرئي",
 	"components.switch.visibleWithPeriod": "مرئي.",
 	"components.switch.hidden": "مخفي",

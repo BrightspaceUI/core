@@ -122,6 +122,11 @@ describe('d2l-list', () => {
 			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
 			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
 		] },
+		{ category: 'button-disabled', tests: [
+			{ name: 'default', selector: '#buttonDisabled' },
+			{ name: 'focus', selector: '#buttonDisabled', action: () => focusButton('#buttonDisabled d2l-list-item-button') },
+			{ name: 'hover', selector: '#buttonDisabled', action: () => hover('#buttonDisabled d2l-list-item-button') }
+		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
@@ -134,14 +139,14 @@ describe('d2l-list', () => {
 			{ name: 'skeleton', selector: '#selectableSkeleton' },
 			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
 		] },
-		{ category: 'header', tests: [
-			{ name: 'not selectable', selector: '#noSelectableHeader' },
-			{ name: 'none selected', selector: '#selectableHeader' },
-			{ name: 'some selected', selector: '#selectableSomeSelectedHeader' },
-			{ name: 'all selected', selector: '#selectableAllSelectedHeader' },
-			{ name: 'all selected pages', selector: '#selectableAllSelectedHeaderPages' },
-			{ name: 'sticky top', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 0) },
-			{ name: 'sticky scrolled', selector: '#stickyHeader', action: () => scrollTo('#stickyHeader > div', 45) }
+		{ category: 'controls', tests: [
+			{ name: 'not selectable', selector: '#noSelectableControls' },
+			{ name: 'none selected', selector: '#selectableControls' },
+			{ name: 'some selected', selector: '#selectableSomeSelectedControls' },
+			{ name: 'all selected', selector: '#selectableAllSelectedControls' },
+			{ name: 'all selected pages', selector: '#selectableAllSelectedControlsPages' },
+			{ name: 'sticky top', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 0) },
+			{ name: 'sticky scrolled', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 45) }
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
@@ -174,7 +179,7 @@ describe('d2l-list', () => {
 		{ category: 'nested', tests: [
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
-			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-header', 100) }
+			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-controls', 100) }
 		] },
 		{ category: 'expand-collapse', tests: [
 			{ name: 'default', selector: '#expand-collapse-default' },
