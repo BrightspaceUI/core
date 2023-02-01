@@ -16,7 +16,7 @@
 			import '../../tooltip/tooltip.js';
 			import '../../typography/typography.js';
 			import '../list.js';
-			import '../list-header.js';
+			import '../list-controls.js';
 			import '../list-item.js';
 			import '../list-item-button.js';
 			import '../list-item-content.js';
@@ -28,10 +28,10 @@
 	<body class="d2l-typography">
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="stickyHeader">
+			<div class="visual-diff" id="stickyControls">
 				<div style="height: 200px; overflow: scroll;">
 					<d2l-list>
-						<d2l-list-header slot="header"></d2l-list-header>
+						<d2l-list-controls slot="controls"></d2l-list-controls>
 						<d2l-list-item label="Item 1" selectable key="1">
 							<d2l-list-item-content>
 								<div>Item 1</div>
@@ -270,9 +270,9 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableHeader">
+			<div class="visual-diff" id="selectableControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
@@ -280,11 +280,11 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="noSelectableHeader">
+			<div class="visual-diff" id="noSelectableControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-selection no-sticky>
+					<d2l-list-controls slot="controls" no-selection no-sticky>
 						<d2l-button-subtle text="Action"></d2l-button-subtle>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item label="Item 1">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2">Item 2</d2l-list-item>
 				</d2l-list>
@@ -301,9 +301,9 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableSomeSelectedHeader">
+			<div class="visual-diff" id="selectableSomeSelectedControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
@@ -311,9 +311,9 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableAllSelectedHeader">
+			<div class="visual-diff" id="selectableAllSelectedControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
@@ -321,9 +321,9 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableAllSelectedHeaderPages">
+			<div class="visual-diff" id="selectableAllSelectedControlsPages">
 				<d2l-list item-count="50">
-					<d2l-list-header slot="header" select-all-pages-allowed no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" select-all-pages-allowed no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
@@ -474,7 +474,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-none-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
@@ -520,7 +520,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-some-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
@@ -566,7 +566,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-all-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>

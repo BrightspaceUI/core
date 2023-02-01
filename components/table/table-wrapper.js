@@ -171,7 +171,7 @@ export const tableStyles = css`
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
- * @slot header - Slot for `d2l-table-header` to be rendered above the table
+ * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  */
 export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
@@ -253,7 +253,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		return html`
-			<slot name="header"></slot>
+			<slot name="controls"></slot>
 			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
 		`;
 	}

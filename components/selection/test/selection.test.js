@@ -3,7 +3,7 @@ import '../selection-action.js';
 import '../selection-action-dropdown.js';
 import '../selection-action-menu-item.js';
 import './selection-component.js';
-import '../selection-header.js';
+import '../selection-controls.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
@@ -87,20 +87,20 @@ describe('d2l-selection-action-menu-item', () => {
 
 });
 
-describe('d2l-selection-header', () => {
+describe('d2l-selection-controls', () => {
 
 	it('should construct', () => {
-		runConstructor('d2l-selection-header');
+		runConstructor('d2l-selection-controls');
 	});
 
 	it('should set default label', async() => {
-		const el = await fixture(html`<d2l-selection-header></d2l-selection-header>`);
+		const el = await fixture(html`<d2l-selection-controls></d2l-selection-controls>`);
 		const section = el.shadowRoot.querySelector('section');
 		expect(section.getAttribute('aria-label')).to.equal('Actions for selection');
 	});
 
 	it('should not set action label if there are no actions or selection options', async() => {
-		const el = await fixture(html`<d2l-selection-header no-selection></d2l-selection-header>`);
+		const el = await fixture(html`<d2l-selection-controls no-selection></d2l-selection-controls>`);
 		const section = el.shadowRoot.querySelector('section');
 		expect(section.getAttribute('aria-label')).to.be.null;
 	});
