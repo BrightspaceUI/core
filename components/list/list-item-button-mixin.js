@@ -10,7 +10,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			 * Disables the primary action button
 			 * @type {boolean}
 			 */
-			buttonDisabled : { type: Boolean, attribute: 'button-disabled' }
+			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true }
 		};
 	}
 
