@@ -1,3 +1,5 @@
 import { ListControls } from './list-controls.js';
 
-customElements.define('d2l-list-header', ListControls);
+class ListHeader extends ListControls {}
+
+customElements.define('d2l-list-header', ListHeader);
