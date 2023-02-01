@@ -27,10 +27,14 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * @type {boolean}
 			 */
 			async: { type: Boolean },
+
+			/**
+			 * The preferred width (unit-less) for the dialog. Maximum 1170.
+			 */
+			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
 			_headerStyle: { type: String, attribute: false },
-			width: { type: Number },
 		};
 	}
 
@@ -46,7 +50,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			}
 
 			.d2l-dialog-outer {
-				max-width: calc(100% - 3em);
+				max-width: calc(100% - 3rem);
 			}
 
 			@media (min-width: 616px) {
@@ -201,7 +205,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		if (this.width) this._width = Math.max(1170, this.width);
+		if (!this.width) this.width = 1170;
+		this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {

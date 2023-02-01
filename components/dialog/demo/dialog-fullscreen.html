@@ -180,6 +180,64 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Fullscreen Dialog using width property</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openWidth">Show Dialog</d2l-button>
+					<d2l-dropdown-more text="Open!">
+						<d2l-dropdown-menu>
+							<d2l-menu label="Dialog">
+								<d2l-menu-item id="dropdownWidth" text="See dialog"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
+					<d2l-dialog-fullscreen id="dialogWidth" title-text="Fullscreen Title" width="1800">
+						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						<d2l-dropdown-button-subtle text="More">
+							<d2l-dropdown-content mobile-tray="bottom">
+								<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+								<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+								<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+							</d2l-dropdown-content>
+						</d2l-dropdown-button-subtle>
+						<d2l-filter>
+							<d2l-filter-dimension-set key="course" text="Course" select-all>
+								<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="drama" text="Drama"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="math" text="Math"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="stats" text="Statistics"></d2l-filter-dimension-set-value>
+								<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
+							</d2l-filter-dimension-set>
+						</d2l-filter>
+						<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog-fullscreen>
+					<script>
+						document.querySelector('#openWidth').addEventListener('click', () => {
+							document.querySelector('#dialogWidth').opened = true;
+						});
+						document.querySelector('#dropdownWidth').addEventListener('click', () => {
+							document.querySelector('#dialogWidth').opened = true;
+						});
+						document.querySelector('#dialogWidth').addEventListener('d2l-dialog-close', (e) => {
+							console.log('confirm action:', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>
