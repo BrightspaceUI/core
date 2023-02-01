@@ -175,7 +175,7 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 </script>
 
 <d2l-list>
-  <d2l-list-controls slot="controls">
+  <d2l-list-controls slot="controls" no-sticky>
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
   </d2l-list-controls>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
@@ -329,7 +329,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-list-controls display:block autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list-controls display:block autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -338,6 +338,14 @@ The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` s
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
+<!-- docs: start hidden content -->
+<style>
+  #demo-element {
+    margin-bottom: 300px;
+    margin-top: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
 
 <d2l-list>
   <d2l-list-controls slot="controls">

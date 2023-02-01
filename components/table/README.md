@@ -363,6 +363,14 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
   }
   customElements.define('d2l-sample-table-with-controls', SampleTableWithControls);
 </script>
+<!-- docs: start hidden content -->
+<style>
+  #demo-element {
+    margin-bottom: 300px;
+    margin-top: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
 <d2l-sample-table-with-controls></d2l-sample-table-with-controls>
 ```
 
