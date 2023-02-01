@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
@@ -464,14 +464,17 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			</div>
 			${offscreenContainer}
 		`;
+
+		let label = nothing;
 		if (this.label && !this.labelHidden && !this.labelledBy) {
 			const unitLabel = this._getUnitLabel();
-			return html`
-				${ this.validationError && !this.skeleton ? html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>
-				${input}`;
+			label = html`<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>`;
 		}
-		return input;
+
+		return html`
+			${ this.validationError && !this.skeleton ? html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : nothing }
+			${label}
+			${input}`;
 	}
 
 	updated(changedProperties) {
