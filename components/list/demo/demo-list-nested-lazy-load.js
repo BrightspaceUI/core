@@ -1,7 +1,7 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import '../list-header.js';
+import '../list-controls.js';
 import '../../selection/selection-action.js';
 import { html, LitElement, nothing } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
@@ -87,7 +87,7 @@ class ListDemoNestedLazyLoad extends LitElement {
 	_renderList(items, nested, includeHeader = false) {
 		return html`
 			<d2l-list grid drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
-				${ includeHeader ? this._renderListHeader() : nothing }
+				${ includeHeader ? this._renderListControls() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}
 				`)}
@@ -95,12 +95,12 @@ class ListDemoNestedLazyLoad extends LitElement {
 		`;
 	}
 
-	_renderListHeader() {
+	_renderListControls() {
 		return html`
-			<d2l-list-header slot="header">
+			<d2l-list-controls slot="controls">
 				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-			</d2l-list-header>
+			</d2l-list-controls>
 		`;
 	}
 

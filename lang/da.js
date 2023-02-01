@@ -62,7 +62,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} skal være før {endLabel}",
 	"components.input-time-range.startTime": "Starttidspunkt",
 	"components.interactive.instructions": "Tryk på Enter for at interagere, Escape for at afslutte",
-	"components.list-header.label": "Handlinger for liste",
+	"components.list-controls.label": "Handlinger for liste",
 	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger element, aktuel position {currentPosition} ud af {size}. For at flytte dette element skal du trykke på pil op eller pil ned.",
 	"components.list-item-tooltip.title": "Tastaturnavigering for lister:",

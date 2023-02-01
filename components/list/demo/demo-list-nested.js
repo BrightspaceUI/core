@@ -7,7 +7,7 @@ import '../../dropdown/dropdown-more.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../paging/pager-load-more.js';
-import '../list-header.js';
+import '../list-controls.js';
 import '../../selection/selection-action.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -25,7 +25,7 @@ class ListDemoNested extends LitElement {
 			disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
 			expanded: { type: Boolean },
 			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
-			includeListHeader: { type: Boolean, attribute: 'include-list-header' },
+			includeListControls: { type: Boolean, attribute: 'include-list-controls' },
 			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
 			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
 			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
@@ -60,7 +60,7 @@ class ListDemoNested extends LitElement {
 	render() {
 		return html`
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
-				${this._renderList(this._loadedItems, false, this.includeListHeader, this.showLoadMore)}
+				${this._renderList(this._loadedItems, false, this.includeListControls, this.showLoadMore)}
 			</div>
 		`;
 	}
@@ -167,10 +167,10 @@ class ListDemoNested extends LitElement {
 			</d2l-list-item-content>`;
 	}
 
-	_renderList(items, nested, includeHeader = false, showLoadMore = false) {
+	_renderList(items, nested, includeControls = false, showLoadMore = false) {
 		return html`
 			<d2l-list ?grid="${!this.disableListGrid}" drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
-				${ includeHeader ? this._renderListHeader() : nothing }
+				${ includeControls ? this._renderListControls() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}
 					${this._renderListItemButton(item)}
@@ -180,12 +180,12 @@ class ListDemoNested extends LitElement {
 		`;
 	}
 
-	_renderListHeader() {
+	_renderListControls() {
 		return html`
-			<d2l-list-header slot="header">
+			<d2l-list-controls slot="controls">
 				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-			</d2l-list-header>
+			</d2l-list-controls>
 		`;
 	}
 

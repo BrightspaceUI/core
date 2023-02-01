@@ -6,7 +6,7 @@ import { SelectionActionMixin } from './selection-action-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
 
 /**
- * An action menu-item component used within selection controls such as d2l-list and d2l-list-header.
+ * An action menu-item component used within selection controls such as d2l-list and d2l-list-controls.
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected.
  * @fires d2l-selection-observer-subscribe - Internal event

@@ -433,7 +433,7 @@ The `d2l-selection-summary` component may be placed inside the selection control
 
 The `d2l-selection-controls` provides a standardized wrapper to display selection information and actions. It includes a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-When using lists, use the list-specific `d2l-list-header` instead, which extends this component's behaviour.
+When using lists, use the list-specific `d2l-list-controls` instead, which extends this component's behaviour.
 
 <!-- docs: demo live name:d2l-selection-controls display:block -->
 ```html
@@ -481,6 +481,6 @@ When using lists, use the list-specific `d2l-list-header` instead, which extends
 | Property | Type | Description |
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
-| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->

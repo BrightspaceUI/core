@@ -156,7 +156,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ## Selection Lists
 
-The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-header` component can be added to `d2l-list`'s `header` slot to provide select-all and bulk actions.
+The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-controls` component can be added to `d2l-list`'s `controls` slot to provide select-all and bulk actions.
 
 ### Accessibility Properties
 
@@ -168,16 +168,16 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-header slot="header">
+  <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-  </d2l-list-header>
+  </d2l-list-controls>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
     <d2l-list-item-content>
       <div>Earth Sciences</div>
@@ -207,16 +207,16 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
 <d2l-list grid style="width: 100%">
-  <d2l-list-header slot="header">
+  <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-  </d2l-list-header>
+  </d2l-list-controls>
   <d2l-list-item selectable expandable key="expand-1" label="Expandable item #1">
     <d2l-list-item-content>
       <div>Expandable item #1</div>
@@ -325,25 +325,25 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 <d2l-my-drag-drop-elem style="width: 100%;"></d2l-my-drag-drop-elem>
 ```
 
-## List Header [d2l-list-header]
+## List Controls [d2l-list-controls]
 
-The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-list-header autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list-controls autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-header slot="header">
+  <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
     <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-  </d2l-list-header>
+  </d2l-list-controls>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
     <d2l-list-item-content>
       <div>Earth Sciences</div>
@@ -365,7 +365,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 | Property | Type | Description |
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
-| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
