@@ -414,6 +414,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	_calculateScrollPosition(selectedTabInfo, measures) {
 
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
+
+		if (!measures.tabRects[selectedTabIndex]) return 0;
+
 		const selectedTabMeasures = measures.tabRects[selectedTabIndex];
 
 		const isOverflowingLeft = (selectedTabMeasures.offsetLeft + this._translationValue < 0);
@@ -635,10 +638,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			this._updateMeasures();
 		}
 
-		Promise.all(animPromises).then(() => {
-			this._updateMeasures();
-			return this._updateScrollPosition(selectedTabInfo);
-		});
+		if (selectedTabInfo) {
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				return this._updateScrollPosition(selectedTabInfo);
+			});
+		}
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tabs-initialized', { bubbles: true, composed: true }
