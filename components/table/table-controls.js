@@ -1,6 +1,6 @@
 import '../selection/selection-select-all-pages.js';
 import '../selection/selection-summary.js';
-import { html, nothing } from 'lit';
+import { css, html, nothing } from 'lit';
 import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
@@ -15,6 +15,18 @@ class TableControls extends SelectionControls {
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' }
 		};
+	}
+
+	static get styles() {
+		return [super.styles, css`
+			:host {
+				--d2l-selection-controls-background-color: var(--d2l-table-controls-background-color);
+				z-index: 2; /* must be greater than d2l-table rows */
+			}
+			:host([no-sticky]) {
+				z-index: auto;
+			}
+		`];
 	}
 
 	_renderSelection() {
