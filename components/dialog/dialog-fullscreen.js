@@ -187,7 +187,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._headerStyle = 'd2l-heading-2';
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
-		this.width = 0;
+		this.width = 1170;
 	}
 
 	get asyncContainerCustom() {
@@ -205,7 +205,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		if (!this.width) this.width = 1170;
 		this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
