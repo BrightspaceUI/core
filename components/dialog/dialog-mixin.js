@@ -432,6 +432,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_render(inner, info, iframeTopOverride) {
 
 		const styles = {};
+		if (this._width) styles.width = `${this._width}px`;
 		if (this._autoSize) {
 			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
 			if (this._ifrauContextInfo) styles.bottom = 'auto';

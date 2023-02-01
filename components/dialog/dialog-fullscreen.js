@@ -27,9 +27,14 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * @type {boolean}
 			 */
 			async: { type: Boolean },
+
+			/**
+			 * The preferred width (unit-less) for the dialog. Maximum 1170.
+			 */
+			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
-			_headerStyle: { type: String, attribute: false }
+			_headerStyle: { type: String, attribute: false },
 		};
 	}
 
@@ -42,6 +47,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 			.d2l-dialog-content-loading {
 				text-align: center;
+			}
+
+			.d2l-dialog-outer {
+				max-width: calc(100% - 3rem);
 			}
 
 			@media (min-width: 616px) {
@@ -78,7 +87,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					animation: d2l-dialog-fullscreen-close 200ms ease-out;
 					border-radius: 8px;
 					margin: 1.5rem;
-					max-width: 1170px;
 					top: 0;
 					width: auto;
 				}
@@ -179,6 +187,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._headerStyle = 'd2l-heading-2';
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
+		this.width = 1170;
 	}
 
 	get asyncContainerCustom() {
@@ -196,7 +205,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-
+		this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
