@@ -17,8 +17,8 @@ describe('ListItemCheckboxMixin', () => {
 	// will log "ListItemCheckboxMixin requires a key."
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
-			'disabled selected',
-			'disabled selected selectable',
+			'selection-disabled selected',
+			'selection-disabled selected selectable',
 			'selected',
 			'selected selectable'
 		];
@@ -30,19 +30,41 @@ describe('ListItemCheckboxMixin', () => {
 		}
 	});
 
+	describe('Adds selection-disabled property when setting deprecated disabled property', () => {
+		const cases = [{
+			input: '',
+			expected: false
+		}, {
+			input: 'disabled',
+			expected: true,
+		}, {
+			input: 'disabled selected',
+			expected: true,
+		}, {
+			input: 'selected',
+			expected: false
+		}];
+		for (const test of cases) {
+			it(test.input || 'empty', async() => {
+				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				expect(element['selectionDisabled']).to.be.equal(test.expected);
+			});
+		}
+	});
+
 	describe('Does not render checkbox or action area when not selectable', () => {
 		const cases = [{
 			input: '',
-			expected: { selectable: false, disabled: false, selected: false }
+			expected: { selectable: false, selectionDisabled: false, selected: false }
 		}, {
-			input: 'disabled',
-			expected: { selectable: false, disabled: true, selected: false }
+			input: 'selection-disabled',
+			expected: { selectable: false, selectionDisabled: true, selected: false }
 		}, {
-			input: 'disabled selected',
-			expected: { selectable: false, disabled: true, selected: true }
+			input: 'selection-disabled selected',
+			expected: { selectable: false, selectionDisabled: true, selected: true }
 		}, {
 			input: 'selected',
-			expected: { selectable: false, disabled: false, selected: true }
+			expected: { selectable: false, selectionDisabled: false, selected: true }
 		}];
 		for (const test of cases) {
 			it(test.input || 'empty', async() => {
@@ -61,12 +83,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Dispatches custom event when checkbox is checked', () => {
 		const cases = [{
 			input: 'selectable',
-			initial: { selectable: true, disabled: false, selected: false },
-			expected: { selectable: true, disabled: false, selected: true }
+			initial: { selectable: true, selectionDisabled: false, selected: false },
+			expected: { selectable: true, selectionDisabled: false, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: { selectable: true, disabled: false, selected: true },
-			expected: { selectable: true, disabled: false, selected: false }
+			initial: { selectable: true, selectionDisabled: false, selected: true },
+			expected: { selectable: true, selectionDisabled: false, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
@@ -90,12 +112,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Dispatches custom event when action area is clicked', () => {
 		const cases = [{
 			input: 'selectable',
-			initial: { selectable: true, disabled: false, selected: false },
-			expected: { selectable: true, disabled: false, selected: true }
+			initial: { selectable: true, selectionDisabled: false, selected: false },
+			expected: { selectable: true, selectionDisabled: false, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: { selectable: true, disabled: false, selected: true },
-			expected: { selectable: true, disabled: false, selected: false }
+			initial: { selectable: true, selectionDisabled: false, selected: true },
+			expected: { selectable: true, selectionDisabled: false, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
@@ -117,15 +139,15 @@ describe('ListItemCheckboxMixin', () => {
 		}
 	});
 
-	describe('Does not dispatch event when item is disabled', () => {
+	describe('Does not dispatch event when item has selection disabled', () => {
 		const cases = [{
-			input: 'disabled selected selectable',
-			initial: { selectable: true, disabled: true, selected: true },
-			expected: { selectable: true, disabled: true, selected: true }
+			input: 'selection-disabled selected selectable',
+			initial: { selectable: true, selectionDisabled: true, selected: true },
+			expected: { selectable: true, selectionDisabled: true, selected: true }
 		}, {
-			input: 'disabled selectable',
-			initial: { selectable: true, disabled: true, selected: false },
-			expected: { selectable: true, disabled: true, selected: false }
+			input: 'selection-disabled selectable',
+			initial: { selectable: true, selectionDisabled: true, selected: false },
+			expected: { selectable: true, selectionDisabled: true, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
