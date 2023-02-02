@@ -38,7 +38,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::before,
 			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::after,
 			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::before,
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after{
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after {
 				border-top-color: transparent;
 			}
 			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
