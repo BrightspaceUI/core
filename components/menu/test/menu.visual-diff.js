@@ -19,8 +19,10 @@ describe('d2l-menu', () => {
 	[
 		'separator',
 		'long',
+		'long-unbreakable',
 		'hidden',
 		'link',
+		'link-long',
 		'supporting'
 	].forEach((id) => {
 		it(id, async function() {

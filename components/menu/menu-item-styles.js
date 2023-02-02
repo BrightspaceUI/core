@@ -50,12 +50,15 @@ export const menuItemStyles = css`
 	}
 
 	.d2l-menu-item-text {
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
 		flex: auto;
+		-webkit-line-clamp: 2;
 		line-height: 1rem;
+		overflow-wrap: anywhere;
 		overflow-x: hidden;
 		overflow-y: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		white-space: normal;
 	}
 
 	.d2l-menu-item-supporting {
