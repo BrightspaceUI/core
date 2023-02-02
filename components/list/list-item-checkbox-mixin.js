@@ -15,7 +15,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * @ignore
 			 */
 			disabled: { type: Boolean }, // deprecated
-
 			/**
 			 * **Selection:** Disables selection
 			 * @type {boolean}
