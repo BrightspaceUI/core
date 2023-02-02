@@ -238,7 +238,15 @@
 			<div class="visual-diff" id="selectable">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+		<div style="width: 400px;">
+			<div class="visual-diff" id="selectableButton">
+				<d2l-list>
+					<d2l-list-item-button label="Item 2" selection-disabled selectable key="2">Item 3</d2l-list-item-button>
+					<d2l-list-item-button label="Item 2" selection-disabled button-disabled selectable key="2">Item 4</d2l-list-item-button>
 				</d2l-list>
 			</div>
 		</div>
@@ -274,7 +282,7 @@
 				<d2l-list>
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -295,7 +303,7 @@
 			<div class="visual-diff" id="selectableSelected">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -305,7 +313,7 @@
 				<d2l-list>
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -315,7 +323,7 @@
 				<d2l-list>
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -325,7 +333,7 @@
 				<d2l-list item-count="50">
 					<d2l-list-controls slot="controls" select-all-pages-allowed no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>

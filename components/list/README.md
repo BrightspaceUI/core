@@ -402,7 +402,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | Property | Type | Description |
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
-| `disabled` | Boolean | Disables the input |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
@@ -418,6 +417,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
+| `selection-disabled` | Boolean | Disables selection |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
 ### Methods
@@ -477,7 +477,6 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `button-disabled` | Boolean | Disables the primary action button |
-| `disabled` | Boolean | Disables the input |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
@@ -490,6 +489,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
+| `selection-disabled` | Boolean | Disables selection |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
 ### Events

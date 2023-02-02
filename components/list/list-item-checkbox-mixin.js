@@ -12,8 +12,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			/**
 			 * **Selection:** Disables the input
 			 * @type {boolean}
+			 * @ignore
 			 */
-			disabled: { type: Boolean },
+			disabled: { type: Boolean }, // deprecated
+			/**
+			 * **Selection:** Disables selection
+			 * @type {boolean}
+			 */
+			selectionDisabled: { type: Boolean, attribute: 'selection-disabled', reflect: true },
 			/**
 			 * **Selection:** Value to identify item if selectable
 			 * @type {string}
@@ -55,9 +61,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	constructor() {
 		super();
-		this.disabled = false;
 		this.selectable = false;
 		this.selected = false;
+		this.selectionDisabled = false;
 		this.selectionInfo = new SelectionInfo();
 		this._checkboxId = getUniqueId();
 	}
@@ -95,6 +101,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
+	willUpdate(changedProperties) {
+		if (changedProperties.has('disabled')) this.selectionDisabled = this.disabled;
+	}
+
 	async _dispatchSelected(value) {
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
@@ -109,7 +119,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	_onCheckboxActionClick(event) {
 		event.preventDefault();
-		if (this.disabled) return;
+		if (this.selectionDisabled) return;
 		this.setSelected(!this.selected);
 		const checkbox = this.shadowRoot && this.shadowRoot.querySelector(`#${this._checkboxId}`);
 		if (checkbox) checkbox.focus();
@@ -138,7 +148,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?selected="${this.selected}"
-				?disabled="${this.disabled}"
+				?disabled="${this.selectionDisabled}"
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
@@ -152,7 +162,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	_renderCheckboxAction(inner) {
 		const classes = {
 			'd2l-checkbox-action': true,
-			'd2l-checkbox-action-disabled': this.disabled
+			'd2l-checkbox-action-disabled': this.selectionDisabled
 		};
 		return this.selectable ? html`
 			<div @click="${this._onCheckboxActionClick}"

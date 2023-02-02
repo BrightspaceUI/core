@@ -147,8 +147,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
 			:host([_separators="none"]) [slot="control-container"]::before,
 			:host([_separators="none"]) [slot="control-container"]::after,
-			:host([selectable][_hovering]:not([disabled])) [slot="control-container"]::before,
-			:host([selectable][_hovering]:not([disabled])) [slot="control-container"]::after,
+			:host([selectable][_hovering]:not([selection-disabled])) [slot="control-container"]::before,
+			:host([selectable][_hovering]:not([selection-disabled])) [slot="control-container"]::after,
 			:host([selectable][_focusing]) [slot="control-container"]::before,
 			:host([selectable][_focusing]) [slot="control-container"]::after,
 			:host([selected]) [slot="control-container"]::before,
@@ -317,20 +317,20 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
-			:host(:not([disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
-			:host(:not([disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
 			}
 
-			:host(:not([disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
 				border-color: transparent;
 				margin: 0;
 			}
@@ -343,9 +343,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				transition: border-color 400ms linear;
 			}
 			:host([_highlighting]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[_hovering][_highlighting]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[_hovering][_highlighting]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border-color: var(--d2l-color-celestine);
 			}
