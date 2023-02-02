@@ -161,7 +161,6 @@ describe('d2l-list', () => {
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
 			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
 			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
-			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') },
 			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusMethod('#expand-collapse-default d2l-list-item') }
 		] },
 		{ category: 'breakpoints', tests: [

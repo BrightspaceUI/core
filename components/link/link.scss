@@ -14,12 +14,17 @@
 		color: $d2l-color-celestine-minus-1;
 		text-decoration: underline;
 	}
-	&:focus,
-	&.d2l-link-focus {
+	&:focus-visible {
 		outline: 2px solid $d2l-color-celestine;
 		outline-offset: 1px;
 		text-decoration: underline;
 	}
+	.d2l-focus-visible-not-supported &:focus {
+		outline: 2px solid $d2l-color-celestine;
+		outline-offset: 1px;
+		text-decoration: underline;
+	}
+
 	&[main] {
 		font-weight: 700;
 	}

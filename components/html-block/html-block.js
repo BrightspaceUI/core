@@ -1,9 +1,11 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
+
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
 export const htmlBlockContentStyles = css`
@@ -99,7 +101,7 @@ export const htmlBlockContentStyles = css`
 		color: var(--d2l-color-celestine-minus-1, #004489);
 		text-decoration: underline;
 	}
-	a:focus {
+	a:${unsafeCSS(getFocusPseudoClass())} {
 		border-radius: 3px;
 		outline: 2px solid var(--d2l-color-celestine, #006fbf);
 		outline-offset: 1px;

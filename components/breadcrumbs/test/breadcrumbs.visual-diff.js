@@ -1,5 +1,5 @@
-import { focus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-breadcrumbs', () => {
 
@@ -22,7 +22,6 @@ describe('d2l-breadcrumbs', () => {
 
 	[
 		{ name:'default-mode', selector: '#default-mode' },
-		{ name:'default-mode-focus', selector: '#default-mode', action: selector => { return focus(page, `${selector} > :first-child`); } },
 		{ name:'current-page', selector: '#current-page' },
 		{ name:'constrained-width', selector: '#constrained-width' },
 		{ name:'compact', selector: '#compact' }

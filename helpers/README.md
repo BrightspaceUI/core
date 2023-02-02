@@ -129,6 +129,9 @@ getComposedActiveElement()
 // gets the first focusable descendant given a node, including those within the shadow DOM
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
 
+// gets the focus pseudo-class to used in selectors (focus-visible if supported, or focus)
+getFocusPseudoClass()
+
 // gets the last focusable descendant given a node, including those within the shadow DOM
 getLastFocusableDescendant(node, includeHidden)
 
@@ -143,6 +146,9 @@ getPreviousFocusableAncestor(node, includeHidden, includeTabbablesOnly)
 
 // returns true/false whether the element is focusable
 isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled)
+
+// returns true/false whether the :focus-visible is supported
+isFocusVisibleSupported()
 
 // returns true and focuses on node or its nearest focusable ancestor;
 // or false if node and its ancestors are not focusable
