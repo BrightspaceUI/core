@@ -27,6 +27,7 @@ describe('d2l-menu radio', () => {
 		'selected',
 		'disabled',
 		'supporting',
+		'long',
 		'dark'
 	].forEach((id) => {
 		it(id, async function() {
