@@ -62,9 +62,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	constructor() {
 		super();
-		this.selectionDisabled = false;
 		this.selectable = false;
 		this.selected = false;
+		this.selectionDisabled = false;
 		this.selectionInfo = new SelectionInfo();
 		this._checkboxId = getUniqueId();
 	}
