@@ -31,18 +31,25 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
 			}
-			:host([_hovering]) [slot="control-container"]::before,
-			:host([_hovering]) [slot="control-container"]::after,
-			:host([_focusing]) [slot="control-container"]::before,
-			:host([_focusing]) [slot="control-container"]::after {
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::before,
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::after,
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::before,
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after,
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::before,
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::after,
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::before,
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after{
 				border-top-color: transparent;
 			}
-			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"],
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
-			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
+			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
+			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			button {
