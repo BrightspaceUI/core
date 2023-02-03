@@ -137,8 +137,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				word-break: break-word;
 			}
 
-			d2l-list-item[disabled] .d2l-filter-dimension-set-value,
-			d2l-list-item[disabled] .d2l-body-small {
+			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
+			d2l-list-item[selection-disabled] .d2l-body-small {
 				color: var(--d2l-color-chromite);
 			}
 
@@ -424,7 +424,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				separators="between">
 				${dimension.values.map(item => html`
 					<d2l-list-item
-						?disabled="${item.disabled}"
+						?selection-disabled="${item.disabled}"
 						?hidden="${item.hidden}"
 						key="${item.key}"
 						label="${item.text}"
