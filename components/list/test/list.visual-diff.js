@@ -77,7 +77,7 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -110,7 +110,10 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
-			{ name: 'no padding', selector: '#itemContentNoPadding' }
+			{ name: 'no padding', selector: '#itemContentNoPadding' },
+			{ name: 'long text wrapping', selector: '#itemContentLongTextWrap' },
+			{ name: 'long text ellipsis', selector: '#itemContentLongTextEllipsis' },
+			{ name: 'short text ellipsis', selector: '#itemContentShortTextEllipsis' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },

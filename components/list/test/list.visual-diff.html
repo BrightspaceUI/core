@@ -196,6 +196,48 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongTextWrap">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+							<div slot="secondary">Secondary Info for item 1</div>
+							<div slot="supporting-info">Supporting info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongTextEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+							<div slot="secondary">Secondary Info for item 1</div>
+							<div slot="supporting-info">Supporting info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentShortTextEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lorem ipsum dolor</div>
+							<div slot="secondary">Secondary Info for item 1</div>
+							<div slot="supporting-info">Supporting info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="href">
 				<d2l-list>
 					<d2l-list-item href="http://www.d2l.com">
@@ -781,5 +823,6 @@
 				</d2l-list>
 			</div>
 		</div>
+
 	</body>
 </html>
