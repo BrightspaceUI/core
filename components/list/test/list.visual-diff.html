@@ -24,6 +24,21 @@
 		<title>d2l-list</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
+		<style>
+			.clamp-single {
+				overflow: hidden;
+				overflow-wrap: anywhere;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.clamp-multi {
+				-webkit-box-orient: vertical;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				overflow-wrap: anywhere;
+			}
+		</style>
 	</head>
 	<body class="d2l-typography">
 
@@ -196,13 +211,13 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="itemContentLongTextWrap">
+			<div class="visual-diff" id="itemContentLongWrap">
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-item-content>
-							<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-							<div slot="secondary">Secondary Info for item 1</div>
-							<div slot="supporting-info">Supporting info for item 1</div>
+							<div>Overflow: wrap. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary">Overflow: wrap. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info">Overflow: wrap. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -210,13 +225,13 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="itemContentLongTextEllipsis">
+			<div class="visual-diff" id="itemContentLongSingleLineEllipsis">
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-item-content>
-							<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-							<div slot="secondary">Secondary Info for item 1</div>
-							<div slot="supporting-info">Supporting info for item 1</div>
+							<div class="clamp-single">Overflow: single-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary" class="clamp-single">Overflow: single-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info" class="clamp-single">Overflow: single-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -224,13 +239,55 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="itemContentShortTextEllipsis">
+			<div class="visual-diff" id="itemContentLongUnbreakableSingleLineEllipsis">
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-item-content>
-							<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lorem ipsum dolor</div>
-							<div slot="secondary">Secondary Info for item 1</div>
-							<div slot="supporting-info">Supporting info for item 1</div>
+							<div class="clamp-single">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+							<div slot="secondary" class="clamp-single">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</div>
+							<div slot="supporting-info" class="clamp-single">ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongSingleLineEllipsisNested">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div><div class="clamp-single">Overflow: single-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+							<div slot="secondary"><div class="clamp-single">Overflow: single-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+							<div slot="supporting-info"><div class="clamp-single">Overflow: single-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentShortSingleLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-single">Overflow: single-line, ellipsis. Primary text.</div>
+							<div slot="secondary" class="clamp-single">Overflow: single-line, ellipsis. Secondary Info.</div>
+							<div slot="supporting-info" class="clamp-single">Overflow: single-line, ellipsis. Supporting Info.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongMultiLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-multi">Overflow: multi-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary" class="clamp-multi">Overflow: multi-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info" class="clamp-multi">Overflow: multi-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>

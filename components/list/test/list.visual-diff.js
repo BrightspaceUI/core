@@ -111,9 +111,12 @@ describe('d2l-list', () => {
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
 			{ name: 'no padding', selector: '#itemContentNoPadding' },
-			{ name: 'long text wrapping', selector: '#itemContentLongTextWrap' },
-			{ name: 'long text ellipsis', selector: '#itemContentLongTextEllipsis' },
-			{ name: 'short text ellipsis', selector: '#itemContentShortTextEllipsis' }
+			{ name: 'long wrapping', selector: '#itemContentLongWrap' },
+			{ name: 'long single line ellipsis', selector: '#itemContentLongSingleLineEllipsis' },
+			{ name: 'long unbreakable single line ellipsis', selector: '#itemContentLongUnbreakableSingleLineEllipsis' },
+			{ name: 'long single line ellipsis nested', selector: '#itemContentLongSingleLineEllipsisNested' },
+			{ name: 'short single line ellipsis', selector: '#itemContentShortSingleLineEllipsis' },
+			{ name: 'long multi line ellipsis', selector: '#itemContentLongMultiLineEllipsis' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },
