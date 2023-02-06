@@ -52,6 +52,13 @@ describe('d2l-selection', () => {
 		].forEach(runTest);
 	});
 
+	describe('controls', () => {
+		[
+			{ name: 'minimal', selector: '#controls' },
+			{ name: 'with-actions', selector: '#controls-with-actions' },
+		].forEach(runTest);
+	});
+
 	describe('dropdown', () => {
 		[
 			{ name: 'text', selector: '#dropdown-text' },
