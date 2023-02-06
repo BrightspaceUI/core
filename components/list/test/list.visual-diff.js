@@ -77,7 +77,7 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 6500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -110,7 +110,13 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
-			{ name: 'no padding', selector: '#itemContentNoPadding' }
+			{ name: 'no padding', selector: '#itemContentNoPadding' },
+			{ name: 'long wrapping', selector: '#itemContentLongWrap' },
+			{ name: 'long single line ellipsis', selector: '#itemContentLongSingleLineEllipsis' },
+			{ name: 'long unbreakable single line ellipsis', selector: '#itemContentLongUnbreakableSingleLineEllipsis' },
+			{ name: 'long single line ellipsis nested', selector: '#itemContentLongSingleLineEllipsisNested' },
+			{ name: 'short single line ellipsis', selector: '#itemContentShortSingleLineEllipsis' },
+			{ name: 'long multi line ellipsis', selector: '#itemContentLongMultiLineEllipsis' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },

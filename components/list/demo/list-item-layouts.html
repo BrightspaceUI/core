@@ -11,11 +11,27 @@
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
+			import '../../tooltip/tooltip-help.js';
 		</script>
 		<style>
 			img {
 				height: 500px;
 				object-fit: cover;
+			}
+			.overflow-type {
+				font-weight: 700;
+			}
+			.clamp-single {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.clamp-multi {
+				-webkit-box-orient: vertical;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				overflow-wrap: anywhere;
 			}
 		</style>
 	</head>
@@ -30,23 +46,60 @@
 					<d2l-list>
 						<d2l-list-item>
 							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
+								<div>Primary text</div>
+								<div slot="secondary">Secondary text</div>
+								<div slot="supporting-info">Supporting info A1.1</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 						<d2l-list-item>
 							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
+								<div>Primary text</div>
+								<div slot="secondary">Secondary text</div>
+								<div slot="supporting-info">Supporting info A1.2</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 						<d2l-list-item>
 							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
+								<div>Primary text</div>
+								<div slot="secondary">Secondary text</div>
+								<div slot="supporting-info">Supporting info A1.3</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Overflow Behaviour</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item>
+							<d2l-list-item-content>
+								<div><span class="overflow-type">Overflow: wrap</span>. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail. <d2l-tooltip-help text="Help tooltip." inherit-font-style>Bowsprit measured fer yer chains Cat o'nine tails ballast topsail hulk Plate Fleet chantey warp hail-shot. Deadlights league yard chase guns Gold Road pink case shot fathom mutiny hempen halter.</d2l-tooltip-help></div>
+								<div slot="secondary"><span class="overflow-type">Overflow: wrap</span>. Secondary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail. <d2l-tooltip-help text="Help tooltip." inherit-font-style>Bowsprit measured fer yer chains Cat o'nine tails ballast topsail hulk Plate Fleet chantey warp hail-shot. Deadlights league yard chase guns Gold Road pink case shot fathom mutiny hempen halter.</d2l-tooltip-help></div>
+								<div slot="supporting-info"><span class="overflow-type">Overflow: wrap</span>. Supporting info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail. <d2l-tooltip-help text="Help tooltip." inherit-font-style>Bowsprit measured fer yer chains Cat o'nine tails ballast topsail hulk Plate Fleet chantey warp hail-shot. Deadlights league yard chase guns Gold Road pink case shot fathom mutiny hempen halter.</d2l-tooltip-help></div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>
+								<div class="clamp-single"><span class="overflow-type">Overflow: clamp single-line</span>. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+								<div slot="secondary" class="clamp-single"><span class="overflow-type">Overflow: clamp single-line</span>. Secondary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+								<div slot="supporting-info" class="clamp-single"><span class="overflow-type">Overflow: clamp single-line</span>. Supporting info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>
+								<div class="clamp-multi"><span class="overflow-type">Overflow: clamp multi-line</span>. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+								<div slot="secondary" class="clamp-multi"><span class="overflow-type">Overflow: clamp multi-line</span>. Secondary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+								<div slot="supporting-info" class="clamp-multi"><span class="overflow-type">Overflow: clamp multi-line</span>. Supporting info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>
+								<div><div class="clamp-single"><span class="overflow-type">Overflow: clamp single-line, nested</span>. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div></div>
+								<div slot="secondary"><div class="clamp-single"><span class="overflow-type">Overflow: clamp single-line, nested</span>. Secondary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div></div>
+								<div slot="supporting-info"><div class="clamp-single"><span class="overflow-type">Overflow: clamp single-line, nested</span>. Supporting info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port. Carouser salmagundi rigging handsomely draft cog mizzen haul wind no prey, no pay lugsail.</div></div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 					</d2l-list>

@@ -12,6 +12,10 @@ class ListItemContent extends LitElement {
 
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
+			:host {
+				min-width: 0;
+			}
+
 			.d2l-list-item-content-text {
 				margin: 0;
 			}
@@ -19,7 +23,8 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text > div {
 				border-radius: var(--d2l-list-item-content-text-border-radius);
 				color: var(--d2l-list-item-content-text-color);
-				display: inline-block;
+				display: block; /* multi-line clamping won't work inside of inline-block in Safari - the compromise is the outline is full width */
+				max-width: 100%;
 				outline: var(--d2l-list-item-content-text-outline, none);
 				outline-offset: var(--d2l-list-item-content-text-outline-offset);
 				overflow-wrap: anywhere;
