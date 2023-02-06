@@ -2,7 +2,7 @@
 
 A list displays a collection of objects of the same type. A list is primarily used in order to help users navigate to a full-page representation of a single object, or to select several items and execute an action on them.
 
-<!-- docs: demo autoSize:false size:large -->
+<!-- docs: demo display:block autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
@@ -14,7 +14,7 @@ A list displays a collection of objects of the same type. A list is primarily us
   import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
@@ -102,7 +102,7 @@ When using `d2l-list`, the `grid` attribute will enable the table-like keyboard 
 
 The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
 
-<!-- docs: demo live name:d2l-list autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -110,7 +110,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item selectable label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
@@ -164,7 +164,7 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 
 ### Example
 
-<!-- docs: demo code autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -174,7 +174,7 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
   </d2l-list-controls>
@@ -203,7 +203,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
 
 ### Expandable List Example
 
-<!-- docs: demo code autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -213,7 +213,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
-<d2l-list grid style="width: 100%">
+<d2l-list grid>
   <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
   </d2l-list-controls>
@@ -222,7 +222,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
       <div>Expandable item #1</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
-    <d2l-list grid style="width: 100%" slot="nested">
+    <d2l-list grid slot="nested">
       <d2l-list-item selectable key="nested-1" label="Nested 1">
         <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
       </d2l-list-item>
@@ -236,7 +236,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
       <div>Expandable Item #2</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
-    <d2l-list grid style="width: 100%" slot="nested">
+    <d2l-list grid slot="nested">
       <d2l-list-item selectable key="nested-3" label="Nested 3">
         <d2l-list-item-content><div>Nested item #3</div></d2l-list-item-content>
       </d2l-list-item>
@@ -272,7 +272,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 ### Example
 
-<!-- docs: demo code autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -322,14 +322,14 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
   }
   customElements.define('d2l-my-drag-drop-elem', ListDemoDragAndDropUsage);
 </script>
-<d2l-my-drag-drop-elem style="width: 100%;"></d2l-my-drag-drop-elem>
+<d2l-my-drag-drop-elem></d2l-my-drag-drop-elem>
 ```
 
 ## List Controls [d2l-list-controls]
 
 The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-list-controls autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list-controls display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -339,7 +339,7 @@ The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` s
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
     <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
@@ -452,7 +452,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
 
-<!-- docs: demo live name:d2l-list-item-button -->
+<!-- docs: demo live name:d2l-list-item-button display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -460,7 +460,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item-button href="http://www.d2l.com" selectable key="1" label="Geomorphology and GIS">
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
@@ -539,7 +539,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 
 The `d2l-list-item-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
 
-<!-- docs: demo live name:d2l-list-item-content -->
+<!-- docs: demo live name:d2l-list-item-content display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -547,7 +547,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Item 1</div>

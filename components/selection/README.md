@@ -175,12 +175,12 @@ The `d2l-selection-action-menu-item` is an optional component that is a menu ite
   import '@brightspace-ui/core/components/selection/selection-action-menu-item.js';
 </script>
 <d2l-dropdown-button-subtle text="Actions">
-	<d2l-dropdown-menu>
-		<d2l-menu label="Actions">
-			<d2l-selection-action-menu-item text="Action 1" requires-selection></d2l-selection-action-menu-item>
-			<d2l-selection-action-menu-item text="Action 2"></d2l-selection-action-menu-item>
-		</d2l-menu>
-	</d2l-dropdown-menu>
+  <d2l-dropdown-menu>
+    <d2l-menu label="Actions">
+      <d2l-selection-action-menu-item text="Action 1" requires-selection></d2l-selection-action-menu-item>
+      <d2l-selection-action-menu-item text="Action 2"></d2l-selection-action-menu-item>
+    </d2l-menu>
+  </d2l-dropdown-menu>
 </d2l-dropdown-button-subtle>
 ```
 
