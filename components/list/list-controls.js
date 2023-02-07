@@ -15,7 +15,7 @@ export class ListControls extends SelectionControls {
 	static get styles() {
 		return [super.styles, css`
 			:host {
-				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color, var(--d2l-list-header-background-color));
+				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
 			:host([no-sticky]) {
