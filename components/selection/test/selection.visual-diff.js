@@ -38,6 +38,10 @@ describe('d2l-selection', () => {
 		}, keyCode);
 	};
 
+	const scrollIntoView = selector => {
+		return page.$eval(selector, element => element.scrollIntoView());
+	};
+
 	describe('action', () => {
 		[
 			{ name: 'text', selector: '#action-text' },
@@ -49,6 +53,13 @@ describe('d2l-selection', () => {
 			{ name: 'requires-selection-none', selector: '#action-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'none', keys: [] }) },
 			{ name: 'requires-selection-some', selector: '#action-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'some', keys: [] }) },
 			{ name: 'requires-selection-all', selector: '#action-requires-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'all', keys: [] }) }
+		].forEach(runTest);
+	});
+
+	describe('controls', () => {
+		[
+			{ name: 'minimal', selector: '#controls', action: () => scrollIntoView('#controls') },
+			{ name: 'with-actions', selector: '#controls-with-actions', action: () => scrollIntoView('#controls-with-actions') },
 		].forEach(runTest);
 	});
 
