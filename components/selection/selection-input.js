@@ -23,12 +23,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * State of the input
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean },
+			selected: { type: Boolean, reflect: true },
 			/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
+			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Private. Force hovering state of input
 			 * @ignore
