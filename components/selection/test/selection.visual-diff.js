@@ -38,6 +38,10 @@ describe('d2l-selection', () => {
 		}, keyCode);
 	};
 
+	const scrollIntoView = selector => {
+		return page.$eval(selector, element => element.scrollIntoView());
+	};
+
 	describe('action', () => {
 		[
 			{ name: 'text', selector: '#action-text' },
@@ -54,8 +58,8 @@ describe('d2l-selection', () => {
 
 	describe('controls', () => {
 		[
-			{ name: 'minimal', selector: '#controls' },
-			{ name: 'with-actions', selector: '#controls-with-actions' },
+			{ name: 'minimal', selector: '#controls', action: () => scrollIntoView('#controls') },
+			{ name: 'with-actions', selector: '#controls-with-actions', action: () => scrollIntoView('#controls-with-actions') },
 		].forEach(runTest);
 	});
 
