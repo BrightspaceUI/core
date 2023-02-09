@@ -146,22 +146,29 @@ The `[br]` markup converts to the `<br />` tag
 Complex markup is more powerful, but requires passing additional information in the second parameter
 
 #### `[a]Linked[/a]`
-The `[a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_links` property
+The `[a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_link` property
+```javascript
+this.localizeHTML('goHome', { _link: 'href="home.html"' });
+```
 
-#### `[tt]Tooltipped[/tt]`
-The `[tt]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltips` property
+#### `[tooltip-help]Tooltipped[/tooltip-help]`
+The `[tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltip` property
+```javascript
+this.localizeHTML('octopusDesc', { _tooltip: 'Cephalopods are members of the molluscan class Cephalopoda' });
+```
 
-Complex markup can be used multiple times by including an index and passing an array of its required information
+Complex markup can be used multiple times by including a name and using an object for its required information
+
 ##### Example
 
 ```javascript
 // en.js
 export default {
-  greetingLinks: `Hi {name}, here's [a]a link[/a]. Here's [a 1]another[/a].`
+  greetingLinks: `Hi {name}, here's [a first]a link[/a]. Here's [a second]another[/a].`
 };
 ```
 ```javascript
-this.localizeHTML('greetingLinks', { name: 'Mary', _links: ['href="a.html"', 'href="b.html" target="_blank"'] });
+this.localizeHTML('greetingLinks', { name: 'Mary', _links: { first: 'href="a.html"', second: 'href="b.html" target="_blank"' } });
 ```
 Output:
 ```html
