@@ -116,6 +116,16 @@
 				</d2l-filter>
 			</div>
 			<div class="visual-diff">
+				<d2l-filter id="single-set-summary-text">
+					<d2l-filter-dimension-set key="course" summary-text="Filter content by courses. Start typing any course name to explore." text="Semester" selection-single>
+						<d2l-filter-dimension-set-value key="fall" text="Fall"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="winter" text="Winter" disabled></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="spring" text="Spring"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</div>
+			<div class="visual-diff">
 				<d2l-filter id="single-set-press-clear">
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
 						<d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
@@ -160,7 +170,7 @@
 						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="math" text="Math" selected></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
-					<d2l-filter-dimension-set key="role" text="Role">
+					<d2l-filter-dimension-set key="role" summary-text="Filter content by courses. Start typing any course name to explore." text="Role">
 						<d2l-filter-dimension-set-value key="admin" text="Admin" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
