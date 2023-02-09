@@ -36,7 +36,7 @@ Note: there is a [known defect](https://rally1.rallydev.com/#/?detail=/defect/64
 
 **Interactive Target Elements:**
 
-If the tooltip's target is an interactive element then it will automatically be accessibile. [A list of interactive elements can be found here.](https://github.com/BrightspaceUI/core/blob/main/components/tooltip/tooltip.js#L38)
+If the tooltip's target is an interactive element then it will automatically be accessible. [A list of interactive elements can be found here.](https://github.com/BrightspaceUI/core/blob/main/components/tooltip/tooltip.js#L38)
 
 **Static / Custom Target Elements:**
 
