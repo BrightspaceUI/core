@@ -169,6 +169,8 @@ class HtmlBlock extends LitElement {
 			:host {
 				display: block;
 				overflow-wrap: break-word;
+				overflow-x: auto;
+				overflow-y: hidden;
 				text-align: start;
 			}
 			:host([inline]),
