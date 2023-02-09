@@ -136,24 +136,25 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	}
 
-	localizeHTML(key, { _links = '', _html = '', _tooltips = '', ...replacements } = {}) {
-		const links = [].concat(_links);
-		const tooltips = [].concat(_tooltips);
-		const html = [].concat(_html);
+	localizeHTML(key, {
+		_link = '', _tooltip = '', _html = '',
+		_links = {}, _tooltips = {},
+		...replacements
+	} = {}) {
 		const localized = this.localize(key, replacements);
 		const sanitized = localized.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		const markedUp = sanitized
-			// replace [a], [a 0] ... [a 9], [/a]
-			.replace(/\[a( [0-9])?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${links[Number(n || 0)] || ''}>${t}</d2l-link>`)
-			// replace [tt], [tt 1] ... [tt 9], [/tt]
-			.replace(/\[tt( [0-9])?\]([^]*?)\[\/tt\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t}">${tooltips[Number(n || 0)] || ''}</d2l-tooltip-help>`)
-			// UNDOCUMENTED: replace [html], [html 0] ... [html 9]
-			.replace(/\[html( [0-9])?\]/g, (m, n) => html[Number(n || 0)] || '')
+			// replace [link], [link key], [/link]
+			.replace(/\[a(?: ?([\w\d-]*))?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${_links[n] || _link}>${t}</d2l-link>`)
+			// replace [tooltip-help], [tooltip-help key], [/tooltip-help]
+			.replace(/\[tooltip-help(?: ?([\w\d-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t}">${_tooltips[n] || _tooltip}</d2l-tooltip-help>`)
+			// UNDOCUMENTED: replace [html]
+			.replace('[html]', _html || '')
 			// replace good-listed markup
 			.replace(LocalizeMixinClass.markupRegex, k => markupMap[k] || k);
 
-		if (_links.length) import('../components/link/link.js');
-		if (_tooltips.length) import('../components/tooltip/tooltip-help.js');
+		if (Object.keys(_links).length) import('../components/link/link.js');
+		if (Object.keys(_tooltips).length) import('../components/tooltip/tooltip-help.js');
 
 		return unsafeHTML(markedUp);
 	}
