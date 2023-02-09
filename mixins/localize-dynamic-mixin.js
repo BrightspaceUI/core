@@ -27,13 +27,6 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 					);
 				}
 
-				this.__resolvedLanguage = {
-					chain: langs,
-					resolved: lang,
-					file: '',
-					resources
-				};
-
 				return {
 					language: lang,
 					resources
