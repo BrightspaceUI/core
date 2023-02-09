@@ -10,12 +10,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	static get properties() {
 		return {
 			/**
-			 * **Selection:** Disables the input
-			 * @type {boolean}
-			 * @ignore
-			 */
-			disabled: { type: Boolean }, // deprecated
-			/**
 			 * **Selection:** Disables selection
 			 * @type {boolean}
 			 */
@@ -99,10 +93,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		if (this.selected === selected || (this.selected === undefined && !selected)) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('disabled')) this.selectionDisabled = this.disabled;
 	}
 
 	async _dispatchSelected(value) {
