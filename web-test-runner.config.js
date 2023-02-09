@@ -12,13 +12,14 @@ export default {
 			name: 'aXe',
 			files: getPattern('axe'),
 			browsers: [
-				playwrightLauncher({
+				/*playwrightLauncher({
 					async createPage({ context }) {
 						const page = await context.newPage();
 						await page.emulateMedia({ reducedMotion: 'reduce' });
 						return page;
 					}
-				})
+				})*/
+				playwrightLauncher({ product: 'firefox', launchOptions: { args: ['--no-sandbox'] } }),
 			]
 		}
 	],
