@@ -35,6 +35,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectionSingle: { type: Boolean, attribute: 'selection-single' },
 			/**
+			 * The summary text to display at the top of the filter dropdown
+			 * @type {string}
+			 */
+			summaryText: { type: String, attribute: 'summary-text' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 * @type {string}
 			 */
@@ -53,6 +58,7 @@ class FilterDimensionSet extends LitElement {
 		this.searchType = 'automatic';
 		this.selectAll = false;
 		this.selectionSingle = false;
+		this.summaryText = '';
 		this.text = '';
 		this.valueOnlyActiveFilterText = false;
 		this._slot = null;
@@ -73,8 +79,7 @@ class FilterDimensionSet extends LitElement {
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
-
-			if (prop === 'text' || prop === 'loading') {
+			if (prop === 'summaryText' || prop === 'text' || prop === 'loading') {
 				changes.set(prop, this[prop]);
 			}
 		});

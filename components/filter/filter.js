@@ -142,6 +142,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
+			.d2l-filter-dimension-set-summary-text {
+				margin: 0;
+				padding: 0 0.6rem 0.9rem 0.6rem;
+				text-align: center;
+			}
+
 			.d2l-filter-dimension-info-message {
 				padding: 0.9rem 0;
 				text-align: center;
@@ -322,6 +328,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dimension = this._getActiveDimension();
 
+		const summaryText = !dimension.summaryText ? nothing : html`
+			<p class="d2l-body-compact d2l-filter-dimension-set-summary-text">${dimension.summaryText}</p>`;
+
 		const clear = html`
 			<d2l-button-subtle
 				@click="${this._handleClear}"
@@ -331,7 +340,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</d2l-button-subtle>
 		`;
 
-		const search = dimension.searchType === 'none' ? null : html`
+		const search = dimension.searchType === 'none' ? nothing : html`
 			<d2l-input-search
 				@d2l-input-search-searched="${this._handleSearch}"
 				?disabled="${this._isDimensionEmpty(dimension)}"
@@ -360,7 +369,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</div>
 		`;
 
-		const header = singleDimension ? null : html`
+		const header = singleDimension ? nothing : html`
 			<div class="d2l-filter-dimension-header">
 				<d2l-button-icon
 					@click="${this._handleDimensionHide}"
@@ -373,6 +382,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		return html`
 			<div slot="header" @keydown="${this._handleDimensionHideKeyDown}">
+				${summaryText}
 				${header}
 				${actions}
 			</div>
@@ -657,6 +667,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.summaryText = dimension.summaryText;
 					info.valueOnlyActiveFilterText = dimension.valueOnlyActiveFilterText;
 					const values = dimension._getValues();
 					info.values = values;
