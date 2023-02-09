@@ -391,7 +391,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
 				<d2l-empty-state-simple
-					class="d2l-filter-dimension-info-message d2l-body-small"
+					class="d2l-filter-dimension-info-message"
 					description="${this.localize('components.filter.noFilters')}">
 				</d2l-empty-state-simple>
 			`;
@@ -402,7 +402,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
 			const classes = {
 				'd2l-filter-dimension-info-message': true,
-				'd2l-body-small': true,
 				'd2l-offscreen': count !== 0
 			};
 
