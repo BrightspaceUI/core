@@ -5,6 +5,7 @@ import '../button/button-subtle.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
+import '../empty-state/empty-state-simple.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
@@ -143,7 +144,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-filter-dimension-info-message {
-				padding: 0.9rem 0;
+				margin: 0.3rem;
 				text-align: center;
 			}
 
@@ -389,9 +390,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-				<p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
-					${this.localize('components.filter.noFilters')}
-				</p>
+				<d2l-empty-state-simple
+					class="d2l-filter-dimension-info-message d2l-body-small"
+					description="${this.localize('components.filter.noFilters')}">
+				</d2l-empty-state-simple>
 			`;
 		}
 
@@ -405,9 +407,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			};
 
 			searchResults = html`
-				<p class="${classMap(classes)}" role="alert">
-					${this.localize('components.filter.searchResults', { number: count })}
-				</p>
+				<d2l-empty-state-simple
+					class="${classMap(classes)}"
+					description="${this.localize('components.filter.searchResults', { number: count })}">
+				</d2l-empty-state-simple>
 			`;
 
 			if (count === 0) return searchResults;
