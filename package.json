@@ -65,7 +65,7 @@
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
     "sinon": "^15",
-    "stylelint": "^14"
+    "stylelint": "^15"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
