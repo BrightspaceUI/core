@@ -48,7 +48,7 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 	}
 
 	__onSelectedChanged(selected) {
-		selected ? this.setAttribute('aria-checked', 'true') : this.removeAttribute('aria-checked');
+		selected ? this.setAttribute('aria-checked', 'true') : this.setAttribute('aria-checked', 'false');
 	}
 
 };
