@@ -5,7 +5,6 @@
 	&:visited,
 	&:link,
 	&:active {
-		border-radius: 3px;
 		color: $d2l-color-celestine;
 		text-decoration: none;
 		cursor: pointer;
@@ -15,11 +14,13 @@
 		text-decoration: underline;
 	}
 	&:focus-visible {
+		border-radius: 2px;
 		outline: 2px solid $d2l-color-celestine;
 		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	.d2l-focus-visible-not-supported &:focus {
+		border-radius: 2px;
 		outline: 2px solid $d2l-color-celestine;
 		outline-offset: 1px;
 		text-decoration: underline;

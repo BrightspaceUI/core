@@ -21,7 +21,7 @@ export const linkStyles = css`
 		text-decoration: underline;
 	}
 	.d2l-link:${unsafeCSS(getFocusPseudoClass())} {
-		border-radius: 3px;
+		border-radius: 2px;
 		outline: 2px solid var(--d2l-color-celestine);
 		outline-offset: 1px;
 		text-decoration: underline;

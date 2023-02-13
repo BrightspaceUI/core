@@ -102,7 +102,7 @@ export const htmlBlockContentStyles = css`
 		text-decoration: underline;
 	}
 	a:${unsafeCSS(getFocusPseudoClass())} {
-		border-radius: 3px;
+		border-radius: 2px;
 		outline: 2px solid var(--d2l-color-celestine, #006fbf);
 		outline-offset: 1px;
 		text-decoration: underline;
