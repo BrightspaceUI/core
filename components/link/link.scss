@@ -5,17 +5,26 @@
 	&:visited,
 	&:link,
 	&:active {
+		border-radius: 3px;
 		color: $d2l-color-celestine;
 		text-decoration: none;
 		cursor: pointer;
 	}
-	&:hover,
-	&:focus,
-	&.d2l-link-focus {
+	&:hover {
 		color: $d2l-color-celestine-minus-1;
 		text-decoration: underline;
-		outline-width: 0;
 	}
+	&:focus-visible {
+		outline: 2px solid $d2l-color-celestine;
+		outline-offset: 1px;
+		text-decoration: underline;
+	}
+	.d2l-focus-visible-not-supported &:focus {
+		outline: 2px solid $d2l-color-celestine;
+		outline-offset: 1px;
+		text-decoration: underline;
+	}
+
 	&[main] {
 		font-weight: 700;
 	}
