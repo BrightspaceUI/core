@@ -21,7 +21,7 @@ class TableControls extends SelectionControls {
 		return [super.styles, css`
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-table-controls-background-color);
-				z-index: 2; /* must be greater than d2l-table rows */
+				z-index: 4; /* must be greater than d2l-table cells */
 			}
 			:host([no-sticky]) {
 				z-index: auto;
