@@ -10,7 +10,7 @@ describe('MenuItemSelectableMixin', () => {
 
 	describe('accessibility', () => {
 
-		it('has no "aria-checked" false by default', async() => {
+		it('has "aria-checked" false by default', async() => {
 			const elem = await fixture(`<${tag}></${tag}>`);
 			expect(elem.getAttribute('aria-checked')).to.equal('false');
 		});
