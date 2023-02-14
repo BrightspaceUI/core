@@ -8,6 +8,7 @@
 		import '../../button/button.js';
 		import '../../filter/filter.js';
 		import '../../filter/filter-dimension-set.js';
+		import '../../filter/filter-dimension-set-empty-state.js';
 		import '../../filter/filter-dimension-set-value.js';
 		import './filter-search-demo.js';
 	</script>
@@ -24,7 +25,7 @@
 			<template>
 				<d2l-filter>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
-						<d2l-filter-dimension-set-value key="art" text="Art" count="12"></d2l-filter-dimension-set-value>
+						<!-- <d2l-filter-dimension-set-value key="art" text="Art" count="12"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="2" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="biology" text="Biology" count="15"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry" count="1"disabled></d2l-filter-dimension-set-value>
@@ -33,8 +34,10 @@
 						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="100"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="math" text="Math" count="50"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="physics" text="Physics" count="23"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="stats" text="Statistics" count="333"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft" count="2211"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="stats" text="Statistics" count="333"></d2l-filter-dimension-set-value> -->
+						<!-- <d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft" count="2211"></d2l-filter-dimension-set-value> -->
+						<d2l-filter-dimension-set-empty-state slot="search-empty-state" description="Search returned no results." action-text="Do something"></d2l-filter-dimension-set-empty-state>
+						<d2l-filter-dimension-set-empty-state slot="set-empty-state" description="There are no available items." action-text="Add an item"></d2l-filter-dimension-set-empty-state>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 			</template>
@@ -126,7 +129,7 @@
 		</d2l-demo-snippet>
 	</d2l-demo-page>
 
-	<script type="module">
+<script type="module">
 		document.addEventListener('d2l-filter-change', e => {
 			if (e.detail.dimensions.length === 1) {
 				console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes); // eslint-disable-line no-console

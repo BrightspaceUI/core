@@ -1,9 +1,16 @@
 import { html, LitElement } from 'lit';
 
+const EmptyStateType = {
+	Search: 'Search',
+	Set: 'Set'
+};
+
 /**
  * A component to represent the main filter dimension type - a set of possible values that can be selected.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
  * @slot - For d2l-filter-dimension-set-value components
+ * @slot - The empty state that is displayed when the search returns no results
+ * @slot - The empty state that is displayed when the dimension-set has no values
  */
 class FilterDimensionSet extends LitElement {
 
@@ -55,6 +62,8 @@ class FilterDimensionSet extends LitElement {
 		this.selectionSingle = false;
 		this.text = '';
 		this.valueOnlyActiveFilterText = false;
+		this._searchEmptyStatesSlot = null;
+		this._setEmptyStatesSlot = null;
 		this._slot = null;
 	}
 
@@ -64,7 +73,11 @@ class FilterDimensionSet extends LitElement {
 	}
 
 	render() {
-		return html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		return html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<slot name="search-empty-state" @d2l-filter-dimension-set-empty-state-change="${this._handleDimensionSetSearchEmptyStateChange}" @slotchange="${this._handleSearchEmptyStateSlotChange}"></slot>
+			<slot name="set-empty-state" @d2l-filter-dimension-set-empty-state-change="${this._handleDimensionSetSetEmptyStateChange}" @slotchange="${this._handleSetEmptyStateSlotChange}"></slot>
+		`;
 	}
 
 	updated(changedProperties) {
@@ -93,6 +106,48 @@ class FilterDimensionSet extends LitElement {
 		}));
 	}
 
+	_dispatchEmptyStateChangeEvent(eventDetail) {
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-empty-state-change', {
+			detail: eventDetail,
+			bubbles: true,
+			composed: false
+		}));
+	}
+
+	_getSearchEmptyState() {
+		const searchEmptyState = this._getSearchEmptyStateSlottedNode();
+		if (!searchEmptyState) return null;
+		return {
+			actionHref: searchEmptyState.actionHref,
+			actionText: searchEmptyState.actionText,
+			description: searchEmptyState.description
+		};
+	}
+
+	_getSearchEmptyStateSlottedNode() {
+		if (!this._searchEmptyStateSlot) return null;
+		const nodes = this._searchEmptyStateSlot.assignedNodes({ flatten: true });
+		return nodes.find((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-empty-state');
+	}
+
+	_getSetEmptyState() {
+		const setEmptyState = this._getSetEmptyStateSlottedNode();
+		if (!setEmptyState) return null;
+		return {
+			actionHref: setEmptyState.actionHref,
+			actionText: setEmptyState.actionText,
+			description: setEmptyState.description
+		};
+	}
+
+	_getSetEmptyStateSlottedNode() {
+		if (!this._setEmptyStateSlot) return null;
+		const nodes = this._setEmptyStateSlot.assignedNodes({ flatten: true });
+		return nodes.find((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-empty-state');
+
+	}
+
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
@@ -113,9 +168,33 @@ class FilterDimensionSet extends LitElement {
 		return values;
 	}
 
+	_handleDimensionSetEmptyStateChange(e, type) {
+		e.stopPropagation();
+		this._dispatchEmptyStateChangeEvent({ dimensionKey: this.key, type: type });
+	}
+	_handleDimensionSetSearchEmptyStateChange(e) {
+		this._handleDimensionSetEmptyStateChange(e, EmptyStateType.Search);
+	}
+
+	_handleDimensionSetSetEmptyStateChange(e) {
+		this._handleDimensionSetEmptyStateChange(e, EmptyStateType.Set);
+	}
+
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
 		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+	}
+
+	_handleSearchEmptyStateSlotChange(e) {
+		if (!this._searchEmptyStateSlot) this._searchEmptyStateSlot = e.target;
+		const searchEmptyState = this._getSearchEmptyState();
+		this._dispatchEmptyStateChangeEvent({ dimensionKey: this.key, type: EmptyStateType.Search });
+	}
+
+	_handleSetEmptyStateSlotChange(e) {
+		if (!this._setEmptyStateSlot) this._setEmptyStateSlot = e.target;
+		const setEmptyState = this._getSetEmptyState();
+		this._dispatchEmptyStateChangeEvent({ dimensionKey: this.key, type: EmptyStateType.Set });
 	}
 
 	_handleSlotChange(e) {
