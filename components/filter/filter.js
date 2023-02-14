@@ -5,6 +5,8 @@ import '../button/button-subtle.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-action-link.js';
 import '../empty-state/empty-state-simple.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../inputs/input-search.js';
@@ -182,6 +184,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+		this.addEventListener('d2l-filter-dimension-empty-state-change', this._handleDimensionEmptyStateChange);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
 
 		// Prevent these events from bubbling out of the filter
@@ -380,6 +383,30 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		`;
 	}
 
+	_createEmptyState(emptyState, classes) {
+		let emptyStateAction = nothing;
+		if (emptyState.actionText && emptyState.actionHref) {
+			emptyStateAction = html`
+				<d2l-empty-state-action-link
+					href="${emptyState.actionHref}"
+					text="${emptyState.actionText}">
+				</d2l-empty-state-action-link>
+			`;
+		}
+		else if (emptyState.actionText) {
+			emptyStateAction = html`
+				<d2l-empty-state-action-button text="${emptyState.actionText}"></d2l-empty-state-action-button>
+			`;
+		}
+		return html`
+			<d2l-empty-state-simple
+				class="${classMap(classes)}"
+				description="${emptyState.description}">
+				${emptyStateAction}
+			</d2l-empty-state-simple>
+		`;
+	}
+
 	_createSetDimension(dimension) {
 		if (dimension.loading) {
 			return html`
@@ -389,12 +416,17 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		if (this._isDimensionEmpty(dimension)) {
-			return html`
-				<d2l-empty-state-simple
-					class="d2l-filter-dimension-info-message"
-					description="${this.localize('components.filter.noFilters')}">
-				</d2l-empty-state-simple>
-			`;
+			const classes = {
+				'd2l-filter-dimension-info-message': true
+			};
+			return dimension.setEmptyState
+				? this._createEmptyState(dimension.setEmptyState, classes)
+				: html`
+					<d2l-empty-state-simple
+						class="${classMap(classes)}"
+						description="${this.localize('components.filter.noFilters')}">
+					</d2l-empty-state-simple>
+				`;
 		}
 
 		let searchResults = null;
@@ -405,12 +437,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				'd2l-offscreen': count !== 0
 			};
 
-			searchResults = html`
-				<d2l-empty-state-simple
-					class="${classMap(classes)}"
-					description="${this.localize('components.filter.searchResults', { number: count })}">
-				</d2l-empty-state-simple>
-			`;
+			searchResults = dimension.searchEmptyState
+				? this._createEmptyState(dimension.searchEmptyState, classes)
+				: html`
+					<d2l-empty-state-simple
+						class="${classMap(classes)}"
+						description="${this.localize('components.filter.searchResults', { number: count })}">
+					</d2l-empty-state-simple>
+				`;
 
 			if (count === 0) return searchResults;
 		}
@@ -572,6 +606,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 	}
 
+	_handleDimensionEmptyStateChange(e) {
+		console.log(e);
+	}
+
 	_handleDimensionHide() {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 	}
@@ -653,12 +691,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				text: dimension.text,
 				type: type
 			};
-
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.searchEmptyState = dimension._getSearchEmptyState();
+					info.setEmptyState = dimension._getSetEmptyState();
 					info.valueOnlyActiveFilterText = dimension.valueOnlyActiveFilterText;
 					const values = dimension._getValues();
 					info.values = values;
