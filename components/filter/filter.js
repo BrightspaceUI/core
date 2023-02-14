@@ -382,8 +382,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		return html`
 			<div slot="header" @keydown="${this._handleDimensionHideKeyDown}">
-				${introductoryText}
 				${header}
+				${introductoryText}
 				${actions}
 			</div>
 		`;
