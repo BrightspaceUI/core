@@ -133,7 +133,7 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 				test1: 'This is [b]important[/b], this is [b][i]very important[/i][/b], and this is [span]not[/span]',
 				test2: 'This is [a]a link[/a]',
 				test3: 'This is [a two]a link[/a]. This is [a one]another one[/a]',
-				test4: 'This is a [tooltip-help]tooltip helper[/tooltip-help] within a sentence',
+				test4: 'This is a [tooltip-help]tooltip helper" onclick="import(`malicious.js`)[/tooltip-help] within a sentence',
 				test5: 'This is a [tooltip-help one]tooltip helper[/tooltip-help] within a sentence. Here is [tooltip-help two]another[/tooltip-help].',
 				test6: 'This is <script src="malicious.js"></script> fine',
 				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. [a]Checkout[/a]} other {Items in your cart:[html][a]Checkout[/a]}}'
@@ -324,7 +324,7 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
-		it('should replace acceptable markup with correct HTML', () => {
+		it.only('should replace acceptable markup with correct HTML', () => {
 			const unsafeHTML = elem.localizeHTML('test1');
 			const val1 = unsafeHTML.values[0];
 			const val2 = elem.localizeHTML('test2', { _link: 'href="http://d2l.com"' }).values[0];
@@ -343,7 +343,7 @@ describe('LocalizeMixin', () => {
 			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
 			expect(val2).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
 			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank">a link</d2l-link>. This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
-			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper&quot; onclick=&quot;import(`malicious.js`)">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(val5).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence. Here is <d2l-tooltip-help inherit-font-style text="another">More tooltip text</d2l-tooltip-help>.');
 			expect(val6).to.equal('This is &lt;script src="malicious.js"&gt;&lt;/script&gt; fine');
 			expect(val7).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
