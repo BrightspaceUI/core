@@ -142,7 +142,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
-			.d2l-filter-dimension-set-summary-text {
+			.d2l-filter-dimension-set-introductory-text {
 				margin: 0;
 				padding: 0 0.6rem 0.9rem 0.6rem;
 				text-align: center;
@@ -328,8 +328,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dimension = this._getActiveDimension();
 
-		const summaryText = !dimension.summaryText ? nothing : html`
-			<p class="d2l-body-compact d2l-filter-dimension-set-summary-text">${dimension.summaryText}</p>`;
+		const introductoryText = !dimension.introductoryText ? nothing : html`
+			<p class="d2l-body-compact d2l-filter-dimension-set-introductory-text">${dimension.introductoryText}</p>`;
 
 		const clear = html`
 			<d2l-button-subtle
@@ -382,7 +382,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		return html`
 			<div slot="header" @keydown="${this._handleDimensionHideKeyDown}">
-				${summaryText}
+				${introductoryText}
 				${header}
 				${actions}
 			</div>
@@ -667,7 +667,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
-					info.summaryText = dimension.summaryText;
+					info.introductoryText = dimension.introductoryText;
 					info.valueOnlyActiveFilterText = dimension.valueOnlyActiveFilterText;
 					const values = dimension._getValues();
 					info.values = values;
