@@ -64,7 +64,7 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
 </style>
 <!-- docs: end hidden content -->
 <d2l-demo-selection>
-  <d2l-selection-controls>
+  <d2l-selection-controls no-sticky>
     <d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
   </d2l-selection-controls>
@@ -436,7 +436,7 @@ The `d2l-selection-controls` provides a standardized wrapper to display selectio
 
 When using lists, use the list-specific `d2l-list-controls` instead, which extends this component's behaviour.
 
-<!-- docs: demo live name:d2l-selection-controls display:block -->
+<!-- docs: demo live name:d2l-selection-controls display:block autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';
@@ -446,6 +446,10 @@ When using lists, use the list-specific `d2l-list-controls` instead, which exten
 </script>
 <!-- docs: start hidden content -->
 <style>
+  #demo-element {
+    margin-bottom: 250px;
+    margin-top: 0;
+  }
   ul {
     padding: 0;
   }

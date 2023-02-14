@@ -329,7 +329,7 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
     render() {
       return html`
         <d2l-table-wrapper>
-          <d2l-table-controls slot="controls" no-sticky>
+          <d2l-table-controls slot="controls">
             <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
             <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
           </d2l-table-controls>
@@ -342,9 +342,9 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
             </thead>
             <tbody>
               ${Object.keys(this._data).map((key, i) => html`
-                <tr ?selected="${i === 0}">
+                <tr>
                   <td>
-                    <d2l-selection-input selected key="${key}" label="${key}" ?checked="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                    <d2l-selection-input key="${key}" label="${key}" ?selected="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
                   </td>
                   <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
                 </tr>
@@ -357,12 +357,21 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
 
     _selectRow(e) {
       const key = e.target.key;
-      this._data[key].checked = !this._data[key].checked;
+      this._data[key].checked = e.target.selected;
+      this.requestUpdate();
     }
 
   }
   customElements.define('d2l-sample-table-with-controls', SampleTableWithControls);
 </script>
+<!-- docs: start hidden content -->
+<style>
+  #demo-element {
+    margin-bottom: 300px;
+    margin-top: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
 <d2l-sample-table-with-controls></d2l-sample-table-with-controls>
 ```
 
