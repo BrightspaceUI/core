@@ -47,7 +47,8 @@ class FilterDimensionSetEmptyState extends LitElement {
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-empty-state-change', {
 				bubbles: true,
-				composed: false
+				composed: false,
+				detail: { changes: changes }
 			}));
 		}
 	}
