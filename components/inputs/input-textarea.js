@@ -114,7 +114,6 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 				position: absolute;
 				resize: none;
 				top: 0;
-				z-index: 2;
 			}
 			:host([no-border]) textarea.d2l-input {
 				border-color: transparent;
@@ -144,9 +143,6 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 			:host([dir='rtl']) .d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-left: calc(18px + 0.8rem);
 				padding-right: 0.75rem;
-			}
-			:host([skeleton]) .d2l-skeletize::before {
-				z-index: 3;
 			}
 		`];
 	}
