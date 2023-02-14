@@ -38,7 +38,7 @@ describe('d2l-filter-dimension-set', () => {
 		it('fires data change event when its data changes', async() => {
 			const elem = await fixture(dimensionfixture);
 			const eventSpy = spy(elem, 'dispatchEvent');
-			elem.summaryText = 'Summary';
+			elem.introductoryText = 'Summary';
 			elem.text = 'Test';
 			elem.loading = true;
 
@@ -46,7 +46,7 @@ describe('d2l-filter-dimension-set', () => {
 			expect(e.detail.dimensionKey).to.equal('dim');
 			expect(e.detail.valueKey).to.be.undefined;
 			expect(e.detail.changes.size).to.equal(3);
-			expect(e.detail.changes.get('summaryText')).to.equal('Summary');
+			expect(e.detail.changes.get('introductoryText')).to.equal('Summary');
 			expect(e.detail.changes.get('text')).to.equal('Test');
 			expect(e.detail.changes.get('loading')).to.equal(true);
 			expect(eventSpy).to.be.calledOnce;
