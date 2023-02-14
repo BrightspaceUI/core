@@ -39,6 +39,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * This component is in charge of all rendering.
  * @slot - Dimension components used by the filter to construct the different dimensions locally
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
+ * @fires d2l-filter-dimension-empty-state-action - Dispatched when an empty state action button is clicked
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
@@ -386,7 +387,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		`;
 	}
 
-	_createEmptyState(emptyState, classes) {
+	_createEmptyState(emptyState, classes, dimensionKey, type) {
 		let emptyStateAction = nothing;
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
@@ -398,7 +399,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 		else if (emptyState.actionText) {
 			emptyStateAction = html`
-				<d2l-empty-state-action-button text="${emptyState.actionText}"></d2l-empty-state-action-button>
+				<d2l-empty-state-action-button
+					@d2l-empty-state-action="${e => this._handleEmptyStateAction(e, dimensionKey, type)}"
+					text="${emptyState.actionText}">
+				</d2l-empty-state-action-button>
 			`;
 		}
 		return html`
@@ -419,7 +423,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		if (this._isDimensionEmpty(dimension)) {
-			return html`
+			const classes = {
+				'd2l-filter-dimension-info-message': true
+			};
+			return dimension.setEmptyState
+				? this._createEmptyState(dimension.setEmptyState, classes, dimension.key, 'Set')
+				: html`
 				<div class="d2l-empty-state-container">
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"
@@ -438,7 +447,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				'd2l-offscreen': count !== 0
 			};
 
-			searchResults = html`
+			searchResults = dimension.searchEmptyState
+				? this._createEmptyState(dimension.searchEmptyState, classes, dimension.key, 'Search')
+				: html`
 				<div class="${classMap(classes)}">
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"
@@ -609,7 +620,24 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleDimensionEmptyStateChange(e) {
-		console.log(e);
+		e.stopPropagation();
+
+		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
+		let emptyState = null;
+		if (e.detail.type === 'Search') emptyState = dimension.searchEmptyState;
+		else if (e.detail.type === 'Set') emptyState = dimension.setEmptyState;
+		if (!emptyState) return;
+
+		let shouldUpdate = false;
+
+		e.detail.changes.forEach((newValue, prop) => {
+			if (emptyState[prop] === newValue) return;
+
+			emptyState[prop] = newValue;
+			shouldUpdate = true;
+		});
+
+		if (shouldUpdate)  this.requestUpdate();
 	}
 
 	_handleDimensionHide() {
@@ -650,6 +678,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
 		}
 		this._stopPropagation(e);
+	}
+
+	_handleEmptyStateAction(e, dimensionKey, type) {
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-empty-state-action', {
+			detail: {
+				key: dimensionKey,
+				type: type
+			}
+		}));
 	}
 
 	_handleSearch(e) {

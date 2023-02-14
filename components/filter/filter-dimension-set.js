@@ -170,7 +170,7 @@ class FilterDimensionSet extends LitElement {
 
 	_handleDimensionSetEmptyStateChange(e, type) {
 		e.stopPropagation();
-		this._dispatchEmptyStateChangeEvent({ dimensionKey: this.key, type: type });
+		this._dispatchEmptyStateChangeEvent({ dimensionKey: this.key, type: type, changes: e.detail.changes });
 	}
 	_handleDimensionSetSearchEmptyStateChange(e) {
 		this._handleDimensionSetEmptyStateChange(e, EmptyStateType.Search);
