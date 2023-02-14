@@ -147,7 +147,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			// replace [link], [link key], [/link]
 			.replace(/\[a(?: ?([\w-]*))?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${_links[n] || _link}>${t}</d2l-link>`)
 			// replace [tooltip-help], [tooltip-help key], [/tooltip-help]
-			.replace(/\[tooltip-help(?: ?([\w-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t}">${_tooltips[n] || _tooltip}</d2l-tooltip-help>`)
+			.replace(/\[tooltip-help(?: ?([\w-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t.replace(/"/g, '&quot;')}">${_tooltips[n] || _tooltip}</d2l-tooltip-help>`)
 			// UNDOCUMENTED: replace [html]
 			.replace('[html]', _html || '')
 			// replace good-listed markup
