@@ -129,6 +129,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				position: sticky;
 				top: 0;
+				z-index: 11; /* must be greater greater than list-items with open dropdowns or tooltips */
 			}
 			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
 				top: 2px;
