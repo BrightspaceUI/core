@@ -42,8 +42,9 @@ class DemoSnippet extends LitElement {
 			}
 			.d2l-demo-snippet-demo-wrapper.fullscreen {
 				background-color: white;
-				height: fit-content;
+				height: 100vh;
 				inset: 0;
+				overflow: auto;
 				position: absolute;
 				z-index: 2;
 			}
