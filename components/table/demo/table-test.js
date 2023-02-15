@@ -64,12 +64,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			<d2l-table-wrapper>
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}">
 					<d2l-selection-action
-						text="Toggle sticky controls"
+						text="Sticky controls"
 						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyControls}"
 					></d2l-selection-action>
 					<d2l-selection-action
-						text="Toggle sticky headers"
+						text="Sticky headers"
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}"
 					></d2l-selection-action>
@@ -90,7 +90,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						`)}
 					</thead>
 					<tbody>
-						${sorted.map((row) => html`
+						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
 								<th scope="row">
 									<d2l-selection-input
@@ -101,7 +101,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
+								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
 					</tbody>

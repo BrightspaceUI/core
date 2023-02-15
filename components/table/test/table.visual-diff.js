@@ -20,6 +20,20 @@ describe('d2l-table', () => {
 	const visualDiff = new VisualDiff('table', import.meta.url);
 
 	let browser, page;
+
+	const setProperties = (selector, properties) => {
+		return page.$eval(selector, (element, properties) => {
+			Object.keys(properties).forEach(key => element[key] = properties[key]);
+		}, properties);
+	};
+
+	const scrollTo = (selector, y) => {
+		return page.$eval(selector, (element, y) => {
+			element.scrollIntoView();
+			element.scrollTo(0, y);
+		}, y);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -136,11 +150,25 @@ describe('d2l-table', () => {
 						});
 
 						[
-							'no-sticky',
-						].forEach((id) => {
-							it(id, async function() {
-								const rect = await getRect(page, id, 'd2l-test-table-controls-visual-diff');
-								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+							{ name: 'no-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: false, stickyHeaders: false }) },
+							{ name: 'sticky-controls', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: false }) },
+							{ name: 'all-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true }) },
+						].forEach(condition1 => {
+							describe(condition1.name, () => {
+
+								before(condition1.action);
+
+								[
+									{ name: '1-top', action: () => scrollTo('pierce/#table-controls', 0) },
+									{ name: '2-scrolled', action: () => scrollTo('pierce/#table-controls', 50) },
+								].forEach(condition2 => {
+									it(condition2.name, async function() {
+										await condition2.action();
+										const rect = await getRect(page, 'table-controls', 'd2l-test-table-controls-visual-diff');
+										await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+									});
+								});
+
 							});
 						});
 
