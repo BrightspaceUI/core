@@ -30,28 +30,6 @@ describe('ListItemCheckboxMixin', () => {
 		}
 	});
 
-	describe('Adds selection-disabled property when setting deprecated disabled property', () => {
-		const cases = [{
-			input: '',
-			expected: false
-		}, {
-			input: 'disabled',
-			expected: true,
-		}, {
-			input: 'disabled selected',
-			expected: true,
-		}, {
-			input: 'selected',
-			expected: false
-		}];
-		for (const test of cases) {
-			it(test.input || 'empty', async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
-				expect(element['selectionDisabled']).to.be.equal(test.expected);
-			});
-		}
-	});
-
 	describe('Does not render checkbox or action area when not selectable', () => {
 		const cases = [{
 			input: '',
