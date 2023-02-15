@@ -43,7 +43,7 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.observer.disconnect();
+		if (this.observer) this.observer.disconnect();
 	}
 
 };
