@@ -4,7 +4,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { spy } from 'sinon';
 
 const emptyStateFixture = html`
-	<d2l-filter-dimension-set-empty-state action-href="https://d2l.com" action-text="Link text" description="Empty state description"></d2l-filter-dimension-set-empty-state>
+	<d2l-filter-dimension-set-empty-state action-href="https://d2l.com/" action-text="Link text" description="Empty state description"></d2l-filter-dimension-set-empty-state>
 `;
 
 describe('d2l-filter-dimension-set-empty-state', () => {
