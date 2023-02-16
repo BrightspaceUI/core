@@ -147,8 +147,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
+			.d2l-empty-state-container {
+				padding: 0.3rem;
+			}
+
 			.d2l-filter-dimension-info-message {
-				margin: 0.3rem;
 				text-align: center;
 			}
 
@@ -187,6 +190,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-empty-state-change', this._handleDimensionEmptyStateChange);
+		this.addEventListener('d2l-filter-dimension-empty-state-slot-change', this._handleDimensionEmptyStateSlotChange);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
 
 		// Prevent these events from bubbling out of the filter
@@ -398,17 +402,21 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		else if (emptyState.actionText) {
 			emptyStateAction = html`
 				<d2l-empty-state-action-button
-					@d2l-empty-state-action="${e => this._handleEmptyStateAction(e, dimensionKey, type)}"
+					@d2l-empty-state-action="${this._handleEmptyStateAction}"
+					data-dimension-key="${dimensionKey}"
+					data-type="${type}"
 					text="${emptyState.actionText}">
 				</d2l-empty-state-action-button>
 			`;
 		}
 		return html`
-			<d2l-empty-state-simple
-				class="${classMap(classes)}"
-				description="${emptyState.description}">
-				${emptyStateAction}
-			</d2l-empty-state-simple>
+			<div class="d2l-empty-state-container">
+				<d2l-empty-state-simple
+					class="${classMap(classes)}"
+					description="${emptyState.description}">
+					${emptyStateAction}
+				</d2l-empty-state-simple>
+			</div>
 		`;
 	}
 
@@ -422,15 +430,18 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			const classes = {
+				'd2l-body-small': true,
 				'd2l-filter-dimension-info-message': true
 			};
 			return dimension.setEmptyState
 				? this._createEmptyState(dimension.setEmptyState, classes, dimension.key, EmptyStateType.Set)
 				: html`
-					<d2l-empty-state-simple
-						class="${classMap(classes)}"
-						description="${this.localize('components.filter.noFilters')}">
-					</d2l-empty-state-simple>
+					<div class="d2l-empty-state-container">
+						<d2l-empty-state-simple
+							class="${classMap(classes)}"
+							description="${this.localize('components.filter.noFilters')}">
+						</d2l-empty-state-simple>
+					</div>
 				`;
 		}
 
@@ -438,6 +449,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.searchValue && dimension.searchValue !== '') {
 			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
 			const classes = {
+				'd2l-body-small': true,
 				'd2l-filter-dimension-info-message': true,
 				'd2l-offscreen': count !== 0
 			};
@@ -445,10 +457,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			searchResults = dimension.searchEmptyState
 				? this._createEmptyState(dimension.searchEmptyState, classes, dimension.key, EmptyStateType.Search)
 				: html`
-					<d2l-empty-state-simple
-						class="${classMap(classes)}"
-						description="${this.localize('components.filter.searchResults', { number: count })}">
-					</d2l-empty-state-simple>
+					<div class="d2l-empty-state-container">
+						<d2l-empty-state-simple
+							class="${classMap(classes)}"
+							description="${this.localize('components.filter.searchResults', { number: count })}">
+						</d2l-empty-state-simple>
+					</div>
 				`;
 
 			if (count === 0) return searchResults;
@@ -615,12 +629,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		e.stopPropagation();
 
 		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
+		let shouldUpdate = false;
 		let emptyState = null;
 		if (e.detail.type === EmptyStateType.Search) emptyState = dimension.searchEmptyState;
 		else if (e.detail.type === EmptyStateType.Set) emptyState = dimension.setEmptyState;
 		if (!emptyState) return;
-
-		let shouldUpdate = false;
 
 		e.detail.changes.forEach((newValue, prop) => {
 			if (emptyState[prop] === newValue) return;
@@ -630,6 +643,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		});
 
 		if (shouldUpdate)  this.requestUpdate();
+	}
+
+	_handleDimensionEmptyStateSlotChange(e) {
+		e.stopPropagation();
+		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
+		if (e.detail.type === EmptyStateType.Search) dimension.searchEmptyState = e.target.getSearchEmptyState();
+		else if (e.detail.type === EmptyStateType.Set) dimension.setEmptyState = e.target.getSetEmptyState();
+		this.requestUpdate();
 	}
 
 	_handleDimensionHide() {
@@ -672,12 +693,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._stopPropagation(e);
 	}
 
-	_handleEmptyStateAction(e, dimensionKey, type) {
+	_handleEmptyStateAction(e) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-empty-state-action', {
-			detail: {
-				key: dimensionKey,
-				type: type
-			}
+			detail: { key: e.target.getAttribute('data-dimension-key'), type: e.target.getAttribute('data-type') }
 		}));
 	}
 
@@ -722,15 +740,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				text: dimension.text,
 				type: type
 			};
+
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
-					info.searchEmptyState = dimension._getSearchEmptyState();
-					info.setEmptyState = dimension._getSetEmptyState();
+					info.searchEmptyState = dimension.getSearchEmptyState();
+					info.setEmptyState = dimension.getSetEmptyState();
 					info.valueOnlyActiveFilterText = dimension.valueOnlyActiveFilterText;
-					const values = dimension._getValues();
+					const values = dimension.getValues();
 					info.values = values;
 					break;
 				}
