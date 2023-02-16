@@ -2,23 +2,24 @@ import { LitElement } from 'lit';
 
 /**
  * A component to customize the empty state parameters for a particular filter-dimension-set.
+ * This component does not render anything, but instead gathers data needed for the d2l-filter.
  */
 class FilterDimensionSetEmptyState extends LitElement {
 
 	static get properties() {
 		return {
 			/**
-			 * Count for the value in the list. If no count is provided, no count will be displayed
+			 * The href that will be used for the empty state action. When set with action-text, d2l-filter will render a link action.
 			 * @type {string}
 			 */
 			actionHref: { type: String, attribute: 'action-href' },
 			/**
-			 * Whether this value in the filter is disabled or not
-			 * @type {boolean}
+			 * The text that will be displayed in the empty state action. When set, d2l-filter renders a button action, or a link if action-href is also defined.
+			 * @type {string}
 			 */
 			actionText: { type: String, attribute: 'action-text' },
 			/**
-			 * REQUIRED: The text that is displayed for the value
+			 * REQUIRED: The text that is displayed in the empty state description
 			 * @type {string}
 			 */
 			description: { type: String }
@@ -39,7 +40,7 @@ class FilterDimensionSetEmptyState extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'actionHref' || prop === 'actionText' || prop === 'description' || prop === 'type') {
+			if (prop === 'actionHref' || prop === 'actionText' || prop === 'description') {
 				changes.set(prop, this[prop]);
 			}
 		});

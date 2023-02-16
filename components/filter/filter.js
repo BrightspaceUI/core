@@ -22,6 +22,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { EmptyStateType } from './filter-dimension-set.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -424,7 +425,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				'd2l-filter-dimension-info-message': true
 			};
 			return dimension.setEmptyState
-				? this._createEmptyState(dimension.setEmptyState, classes, dimension.key, 'Set')
+				? this._createEmptyState(dimension.setEmptyState, classes, dimension.key, EmptyStateType.Set)
 				: html`
 					<d2l-empty-state-simple
 						class="${classMap(classes)}"
@@ -442,7 +443,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			};
 
 			searchResults = dimension.searchEmptyState
-				? this._createEmptyState(dimension.searchEmptyState, classes, dimension.key, 'Search')
+				? this._createEmptyState(dimension.searchEmptyState, classes, dimension.key, EmptyStateType.Search)
 				: html`
 					<d2l-empty-state-simple
 						class="${classMap(classes)}"
@@ -615,8 +616,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
 		let emptyState = null;
-		if (e.detail.type === 'Search') emptyState = dimension.searchEmptyState;
-		else if (e.detail.type === 'Set') emptyState = dimension.setEmptyState;
+		if (e.detail.type === EmptyStateType.Search) emptyState = dimension.searchEmptyState;
+		else if (e.detail.type === EmptyStateType.Set) emptyState = dimension.setEmptyState;
 		if (!emptyState) return;
 
 		let shouldUpdate = false;
