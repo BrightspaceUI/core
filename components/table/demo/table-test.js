@@ -34,6 +34,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	static get properties() {
 		return {
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
+			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
@@ -44,6 +45,9 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return [tableStyles, css`
 			:host {
 				display: block;
+			}
+			:host([visible-background]) {
+				--d2l-table-controls-background-color: #dddddd;
 			}
 		`];
 	}
@@ -79,13 +83,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col"><d2l-selection-select-all></d2l-selection-select-all></th>
-							<th scope="col">Country</th>
+							<th scope="col" sticky>Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 						${[1, 2].map(() => html`
 							<tr>
 								<th scope="col"></th>
-								${thText.map(text => html`<th scope="col">${text}</th>`)}
+								${thText.map((text, i) => html`<th scope="col" ?sticky="${i === 0}">${text}</th>`)}
 							</tr>
 						`)}
 					</thead>
@@ -100,7 +104,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 										label="${row.name}">
 									</d2l-selection-input>
 								</th>
-								<th scope="row">${row.name}</th>
+								<th scope="row" sticky>${row.name}</th>
 								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}

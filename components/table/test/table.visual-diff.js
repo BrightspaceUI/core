@@ -153,6 +153,7 @@ describe('d2l-table', () => {
 							{ name: 'no-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: false, stickyHeaders: false }) },
 							{ name: 'sticky-controls', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: false }) },
 							{ name: 'all-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true }) },
+							{ name: 'visible-background', action: () => setProperties('pierce/#table-controls > d2l-test-table', { visibleBackground: true }) },
 						].forEach(condition1 => {
 							describe(condition1.name, () => {
 
@@ -160,7 +161,7 @@ describe('d2l-table', () => {
 
 								[
 									{ name: '1-top', action: () => scrollTo('pierce/#table-controls', 0) },
-									{ name: '2-scrolled', action: () => scrollTo('pierce/#table-controls', 50) },
+									{ name: '2-scrolled', action: () => scrollTo('pierce/#table-controls', 1000) },
 								].forEach(condition2 => {
 									it(condition2.name, async function() {
 										await condition2.action();
