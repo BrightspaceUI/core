@@ -135,11 +135,18 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				top: 2px;
 			}
 			.d2l-collapsible-panel-title {
+				-webkit-box-orient: vertical;
+				display: -webkit-box;
 				flex: 1;
+				-webkit-line-clamp: 2;
 				margin: 0.3rem;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+				overflow-wrap: anywhere;
+				overflow-x: hidden;
+				overflow-y: hidden;
 				user-select: none;
 			}
+
 			.d2l-collapsible-panel.focused {
 				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
@@ -162,6 +169,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				cursor: default;
 			}
 			.d2l-collapsible-panel-header-actions {
+				align-self: self-start;
 				display: flex;
 				gap: 0.3rem;
 			}
@@ -172,6 +180,7 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				margin: 0.3rem;
 			}
 			.d2l-collapsible-panel-opener {
+				align-self: self-start;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom {
