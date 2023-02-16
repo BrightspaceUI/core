@@ -119,7 +119,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > * {
 		position: -webkit-sticky;
 		position: sticky;
-		top: 0;
+		z-index: 2;
 	}
 
 	/* header cells that are also sticky */
@@ -135,13 +135,6 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
 	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > [sticky] {
 		right: 0;
-	}
-
-	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > thead > tr > th,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr.d2l-table-header > *,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > * {
-		top: -5px;
 	}
 
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
@@ -225,6 +218,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				display: none;
 			}
 			:host([type="light"]) {
+				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
 				--d2l-table-cell-padding: 0.6rem;
 				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
@@ -271,6 +265,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
+			this._updateControls();
 		}
 	}
 
@@ -323,6 +318,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			await new Promise(resolve => requestAnimationFrame(resolve));
 		}
 
+		this._updateControls();
 		this._updateStickyTops();
 	}
 
@@ -390,19 +386,22 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		if (target) this[observerName].observe(target, options);
 	}
 
+	_updateControls() {
+		if (!this._controls) return;
+		this._controls._hasStickyHeaders = this.stickyHeaders;
+	}
+
 	_updateStickyTops() {
 		if (!this._table || !this.stickyHeaders) return;
 
-		const controlsHeight = this._controls && !this._controls.noSticky ? this._controls.offsetHeight + 4 : 0; // +4 for the shadow's `bottom: -4px`.
-		const borderRadius = this.type === 'default' ? 5 : 0;
-		let rowTop = controlsHeight - borderRadius;
+		const hasStickyControls = this._controls && !this._controls.noSticky;
+		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
 
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {
+			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px - var(--d2l-table-border-radius))`;
 			const ths = Array.from(r.querySelectorAll('th'));
-			ths.forEach((th) => {
-				th.style.top = `${rowTop}px`;
-			});
+			ths.forEach(th => th.style.top = thTop);
 
 			const rowHeight = r.querySelector('th:not([rowspan])')?.offsetHeight || 0;
 			rowTop += rowHeight;
