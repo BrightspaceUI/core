@@ -279,7 +279,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			await this.updateComplete;
 
 			if (!this._scrollCollapsed) {
-				return this._updateScrollPosition(tabInfo);
+				await this._updateScrollPosition(tabInfo);
 			} else {
 				const measures = this._getMeasures();
 				const newTranslationValue = this._calculateScrollPosition(tabInfo, measures);
@@ -291,12 +291,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				}
 
 				const expanded = await this._tryExpandTabsContainer(measures);
-				if (expanded) {
-					return;
-				} else {
-					return this._updateScrollPosition(tabInfo);
+				if (!expanded) {
+					await this._updateScrollPosition(tabInfo);
 				}
 			}
+			return tab.shadowRoot.querySelector('[role="tab"]');
 		};
 
 		this._handleResize = this._handleResize.bind(this);
@@ -345,10 +344,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
-								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
+								<d2l-tab-internal
+								  selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
+									.activeFocusable="${tabInfo.activeFocusable}"
 									data-state="${tabInfo.state}"
-									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
+									href="${tabInfo.href}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
 							`)}
@@ -497,9 +498,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	async _focusSelected() {
-		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
+		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[selected="true"]');
 		if (!selectedTab) return;
-
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
 		await this._updateScrollPosition(selectedTabInfo);
 
@@ -590,6 +590,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			const tabInfo = {
 				id: panel.id,
 				text: panel.text,
+				href: panel.href,
 				selected: panel.selected,
 				state: state
 			};
@@ -809,7 +810,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_setFocusable(tabInfo) {
+
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
+
 		if (currentFocusable) currentFocusable.activeFocusable = false;
 
 		tabInfo.activeFocusable = true;

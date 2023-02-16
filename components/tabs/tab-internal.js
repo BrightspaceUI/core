@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -7,14 +8,16 @@ const keyCodes = {
 	SPACE: 32
 };
 
-class Tab extends RtlMixin(LitElement) {
+class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
+			activeFocusable: { type: Boolean, attribute: 'active-focusable' },
+			selected: { type: String, reflect: true, attribute: 'selected' },
 			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
 			role: { type: String, reflect: true },
-			text: { type: String }
+			text: { type: String },
+			href: { type: String }
 		};
 	}
 
@@ -24,9 +27,13 @@ class Tab extends RtlMixin(LitElement) {
 				box-sizing: border-box;
 				display: inline-block;
 				max-width: 200px;
-				outline: none;
 				position: relative;
 				vertical-align: middle;
+			}
+			[role="tab"] {
+				color: unset;
+				outline: none;
+				text-decoration: unset;
 			}
 			.d2l-tab-text {
 				margin: 0.5rem;
@@ -62,23 +69,23 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host(.focus-visible) > .d2l-tab-text {
+			.focus-visible > .d2l-tab-text {
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);
 			}
-			:host([aria-selected="true"]:focus) {
+			:host([selected="true"]), [role="tab"]:focus {
 				text-decoration: none;
 			}
 			:host(:hover) {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
-			:host([aria-selected="true"]:hover) {
+			:host([selected="true"]:hover) {
 				color: inherit;
 				cursor: default;
 			}
-			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
+			:host([selected="true"]) .d2l-tab-selected-indicator {
 				display: block;
 			}
 
@@ -93,15 +100,15 @@ class Tab extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.ariaSelected = 'false';
+		this.selected = 'false';
 		this.role = 'tab';
-		this.tabIndex = -1;
 	}
 
 	firstUpdated(changedProperties) {
+
 		super.firstUpdated(changedProperties);
 		this.addEventListener('click', () => {
-			this.ariaSelected = 'true';
+			this.selected = 'true';
 		});
 		this.addEventListener('keydown', (e) => {
 			if (e.keyCode !== keyCodes.SPACE) return;
@@ -110,21 +117,34 @@ class Tab extends RtlMixin(LitElement) {
 		});
 		this.addEventListener('keyup', (e) => {
 			if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
-			this.ariaSelected = 'true';
+			this.selected = 'true';
 		});
 	}
 
 	render() {
-		return html`
+		return this.href ? html`
+		<a
+			href="${this.href}"
+		 role="tab"
+		 tabindex="${this.activeFocusable ? 0 : -1}"
+		 aria-selected="${this.selected ? 'true' : 'false'}">
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
-		`;
+		</a>
+		` : html`
+		<span
+		 role="tab"
+		 tabindex="${this.activeFocusable ? 0 : -1}"
+		 aria-selected="${this.selected ? 'true' : 'false'}">
+			<div class="d2l-tab-text">${this.text}</div>
+			<div class="d2l-tab-selected-indicator"></div>
+		</span>`;
 	}
 
 	update(changedProperties) {
 		super.update(changedProperties);
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'ariaSelected' && this.ariaSelected === 'true') {
+			if (prop === 'selected' && this.selected === 'true') {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
 				));
