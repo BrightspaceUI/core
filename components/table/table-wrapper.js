@@ -256,6 +256,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 		this._controls = null;
 		this._controlsMutationObserver = null;
+		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
 		this._table = null;
 		this._tableIntersectionObserver = null;
