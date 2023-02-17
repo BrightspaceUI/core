@@ -82,21 +82,21 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th scope="col"><d2l-selection-select-all></d2l-selection-select-all></th>
-							<th scope="col" sticky>Country</th>
+							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 						${[1, 2].map(() => html`
 							<tr>
-								<th scope="col"></th>
-								${thText.map((text, i) => html`<th scope="col" ?sticky="${i === 0}">${text}</th>`)}
+								<th scope="col" sticky></th>
+								${thText.map(text => html`<th scope="col">${text}</th>`)}
 							</tr>
 						`)}
 					</thead>
 					<tbody>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
-								<th scope="row">
+								<th scope="row" sticky>
 									<d2l-selection-input
 										@d2l-selection-change="${this._selectRow}"
 										?selected="${row.selected}"
@@ -104,7 +104,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 										label="${row.name}">
 									</d2l-selection-input>
 								</th>
-								<th scope="row" sticky>${row.name}</th>
+								<th scope="row">${row.name}</th>
 								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
