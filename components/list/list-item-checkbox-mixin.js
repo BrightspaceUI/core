@@ -33,7 +33,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * Private. The selection info (set by the selection component).
 			 * @ignore
 			 */
-			selectionInfo: { type: Object, attribute: false }
+			selectionInfo: { type: Object, attribute: false },
+
+			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
 		};
 	}
 
@@ -123,6 +125,13 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			}
 		}
 	}
+	_onMouseEnterSelection() {
+		this._hoveringSelection = !this.selectionDisabled;
+	}
+
+	_onMouseLeaveSelection() {
+		this._hoveringSelection = false;
+	}
 
 	_onNestedSlotChangeCheckboxMixin() {
 		this._updateNestedSelectionProvider();
@@ -144,7 +153,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				key="${this.key}"
 				label="${this.label}"
 				?skeleton="${this.skeleton}"
-				.hovering="${this._hovering}">
+				.hovering="${this._hoveringSelection}">
 			</d2l-selection-input>
 		` : nothing;
 	}
@@ -156,6 +165,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		};
 		return this.selectable ? html`
 			<div @click="${this._onCheckboxActionClick}"
+				@mouseenter="${this._onMouseEnterSelection}"
+				@mouseleave="${this._onMouseLeaveSelection}"
 				class="${classMap(classes)}">
 				${inner}
 			</div>
