@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { ref, createRef } from 'lit/directives/ref.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -9,6 +10,8 @@ const keyCodes = {
 };
 
 class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
+
+	tabRef = createRef();
 
 	static get properties() {
 		return {
@@ -107,17 +110,17 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 
 		super.firstUpdated(changedProperties);
-		this.addEventListener('click', () => {
+		this.tabRef.value.addEventListener('click', () => {
 			this.selected = 'true';
 		});
-		this.addEventListener('keydown', (e) => {
+		this.tabRef.value.addEventListener('keydown', (e) => {
 			if (e.keyCode !== keyCodes.SPACE) return;
 			e.stopPropagation();
 			e.preventDefault();
 		});
-		this.addEventListener('keyup', (e) => {
+		this.tabRef.value.addEventListener('keyup', (e) => {
 			if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
-			this.selected = 'true';
+			this.tabRef.value.click();
 		});
 	}
 
@@ -127,7 +130,8 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			href="${this.href}"
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}">
+		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 ${ref(this.tabRef)}>
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
 		</a>
@@ -135,7 +139,8 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		<span
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}">
+		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 ${ref(this.tabRef)}>
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
 		</span>`;
