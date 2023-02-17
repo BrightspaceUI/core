@@ -444,7 +444,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onKeydown(event) {
-		if (!this.gridActive || event.explicitOriginalTarget.nodeName === 'INPUT') return;
+		if (!this.gridActive || event.explicitOriginalTarget?.nodeName === 'INPUT') return;
 		let node = null;
 		let preventDefault = true;
 		switch (event.keyCode) {
