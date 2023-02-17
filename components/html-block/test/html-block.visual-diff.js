@@ -29,6 +29,7 @@ describe('d2l-html-block', () => {
 		{ name: 'inline', selector: '#inline' },
 		{ name: 'inline-no-deferred-rendering', selector: '#inline-no-deferred-rendering' },
 		{ name: 'large-font-size', selector: '#large-font-size' },
+		{ name: 'overflowing', selector: '#overflowing' },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
 		{ name: 'math (block)', selector: '#math-block' },
 		{ name: 'math (inline)', selector: '#math-inline' },
