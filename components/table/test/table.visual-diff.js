@@ -150,10 +150,10 @@ describe('d2l-table', () => {
 						});
 
 						[
-							{ name: 'no-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: false, stickyHeaders: false }) },
-							{ name: 'sticky-controls', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: false }) },
-							{ name: 'all-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true }) },
-							{ name: 'visible-background', action: () => setProperties('pierce/#table-controls > d2l-test-table', { visibleBackground: true }) },
+							{ name: 'no-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: false, stickyHeaders: false, visibleBackground: false }) },
+							{ name: 'sticky-controls', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: false, visibleBackground: false }) },
+							{ name: 'all-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true, visibleBackground: false }) },
+							{ name: 'visible-background', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true, visibleBackground: true }) },
 						].forEach(condition1 => {
 							describe(condition1.name, () => {
 
