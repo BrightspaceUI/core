@@ -226,6 +226,9 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
+			:host([sticky-headers]) {
+				--d2l-table-controls-shadow-display: none;
+			}
 			#d2l-sticky-headers-backdrop {
 				position: sticky;
 				top: calc(var(--d2l-table-sticky-top) + var(--d2l-table-border-radius));
@@ -283,7 +286,6 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
-			this._updateControls();
 		}
 	}
 
@@ -337,7 +339,6 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		}
 
 		this._handleControlsScrolledChange();
-		this._updateControls();
 		this._updateStickyTops();
 	}
 
@@ -411,11 +412,6 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			this[observerName] = new MutationObserver(callback);
 		}
 		if (target) this[observerName].observe(target, options);
-	}
-
-	_updateControls() {
-		if (!this._controls) return;
-		this._controls._noShadow = this.stickyHeaders;
 	}
 
 	_updateStickyTops() {

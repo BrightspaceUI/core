@@ -33,7 +33,6 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
 			_hasActions: { state: true },
-			_noShadow: { state: true },
 			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
@@ -60,6 +59,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 				bottom: -4px;
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				clip: rect(30px, auto, 200px, auto);
+				display: var(--d2l-selection-controls-shadow-display, block);
 				height: 40px;
 				position: absolute;
 				width: 100%;
@@ -137,7 +137,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</section>
-			${!this.noSticky && !this._noShadow ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
+			${!this.noSticky ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
 		`;
 	}
 
