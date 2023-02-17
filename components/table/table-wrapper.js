@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
@@ -119,7 +119,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > * {
 		position: -webkit-sticky;
 		position: sticky;
-		top: 0;
+		z-index: 2;
 	}
 
 	/* header cells that are also sticky */
@@ -137,21 +137,14 @@ export const tableStyles = css`
 		right: 0;
 	}
 
-	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > thead > tr > th,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr.d2l-table-header > *,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > * {
-		top: -5px;
-	}
-
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
 	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		left: -5px;
+		left: var(--d2l-table-border-radius-sticky-offset);
 	}
 	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		right: -5px;
+		right: var(--d2l-table-border-radius-sticky-offset);
 	}
 
 	/* non-header sticky cells */
@@ -202,7 +195,8 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			type: {
 				reflect: true,
 				type: String
-			}
+			},
+			_controlsScrolled: { state: true }
 		};
 	}
 
@@ -212,6 +206,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				--d2l-table-border: 1px solid var(--d2l-table-border-color);
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
+				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
 				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
 				--d2l-table-cell-padding: 0.5rem 1rem;
 				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
@@ -225,11 +220,30 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				display: none;
 			}
 			:host([type="light"]) {
+				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
+				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
 				--d2l-table-cell-padding: 0.6rem;
 				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
+			}
+			:host([sticky-headers]) {
+				--d2l-table-controls-shadow-display: none;
+			}
+			.d2l-sticky-headers-backdrop {
+				position: sticky;
+				top: calc(var(--d2l-table-sticky-top) + var(--d2l-table-border-radius));
+				width: 100%;
+				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
+			}
+			.d2l-sticky-headers-backdrop::after {
+				background-color: var(--d2l-table-controls-background-color, white);
+				bottom: 0;
+				content: "";
+				position: absolute;
+				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
+				width: 100%;
 			}
 		`;
 	}
@@ -239,6 +253,12 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
+
+		this._controls = null;
+		this._controlsMutationObserver = null;
+		this._controlsScrolled = false;
+		this._controlsScrolledMutationObserver = null;
+		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 	}
@@ -246,14 +266,17 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
-		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
+		this._controlsMutationObserver?.disconnect();
+		this._controlsScrolledMutationObserver?.disconnect();
+		this._tableMutationObserver?.disconnect();
+		this._tableIntersectionObserver?.disconnect();
 	}
 
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		return html`
-			<slot name="controls"></slot>
+			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
+			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
 			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
 		`;
 	}
@@ -269,15 +292,11 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		}
 	}
 
-	async _applyClassNames(table) {
-
-		// wait until start of next frame to read
-		await new Promise(resolve => {
-			requestAnimationFrame(resolve);
-		});
+	_applyClassNames() {
+		if (!this._table) return;
 
 		// offsetParent causes reflow/paint so do them all at once
-		const rows = Array.from(table.rows);
+		const rows = Array.from(this._table.rows);
 		let firstRow = null;
 		let lastRow = null;
 		rows.forEach((r) => {
@@ -286,13 +305,9 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			lastRow = r;
 		});
 
-		const topHeader = table.querySelector('tr.d2l-table-header:first-child th:not([rowspan]), tr[header]:first-child th:not([rowspan]), thead tr:first-child th:not([rowspan])');
-		const topHeaderHeight = topHeader ? topHeader.clientHeight : -1;
-
 		let prevRow = null;
 		let skipFirst = 0;
 		rows.forEach((r) => {
-
 			const isHeader = r.parentNode.tagName === 'THEAD' || r.classList.contains('d2l-table-header') || r.hasAttribute('header');
 			const isSelected = r.hasAttribute('selected');
 
@@ -317,39 +332,53 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
-
 		});
+	}
 
-		if (this.stickyHeaders && topHeaderHeight > -1) {
-			const offset = this.type === 'default' ? -3 : 1; // default: -5px top + 2px border, light: 0 top + 1px border
-			const ths = Array.from(table.querySelectorAll('tr.d2l-table-header:not(:first-child) th, tr[header]:not(:first-child) th, thead tr:not(:first-child) th'));
-			ths.forEach((th) => {
-				th.style.top = `${topHeaderHeight + offset}px`;
-			});
+	async _handleControlsChange() {
+		if (this._controls) {
+			await this._controls.updateComplete;
+			await new Promise(resolve => requestAnimationFrame(resolve));
 		}
 
+		this._handleControlsScrolledChange();
+		this._updateStickyTops();
+	}
+
+	_handleControlsScrolledChange() {
+		this._controlsScrolled = this._controls?._scrolled;
+	}
+
+	_handleControlsSlotChange(e) {
+		this._controls = e.target.assignedNodes({ flatten: true })[0];
+
+		this._registerMutationObserver('_controlsMutationObserver', this._handleControlsChange.bind(this), this._controls, {
+			attributes: true,
+			attributeFilter: ['hidden', 'no-sticky'],
+		});
+		this._registerMutationObserver('_controlsScrolledMutationObserver', this._handleControlsScrolledChange.bind(this), this._controls, {
+			attributes: true,
+			attributeFilter: ['_scrolled'],
+		});
+
+		this._handleControlsChange();
 	}
 
 	_handleSlotChange(e) {
-
-		const table = e.target.assignedNodes({ flatten: true }).find(
+		this._table = e.target.assignedNodes({ flatten: true }).find(
 			node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TABLE' && node.classList.contains('d2l-table'))
 		);
-		if (!table) return;
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
-		if (this._tableMutationObserver === null) {
-			this._tableMutationObserver = new MutationObserver(() => this._applyClassNames(table, 0));
-		} else {
-			this._tableMutationObserver.disconnect();
-		}
-		this._tableMutationObserver.observe(table, {
+		this._registerMutationObserver('_tableMutationObserver', this._handleTableChange.bind(this), this._table, {
 			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
 		});
+
+		if (!this._table) return;
 
 		// observes when visibility of <table> changes to catch cases
 		// where table is initially hidden (which would cause first/last
@@ -359,19 +388,53 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
-							this._applyClassNames(table);
+							this._handleTableChange();
 						}
 					});
 				});
 			} else {
 				this._tableIntersectionObserver.disconnect();
 			}
-			this._tableIntersectionObserver.observe(table);
+			this._tableIntersectionObserver.observe(this._table);
 		}
 
-		this._applyClassNames(table);
-
+		this._handleTableChange();
 	}
+
+	async _handleTableChange() {
+		await new Promise(resolve => requestAnimationFrame(resolve));
+
+		this._applyClassNames();
+		this._updateStickyTops();
+	}
+
+	_registerMutationObserver(observerName, callback, target, options) {
+		if (this[observerName]) {
+			this[observerName].disconnect();
+		} else if (target) {
+			this[observerName] = new MutationObserver(callback);
+		}
+		if (target) this[observerName].observe(target, options);
+	}
+
+	_updateStickyTops() {
+		if (!this._table || !this.stickyHeaders) return;
+
+		const hasStickyControls = this._controls && !this._controls.noSticky;
+		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
+		this.style.setProperty('--d2l-table-sticky-top', `${rowTop}px`);
+
+		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
+		stickyRows.forEach(r => {
+			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset))`;
+			const ths = Array.from(r.querySelectorAll('th'));
+			ths.forEach(th => th.style.top = thTop);
+
+			const rowHeight = r.querySelector('th:not([rowspan])')?.offsetHeight || 0;
+			rowTop += rowHeight;
+		});
+	}
+
 }
 
 customElements.define('d2l-table-wrapper', TableWrapper);

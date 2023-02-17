@@ -1,7 +1,4 @@
-import '../../selection/selection-action.js';
-import '../../selection/selection-input.js';
-import '../../selection/selection-select-all.js';
-import '../table-controls.js';
+import '../demo/table-test.js';
 import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
@@ -15,36 +12,19 @@ class TestTableControlsVisualDiff extends LitElement {
 			.d2l-visual-diff {
 				margin-bottom: 300px;
 			}
+			#table-controls {
+				height: 300px;
+				overflow-y: scroll;
+			}
 		`];
 	}
 
 	render() {
 		return html`
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="no-sticky">
-					<d2l-table-controls slot="controls" no-sticky>
-						<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-					</d2l-table-controls>
-					<table class="d2l-table">
-						<thead>
-							<tr>
-								<th><d2l-selection-select-all></d2l-selection-select-all></th>
-								<th>Column B</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr selected>
-								<td><d2l-selection-input selected label="a" key="a"></d2l-selection-input></td>
-								<td>this row is selected</td>
-							</tr>
-							<tr>
-								<td><d2l-selection-input label="b" key="b"></d2l-selection-input></td>
-								<td>this row is not selected</td>
-							</tr>
-						</tbody>
-					</table>
-				</d2l-table-wrapper>
+				<div id="table-controls">
+					<d2l-test-table condensed type="${type}"></d2l-test-table>
+				</div>
 			</div>
 		`;
 	}

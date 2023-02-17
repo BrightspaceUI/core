@@ -15,6 +15,7 @@ import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
+const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
 	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
@@ -32,6 +33,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	static get properties() {
 		return {
+			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
+			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
@@ -42,6 +45,9 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return [tableStyles, css`
 			:host {
 				display: block;
+			}
+			:host([visible-background]) {
+				--d2l-table-controls-background-color: #dddddd;
 			}
 		`];
 	}
@@ -60,45 +66,37 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		});
 		return html`
 			<d2l-table-wrapper>
-				<d2l-table-controls slot="controls" no-sticky>
-					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
-					<d2l-selection-action-dropdown text="Move To" requires-selection>
-						<d2l-dropdown-menu>
-							<d2l-menu label="Move To Options">
-								<d2l-menu-item text="Top of Quiz"></d2l-menu-item>
-								<d2l-menu-item text="Bottom of Quiz"></d2l-menu-item>
-								<d2l-menu-item text="Section">
-									<d2l-menu>
-										<d2l-menu-item text="Option 1"></d2l-menu-item>
-										<d2l-menu-item text="Option 2"></d2l-menu-item>
-									</d2l-menu>
-								</d2l-menu-item>
-							</d2l-menu>
-						</d2l-dropdown-menu>
-					</d2l-selection-action-dropdown>
-					<d2l-dropdown-button-subtle text="Actions">
-						<d2l-dropdown-menu>
-							<d2l-menu label="Actions">
-								<d2l-selection-action-menu-item text="Bookmark (requires selection)" requires-selection></d2l-selection-action-menu-item>
-								<d2l-selection-action-menu-item text="Advanced"></d2l-selection-action-menu-item>
-							</d2l-menu>
-						</d2l-dropdown-menu>
-					</d2l-dropdown-button-subtle>
-					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
+				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}">
+					<d2l-selection-action
+						text="Sticky controls"
+						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleStickyControls}"
+					></d2l-selection-action>
+					<d2l-selection-action
+						text="Sticky headers"
+						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleStickyHeaders}"
+					></d2l-selection-action>
 				</d2l-table-controls>
 
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th scope="col"><d2l-selection-select-all></d2l-selection-select-all></th>
+							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
 							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
+						${[1, 2].map(() => html`
+							<tr>
+								<th scope="col" sticky></th>
+								${thText.map(text => html`<th scope="col">${text}</th>`)}
+							</tr>
+						`)}
 					</thead>
 					<tbody>
-						${sorted.map((row) => html`
+						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
-								<th scope="row">
+								<th scope="row" sticky>
 									<d2l-selection-input
 										@d2l-selection-change="${this._selectRow}"
 										?selected="${row.selected}"
@@ -107,7 +105,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
+								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
 					</tbody>
@@ -140,6 +138,14 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const row = this._data.find(row => row.name === country);
 		row.selected = e.target.selected;
 		this.requestUpdate();
+	}
+
+	_toggleStickyControls() {
+		this.stickyControls = !this.stickyControls;
+	}
+
+	_toggleStickyHeaders() {
+		this.stickyHeaders = !this.stickyHeaders;
 	}
 
 }

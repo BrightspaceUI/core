@@ -26,7 +26,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 			 * Disables sticky positioning for the controls
 			 * @type {boolean}
 			 */
-			noSticky: { type: Boolean, attribute: 'no-sticky' },
+			noSticky: { type: Boolean, attribute: 'no-sticky', reflect: true },
 			/**
 			 * Whether all pages can be selected
 			 * @type {boolean}
@@ -59,6 +59,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 				bottom: -4px;
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				clip: rect(30px, auto, 200px, auto);
+				display: var(--d2l-selection-controls-shadow-display, block);
 				height: 40px;
 				position: absolute;
 				width: 100%;
