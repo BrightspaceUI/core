@@ -1,8 +1,8 @@
 import '../colors/colors.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement } from 'lit';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { ref, createRef } from 'lit/directives/ref.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -10,8 +10,6 @@ const keyCodes = {
 };
 
 class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
-
-	tabRef = createRef();
 
 	static get properties() {
 		return {
@@ -23,7 +21,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			href: { type: String }
 		};
 	}
-
 	static get styles() {
 		return css`
 			:host {
@@ -100,6 +97,8 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 		`;
 	}
+
+	tabRef = createRef();
 
 	constructor() {
 		super();
