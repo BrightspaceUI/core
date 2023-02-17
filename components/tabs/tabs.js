@@ -93,6 +93,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				display: flex;
 			}
 			.d2l-tabs-layout-shown {
+				align-items: center;
 				display: flex;
 				max-height: 60px;
 				opacity: 1;
