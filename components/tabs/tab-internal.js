@@ -1,5 +1,4 @@
 import '../colors/colors.js';
-import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement } from 'lit';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -97,38 +96,21 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		`;
 	}
 
-	tabRef = createRef();
-
 	constructor() {
 		super();
 		this.selected = 'false';
 	}
 
-	firstUpdated(changedProperties) {
-
-		super.firstUpdated(changedProperties);
-		this.tabRef.value.addEventListener('click', () => {
-			this.selected = 'true';
-		});
-		this.tabRef.value.addEventListener('keydown', (e) => {
-			if (e.keyCode !== keyCodes.SPACE) return;
-			e.stopPropagation();
-			e.preventDefault();
-		});
-		this.tabRef.value.addEventListener('keyup', (e) => {
-			if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
-			this.tabRef.value.click();
-		});
-	}
-
 	render() {
 		return this.href ? html`
 		<a
-			href="${this.href}"
+		 href="${this.href}"
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
 		 aria-selected="${this.selected ? 'true' : 'false'}"
-		 ${ref(this.tabRef)}>
+		 @click="${this._handleTabClick}"
+		 @keydown="${this._handleKeyDown}"
+		 @keyup="${this._handleKeyUp}">
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
 		</a>
@@ -137,7 +119,9 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
 		 aria-selected="${this.selected ? 'true' : 'false'}"
-		 ${ref(this.tabRef)}>
+		 @click="${this._handleTabClick}"
+		 @keydown="${this._handleKeyDown}"
+		 @keyup="${this._handleKeyUp}">
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
 		</span>`;
@@ -154,6 +138,21 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				this.title = this.text;
 			}
 		});
+	}
+
+	_handleClick() {
+		this.selected = 'true';
+	}
+
+	_handleKeyDown(e) {
+		if (e.keyCode !== keyCodes.SPACE) return;
+		e.stopPropagation();
+		e.preventDefault();
+	}
+
+	_handleKeyUp(e) {
+		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
+		e.target.click();
 	}
 
 }
