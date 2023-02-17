@@ -242,7 +242,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				bottom: 0;
 				content: "";
 				position: absolute;
-				top: calc(-6px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom */
+				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
 				width: 100%;
 			}
 		`;
