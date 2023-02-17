@@ -415,7 +415,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 	_updateControls() {
 		if (!this._controls) return;
-		this._controls.noShadow = this.stickyHeaders;
+		this._controls._noShadow = this.stickyHeaders;
 	}
 
 	_updateStickyTops() {
