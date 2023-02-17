@@ -345,7 +345,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 							style="${styleMap(tabsContainerListStyles)}">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal
-								  selected="${tabInfo.selected ? 'true' : 'false'}"
+								  .selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									.activeFocusable="${tabInfo.activeFocusable}"
 									data-state="${tabInfo.state}"
