@@ -229,13 +229,13 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
 			}
-			#d2l-sticky-headers-backdrop {
+			.d2l-sticky-headers-backdrop {
 				position: sticky;
 				top: calc(var(--d2l-table-sticky-top) + var(--d2l-table-border-radius));
 				width: 100%;
 				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
 			}
-			#d2l-sticky-headers-backdrop::after {
+			.d2l-sticky-headers-backdrop::after {
 				background-color: var(--d2l-table-controls-background-color, white);
 				bottom: 0;
 				content: "";
@@ -273,7 +273,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
-			${this.stickyHeaders && this._controlsScrolled ? html`<div id="d2l-sticky-headers-backdrop"></div>` : nothing}
+			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
 			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
 		`;
 	}
