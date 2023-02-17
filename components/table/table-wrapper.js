@@ -418,11 +418,11 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	}
 
 	_updateStickyTops() {
-		if (!this._table || !this.stickyHeaders) return;
-
 		const hasStickyControls = this._controls && !this._controls.noSticky;
 		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
 		this.style.setProperty('--d2l-table-sticky-top', `${rowTop}px`);
+
+		if (!this._table || !this.stickyHeaders) return;
 
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {
