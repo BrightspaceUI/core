@@ -430,6 +430,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
 		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
+		this._onTooltipShowOther = this._onTooltipShowOther.bind(this);
+
 		this.announced = false;
 		this.closeOnClick = false;
 		this.delay = 300;
@@ -474,6 +476,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.disconnectedCallback();
 		this._removeListeners();
 		window.removeEventListener('resize', this._onTargetResize);
+		document.body.removeEventListener('d2l-tooltip-show', this._onTooltipShowOther);
 		clearDismissible(this._dismissibleId);
 		delayTimeoutId = null;
 		this._dismissibleId = null;
@@ -859,6 +862,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		}, 500);
 	}
 
+	_onTooltipShowOther() {
+		// only allow one tooltip showing at a time
+		this.hide();
+	}
+
 	_removeListeners() {
 		if (!this._target) {
 			return;
@@ -889,6 +897,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
+
+			document.body.addEventListener('d2l-tooltip-show', this._onTooltipShowOther, true);
+
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
 			this.setAttribute('aria-hidden', 'true');
@@ -899,6 +910,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-hide', { bubbles: true, composed: true }
 			));
+
+			document.body.removeEventListener('d2l-tooltip-show', this._onTooltipShowOther, true);
 		}
 	}
 
