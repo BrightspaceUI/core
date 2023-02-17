@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
@@ -195,7 +195,8 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			type: {
 				reflect: true,
 				type: String
-			}
+			},
+			_controlsScrolled: { state: true }
 		};
 	}
 
@@ -225,6 +226,20 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
+			#d2l-sticky-headers-backdrop {
+				position: sticky;
+				top: calc(var(--d2l-table-sticky-top) + var(--d2l-table-border-radius));
+				width: 100%;
+				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
+			}
+			#d2l-sticky-headers-backdrop::after {
+				background-color: var(--d2l-table-controls-background-color, white);
+				bottom: 0;
+				content: "";
+				position: absolute;
+				top: calc(-6px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom */
+				width: 100%;
+			}
 		`;
 	}
 
@@ -236,6 +251,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 		this._controls = null;
 		this._controlsMutationObserver = null;
+		this._controlsScrolledMutationObserver = null;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
@@ -245,6 +261,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		super.disconnectedCallback();
 
 		this._controlsMutationObserver?.disconnect();
+		this._controlsScrolledMutationObserver?.disconnect();
 		this._tableMutationObserver?.disconnect();
 		this._tableIntersectionObserver?.disconnect();
 	}
@@ -253,6 +270,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
+			${this.stickyHeaders && this._controlsScrolled ? html`<div id="d2l-sticky-headers-backdrop"></div>` : nothing}
 			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
 		`;
 	}
@@ -318,8 +336,13 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			await new Promise(resolve => requestAnimationFrame(resolve));
 		}
 
+		this._handleControlsScrolledChange();
 		this._updateControls();
 		this._updateStickyTops();
+	}
+
+	_handleControlsScrolledChange() {
+		this._controlsScrolled = this._controls?._scrolled;
 	}
 
 	_handleControlsSlotChange(e) {
@@ -328,6 +351,10 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 		this._registerMutationObserver('_controlsMutationObserver', this._handleControlsChange.bind(this), this._controls, {
 			attributes: true,
 			attributeFilter: ['hidden', 'no-sticky'],
+		});
+		this._registerMutationObserver('_controlsScrolledMutationObserver', this._handleControlsScrolledChange.bind(this), this._controls, {
+			attributes: true,
+			attributeFilter: ['_scrolled'],
 		});
 
 		this._handleControlsChange();
@@ -388,7 +415,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 	_updateControls() {
 		if (!this._controls) return;
-		this._controls._hasStickyHeaders = this.stickyHeaders;
+		this._controls.noShadow = this.stickyHeaders;
 	}
 
 	_updateStickyTops() {
@@ -396,6 +423,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 		const hasStickyControls = this._controls && !this._controls.noSticky;
 		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
+		this.style.setProperty('--d2l-table-sticky-top', `${rowTop}px`);
 
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {

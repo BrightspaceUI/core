@@ -23,10 +23,15 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
+			 * Whether to render a shadow when the controls are stuck
+			 * @type {boolean}
+			 */
+			noShadow: { type: Boolean, attribute: 'no-shadow' },
+			/**
 			 * Disables sticky positioning for the controls
 			 * @type {boolean}
 			 */
-			noSticky: { type: Boolean, attribute: 'no-sticky' },
+			noSticky: { type: Boolean, attribute: 'no-sticky', reflect: true },
 			/**
 			 * Whether all pages can be selected
 			 * @type {boolean}
@@ -136,7 +141,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</section>
-			${!this.noSticky ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
+			${!this.noSticky && !this.noShadow ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
 		`;
 	}
 

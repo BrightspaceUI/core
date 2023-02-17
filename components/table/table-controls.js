@@ -13,8 +13,7 @@ class TableControls extends SelectionControls {
 			 * Whether to render the selection summary
 			 * @type {boolean}
 			 */
-			noSelection: { type: Boolean, attribute: 'no-selection' },
-			_hasStickyHeaders: { type: Boolean, attribute: '_has-sticky-headers', reflect: true },
+			noSelection: { type: Boolean, attribute: 'no-selection' }
 		};
 	}
 
@@ -23,15 +22,10 @@ class TableControls extends SelectionControls {
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-table-controls-background-color);
 				--d2l-selection-controls-shadow-display: var(--d2l-table-controls-shadow-display);
-				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
+				z-index: 5; /* Must be greater than d2l-table-wrapper and d2l-scroll-wrapper */
 			}
 			:host([no-sticky]) {
 				z-index: auto;
-			}
-			:host([_has-sticky-headers][_scrolled]) .d2l-selection-controls-shadow {
-				bottom: calc(-6px - var(--d2l-table-border-radius)); /* Extend past 6px margin and --d2l-table-border-radius */
-				box-shadow: unset;
-				clip: unset;
 			}
 		`];
 	}
