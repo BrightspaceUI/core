@@ -16,7 +16,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			activeFocusable: { type: Boolean, attribute: 'active-focusable' },
 			selected: { type: String, reflect: true, attribute: 'selected' },
 			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
-			role: { type: String, reflect: true },
 			text: { type: String },
 			href: { type: String }
 		};
@@ -103,7 +102,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	constructor() {
 		super();
 		this.selected = 'false';
-		this.role = 'tab';
 	}
 
 	firstUpdated(changedProperties) {
