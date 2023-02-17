@@ -427,7 +427,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {
-			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px - var(--d2l-table-border-radius))`;
+			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px - var(--d2l-table-border-radius) + 1px)`;
 			const ths = Array.from(r.querySelectorAll('th'));
 			ths.forEach(th => th.style.top = thTop);
 
