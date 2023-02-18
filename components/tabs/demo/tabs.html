@@ -60,6 +60,56 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Tabs (with href)</h2>
+
+			<div style="margin-bottom: 30px;">
+				<d2l-button-subtle id="reset-path" text="Reset History"></d2l-button-subtle>
+			</div>
+			<script>
+			  const startPath = location.pathname;
+				const basePath = startPath.split('/').slice(0, -1).join('/');
+
+				const resetHistory = () => {
+					history.go((history.length - 2) * -1);
+					setTimeout(() => {
+						if (location.pathname !== startPath) history.back();
+					}, 10);
+				};
+
+				window.onpopstate = (event) => {
+					if (event.state) {
+						document.querySelector(`#spa-tabs [href="${event.state.page}"]`).selected = true;
+					}
+					else {
+						document.querySelector(`#spa-tabs [href="biology"]`).selected = true;
+					}
+				}
+
+				document.addEventListener('click', e => {
+					const href = e.composedPath().find(el => el.tagName === 'A' && el.href)?.getAttribute('href');
+					if (href) {
+						e.preventDefault();
+						window.history.pushState({ page: href }, '', `${basePath}/${href}`);
+						document.title = `d2l-tabs - ${href}`
+						document.querySelector(`#spa-tabs [href="${href}"]`).selected = true;
+					}
+				});
+
+				document.querySelector('#reset-path').addEventListener('click', () => resetHistory());
+			</script>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs id="spa-tabs">
+						<d2l-tab-panel href="biology" text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel href="chemistry" text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel href="earth" text="Earth &amp; Planetary Sciences">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
+						<d2l-tab-panel href="physics" text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel href="math" text="Math">Tab content for Math</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
 			<h3>Tabs (with slot)</h3>
 
 			<d2l-demo-snippet>
