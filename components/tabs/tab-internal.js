@@ -23,15 +23,15 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		return css`
 			:host {
 				box-sizing: border-box;
-				display: inline-block;
-				max-width: 200px;
-				position: relative;
-				vertical-align: middle;
 			}
 			[role="tab"] {
 				color: unset;
+				display: inline-block;
+				max-width: 200px;
 				outline: none;
+				position: relative;
 				text-decoration: unset;
+				vertical-align: middle;
 			}
 			.d2l-tab-text {
 				margin: 0.5rem;
@@ -72,14 +72,14 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);
 			}
-			:host([selected="true"]), [role="tab"]:focus {
+			:host([selected="true"]) [role="tab"]:focus {
 				text-decoration: none;
 			}
-			:host(:hover) {
+			[role="tab"]:hover {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
-			:host([selected="true"]:hover) {
+			:host([selected="true"] [role="tab"]:hover) {
 				color: inherit;
 				cursor: default;
 			}
