@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="components/demo/styles.css" type="text/css">
+	<link rel="stylesheet" href="/components/demo/styles.css" type="text/css">
 	<script type="module">
-		import './components/colors/colors.js';
-		import './components/typography/typography.js';
-		import './index.js';
+		/* eslint-disable import/no-absolute-path, indent */
+		import '/components/colors/colors.js';
+		import '/components/typography/typography.js';
+		import '/index.js';
 	</script>
 	<title>core-ui</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,10 @@
 			padding: 0 30px;
 		}
 	</style>
+	<script>
+	  const pathParts = location.pathname.split('/').slice(0, -1);
+	  if (history.state) history.replaceState({}, '', `${pathParts.join('/')}/${pathParts.at(-2)}.html`), history.go();
+	</script>
 </head>
 <body class="d2l-typography">
 
