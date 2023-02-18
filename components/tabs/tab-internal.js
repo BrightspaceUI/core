@@ -24,6 +24,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			:host {
 				box-sizing: border-box;
 				max-width: 200px;
+				display: inline-block;
 			}
 			[role="tab"] {
 				color: unset;
