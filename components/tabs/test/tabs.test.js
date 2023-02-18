@@ -1,6 +1,6 @@
 import '../tabs.js';
 import '../tab-panel.js';
-import { fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
@@ -8,7 +8,7 @@ const normalFixture = html`
 		<d2l-tabs>
 			<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
 			<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
-			<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+			<d2l-tab-panel text="Chemistry" href="chemistry">Tab content for Chemistry</d2l-tab-panel>
 		</d2l-tabs>
 	</div>
 `;
@@ -34,6 +34,21 @@ describe('d2l-tabs', () => {
 			const panel = el.querySelectorAll('d2l-tab-panel')[1];
 			setTimeout(() => panel.selected = true);
 			await oneEvent(panel, 'd2l-tab-panel-selected');
+		});
+
+		it.only('selects panel when clicked', async() => {
+			const el = await fixture(normalFixture);
+			const panel = el.querySelectorAll('d2l-tab-panel')[1];
+			panel.click();
+			expect(panel.selected).to.be.false;
+		});
+
+		it.only('does not select href panel when clicked', async() => {
+			//const document.addEventListener('click', () => false);
+			const el = await fixture(normalFixture);
+			const hrefPanel = el.querySelectorAll('d2l-tab-panel')[2];
+			hrefPanel.click();
+			expect(hrefPanel.selected).to.be.false;
 		});
 
 		it('dispatches d2l-tab-panel-text-changed', async() => {
