@@ -109,6 +109,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
 		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 @keydown="${this._handleKeyDown}"
 		 @keyup="${this._handleKeyUp}">
 			<div class="d2l-tab-text">${this.text}</div>
 			<div class="d2l-tab-selected-indicator"></div>
