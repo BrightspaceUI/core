@@ -67,32 +67,32 @@
 			</div>
 			<script>
 			  const startPath = location.pathname;
-				const basePath = startPath.split('/').slice(0, -1).join('/');
-				const stateLog = [];
+			  const basePath = startPath.split('/').slice(0, -1).join('/');
+			  const stateLog = [];
 
-				const resetHistory = () => history.go((stateLog.pos + 1) * -1);
+			  const resetHistory = () => history.go((stateLog.pos + 1) * -1);
 
-				window.addEventListener('popstate', (event) => {
-					const page = event.state?.page || 'biology';
-					stateLog.pos = stateLog.findIndex(s => s.ts === event.state?.ts);
-					document.querySelector(`#spa-tabs [href="${page}"]`).selected = true;
-				});
+			  window.addEventListener('popstate', (event) => {
+			  	const page = event.state?.page || 'biology';
+			  	stateLog.pos = stateLog.findIndex(s => s.ts === event.state?.ts);
+			  	document.querySelector(`#spa-tabs [href="${page}"]`).selected = true;
+			  });
 
-				document.addEventListener('click', e => {
-					const href = e.composedPath().find(el => el.tagName === 'A')?.getAttribute('href');
-					if (href) {
-						e.preventDefault();
-						const state = { page: href, ts: Date.now() };
-						window.history.pushState(state, '', `${basePath}/${href}`);
-						stateLog.splice(stateLog.pos + 1, Infinity, state);
-						stateLog.pos = stateLog.length - 1;
-						const tab = document.querySelector(`#spa-tabs [href="${href}"]`);
-						document.title = `d2l-tabs - ${tab.text}`
-						tab.selected = true;
-					}
-				});
+			  document.addEventListener('click', e => {
+			  	const href = e.composedPath().find(el => el.tagName === 'A')?.getAttribute('href');
+			  	if (href) {
+			  		e.preventDefault();
+			  		const state = { page: href, ts: Date.now() };
+			  		window.history.pushState(state, '', `${basePath}/${href}`);
+			  		stateLog.splice(stateLog.pos + 1, Infinity, state);
+			  		stateLog.pos = stateLog.length - 1;
+			  		const tab = document.querySelector(`#spa-tabs [href="${href}"]`);
+			  		document.title = `d2l-tabs - ${tab.text}`;
+			  		tab.selected = true;
+			  	}
+			  });
 
-				document.querySelector('#reset-history').addEventListener('click', () => resetHistory());
+			  document.querySelector('#reset-history').addEventListener('click', () => resetHistory());
 			</script>
 
 			<d2l-demo-snippet>

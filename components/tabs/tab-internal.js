@@ -23,8 +23,8 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		return css`
 			:host {
 				box-sizing: border-box;
-				max-width: 200px;
 				display: inline-block;
+				max-width: 200px;
 			}
 			[role="tab"] {
 				color: unset;
@@ -140,10 +140,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		});
 	}
 
-	_handleTabClick() {
-		this.selected = 'true';
-	}
-
 	_handleKeyDown(e) {
 		if (e.keyCode !== keyCodes.SPACE) return;
 		e.stopPropagation();
@@ -153,6 +149,10 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	_handleKeyUp(e) {
 		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
 		e.target.click();
+	}
+
+	_handleTabClick() {
+		this.selected = 'true';
 	}
 
 }
