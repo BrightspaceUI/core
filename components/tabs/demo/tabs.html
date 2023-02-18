@@ -63,39 +63,36 @@
 			<h2>Tabs (with href)</h2>
 
 			<div style="margin-bottom: 30px;">
-				<d2l-button-subtle id="reset-path" text="Reset History"></d2l-button-subtle>
+				<d2l-button-subtle id="reset-history" text="Reset History"></d2l-button-subtle>
 			</div>
 			<script>
 			  const startPath = location.pathname;
 				const basePath = startPath.split('/').slice(0, -1).join('/');
+				const stateLog = [];
 
-				const resetHistory = () => {
-					history.go((history.length - 2) * -1);
-					setTimeout(() => {
-						if (location.pathname !== startPath) history.back();
-					}, 10);
-				};
+				const resetHistory = () => history.go((stateLog.pos + 1) * -1);
 
-				window.onpopstate = (event) => {
-					if (event.state) {
-						document.querySelector(`#spa-tabs [href="${event.state.page}"]`).selected = true;
-					}
-					else {
-						document.querySelector(`#spa-tabs [href="biology"]`).selected = true;
-					}
-				}
+				window.addEventListener('popstate', (event) => {
+					const page = event.state?.page || 'biology';
+					stateLog.pos = stateLog.findIndex(s => s.ts === event.state?.ts);
+					document.querySelector(`#spa-tabs [href="${page}"]`).selected = true;
+				});
 
 				document.addEventListener('click', e => {
-					const href = e.composedPath().find(el => el.tagName === 'A' && el.href)?.getAttribute('href');
+					const href = e.composedPath().find(el => el.tagName === 'A')?.getAttribute('href');
 					if (href) {
 						e.preventDefault();
-						window.history.pushState({ page: href }, '', `${basePath}/${href}`);
-						document.title = `d2l-tabs - ${href}`
-						document.querySelector(`#spa-tabs [href="${href}"]`).selected = true;
+						const state = { page: href, ts: Date.now() };
+						window.history.pushState(state, '', `${basePath}/${href}`);
+						stateLog.splice(stateLog.pos + 1, Infinity, state);
+						stateLog.pos = stateLog.length - 1;
+						const tab = document.querySelector(`#spa-tabs [href="${href}"]`);
+						document.title = `d2l-tabs - ${tab.text}`
+						tab.selected = true;
 					}
 				});
 
-				document.querySelector('#reset-path').addEventListener('click', () => resetHistory());
+				document.querySelector('#reset-history').addEventListener('click', () => resetHistory());
 			</script>
 
 			<d2l-demo-snippet>
