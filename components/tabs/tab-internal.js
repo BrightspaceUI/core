@@ -27,7 +27,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				max-width: 200px;
 			}
 			[role="tab"] {
-				color: unset;
+				color: inherit;
 				display: inline-block;
 				outline: none;
 				position: relative;

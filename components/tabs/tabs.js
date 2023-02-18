@@ -811,9 +811,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_setFocusable(tabInfo) {
-
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
-
 		if (currentFocusable) currentFocusable.activeFocusable = false;
 
 		tabInfo.activeFocusable = true;

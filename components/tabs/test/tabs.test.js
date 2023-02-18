@@ -36,15 +36,14 @@ describe('d2l-tabs', () => {
 			await oneEvent(panel, 'd2l-tab-panel-selected');
 		});
 
-		it.only('selects panel when clicked', async() => {
+		it('selects panel when clicked', async() => {
 			const el = await fixture(normalFixture);
 			const panel = el.querySelectorAll('d2l-tab-panel')[1];
 			panel.click();
 			expect(panel.selected).to.be.false;
 		});
 
-		it.only('does not select href panel when clicked', async() => {
-			//const document.addEventListener('click', () => false);
+		it('does not select href panel when clicked', async() => {
 			const el = await fixture(normalFixture);
 			const hrefPanel = el.querySelectorAll('d2l-tab-panel')[2];
 			hrefPanel.click();

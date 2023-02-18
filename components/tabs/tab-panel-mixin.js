@@ -80,11 +80,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 				));
-			} else if (prop === 'href') {
-				/** Dispatched when the href attribute is changed */
-				this.dispatchEvent(new CustomEvent(
-					'd2l-tab-panel-href-changed', { bubbles: true, composed: true, detail: { href: this.href } }
-				));
 			}
 		});
 	}
