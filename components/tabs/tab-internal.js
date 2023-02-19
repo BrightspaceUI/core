@@ -5,101 +5,104 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
-	SPACE: 32
+	SPACE: 32,
+	ARROWS: [35, 36, 37, 38, 39, 40]
 };
+
+export const tabInternalStyles = css`
+	d2l-tab-internal {
+		box-sizing: border-box;
+		display: inline-block;
+		max-width: 200px;
+	}
+	[role="tab"] {
+		color: inherit;
+		display: inline-block;
+		outline: none;
+		position: relative;
+		text-decoration: unset;
+		vertical-align: middle;
+		max-width: 100%;
+	}
+	.d2l-tab-text {
+		margin: 0.5rem;
+		overflow: hidden;
+		padding: 0.1rem;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	d2l-tab-internal:first-child .d2l-tab-text {
+		margin-left: 0;
+	}
+	d2l-tab-internal[dir="rtl"]:first-child .d2l-tab-text {
+		margin-left: 0.6rem;
+		margin-right: 0;
+	}
+	.d2l-tab-selected-indicator {
+		border-top: 4px solid var(--d2l-color-celestine);
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+		bottom: 0;
+		display: none;
+		margin: 1px 0.6rem 0 0.6rem;
+		position: absolute;
+		-webkit-transition: box-shadow 0.2s;
+		transition: box-shadow 0.2s;
+		width: calc(100% - 1.2rem);
+	}
+	d2l-tab-internal:first-child .d2l-tab-selected-indicator {
+		margin-left: 0;
+		width: calc(100% - 0.6rem);
+	}
+	d2l-tab-internal[dir="rtl"]:first-child .d2l-tab-selected-indicator {
+		margin-left: 0.6rem;
+		margin-right: 0;
+	}
+	[role="tab"].focus-visible > .d2l-tab-text {
+		border-radius: 0.3rem;
+		box-shadow: 0 0 0 2px var(--d2l-color-celestine);
+		color: var(--d2l-color-celestine);
+	}
+	d2l-tab-internal[selected] [role="tab"]:focus {
+		text-decoration: none;
+	}
+	[role="tab"]:hover {
+		color: var(--d2l-color-celestine);
+		cursor: pointer;
+	}
+	d2l-tab-internal[selected] [role="tab"]:hover {
+		color: inherit;
+		cursor: default;
+	}
+	d2l-tab-internal[selected] .d2l-tab-selected-indicator {
+		display: block;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.d2l-tab-selected-indicator {
+			-webkit-transition: none;
+			transition: none;
+		}
+	}
+	`;
 
 class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			activeFocusable: { type: Boolean, attribute: 'active-focusable' },
-			selected: { type: String, reflect: true, attribute: 'selected' },
+			selected: { type: Boolean, reflect: true },
 			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
 			text: { type: String },
 			href: { type: String }
 		};
 	}
-	static get styles() {
-		return css`
-			:host {
-				box-sizing: border-box;
-				display: inline-block;
-				max-width: 200px;
-			}
-			[role="tab"] {
-				color: inherit;
-				display: inline-block;
-				outline: none;
-				position: relative;
-				text-decoration: unset;
-				vertical-align: middle;
-			}
-			.d2l-tab-text {
-				margin: 0.5rem;
-				overflow: hidden;
-				padding: 0.1rem;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			:host(:first-child) .d2l-tab-text {
-				margin-left: 0;
-			}
-			:host([dir="rtl"]:first-child) .d2l-tab-text {
-				margin-left: 0.6rem;
-				margin-right: 0;
-			}
-			.d2l-tab-selected-indicator {
-				border-top: 4px solid var(--d2l-color-celestine);
-				border-top-left-radius: 4px;
-				border-top-right-radius: 4px;
-				bottom: 0;
-				display: none;
-				margin: 1px 0.6rem 0 0.6rem;
-				position: absolute;
-				-webkit-transition: box-shadow 0.2s;
-				transition: box-shadow 0.2s;
-				width: calc(100% - 1.2rem);
-			}
-			:host(:first-child) .d2l-tab-selected-indicator {
-				margin-left: 0;
-				width: calc(100% - 0.6rem);
-			}
-			:host([dir="rtl"]:first-child) .d2l-tab-selected-indicator {
-				margin-left: 0.6rem;
-				margin-right: 0;
-			}
-			.focus-visible > .d2l-tab-text {
-				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-				color: var(--d2l-color-celestine);
-			}
-			:host([selected="true"]) [role="tab"]:focus {
-				text-decoration: none;
-			}
-			[role="tab"]:hover {
-				color: var(--d2l-color-celestine);
-				cursor: pointer;
-			}
-			:host([selected="true"] [role="tab"]:hover) {
-				color: inherit;
-				cursor: default;
-			}
-			:host([selected="true"]) .d2l-tab-selected-indicator {
-				display: block;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-tab-selected-indicator {
-					-webkit-transition: none;
-					transition: none;
-				}
-			}
-		`;
-	}
 
 	constructor() {
 		super();
-		this.selected = 'false';
+		this.selected = false;
+		this.tabindex = '-1';
+		this.role = 'none';
 	}
 
 	render() {
@@ -108,7 +111,9 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 href="${this.href}"
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 aria-selected="${this.selected}"
+		 aria-controls="${this.controlsPanel}"
+		 title="${this.text}"
 		 @keydown="${this._handleKeyDown}"
 		 @keyup="${this._handleKeyUp}">
 			<div class="d2l-tab-text">${this.text}</div>
@@ -118,7 +123,9 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		<span
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 aria-selected="${this.selected}"
+		 aria-controls="${this.controlsPanel}"
+		 title="${this.text}"
 		 @click="${this._handleTabClick}"
 		 @keydown="${this._handleKeyDown}"
 		 @keyup="${this._handleKeyUp}">
@@ -130,18 +137,25 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	update(changedProperties) {
 		super.update(changedProperties);
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'selected' && this.selected === 'true') {
+			if (prop === 'selected' && this.selected) {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
 				));
-			} else if (prop === 'text') {
-				this.title = this.text;
 			}
 		});
 	}
 
+	focus() {
+		this.querySelector('[role="tab"]').focus();
+	}
+
 	_handleKeyDown(e) {
-		if (e.keyCode !== keyCodes.SPACE) return;
+		if (keyCodes.ARROWS.includes(e.keyCode)) {
+			this.dispatchEvent(new KeyboardEvent('keydown', e));
+		}
+		else if (e.keyCode !== keyCodes.SPACE) {
+			return;
+		}
 		e.stopPropagation();
 		e.preventDefault();
 	}
@@ -152,7 +166,11 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	_handleTabClick() {
-		this.selected = 'true';
+		this.selected = true;
+	}
+
+	createRenderRoot() {
+		return this;
 	}
 
 }

@@ -44,7 +44,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 
 	async _focus(elem) {
 		if (elem) {
-			elem = await this.arrowKeysOnBeforeFocus?.(elem) || elem;
+			this.arrowKeysOnBeforeFocus && await this.arrowKeysOnBeforeFocus(elem);
 			elem.focus();
 		}
 	}

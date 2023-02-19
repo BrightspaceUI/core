@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
-import './tab-internal.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
@@ -13,6 +12,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { tabInternalStyles } from './tab-internal.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -72,7 +72,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [bodyCompactStyles, tabInternalStyles, css`
 			:host {
 				--d2l-tabs-background-color: white;
 				box-sizing: border-box;
@@ -296,7 +296,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 					await this._updateScrollPosition(tabInfo);
 				}
 			}
-			return tab.shadowRoot.querySelector('[role="tab"]');
 		};
 
 		this._handleResize = this._handleResize.bind(this);
@@ -346,7 +345,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 							style="${styleMap(tabsContainerListStyles)}">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal
-								  .selected="${tabInfo.selected ? 'true' : 'false'}"
+								  .selected="${tabInfo.selected}"
 									.controlsPanel="${tabInfo.id}"
 									.activeFocusable="${tabInfo.activeFocusable}"
 									data-state="${tabInfo.state}"
@@ -499,7 +498,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	async _focusSelected() {
-		const selectedTab = this.shadowRoot?.querySelector('d2l-tab-internal[selected="true"]');
+		const selectedTab = this.shadowRoot?.querySelector('d2l-tab-internal[selected]');
 		if (!selectedTab) return;
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
 		await this._updateScrollPosition(selectedTabInfo);
