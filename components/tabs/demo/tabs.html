@@ -93,11 +93,13 @@
 					const href = e.composedPath().find(el => el.tagName === 'A')?.getAttribute('href');
 					if (href) {
 						e.preventDefault();
-						const state = { page: href, ts: Date.now() };
-						stateLog.splice(stateLog.pos + 1, Infinity, state);
-						stateLog.pos = stateLog.length - 1;
-						window.history.pushState({ ...state, log: stateLog }, '', `${basePath}/${href}`);
-						selectTab(href);
+						if (history.state.page != href) {
+							const state = { page: href, ts: Date.now() };
+							stateLog.splice(stateLog.pos + 1, Infinity, state);
+							stateLog.pos = stateLog.length - 1;
+							window.history.pushState({ ...state, log: stateLog }, '', `${basePath}/${href}`);
+							selectTab(href);
+						}
 					}
 				});
 			</script>

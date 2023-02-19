@@ -34,6 +34,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				position: relative;
 				text-decoration: unset;
 				vertical-align: middle;
+				max-width: 100%;
 			}
 			.d2l-tab-text {
 				margin: 0.5rem;
@@ -81,7 +82,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
-			:host([selected] [role="tab"]:hover) {
+			:host([selected]) [role="tab"]:hover {
 				color: inherit;
 				cursor: default;
 			}
@@ -110,7 +111,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 href="${this.href}"
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 aria-selected="${this.selected}"
 		 aria-controls="${this.controlsPanel}"
 		 title="${this.text}"
 		 @keydown="${this._handleKeyDown}"
@@ -122,7 +123,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		<span
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
-		 aria-selected="${this.selected ? 'true' : 'false'}"
+		 aria-selected="${this.selected}"
 		 aria-controls="${this.controlsPanel}"
 		 title="${this.text}"
 		 @click="${this._handleTabClick}"

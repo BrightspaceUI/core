@@ -554,7 +554,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_handleFocusOut(e) {
-		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
+		if (e.relatedTarget?.tagName === 'D2L-TAB-INTERNAL') return;
 		this._resetFocusables();
 	}
 

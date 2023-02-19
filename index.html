@@ -17,8 +17,9 @@
 		}
 	</style>
 	<script>
-	  const pathParts = location.pathname.split('/').slice(0, -1);
-	  if (history.state) history.replaceState(history.state, '', `${pathParts.join('/')}/${pathParts.at(-2)}.html`), history.go();
+		const pathParts = location.pathname.split('/').slice(0, -1);
+		if (history.state) history.replaceState(history.state, '', `${pathParts.join('/')}/${pathParts.at(-2)}.html`), history.go();
+		else if (pathParts.length) history.replaceState('', '', '/');
 	</script>
 </head>
 <body class="d2l-typography">
