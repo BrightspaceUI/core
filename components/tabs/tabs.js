@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
+import './tab-internal.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
@@ -12,7 +13,6 @@ import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { tabInternalStyles } from './tab-internal.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -72,7 +72,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, tabInternalStyles, css`
+		return [bodyCompactStyles, css`
 			:host {
 				--d2l-tabs-background-color: white;
 				box-sizing: border-box;
