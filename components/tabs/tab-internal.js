@@ -98,7 +98,7 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 		`;
 	}
-	
+
 	constructor() {
 		super();
 		this.selected = false;
