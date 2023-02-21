@@ -263,7 +263,7 @@ Note that when using multiple filter dimensions, the counts should be updated wh
 
 The `d2l-filter-dimension-set-empty-state` component allows you to customize the empty state components that are rendered in [d2l-filter-dimension-set](#d2l-filter-dimension-set). When placed in the `d2l-filter-dimension-set` empty state slots, it will replace the component's default empty state. This component can be placed in either the `set-empty-state` or the `search-empty-state` slots.
 
-<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo live name:d2l-filter-dimension-set-empty-state align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
