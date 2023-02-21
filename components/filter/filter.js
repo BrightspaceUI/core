@@ -143,8 +143,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
+			.d2l-empty-state-container {
+				padding: 0.3rem;
+			}
+
 			.d2l-filter-dimension-info-message {
-				margin: 0.3rem;
 				text-align: center;
 			}
 
@@ -270,7 +273,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimensionHTML = html`
-				<div aria-live="polite" class="d2l-filter-container">
+				<div class="d2l-filter-container">
 					${this._createSetDimension(dimension)}
 				</div>`;
 				break;
@@ -390,10 +393,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-				<d2l-empty-state-simple
-					class="d2l-filter-dimension-info-message"
-					description="${this.localize('components.filter.noFilters')}">
-				</d2l-empty-state-simple>
+				<div class="d2l-empty-state-container">
+					<d2l-empty-state-simple
+						class="d2l-filter-dimension-info-message"
+						description="${this.localize('components.filter.noFilters')}"
+						role="alert">
+					</d2l-empty-state-simple>
+				</div>
 			`;
 		}
 
@@ -406,10 +412,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			};
 
 			searchResults = html`
-				<d2l-empty-state-simple
-					class="${classMap(classes)}"
-					description="${this.localize('components.filter.searchResults', { number: count })}">
-				</d2l-empty-state-simple>
+				<div class="d2l-empty-state-container">
+					<d2l-empty-state-simple
+						class="${classMap(classes)}"
+						description="${this.localize('components.filter.searchResults', { number: count })}"
+						role="alert">
+					</d2l-empty-state-simple>
+				</div>
 			`;
 
 			if (count === 0) return searchResults;
@@ -418,6 +427,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return html`
 			${searchResults}
 			<d2l-list
+				aria-live="polite" 
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
