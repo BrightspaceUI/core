@@ -112,7 +112,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
 		 aria-selected="${this.selected}"
-		 aria-controls="${this.controlsPanel}"
 		 title="${this.text}"
 		 @keydown="${this._handleKeyDown}"
 		 @keyup="${this._handleKeyUp}">
@@ -124,7 +123,6 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		 role="tab"
 		 tabindex="${this.activeFocusable ? 0 : -1}"
 		 aria-selected="${this.selected}"
-		 aria-controls="${this.controlsPanel}"
 		 title="${this.text}"
 		 @click="${this._handleTabClick}"
 		 @keydown="${this._handleKeyDown}"
