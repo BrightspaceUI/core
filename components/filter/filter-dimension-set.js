@@ -93,7 +93,7 @@ class FilterDimensionSet extends LitElement {
 		});
 
 		if (changes.size > 0) {
-			this._dispatchDataChangeEvent({ dimensionKey: this.key, changes: changes });
+			this._dispatchEvent('d2l-filter-dimension-data-change', { dimensionKey: this.key, changes: changes });
 		}
 	}
 
