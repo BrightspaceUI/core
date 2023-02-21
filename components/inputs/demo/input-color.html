@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../input-color.js';
+			import './input-color-palette.js';
+		</script>
+		<style>
+			d2l-input-color {
+				margin-inline-end: 30px;
+				vertical-align: top;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-color">
+
+			<h2>Normal (dropdown)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-color type="foreground" launch-type="dropdown" disallow-none value="#D97B32"><d2l-test-input-color-palette value="D97B32"></d2l-test-input-color-palette></d2l-input-color>
+					<d2l-input-color type="background" launch-type="dropdown"><d2l-test-input-color-palette></d2l-test-input-color-palette></d2l-input-color>
+					<d2l-input-color label="Custom Color" type="custom" launch-type="dropdown" value="#8ad934"><d2l-test-input-color-palette value="8ad934"></d2l-test-input-color-palette></d2l-input-color>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Readonly</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-color type="foreground" disallow-none value="#D97B32" readonly></d2l-input-color>
+					<d2l-input-color type="background" readonly></d2l-input-color>
+					<d2l-input-color label="Custom Color" type="custom" value="#8ad934" readonly></d2l-input-color>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Disabled</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-color type="foreground" disallow-none value="#D97B32" disabled></d2l-input-color>
+					<d2l-input-color type="background" disabled></d2l-input-color>
+					<d2l-input-color label="Custom Color" type="custom" value="#8ad934" disabled></d2l-input-color>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
