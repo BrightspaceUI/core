@@ -11,6 +11,9 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 let logAccessibilityWarning = true;
 
+/* only one tooltip is to be shown at once - track the active tooltip so it can be hidden if necessary */
+let activeTooltip = null;
+
 const pointerLength = 16;
 const pointerOverhang = 7; /* how far the pointer extends outside the content */
 
@@ -430,8 +433,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
 		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
-		this._onTooltipShowOther = this._onTooltipShowOther.bind(this);
-
 		this.announced = false;
 		this.closeOnClick = false;
 		this.delay = 300;
@@ -474,9 +475,9 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (activeTooltip === this) activeTooltip = null;
 		this._removeListeners();
 		window.removeEventListener('resize', this._onTargetResize);
-		document.body.removeEventListener('d2l-tooltip-show', this._onTooltipShowOther);
 		clearDismissible(this._dismissibleId);
 		delayTimeoutId = null;
 		this._dismissibleId = null;
@@ -862,11 +863,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		}, 500);
 	}
 
-	_onTooltipShowOther() {
-		// only allow one tooltip showing at a time
-		this.hide();
-	}
-
 	_removeListeners() {
 		if (!this._target) {
 			return;
@@ -890,6 +886,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
 		if (newValue) {
+			if (!this.forceShow) {
+				if (activeTooltip) activeTooltip.hide();
+				activeTooltip = this;
+			}
+
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
 			await this.updateComplete;
@@ -898,10 +899,10 @@ class Tooltip extends RtlMixin(LitElement) {
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
 
-			document.body.addEventListener('d2l-tooltip-show', this._onTooltipShowOther, true);
-
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
+			if (activeTooltip === this) activeTooltip = null;
+
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
@@ -910,8 +911,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-hide', { bubbles: true, composed: true }
 			));
-
-			document.body.removeEventListener('d2l-tooltip-show', this._onTooltipShowOther, true);
 		}
 	}
 
