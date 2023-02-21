@@ -30,11 +30,11 @@ class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			[role="tab"] {
 				color: inherit;
 				display: inline-block;
+				max-width: 100%;
 				outline: none;
 				position: relative;
 				text-decoration: unset;
 				vertical-align: middle;
-				max-width: 100%;
 			}
 			.d2l-tab-text {
 				margin: 0.5rem;
