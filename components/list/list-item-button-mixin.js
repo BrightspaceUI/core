@@ -20,7 +20,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host([skeleton]) [slot="content-action"],
 			:host([button-disabled]) [slot="content-action"] {
 				pointer-events: none;
 			}
