@@ -372,7 +372,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				font-weight: 700;
 			}
 			:host([skeleton]) {
-				pointer-events:none;
+				pointer-events: none;
 			}
 		`];
 
