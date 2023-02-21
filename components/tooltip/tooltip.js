@@ -886,8 +886,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
 		if (newValue) {
-			if (activeTooltip) activeTooltip.hide();
-			activeTooltip = this;
+			if (!this.forceShow) {
+				if (activeTooltip) activeTooltip.hide();
+				activeTooltip = this;
+			}
 
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
