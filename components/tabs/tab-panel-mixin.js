@@ -45,6 +45,11 @@ export const TabPanelMixin = superclass => class extends superclass {
 			:host([selected]) {
 				display: block;
 			}
+			:host(.focus-visible) {
+				outline: none;
+				border-radius: 0.3rem;
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
+			}
 		`;
 	}
 
