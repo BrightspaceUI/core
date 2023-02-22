@@ -156,7 +156,6 @@ describe('d2l-list', () => {
 			} },
 			{ name: 'hover secondary action', selector: '#selectableHref', action: () => hover('#selectableHref [selectable] d2l-button-icon') },
 		] },
-
 		{ category: 'controls', tests: [
 			{ name: 'not selectable', selector: '#noSelectableControls' },
 			{ name: 'none selected', selector: '#selectableControls' },
