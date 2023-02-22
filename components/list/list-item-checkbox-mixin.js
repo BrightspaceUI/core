@@ -45,7 +45,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				height: 100%;
 			}
 			:host([selection-disabled]) .d2l-checkbox-action {
-				pointer-events:none;
+				pointer-events: none;
 			}
 		` ];
 
