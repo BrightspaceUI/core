@@ -276,7 +276,7 @@ When using `d2l-dialog` or `d2l-dialog-fullscreen` the dialog text will not be a
 To announce the dialog text, use one of the following methods:
 
 1. Use `d2l-dialog-confirm` instead
-2. Add `describe-content="true"`
+2. Add `describe-content="true"` (if using `d2l-dialog`)
 3. Set `autofocus` on the first text element (see above for details)
 
 <!-- docs: start hidden content -->
