@@ -26,7 +26,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
 			}
-			
 			button {
 				background-color: transparent;
 				border: none;
