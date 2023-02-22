@@ -103,15 +103,16 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 			:host(:not([expanded])) .d2l-collapsible-panel {
 				cursor: pointer;
 			}
-			:host([type=subtle]) .d2l-collapsible-panel {
+			:host([type="subtle"]) .d2l-collapsible-panel {
 				background-color: white;
 				border: none;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
 			}
-			:host([type=inline]) .d2l-collapsible-panel {
+			:host([type="inline"]) .d2l-collapsible-panel {
 				border-left: none;
 				border-radius: 0;
 				border-right: none;
+				outline-offset: -2px;
 			}
 			:host([heading-style="1"]) {
 				--d2l-collapsible-panel-header-spacing: 1.2rem;
@@ -123,6 +124,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 				border-radius: 0.4rem;
 				cursor: pointer;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
+			}
+			:host([type="inline"]) .d2l-collapsible-panel-header {
+				border-radius: 0;
+				outline-offset: -2px;
 			}
 			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
 				background-color: white;
