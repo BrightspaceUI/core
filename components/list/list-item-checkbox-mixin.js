@@ -95,6 +95,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('selectionDisabled') && this.selectionDisabled === true) this._hoveringSelection = false;
+	}
+
 	async _dispatchSelected(value) {
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */

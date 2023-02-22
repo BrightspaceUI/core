@@ -39,6 +39,11 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		this._primaryActionId = getUniqueId();
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('actionHref') && !this.actionHref) this._hoveringPrimaryAction = false;
+	}
+
 	_handleLinkClick() {
 		/** Dispatched when the item's primary link action is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
