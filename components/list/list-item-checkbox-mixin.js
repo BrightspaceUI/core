@@ -1,6 +1,5 @@
 import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -45,8 +44,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				display: block;
 				height: 100%;
 			}
-			.d2l-checkbox-action.d2l-checkbox-action-disabled {
-				cursor: default;
+			:host([selection-disabled]) .d2l-checkbox-action {
+				pointer-events:none;
 			}
 		` ];
 
@@ -126,7 +125,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_onMouseEnterSelection() {
-		this._hoveringSelection = !this.selectionDisabled;
+		this._hoveringSelection = true;
 	}
 
 	_onMouseLeaveSelection() {
@@ -159,15 +158,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckboxAction(inner) {
-		const classes = {
-			'd2l-checkbox-action': true,
-			'd2l-checkbox-action-disabled': this.selectionDisabled
-		};
 		return this.selectable ? html`
 			<div @click="${this._onCheckboxActionClick}"
 				@mouseenter="${this._onMouseEnterSelection}"
 				@mouseleave="${this._onMouseLeaveSelection}"
-				class="${classMap(classes)}">
+				class="d2l-checkbox-action">
 				${inner}
 			</div>
 			` : nothing;
