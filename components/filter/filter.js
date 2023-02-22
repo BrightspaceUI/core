@@ -407,14 +407,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.searchValue && dimension.searchValue !== '') {
 			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
 			const classes = {
-				'd2l-filter-dimension-info-message': true,
+				'd2l-empty-state-container': true,
 				'd2l-offscreen': count !== 0
 			};
 
 			searchResults = html`
-				<div class="d2l-empty-state-container">
+				<div class="${classMap(classes)}">
 					<d2l-empty-state-simple
-						class="${classMap(classes)}"
+						class="d2l-filter-dimension-info-message"
 						description="${this.localize('components.filter.searchResults', { number: count })}"
 						role="alert">
 					</d2l-empty-state-simple>
