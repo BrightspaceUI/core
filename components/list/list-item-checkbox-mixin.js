@@ -125,6 +125,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			}
 		}
 	}
+
 	_onMouseEnterSelection() {
 		this._hoveringSelection = !this.selectionDisabled;
 	}
