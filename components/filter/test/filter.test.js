@@ -67,9 +67,10 @@ describe('d2l-filter', () => {
 			elem.requestUpdate();
 			await elem.updateComplete;
 
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
 			expect(infoMessage.description).to.include('No search results');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.false;
+			expect(container.classList.contains('d2l-offscreen')).to.be.false;
 		});
 
 		it('set dimension - search results (offscreen)', async() => {
@@ -78,16 +79,17 @@ describe('d2l-filter', () => {
 			elem.requestUpdate();
 			await elem.updateComplete;
 
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
 			expect(infoMessage.description).to.include('1 search result');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+			expect(container.classList.contains('d2l-offscreen')).to.be.true;
 
 			elem._handleSearch({ detail: { value: 'value' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
 
 			expect(infoMessage.description).to.include('2 search results');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+			expect(container.classList.contains('d2l-offscreen')).to.be.true;
 		});
 	});
 
