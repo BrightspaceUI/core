@@ -349,7 +349,10 @@ Collapsible panels have two optional slots, `header` and `actions` that can be u
 	</div>
 	<d2l-collapsible-panel-summary-item slot="summary" text="Week 2 Lab (PDF) attached"></d2l-collapsible-panel-summary-item>
 	<d2l-collapsible-panel-summary-item slot="summary" text="1 comment"></d2l-collapsible-panel-summary-item>
-	Expanded content
+	<p style="margin-top: 0;">Sweet roll candy dessert caramels shortbread gummies toffee oat cake cookie. Wafer gummies shortbread sweet halvah jujubes sweet. Cake chocolate chocolate bar carrot cake marzipan. Icing chupa chups jujubes macaroon toffee chocolate bar wafer croissant.</p>
+	<p>Toffee pastry chupa chups lollipop carrot cake chocolate cake sweet roll sweet roll. Marzipan pudding candy canes jelly lemon drops oat cake ice cream. Wafer danish pudding marzipan chupa chups jelly beans brownie.</p>
+	<p>Pastry apple pie biscuit sesame snaps sweet pie apple pie dessert jelly beans. Lemon drops croissant tootsie roll croissant oat cake. Macaroon toffee pie gummi bears cupcake wafer tiramisu.</p>
+	<p style="margin-bottom: 0;">Chocolate cake ice cream cake chocolate bar dessert. Donut tiramisu fruitcake tiramisu liquorice shortbread sugar plum macaroon caramels. Tart candy cookie ice cream dessert tootsie roll.</p>
 </d2l-collapsible-panel>
 ```
 
