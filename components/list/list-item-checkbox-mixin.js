@@ -34,7 +34,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * @ignore
 			 */
 			selectionInfo: { type: Object, attribute: false },
-
 			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
 		};
 	}
