@@ -36,8 +36,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				outline: none;
 				width: 100%;
 			}
-
-			
 		` ];
 
 		super.styles && styles.unshift(super.styles);
