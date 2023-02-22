@@ -23,7 +23,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host([button-disabled]) [slot="content-action"] {
 				pointer-events: none;
 			}
-
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
 			}
