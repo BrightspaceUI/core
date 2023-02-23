@@ -63,6 +63,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	_handleLinkKeyDown(e) {
 		if (e.keyCode !== 32) return;
+		// handle the space key
 		e.preventDefault();
 		e.stopPropagation();
 		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
