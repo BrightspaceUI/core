@@ -79,7 +79,8 @@ class FilterDimensionSet extends LitElement {
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
-			if (prop === 'introductoryText' || prop === 'text' || prop === 'loading') {
+
+			if (prop === 'text' || prop === 'loading') {
 				changes.set(prop, this[prop]);
 			}
 		});

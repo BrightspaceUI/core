@@ -74,6 +74,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-bottom: 0.9rem;
 			}
 
+			.d2l-filter-dimension-header.d2l-filter-dimension-header-with-intro {
+				padding-bottom: 0.6rem;
+			}
+
 			.d2l-filter-dimension-header,
 			.d2l-filter-dimension-header-actions {
 				align-items: center;
@@ -142,10 +146,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
-			.d2l-filter-dimension-set-introductory-text {
+			.d2l-filter-dimension-intro-text {
 				margin: 0;
-				padding: 0 0.6rem 0.9rem 0.6rem;
+				padding: 0.6rem 1.5rem 1.5rem;
 				text-align: center;
+			}
+
+			.d2l-filter-dimension-intro-text.d2l-filter-dimension-intro-text-multi-dimension {
+				padding: 0 1.5rem 1.5rem;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -328,8 +336,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dimension = this._getActiveDimension();
 
+		const introductoryTextClasses = {
+			'd2l-body-compact': true,
+			'd2l-filter-dimension-intro-text': true,
+			'd2l-filter-dimension-intro-text-multi-dimension': !singleDimension
+		};
 		const introductoryText = !dimension.introductoryText ? nothing : html`
-			<p class="d2l-body-compact d2l-filter-dimension-set-introductory-text">${dimension.introductoryText}</p>`;
+			<p class="${classMap(introductoryTextClasses)}">${dimension.introductoryText}</p>`;
 
 		const clear = html`
 			<d2l-button-subtle
@@ -369,8 +382,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</div>
 		`;
 
+		const headerClasses = {
+			'd2l-filter-dimension-header': true,
+			'd2l-filter-dimension-header-with-intro': dimension.introductoryText
+		};
 		const header = singleDimension ? nothing : html`
-			<div class="d2l-filter-dimension-header">
+			<div class="${classMap(headerClasses)}">
 				<d2l-button-icon
 					@click="${this._handleDimensionHide}"
 					icon="tier1:chevron-left"
