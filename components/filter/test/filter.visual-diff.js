@@ -48,13 +48,13 @@ describe('d2l-filter', () => {
 
 			[
 				'empty',
+				'introductory-text',
 				'single-selection',
 				'single-selection-select-all',
 				'multi-selection',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
 				'multi-selection-all-selected',
-				'introductory-text'
 			].forEach(type => {
 				it(type, async function() {
 					const selector = `#single-set-${type}`;
@@ -257,11 +257,11 @@ describe('d2l-filter', () => {
 			});
 
 			[
+				'introductory-text',
 				'single-selection-select-all',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
-				'multi-selection-all-selected',
-				'introductory-text'
+				'multi-selection-all-selected'
 			].forEach(type => {
 				it(type, async function() {
 					const selector = `#single-set-${type}`;
