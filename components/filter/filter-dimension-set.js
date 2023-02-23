@@ -146,16 +146,6 @@ class FilterDimensionSet extends LitElement {
 		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value');
 	}
 
-	_handleDimensionSetSearchEmptyStateChange(e) {
-		e.stopPropagation();
-		this._dispatchEvent('d2l-filter-dimension-empty-state-change', { dimensionKey: this.key, type: EmptyStateType.Search, changes: e.detail.changes });
-	}
-
-	_handleDimensionSetSetEmptyStateChange(e) {
-		e.stopPropagation();
-		this._dispatchEvent('d2l-filter-dimension-empty-state-change', { dimensionKey: this.key, type: EmptyStateType.Set, changes: e.detail.changes });
-	}
-
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
 		this._dispatchEvent('d2l-filter-dimension-data-change', { dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
@@ -163,12 +153,12 @@ class FilterDimensionSet extends LitElement {
 
 	_handleSearchEmptyStateSlotChange(e) {
 		if (!this._searchEmptyStateSlot) this._searchEmptyStateSlot = e.target;
-		this._dispatchEvent('d2l-filter-dimension-empty-state-slot-change', { dimensionKey: this.key, type: EmptyStateType.Search });
+		this._dispatchEvent('d2l-filter-dimension-data-change', { dimensionKey: this.key, changes: new Map([['searchEmptyState', this.getSearchEmptyState()]]) });
 	}
 
 	_handleSetEmptyStateSlotChange(e) {
 		if (!this._setEmptyStateSlot) this._setEmptyStateSlot = e.target;
-		this._dispatchEvent('d2l-filter-dimension-empty-state-slot-change', { dimensionKey: this.key, type: EmptyStateType.Set });
+		this._dispatchEvent('d2l-filter-dimension-data-change', { dimensionKey: this.key, changes: new Map([['setEmptyState', this.getSearchEmptyState()]]) });
 	}
 
 	_handleSlotChange(e) {

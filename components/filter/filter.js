@@ -189,8 +189,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this.addEventListener('d2l-filter-dimension-empty-state-change', this._handleDimensionEmptyStateChange);
-		this.addEventListener('d2l-filter-dimension-empty-state-slot-change', this._handleDimensionEmptyStateSlotChange);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
 
 		// Prevent these events from bubbling out of the filter
@@ -430,7 +428,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			const classes = {
-				'd2l-body-small': true,
 				'd2l-filter-dimension-info-message': true
 			};
 			return dimension.setEmptyState
@@ -449,7 +446,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.searchValue && dimension.searchValue !== '') {
 			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
 			const classes = {
-				'd2l-body-small': true,
 				'd2l-filter-dimension-info-message': true,
 				'd2l-offscreen': count !== 0
 			};
@@ -623,34 +619,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldResizeDropdown) {
 			this._requestDropdownResize();
 		}
-	}
-
-	_handleDimensionEmptyStateChange(e) {
-		e.stopPropagation();
-
-		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
-		let shouldUpdate = false;
-		let emptyState = null;
-		if (e.detail.type === EmptyStateType.Search) emptyState = dimension.searchEmptyState;
-		else if (e.detail.type === EmptyStateType.Set) emptyState = dimension.setEmptyState;
-		if (!emptyState) return;
-
-		e.detail.changes.forEach((newValue, prop) => {
-			if (emptyState[prop] === newValue) return;
-
-			emptyState[prop] = newValue;
-			shouldUpdate = true;
-		});
-
-		if (shouldUpdate)  this.requestUpdate();
-	}
-
-	_handleDimensionEmptyStateSlotChange(e) {
-		e.stopPropagation();
-		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
-		if (e.detail.type === EmptyStateType.Search) dimension.searchEmptyState = e.target.getSearchEmptyState();
-		else if (e.detail.type === EmptyStateType.Set) dimension.setEmptyState = e.target.getSetEmptyState();
-		this.requestUpdate();
 	}
 
 	_handleDimensionHide() {
