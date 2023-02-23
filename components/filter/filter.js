@@ -144,7 +144,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-empty-state-container {
-				padding: 0.3rem;
+				padding: 0.9rem;
 			}
 
 			.d2l-filter-dimension-info-message {
