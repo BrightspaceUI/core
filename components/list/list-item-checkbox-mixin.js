@@ -1,6 +1,5 @@
 import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -33,7 +32,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * Private. The selection info (set by the selection component).
 			 * @ignore
 			 */
-			selectionInfo: { type: Object, attribute: false }
+			selectionInfo: { type: Object, attribute: false },
+			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
 		};
 	}
 
@@ -44,7 +44,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				display: block;
 				height: 100%;
 			}
-			.d2l-checkbox-action.d2l-checkbox-action-disabled {
+			:host([selection-disabled]) .d2l-checkbox-action {
 				cursor: default;
 			}
 		` ];
@@ -95,6 +95,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('selectionDisabled') && this.selectionDisabled === true) this._hoveringSelection = false;
+	}
+
 	async _dispatchSelected(value) {
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
@@ -124,6 +129,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		}
 	}
 
+	_onMouseEnterSelection() {
+		this._hoveringSelection = !this.selectionDisabled;
+	}
+
+	_onMouseLeaveSelection() {
+		this._hoveringSelection = false;
+	}
+
 	_onNestedSlotChangeCheckboxMixin() {
 		this._updateNestedSelectionProvider();
 	}
@@ -144,19 +157,17 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				key="${this.key}"
 				label="${this.label}"
 				?skeleton="${this.skeleton}"
-				.hovering="${this._hovering}">
+				.hovering="${this._hoveringSelection}">
 			</d2l-selection-input>
 		` : nothing;
 	}
 
 	_renderCheckboxAction(inner) {
-		const classes = {
-			'd2l-checkbox-action': true,
-			'd2l-checkbox-action-disabled': this.selectionDisabled
-		};
 		return this.selectable ? html`
 			<div @click="${this._onCheckboxActionClick}"
-				class="${classMap(classes)}">
+				@mouseenter="${this._onMouseEnterSelection}"
+				@mouseleave="${this._onMouseLeaveSelection}"
+				class="d2l-checkbox-action">
 				${inner}
 			</div>
 			` : nothing;
