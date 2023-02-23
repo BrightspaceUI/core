@@ -124,6 +124,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		}
 	}
 
+	_onCheckboxKeyDown(e) {
+		if (e.keyCode !== 13) return;
+		this.selected = !this.selected;
+	}
+
 	_onNestedSlotChangeCheckboxMixin() {
 		this._updateNestedSelectionProvider();
 	}
@@ -142,6 +147,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
+				@keydown="${this._onCheckboxKeyDown}"
 				label="${this.label}"
 				?skeleton="${this.skeleton}"
 				.hovering="${this._hovering}">

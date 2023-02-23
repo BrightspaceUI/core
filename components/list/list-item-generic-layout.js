@@ -445,16 +445,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_onKeydown(event) {
 		if (!this.gridActive) return;
+
 		let node = null;
 		let preventDefault = true;
 		switch (event.keyCode) {
-			case keyCodes.ENTER:
-			case keyCodes.SPACE:
-				node = getComposedActiveElement();
-				node.click();
-				// mouseup event is necessary for components like d2l-dropdown-more that control state by listening to this event
-				node.dispatchEvent(new MouseEvent('mouseup', { composed: true }));
-				break;
 			case keyCodes.RIGHT:
 				node = getComposedActiveElement();
 				if (this.dir === 'rtl') {
