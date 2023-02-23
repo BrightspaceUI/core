@@ -35,6 +35,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectionSingle: { type: Boolean, attribute: 'selection-single' },
 			/**
+			 * The introductory text to display at the top of the filter dropdown
+			 * @type {string}
+			 */
+			introductoryText: { type: String, attribute: 'introductory-text' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 * @type {string}
 			 */
@@ -49,6 +54,7 @@ class FilterDimensionSet extends LitElement {
 
 	constructor() {
 		super();
+		this.introductoryText = '';
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;

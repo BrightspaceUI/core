@@ -147,12 +147,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
 			:host([_separators="none"]) [slot="control-container"]::before,
 			:host([_separators="none"]) [slot="control-container"]::after,
-			:host([selectable][_hovering]:not([selection-disabled])) [slot="control-container"]::before,
-			:host([selectable][_hovering]:not([selection-disabled])) [slot="control-container"]::after,
+			:host([_hovering-selection]) [slot="control-container"]::before,
+			:host([_hovering-selection]) [slot="control-container"]::after,
+			:host([_hovering-primary-action]) [slot="control-container"]::before,
+			:host([_hovering-primary-action]) [slot="control-container"]::after,
 			:host([selectable][_focusing]) [slot="control-container"]::before,
 			:host([selectable][_focusing]) [slot="control-container"]::after,
-			:host([selected]) [slot="control-container"]::before,
-			:host([selected]) [slot="control-container"]::after,
+			:host([_focusing-primary-action]) [slot="control-container"]::before,
+			:host([_focusing-primary-action]) [slot="control-container"]::after,
+			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
+			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -317,17 +321,21 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"],
+			:host([_hovering-primary-action]) [slot="outside-control-container"],
+			:host([_hovering-selection]) [slot="outside-control-container"],
+			:host([_focusing-primary-action]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_hovering]) [slot="outside-control-container"] {
+			:host([_hovering-primary-action]) [slot="outside-control-container"],
+			:host([_hovering-selection]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
+				border-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
 
 			:host(:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
@@ -343,7 +351,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				transition: border-color 400ms linear;
 			}
 			:host([_highlighting]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[_hovering][_highlighting]) [slot="outside-control-container"],
+			:host([_hovering-selection][_highlighting]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-celestine-plus-2);
@@ -362,6 +370,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			.d2l-list-item-tooltip-key {
 				font-weight: 700;
+			}
+			:host([skeleton]) {
+				pointer-events: none;
 			}
 		`];
 
@@ -632,7 +643,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					${this._renderExpandCollapse()}
 				</div>
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
-				${this.selectable || this.expandable ? html`<div slot="control-action"
+				${this.selectable || this.expandable ? html`
+				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}
