@@ -11,14 +11,6 @@ const dimensionfixture = html`
 		<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
 	</d2l-filter-dimension-set>`;
 
-const emptyStateDimensionFixture = html`
-	<d2l-filter-dimension-set key="dim" text="Dim">
-		<d2l-filter-dimension-set-value key="1" text="Value 1"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-empty-state id="search-empty-state" slot="search-empty-state" description="Empty state description"></d2l-filter-dimension-set-empty-state>
-		<d2l-filter-dimension-set-empty-state id="set-empty-state" slot="set-empty-state" description="Empty state description" action-text="Action text" action-href="https://d2l.com"></d2l-filter-dimension-set-empty-state>
-	</d2l-filter-dimension-set>`;
-
 describe('d2l-filter-dimension-set', () => {
 
 	it('should construct', () => {
@@ -42,6 +34,47 @@ describe('d2l-filter-dimension-set', () => {
 			expect(values[2].key).to.equal('newValue');
 		});
 
+		it('handles search-empty-state slot change', async() => {
+			const elem = await fixture(dimensionfixture);
+			const eventSpy = spy(elem, 'dispatchEvent');
+
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'search-empty-state';
+			setTimeout(() => elem.appendChild(emptyState));
+
+			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(e.detail.dimensionKey).to.equal('dim');
+			expect(e.detail.changes.size).to.equal(1);
+			expect(e.detail.changes.get('searchEmptyState').actionHref).to.equal('https://d2l.com');
+			expect(e.detail.changes.get('searchEmptyState').actionText).to.equal('Click me');
+			expect(e.detail.changes.get('searchEmptyState').description).to.equal('Description');
+			expect(eventSpy).to.be.calledOnce;
+		});
+
+		it('handles set-empty-state slot change', async() => {
+			const elem = await fixture(dimensionfixture);
+			const eventSpy = spy(elem, 'dispatchEvent');
+
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'set-empty-state';
+			setTimeout(() => elem.appendChild(emptyState));
+
+			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(e.detail.dimensionKey).to.equal('dim');
+			expect(e.detail.changes.size).to.equal(1);
+			expect(e.detail.changes.get('setEmptyState').actionHref).to.equal('https://d2l.com');
+			expect(e.detail.changes.get('setEmptyState').actionText).to.equal('Click me');
+			expect(e.detail.changes.get('setEmptyState').description).to.equal('Description');
+			expect(eventSpy).to.be.calledOnce;
+		});
 	});
 
 	describe('data change', () => {
@@ -71,32 +104,6 @@ describe('d2l-filter-dimension-set', () => {
 			expect(e.detail.valueKey).to.equal('2');
 			expect(e.detail.changes.size).to.equal(1);
 			expect(e.detail.changes.get('selected')).to.be.true;
-			expect(eventSpy).to.be.calledOnce;
-		});
-
-		it('fires empty state change event when data changes in search empty state', async() => {
-			const elem = await fixture(emptyStateDimensionFixture);
-			const eventSpy = spy(elem, 'dispatchEvent');
-			const searchEmptyState = elem.querySelector('#search-empty-state');
-			setTimeout(() => searchEmptyState.actionText = 'Changed!');
-
-			const e = await oneEvent(elem, 'd2l-filter-dimension-empty-state-change');
-			expect(e.detail.dimensionKey).to.equal('dim');
-			expect(e.detail.changes.size).to.equal(1);
-			expect(e.detail.changes.get('actionText')).to.equal('Changed!');
-			expect(eventSpy).to.be.calledOnce;
-		});
-
-		it('fires empty state change event when data changes in set empty state', async() => {
-			const elem = await fixture(emptyStateDimensionFixture);
-			const eventSpy = spy(elem, 'dispatchEvent');
-			const setEmptyState = elem.querySelector('#set-empty-state');
-			setTimeout(() => setEmptyState.description = 'Changed!');
-
-			const e = await oneEvent(elem, 'd2l-filter-dimension-empty-state-change');
-			expect(e.detail.dimensionKey).to.equal('dim');
-			expect(e.detail.changes.size).to.equal(1);
-			expect(e.detail.changes.get('description')).to.equal('Changed!');
 			expect(eventSpy).to.be.calledOnce;
 		});
 	});

@@ -263,7 +263,7 @@ Note that when using multiple filter dimensions, the counts should be updated wh
 
 The `d2l-filter-dimension-set-empty-state` component allows you to customize the empty state components that are rendered in [d2l-filter-dimension-set](#d2l-filter-dimension-set). When placed in the `d2l-filter-dimension-set` empty state slots, it will replace the component's default empty state. This component can be placed in either the `set-empty-state` or the `search-empty-state` slots.
 
-<!-- docs: demo live name:d2l-filter-dimension-set-empty-state align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo live name:d2l-filter-dimension-set-empty-state autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -276,14 +276,14 @@ The `d2l-filter-dimension-set-empty-state` component allows you to customize the
     <d2l-filter-dimension-set-value key="art" text="Art" count="1" selected></d2l-filter-dimension-set-value>
     <d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="3" disabled></d2l-filter-dimension-set-value>
     <d2l-filter-dimension-set-value key="biology" text="Biology" count="5"></d2l-filter-dimension-set-value>
-	<d2l-filter-dimension-set-empty-state slot="search-empty-state" description="Search returned no results." action-text="Add a course"></d2l-filter-dimension-set-empty-state>
-	<d2l-filter-dimension-set-empty-state slot="set-empty-state" description="There are no available items." action-text="Add a course"></d2l-filter-dimension-set-empty-state>
+    <d2l-filter-dimension-set-empty-state slot="search-empty-state" description="Search returned no results." action-text="Add a course"></d2l-filter-dimension-set-empty-state>
+    <d2l-filter-dimension-set-empty-state slot="set-empty-state" description="There are no available items." action-text="Add a course"></d2l-filter-dimension-set-empty-state>
   </d2l-filter-dimension-set>
 </d2l-filter>
 <script>
-	document.querySelector('#filter-single').addEventListener('d2l-filter-dimension-empty-state-action', e => {
-			console.log(`Filter dimension empty state action clicked:\nkey: ${e.detail.key}\ntype: ${e.detail.type}`);
-		});
+    document.querySelector('#filter-single').addEventListener('d2l-filter-dimension-empty-state-action', e => {
+            console.log(`Filter dimension empty state action clicked:\nkey: ${e.detail.key}\ntype: ${e.detail.type}`);
+        });
 </script>
 ```
 <!-- docs: start hidden content -->

@@ -92,18 +92,31 @@ describe('d2l-filter', () => {
 			expect(emptyStateAction.text).to.equal('Click me');
 		});
 
+		it('set dimension - no search results', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			elem._handleSearch({ detail: { value: 'no results' } });
+			elem.requestUpdate();
+			await elem.updateComplete;
+
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
+			const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
+			expect(emptyState.description).to.equal('No search results');
+			expect(container.classList.contains('d2l-offscreen')).to.be.false;
+		});
+
 		it('set dimension - custom no search results', async() => {
 			const elem = await fixture(singleSetLinkSearchEmptyStateDimensionFixture);
 			elem._handleSearch({ detail: { value: 'no results' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
 
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
 			const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-link');
 			expect(emptyState.description).to.equal('Test description');
 			expect(emptyStateAction.text).to.equal('Click me');
 			expect(emptyStateAction.href).to.equal('https://d2l.com');
-			expect(emptyState.classList.contains('d2l-offscreen')).to.be.false;
+			expect(container.classList.contains('d2l-offscreen')).to.be.false;
 		});
 
 		it('set dimension - search results (offscreen)', async() => {
@@ -824,6 +837,44 @@ describe('d2l-filter', () => {
 
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(elem._dimensions[1].values[0].text).to.equal('Test');
+			expect(updateStub).to.be.calledOnce;
+			expect(recountSpy).to.be.not.be.called;
+			expect(searchSpy).to.be.not.be.called;
+		});
+
+		it('dimension search empty state changes are handled', async() => {
+			const dimensionSet = elem.querySelector('d2l-filter-dimension-set[key="2"]');
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'search-empty-state';
+			setTimeout(() => dimensionSet.appendChild(emptyState));
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(elem._dimensions[1].searchEmptyState.actionHref).to.equal('https://d2l.com');
+			expect(elem._dimensions[1].searchEmptyState.actionText).to.equal('Click me');
+			expect(elem._dimensions[1].searchEmptyState.description).to.equal('Description');
+			expect(updateStub).to.be.calledOnce;
+			expect(recountSpy).to.be.not.be.called;
+			expect(searchSpy).to.be.not.be.called;
+		});
+
+		it('dimension set empty state changes are handled', async() => {
+			const dimensionSet = elem.querySelector('d2l-filter-dimension-set[key="2"]');
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'set-empty-state';
+			setTimeout(() => dimensionSet.appendChild(emptyState));
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(elem._dimensions[1].setEmptyState.actionHref).to.equal('https://d2l.com');
+			expect(elem._dimensions[1].setEmptyState.actionText).to.equal('Click me');
+			expect(elem._dimensions[1].setEmptyState.description).to.equal('Description');
 			expect(updateStub).to.be.calledOnce;
 			expect(recountSpy).to.be.not.be.called;
 			expect(searchSpy).to.be.not.be.called;
