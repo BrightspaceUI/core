@@ -61,9 +61,20 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
 	}
 
+	_handleLinkKeyDown(e) {
+		if (e.keyCode !== 32) return;
+		e.preventDefault();
+		e.stopPropagation();
+		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
+	}
+
 	_renderPrimaryAction(labelledBy) {
 		if (!this.actionHref) return;
-		return html`<a id="${this._primaryActionId}" aria-labelledby="${labelledBy}" href="${this.actionHref}" @click="${this._handleLinkClick}"></a>`;
+		return html`<a aria-labelledby="${labelledBy}"
+			@click="${this._handleLinkClick}"
+			href="${this.actionHref}"
+			id="${this._primaryActionId}"
+			@keydown="${this._handleLinkKeyDown}"></a>`;
 	}
 
 };
