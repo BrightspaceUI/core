@@ -54,7 +54,7 @@ describe('d2l-filter', () => {
 				'multi-selection',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
-				'multi-selection-all-selected',
+				'multi-selection-all-selected'
 			].forEach(type => {
 				it(type, async function() {
 					const selector = `#single-set-${type}`;
