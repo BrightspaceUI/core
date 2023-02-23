@@ -33,26 +33,6 @@ class FilterDimensionSetEmptyState extends LitElement {
 		this.description = '';
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		const changes = new Map();
-		changedProperties.forEach((oldValue, prop) => {
-			if (oldValue === undefined) return;
-
-			if (prop === 'actionHref' || prop === 'actionText' || prop === 'description') {
-				changes.set(prop, this[prop]);
-			}
-		});
-		if (changes.size > 0) {
-			/** @ignore */
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-empty-state-change', {
-				bubbles: true,
-				composed: false,
-				detail: { changes: changes }
-			}));
-		}
-	}
 }
 
 customElements.define('d2l-filter-dimension-set-empty-state', FilterDimensionSetEmptyState);
