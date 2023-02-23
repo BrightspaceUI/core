@@ -148,7 +148,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-filter-dimension-info-message {
-				color: var(--d2l-color-ferrite); 
+				color: var(--d2l-color-ferrite);
 				text-align: center;
 			}
 
