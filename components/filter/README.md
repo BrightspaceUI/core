@@ -188,6 +188,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 | Property | Type | Description |
 |---|---|---|
+| `introductory-text` | String | The introductory text to display at the top of the filter dropdown |
 | `key` | String, required | Unique identifier for the dimension |
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |
 | `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and pass the keys of the values to be displayed |

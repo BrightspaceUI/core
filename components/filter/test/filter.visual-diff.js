@@ -182,6 +182,7 @@ describe('d2l-filter', () => {
 
 			[
 				/*'single-set-empty', // flaky */
+				'single-set-introductory-text',
 				'single-set-single-selection',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection',
@@ -317,13 +318,13 @@ describe('d2l-filter', () => {
 			});
 
 			[
+				'single-set-introductory-text',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection-no-search',
 				'single-set-multi-selection-no-search-select-all',
 				'single-set-multi-selection-all-selected',
 				'multiple-empty',
-				'multiple-selected',
-				'introductory-text'
+				'multiple-selected'
 			].forEach(type => {
 				it(type, async function() {
 					const selector = `#${type}`;
