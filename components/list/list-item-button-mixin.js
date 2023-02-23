@@ -20,37 +20,11 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host([button-disabled][_hovering-primary-action]) .d2l-list-item-content,
-			:host([button-disabled][_focusing-primary-action]) .d2l-list-item-content {
-				--d2l-list-item-content-text-color: unset;
-				--d2l-list-item-content-text-decoration: none;
-			}
-			:host([button-disabled]) button {
-				cursor: default;
+			:host([button-disabled]) [slot="content-action"] {
+				pointer-events: none;
 			}
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
-			}
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::before,
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::after,
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::before,
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after,
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::before,
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="control-container"]::after,
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::before,
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="control-container"]::after {
-				border-top-color: transparent;
-			}
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"],
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
-				background-color: white;
-				border-color: #b6cbe8; /* celestine alpha 0.3 */
-			}
-			:host([selectable]:not([selection-disabled][button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host(:not([selectable]):not([button-disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			button {
 				background-color: transparent;
@@ -60,11 +34,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				height: 100%;
 				outline: none;
 				width: 100%;
-			}
-			/* simply hide the button action layer rather than disabling button so
-			 that the cursor pointer ins't displayed when hovering skeleton */
-			:host([skeleton]) button {
-				display: none;
 			}
 		` ];
 
@@ -76,6 +45,11 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		super();
 		this._primaryActionId = getUniqueId();
 		this.buttonDisabled = false;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
 	}
 
 	_onButtonClick() {
