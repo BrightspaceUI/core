@@ -129,6 +129,12 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		}
 	}
 
+	_onCheckboxKeyDown(e) {
+		// handle the enter key
+		if (e.keyCode !== 13) return;
+		this.selected = !this.selected;
+	}
+
 	_onMouseEnterSelection() {
 		this._hoveringSelection = !this.selectionDisabled;
 	}
@@ -150,24 +156,25 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		return this.selectable ? html`
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
-				?selected="${this.selected}"
 				?disabled="${this.selectionDisabled}"
+				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
+				@keydown="${this._onCheckboxKeyDown}"
 				label="${this.label}"
-				?skeleton="${this.skeleton}"
-				.hovering="${this._hoveringSelection}">
+				?selected="${this.selected}"
+				?skeleton="${this.skeleton}">
 			</d2l-selection-input>
 		` : nothing;
 	}
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._onCheckboxActionClick}"
+			<div class="d2l-checkbox-action"
+				@click="${this._onCheckboxActionClick}"
 				@mouseenter="${this._onMouseEnterSelection}"
-				@mouseleave="${this._onMouseLeaveSelection}"
-				class="d2l-checkbox-action">
+				@mouseleave="${this._onMouseLeaveSelection}">
 				${inner}
 			</div>
 			` : nothing;
