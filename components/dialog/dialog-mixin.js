@@ -42,6 +42,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
+			noScroll: { type: Boolean },
 			_autoSize: { type: Boolean, attribute: false },
 			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
@@ -63,6 +64,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	constructor() {
 		super();
 		this.opened = false;
+		this.noScroll = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -394,9 +396,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 			this.shadowRoot.querySelector('.d2l-dialog-content').scrollTop = 0;
 			// scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash
-			setTimeout(() => {
-				this._scroll = true;
-			}, 0);
+			if (!this.noScroll) {
+				setTimeout(() => {
+					this._scroll = true;
+				}, 0);
+			}
 
 			await this._updateSize();
 			this._state = 'showing';
