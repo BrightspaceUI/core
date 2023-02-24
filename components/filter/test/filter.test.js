@@ -58,7 +58,7 @@ describe('d2l-filter', () => {
 	describe('info messages', () => {
 		it('set dimension - empty state', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
-			expect(elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message').textContent).to.include('No available filters');
+			expect(elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message').description).to.include('No available filters');
 		});
 
 		it('set dimension - no search results', async() => {
@@ -67,9 +67,10 @@ describe('d2l-filter', () => {
 			elem.requestUpdate();
 			await elem.updateComplete;
 
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-			expect(infoMessage.textContent).to.include('No search results');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.false;
+			expect(infoMessage.description).to.include('No search results');
+			expect(container.classList.contains('d2l-offscreen')).to.be.false;
 		});
 
 		it('set dimension - search results (offscreen)', async() => {
@@ -78,16 +79,46 @@ describe('d2l-filter', () => {
 			elem.requestUpdate();
 			await elem.updateComplete;
 
+			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-			expect(infoMessage.textContent).to.include('1 search result');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+			expect(infoMessage.description).to.include('1 search result');
+			expect(container.classList.contains('d2l-offscreen')).to.be.true;
 
 			elem._handleSearch({ detail: { value: 'value' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
 
-			expect(infoMessage.textContent).to.include('2 search results');
-			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+			expect(infoMessage.description).to.include('2 search results');
+			expect(container.classList.contains('d2l-offscreen')).to.be.true;
+		});
+	});
+
+	describe('introductory-text', () => {
+		it('sets introductory text on a single dimension', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
+			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
+			expect(introText.classList.contains('multi-dimension')).to.be.false;
+			expect(introText.textContent).to.equal('Intro');
+		});
+
+		it('sets introductory text on a dimension in a multi-dimensional filter', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set><d2l-filter-dimension-set introductory-text="intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			await dropdownContent.updateComplete;
+			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+
+			elem.opened = true;
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+
+			setTimeout(() => dimension.click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+
+			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
+			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
+			expect(introText.classList.contains('multi-dimension')).to.be.true;
+			expect(introText.textContent).to.equal('Intro');
 		});
 	});
 

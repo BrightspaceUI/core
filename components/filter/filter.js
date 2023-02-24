@@ -5,6 +5,7 @@ import '../button/button-subtle.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
+import '../empty-state/empty-state-simple.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
@@ -156,8 +157,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding: 0 1.5rem 1.5rem;
 			}
 
+			.d2l-empty-state-container {
+				padding: 0.9rem;
+			}
+
 			.d2l-filter-dimension-info-message {
-				padding: 0.9rem 0;
+				color: var(--d2l-color-ferrite);
 				text-align: center;
 			}
 
@@ -283,7 +288,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimensionHTML = html`
-				<div aria-live="polite" class="d2l-filter-container">
+				<div class="d2l-filter-container">
 					${this._createSetDimension(dimension)}
 				</div>`;
 				break;
@@ -416,9 +421,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-				<p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
-					${this.localize('components.filter.noFilters')}
-				</p>
+				<div class="d2l-empty-state-container" role="alert">
+					<d2l-empty-state-simple
+						class="d2l-filter-dimension-info-message"
+						description="${this.localize('components.filter.noFilters')}">
+					</d2l-empty-state-simple>
+				</div>
 			`;
 		}
 
@@ -426,15 +434,17 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.searchValue && dimension.searchValue !== '') {
 			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
 			const classes = {
-				'd2l-filter-dimension-info-message': true,
-				'd2l-body-small': true,
+				'd2l-empty-state-container': true,
 				'd2l-offscreen': count !== 0
 			};
 
 			searchResults = html`
-				<p class="${classMap(classes)}" role="alert">
-					${this.localize('components.filter.searchResults', { number: count })}
-				</p>
+				<div class="${classMap(classes)}" role="alert">
+					<d2l-empty-state-simple
+						class="d2l-filter-dimension-info-message"
+						description="${this.localize('components.filter.searchResults', { number: count })}">
+					</d2l-empty-state-simple>
+				</div>
 			`;
 
 			if (count === 0) return searchResults;
