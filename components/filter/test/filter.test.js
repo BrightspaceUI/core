@@ -96,7 +96,7 @@ describe('d2l-filter', () => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
 			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
 			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
-			expect(introText.classList.contains('d2l-filter-dimension-intro-text-multi-dimension')).to.be.false;
+			expect(introText.classList.contains('multi-dimension')).to.be.false;
 			expect(introText.textContent).to.equal('Intro');
 		});
 
@@ -115,7 +115,7 @@ describe('d2l-filter', () => {
 
 			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
 			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
-			expect(introText.classList.contains('d2l-filter-dimension-intro-text-multi-dimension')).to.be.true;
+			expect(introText.classList.contains('multi-dimension')).to.be.true;
 			expect(introText.textContent).to.equal('Intro');
 		});
 	});

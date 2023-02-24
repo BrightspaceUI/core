@@ -74,7 +74,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-bottom: 0.9rem;
 			}
 
-			.d2l-filter-dimension-header.d2l-filter-dimension-header-with-intro {
+			.d2l-filter-dimension-header.with-intro {
 				padding-bottom: 0.6rem;
 			}
 
@@ -152,7 +152,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				text-align: center;
 			}
 
-			.d2l-filter-dimension-intro-text.d2l-filter-dimension-intro-text-multi-dimension {
+			.d2l-filter-dimension-intro-text.multi-dimension {
 				padding: 0 1.5rem 1.5rem;
 			}
 
@@ -339,7 +339,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const introductoryTextClasses = {
 			'd2l-body-compact': true,
 			'd2l-filter-dimension-intro-text': true,
-			'd2l-filter-dimension-intro-text-multi-dimension': !singleDimension
+			'multi-dimension': !singleDimension
 		};
 		const introductoryText = !dimension.introductoryText ? nothing : html`
 			<p class="${classMap(introductoryTextClasses)}">${dimension.introductoryText}</p>`;
@@ -384,7 +384,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const headerClasses = {
 			'd2l-filter-dimension-header': true,
-			'd2l-filter-dimension-header-with-intro': dimension.introductoryText
+			'with-intro': dimension.introductoryText
 		};
 		const header = singleDimension ? nothing : html`
 			<div class="${classMap(headerClasses)}">
