@@ -17,8 +17,7 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 			'de': { 'hello': 'Hallo {name}' },
 			'en': {
 				'hello': 'Hello {name}',
-				'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.',
-				'tt': 'This is [tooltip-help one]a tooltipy" onclick="alert(`I am malicious`)"[/tooltip-help]'
+				'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
 			},
 			'en-ca': { 'hello': 'Hello, {name} eh' },
 			'es': { 'hello': 'Hola {name}' },
@@ -50,7 +49,6 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 		);
 		return html`
 			<p>${this.localize('hello', { name: this.name })}</p>
-			<p>${this.localizeHTML('tt', { _tooltips: { one: 'Tooltip text', two: 'More tooltip text' } })}</p>
 		`;
 	}
 
