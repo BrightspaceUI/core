@@ -147,10 +147,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
-<<<<<<< HEAD
-			.d2l-empty-state-container {
-				padding: 0.9rem;
-=======
 			.d2l-filter-dimension-intro-text {
 				margin: 0;
 				padding: 0.6rem 1.5rem 1.5rem;
@@ -159,7 +155,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-intro-text.multi-dimension {
 				padding: 0 1.5rem 1.5rem;
->>>>>>> 9acee032 (feat: Add introductory-text to filter-dimension-set (#3258))
+			}
+
+			.d2l-empty-state-container {
+				padding: 0.9rem;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -422,11 +421,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-				<div class="d2l-empty-state-container">
+				<div class="d2l-empty-state-container" role="alert">
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"
-						description="${this.localize('components.filter.noFilters')}"
-						role="alert">
+						description="${this.localize('components.filter.noFilters')}">
 					</d2l-empty-state-simple>
 				</div>
 			`;
@@ -441,11 +439,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			};
 
 			searchResults = html`
-				<div class="${classMap(classes)}">
+				<div class="${classMap(classes)}" role="alert">
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"
-						description="${this.localize('components.filter.searchResults', { number: count })}"
-						role="alert">
+						description="${this.localize('components.filter.searchResults', { number: count })}">
 					</d2l-empty-state-simple>
 				</div>
 			`;
