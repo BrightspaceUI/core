@@ -5,7 +5,7 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
-		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
+		<d2l-filter-dimension-set key="dim" introductory-text="Intro" text="Dim" select-all>
 			<d2l-filter-dimension-set-value key="value-1" text="Value 1"></d2l-filter-dimension-set-value>
 			<d2l-filter-dimension-set-value key="value-2" text="Value 2" selected></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
@@ -19,7 +19,7 @@ const singleSetDimensionSingleSelectionOnFixture = html`
 	</d2l-filter>`;
 const multiDimensionFixture = html`
 	<d2l-filter>
-		<d2l-filter-dimension-set key="1" text="Dim 1" select-all>
+		<d2l-filter-dimension-set key="1" introductory-text="Intro" text="Dim 1" select-all>
 			<d2l-filter-dimension-set-value key="1" text="Value 1"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 		<d2l-filter-dimension-set key="2" text="Dim 2" select-all>

@@ -74,6 +74,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-bottom: 0.9rem;
 			}
 
+			.d2l-filter-dimension-header.with-intro {
+				padding-bottom: 0.6rem;
+			}
+
 			.d2l-filter-dimension-header,
 			.d2l-filter-dimension-header-actions {
 				align-items: center;
@@ -140,6 +144,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
 			d2l-list-item[selection-disabled] .d2l-body-small {
 				color: var(--d2l-color-chromite);
+			}
+
+			.d2l-filter-dimension-intro-text {
+				margin: 0;
+				padding: 0.6rem 1.5rem 1.5rem;
+				text-align: center;
+			}
+
+			.d2l-filter-dimension-intro-text.multi-dimension {
+				padding: 0 1.5rem 1.5rem;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -322,6 +336,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dimension = this._getActiveDimension();
 
+		const introductoryTextClasses = {
+			'd2l-body-compact': true,
+			'd2l-filter-dimension-intro-text': true,
+			'multi-dimension': !singleDimension
+		};
+		const introductoryText = !dimension.introductoryText ? nothing : html`
+			<p class="${classMap(introductoryTextClasses)}">${dimension.introductoryText}</p>`;
+
 		const clear = html`
 			<d2l-button-subtle
 				@click="${this._handleClear}"
@@ -331,7 +353,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</d2l-button-subtle>
 		`;
 
-		const search = dimension.searchType === 'none' ? null : html`
+		const search = dimension.searchType === 'none' ? nothing : html`
 			<d2l-input-search
 				@d2l-input-search-searched="${this._handleSearch}"
 				?disabled="${this._isDimensionEmpty(dimension)}"
@@ -360,8 +382,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</div>
 		`;
 
-		const header = singleDimension ? null : html`
-			<div class="d2l-filter-dimension-header">
+		const headerClasses = {
+			'd2l-filter-dimension-header': true,
+			'with-intro': dimension.introductoryText
+		};
+		const header = singleDimension ? nothing : html`
+			<div class="${classMap(headerClasses)}">
 				<d2l-button-icon
 					@click="${this._handleDimensionHide}"
 					icon="tier1:chevron-left"
@@ -374,6 +400,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return html`
 			<div slot="header" @keydown="${this._handleDimensionHideKeyDown}">
 				${header}
+				${introductoryText}
 				${actions}
 			</div>
 		`;
@@ -654,6 +681,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
+					info.introductoryText = dimension.introductoryText;
 					info.searchType = dimension.searchType;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
