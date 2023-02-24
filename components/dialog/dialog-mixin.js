@@ -27,7 +27,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
-const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
+const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
 
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 

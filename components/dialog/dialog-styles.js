@@ -28,7 +28,7 @@ export const dialogStyles = css`
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		box-sizing: border-box;
 		position: fixed; /* also required for native to override position: absolute */
-		top: 100px;
+		top: 75px;
 	}
 
 	:host([_state="showing"]) > .d2l-dialog-outer {
