@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -15,7 +16,7 @@ describe('d2l-list-item-drag-handle', () => {
 	let browser, page;
 
 	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => { item.focus(); });
+		return page.$eval(selector, (item) => { forceFocusVisible(item); });
 	};
 
 	before(async() => {
