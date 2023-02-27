@@ -261,8 +261,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
 		if (footer) preferredHeight += Math.ceil(footer.getBoundingClientRect().height);
 
-		this._fullHeight = preferredHeight > availableHeight;
-		const height = this._fullHeight ? 0 : preferredHeight;
+		const exceedsHeight = preferredHeight > availableHeight;
+		this._fullHeight = !this._ifrauContextInfo && exceedsHeight;
+
+		const height = exceedsHeight ? availableHeight : preferredHeight;
 		return height;
 	}
 
@@ -440,7 +442,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
 			if (this._ifrauContextInfo) styles.bottom = 'auto';
 			if (this._left) styles.left = `${this._left}px`;
-			if (this._height) styles.height = `${this._height}px`;
+			if (this._height && !this._fullHeight) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
 		} else if (iframeTopOverride && this._ifrauContextInfo) {
