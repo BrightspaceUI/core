@@ -258,6 +258,7 @@ describe('d2l-filter', () => {
 			});
 
 			[
+				'introductory-text',
 				'single-selection-select-all',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
