@@ -30,13 +30,7 @@ class LocalizeTest extends LocalizeDynamicMixin(LitElement) {
 			'zh-tw': { 'hello': '你好 {name}' }
 		};
 		return {
-			importFunc: async lang => {
-				return new Promise((resolve) => {
-					setTimeout(() => {
-						resolve(langResources[lang]);
-					}, 50);
-				});
-			}
+			importFunc: async lang => langResources[lang]
 		};
 	}
 
