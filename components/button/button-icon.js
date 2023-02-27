@@ -1,10 +1,11 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -116,7 +117,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
-				button.focus-visible {
+				button.focus-visible,
+				button:${unsafeCSS(getFocusPseudoClass())} {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 

@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -15,7 +16,7 @@ describe('d2l-list-item-drag-handle', () => {
 	let browser, page;
 
 	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => { item.focus(); });
+		return page.$eval(selector, (item) => { forceFocusVisible(item); });
 	};
 
 	before(async() => {
@@ -42,7 +43,6 @@ describe('d2l-list-item-drag-handle', () => {
 		});
 
 		itWithReload('keyboard-mode', async function() {
-			await focusMethod('d2l-list-item-drag-handle');
 			await page.$eval('d2l-list-item-drag-handle', (item) => { item._keyboardActive = true; });
 			const rect = await visualDiff.getRect(page, '#drag-handle');
 			rect.width = 320;

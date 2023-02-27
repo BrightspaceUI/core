@@ -1,5 +1,6 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 export const buttonStyles = css`
 	button {
@@ -21,10 +22,8 @@ export const buttonStyles = css`
 		white-space: nowrap;
 		width: auto;
 	}
-	/* Outline on focus for elements not using FocusVisiblePolyfillMixin
-	 * or when focus-visible for those who are */
-	:host(:not([data-js-focus-visible])) button:focus,
-	button.focus-visible {
+	button.focus-visible, /* still required for when forceFocusVisible is used programatically */
+	button:${unsafeCSS(getFocusPseudoClass())} {
 		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 	}
 `;

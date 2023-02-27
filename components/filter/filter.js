@@ -162,7 +162,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-empty-state-container {
-				color: var(--d2l-color-ferrite);
 				padding: 0.9rem;
 			}
 
