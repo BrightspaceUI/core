@@ -127,10 +127,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					animation: d2l-dialog-fullscreen-open 400ms ease-out;
 				}
 
-				dialog::backdrop {
-					transition: opacity 200ms ease-out;
-				}
-
 				:host([_state="showing"]) dialog::backdrop {
 					transition-duration: 400ms;
 				}

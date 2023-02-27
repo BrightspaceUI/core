@@ -21,7 +21,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer {
-		animation: d2l-dialog-close 200ms ease-in;
+		animation: d2l-dialog-close 200ms ease-out;
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
@@ -33,7 +33,7 @@ export const dialogStyles = css`
 
 	:host([_state="showing"]) > .d2l-dialog-outer {
 		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
-		animation: d2l-dialog-open 200ms ease-in;
+		animation: d2l-dialog-open 200ms ease-out;
 	}
 
 	@keyframes d2l-dialog-close {
@@ -70,7 +70,7 @@ export const dialogStyles = css`
 		/* cannot use variables inside of ::backdrop : https://github.com/whatwg/fullscreen/issues/124 */
 		background-color: #f9fbff;
 		opacity: 0;
-		transition: opacity 200ms ease-in;
+		transition: opacity 200ms ease-out;
 	}
 
 	:host([_state="showing"]) dialog::backdrop {
