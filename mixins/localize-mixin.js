@@ -153,8 +153,8 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			// replace good-listed markup
 			.replace(LocalizeMixinClass.markupRegex, k => markupMap[k] || k);
 
-		if (Object.keys(_links).length) import('../components/link/link.js');
-		if (Object.keys(_tooltips).length) import('../components/tooltip/tooltip-help.js');
+		if (_link || Object.keys(_links).length) import('../components/link/link.js');
+		if (_tooltip || Object.keys(_tooltips).length) import('../components/tooltip/tooltip-help.js');
 
 		return unsafeHTML(markedUp);
 	}
