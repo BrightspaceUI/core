@@ -6,14 +6,85 @@
 		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../components/demo/demo-page.js';
-			import './localize-test.js';
+			import { html, LitElement } from 'lit';
+			import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
+			window.html = html;
+			window.LitElement = LitElement;
+			window.LocalizeDynamicMixin = LocalizeDynamicMixin;
 		</script>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="localize-mixin">
+
+			<h2>localize()</h2>
+
 			<d2l-demo-snippet>
-				<d2l-test-localize name="Bill"></d2l-test-localize>
+
+				<script type="module">
+class Greeting extends LocalizeDynamicMixin(LitElement) {
+
+	static get properties() {
+		return {
+			name: {	type: String }
+		};
+	}
+
+	static get localizeConfig() {
+		const langResources = {
+			'en': { hello: `Hello, {name}` },
+			'en-gb': { hello: `'Ello, {name}` },
+			'fr': { hello: `Bonjour, {name}` },
+		};
+		return {
+			importFunc: async lang => langResources[lang]
+		};
+	}
+
+	render() {
+		return html`
+			<p>${this.localize('hello', { name: this.name })}</p>
+		`;
+	}
+}
+
+customElements.define('d2l-greeting', Greeting);
+				</script>
+
+				<d2l-greeting name="Bill"></d2l-greeting>
+
 			</d2l-demo-snippet>
+
+			<h2>localizeHTML()</h2>
+
+			<d2l-demo-snippet>
+				<script type="module">
+class Mission extends LocalizeDynamicMixin(LitElement) {
+
+	static get localizeConfig() {
+		const langResources = {
+			'en': { mission: `Transforming the way [a]the world[/a] learns` },
+			'fr': { mission: `Transformer la façon dont [a]le monde[/a] apprend` }
+		};
+		return {
+			importFunc: async lang => langResources[lang]
+		};
+	}
+
+	render() {
+		const _link = `href="https://.wikipedia.org/wiki/Earth" target="_blank"><ul><li>item</li></ul`;
+		return html`
+			<p>${this.localizeHTML('mission', { _link })}</p>
+		`;
+	}
+}
+
+customElements.define('d2l-mission', Mission);
+				</script>
+
+				<d2l-mission></d2l-mission>
+
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>
