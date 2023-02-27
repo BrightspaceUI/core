@@ -42,7 +42,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
-			_autoSize: { type: Boolean, attribute: false },
+			_autoSize: { type: Boolean, attribute: 'auto-size', reflect: true },
+			_fullHeight: { type: Boolean, attribute: 'full-height', reflect: true },
 			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
@@ -65,6 +66,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
+		this._fullHeight = false;
 		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
@@ -259,7 +261,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
 		if (footer) preferredHeight += Math.ceil(footer.getBoundingClientRect().height);
 
-		const height = (preferredHeight < availableHeight ? preferredHeight : availableHeight);
+		this._fullHeight = preferredHeight > availableHeight;
+		const height = this._fullHeight ? 0 : preferredHeight;
 		return height;
 	}
 

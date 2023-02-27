@@ -31,6 +31,11 @@ export const dialogStyles = css`
 		top: 75px;
 	}
 
+	:host([auto-size][full-height]) > .d2l-dialog-outer {
+		bottom: 1.5rem;
+		top: 1.5rem;
+	}
+
 	:host([_state="showing"]) > .d2l-dialog-outer {
 		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
 		animation: d2l-dialog-open 200ms ease-out;
