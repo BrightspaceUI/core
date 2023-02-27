@@ -49,6 +49,7 @@ describe('d2l-filter', () => {
 			[
 				'empty',
 				'custom-empty',
+				'introductory-text',
 				'single-selection',
 				'single-selection-select-all',
 				'multi-selection',
@@ -182,6 +183,7 @@ describe('d2l-filter', () => {
 
 			[
 				/*'single-set-empty', // flaky */
+				'single-set-introductory-text',
 				'single-set-single-selection',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection',
@@ -256,8 +258,6 @@ describe('d2l-filter', () => {
 			});
 
 			[
-				'empty',
-				'custom-empty',
 				'single-selection-select-all',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
@@ -318,6 +318,7 @@ describe('d2l-filter', () => {
 			});
 
 			[
+				'single-set-introductory-text',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection-no-search',
 				'single-set-multi-selection-no-search-select-all',

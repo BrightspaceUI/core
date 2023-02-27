@@ -94,7 +94,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 			.d2l-scroll-wrapper-actions {
 				position: -webkit-sticky;
 				position: sticky;
-				top: 0;
+				top: var(--d2l-table-sticky-top, 0);
 				z-index: 4;
 			}
 

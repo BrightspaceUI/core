@@ -147,6 +147,15 @@ describe('d2l-list', () => {
 			{ name: 'skeleton', selector: '#selectableSkeleton' },
 			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
 		] },
+		{ category: 'selectableHref', tests: [
+			{ name: 'hover href', selector: '#selectableHref', action: () => hover('#selectableHref [selectable]') },
+			{ name: 'hover selection', selector: '#selectableHref', action: async() => {
+				const item = await page.$('#selectableHref [selectable]');
+				const control = await page.evaluateHandle(item => item.shadowRoot.querySelector('[slot="control"]'), item);
+				return control.hover();
+			} },
+			{ name: 'hover secondary action', selector: '#selectableHref', action: () => hover('#selectableHref [selectable] d2l-button-icon') },
+		] },
 		{ category: 'controls', tests: [
 			{ name: 'not selectable', selector: '#noSelectableControls' },
 			{ name: 'none selected', selector: '#selectableControls' },

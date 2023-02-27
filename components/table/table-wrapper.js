@@ -140,11 +140,11 @@ export const tableStyles = css`
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
 	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		left: var(--d2l-table-border-radius-sticky-offset);
+		left: var(--d2l-table-border-radius-sticky-offset, 0);
 	}
 	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		right: var(--d2l-table-border-radius-sticky-offset);
+		right: var(--d2l-table-border-radius-sticky-offset, 0);
 	}
 
 	/* non-header sticky cells */
@@ -233,7 +233,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			}
 			.d2l-sticky-headers-backdrop {
 				position: sticky;
-				top: calc(var(--d2l-table-sticky-top) + var(--d2l-table-border-radius));
+				top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
 				width: 100%;
 				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
 			}
@@ -418,15 +418,15 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	}
 
 	_updateStickyTops() {
-		if (!this._table || !this.stickyHeaders) return;
-
 		const hasStickyControls = this._controls && !this._controls.noSticky;
 		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
 		this.style.setProperty('--d2l-table-sticky-top', `${rowTop}px`);
 
+		if (!this._table || !this.stickyHeaders) return;
+
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {
-			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset))`;
+			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset, 0px))`;
 			const ths = Array.from(r.querySelectorAll('th'));
 			ths.forEach(th => th.style.top = thTop);
 
