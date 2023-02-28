@@ -27,7 +27,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
-const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
+const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
 
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
@@ -42,7 +42,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
-			_autoSize: { type: Boolean, attribute: false },
+			_autoSize: { type: Boolean, attribute: 'auto-size', reflect: true },
+			_fullHeight: { type: Boolean, attribute: 'full-height', reflect: true },
 			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
@@ -65,6 +66,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
+		this._fullHeight = false;
 		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
@@ -259,7 +261,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
 		if (footer) preferredHeight += Math.ceil(footer.getBoundingClientRect().height);
 
-		const height = (preferredHeight < availableHeight ? preferredHeight : availableHeight);
+		const exceedsHeight = preferredHeight > availableHeight;
+		this._fullHeight = !this._ifrauContextInfo && exceedsHeight;
+
+		const height = exceedsHeight ? availableHeight : preferredHeight;
 		return height;
 	}
 
@@ -437,7 +442,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
 			if (this._ifrauContextInfo) styles.bottom = 'auto';
 			if (this._left) styles.left = `${this._left}px`;
-			if (this._height) styles.height = `${this._height}px`;
+			if (this._height && !this._fullHeight) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
 		} else if (iframeTopOverride && this._ifrauContextInfo) {
