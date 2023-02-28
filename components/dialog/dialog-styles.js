@@ -42,13 +42,13 @@ export const dialogStyles = css`
 	}
 
 	@keyframes d2l-dialog-close {
-		0% { transform: translateY(0); }
-		100% { transform: translateY(-50px); }
+		0% { opacity: 1; transform: translateY(0); }
+		100% { opacity: 0; transform: translateY(-50px) scale(0.97); }
 	}
 
 	@keyframes d2l-dialog-open {
-		0% { transform: translateY(-50px); }
-		100% { transform: translateY(0); }
+		0% { opacity: 0; transform: translateY(-50px) scale(0.97); }
+		100% { opacity: 1; transform: translateY(0); }
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
