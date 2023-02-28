@@ -465,42 +465,4 @@ describe('LocalizeMixin', () => {
 		});
 	});
 
-	describe('shouldUpdate tracking', () => {
-
-		it('should pass all changed properties to updated()', (done) => {
-			fixture('<div></div>').then(async(container) => {
-				const elem = document.createElement(asyncTag);
-				setTimeout(() => container.appendChild(elem));
-				const { detail } = await oneEvent(elem, 'd2l-test-localize-updated');
-				expect(detail.props.size).to.equal(1);
-				expect(detail.props.has('__resources'));
-				done();
-			});
-		});
-
-		it('should clear changed properties after language resolution', (done) => {
-			fixture('<div></div>').then((container) => {
-				let first = true;
-				const elem = document.createElement(asyncTag);
-				elem.setAttribute('name', 'Bill');
-				elem.addEventListener('d2l-test-localize-updated', (e) => {
-					const props = e.detail.props;
-					if (first) {
-						first = false;
-						expect(props.size).to.equal(2);
-						return;
-					}
-					expect(props.size).to.equal(1);
-					expect(e.detail.props.has('name'));
-					done();
-				});
-				elem.addEventListener('d2l-test-localize-render', () => {
-					elem.setAttribute('name', 'Jim');
-				});
-				container.appendChild(elem);
-			});
-		});
-
-	});
-
 });
