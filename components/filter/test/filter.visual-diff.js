@@ -48,6 +48,7 @@ describe('d2l-filter', () => {
 
 			[
 				'empty',
+				'custom-empty',
 				'introductory-text',
 				'single-selection',
 				'single-selection-select-all',
