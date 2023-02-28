@@ -71,7 +71,7 @@ class Mission extends LocalizeDynamicMixin(LitElement) {
 	}
 
 	render() {
-		const _link = `href="https://.wikipedia.org/wiki/Earth" target="_blank"><ul><li>item</li></ul`;
+		const _link = `href="https://.wikipedia.org/wiki/Earth" target="_blank"`;
 		return html`
 			<p>${this.localizeHTML('mission', { _link })}</p>
 		`;
