@@ -1,4 +1,3 @@
-import '../demo/localize-test.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
@@ -177,65 +176,74 @@ const multiMixinTagDynamicConsolidated = defineCE(
 	}
 );
 
-const asyncTag = defineCE(
-	class extends LocalizeMixin(LitElement) {
-		static get properties() {
-			return {
-				name: {
-					type: String
-				}
-			};
-		}
-		static async getLocalizeResources(langs) {
-			return new Promise((resolve) => {
-				const langResources = {
-					'en': {
-						'hello': 'Hello {name}',
-						'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
-					},
-					'fr': { 'hello': 'Bonjour {name}' }
+class StaticEl extends LocalizeMixin(LitElement) {
+	static get properties() {
+		return {
+			name: {
+				type: String
+			}
+		};
+	}
+	static langResources = {
+		'en': {
+			'hello': 'Hello {name}',
+			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+		},
+		'fr': { 'hello': 'Bonjour {name}' }
+	};
+	static getLocalizeResources(langs) {
+		for (let i = 0; i < langs.length; i++) {
+			if (this.langResources[langs[i]]) {
+				return {
+					language: langs[i],
+					resources: this.langResources[langs[i]]
 				};
-				for (let i = 0; i < langs.length; i++) {
-					if (langResources[langs[i]]) {
-						const langVal = {
-							language: langs[i],
-							resources: langResources[langs[i]]
-						};
-						setTimeout(() => {
-							resolve(langVal);
-						}, 50);
-					}
-				}
-			});
+			}
 		}
-		render() {
-			requestAnimationFrame(
-				() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
-					bubbles: false,
-					composed: false
-				}))
-			);
-			return html`
-				<p>${this.localize('hello', { name: this.name })}</p>
-			`;
-		}
-		updated(changedProperties) {
-			super.updated(changedProperties);
-			this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
+	}
+	render() {
+		requestAnimationFrame(
+			() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
 				bubbles: false,
-				composed: false,
-				detail: {
-					props: changedProperties
+				composed: false
+			}))
+		);
+		return html`
+			<p>${this.localize('hello', { name: this.name })}</p>
+		`;
+	}
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
+			bubbles: false,
+			composed: false,
+			detail: {
+				props: changedProperties
+			}
+		}));
+	}
+}
+
+const staticTag = defineCE(StaticEl);
+
+const asyncTag = defineCE(
+	class extends StaticEl {
+		static getLocalizeResources(langs) {
+			for (let i = 0; i < langs.length; i++) {
+				if (this.langResources[langs[i]]) {
+					const resources = {
+						language: langs[i],
+						resources: this.langResources[langs[i]]
+					};
+					return new Promise(r => setTimeout(() => r(resources), 50));
 				}
-			}));
+			}
 		}
 	}
 );
 
 const localizeHTMLTag = defineCE(
-	class extends Test1LocalizeHTML((LitElement)) {
-
-	}
+	class extends Test1LocalizeHTML((LitElement)) {}
 );
 
 describe('LocalizeMixin', () => {
@@ -246,9 +254,9 @@ describe('LocalizeMixin', () => {
 
 	['static', 'async'].forEach((type) => {
 
-		const f = (type === 'static') ? html`<d2l-test-localize></d2l-test-localize>` :
-			`<${asyncTag} name="Bill"></${asyncTag}>`;
-		const tagName = (type === 'static') ? 'd2l-test-localize' : asyncTag;
+		const f = (type === 'static') ? `<${staticTag}></${staticTag}>` :
+			`<${asyncTag}></${asyncTag}>`;
+		const tagName = (type === 'static') ? staticTag : asyncTag;
 
 		describe(`localize (${type})`, () => {
 
@@ -324,11 +332,11 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
-		it.only('should replace acceptable markup with correct HTML', () => {
+		it('should replace acceptable markup with correct HTML', () => {
 			const unsafeHTML = elem.localizeHTML('test1');
 			const val1 = unsafeHTML.values[0];
 			const val2 = elem.localizeHTML('test2', { _link: 'href="http://d2l.com"' }).values[0];
-			const val3 = elem.localizeHTML('test3', { _links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"' } }).values[0];
+			const val3 = elem.localizeHTML('test3', { _links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"><div>Injected Link Contents</div' } }).values[0];
 			const val4 = elem.localizeHTML('test4', { _tooltip: 'Tooltip text' }).values[0];
 			const val5 = elem.localizeHTML('test5', { _tooltips: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
 			const val6 = elem.localizeHTML('test6').values[0];
@@ -342,7 +350,7 @@ describe('LocalizeMixin', () => {
 			expect(unsafeHTML).to.have.property('_$litDirective$').that.has.property('directiveName', 'unsafeHTML');
 			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
 			expect(val2).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank">a link</d2l-link>. This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
+			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank"&gt;<div&gt;Injected Link Contents</div>a link</d2l-link>. This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
 			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper&quot; onclick=&quot;import(`malicious.js`)">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(val5).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence. Here is <d2l-tooltip-help inherit-font-style text="another">More tooltip text</d2l-tooltip-help>.');
 			expect(val6).to.equal('This is &lt;script src="malicious.js"&gt;&lt;/script&gt; fine');
@@ -463,6 +471,44 @@ describe('LocalizeMixin', () => {
 			elem.addEventListener('d2l-localize-resources-change', myEventListener);
 			documentLocaleSettings.language = 'fr';
 		});
+	});
+
+	describe('shouldUpdate tracking', () => {
+
+		it('should pass all changed properties to updated()', (done) => {
+			fixture('<div></div>').then(async(container) => {
+				const elem = document.createElement(asyncTag);
+				setTimeout(() => container.appendChild(elem));
+				const { detail } = await oneEvent(elem, 'd2l-test-localize-updated');
+				expect(detail.props.size).to.equal(1);
+				expect(detail.props.has('__resources'));
+				done();
+			});
+		});
+
+		it('should clear changed properties after language resolution', (done) => {
+			fixture('<div></div>').then((container) => {
+				let first = true;
+				const elem = document.createElement(asyncTag);
+				elem.setAttribute('name', 'Bill');
+				elem.addEventListener('d2l-test-localize-updated', (e) => {
+					const props = e.detail.props;
+					if (first) {
+						first = false;
+						expect(props.size).to.equal(2);
+						return;
+					}
+					expect(props.size).to.equal(1);
+					expect(e.detail.props.has('name'));
+					done();
+				});
+				elem.addEventListener('d2l-test-localize-render', () => {
+					elem.setAttribute('name', 'Jim');
+				});
+				container.appendChild(elem);
+			});
+		});
+
 	});
 
 });
