@@ -271,6 +271,10 @@ The `d2l-filter-dimension-set-empty-state` component allows you to customize the
   import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-empty-state.js';
   import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+
+  document.querySelector('d2l-filter').addEventListener('d2l-filter-dimension-empty-state-action', e => {
+      console.log(`Filter dimension empty state action clicked:\nkey: ${e.detail.key}\ntype: ${e.detail.type}`);
+    });
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
