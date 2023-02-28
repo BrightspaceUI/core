@@ -84,10 +84,21 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
+					animation: d2l-dialog-fullscreen-close 200ms ease-out;
 					border-radius: 8px;
 					margin: 1.5rem;
 					top: 0;
 					width: auto;
+				}
+
+				@keyframes d2l-dialog-fullscreen-close {
+					0% { opacity: 1; transform: translateY(0); }
+					100% { opacity: 0; transform: translateY(-50px) scale(0.97); }
+				}
+
+				@keyframes d2l-dialog-fullscreen-open {
+					0% { opacity: 0; transform: translateY(-50px) scale(0.97); }
+					100% { opacity: 1; transform: translateY(0); }
 				}
 
 				dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
@@ -113,7 +124,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				:host([_state="showing"]) dialog.d2l-dialog-outer,
 				:host([_state="showing"]) div.d2l-dialog-outer {
-					animation: d2l-dialog-open 400ms ease-out;
+					animation: d2l-dialog-fullscreen-open 400ms ease-out;
 				}
 
 				:host([_state="showing"]) dialog::backdrop {
