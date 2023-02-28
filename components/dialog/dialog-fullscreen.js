@@ -84,7 +84,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					animation: d2l-dialog-fullscreen-close 200ms ease-out;
+					animation: d2l-dialog-fullscreen-close 200ms ease-in;
 					border-radius: 8px;
 					margin: 1.5rem;
 					top: 0;

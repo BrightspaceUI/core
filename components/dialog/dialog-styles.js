@@ -21,7 +21,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer {
-		animation: d2l-dialog-close 200ms ease-out;
+		animation: d2l-dialog-close 200ms ease-in;
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
@@ -42,13 +42,13 @@ export const dialogStyles = css`
 	}
 
 	@keyframes d2l-dialog-close {
-		0% { transform: translateY(0); }
-		100% { transform: translateY(-50px); }
+		0% { opacity: 1; transform: translateY(0); }
+		100% { opacity: 0; transform: translateY(-50px); }
 	}
 
 	@keyframes d2l-dialog-open {
-		0% { transform: translateY(-50px); }
-		100% { transform: translateY(0); }
+		0% { opacity: 0; transform: translateY(-50px); }
+		100% { opacity: 1; transform: translateY(0); }
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
@@ -75,11 +75,12 @@ export const dialogStyles = css`
 		/* cannot use variables inside of ::backdrop : https://github.com/whatwg/fullscreen/issues/124 */
 		background-color: #f9fbff;
 		opacity: 0;
-		transition: opacity 200ms ease-out;
+		transition: opacity 200ms ease-in;
 	}
 
 	:host([_state="showing"]) dialog::backdrop {
 		opacity: 0.7;
+		transition-timing-function: ease-out;
 	}
 
 	d2l-focus-trap {
