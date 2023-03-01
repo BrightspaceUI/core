@@ -32,9 +32,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * The preferred width (unit-less) for the dialog. Maximum 1170.
 			 */
 			width: { type: Number },
-			_hasFooterContent: { type: Boolean, attribute: false },
-			_icon: { type: String, attribute: false },
-			_headerStyle: { type: String, attribute: false },
+			_autoSize: { state: true }, /* DE52039 This is only redefined here to suppress a lit-analyzer linting issue */
+			_hasFooterContent: { state: true },
+			_icon: { state: true },
+			_headerStyle: { state: true },
 		};
 	}
 
