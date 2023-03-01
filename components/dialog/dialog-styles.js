@@ -31,11 +31,6 @@ export const dialogStyles = css`
 		top: 75px;
 	}
 
-	:host([auto-size][full-height]) > .d2l-dialog-outer {
-		bottom: 1.5rem;
-		top: 1.5rem;
-	}
-
 	:host([_state="showing"]) > .d2l-dialog-outer {
 		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
 		animation: d2l-dialog-open 200ms ease-out;
@@ -49,6 +44,11 @@ export const dialogStyles = css`
 	@keyframes d2l-dialog-open {
 		0% { opacity: 0; transform: translateY(-50px); }
 		100% { opacity: 1; transform: translateY(0); }
+	}
+
+	.d2l-dialog-outer.d2l-dialog-outer-full-height {
+		bottom: 1.5rem;
+		top: 1.5rem;
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
