@@ -147,6 +147,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 					align-items: center;
 					background-color: var(--d2l-color-gypsum);
 					display: flex;
+					gap: 0.15rem;
 					min-height: auto;
 					padding-block-end: 0.55rem;
 					padding-block-start: 0.55rem;
@@ -200,15 +201,16 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 				}
 
 				.readonly-wrapper {
-					border-radius: 0.3rem;
-					display: inline-block;
+					border-radius: 0.1rem;
+					display: block;
 					line-height: 0;
 					outline: none;
-					padding: 0.55rem;
+					width: 1.2rem;
 				}
 				.readonly-wrapper:focus {
 					outline: none;
 				}
+				.readonly-wrapper.focus-visible,
 				.readonly-wrapper:${unsafeCSS(getFocusPseudoClass())} {
 					box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				}
