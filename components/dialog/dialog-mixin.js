@@ -42,22 +42,22 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
-			_autoSize: { type: Boolean, attribute: 'auto-size', reflect: true },
-			_fullHeight: { type: Boolean, attribute: 'full-height', reflect: true },
-			_fullscreenWithin: { type: Number },
-			_height: { type: Number },
+			_autoSize: { state: true },
+			_fullHeight: { state: true },
+			_fullscreenWithin: { state: true },
+			_height: { state: true },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
-			_left: { type: Number },
-			_margin: { type: Object },
-			_nestedShowing: { type: Boolean },
-			_overflowBottom: { type: Boolean },
-			_overflowTop: { type: Boolean },
-			_parentDialog: { type: Object },
-			_scroll: { type: Boolean },
+			_left: { state: true },
+			_margin: { state: true },
+			_nestedShowing: { state: true },
+			_overflowBottom: { state: true },
+			_overflowTop: { state: true },
+			_parentDialog: { state: true },
+			_scroll: { state: true },
 			_state: { type: String, reflect: true },
-			_top: { type: Number },
-			_width: { type: Number },
-			_useNative: { type: Boolean }
+			_top: { state: true },
+			_width: { state: true },
+			_useNative: { state: true }
 		};
 	}
 
@@ -451,6 +451,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		const dialogOuterClasses = {
 			'd2l-dialog-outer': true,
+			'd2l-dialog-outer-full-height': this._autoSize && this._fullHeight,
 			'd2l-dialog-outer-overflow-bottom': this._overflowBottom,
 			'd2l-dialog-outer-overflow-top': this._overflowTop,
 			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
