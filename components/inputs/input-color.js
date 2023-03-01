@@ -149,10 +149,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 					display: flex;
 					gap: 0.15rem;
 					min-height: auto;
-					padding-block-end: 0.55rem;
-					padding-block-start: 0.55rem;
-					padding-inline-end: 0.6rem;
-					padding-inline-start: 0.55rem;
+					padding: 0.55rem;
 					position: relative;
 				}
 				button:not([aria-disabled]):hover,
@@ -167,6 +164,11 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 				/* Firefox includes a hidden border which messes up button dimensions */
 				button::-moz-focus-inner {
 					border: 0;
+				}
+
+				.d2l-input-label {
+					margin-bottom: 0;
+					padding-bottom: 7px; /* prevent margin-collapse with readonly swatch margins */
 				}
 
 				.swatch {
@@ -204,6 +206,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 					border-radius: 0.1rem;
 					display: block;
 					line-height: 0;
+					margin: 0.55rem 0;
 					outline: none;
 					width: 1.2rem;
 				}
