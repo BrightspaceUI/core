@@ -1,6 +1,5 @@
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
-import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
@@ -301,7 +300,13 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 			'opened': this._opened
 		};
 		const ariaLabel = this._opened ? this._getTooltipLabel() : undefined;
-		const button = html`<button id="opener" class="${classMap(buttonClass)}" aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}" aria-label="${ifDefined(ariaLabel)}" @click="${this._handleOpenDialog}">${this._getSwatch()}<d2l-icon icon="tier1:chevron-down-small"></d2l-icon></button>`;
+		const button = html`
+			<button id="opener" class="${classMap(buttonClass)}" aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}" aria-label="${ifDefined(ariaLabel)}" @click="${this._handleOpenDialog}">
+				${this._getSwatch()}
+				<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
+					<path fill="#202122" d="M4.792 5.528a.733.733 0 0 1-.537-.223L.224 1.282a.745.745 0 0 1 0-1.065.751.751 0 0 1 1.057 0l3.51 3.511L8.303.218A.751.751 0 0 1 9.36 1.281L5.337 5.305a.753.753 0 0 1-.535.223h-.01Z"/>
+				</svg>
+			</button>`;
 		if (this.launchType === 'dialog') {
 			return button;
 		}
@@ -357,8 +362,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 		}
 		this._opened = true;
 		let url = new D2L.LP.Web.Http.UrlLocation('/d2l/lp/colourSelector')
-			.WithQueryString('type', this.type)
-			.WithQueryString('hasNoColourOption', !this.disallowNone);
+			.WithQueryString('type', this.type);
 		if (this.value !== undefined) {
 			url = url.WithQueryString('value', this.value);
 		}
