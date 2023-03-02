@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-color.js';
+		</script>
+		<title>d2l-input-color visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<style>
+			.visual-diff {
+				display: inline-block;
+				margin-right: 20px;
+				padding: 0 20px 50px 90px;
+			}
+		</style>
+	</head>
+	<body class="d2l-typography">
+		<div class="visual-diff" id="background">
+			<d2l-input-color type="background" value="#ff0000"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="background-none">
+			<d2l-input-color type="background"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="background-disabled">
+			<d2l-input-color type="background" value="#ff0000" disabled></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="background-readonly">
+			<d2l-input-color type="background" value="#ff0000" readonly></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="foreground">
+			<d2l-input-color type="foreground" value="#00ff00"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="foreground-none">
+			<d2l-input-color type="foreground"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="foreground-disabled">
+			<d2l-input-color type="foreground" value="#00ff00" disabled></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="foreground-readonly">
+			<d2l-input-color type="foreground" value="#00ff00" readonly></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="custom">
+			<d2l-input-color type="custom" label="Custom Fun Color" value="#0000ff"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="custom-none">
+			<d2l-input-color type="custom" label="Custom Fun Color"></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="custom-disabled">
+			<d2l-input-color type="custom" label="Custom Fun Color" value="#0000ff" disabled></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="custom-readonly">
+			<d2l-input-color type="custom" label="Custom Fun Color" value="#0000ff" readonly></d2l-input-color>
+		</div>
+		<div class="visual-diff" id="label-hidden" style="padding-right: 75px;">
+			<d2l-input-color type="custom" label="Custom Fun Color" label-hidden value="#0000ff"></d2l-input-color>
+		</div>
+	</body>
+</html>
