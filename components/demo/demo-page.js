@@ -80,7 +80,8 @@ class DemoPage extends LitElement {
 		const classes = {
 			'no-scroll': this._noScroll
 		};
-		const selectedLanguageCode = getDocumentLocaleSettings().language;
+		let selectedLanguageCode = getDocumentLocaleSettings().language;
+		if (selectedLanguageCode === 'en') selectedLanguageCode = 'en-us';
 		let foundSelected = false;
 		const languageOptions = supportedLocalesDetails.map((l) => {
 			const selected = !foundSelected && l.code.startsWith(selectedLanguageCode);
