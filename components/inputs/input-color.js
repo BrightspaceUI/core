@@ -365,7 +365,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 			console.warn('<d2l-color-input>: when "launch-type" is "dialog", component must be hosted in a LMS page.');
 			return;
 		}
-		this._opened = true;
 		let url = new D2L.LP.Web.Http.UrlLocation('/d2l/lp/colourSelector')
 			.WithQueryString('type', this.type);
 		if (this.value !== undefined) {
