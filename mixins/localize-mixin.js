@@ -2,8 +2,15 @@ import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
-import { markupMap } from '../helpers/localize-markup-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
+const markupMap = Object.freeze({
+	'[b]': '<strong>',
+	'[/b]': '</strong>',
+	'[i]': '<em>',
+	'[/i]': '</em>',
+	'[br]': '<br>',
+});
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
