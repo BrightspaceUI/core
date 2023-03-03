@@ -149,21 +149,21 @@ For more complex markup, additional information must be provided as the second p
 
 #### Links
 
-The `[a]link[/a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_link` property.
+The `[a]link[/a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `link` property.
 
 > Return [a]home[/a].
 
 ```javascript
-this.localizeHTML('termName', { _link: 'href="home.html"' });
+this.localizeHTML('termName', { link: 'href="home.html"' });
 ```
 
-If a localization resource contains multiple links, give them unique identifiers and provide attributes from the `_links` property instead:
+If a localization resource contains multiple links, give them unique identifiers and provide attributes from the `links` property instead:
 
 > Go [a home]home[/a] or [a back]return back[/a] to the previous page.
 
 ```javascript
 this.localizeHTML('termName', {
-  _links: {
+  links: {
     home: 'href="home.html"',
     back: 'href="back.html"'
   }
@@ -172,14 +172,14 @@ this.localizeHTML('termName', {
 
 #### Help Tooltips
 
-The `[tooltip-help]help tooltip[/tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltipHelp` property.
+The `[tooltip-help]help tooltip[/tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `tooltipHelp` property.
 
 > An octopus is a member of the [tooltip-help]cephalopod[/tooltip-help] family.
 
 ```javascript
 this.localizeHTML('termName', {
-  _tooltipHelp: 'Cephalopods are members of the molluscan class Cephalopoda'
+  tooltipHelp: 'Cephalopods are members of the molluscan class Cephalopoda'
 });
 ```
 
-Similar to links, multiple help tooltips in a single term should use an identifier and the `_tooltipHelps` property.
+Similar to links, multiple help tooltips in a single term should use an identifier and the `tooltipHelps` property.
