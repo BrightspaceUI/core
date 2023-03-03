@@ -347,6 +347,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 
 	_handleClose() {
 		this._opened = false;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-color-close', { bubbles: false, composed: false }
 		));
@@ -384,6 +385,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 
 	_handleOpenDropdown() {
 		this._opened = true;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-color-open', { bubbles: false, composed: false }
 		));
