@@ -475,7 +475,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				'd2l-empty-state-container': true,
 				'd2l-offscreen': count !== 0
 			};
-			const emptyState = dimension.searchEmptyState
+			const emptyState = dimension.searchEmptyState && count === 0
 				? this._createEmptyState(dimension.searchEmptyState, dimension.key, EmptyStateType.Search)
 				: html`
 					<d2l-empty-state-simple
