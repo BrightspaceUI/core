@@ -137,8 +137,8 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 	}
 
 	localizeHTML(key, {
-		_link = '', _tooltip = '', _html = '',
-		_links = {}, _tooltips = {},
+		_link = '', _tooltipHelp = '', _html = '',
+		_links = {}, _tooltipHelps = {},
 		...replacements
 	} = {}) {
 		const localized = this.localize(key, replacements);
@@ -147,14 +147,14 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			// replace [link], [link key], [/link]
 			.replace(/\[a(?: ?([\w-]*))?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${(_links[n] || _link).replace(/>/g, '&gt;')}>${t}</d2l-link>`)
 			// replace [tooltip-help], [tooltip-help key], [/tooltip-help]
-			.replace(/\[tooltip-help(?: ?([\w-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t.replace(/"/g, '&quot;')}">${_tooltips[n] || _tooltip}</d2l-tooltip-help>`)
+			.replace(/\[tooltip-help(?: ?([\w-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t.replace(/"/g, '&quot;')}">${_tooltipHelps[n] || _tooltipHelp}</d2l-tooltip-help>`)
 			// UNDOCUMENTED: replace [html]
 			.replace('[html]', _html || '')
 			// replace good-listed markup
 			.replace(LocalizeMixinClass.markupRegex, k => markupMap[k] || k);
 
 		if (_link || Object.keys(_links).length) import('../components/link/link.js');
-		if (_tooltip || Object.keys(_tooltips).length) import('../components/tooltip/tooltip-help.js');
+		if (_tooltipHelp || Object.keys(_tooltipHelps).length) import('../components/tooltip/tooltip-help.js');
 
 		return unsafeHTML(markedUp);
 	}
