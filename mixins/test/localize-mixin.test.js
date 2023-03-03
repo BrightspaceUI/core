@@ -131,7 +131,7 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 			en: {
 				test1: 'This is [b]important[/b], this is [b][i]very important[/i][/b], and this is [span]not[/span]',
 				test2: 'This is [a]a link[/a]',
-				test3: 'This is [a two]a link[/a]. This is [a one]another one[/a]',
+				test3: 'This is [a two]a link[/a].[br]This is [a one]another one[/a]',
 				test4: 'This is a [tooltip-help]tooltip helper" onclick="import(`malicious.js`)[/tooltip-help] within a sentence',
 				test5: 'This is a [tooltip-help one]tooltip helper[/tooltip-help] within a sentence. Here is [tooltip-help two]another[/tooltip-help].',
 				test6: 'This is <script src="malicious.js"></script> fine',
@@ -350,7 +350,7 @@ describe('LocalizeMixin', () => {
 			expect(unsafeHTML).to.have.property('_$litDirective$').that.has.property('directiveName', 'unsafeHTML');
 			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
 			expect(val2).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank"&gt;<div&gt;Injected Link Contents</div>a link</d2l-link>. This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
+			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank"&gt;<div&gt;Injected Link Contents</div>a link</d2l-link>.<br>This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
 			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper&quot; onclick=&quot;import(`malicious.js`)">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(val5).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence. Here is <d2l-tooltip-help inherit-font-style text="another">More tooltip text</d2l-tooltip-help>.');
 			expect(val6).to.equal('This is &lt;script src="malicious.js"&gt;&lt;/script&gt; fine');
