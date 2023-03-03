@@ -6,21 +6,16 @@
 		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../components/demo/demo-page.js';
-			import { html, LitElement } from 'lit';
-			import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
-			window.html = html;
-			window.LitElement = LitElement;
-			window.LocalizeDynamicMixin = LocalizeDynamicMixin;
 		</script>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="localize-mixin">
 
 			<h2>localize()</h2>
-
 			<d2l-demo-snippet>
-
 				<script type="module">
+import { html, LitElement } from 'lit';
+import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 class Greeting extends LocalizeDynamicMixin(LitElement) {
 
 	static get properties() {
@@ -31,9 +26,18 @@ class Greeting extends LocalizeDynamicMixin(LitElement) {
 
 	static get localizeConfig() {
 		const langResources = {
-			'en': { hello: `Hello, {name}` },
-			'en-gb': { hello: `'Ello, {name}` },
-			'fr': { hello: `Bonjour, {name}` },
+			'ar': { 'hello': 'مرحبا {name}' },
+			'de': { 'hello': 'Hallo {name}' },
+			'en': { 'hello': `Hello, {name}` },
+			'en-gb': { 'hello': `'Ello, {name}` },
+			'es': { 'hello': 'Hola {name}' },
+			'fr': { 'hello': `Bonjour, {name}` },
+			'ja': { 'hello': 'こんにちは {name}' },
+			'ko': { 'hello': '안녕하세요 {name}' },
+			'pt-br': { 'hello': 'Olá {name}' },
+			'tr': { 'hello': 'Merhaba {name}' },
+			'zh-cn': { 'hello': '你好 {name}' },
+			'zh-tw': { 'hello': '你好 {name}' }
 		};
 		return {
 			importFunc: async lang => langResources[lang]
@@ -55,14 +59,15 @@ customElements.define('d2l-greeting', Greeting);
 			</d2l-demo-snippet>
 
 			<h2>localizeHTML()</h2>
-
 			<d2l-demo-snippet>
 				<script type="module">
+import { html, LitElement } from 'lit';
+import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 class Mission extends LocalizeDynamicMixin(LitElement) {
 
 	static get localizeConfig() {
 		const langResources = {
-			'en': { mission: `Transforming the way [a]the world[/a] learns` },
+			'en': { mission: `[em]Transforming[/em] the way [a]the world[/a] learns` },
 			'fr': { mission: `Transformer la façon dont [a]le monde[/a] apprend` }
 		};
 		return {
