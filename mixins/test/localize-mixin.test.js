@@ -335,17 +335,17 @@ describe('LocalizeMixin', () => {
 		it('should replace acceptable markup with correct HTML', () => {
 			const unsafeHTML = elem.localizeHTML('test1');
 			const val1 = unsafeHTML.values[0];
-			const val2 = elem.localizeHTML('test2', { _link: 'href="http://d2l.com"' }).values[0];
-			const val3 = elem.localizeHTML('test3', { _links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"><div>Injected Link Contents</div' } }).values[0];
-			const val4 = elem.localizeHTML('test4', { _tooltipHelp: 'Tooltip text' }).values[0];
-			const val5 = elem.localizeHTML('test5', { _tooltipHelps: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
+			const val2 = elem.localizeHTML('test2', { link: 'href="http://d2l.com"' }).values[0];
+			const val3 = elem.localizeHTML('test3', { links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"><div>Injected Link Contents</div' } }).values[0];
+			const val4 = elem.localizeHTML('test4', { tooltipHelp: 'Tooltip text' }).values[0];
+			const val5 = elem.localizeHTML('test5', { tooltipHelps: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
 			const val6 = elem.localizeHTML('test6').values[0];
 
 			const items = ['milk'];
-			const val7 = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], _link: 'href="checkout"' }).values[0];
+			const val7 = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: 'href="checkout"' }).values[0];
 
 			items.push('bread', 'eggs');
-			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, _link: 'href="checkout"', _html: `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>` }).values[0];
+			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: 'href="checkout"', _html: `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>` }).values[0];
 
 			expect(unsafeHTML).to.have.property('_$litDirective$').that.has.property('directiveName', 'unsafeHTML');
 			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
