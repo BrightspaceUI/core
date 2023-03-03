@@ -337,8 +337,8 @@ describe('LocalizeMixin', () => {
 			const val1 = unsafeHTML.values[0];
 			const val2 = elem.localizeHTML('test2', { _link: 'href="http://d2l.com"' }).values[0];
 			const val3 = elem.localizeHTML('test3', { _links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"><div>Injected Link Contents</div' } }).values[0];
-			const val4 = elem.localizeHTML('test4', { _tooltip: 'Tooltip text' }).values[0];
-			const val5 = elem.localizeHTML('test5', { _tooltips: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
+			const val4 = elem.localizeHTML('test4', { _tooltipHelp: 'Tooltip text' }).values[0];
+			const val5 = elem.localizeHTML('test5', { _tooltipHelps: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
 			const val6 = elem.localizeHTML('test6').values[0];
 
 			const items = ['milk'];

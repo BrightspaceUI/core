@@ -127,50 +127,59 @@ render() {
 
 ## `localizeHTML()`
 
-You can include some basic markup in your localization resources and safely convert them to HTML with the `localizeHTML()` method
+You can include some basic markup in your localization resources and safely convert them to HTML with the `localizeHTML()` method.
 
 ### Simple Markup
 
-#### `[b]Bold[/b]`
-The `[b]` markup converts to the `<strong>` tag
+#### Bold
 
-#### `[i]Italic[/i]`
-The `[i]` markup converts to the `<em>` tag
+The `[b]bold[/b]` markup converts to the `<strong>` tag.
 
-#### `[br]`
-The `[br]` markup converts to the `<br />` tag
+#### Italic
 
+The `[i]italic[/i]` markup converts to the `<em>` tag.
 
-### Complex markup
+#### Line Breaks
 
-Complex markup is more powerful, but requires passing additional information in the second parameter
+The `[br]` markup converts to the `<br>` tag.
 
-#### `[a]Linked[/a]`
-The `[a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_link` property
-```javascript
-this.localizeHTML('goHome', { _link: 'href="home.html"' });
-```
+### Complex Markup
 
-#### `[tooltip-help]Tooltipped[/tooltip-help]`
-The `[tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltip` property
-```javascript
-this.localizeHTML('octopusDesc', { _tooltip: 'Cephalopods are members of the molluscan class Cephalopoda' });
-```
+For more complex markup, additional information must be provided as the second parameter.
 
-Complex markup can be used multiple times by including a name and using an object for its required information
+#### Links
 
-##### Example
+The `[a]link[/a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `_link` property.
+
+> Return [a]home[/a].
 
 ```javascript
-// en.js
-export default {
-  greetingLinks: `Hi {name}, here's [a first]a link[/a]. Here's [a second]another[/a].`
-};
+this.localizeHTML('termName', { _link: 'href="home.html"' });
 ```
+
+If a localization resource contains multiple links, give them unique identifiers and provide attributes from the `_links` property instead:
+
+> Go [a home]home[/a] or [a back]return back[/a] to the previous page.
+
 ```javascript
-this.localizeHTML('greetingLinks', { name: 'Mary', _links: { first: 'href="a.html"', second: 'href="b.html" target="_blank"' } });
+this.localizeHTML('termName', {
+  _links: {
+    home: 'href="home.html"',
+    back: 'href="back.html"'
+  }
+});
 ```
-Output:
-```html
-Hi Mary, here's <d2l-link href="a.html">a link</d2l-link>. Here's <d2l-link href="b.html" target="_blank">another</d2l-link>.
+
+#### Help Tooltips
+
+The `[tooltip-help]help tooltip[/tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `_tooltipHelp` property.
+
+> An octopus is a member of the [tooltip-help]cephalopod[/tooltip-help] family.
+
+```javascript
+this.localizeHTML('termName', {
+  _tooltipHelp: 'Cephalopods are members of the molluscan class Cephalopoda'
+});
 ```
+
+Similar to links, multiple help tooltips in a single term should use an identifier and the `_tooltipHelps` property.
