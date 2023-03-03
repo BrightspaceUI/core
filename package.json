@@ -23,7 +23,7 @@
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group default",
     "test:headless:watch": "web-test-runner --group default --watch",
-    "test:translations": "mfv -e -s en -p ./lang/"
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
   },
   "files": [
     "custom-elements.json",
