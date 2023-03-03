@@ -3,5 +3,5 @@ export const markupMap = Object.freeze({
 	'[/b]': '</strong>',
 	'[i]': '<em>',
 	'[/i]': '</em>',
-	'[br]': '<br />',
+	'[br]': '<br>',
 });
