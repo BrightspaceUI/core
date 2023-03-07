@@ -130,6 +130,10 @@ getComposedActiveElement()
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
 
 // gets the focus pseudo-class to used in selectors (focus-visible if supported, or focus)
+// Always also include `.focus-visible` as a selector, to support `forceFocusVisible`. Usage:
+//	css`
+//		some-element.focus-visible, some-element:${unsafeCSS(getFocusPseudoClass())} { ... }
+//	`
 getFocusPseudoClass()
 
 // gets the last focusable descendant given a node, including those within the shadow DOM
