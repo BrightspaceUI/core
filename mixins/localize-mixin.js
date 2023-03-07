@@ -2,6 +2,7 @@ import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import IntlMessageFormat from 'intl-messageformat';
 
 const markupMap = Object.freeze({
@@ -149,6 +150,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		return this.localize(key, {
 			b: chunks => html`<strong>${chunks}</strong>`,
 			br: () => html`<br>`,
+			p: chunks => html`<p>${chunks}</p>`,
 			...replacements
 		});
 	}
@@ -192,3 +194,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 	}
 
 });
+
+export const linkGenerator = ({ href, target }) => {
+	return chunks => html`<d2l-link href="${ifDefined(href)}" target="${ifDefined(target)}">${chunks}</d2l-link>`;
+};

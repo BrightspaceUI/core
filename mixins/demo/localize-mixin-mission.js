@@ -1,13 +1,14 @@
 import '../../components/link/link.js';
 import { html, LitElement } from 'lit';
+import { linkGenerator } from '../../mixins/localize-mixin.js';
 import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 
 class Mission extends LocalizeDynamicMixin(LitElement) {
 
 	static get localizeConfig() {
 		const langResources = {
-			'en': { mission: 'Transforming the way <my-link>the <br></br> <b>world</b></my-link> learns' },
-			'fr': { mission: 'Transformer la façon dont <my-link>le <br></br> <b>monde</b></my-link> apprend' }
+			'en': { mission: '<p><link1>Transforming</link1> the way</p><link2>the <br></br> <b>world</b></link2> learns' },
+			'fr': { mission: '<p><link1>Transformer</link1> la façon dont</p><link2>le <br></br> <b>monde</b></link2> apprend' }
 		};
 		return {
 			importFunc: async lang => langResources[lang]
@@ -15,9 +16,10 @@ class Mission extends LocalizeDynamicMixin(LitElement) {
 	}
 
 	render() {
-		const myLink = chunks => html`<d2l-link href="https://wikipedia.org/wiki/Earth" target="_blank">${chunks}</d2l-link>`;
+		const link1 = linkGenerator({ href: 'https://wikipedia.org/wiki/Culture_change', target: '_blank' });
+		const link2 = linkGenerator({ href: 'https://wikipedia.org/wiki/Earth', target: '_blank' });
 		return html`
-			<p>${this.localizeHTML('mission', { 'my-link': myLink })}</p>
+			${this.localizeHTML('mission', { link1, link2 })}
 		`;
 	}
 }
