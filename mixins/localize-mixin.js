@@ -196,5 +196,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 });
 
 export const linkGenerator = ({ href, target }) => {
+	import('../components/link/link.js');
 	return chunks => html`<d2l-link href="${ifDefined(href)}" target="${ifDefined(target)}">${chunks}</d2l-link>`;
 };
