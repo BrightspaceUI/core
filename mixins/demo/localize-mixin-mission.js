@@ -1,4 +1,3 @@
-import '../../components/link/link.js';
 import { html, LitElement } from 'lit';
 import { linkGenerator } from '../../mixins/localize-mixin.js';
 import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
