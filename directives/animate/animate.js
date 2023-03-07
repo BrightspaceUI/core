@@ -1,5 +1,5 @@
 import { directive, PartType } from 'lit/directive.js';
-import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable, isFocusVisibleApplied } from '../../helpers/focus.js';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { noChange } from 'lit';
@@ -180,7 +180,7 @@ class AnimationState {
 
 		// if focus is inside and was placed by keyboard, move it to next focusable
 		const activeElem = getComposedActiveElement();
-		if (activeElem && activeElem.classList.contains('focus-visible')) {
+		if (activeElem && isFocusVisibleApplied(activeElem)) {
 			const focusIsInside = isComposedAncestor(this.elem, activeElem);
 			if (focusIsInside) {
 				const nextFocusable = getNextFocusable(activeElem);
