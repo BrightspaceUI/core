@@ -1,10 +1,10 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -12,7 +12,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  */
-class TooltipHelp extends SkeletonMixin(FocusMixin(FocusVisiblePolyfillMixin(LitElement))) {
+class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -60,7 +60,8 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(FocusVisiblePolyfillMixin(Lit
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
-			#d2l-tooltip-help-text.focus-visible {
+			#d2l-tooltip-help-text.focus-visible,
+			#d2l-tooltip-help-text:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);
 				outline-offset: 0.05rem;

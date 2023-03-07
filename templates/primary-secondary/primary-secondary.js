@@ -2,9 +2,9 @@ import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -536,7 +536,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
-class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -743,7 +743,9 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				width: 0.1rem;
 			}
 			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left {
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-right,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
 			:host(:not([dir="rtl"]):not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
@@ -776,7 +778,9 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				box-shadow: none;
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider.focus-visible,
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible {
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible,
+			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())},
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-celestine);
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
@@ -786,7 +790,9 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				background-color: var(--d2l-color-ferrite);
 			}
 			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after {
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: white;
 			}
 
@@ -913,13 +919,15 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					height: 1rem;
 					width: 2.2rem;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
+				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle,
+				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
 					right: 17px;
 					width: 2.6rem;
 				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
+				:host([dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle,
+				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					left: 17px;
 					right: auto;
 				}
@@ -927,7 +935,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile {
+				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile,
+				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
 				}
