@@ -2,6 +2,7 @@ import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { forceFocusVisible, getComposedActiveElement } from '../../../helpers/focus.js';
 import { hide, show } from '../animate.js';
 import { html, LitElement } from 'lit';
+import { testRunnerKeyboardFocus, testRunnerMouseFocus } from '../../../test/test-helpers.js';
 
 class FocusTestElem extends LitElement {
 
@@ -84,7 +85,7 @@ describe('animate directive', () => {
 		it('should move focus when element with visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			elem.forceFocusVisible();
+			await testRunnerKeyboardFocus(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
@@ -95,7 +96,7 @@ describe('animate directive', () => {
 		it('should not move focus when element with non-visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			elem.focus();
+			await testRunnerMouseFocus(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
