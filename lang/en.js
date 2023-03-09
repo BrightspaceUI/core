@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Hidden",
 	"components.switch.conditions": "Conditions must be met",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Scroll Forward",
 	"components.tabs.previous": "Scroll Backward",
 	"components.tag-list.clear": "Click, press backspace, or press delete key to remove item {value}",

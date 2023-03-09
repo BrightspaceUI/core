@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Visível.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "As condições devem ser atendidas",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás",
 	"components.tag-list.clear": "Clique em, pressione Backspace ou pressione a tecla Delete para remover o item {value}",

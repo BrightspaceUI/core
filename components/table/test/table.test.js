@@ -37,10 +37,10 @@ describe('d2l-table-controls', () => {
 		runConstructor('d2l-table-controls');
 	});
 
-	// it('should override default SelectionControls label', async() => {
-	// 	const el = await fixture(html`<d2l-table-controls></d2l-table-controls>`);
-	// 	const section = el.shadowRoot.querySelector('section');
-	// 	expect(section.getAttribute('aria-label')).to.equal('Table controls');
-	// });
+	it('should override default SelectionControls label', async() => {
+		const el = await fixture(html`<d2l-table-controls></d2l-table-controls>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.equal('Actions for table');
+	});
 
 });

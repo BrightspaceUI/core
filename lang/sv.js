@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Synlig.",
 	"components.switch.hidden": "Dold",
 	"components.switch.conditions": "Villkoren måste uppfyllas",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt",
 	"components.tag-list.clear": "Klicka, tryck på backstegstangenten eller Delete-tangenten för att ta bort objektet {value}",

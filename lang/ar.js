@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "مرئي.",
 	"components.switch.hidden": "مخفي",
 	"components.switch.conditions": "يجب استيفاء الشروط",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف",
 	"components.tag-list.clear": "انقر فوق، أو اضغط على مسافة للخلف، أو اضغط على مفتاح حذف لإزالة العنصر {value}",
