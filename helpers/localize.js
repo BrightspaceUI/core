@@ -7,7 +7,7 @@ const markupError = `localizeHTML() rich-text replacements must use markup templ
 const acceptedTagsRegex = new RegExp(`<(?!/?(${acceptedTags.join('|')}))`);
 
 export function validateMarkup(content, applyRegex) {
-	if (content.map) return content.map(validateMarkup);
+	if (content.map) return content.map(item => validateMarkup(item, applyRegex));
 
 	if (content._markup) return content;
 	if (content.constructor !== String) throw markupError;

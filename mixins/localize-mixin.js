@@ -116,7 +116,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localizeHTML(key, params) {
 
-		if (!key || !this.__resources || !this._resources[key]) return '';
+		if (!key || !this.__resources || !this.__resources[key]) return '';
 
 		const resource = this.__resources[key];
 		const translatedValue = resource.value;
