@@ -30,6 +30,10 @@ class TableControls extends SelectionControls {
 		`];
 	}
 
+	_getSelectionControlsLabel() {
+		return this.localize('components.table-controls.label');
+	}
+
 	_renderSelection() {
 		return html`
 			<d2l-selection-summary

@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "दृश्यमान।",
 	"components.switch.hidden": "छुपा हुआ",
 	"components.switch.conditions": "शर्तें पूरी होनी चाहिए",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "आगे स्क्रॉल करें",
 	"components.tabs.previous": "पीछे स्क्रॉल करें",
 	"components.tag-list.clear": "{value} को हटाने के लिए क्लिक करें, बैकस्पेस दबाएँ, या हटाएँ कुंजी को दबाएँ",

@@ -106,6 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
+	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Faire défiler vers l'avant",
 	"components.tabs.previous": "Faire défiler vers l'arrière",
 	"components.tag-list.clear": "Cliquez sur l’élément, appuyez sur la touche Retour arrière ou sur la touche Suppr pour supprimer l’élément {value}",
