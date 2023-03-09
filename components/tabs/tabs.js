@@ -2,12 +2,12 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -52,7 +52,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyfillMixin(LitElement)))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -182,14 +182,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				border: 0;
 			}
 			.d2l-tabs-scroll-button[disabled]:hover,
-			.d2l-tabs-scroll-button[disabled].focus-visible {
+			.d2l-tabs-scroll-button[disabled].focus-visible,
+			.d2l-tabs-scroll-button[disabled]:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: transparent;
 			}
 			.d2l-tabs-scroll-button:hover,
-			.d2l-tabs-scroll-button.focus-visible {
+			.d2l-tabs-scroll-button.focus-visible,
+			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-gypsum);
 			}
-			.d2l-tabs-scroll-button.focus-visible {
+			.d2l-tabs-scroll-button.focus-visible,
+			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {

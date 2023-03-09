@@ -21,6 +21,8 @@ export const menuItemStyles = css`
 		color: var(--d2l-menu-foreground-color-hover);
 	}
 
+	:host(.focus-visible),
+	:host([first].focus-visible),
 	:host(:${unsafeCSS(getFocusPseudoClass())}),
 	:host([first]:${unsafeCSS(getFocusPseudoClass())}) {
 		border-radius: 6px;
@@ -36,6 +38,7 @@ export const menuItemStyles = css`
 		opacity: 0.75;
 	}
 
+	:host([disabled].focus-visible),
 	:host([disabled]:${unsafeCSS(getFocusPseudoClass())}) {
 		cursor: default;
 		opacity: 0.75;

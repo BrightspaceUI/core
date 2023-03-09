@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { css, html, LitElement, unsafeCSS } from 'lit';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -14,7 +14,7 @@ const SCROLL_AMOUNT = 0.8;
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  * @slot - User provided content to wrap
  */
-class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
+class ScrollWrapper extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -59,7 +59,8 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				overflow-x: auto;
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
-			.d2l-scroll-wrapper-container.focus-visible {
+			.d2l-scroll-wrapper-container.focus-visible,
+			.d2l-scroll-wrapper-container:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {

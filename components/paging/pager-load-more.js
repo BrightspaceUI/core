@@ -4,7 +4,6 @@ import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
@@ -18,7 +17,7 @@ const nativeFocus = document.createElement('div').focus;
  *  A pager component for load-more paging.
  * @fires d2l-pager-load-more - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
  */
-class LoadMore extends FocusMixin(FocusVisiblePolyfillMixin(LocalizeCoreElement(LitElement))) {
+class LoadMore extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
