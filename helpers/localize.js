@@ -4,34 +4,21 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const acceptedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
 
 const markupError = `localize() rich-text replacements must use markup templates with only the following accepted elements: ${acceptedTags}. [link to docs]`;
-const regex = new RegExp(`<(?!\/?(${acceptedTags.join('|')}))`);
+const acceptedTagsRegex = new RegExp(`<(?!/?(${acceptedTags.join('|')}))`);
 
-export function validateMarkup(parts) {
-	return parts.map(p => {
-		debugger;
-		if (p._markup) return p;
-		else if (p.constructor !== String) throw markupError;
-		return p;
-	});
+export function validateMarkup(content, applyRegex) {
+	if (content.map) return content.map(validateMarkup);
+
+	if (content._markup) return content;
+	if (content.constructor !== String) throw markupError;
+	if (applyRegex && acceptedTagsRegex.test(content)) throw markupError;
+
+	return content;
 }
 
 export function markup(str, ...parts) {
-	let reject = str.some(str => regex.test(str));
-	reject = reject || parts.some(subparts => { // subparts === chunks?
-		if (subparts.constructor === String) {
-			return regex.test(subparts);
-		}
-		else if (Array.isArray(subparts)) {
-			 return !subparts.some(subpart => subpart.constructor === String || subpart._markup);
-		}
-		else {
-			return !subparts._markup;
-		}
-	});
-	if (reject) throw markupError;
-	const _html = html(str, ...parts);
-	_html._markup = true;
-	return _html;
+	validateMarkup(str, true) && validateMarkup(parts, true);
+	return { ...html(str, ...parts), _markup: true };
 }
 
 export const linkGenerator = ({ href, target }) => {

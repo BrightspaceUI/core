@@ -1,7 +1,7 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
+import { markup, validateMarkup } from '../helpers/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { markup, validateMarkup } from '../helpers/localize.js'
 import IntlMessageFormat from 'intl-messageformat';
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
@@ -121,26 +121,21 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
 		let formattedMessage = translatedValue;
 		try {
-			formattedMessage = translatedMessage.format(params);
+			formattedMessage = translatedMessage.format({
+				b: chunks => markup`<strong>${chunks}</strong>`,
+				br: () => markup`<br>`,
+				em: chunks => markup`<em>${chunks}</em>`,
+				i: chunks => markup`<em>${chunks}</em>`,
+				p: chunks => markup`<p>${chunks}</p>`,
+				strong: chunks => markup`<strong>${chunks}</strong>`,
+				...params
+			});
 		} catch (e) {
 			console.error(e);
 		}
-		return formattedMessage;
 
-	}
+		return validateMarkup(formattedMessage);
 
-	localizeHTML(key, {
-		...replacements
-	} = {}) {
-
-		const parts = this.localize(key, {
-			b: chunks => markup`<strong>${chunks}</strong>`,
-			br: () => markup`<br>`,
-			p: chunks => markup`<p>${chunks}</p>`,
-			...replacements
-		});
-
-		return validateMarkup(parts);
 	}
 
 	static _generatePossibleLanguages(config) {
