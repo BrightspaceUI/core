@@ -85,4 +85,4 @@ To make your usage of `d2l-input-search` accessible, use the following property 
 | Attribute | Description |
 |---|---|
 | `description` | Use when label on input does not provide enough context. |
-| label | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Not visible. |
+| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Not visible. |
