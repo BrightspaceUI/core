@@ -1,17 +1,8 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { markup, validateMarkup } from '../helpers/localize.js'
 import IntlMessageFormat from 'intl-messageformat';
-
-const markupMap = Object.freeze({
-	'[b]': '<strong>',
-	'[/b]': '</strong>',
-	'[i]': '<em>',
-	'[/i]': '</em>',
-	'[br]': '<br>',
-});
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
@@ -20,8 +11,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			__resources: { type: Object, attribute: false  }
 		};
 	}
-
-	static #markupRegex = new RegExp(Object.keys(markupMap).join('|').replace(/[[\]]/g, '\\$&'), 'g');
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 
@@ -56,10 +45,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		});
 
 		this.__updatedProperties = new Map();
-	}
-
-	static get markupRegex() {
-		return LocalizeMixinClass.#markupRegex;
 	}
 
 	connectedCallback() {
@@ -147,12 +132,15 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 	localizeHTML(key, {
 		...replacements
 	} = {}) {
-		return this.localize(key, {
-			b: chunks => html`<strong>${chunks}</strong>`,
-			br: () => html`<br>`,
-			p: chunks => html`<p>${chunks}</p>`,
+
+		const parts = this.localize(key, {
+			b: chunks => markup`<strong>${chunks}</strong>`,
+			br: () => markup`<br>`,
+			p: chunks => markup`<p>${chunks}</p>`,
 			...replacements
 		});
+
+		return validateMarkup(parts);
 	}
 
 	static _generatePossibleLanguages(config) {
@@ -194,8 +182,3 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 	}
 
 });
-
-export const linkGenerator = ({ href, target }) => {
-	import('../components/link/link.js');
-	return chunks => html`<d2l-link href="${ifDefined(href)}" target="${ifDefined(target)}">${chunks}</d2l-link>`;
-};
