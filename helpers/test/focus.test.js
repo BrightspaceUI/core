@@ -410,11 +410,6 @@ describe('focus', () => {
 			expect(isFocusVisibleApplied(button)).to.be.false;
 		});
 
-		it('returns true on a forceFocusVisible element', async() => {
-			forceFocusVisible(button);
-			expect(isFocusVisibleApplied(button)).to.be.true;
-		});
-
 		it('returns false on a mouse-mode focused element', async() => {
 			await testRunnerMouseFocus(button);
 			expect(isFocusVisibleApplied(button)).to.be.false;
@@ -422,6 +417,12 @@ describe('focus', () => {
 
 		it('returns true on a keyboard-mode focused element', async() => {
 			await testRunnerKeyboardFocus(button);
+			expect(isFocusVisibleApplied(button)).to.be.true;
+		});
+
+		it('returns true on a forceFocusVisible element', async() => {
+			await testRunnerMouseFocus(button);
+			forceFocusVisible(button);
 			expect(isFocusVisibleApplied(button)).to.be.true;
 		});
 
