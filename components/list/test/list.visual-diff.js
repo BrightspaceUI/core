@@ -144,7 +144,7 @@ describe('d2l-list', () => {
 			{ name: 'not selected hover', selector: '#selectable', action: () => hover('#selectable [selectable]') },
 			{ name: 'selection-disabled hover', selector: '#selectable', action: () => hover('#selectable [selectable][selection-disabled]') },
 			{ name: 'button selection-disabled hover', selector: '#selectableButton', action: () => hover('#selectableButton [selectable][selection-disabled]') },
-			{ name: 'button selection-disabled button-disabled hover', selector: '#selectableButton', action: () => hover('#selectableButton [selectable][selection-disabled][button-disabled') },
+			{ name: 'button selection-disabled button-disabled hover', selector: '#selectableButton', action: () => hover('#selectableButton [selectable][selection-disabled][button-disabled]') },
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
