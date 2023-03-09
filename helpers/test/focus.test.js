@@ -1,4 +1,5 @@
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
+import { focusWithKeyboard, focusWithMouse } from '../../tools/web-test-runner-helpers.js';
 import {
 	forceFocusVisible,
 	getComposedActiveElement,
@@ -11,7 +12,6 @@ import {
 	isFocusVisibleApplied,
 	tryApplyFocus
 } from '../focus.js';
-import { testRunnerKeyboardFocus, testRunnerMouseFocus } from '../../test/test-helpers.js';
 import { LitElement } from 'lit';
 
 const testElemTag = defineCE(
@@ -411,17 +411,17 @@ describe('focus', () => {
 		});
 
 		it('returns false on a mouse-mode focused element', async() => {
-			await testRunnerMouseFocus(button);
+			await focusWithMouse(button);
 			expect(isFocusVisibleApplied(button)).to.be.false;
 		});
 
 		it('returns true on a keyboard-mode focused element', async() => {
-			await testRunnerKeyboardFocus(button);
+			await focusWithKeyboard(button);
 			expect(isFocusVisibleApplied(button)).to.be.true;
 		});
 
 		it('returns true on a forceFocusVisible element', async() => {
-			await testRunnerMouseFocus(button);
+			await focusWithMouse(button);
 			forceFocusVisible(button);
 			expect(isFocusVisibleApplied(button)).to.be.true;
 		});

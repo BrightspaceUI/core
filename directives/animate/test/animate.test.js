@@ -1,8 +1,8 @@
 import { expect, fixture, oneEvent } from '@open-wc/testing';
-import { forceFocusVisible, getComposedActiveElement } from '../../../helpers/focus.js';
+import { focusWithKeyboard, focusWithMouse } from '../../../tools/web-test-runner-helpers.js';
 import { hide, show } from '../animate.js';
 import { html, LitElement } from 'lit';
-import { testRunnerKeyboardFocus, testRunnerMouseFocus } from '../../../test/test-helpers.js';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
 
 class FocusTestElem extends LitElement {
 
@@ -18,14 +18,6 @@ class FocusTestElem extends LitElement {
 			<button id="first" .animate="${animateValue}" @d2l-animate-complete="${this._dispatchEvent}">first</button>
 			<button id="second">second</button>
 		`;
-	}
-
-	focus() {
-		if (this.shadowRoot) this.shadowRoot.querySelector('#first').focus();
-	}
-
-	forceFocusVisible() {
-		if (this.shadowRoot) forceFocusVisible(this.shadowRoot.querySelector('#first'));
 	}
 
 	_dispatchEvent() {
@@ -85,7 +77,7 @@ describe('animate directive', () => {
 		it('should move focus when element with visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			await testRunnerKeyboardFocus(elem.shadowRoot.querySelector('#first'));
+			await focusWithKeyboard(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
@@ -96,7 +88,7 @@ describe('animate directive', () => {
 		it('should not move focus when element with non-visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			await testRunnerMouseFocus(elem.shadowRoot.querySelector('#first'));
+			await focusWithMouse(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
