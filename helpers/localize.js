@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const acceptedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
 
-const markupError = `localize() rich-text replacements must use markup templates with only the following accepted elements: ${acceptedTags}. [link to docs]`;
+const markupError = `localizeHTML() rich-text replacements must use markup templates with only the following accepted elements: ${acceptedTags}. [link to docs]`;
 const acceptedTagsRegex = new RegExp(`<(?!/?(${acceptedTags.join('|')}))`);
 
 export function validateMarkup(content, applyRegex) {

@@ -23,7 +23,7 @@ class Mission extends LocalizeDynamicMixin(LitElement) {
 			link2: chunks => markup`<d2l-link href="https://wikipedia.org/wiki/Earth" target="_blank"><em>${chunks}</em> ${surnameMarkup}</d2l-link>`
 		};
 		return html`
-			${this.localize('mission', replacements)}
+			${this.localizeHTML('mission', replacements)}
 		`;
 	}
 }

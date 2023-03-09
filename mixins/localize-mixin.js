@@ -97,16 +97,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localize(key) {
 
-		if (!key || !this.__resources) {
-			return '';
-		}
-
-		const resource = this.__resources[key];
-		if (!resource) {
-			return '';
-		}
-		const translatedValue = resource.value;
-
 		let params = {};
 		if (arguments.length > 1 && typeof arguments[1] === 'object') {
 			// support for key-value replacements as a single arg
@@ -117,6 +107,19 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 				params[arguments[i]] = arguments[i + 1];
 			}
 		}
+
+		if (Object.values(params).some(v => v.constructor !== String)) throw 'localize() only supports string substitution.';
+
+		return this.localizeHTML(key, params);
+
+	}
+
+	localizeHTML(key, params) {
+
+		if (!key || !this.__resources || !this._resources[key]) return '';
+
+		const resource = this.__resources[key];
+		const translatedValue = resource.value;
 
 		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
 		let formattedMessage = translatedValue;
