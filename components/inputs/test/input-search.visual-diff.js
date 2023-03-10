@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
+import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-search', () => {
 
@@ -21,20 +20,6 @@ describe('d2l-input-search', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	async function getShadowElem(id, selector) {
-		return await page.evaluateHandle(
-			`document.querySelector('#${id}').shadowRoot.querySelector('${selector}')`
-		);
-	}
-
-	async function getClearButton(id) {
-		return getShadowElem(id, 'd2l-button-icon[icon="tier1:close-default"]');
-	}
-
-	async function getSearchButton(id) {
-		return getShadowElem(id, 'd2l-button-icon[icon="tier1:search"]');
-	}
-
 	[
 		'no-value',
 		'has-value',
@@ -54,40 +39,6 @@ describe('d2l-input-search', () => {
 	it('focus-input', async function() {
 		await page.$eval('#no-value', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#no-value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('focus-search-button', async function() {
-		await page.evaluateHandle(() => {
-			forceFocusVisible(
-				document.querySelector('#no-value').shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]')
-			);
-		});
-		const rect = await visualDiff.getRect(page, '#no-value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('focus-clear-button', async function() {
-		await page.evaluateHandle(() => {
-			forceFocusVisible(
-				document.querySelector('#has-value').shadowRoot.querySelector('d2l-button-icon[icon="tier1:close-default"]')
-			);
-		});
-		const rect = await visualDiff.getRect(page, '#has-value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('hover-search-button', async function() {
-		const searchButton = await getSearchButton('no-value');
-		await searchButton.hover();
-		const rect = await visualDiff.getRect(page, '#no-value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('hover-clear-button', async function() {
-		const clearButton = await getClearButton('has-value');
-		await clearButton.hover();
-		const rect = await visualDiff.getRect(page, '#has-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 

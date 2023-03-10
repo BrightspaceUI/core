@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-switch', () => {
 
@@ -38,7 +37,7 @@ describe('d2l-switch', () => {
 
 			[
 				{ name: 'off', selector: '#off' },
-				{ name: 'off-focus', selector: '#off', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+				{ name: 'off-focus', selector: '#off', action: (selector) => focusWithKeyboard(page, selector) },
 				{ name: 'off-disabled', selector: '#off-disabled' },
 				{ name: 'off-hover', selector: '#off',
 					action: async(selector) => {
@@ -47,7 +46,7 @@ describe('d2l-switch', () => {
 					}
 				},
 				{ name: 'on', selector: '#on' },
-				{ name: 'on-focus', selector: '#on', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+				{ name: 'on-focus', selector: '#on', action: (selector) => focusWithKeyboard(page, selector) },
 				{ name: 'on-hover', selector: '#on',
 					action: async(selector) => {
 						const d2lSwitch = await getSwitch(selector);

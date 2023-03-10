@@ -1,4 +1,3 @@
-/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -118,9 +117,10 @@ describe('d2l-tabs', () => {
 				});
 
 				it('focus next', async function() {
+					await page.keyboard.press('Tab');
 					await page.$eval('#focus-next', (elem) => {
 						const buttonElement = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container > button');
-						forceFocusVisible(buttonElement);
+						buttonElement.focus({ focusVisible: true });
 					});
 					const rect = await visualDiff.getRect(page, '#focus-next');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -128,9 +128,10 @@ describe('d2l-tabs', () => {
 
 				it('focus previous', async function() {
 					const rect = await visualDiff.getRect(page, '#focus-previous');
+					await page.keyboard.press('Tab');
 					await page.$eval('#focus-previous', (elem) => {
 						const buttonElement = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container > button');
-						forceFocusVisible(buttonElement);
+						buttonElement.focus({ focusVisible: true });
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});

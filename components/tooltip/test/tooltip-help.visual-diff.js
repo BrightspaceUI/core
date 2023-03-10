@@ -1,7 +1,6 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRect, show } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip-help', () => {
 
@@ -41,7 +40,7 @@ describe('d2l-tooltip-help', () => {
 			});
 
 			if (testCase.focus) {
-				await page.$eval(tooltipHelpSelector, (elem) => forceFocusVisible(elem));
+				await focusWithKeyboard(page, tooltipHelpSelector);
 			}
 			if (testCase.hover) {
 				await page.hover(tooltipHelpSelector);
@@ -96,7 +95,7 @@ describe('d2l-tooltip-help', () => {
 					});
 				});
 
-				await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
+				await focusWithKeyboard(page, `${selector} d2l-tooltip-help`);
 				await openEvent;
 
 				const rect = await visualDiff.getRect(page, selector);
@@ -119,7 +118,7 @@ describe('d2l-tooltip-help', () => {
 		it(testCase.case, async function() {
 
 			if (testCase.focus) {
-				await page.$eval(tooltipHelpSelectorSkeleton, (elem) => forceFocusVisible(elem));
+				await focusWithKeyboard(page, tooltipHelpSelectorSkeleton);
 			}
 			if (testCase.hover) {
 				await page.hover(tooltipHelpSelectorSkeleton);
