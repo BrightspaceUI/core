@@ -1,7 +1,7 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
+import { markup, validateMarkup } from '../helpers/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { markup, validateMarkup } from '../helpers/localize.js'
 import IntlMessageFormat from 'intl-messageformat';
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
@@ -97,18 +97,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localize(key) {
 
-		if (!key || !this.__resources) {
-			return '';
-		}
-
-		const resource = this.__resources[key];
-		if (!resource) {
-			return '';
-		}
-		const translatedValue = resource.value;
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
 		let params = {};
-		if (arguments.length > 1 && typeof arguments[1] === 'object') {
+		if (arguments.length > 1 && arguments[1].constructor === Object) {
 			// support for key-value replacements as a single arg
 			params = arguments[1];
 		} else {
@@ -118,29 +111,42 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			}
 		}
 
-		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
-		let formattedMessage = translatedValue;
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
 		try {
+			if (Object.values(params).some(v => typeof v === 'function')) throw 'localize() does not support rich text.';
 			formattedMessage = translatedMessage.format(params);
 		} catch (e) {
 			console.error(e);
 		}
-		return formattedMessage;
 
+		return formattedMessage;
 	}
 
-	localizeHTML(key, {
-		...replacements
-	} = {}) {
+	localizeHTML(key, params = {}) {
 
-		const parts = this.localize(key, {
-			b: chunks => markup`<strong>${chunks}</strong>`,
-			br: () => markup`<br>`,
-			p: chunks => markup`<p>${chunks}</p>`,
-			...replacements
-		});
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
-		return validateMarkup(parts);
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
+		try {
+			formattedMessage = translatedMessage.format({
+				b: chunks => markup`<strong>${chunks}</strong>`,
+				br: () => markup`<br>`,
+				em: chunks => markup`<em>${chunks}</em>`,
+				i: chunks => markup`<em>${chunks}</em>`,
+				p: chunks => markup`<p>${chunks}</p>`,
+				strong: chunks => markup`<strong>${chunks}</strong>`,
+				...params
+			});
+
+			formattedMessage = validateMarkup(formattedMessage);
+		} catch (e) {
+			console.error(e);
+		}
+
+		return formattedMessage;
 	}
 
 	static _generatePossibleLanguages(config) {
