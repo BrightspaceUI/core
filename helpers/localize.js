@@ -7,18 +7,18 @@ const markupError = `localizeHTML() rich-text replacements must use markup templ
 const acceptedTagsRegex = new RegExp(`<(?!/?(${acceptedTags.join('|')}))`);
 
 export function validateMarkup(content, applyRegex) {
-	if (content.map) return content.map(item => validateMarkup(item, applyRegex));
-
-	if (content._markup) return content;
-	if (content.constructor !== String) throw markupError;
-	if (applyRegex && acceptedTagsRegex.test(content)) throw markupError;
-
+	if (content) {
+		if (content.map) return content.map(item => validateMarkup(item, applyRegex));
+		if (content._markup) return content;
+		if (Object.hasOwn(content, '_$litType$')) throw markupError;
+		if (applyRegex && content.constructor === String && acceptedTagsRegex.test(content)) throw markupError;
+	}
 	return content;
 }
 
-export function markup(str, ...parts) {
-	validateMarkup(str, true) && validateMarkup(parts, true);
-	return { ...html(str, ...parts), _markup: true };
+export function markup(strings, ...expressions) {
+	validateMarkup(strings, true) && validateMarkup(expressions, true);
+	return { ...html(strings, ...expressions), _markup: true };
 }
 
 export const linkGenerator = ({ href, target }) => {
