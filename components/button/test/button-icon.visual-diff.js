@@ -1,4 +1,4 @@
-import { focus, focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, focusWithMouse, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
 describe('d2l-button-icon', () => {
@@ -35,7 +35,7 @@ describe('d2l-button-icon', () => {
 
 					if (name === 'hover') await page.hover(selector);
 					else if (name === 'focus') await focusWithKeyboard(page, selector);
-					else if (name === 'click') await focus(page, selector);
+					else if (name === 'click') await focusWithMouse(page, selector);
 
 					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
