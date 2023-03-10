@@ -1,23 +1,24 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-export const acceptedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
+export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
 
-const markupError = `localizeHTML() rich-text replacements must use markup templates with only the following accepted elements: ${acceptedTags}. [link to docs]`;
-const acceptedTagsRegex = new RegExp(`<(?!/?(${acceptedTags.join('|')}))`);
+const markupError = `localizeHTML() rich-text replacements must use markup templates with only the following allowed elements: ${allowedTags}. [link to docs]`;
+const disallowedTagsRegex = new RegExp(`<(?!/?(${allowedTags.join('|')}|>|\s)+).*?>`);
 
 export function validateMarkup(content, applyRegex) {
 	if (content) {
-		if (content.map) return content.map(item => validateMarkup(item, applyRegex));
+		if (content.map) return content.map(item => validateMarkup(item));
 		if (content._markup) return content;
 		if (Object.hasOwn(content, '_$litType$')) throw markupError;
-		if (applyRegex && content.constructor === String && acceptedTagsRegex.test(content)) throw markupError;
+		if (applyRegex && content.constructor === String && disallowedTagsRegex.test(content)) throw markupError;
 	}
 	return content;
 }
 
 export function markup(strings, ...expressions) {
-	validateMarkup(strings, true) && validateMarkup(expressions, true);
+	strings.forEach(str => validateMarkup(str, true));
+	expressions.forEach(exp => validateMarkup(exp, true));
 	return { ...html(strings, ...expressions), _markup: true };
 }
 

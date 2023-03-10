@@ -34,7 +34,9 @@ class Mission extends LocalizeDynamicMixin(LitElement) {
 			<div>4. ${this.localizeHTML('a', { a: {} })}</div>
 			<div>5. ${this.localizeHTML('a', { a: false, b: new Date() })}</div>
 			<div>6. ${this.localizeHTML('a', { a: true, c: [1, 2, 3] })}</div>
-			<div>7. ${this.localizeHTML('a', { a: true, c: markup`<b>test</b>` })}</div>
+			<div>7. ${this.localizeHTML('a', { a: true, c: markup`<b>bold</b>` })}</div>
+			<div>8. ${this.localizeHTML('a', { a: true, c: [markup`<br>`] })}</div>
+			<div>9. ${this.localizeHTML('a', { a: true, c: `<test>` })}</div>
 		`;
 	}
 }
