@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-count-badge', () => {
 
@@ -53,7 +52,7 @@ describe('d2l-count-badge', () => {
 	].forEach((testName) => {
 		it(`${testName} focused`, async function() {
 			const selector = `#${testName}`;
-			await page.$eval(selector, (elem) => forceFocusVisible(elem));
+			await focusWithKeyboard(page, selector);
 			const rect = await visualDiff.getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -65,7 +64,7 @@ describe('d2l-count-badge', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it('appears on focus-visible', async function() {
-			await page.$eval('#tooltip', (elem) => forceFocusVisible(elem));
+			await focusWithKeyboard(page, '#tooltip');
 			await page.waitForTimeout(50);
 			const rect = await getRect(page, '#tooltip');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

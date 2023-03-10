@@ -1,8 +1,7 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { hide, show } from '../../tooltip/test/tooltip-helper.js';
 import { open, reset } from '../../dropdown/test/dropdown-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-list', () => {
 
@@ -18,10 +17,6 @@ describe('d2l-list', () => {
 		return page.$eval(selector, (item) => {
 			item.focus();
 		});
-	};
-
-	const forceFocusMethod = (selector) => {
-		return page.$eval(selector, (item) => forceFocusVisible(item));
 	};
 
 	const focusInput = (selector) => {
@@ -172,7 +167,7 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
-			{ name: 'focus', selector: '#draggable', action: () => forceFocusMethod('#draggable [key="1"]') },
+			{ name: 'focus', selector: '#draggable', action: () => focusWithKeyboard(page, '#draggable [key="1"]') },
 			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
 			{ name: 'selectable', selector: '#draggableSelectable' },
 			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
