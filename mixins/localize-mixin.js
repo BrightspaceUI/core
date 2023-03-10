@@ -97,8 +97,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localize(key) {
 
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
+
 		let params = {};
-		if (arguments.length > 1 && typeof arguments[1] === 'object') {
+		if (arguments.length > 1 && arguments[1].constructor === Object) {
 			// support for key-value replacements as a single arg
 			params = arguments[1];
 		} else {
@@ -108,21 +111,25 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			}
 		}
 
-		if (Object.values(params).some(v => v.constructor !== String)) throw 'localize() only supports string substitution.';
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
+		try {
+			if (Object.values(params).some(v => typeof v === 'function')) throw 'localize() does not support rich text.';
+			formattedMessage = translatedMessage.format(params);
+		} catch (e) {
+			console.error(e);
+		}
 
-		return this.localizeHTML(key, params);
-
+		return formattedMessage;
 	}
 
-	localizeHTML(key, params) {
+	localizeHTML(key, params = {}) {
 
-		if (!key || !this.__resources || !this.__resources[key]) return '';
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
-		const resource = this.__resources[key];
-		const translatedValue = resource.value;
-
-		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
-		let formattedMessage = translatedValue;
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
 		try {
 			formattedMessage = translatedMessage.format({
 				b: chunks => markup`<strong>${chunks}</strong>`,
@@ -133,12 +140,13 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 				strong: chunks => markup`<strong>${chunks}</strong>`,
 				...params
 			});
+
+			formattedMessage = validateMarkup(formattedMessage);
 		} catch (e) {
 			console.error(e);
 		}
 
-		return validateMarkup(formattedMessage);
-
+		return formattedMessage;
 	}
 
 	static _generatePossibleLanguages(config) {
