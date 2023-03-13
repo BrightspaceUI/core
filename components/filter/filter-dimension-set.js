@@ -1,10 +1,5 @@
 import { html, LitElement } from 'lit';
 
-export const EmptyStateType = {
-	Search: 'search',
-	Set: 'set'
-};
-
 /**
  * A component to represent the main filter dimension type - a set of possible values that can be selected.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
@@ -104,11 +99,11 @@ class FilterDimensionSet extends LitElement {
 	}
 
 	getSearchEmptyState() {
-		return this._getEmptyState(this._searchEmptyStateSlot);
+		return this._getEmptyState(this._searchEmptyStateSlot, 'search');
 	}
 
 	getSetEmptyState() {
-		return this._getEmptyState(this._setEmptyStateSlot);
+		return this._getEmptyState(this._setEmptyStateSlot, 'set');
 	}
 
 	getValues() {
@@ -134,7 +129,7 @@ class FilterDimensionSet extends LitElement {
 		}));
 	}
 
-	_getEmptyState(emptyStateSlot) {
+	_getEmptyState(emptyStateSlot, emptyStateType) {
 		if (!emptyStateSlot) return null;
 		const nodes = emptyStateSlot.assignedNodes({ flatten: true });
 		const emptyState = nodes.find((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-empty-state');
@@ -142,7 +137,8 @@ class FilterDimensionSet extends LitElement {
 		return {
 			actionHref: emptyState.actionHref,
 			actionText: emptyState.actionText,
-			description: emptyState.description
+			description: emptyState.description,
+			type: emptyStateType
 		};
 	}
 
