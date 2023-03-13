@@ -19,7 +19,7 @@ describe('d2l-collapsible-panel', () => {
 
 	after(async() => await browser.close());
 
-	async function focusElement(selector) {
+	function focusElement(selector) {
 		return focusWithKeyboard(page, `${selector} > d2l-collapsible-panel`);
 	}
 
