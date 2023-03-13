@@ -57,13 +57,13 @@ describe('d2l-input-search', () => {
 	});
 
 	it('focus-search-button', async function() {
-		await focusWithKeyboard(page, 'pierce/#no-value > d2l-button-icon[icon="tier1:search"]');
+		await focusWithKeyboard(page, ['#no-value', 'd2l-button-icon[icon="tier1:search"]']);
 		const rect = await visualDiff.getRect(page, '#no-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('focus-clear-button', async function() {
-		await focusWithKeyboard(page, 'pierce/#has-value > d2l-button-icon[icon="tier1:close-default"]');
+		await focusWithKeyboard(page, ['#has-value', 'd2l-button-icon[icon="tier1:close-default"]']);
 		const rect = await visualDiff.getRect(page, '#has-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
