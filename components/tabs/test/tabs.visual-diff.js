@@ -118,13 +118,13 @@ describe('d2l-tabs', () => {
 
 				it('focus next', async function() {
 					const rect = await visualDiff.getRect(page, '#focus-next');
-					await focusWithKeyboard(page, ['#focus-next', '.d2l-tabs-scroll-next-container > button']);
+					await focusWithKeyboard(page, 'pierce/#focus-next > .d2l-tabs-scroll-next-container > button');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('focus previous', async function() {
 					const rect = await visualDiff.getRect(page, '#focus-previous');
-					await focusWithKeyboard(page, ['#focus-previous', '.d2l-tabs-scroll-previous-container > button']);
+					await focusWithKeyboard(page, 'pierce/#focus-previous > .d2l-tabs-scroll-previous-container > button');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 			});
