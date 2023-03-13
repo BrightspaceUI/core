@@ -13,34 +13,20 @@ describe('d2l-list', () => {
 		return reset(page, selector);
 	};
 
-	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.focus();
-		});
-	};
-
 	const focusInput = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('d2l-selection-input').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'd2l-selection-input']);
 	};
 
 	const focusLink = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('a').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'a']);
 	};
 
 	const focusButton = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('button').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'button']);
 	};
 
 	const focusExpandCollapseButton = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('d2l-button-icon').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'd2l-button-icon']);
 	};
 
 	const hideTooltip = (selector) => {
@@ -175,10 +161,10 @@ describe('d2l-list', () => {
 			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
 		] },
 		{ category: 'focus method', tests: [
-			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
-			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
-			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
-			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusMethod('#expand-collapse-default d2l-list-item') }
+			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },
+			{ name: 'button', selector: '#button', action: () => focusWithKeyboard(page, '#button d2l-list-item-button') },
+			{ name: 'selectable', selector: '#selectable', action: () => focusWithKeyboard(page, '#selectable [selectable]') },
+			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusWithKeyboard(page, '#expand-collapse-default d2l-list-item') }
 		] },
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },

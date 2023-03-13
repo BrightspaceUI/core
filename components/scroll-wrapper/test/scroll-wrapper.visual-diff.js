@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-scroll-wrapper', () => {
 
@@ -38,7 +38,7 @@ describe('d2l-scroll-wrapper', () => {
 			});
 
 			it('focus', async function() {
-				await page.$eval('#show-actions-overflow-right > d2l-test-scroll-wrapper', (elem) => elem.focus());
+				await focusWithKeyboard(page, '#show-actions-overflow-right > d2l-test-scroll-wrapper');
 				const rect = await visualDiff.getRect(page, '#show-actions-overflow-right');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});

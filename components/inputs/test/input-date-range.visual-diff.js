@@ -1,6 +1,6 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRectTooltip } from './input-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, dateInputNum) {
 	return await page.$eval(selector, (elem, dateInputNum) => {
@@ -116,7 +116,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('required focus then blur', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();
@@ -126,7 +126,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('required focus then blur then fix', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();

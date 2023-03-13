@@ -7,13 +7,9 @@ describe('d2l-tabs', () => {
 
 	let browser, page;
 
-	const focusTabs = (selector) => {
-		return page.$eval(selector, (elem) => {
-			return new Promise((resolve) => {
-				elem.focus();
-				requestAnimationFrame(resolve);
-			});
-		});
+	const focusTabs = async(selector) => {
+		await focusWithKeyboard(page, selector);
+		await new Promise(resolve => requestAnimationFrame(resolve));
 	};
 
 	before(async() => {

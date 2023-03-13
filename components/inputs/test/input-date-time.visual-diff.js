@@ -1,6 +1,6 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 import { resetInnerTimeInput } from './input-helper.js';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, tag) {
 	return await page.$eval(selector, (elem, tag) => {
@@ -96,7 +96,7 @@ describe('d2l-input-date-time', () => {
 	});
 
 	it('required focus then blur', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();
@@ -107,7 +107,7 @@ describe('d2l-input-date-time', () => {
 
 	it('required focus then blur then fix', async function() {
 		await changeInnerElem(page, '#required', 'd2l-input-date', ''); // reset width change event
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => elem.blur());
 		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20', true);
 		const rect = await visualDiff.getRect(page, '#required');

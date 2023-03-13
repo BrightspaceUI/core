@@ -1,4 +1,4 @@
-import { oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
 describe('d2l-input-color', () => {
@@ -36,7 +36,7 @@ describe('d2l-input-color', () => {
 		});
 		it(`${name}-focus`, async function() {
 			const e = oneEvent(page, `#${name} > d2l-input-color`, 'd2l-tooltip-show');
-			await page.$eval(`#${name} > d2l-input-color`, (elem) => elem.focus());
+			await focusWithKeyboard(page, `#${name} > d2l-input-color`);
 			await e;
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
