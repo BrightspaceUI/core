@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 function itWithReload(name, test, getPage) {
 	return it(name, async function() {
@@ -14,10 +13,6 @@ describe('d2l-list-item-drag-handle', () => {
 	const visualDiff = new VisualDiff('list-item-drag-handle', import.meta.url);
 
 	let browser, page;
-
-	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => { forceFocusVisible(item); });
-	};
 
 	before(async() => {
 		browser = await puppeteer.launch();
@@ -37,7 +32,7 @@ describe('d2l-list-item-drag-handle', () => {
 		});
 
 		it('focus', async function() {
-			await focusMethod('d2l-list-item-drag-handle');
+			await focusWithKeyboard(page, 'd2l-list-item-drag-handle');
 			const rect = await visualDiff.getRect(page, '#drag-handle');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
