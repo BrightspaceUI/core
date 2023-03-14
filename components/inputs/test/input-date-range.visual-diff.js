@@ -126,7 +126,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('required focus then blur then fix', async function() {
-		await focusWithKeyboard(page, '#required');
+		await page.$eval('#required', (elem) => elem.focus());
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();
