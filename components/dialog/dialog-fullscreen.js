@@ -202,7 +202,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		this._width = Math.max(1170, this.width);
+		this._width = this.width;
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
