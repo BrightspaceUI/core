@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
 
 const markupError = `localizeHTML() rich-text replacements must use markup templates with only the following allowed elements: ${allowedTags}. [link to docs]`;
-const disallowedTagsRegex = new RegExp(`<(?!/?(${allowedTags.join('|')}|>|\s)+).*?>`);
+const disallowedTagsRegex = new RegExp(`<(?!/?(${allowedTags.join('|')})?[\\s>])`);
 
 export function validateMarkup(content, applyRegex) {
 	if (content) {
