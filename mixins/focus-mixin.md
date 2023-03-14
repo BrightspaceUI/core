@@ -16,6 +16,7 @@ class MyComponent extends FocusMixin(LitElement) {
   // delegate focus to the underlying input
   static get focusElementSelector() {
 		return 'input';
+  }
 
   render() {
 	  return html`<input type="text">`;
