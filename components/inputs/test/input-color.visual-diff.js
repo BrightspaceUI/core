@@ -42,6 +42,7 @@ describe('d2l-input-color', () => {
 			const e = oneEvent(page, `#${name} > d2l-input-color`, 'd2l-tooltip-show');
 			await focusWithKeyboard(page, `#${name} > d2l-input-color`);
 			await e;
+			await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)));
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
