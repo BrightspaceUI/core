@@ -1,4 +1,4 @@
-import { focusWithKeyboard, oneEvent, VisualDiff } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, oneEvent, resetFocus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
 describe('d2l-input-color', () => {
@@ -11,6 +11,10 @@ describe('d2l-input-color', () => {
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-color.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+	});
+
+	beforeEach(async() => {
+		await resetFocus(page);
 	});
 
 	after(async() => await browser.close());
@@ -32,14 +36,14 @@ describe('d2l-input-color', () => {
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name} > d2l-input-color`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewPort: false });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it(`${name}-focus`, async function() {
 			const e = oneEvent(page, `#${name} > d2l-input-color`, 'd2l-tooltip-show');
 			await focusWithKeyboard(page, `#${name} > d2l-input-color`);
 			await e;
 			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewPort: false });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
