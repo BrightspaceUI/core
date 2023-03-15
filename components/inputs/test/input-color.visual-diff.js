@@ -36,7 +36,7 @@ describe('d2l-input-color', () => {
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name} > d2l-input-color`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it(`${name}-focus`, async function() {
 			const e = oneEvent(page, `#${name} > d2l-input-color`, 'd2l-tooltip-show');
