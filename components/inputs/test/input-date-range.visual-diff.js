@@ -242,13 +242,13 @@ describe('d2l-input-date-range', () => {
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
 						const rect = await getRectTooltip(page, '#min-max');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
 						const rect = await getRectTooltip(page, '#min-max', 1);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
 			});
@@ -280,13 +280,13 @@ describe('d2l-input-date-range', () => {
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
 						const rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
 						const rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
 			});
@@ -329,13 +329,13 @@ describe('d2l-input-date-range', () => {
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
 						const rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
 						const rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
 			});

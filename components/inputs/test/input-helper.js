@@ -89,7 +89,7 @@ export async function focusOnInput(page, selector, inputSelector) {
 	return page.$eval(selector, (elem) => {
 		elem.blur();
 		return new Promise((resolve) => {
-			elem.addEventListener('d2l-tooltip-show', (resolve), { once: true });
+			elem.addEventListener('d2l-tooltip-show', () => requestAnimationFrame(resolve), { once: true });
 		});
 	});
 }
