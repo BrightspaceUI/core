@@ -1,5 +1,5 @@
+import { focusOnInput, getRectTooltip, resetInnerTimeInput } from './input-helper.js';
 import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
-import { getRectTooltip, resetInnerTimeInput } from './input-helper.js';
 import puppeteer from 'puppeteer';
 
 async function getRect(page, selector, timePickerIndex) {
@@ -134,17 +134,6 @@ describe('d2l-input-time-range', () => {
 		});
 
 		describe('bad input', () => {
-
-			async function focusOnInput(page, selector, inputSelector) {
-				return page.$eval(selector, (elem, inputSelector) => {
-					elem.blur();
-					const input = elem.shadowRoot.querySelector(inputSelector);
-					return new Promise((resolve) => {
-						elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-						input.focus();
-					});
-				}, inputSelector);
-			}
 
 			describe('function', () => {
 				beforeEach(async() => {
