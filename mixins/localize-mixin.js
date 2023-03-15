@@ -1,16 +1,8 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
+import { markup, validateMarkup } from '../helpers/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-
-const markupMap = Object.freeze({
-	'[b]': '<strong>',
-	'[/b]': '</strong>',
-	'[i]': '<em>',
-	'[/i]': '</em>',
-	'[br]': '<br>',
-});
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
@@ -19,8 +11,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			__resources: { type: Object, attribute: false  }
 		};
 	}
-
-	static #markupRegex = new RegExp(Object.keys(markupMap).join('|').replace(/[[\]]/g, '\\$&'), 'g');
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 
@@ -55,10 +45,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		});
 
 		this.__updatedProperties = new Map();
-	}
-
-	static get markupRegex() {
-		return LocalizeMixinClass.#markupRegex;
 	}
 
 	connectedCallback() {
@@ -111,18 +97,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localize(key) {
 
-		if (!key || !this.__resources) {
-			return '';
-		}
-
-		const resource = this.__resources[key];
-		if (!resource) {
-			return '';
-		}
-		const translatedValue = resource.value;
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
 		let params = {};
-		if (arguments.length > 1 && typeof arguments[1] === 'object') {
+		if (arguments.length > 1 && arguments[1].constructor === Object) {
 			// support for key-value replacements as a single arg
 			params = arguments[1];
 		} else {
@@ -132,38 +111,42 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			}
 		}
 
-		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
-		let formattedMessage = translatedValue;
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
 		try {
+			if (Object.values(params).some(v => typeof v === 'function')) throw 'localize() does not support rich text.';
 			formattedMessage = translatedMessage.format(params);
 		} catch (e) {
 			console.error(e);
 		}
-		return formattedMessage;
 
+		return formattedMessage;
 	}
 
-	localizeHTML(key, {
-		link = '', tooltipHelp = '', _html = '',
-		links = {}, tooltipHelps = {},
-		...replacements
-	} = {}) {
-		const localized = this.localize(key, replacements);
-		const sanitized = localized.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-		const markedUp = sanitized
-			// replace [link], [link key], [/link]
-			.replace(/\[a(?: ?([\w-]*))?\]([^]*?)\[\/a\]/g, (m, n, t) => `<d2l-link ${(links[n] || link).replace(/>/g, '&gt;')}>${t}</d2l-link>`)
-			// replace [tooltip-help], [tooltip-help key], [/tooltip-help]
-			.replace(/\[tooltip-help(?: ?([\w-]*))?\]([^]*?)\[\/tooltip-help\]/g, (m, n, t) => `<d2l-tooltip-help inherit-font-style text="${t.replace(/"/g, '&quot;')}">${tooltipHelps[n] || tooltipHelp}</d2l-tooltip-help>`)
-			// UNDOCUMENTED: replace [html]
-			.replace('[html]', _html || '')
-			// replace good-listed markup
-			.replace(LocalizeMixinClass.markupRegex, k => markupMap[k] || k);
+	localizeHTML(key, params = {}) {
 
-		if (link || Object.keys(links).length) import('../components/link/link.js');
-		if (tooltipHelp || Object.keys(tooltipHelps).length) import('../components/tooltip/tooltip-help.js');
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
-		return unsafeHTML(markedUp);
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
+		try {
+			formattedMessage = translatedMessage.format({
+				b: chunks => markup`<strong>${chunks}</strong>`,
+				br: () => markup`<br>`,
+				em: chunks => markup`<em>${chunks}</em>`,
+				i: chunks => markup`<em>${chunks}</em>`,
+				p: chunks => markup`<p>${chunks}</p>`,
+				strong: chunks => markup`<strong>${chunks}</strong>`,
+				...params
+			});
+
+			formattedMessage = validateMarkup(formattedMessage);
+		} catch (e) {
+			console.error(e);
+		}
+
+		return formattedMessage;
 	}
 
 	static _generatePossibleLanguages(config) {

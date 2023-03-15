@@ -73,7 +73,7 @@
     "@open-wc/dedupe-mixin": "^1",
     "focus-visible": "^5",
     "ifrau": "^0.40",
-    "intl-messageformat": "^7",
+    "intl-messageformat": "^10",
     "lit": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
