@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-more-less', () => {
 
@@ -107,7 +107,7 @@ describe('d2l-more-less', () => {
 
 	it('auto-expands on focus-in', async function() {
 		const resize = contentResize(page, '#auto-expand');
-		await page.evaluate(() => document.querySelector('#auto-expand').querySelector('a').focus());
+		await focusWithKeyboard(page, '#auto-expand a');
 		await resize;
 		const rect = await visualDiff.getRect(page, '#auto-expand');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -115,7 +115,7 @@ describe('d2l-more-less', () => {
 
 	it('auto-collapses on focus-out', async function() {
 		let resize = contentResize(page, '#auto-expand');
-		await page.evaluate(() => document.querySelector('#auto-expand').querySelector('a').focus());
+		await focusWithKeyboard(page, '#auto-expand a');
 		await resize;
 
 		resize = contentResize(page, '#auto-expand');

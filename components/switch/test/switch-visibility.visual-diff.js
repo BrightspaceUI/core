@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-switch-visibility', () => {
 
@@ -52,11 +52,11 @@ describe('d2l-switch-visibility', () => {
 
 			it('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
+				setTimeout(() => focusWithKeyboard(page, [selector, '#conditions-help']));
 				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
 						const conditionsHelpTooltip = elem.shadowRoot.querySelector('#conditions-help');
 						conditionsHelpTooltip.addEventListener('d2l-tooltip-show', resolve);
-						conditionsHelpTooltip.focus();
 					});
 				});
 

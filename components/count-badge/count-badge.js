@@ -1,11 +1,12 @@
 import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { CountBadgeMixin } from './count-badge-mixin.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-class CountBadge extends CountBadgeMixin(LitElement) {
+class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	static get styles() {
 		return [super.styles, css`
@@ -36,6 +37,10 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 	constructor() {
 		super();
 		this._badgeId = getUniqueId();
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-count-badge-wrapper';
 	}
 
 	render() {

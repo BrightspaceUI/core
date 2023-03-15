@@ -1,4 +1,4 @@
-import { focus, VisualDiff } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
 describe('d2l-object-property-list', () => {
@@ -20,7 +20,7 @@ describe('d2l-object-property-list', () => {
 		{ name: 'single', selector: '#single' },
 		{ name: 'all-types', selector: '#all-types' },
 		{ name: 'word-wrap', selector: '#word-wrap' },
-		{ name: 'focus', selector: '#all-types', action: selector => { return focus(page, `${selector} d2l-object-property-list-item-link`); } },
+		{ name: 'focus', selector: '#all-types', action: selector => { return focusWithKeyboard(page, `${selector} d2l-object-property-list-item-link`); } },
 		{ name: 'rtl', selector: '#rtl' },
 		{ name: 'list-skeleton', selector: '#list-skeleton' },
 		{ name: 'item-skeleton', selector: '#item-skeleton' },
