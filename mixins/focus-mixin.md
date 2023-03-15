@@ -12,14 +12,14 @@ Apply the mixin and set the static `focusElementSelector` to a CSS query selecto
 import { FocusMixin } from '@brightspace-ui/core/mixins/focus-mixin.js';
 
 class MyComponent extends FocusMixin(LitElement) {
-  
+
   // delegate focus to the underlying input
   static get focusElementSelector() {
-		return 'input';
+    return 'input';
   }
 
   render() {
-	  return html`<input type="text">`;
+    return html`<input type="text">`;
   }
 
 }
