@@ -1,17 +1,8 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
+import { markup, validateMarkup } from '../helpers/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import IntlMessageFormat from 'intl-messageformat';
-
-const markupMap = Object.freeze({
-	'[b]': '<strong>',
-	'[/b]': '</strong>',
-	'[i]': '<em>',
-	'[/i]': '</em>',
-	'[br]': '<br>',
-});
 
 export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
@@ -20,8 +11,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			__resources: { type: Object, attribute: false  }
 		};
 	}
-
-	static #markupRegex = new RegExp(Object.keys(markupMap).join('|').replace(/[[\]]/g, '\\$&'), 'g');
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 
@@ -56,10 +45,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		});
 
 		this.__updatedProperties = new Map();
-	}
-
-	static get markupRegex() {
-		return LocalizeMixinClass.#markupRegex;
 	}
 
 	connectedCallback() {
@@ -112,18 +97,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 	localize(key) {
 
-		if (!key || !this.__resources) {
-			return '';
-		}
-
-		const resource = this.__resources[key];
-		if (!resource) {
-			return '';
-		}
-		const translatedValue = resource.value;
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
 
 		let params = {};
-		if (arguments.length > 1 && typeof arguments[1] === 'object') {
+		if (arguments.length > 1 && arguments[1].constructor === Object) {
 			// support for key-value replacements as a single arg
 			params = arguments[1];
 		} else {
@@ -133,26 +111,42 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 			}
 		}
 
-		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
-		let formattedMessage = translatedValue;
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
 		try {
+			if (Object.values(params).some(v => typeof v === 'function')) throw 'localize() does not support rich text.';
 			formattedMessage = translatedMessage.format(params);
 		} catch (e) {
 			console.error(e);
 		}
-		return formattedMessage;
 
+		return formattedMessage;
 	}
 
-	localizeHTML(key, {
-		...replacements
-	} = {}) {
-		return this.localize(key, {
-			b: chunks => html`<strong>${chunks}</strong>`,
-			br: () => html`<br>`,
-			p: chunks => html`<p>${chunks}</p>`,
-			...replacements
-		});
+	localizeHTML(key, params = {}) {
+
+		const { language, value } = this.__resources?.[key] ?? {};
+		if (!value) return '';
+
+		const translatedMessage = new IntlMessageFormat(value, language);
+		let formattedMessage = value;
+		try {
+			formattedMessage = translatedMessage.format({
+				b: chunks => markup`<strong>${chunks}</strong>`,
+				br: () => markup`<br>`,
+				em: chunks => markup`<em>${chunks}</em>`,
+				i: chunks => markup`<em>${chunks}</em>`,
+				p: chunks => markup`<p>${chunks}</p>`,
+				strong: chunks => markup`<strong>${chunks}</strong>`,
+				...params
+			});
+
+			formattedMessage = validateMarkup(formattedMessage);
+		} catch (e) {
+			console.error(e);
+		}
+
+		return formattedMessage;
 	}
 
 	static _generatePossibleLanguages(config) {
@@ -194,8 +188,3 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 	}
 
 });
-
-export const linkGenerator = ({ href, target }) => {
-	import('../components/link/link.js');
-	return chunks => html`<d2l-link href="${ifDefined(href)}" target="${ifDefined(target)}">${chunks}</d2l-link>`;
-};
