@@ -1,4 +1,4 @@
-import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, resetFocus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
 
 describe('d2l-switch-visibility', () => {
@@ -10,6 +10,10 @@ describe('d2l-switch-visibility', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
+	});
+
+	beforeEach(async() => {
+		await resetFocus(page);
 	});
 
 	after(async() => await browser.close());
@@ -68,7 +72,7 @@ describe('d2l-switch-visibility', () => {
 				rect.width += 120;
 				rect.height += 170;
 
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
 			});
 
 		});
