@@ -213,7 +213,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 				.readonly-wrapper:focus {
 					outline: none;
 				}
-				.readonly-wrapper.focus-visible,
 				.readonly-wrapper:${unsafeCSS(getFocusPseudoClass())} {
 					box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				}

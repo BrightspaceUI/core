@@ -742,8 +742,6 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				display: inline-block;
 				width: 0.1rem;
 			}
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left,
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-right,
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
@@ -777,8 +775,6 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				background-color: var(--d2l-color-mica);
 				box-shadow: none;
 			}
-			:host([resizable]) .d2l-template-primary-secondary-divider.focus-visible,
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible,
 			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())},
 			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-celestine);
@@ -789,8 +785,6 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: var(--d2l-color-ferrite);
 			}
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after,
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: white;
@@ -919,14 +913,12 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					height: 1rem;
 					width: 2.2rem;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle,
 				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
 					right: 17px;
 					width: 2.6rem;
 				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle,
 				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					left: 17px;
 					right: auto;
@@ -935,7 +927,6 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile,
 				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;

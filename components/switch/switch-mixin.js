@@ -59,7 +59,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container.focus-visible,
 			.d2l-switch-container:${unsafeCSS(getFocusPseudoClass())} {
 				border-color: var(--d2l-color-celestine);
 			}

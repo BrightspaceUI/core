@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { forceFocusVisible, getComposedActiveElement, getNextFocusable, isFocusVisibleApplied, tryApplyFocus } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable, isFocusVisibleApplied } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -207,7 +207,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
-				forceFocusVisible(elementToFocus, false);
+				this._forceDialogFocusVisible(elementToFocus);
 				return;
 			}
 		}
@@ -219,7 +219,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
 		if (header) {
 			const firstFocusable = getNextFocusable(header);
-			if (firstFocusable) forceFocusVisible(firstFocusable);
+			if (firstFocusable) this._forceDialogFocusVisible(firstFocusable);
 		}
 	}
 
@@ -231,10 +231,30 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._opener && this._opener.focus) {
 			// wait for inactive focus trap
 			requestAnimationFrame(() => {
-				tryApplyFocus(this._opener);
+				let focusable = this._opener;
 				this._opener = null;
+				if (!isFocusable(focusable)) {
+					focusable = findComposedAncestor(focusable, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
+					if (focusable === null) return;
+					if (!isFocusable(focusable)) {
+						focusable = getFirstFocusableDescendant(focusable);
+					}
+				}
+				if (isFocusable(focusable)) focusable.focus();
 			});
 		}
+	}
+
+	_forceDialogFocusVisible(elem) {
+		if (!isFocusable(elem, false, false)) {
+			elem = getFirstFocusableDescendant(elem);
+		}
+		if (!elem) return;
+		if (elem.tagName === 'BUTTON') {
+			elem.addEventListener('blur', () => elem.classList.remove('force-dialog-focus-visible'), { once: true });
+			elem.classList.add('force-dialog-focus-visible');
+		}
+		if (elem) elem.focus();
 	}
 
 	_getHeight() {

@@ -63,7 +63,6 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host(.focus-visible) > .d2l-tab-text,
 			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine);

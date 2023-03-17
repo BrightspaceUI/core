@@ -13,18 +13,6 @@ const focusableElements = {
 	textarea: true
 };
 
-export function forceFocusVisible(elem, includeTabbablesOnly) {
-	if (!isFocusable(elem, false, includeTabbablesOnly)) {
-		elem = getFirstFocusableDescendant(elem);
-	}
-	if (!elem) return;
-	elem.addEventListener('blur', () => {
-		elem.classList.remove('focus-visible');
-	}, { once: true });
-	elem.classList.add('focus-visible');
-	elem.focus();
-}
-
 export function getComposedActiveElement() {
 	let node = document.activeElement;
 
@@ -209,17 +197,4 @@ export function isFocusVisibleSupported() {
 	}
 
 	return _isFocusVisibleSupported;
-}
-
-export function tryApplyFocus(elem) {
-	if (isFocusable(elem)) {
-		forceFocusVisible(elem);
-		return true;
-	}
-	const focusable = findComposedAncestor(elem, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
-	if (focusable) {
-		forceFocusVisible(focusable);
-		return true;
-	}
-	return false;
 }
