@@ -2,11 +2,14 @@ import { cssEscape } from '../../helpers/dom.js';
 
 export class SubscriberRegistryController {
 
-	constructor(host, callbacks, options) {
+	constructor(host, name, options = {}) {
+		if (!host || !name) throw 'must have a host and name';
+
 		this._host = host;
 		host.addController(this);
-		this._callbacks = callbacks || {};
-		this._eventName = options && options.eventName;
+		this._name = name;
+		this._options = options;
+		this._eventName = `d2l-subscribe-${this._name}`;
 		this._subscribers = new Map();
 
 		this._handleSubscribe = this._handleSubscribe.bind(this);
@@ -27,24 +30,24 @@ export class SubscriberRegistryController {
 	subscribe(target) {
 		if (this._subscribers.has(target)) return;
 		this._subscribers.set(target, target);
-		if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(target);
+		if (this._options.onSubscribe) this._options.onSubscribe(target);
 	}
 
 	unsubscribe(target) {
 		this._subscribers.delete(target);
-		if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(target);
+		if (this._options.onUnsubscribe) this._options.onUnsubscribe(target);
 	}
 
 	updateSubscribers() {
 		if (!this._subscribers || this._subscribers.size === 0) return;
-		if (!this._callbacks.updateSubscribers) return;
+		if (!this._options.updateSubscribers) return;
 
 		// debounce the updates
 		if (this._updateSubscribersRequested) return;
 
 		this._updateSubscribersRequested = true;
 		setTimeout(() => {
-			this._callbacks.updateSubscribers(this._subscribers);
+			this._options.updateSubscribers(this._subscribers);
 			this._updateSubscribersRequested = false;
 		}, 0);
 	}
@@ -59,11 +62,14 @@ export class SubscriberRegistryController {
 
 export class EventSubscriberController {
 
-	constructor(host, callbacks, options) {
+	constructor(host, name, options = {}) {
+		if (!host || !name) throw 'must have a host and name';
+
 		this._host = host;
 		host.addController(this);
-		this._callbacks = callbacks || {};
-		this._eventName = options && options.eventName;
+		this._name = name;
+		this._options = options || {};
+		this._eventName = `d2l-subscribe-${this._name}`;
 		this._controllerId = options && options.controllerId;
 		this._registry = null;
 	}
@@ -84,10 +90,10 @@ export class EventSubscriberController {
 			this._registry = evt.detail.registry;
 
 			if (!this._registry) {
-				if (this._callbacks.onError) this._callbacks.onError();
+				if (this._options.onError) this._options.onError();
 				return;
 			}
-			if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(this._registry);
+			if (this._options.onSubscribe) this._options.onSubscribe(this._registry);
 		});
 	}
 
@@ -99,10 +105,13 @@ export class EventSubscriberController {
 
 export class IdSubscriberController {
 
-	constructor(host, callbacks, options) {
+	constructor(host, name, options = {}) {
+		if (!host || !name) throw 'must have a host and name';
+
 		this._host = host;
 		host.addController(this);
-		this._callbacks = callbacks || {};
+		this._name = name;
+		this._options = options || {};
 		this._idPropertyName = options && options.idPropertyName;
 		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._controllerId = options && options.controllerId;
@@ -131,7 +140,7 @@ export class IdSubscriberController {
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registries.forEach(registry => {
 			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
-			if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(registry.id);
+			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registry.id);
 		});
 		this._registries = new Map();
 
@@ -159,7 +168,7 @@ export class IdSubscriberController {
 
 	_updateRegistry(registryId, elapsedTime) {
 		let registryComponent = this._host.getRootNode().querySelector(`#${cssEscape(registryId)}`);
-		if (!registryComponent && this._callbacks.onError) {
+		if (!registryComponent && this._options.onError) {
 			if (elapsedTime < 3000) {
 				const timeoutId = setTimeout(() => {
 					this._timeouts.delete(timeoutId);
@@ -167,7 +176,7 @@ export class IdSubscriberController {
 				}, 100);
 				this._timeouts.add(timeoutId);
 			} else {
-				this._callbacks.onError(registryId);
+				this._options.onError(registryId);
 			}
 		}
 
@@ -177,10 +186,10 @@ export class IdSubscriberController {
 		if (registryComponent) {
 			registryComponent.getSubscriberController(this._controllerId).subscribe(this._host);
 			this._registries.set(registryId, registryComponent);
-			if (this._callbacks.onSubscribe) this._callbacks.onSubscribe(registryComponent);
+			if (this._options.onSubscribe) this._options.onSubscribe(registryComponent);
 		} else {
 			this._registries.delete(registryId);
-			if (this._callbacks.onUnsubscribe) this._callbacks.onUnsubscribe(registryId);
+			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registryId);
 		}
 	}
 
