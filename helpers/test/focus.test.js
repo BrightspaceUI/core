@@ -75,23 +75,6 @@ const focusableFixture = html`
 		</div>
 	</div>
 `;
-const focusableAncestorFixture = html`
-	<a>
-		<div>
-			<button disabled></button>
-		</div>
-	</a>
-`;
-const parentSiblingFocusableAncestorFixture = html`
-	<div>
-		<div>
-			<iframe></iframe>
-			<div>
-				<button disabled></button>
-			</div>
-		</div>
-	</div>
-`;
 const focusableNotTabbableFixture = html`
 	<div>
 		<div id="not-focusable" class="same-class"></div>

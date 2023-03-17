@@ -1,4 +1,4 @@
-import { findComposedAncestor, getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
+import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
 
 const focusableElements = {
 	a: true,
