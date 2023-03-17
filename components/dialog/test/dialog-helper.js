@@ -1,4 +1,4 @@
-import { oneEvent } from '@brightspace-ui/visual-diff';
+import { focusWithKeyboard, oneEvent } from '@brightspace-ui/visual-diff';
 
 export async function close(page, selector) {
 	const closeEvent = getCloseEvent(page, selector);
@@ -63,7 +63,7 @@ export async function reset(page, selector) {
 			}
 		});
 	});
-	return page.click('#open');
+	return focusWithKeyboard(page, '#open');
 }
 
 export async function resetDropdown(page, selector) {
