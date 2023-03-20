@@ -60,7 +60,6 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
-			#d2l-tooltip-help-text.focus-visible,
 			#d2l-tooltip-help-text:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);

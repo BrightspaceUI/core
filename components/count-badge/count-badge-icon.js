@@ -25,8 +25,6 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 	static get styles() {
 		return [super.styles, css`
 		:host([focus-ring]) d2l-icon,
-		:host(.focus-visible) d2l-icon,
-		d2l-icon.focus-visible,
 		:host(:${unsafeCSS(getFocusPseudoClass())}) d2l-icon,
 		d2l-icon:${unsafeCSS(getFocusPseudoClass())} {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);

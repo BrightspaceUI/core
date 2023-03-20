@@ -68,7 +68,7 @@
 					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
 				<script type="module">
-					import { forceFocusVisible, getNextFocusable } from '../../../helpers/focus.js';
+					import { getNextFocusable } from '../../../helpers/focus.js';
 
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
 						e.target.parentNode.removeChild(e.target);
@@ -82,7 +82,7 @@
 							e.target.removeChild(tag);
 						});
 						// consumer must move focus someplace logical
-						forceFocusVisible(nextFocusable);
+						nextFocusable?.focus();
 					});
 				</script>
 			</d2l-demo-snippet>

@@ -59,7 +59,6 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				overflow-x: auto;
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
-			.d2l-scroll-wrapper-container.focus-visible,
 			.d2l-scroll-wrapper-container:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 			}

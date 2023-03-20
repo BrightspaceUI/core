@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { forceFocusVisible, getComposedActiveElement, getNextFocusable, isFocusVisibleApplied, tryApplyFocus } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -201,13 +201,20 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return autofocusElement;
 	}
 
+	_focusElemOrDescendant(elem) {
+		if (!isFocusable(elem, false, false)) {
+			elem = getFirstFocusableDescendant(elem);
+		}
+		if (elem) elem.focus();
+	}
+
 	_focusFirst() {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
-				forceFocusVisible(elementToFocus, false);
+				this._focusElemOrDescendant(elementToFocus);
 				return;
 			}
 		}
@@ -219,7 +226,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
 		if (header) {
 			const firstFocusable = getNextFocusable(header);
-			if (firstFocusable) forceFocusVisible(firstFocusable);
+			if (firstFocusable) this._focusElemOrDescendant(firstFocusable);
 		}
 	}
 
@@ -231,7 +238,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._opener && this._opener.focus) {
 			// wait for inactive focus trap
 			requestAnimationFrame(() => {
-				tryApplyFocus(this._opener);
+				this._tryApplyFocus(this._opener);
 				this._opener = null;
 			});
 		}
@@ -410,8 +417,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();
 			if (!activeElement
-			|| !isComposedAncestor(dialog, activeElement)
-			|| !isFocusVisibleApplied(activeElement)) {
+			|| !isComposedAncestor(dialog, activeElement)) {
 				// wait till the dialog is visible for Safari
 				requestAnimationFrame(() => this._focusInitial());
 			}
@@ -493,6 +499,17 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
 
+	}
+
+	_tryApplyFocus(focusable) {
+		if (!isFocusable(focusable)) {
+			focusable = findComposedAncestor(focusable, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
+			if (focusable === null) return;
+			if (!isFocusable(focusable)) {
+				focusable = getFirstFocusableDescendant(focusable);
+			}
+		}
+		if (isFocusable(focusable)) focusable.focus();
 	}
 
 	_updateOverflow() {

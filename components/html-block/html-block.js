@@ -101,7 +101,6 @@ export const htmlBlockContentStyles = css`
 		color: var(--d2l-color-celestine-minus-1, #004489);
 		text-decoration: underline;
 	}
-	a.focus-visible,
 	a:${unsafeCSS(getFocusPseudoClass())} {
 		border-radius: 2px;
 		outline: 2px solid var(--d2l-color-celestine, #006fbf);
