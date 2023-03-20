@@ -176,7 +176,6 @@ export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDi
 
 export function isFocusVisibleApplied(node) {
 	if (!node) return false;
-	if (node.classList.contains('focus-visible')) return true;
 	return isFocusVisibleSupported() && node.parentNode?.querySelector(':focus-visible') === node;
 }
 
