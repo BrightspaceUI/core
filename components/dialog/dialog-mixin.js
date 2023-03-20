@@ -246,7 +246,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			elem.addEventListener('blur', () => elem.classList.remove('force-dialog-focus-visible'), { once: true });
 			elem.classList.add('force-dialog-focus-visible');
 		}
-		if (elem) elem.focus();
+		elem.focus();
 	}
 
 	_getHeight() {
