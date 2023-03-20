@@ -117,7 +117,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
-				button.force-dialog-focus-visible,
 				button:${unsafeCSS(getFocusPseudoClass())} {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}

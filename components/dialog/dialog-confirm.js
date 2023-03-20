@@ -105,7 +105,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			const node = nodes[i];
 			if (node.nodeType !== Node.ELEMENT_NODE) continue;
 			if (!node.hasAttribute('primary')) {
-				this._forceDialogFocusVisible(node);
+				this._focusElemOrDescendant(node);
 				return;
 			}
 		}

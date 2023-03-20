@@ -201,13 +201,20 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return autofocusElement;
 	}
 
+	_focusElemOrDescendant(elem) {
+		if (!isFocusable(elem, false, false)) {
+			elem = getFirstFocusableDescendant(elem);
+		}
+		if (elem) elem.focus();
+	}
+
 	_focusFirst() {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
-				this._forceDialogFocusVisible(elementToFocus);
+				this._focusElemOrDescendant(elementToFocus);
 				return;
 			}
 		}
@@ -219,7 +226,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
 		if (header) {
 			const firstFocusable = getNextFocusable(header);
-			if (firstFocusable) this._forceDialogFocusVisible(firstFocusable);
+			if (firstFocusable) this._focusElemOrDescendant(firstFocusable);
 		}
 	}
 
@@ -235,18 +242,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				this._opener = null;
 			});
 		}
-	}
-
-	_forceDialogFocusVisible(elem) {
-		if (!isFocusable(elem, false, false)) {
-			elem = getFirstFocusableDescendant(elem);
-		}
-		if (!elem) return;
-		if (elem.tagName === 'BUTTON') {
-			elem.addEventListener('blur', () => elem.classList.remove('force-dialog-focus-visible'), { once: true });
-			elem.classList.add('force-dialog-focus-visible');
-		}
-		elem.focus();
 	}
 
 	_getHeight() {
@@ -423,7 +418,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			const activeElement = getComposedActiveElement();
 			if (!activeElement
 			|| !isComposedAncestor(dialog, activeElement)
-			|| (!isFocusVisibleApplied(activeElement) && !activeElement.classList.contains('force-dialog-focus-visible'))) {
+			|| !isFocusVisibleApplied(activeElement)) {
 				// wait till the dialog is visible for Safari
 				requestAnimationFrame(() => this._focusInitial());
 			}

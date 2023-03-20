@@ -22,7 +22,6 @@ export const buttonStyles = css`
 		white-space: nowrap;
 		width: auto;
 	}
-	button.force-dialog-focus-visible,
 	button:${unsafeCSS(getFocusPseudoClass())} {
 		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 	}
