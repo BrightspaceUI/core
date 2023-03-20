@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable, isFocusVisibleApplied } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -417,8 +417,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();
 			if (!activeElement
-			|| !isComposedAncestor(dialog, activeElement)
-			|| !isFocusVisibleApplied(activeElement)) {
+			|| !isComposedAncestor(dialog, activeElement)) {
 				// wait till the dialog is visible for Safari
 				requestAnimationFrame(() => this._focusInitial());
 			}

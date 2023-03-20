@@ -148,9 +148,6 @@ getPreviousFocusableAncestor(node, includeHidden, includeTabbablesOnly)
 // returns true/false whether the element is focusable
 isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled)
 
-// returns true/false whether the element has :focus-visible applied
-isFocusVisibleApplied(node)
-
 // returns true/false whether the :focus-visible is supported
 isFocusVisibleSupported()
 ```

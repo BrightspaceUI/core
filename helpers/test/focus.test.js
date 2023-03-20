@@ -1,5 +1,4 @@
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
-import { focusWithKeyboard, focusWithMouse } from '../../tools/web-test-runner-helpers.js';
 import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
@@ -7,8 +6,7 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	getPreviousFocusableAncestor,
-	isFocusable,
-	isFocusVisibleApplied
+	isFocusable
 } from '../focus.js';
 import { LitElement } from 'lit';
 
@@ -375,30 +373,6 @@ describe('focus', () => {
 		it('returns false for comment node', () => {
 			const commentNode = elem.querySelector('button').nextSibling.nextSibling;
 			expect(isFocusable(commentNode)).to.be.false;
-		});
-
-	});
-
-	describe('isFocusVisibleApplied', () => {
-
-		let button;
-		beforeEach(async() => {
-			const elem = await fixture(focusableFixture);
-			button = elem.querySelector('button');
-		});
-
-		it('returns false on an unfocused element', async() => {
-			expect(isFocusVisibleApplied(button)).to.be.false;
-		});
-
-		it('returns false on a mouse-mode focused element', async() => {
-			await focusWithMouse(button);
-			expect(isFocusVisibleApplied(button)).to.be.false;
-		});
-
-		it('returns true on a keyboard-mode focused element', async() => {
-			await focusWithKeyboard(button);
-			expect(isFocusVisibleApplied(button)).to.be.true;
 		});
 
 	});
