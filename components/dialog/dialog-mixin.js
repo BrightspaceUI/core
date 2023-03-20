@@ -231,16 +231,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._opener && this._opener.focus) {
 			// wait for inactive focus trap
 			requestAnimationFrame(() => {
-				let focusable = this._opener;
+				this._tryApplyFocus(this._opener);
 				this._opener = null;
-				if (!isFocusable(focusable)) {
-					focusable = findComposedAncestor(focusable, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
-					if (focusable === null) return;
-					if (!isFocusable(focusable)) {
-						focusable = getFirstFocusableDescendant(focusable);
-					}
-				}
-				if (isFocusable(focusable)) focusable.focus();
 			});
 		}
 	}
@@ -513,6 +505,17 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
 
+	}
+
+	_tryApplyFocus(focusable) {
+		if (!isFocusable(focusable)) {
+			focusable = findComposedAncestor(focusable, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
+			if (focusable === null) return;
+			if (!isFocusable(focusable)) {
+				focusable = getFirstFocusableDescendant(focusable);
+			}
+		}
+		if (isFocusable(focusable)) focusable.focus();
 	}
 
 	_updateOverflow() {
