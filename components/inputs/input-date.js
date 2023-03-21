@@ -184,14 +184,22 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		return super.validationMessage;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
 		const updateHiddenContentWidth = () => {
-			const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
-			this._hiddenContentWidth = `${Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')))}px`;
+			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			if (isNaN(width)) return false; // hidden elements will have "auto" width
+			this._hiddenContentWidth = `${width}px`;
+			return true;
 		};
 
 		this.addEventListener('blur', this._handleBlur);
@@ -204,7 +212,17 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._formattedValue = this.emptyText ? this.emptyText : '';
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
-		updateHiddenContentWidth();
+
+		// resize observer needed to handle case where it's initially hidden
+		if (!updateHiddenContentWidth()) {
+			this._hiddenContentResizeObserver = new ResizeObserver(() => {
+				if (updateHiddenContentWidth()) {
+					this._hiddenContentResizeObserver.disconnect();
+					this._hiddenContentResizeObserver = null;
+				}
+			});
+			this._hiddenContentResizeObserver.observe(hiddenContent);
+		}
 
 	}
 

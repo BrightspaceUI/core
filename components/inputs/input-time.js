@@ -255,6 +255,11 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		return '.d2l-input';
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) this._hiddenContentResizeObserver.disconnect();
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -264,15 +269,17 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this._formattedValue = formatTime(time);
 		}
 
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
 		const updateHiddenContentWidth = () => {
-			const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			if (isNaN(width)) return false; // hidden elements will have "auto" width
 			this._hiddenContentWidth = `${width}px`;
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-input-time-hidden-content-width-change',
 				{ bubbles: true, composed: false }
 			));
+			return true;
 		};
 
 		this.addEventListener('d2l-localize-resources-change', async() => {
@@ -285,7 +292,16 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		updateHiddenContentWidth();
+		// resize observer needed to handle case where it's initially hidden
+		if (!updateHiddenContentWidth()) {
+			this._hiddenContentResizeObserver = new ResizeObserver(() => {
+				if (updateHiddenContentWidth()) {
+					this._hiddenContentResizeObserver.disconnect();
+					this._hiddenContentResizeObserver = null;
+				}
+			});
+			this._hiddenContentResizeObserver.observe(hiddenContent);
+		}
 
 	}
 
