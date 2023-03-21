@@ -69,11 +69,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listItemChanges = [];
 		this._childHasExpandCollapseToggle = false;
 
-		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(
-			this,
-			{ onSubscribe: this._updateActiveSubscriber.bind(this), updateSubscribers: this._updateActiveSubscribers.bind(this) },
-			{ eventName: 'd2l-list-child-status' }
-		);
+		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
+			onSubscribe: this._updateActiveSubscriber.bind(this),
+			updateSubscribers: this._updateActiveSubscribers.bind(this)
+		});
 	}
 
 	connectedCallback() {
@@ -183,10 +182,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
-	}
-
-	getSubscriberController() {
-		return this._listChildrenUpdatedSubscribers;
 	}
 
 	_getItemByIndex(index) {

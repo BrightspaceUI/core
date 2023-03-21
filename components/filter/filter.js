@@ -137,7 +137,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				line-height: unset;
 				overflow: hidden;
 			}
-			
+
 			.d2l-filter-dimension-set-value-text {
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
@@ -192,10 +192,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._totalAppliedCount = 0;
 
 		this._activeFilters = null;
-		this._activeFiltersSubscribers = new SubscriberRegistryController(this,
-			{ onSubscribe: this._updateActiveFiltersSubscriber.bind(this), updateSubscribers: this._updateActiveFiltersSubscribers.bind(this) },
-			{}
-		);
+		this._activeFiltersSubscribers = new SubscriberRegistryController(this, 'active-filters', {
+			onSubscribe: this._updateActiveFiltersSubscriber.bind(this),
+			updateSubscribers: this._updateActiveFiltersSubscribers.bind(this)
+		});
 	}
 
 	static get focusElementSelector() {
@@ -267,10 +267,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</d2l-dropdown-button-subtle>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
-	}
-
-	getSubscriberController() {
-		return this._activeFiltersSubscribers;
 	}
 
 	requestFilterClearAll() {
