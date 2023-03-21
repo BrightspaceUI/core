@@ -55,6 +55,7 @@ export class SubscriberRegistryController {
 	_handleSubscribe(e) {
 		e.stopPropagation();
 		e.detail.registry = this._host;
+		e.detail.registryController = this;
 		const target = e.composedPath()[0];
 		this.subscribe(target);
 	}
@@ -70,8 +71,8 @@ export class EventSubscriberController {
 		this._name = name;
 		this._options = options || {};
 		this._eventName = `d2l-subscribe-${this._name}`;
-		this._controllerId = options && options.controllerId;
 		this._registry = null;
+		this._registryController = null;
 	}
 
 	get registry() {
@@ -88,6 +89,7 @@ export class EventSubscriberController {
 			});
 			this._host.dispatchEvent(evt);
 			this._registry = evt.detail.registry;
+			this._registryController = evt.detail.registryController;
 
 			if (!this._registry) {
 				if (this._options.onError) this._options.onError();
@@ -98,7 +100,7 @@ export class EventSubscriberController {
 	}
 
 	hostDisconnected() {
-		if (this._registry) this._registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
+		if (this._registryController) this._registryController.unsubscribe(this._host);
 	}
 
 }
@@ -114,8 +116,8 @@ export class IdSubscriberController {
 		this._options = options || {};
 		this._idPropertyName = options && options.idPropertyName;
 		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
-		this._controllerId = options && options.controllerId;
 		this._registries = new Map();
+		this._registryControllers = new Map();
 		this._timeouts = new Set();
 	}
 
@@ -126,8 +128,8 @@ export class IdSubscriberController {
 	hostDisconnected() {
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._timeouts.forEach(timeoutId => clearTimeout(timeoutId));
-		this._registries.forEach(registry => {
-			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
+		this._registryControllers.forEach(controller => {
+			controller.unsubscribe(this._host);
 		});
 	}
 
@@ -138,11 +140,12 @@ export class IdSubscriberController {
 		this._idPropertyValue = propertyValue;
 
 		if (this._registryObserver) this._registryObserver.disconnect();
-		this._registries.forEach(registry => {
-			registry.getSubscriberController(this._controllerId).unsubscribe(this._host);
-			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registry.id);
+		this._registryControllers.forEach((controller, key) => {
+			controller.unsubscribe(this._host);
+			if (this._options.onUnsubscribe) this._options.onUnsubscribe(key);
 		});
 		this._registries = new Map();
+		this._registryControllers = new Map();
 
 		this._updateRegistries();
 
@@ -184,11 +187,14 @@ export class IdSubscriberController {
 		if (this._registries.get(registryId) === registryComponent) return;
 
 		if (registryComponent) {
-			registryComponent.getSubscriberController(this._controllerId).subscribe(this._host);
-			this._registries.set(registryId, registryComponent);
+			const evt = new CustomEvent(this._eventName, { detail: {} });
+			registryComponent.dispatchEvent(evt);
+			this._registries.set(registryId, evt.detail.registry);
+			this._registryControllers.set(registryId, evt.detail.registryController);
 			if (this._options.onSubscribe) this._options.onSubscribe(registryComponent);
 		} else {
 			this._registries.delete(registryId);
+			this._registryControllers.delete(registryId);
 			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registryId);
 		}
 	}
