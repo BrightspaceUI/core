@@ -12,29 +12,19 @@ import { SubscriberRegistryController } from '@brightspace-ui/core/controllers/s
 class CableSubscription extends LitElement {
 	constructor() {
 		super();
-		this._sportsSubscribers = new SubscriberRegistryController(this,
-			{ onSubscribe: this._unlockSportsChannels.bind(this) },
-			{ eventName: 'd2l-channels-subscribe-sports' }
-		);
 
-		this._movieSubscribers = new SubscriberRegistryController(this, {},
-			{ onSubscribe: this._unlockMovieChannels.bind(this), updateSubscribers: this._sendMovieGuide.bind(this) },
-			{ eventName: 'd2l-channels-subscribe-movies' }
-		);
+		this._sportsSubscribers = new SubscriberRegistryController(this, 'channels-sports', {
+			onSubscribe: this._unlockSportsChannels.bind(this)
+		});
 
-		// This controller only supports registering by id - no event is needed
-		this._kidsChannelSubscribers = new SubscriberRegistryController(this,
-			{ onSubscribe: this._unlockKidsChannels.bind(this) }, {});
-	}
-
-	getSubscriberController(controllerId) {
-		if (controllerId === 'sports') {
-			return this._sportsSubscribers;
-		} else if (controllerId === 'movies') {
-			return this._movieSubscribers;
-		} else if (controllerId === 'kids') {
-			return this._kidsChannelSubscribers;
+		this._movieSubscribers = new SubscriberRegistryController(this, 'channels-movies', {
+			onSubscribe: this._unlockMovieChannels.bind(this),
+			updateSubscribers: this._sendMovieGuide.bind(this)
 		}
+
+		this._kidsChannelSubscribers = new SubscriberRegistryController(this, 'channels-kids', {
+			onSubscribe: this._unlockKidsChannels.bind(this)
+		});
 	}
 
 	_sendMovieGuide(subscribers) {
@@ -51,10 +41,8 @@ class CableSubscription extends LitElement {
 
 When creating the controller, you can pass in callbacks to run whenever a subscriber is added, removed, or `updateSubscribers` is called (which handles request debouncing for you).
 
-The `*subscriberController`s will use a `getSubscriberController` method that needs to be exposed on the registry component. If you only have one `SubscriberRegistryController` you can simple return that.  If you have multiple, you will return the proper controller depending on the id the subscriber component passed to you.
-
 Once this has been set up, components can subscribe to particular registries two different ways:
-1. Using a matching event name with `EventSubscriberController`. The component will need to be a child of the registry component for this to work.
+1. Using a matching subscriber name with `EventSubscriberController`. The component will need to be a child of the registry component for this to work.
 2. By pointing to the registry component's id with `IdSubscriberController`. The component will need to be in the same DOM scope as the registry component for this to work.
 
 Like the `SubscriberRegistryController`, these `*subscriberController`s take optional callbacks to throw at different points in the subscription process.
@@ -72,15 +60,12 @@ class GeneralViewer extends LitElement {
 	constructor() {
 		super();
 		this._subscribedChannels = new Set();
-	
-		this._sportsSubscription = new EventSubscriberController(this,
-			{ onError: this._onSportsError.bind(this) }
-			{ eventName: 'd2l-channels-subscribe-sports', controllerId: 'sports' }
-		);
 
-		this._movieSubscription = new EventSubscriberController(this, {},
-			{ eventName: 'd2l-channels-subscribe-movies', controllerId: 'movies' }
-		);
+		this._sportsSubscription = new EventSubscriberController(this, 'channels-sports', {
+			onError: this._onSportsError.bind(this)
+		}
+
+		this._movieSubscription = new EventSubscriberController(this, 'channels-movies');
 	}
 
 	addChannels(channels) {
@@ -106,10 +91,11 @@ class YoungerViewer extends LitElement {
 		super();
 		this._subscribedChannels = new Set();
 
-		this._kidsSubscription = new IdSubscriberController(this,
-			{ onSubscribe: this._onSubscribe.bind(this), onUnsubscribe: this._onUnsubscribe.bind(this) },
-			{ idPropertyName: 'for', controllerId: 'kids' }
-		);
+		this._kidsSubscription = new IdSubscriberController(this, 'channels-kids', {
+			idPropertyName: 'for',
+			onSubscribe: this._onSubscribe.bind(this),
+			onUnsubscribe: this._onUnsubscribe.bind(this)
+		});
 	}
 
 	addChannels(channels) {
@@ -142,7 +128,7 @@ As of the Lit 2 upgrade, the lifecycle methods `hostConnected`, `hostDisconnecte
 ### SubscriberRegistryController
 | Callback Name | Description | Passed to Callback |
 |---|---|---|
-| `onSubscribe` | Runs whenever a new subscriber is added | Subscriber that was just subscribed | 
+| `onSubscribe` | Runs whenever a new subscriber is added | Subscriber that was just subscribed |
 | `onUnsubscribe` | Runs whenever a subscriber is removed | Subscriber that was just unsubscribed |
 | `updateSubscribers` | Runs whenever `updateSubscribers` is called on the controller, handles debouncing requests for you | Map of all current subscribers |
 
