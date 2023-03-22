@@ -270,7 +270,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
-		const updateHiddenContentWidth = () => {
+		const tryUpdateHiddenContentWidth = () => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			if (isNaN(width)) return false; // hidden elements will have "auto" width
 			this._hiddenContentWidth = `${width}px`;
@@ -287,15 +287,15 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
 			this.requestUpdate();
-			this.updateComplete.then(() => updateHiddenContentWidth());
+			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
 		// resize observer needed to handle case where it's initially hidden
-		if (!updateHiddenContentWidth()) {
+		if (!tryUpdateHiddenContentWidth()) {
 			this._hiddenContentResizeObserver = new ResizeObserver(() => {
-				if (updateHiddenContentWidth()) {
+				if (tryUpdateHiddenContentWidth()) {
 					this._hiddenContentResizeObserver.disconnect();
 					this._hiddenContentResizeObserver = null;
 				}

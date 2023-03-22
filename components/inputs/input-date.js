@@ -195,7 +195,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
-		const updateHiddenContentWidth = () => {
+		const tryUpdateHiddenContentWidth = () => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			if (isNaN(width)) return false; // hidden elements will have "auto" width
 			this._hiddenContentWidth = `${width}px`;
@@ -206,7 +206,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this.addEventListener('d2l-localize-resources-change', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
-			this.updateComplete.then(() => updateHiddenContentWidth());
+			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
@@ -214,9 +214,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
 		// resize observer needed to handle case where it's initially hidden
-		if (!updateHiddenContentWidth()) {
+		if (!tryUpdateHiddenContentWidth()) {
 			this._hiddenContentResizeObserver = new ResizeObserver(() => {
-				if (updateHiddenContentWidth()) {
+				if (tryUpdateHiddenContentWidth()) {
 					this._hiddenContentResizeObserver.disconnect();
 					this._hiddenContentResizeObserver = null;
 				}
