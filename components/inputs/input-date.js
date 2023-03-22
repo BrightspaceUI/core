@@ -14,7 +14,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -195,26 +194,36 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
+		const tryUpdateHiddenContentWidth = () => {
+			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			if (isNaN(width)) return false; // hidden elements will have "auto" width
+			this._hiddenContentWidth = `${width}px`;
+			return true;
+		};
+
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-resources-change', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
-			this.updateComplete.then(() => {
-				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-text')).getPropertyValue('width')));
-				this._hiddenContentWidth = `${width}px`;
-			});
+			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
-		this._hiddenContentResizeObserver = new ResizeObserver(() => {
-			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
-			this._hiddenContentWidth = `${width}px`;
-		});
-		this._hiddenContentResizeObserver.observe(hiddenContent);
+		// resize observer needed to handle case where it's initially hidden
+		if (!tryUpdateHiddenContentWidth()) {
+			this._hiddenContentResizeObserver = new ResizeObserver(() => {
+				if (tryUpdateHiddenContentWidth()) {
+					this._hiddenContentResizeObserver.disconnect();
+					this._hiddenContentResizeObserver = null;
+				}
+			});
+			this._hiddenContentResizeObserver.observe(hiddenContent);
+		}
+
 	}
 
 	render() {
