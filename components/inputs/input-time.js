@@ -15,6 +15,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
