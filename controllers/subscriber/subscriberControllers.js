@@ -1,17 +1,23 @@
 import { cssEscape } from '../../helpers/dom.js';
 
-export class SubscriberRegistryController {
-
+class BaseController {
 	constructor(host, name, options = {}) {
 		if (!host || !name) throw 'must have a host and name';
 
-		this._host = host;
 		host.addController(this);
+		this._host = host;
 		this._name = name;
 		this._options = options;
 		this._eventName = `d2l-subscribe-${this._name}`;
-		this._subscribers = new Map();
+	}
+}
 
+export class SubscriberRegistryController extends BaseController {
+
+	constructor(host, name, options = {}) {
+		super(host, name, options);
+
+		this._subscribers = new Map();
 		this._handleSubscribe = this._handleSubscribe.bind(this);
 	}
 
@@ -61,16 +67,37 @@ export class SubscriberRegistryController {
 	}
 }
 
-export class EventSubscriberController {
+class BaseSubscriber extends BaseController {
+	_subscribe(target = this._host, targetLabel) {
+		const isBroadcast = target === this._host;
 
-	constructor(host, name, options = {}) {
-		if (!host || !name) throw 'must have a host and name';
+		const options = isBroadcast ? { bubbles: true, composed: true } : {};
+		const evt = new CustomEvent(this._eventName, {
+			...options,
+			detail: { subscriber: this._host }
+		});
+		target.dispatchEvent(evt);
 
-		this._host = host;
-		host.addController(this);
-		this._name = name;
-		this._options = options || {};
-		this._eventName = `d2l-subscribe-${this._name}`;
+		const { registry, registryController } = evt.detail;
+		if (!registry) return this._options.onError();
+
+		if (targetLabel) {
+			this._registries.set(targetLabel, registry);
+			this._registryControllers.set(targetLabel, registryController);
+		} else {
+			this._registry = registry;
+			this._registryController = registryController;
+		}
+
+		if (this._options.onSubscribe) this._options.onSubscribe(registry);
+	}
+}
+
+export class EventSubscriberController extends BaseSubscriber {
+
+	constructor(host, name, options) {
+		super(host, name, options);
+
 		this._registry = null;
 		this._registryController = null;
 	}
@@ -81,22 +108,7 @@ export class EventSubscriberController {
 
 	hostConnected() {
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => {
-			const evt = new CustomEvent(this._eventName, {
-				bubbles: true,
-				composed: true,
-				detail: { subscriber: this._host }
-			});
-			this._host.dispatchEvent(evt);
-			this._registry = evt.detail.registry;
-			this._registryController = evt.detail.registryController;
-
-			if (!this._registry) {
-				if (this._options.onError) this._options.onError();
-				return;
-			}
-			if (this._options.onSubscribe) this._options.onSubscribe(this._registry);
-		});
+		requestAnimationFrame(() => this._subscribe());
 	}
 
 	hostDisconnected() {
@@ -105,16 +117,11 @@ export class EventSubscriberController {
 
 }
 
-export class IdSubscriberController {
+export class IdSubscriberController extends BaseSubscriber {
 
 	constructor(host, name, options = {}) {
-		if (!host || !name) throw 'must have a host and name';
+		super(host, name, options);
 
-		this._host = host;
-		host.addController(this);
-		this._name = name;
-		this._options = options || {};
-		this._eventName = `d2l-subscribe-${this._name}`;
 		this._idPropertyName = options && options.idPropertyName;
 		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._registries = new Map();
@@ -187,13 +194,8 @@ export class IdSubscriberController {
 		registryComponent = registryComponent || undefined;
 		if (this._registries.get(registryId) === registryComponent) return;
 
-		if (registryComponent) {
-			const evt = new CustomEvent(this._eventName, { detail: { subscriber: this._host } });
-			registryComponent.dispatchEvent(evt);
-			this._registries.set(registryId, evt.detail.registry);
-			this._registryControllers.set(registryId, evt.detail.registryController);
-			if (this._options.onSubscribe) this._options.onSubscribe(registryComponent);
-		} else {
+		if (registryComponent) this._subscribe(registryComponent, registryId);
+		else {
 			this._registries.delete(registryId);
 			this._registryControllers.delete(registryId);
 			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registryId);
