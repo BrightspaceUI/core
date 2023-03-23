@@ -96,7 +96,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 				display: flex;
 				max-height: 60px;
 				opacity: 1;
-				transform: translateY(0);
+				transform: none;
 			}
 			.d2l-tabs-container {
 				box-sizing: border-box;
