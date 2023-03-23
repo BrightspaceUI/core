@@ -42,8 +42,8 @@ class CableSubscription extends LitElement {
 When creating the controller, you can pass in callbacks to run whenever a subscriber is added, removed, or `updateSubscribers` is called (which handles request debouncing for you).
 
 Once this has been set up, components can subscribe to particular registries two different ways:
-1. Using a matching subscriber name with `EventSubscriberController`. The component will need to be a child of the registry component for this to work.
-2. By pointing to the registry component's id with `IdSubscriberController`. The component will need to be in the same DOM scope as the registry component for this to work.
+1. Using `EventSubscriberController`. The component will need to be a child of the registry component for this to work.
+2. By pointing to the registry component's id with `IdSubscriberController` and the `idPropertyName` option. The component will need to be in the same DOM scope as the registry component for this to work.
 
 Like the `SubscriberRegistryController`, these `*subscriberController`s take optional callbacks to throw at different points in the subscription process.
 
@@ -123,6 +123,7 @@ An example of what this could look like altogether:
 ```
 
 As of the Lit 2 upgrade, the lifecycle methods `hostConnected`, `hostDisconnected`, and `hostUpdated` will be called automatically.
+
 ## Available Callbacks
 
 ### SubscriberRegistryController
