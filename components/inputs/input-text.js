@@ -472,7 +472,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		}
 
 		let tooltip = nothing;
-		if (this.validationError && !this.skeleton) {
+		if (this.validationError && !this.skeleton && !this.noValidate) {
 			tooltip = html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
 		}
 
