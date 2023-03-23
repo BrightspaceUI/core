@@ -56,7 +56,7 @@ export class SubscriberRegistryController {
 		e.stopPropagation();
 		e.detail.registry = this._host;
 		e.detail.registryController = this;
-		const target = e.composedPath()[0];
+		const target = e.detail.subscriber;
 		this.subscribe(target);
 	}
 }
@@ -85,7 +85,7 @@ export class EventSubscriberController {
 			const evt = new CustomEvent(this._eventName, {
 				bubbles: true,
 				composed: true,
-				detail: {}
+				detail: { subscriber: this._host }
 			});
 			this._host.dispatchEvent(evt);
 			this._registry = evt.detail.registry;
@@ -188,7 +188,7 @@ export class IdSubscriberController {
 		if (this._registries.get(registryId) === registryComponent) return;
 
 		if (registryComponent) {
-			const evt = new CustomEvent(this._eventName, { detail: {} });
+			const evt = new CustomEvent(this._eventName, { detail: { subscriber: this._host } });
 			registryComponent.dispatchEvent(evt);
 			this._registries.set(registryId, evt.detail.registry);
 			this._registryControllers.set(registryId, evt.detail.registryController);
