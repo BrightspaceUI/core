@@ -14,7 +14,7 @@ class BaseController {
 
 export class SubscriberRegistryController extends BaseController {
 
-	constructor(host, name, options = {}) {
+	constructor(host, name, options) {
 		super(host, name, options);
 
 		this._subscribers = new Map();
@@ -79,7 +79,10 @@ class BaseSubscriber extends BaseController {
 		target.dispatchEvent(evt);
 
 		const { registry, registryController } = evt.detail;
-		if (!registry) return this._options.onError();
+		if (!registry) {
+			if (this._options.onError) this._options.onError();
+			return;
+		}
 
 		if (targetLabel) {
 			this._registries.set(targetLabel, registry);
@@ -119,7 +122,7 @@ export class EventSubscriberController extends BaseSubscriber {
 
 export class IdSubscriberController extends BaseSubscriber {
 
-	constructor(host, name, options = {}) {
+	constructor(host, name, options) {
 		super(host, name, options);
 
 		this._idPropertyName = options && options.idPropertyName;
