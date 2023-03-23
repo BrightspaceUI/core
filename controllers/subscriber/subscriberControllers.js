@@ -114,6 +114,7 @@ export class IdSubscriberController {
 		host.addController(this);
 		this._name = name;
 		this._options = options || {};
+		this._eventName = `d2l-subscribe-${this._name}`;
 		this._idPropertyName = options && options.idPropertyName;
 		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._registries = new Map();
