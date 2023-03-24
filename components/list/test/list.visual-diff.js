@@ -46,11 +46,9 @@ describe('d2l-list', () => {
 	};
 
 	const scrollTo = (selector, y) => {
-		return page.$eval(selector, (container, y) => {
-			return new Promise(resolve => {
-				container.scrollTo(0, y);
-				setTimeout(resolve, 400);
-			});
+		return page.$eval(selector, (element, y) => {
+			element.scrollIntoView();
+			element.scrollTo(0, y);
 		}, y);
 	};
 
@@ -70,6 +68,7 @@ describe('d2l-list', () => {
 
 	beforeEach(async() => {
 		await visualDiff.resetFocus(page);
+		await page.mouse.move(-1, -1);
 	});
 
 	after(async() => await browser.close());
