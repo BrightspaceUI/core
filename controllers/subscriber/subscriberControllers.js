@@ -2,7 +2,7 @@ import { cssEscape } from '../../helpers/dom.js';
 
 class BaseController {
 	constructor(host, name, options = {}) {
-		if (!host || !name) throw new Error('Subscriber controllers must receive a host and a subscription name.');
+		if (!host || !name) throw new TypeError('SubscriberController: missing host or subscription name');
 
 		host.addController(this);
 		this._host = host;
