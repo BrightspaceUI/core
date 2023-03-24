@@ -1209,7 +1209,7 @@ describe('d2l-filter', () => {
 			]);
 		});
 
-		it.only('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
+		it('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
 			elem = await fixture(multiDimensionFixture);
 			elem._activeFiltersSubscribers.subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
