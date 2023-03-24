@@ -12,6 +12,35 @@ class BaseController {
 	}
 }
 
+class BaseSubscriber extends BaseController {
+	_subscribe(target = this._host, targetLabel) {
+		const isBroadcast = target === this._host;
+
+		const options = isBroadcast ? { bubbles: true, composed: true } : {};
+		const evt = new CustomEvent(this._eventName, {
+			...options,
+			detail: { subscriber: this._host }
+		});
+		target.dispatchEvent(evt);
+
+		const { registry, registryController } = evt.detail;
+		if (!registry) {
+			if (this._options.onError) this._options.onError();
+			return;
+		}
+
+		if (targetLabel) {
+			this._registries.set(targetLabel, registry);
+			this._registryControllers.set(targetLabel, registryController);
+		} else {
+			this._registry = registry;
+			this._registryController = registryController;
+		}
+
+		if (this._options.onSubscribe) this._options.onSubscribe(registry);
+	}
+}
+
 export class SubscriberRegistryController extends BaseController {
 
 	constructor(host, name, options) {
@@ -64,35 +93,6 @@ export class SubscriberRegistryController extends BaseController {
 		e.detail.registryController = this;
 		const target = e.detail.subscriber;
 		this.subscribe(target);
-	}
-}
-
-class BaseSubscriber extends BaseController {
-	_subscribe(target = this._host, targetLabel) {
-		const isBroadcast = target === this._host;
-
-		const options = isBroadcast ? { bubbles: true, composed: true } : {};
-		const evt = new CustomEvent(this._eventName, {
-			...options,
-			detail: { subscriber: this._host }
-		});
-		target.dispatchEvent(evt);
-
-		const { registry, registryController } = evt.detail;
-		if (!registry) {
-			if (this._options.onError) this._options.onError();
-			return;
-		}
-
-		if (targetLabel) {
-			this._registries.set(targetLabel, registry);
-			this._registryControllers.set(targetLabel, registryController);
-		} else {
-			this._registry = registry;
-			this._registryController = registryController;
-		}
-
-		if (this._options.onSubscribe) this._options.onSubscribe(registry);
 	}
 }
 
