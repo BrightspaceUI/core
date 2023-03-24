@@ -113,7 +113,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				z-index: 10; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
 			}
 			:host([_tooltip-showing]) {
-				z-index: 20; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
+				z-index: 11; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
 			}
 			:host([_fullscreen-within]) {
 				position: fixed; /* required for Safari */
