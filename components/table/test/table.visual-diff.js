@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, id, wrapperId) {
 	return await page.$eval(wrapperId, (wrapper, id) => {
@@ -98,9 +98,7 @@ describe('d2l-table', () => {
 						});
 
 						it('col-sort-button-focus', async function() {
-							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
-								wrapper.shadowRoot.querySelector('d2l-table-col-sort-button').focus();
-							});
+							await focusWithKeyboard(page, ['d2l-test-table-visual-diff', 'd2l-table-col-sort-button']);
 							const rect = await getRect(page, 'col-sort-button', 'd2l-test-table-visual-diff');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});

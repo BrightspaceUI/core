@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -21,7 +20,7 @@ describe('d2l-collapsible-panel', () => {
 	after(async() => await browser.close());
 
 	function focusElement(selector) {
-		return page.$eval(selector, (elem) => forceFocusVisible(elem));
+		return focusWithKeyboard(page, `${selector} > d2l-collapsible-panel`);
 	}
 
 	function expandPanel(selector) {

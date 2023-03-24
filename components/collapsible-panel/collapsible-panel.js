@@ -4,6 +4,7 @@ import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -25,7 +26,7 @@ const defaultHeading = 3;
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
  */
-class CollapsiblePanel extends RtlMixin(LitElement) {
+class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -269,6 +270,10 @@ class CollapsiblePanel extends RtlMixin(LitElement) {
 		this._focused = false;
 		this._hasSummary = false;
 		this._scrolled = false;
+	}
+
+	static get focusElementSelector() {
+		return 'button.d2l-offscreen';
 	}
 
 	disconnectedCallback() {

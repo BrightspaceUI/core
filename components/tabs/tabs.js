@@ -96,7 +96,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 				display: flex;
 				max-height: 60px;
 				opacity: 1;
-				transform: translateY(0);
+				transform: none;
 			}
 			.d2l-tabs-container {
 				box-sizing: border-box;
@@ -182,16 +182,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 				border: 0;
 			}
 			.d2l-tabs-scroll-button[disabled]:hover,
-			.d2l-tabs-scroll-button[disabled].focus-visible,
 			.d2l-tabs-scroll-button[disabled]:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: transparent;
 			}
 			.d2l-tabs-scroll-button:hover,
-			.d2l-tabs-scroll-button.focus-visible,
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-gypsum);
 			}
-			.d2l-tabs-scroll-button.focus-visible,
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}

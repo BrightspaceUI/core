@@ -1,8 +1,7 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { hide, show } from '../../tooltip/test/tooltip-helper.js';
 import { open, reset } from '../../dropdown/test/dropdown-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-list', () => {
 
@@ -14,38 +13,20 @@ describe('d2l-list', () => {
 		return reset(page, selector);
 	};
 
-	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.focus();
-		});
-	};
-
-	const forceFocusMethod = (selector) => {
-		return page.$eval(selector, (item) => forceFocusVisible(item));
-	};
-
 	const focusInput = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('d2l-selection-input').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'd2l-selection-input']);
 	};
 
 	const focusLink = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('a').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'a']);
 	};
 
 	const focusButton = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('button').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'button']);
 	};
 
 	const focusExpandCollapseButton = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('d2l-button-icon').focus();
-		});
+		return focusWithKeyboard(page, [selector, 'd2l-button-icon']);
 	};
 
 	const hideTooltip = (selector) => {
@@ -65,11 +46,9 @@ describe('d2l-list', () => {
 	};
 
 	const scrollTo = (selector, y) => {
-		return page.$eval(selector, (container, y) => {
-			return new Promise(resolve => {
-				container.scrollTo(0, y);
-				setTimeout(resolve, 400);
-			});
+		return page.$eval(selector, (element, y) => {
+			element.scrollIntoView();
+			element.scrollTo(0, y);
 		}, y);
 	};
 
@@ -89,6 +68,7 @@ describe('d2l-list', () => {
 
 	beforeEach(async() => {
 		await visualDiff.resetFocus(page);
+		await page.mouse.move(-1, -1);
 	});
 
 	after(async() => await browser.close());
@@ -172,7 +152,7 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
-			{ name: 'focus', selector: '#draggable', action: () => forceFocusMethod('#draggable [key="1"]') },
+			{ name: 'focus', selector: '#draggable', action: () => focusWithKeyboard(page, '#draggable [key="1"]') },
 			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
 			{ name: 'selectable', selector: '#draggableSelectable' },
 			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
@@ -180,10 +160,10 @@ describe('d2l-list', () => {
 			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
 		] },
 		{ category: 'focus method', tests: [
-			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
-			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
-			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
-			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusMethod('#expand-collapse-default d2l-list-item') }
+			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },
+			{ name: 'button', selector: '#button', action: () => focusWithKeyboard(page, '#button d2l-list-item-button') },
+			{ name: 'selectable', selector: '#selectable', action: () => focusWithKeyboard(page, '#selectable [selectable]') },
+			{ name: 'expandable', selector: '#expand-collapse-default', action: () => focusWithKeyboard(page, '#expand-collapse-default d2l-list-item') }
 		] },
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },

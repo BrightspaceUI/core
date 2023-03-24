@@ -22,7 +22,6 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typog
 import { css, html, LitElement, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { EmptyStateType } from './filter-dimension-set.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -411,7 +410,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		`;
 	}
 
-	_createEmptyState(emptyState, dimensionKey, type) {
+	_createEmptyState(emptyState, dimensionKey) {
 		let emptyStateAction = nothing;
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
@@ -426,7 +425,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				<d2l-empty-state-action-button
 					@d2l-empty-state-action="${this._handleEmptyStateAction}"
 					data-dimension-key="${dimensionKey}"
-					data-type="${type}"
+					data-type="${emptyState.type}"
 					text="${emptyState.actionText}">
 				</d2l-empty-state-action-button>
 			`;
@@ -450,7 +449,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			const emptyState = dimension.setEmptyState
-				? this._createEmptyState(dimension.setEmptyState, dimension.key, EmptyStateType.Set)
+				? this._createEmptyState(dimension.setEmptyState, dimension.key)
 				: html`
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"
@@ -472,7 +471,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				'd2l-offscreen': count !== 0
 			};
 			const emptyState = dimension.searchEmptyState && count === 0
-				? this._createEmptyState(dimension.searchEmptyState, dimension.key, EmptyStateType.Search)
+				? this._createEmptyState(dimension.searchEmptyState, dimension.key)
 				: html`
 					<d2l-empty-state-simple
 						class="d2l-filter-dimension-info-message"

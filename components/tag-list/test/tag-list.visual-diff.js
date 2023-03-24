@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 describe('d2l-tag-list', () => {
 	const visualDiff = new VisualDiff('tag-list', import.meta.url);
@@ -181,7 +181,7 @@ describe('d2l-tag-list', () => {
 
 		it('focus', async function() {
 			const rect = await visualDiff.getRect(page, '#interactive');
-			await page.$eval('#interactive', elem => elem.focus());
+			await focusWithKeyboard(page, '#interactive');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});
 

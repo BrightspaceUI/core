@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-template-primary-secondary', () => {
 	const visualDiff = new VisualDiff('primary-secondary', import.meta.url);
@@ -36,10 +36,7 @@ describe('d2l-template-primary-secondary', () => {
 	}
 
 	async function focusHandle(page, selector) {
-		return page.$eval(selector, (elem) => {
-			const handle = elem.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-			handle.focus();
-		});
+		return focusWithKeyboard(page, [selector, '.d2l-template-primary-secondary-divider']);
 	}
 
 	describe('mobile', () => {

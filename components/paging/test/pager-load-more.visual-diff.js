@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-pager-load-more', () => {
 
@@ -42,7 +41,7 @@ describe('d2l-pager-load-more', () => {
 			{ name: 'item-count', selector: '#item-count' },
 			{ name: 'no-item-count', selector: '#no-item-count' },
 			{ name: 'hover', selector: '#item-count', action: selector => page.hover(`${selector} d2l-pager-load-more`) },
-			{ name: 'focus', selector: '#item-count', action: selector => page.$eval(selector, elem => forceFocusVisible(elem.querySelector('d2l-pager-load-more'))) },
+			{ name: 'focus', selector: '#item-count', action: selector => focusWithKeyboard(page, `${selector} d2l-pager-load-more`) },
 		].forEach(runTest);
 
 	});

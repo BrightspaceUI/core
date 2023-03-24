@@ -1,5 +1,5 @@
 import { directive, PartType } from 'lit/directive.js';
-import { getComposedActiveElement, getNextFocusable, isFocusVisibleApplied } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable, isFocusVisibleSupported } from '../../helpers/focus.js';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { noChange } from 'lit';
@@ -9,6 +9,11 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const showTransitionDuration = 300;
 const hideTransitionDuration = 200;
 const moveYValue = 20;
+
+function isFocusVisibleApplied(node) {
+	if (!node) return false;
+	return isFocusVisibleSupported() && node.parentNode?.querySelector(':focus-visible') === node;
+}
 
 class AnimationState {
 

@@ -1,7 +1,6 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, focusWithMouse, VisualDiff } from '@brightspace-ui/visual-diff';
 import { open } from '../../dropdown/test/dropdown-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-card', () => {
 
@@ -28,14 +27,14 @@ describe('d2l-card', () => {
 		{ name: 'align-center', selector: '#align-center' },
 		{ name: 'badge', selector: '#badge' },
 		{ name: 'actions', selector: '#actions' },
-		{ name: 'actions-focus', selector: '#actions', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
+		{ name: 'actions-focus', selector: '#actions', action: (selector) => focusWithKeyboard(page, `${selector} > d2l-button-icon`) },
 		{ name: 'actions-rtl', selector: '#actions-rtl' },
-		{ name: 'no-link-focus', selector: '#header-content', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+		{ name: 'no-link-focus', selector: '#header-content', action: (selector) => focusWithMouse(page, selector) },
 		{ name: 'subtle', selector: '#subtle' },
 		{ name: 'link', selector: '#link' },
-		{ name: 'link-focus', selector: '#link', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
-		{ name: 'link-actions-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
-		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => forceFocusVisible(elem)) },
+		{ name: 'link-focus', selector: '#link', action: (selector) => focusWithMouse(page, selector) },
+		{ name: 'link-actions-focus', selector: '#link', action: (selector) => focusWithKeyboard(page, `${selector} > d2l-button-icon`) },
+		{ name: 'link-footer-focus', selector: '#link', action: (selector) => focusWithKeyboard(page, `${selector} > d2l-button`) },
 		{ name: 'with-dropdown', selector: '#with-dropdown', margin: 20 },
 		{ name: 'with-dropdown-open', selector: '#with-dropdown', margin: 20, action: (selector) => open(page, `${selector} d2l-dropdown-more`) },
 		{ name: 'with-dropdown-adjacent-hover', selector: '#with-dropdown-adjacent-hover', margin: 20, action: async(selector) => {
@@ -43,7 +42,7 @@ describe('d2l-card', () => {
 			return page.hover(`${selector} #hover-target`);
 		} },
 		{ name: 'with-tooltip', selector: '#with-tooltip', margin: 20 },
-		{ name: 'with-tooltip-focus', selector: '#with-tooltip', margin: 20, action: (selector) => page.$eval(`${selector} #shiny-button`, (elem) => forceFocusVisible(elem)) }
+		{ name: 'with-tooltip-focus', selector: '#with-tooltip', margin: 20, action: (selector) => focusWithKeyboard(page, `${selector} #shiny-button`) }
 	].forEach((info) => {
 
 		it(info.name, async function() {

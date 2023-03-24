@@ -271,18 +271,38 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
+		const tryUpdateHiddenContentWidth = () => {
+			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			if (isNaN(width)) return false; // hidden elements will have "auto" width
+			this._hiddenContentWidth = `${width}px`;
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-time-hidden-content-width-change',
+				{ bubbles: true, composed: false }
+			));
+			return true;
+		};
+
 		this.addEventListener('d2l-localize-resources-change', async() => {
 			await this.updateComplete;
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
 			this.requestUpdate();
-			this.updateComplete.then(() => this._onResize(hiddenContent));
+			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		this._hiddenContentResizeObserver = new ResizeObserver(() => this._onResize(hiddenContent));
-		this._hiddenContentResizeObserver.observe(hiddenContent);
+		// resize observer needed to handle case where it's initially hidden
+		if (!tryUpdateHiddenContentWidth()) {
+			this._hiddenContentResizeObserver = new ResizeObserver(() => {
+				if (tryUpdateHiddenContentWidth()) {
+					this._hiddenContentResizeObserver.disconnect();
+					this._hiddenContentResizeObserver = null;
+				}
+			});
+			this._hiddenContentResizeObserver.observe(hiddenContent);
+		}
 
 	}
 
@@ -428,15 +448,5 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 	}
 
-	_onResize(hiddenContent) {
-		const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
-		this._hiddenContentWidth = `${width}px`;
-
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-input-time-hidden-content-width-change',
-			{ bubbles: true, composed: false }
-		));
-	}
 }
 customElements.define('d2l-input-time', InputTime);

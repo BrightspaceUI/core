@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-calendar', () => {
 
@@ -80,7 +80,7 @@ describe('d2l-calendar', () => {
 		});
 
 		it('focus', async function() {
-			await page.$eval(firstCalendarOfPage, (elem) => elem.focus());
+			await focusWithKeyboard(page, firstCalendarOfPage);
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -105,19 +105,13 @@ describe('d2l-calendar', () => {
 			});
 
 			it('focus on non-selected-value', async function() {
-				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
-					date.focus();
-				});
+				await focusWithKeyboard(page, [firstCalendarOfPage, 'td[data-date="20"]']);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('focus on selected-value', async function() {
-				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="14"]');
-					date.focus();
-				});
+				await focusWithKeyboard(page, [firstCalendarOfPage, 'td[data-date="14"]']);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -126,9 +120,8 @@ describe('d2l-calendar', () => {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.classList.add('d2l-calendar-date-hover');
-					const dateParent = date.parentNode;
-					dateParent.focus();
 				});
+				await focusWithKeyboard(page, [firstCalendarOfPage, 'td[data-date="20"]']);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -137,12 +130,9 @@ describe('d2l-calendar', () => {
 				let date;
 				await page.$eval(firstCalendarOfPage, async(calendar) => {
 					date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
-					const dateParent = date.parentNode;
-					dateParent.focus();
-				});
-				await page.$eval(firstCalendarOfPage, async() => {
 					date.classList.add('d2l-calendar-date-hover');
 				});
+				await focusWithKeyboard(page, [firstCalendarOfPage, 'td[data-date="14"]']);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -159,12 +149,15 @@ describe('d2l-calendar', () => {
 			const testOpts = this.currentTest.value;
 			if (testOpts) opts = Object.assign(opts, testOpts);
 
-			await page.$eval(opts.calendar, async(calendar, selected, focus) => {
+			await page.$eval(opts.calendar, async(calendar, selected) => {
 				calendar.selectedValue = selected;
 				await calendar.reset();
-				if (focus) calendar.focus();
-			}, opts.selected, opts.focus);
-			if (!opts.focus) await visualDiff.resetFocus(page);
+			}, opts.selected);
+			if (opts.focus) {
+				await focusWithKeyboard(page, opts.calendar);
+			} else {
+				await visualDiff.resetFocus(page);
+			}
 		});
 
 		it('click left arrow', async function() {
@@ -336,8 +329,8 @@ describe('d2l-calendar', () => {
 						await page.$eval('#min-max', async(calendar) => {
 							calendar.selectedValue = '2018-02-14';
 							await calendar.reset();
-							calendar.focus();
 						});
+						await focusWithKeyboard(page, '#min-max');
 					});
 
 					it('HOME min value', async function() {
