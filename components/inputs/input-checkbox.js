@@ -120,8 +120,8 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					margin-bottom: 0;
 				}
 				label {
-					display: inline-block;
-					white-space: nowrap;
+					display: flex;
+					overflow-wrap: anywhere;
 				}
 				.d2l-input-checkbox-wrapper {
 					display: inline-block;

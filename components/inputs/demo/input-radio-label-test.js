@@ -34,6 +34,10 @@ class TestInputRadioLabel extends RtlMixin(LitElement) {
 				Label for radio that wraps nicely onto
 				multiple lines and stays aligned
 			</label>
+			<label class="d2l-input-radio-label">
+				<input type="radio" name="myGroup" value="long">
+				https://en.wikipedia.org/wiki/Dark_matter
+			</label>
 		`;
 	}
 
