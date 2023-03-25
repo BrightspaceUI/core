@@ -9,6 +9,7 @@ class TestInputRadioLabel extends RtlMixin(LitElement) {
 			css`
 				:host {
 					display: block;
+					overflow: hidden;
 					width: 200px;
 				}
 			`
