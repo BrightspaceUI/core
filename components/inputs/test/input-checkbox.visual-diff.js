@@ -41,6 +41,7 @@ describe('d2l-input-checkbox', () => {
 
 	[
 		'multiline',
+		'multiline-unbreakable',
 		'hidden-label',
 		'spacer'
 	].forEach((type) => {
