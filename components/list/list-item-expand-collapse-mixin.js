@@ -76,7 +76,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		this._siblingHasNestedItems = false;
 		this._renderExpandCollapseSlot = false;
 		this._showNestedLoadingSpinner = false;
-		this._parentChildUpdateSubscription = new EventSubscriberController(this, {}, { eventName: 'd2l-list-child-status' });
+		this._parentChildUpdateSubscription = new EventSubscriberController(this, 'list-child-status');
 	}
 
 	connectedCallback() {

@@ -36,10 +36,10 @@ class FilterTags extends LocalizeCoreElement(LitElement) {
 		super();
 
 		this._allActiveFilters = new Map();
-		this._filters = new IdSubscriberController(this,
-			{ onUnsubscribe: this._removeLostFilter.bind(this) },
-			{ idPropertyName: 'filterIds' }
-		);
+		this._filters = new IdSubscriberController(this, 'active-filters', {
+			idPropertyName: 'filterIds',
+			onUnsubscribe: this._removeLostFilter.bind(this)
+		});
 	}
 
 	render() {

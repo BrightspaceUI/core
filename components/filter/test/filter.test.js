@@ -1183,7 +1183,7 @@ describe('d2l-filter', () => {
 
 		it('If there are subscribers, active filters are calculated properly', async() => {
 			elem = await fixture(multiDimensionFixture);
-			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
+			elem._activeFiltersSubscribers.subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
 			const item1 = elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]');
@@ -1211,12 +1211,12 @@ describe('d2l-filter', () => {
 
 		it('If an additional subscriber is added, they are sent the active filters (which are not recalculated)', async() => {
 			elem = await fixture(multiDimensionFixture);
-			elem.getSubscriberController().subscribe({ updateActiveFilters: () => {} });
+			elem._activeFiltersSubscribers.subscribe({ updateActiveFilters: () => {} });
 			await elem.updateComplete;
 
 			const updateSpy = spy(elem, '_updateActiveFilters');
 			let id, result;
-			elem.getSubscriberController().subscribe({ updateActiveFilters: (filterId, activeFilters) => { id = filterId; result = activeFilters; } });
+			elem._activeFiltersSubscribers.subscribe({ updateActiveFilters: (filterId, activeFilters) => { id = filterId; result = activeFilters; } });
 
 			expect(updateSpy).to.not.have.been.called;
 			expect(result).to.equal(elem._activeFilters);
@@ -1229,7 +1229,7 @@ describe('d2l-filter', () => {
 			beforeEach(async() => {
 				elem = await fixture(multiDimensionFixture);
 				subscriberUpdated = false;
-				elem.getSubscriberController().subscribe({ updateActiveFilters: () => subscriberUpdated = true });
+				elem._activeFiltersSubscribers.subscribe({ updateActiveFilters: () => subscriberUpdated = true });
 				await elem.updateComplete;
 				updateSpy = spy(elem, '_updateActiveFilters');
 			});
