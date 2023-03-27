@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Zichtbaar.",
 	"components.switch.hidden": "Verborgen",
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Acties voor tabel",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",
 	"components.tag-list.clear": "Klik, druk op Backspace of druk op de Delete-toets om item {value} te verwijderen",

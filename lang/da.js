@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Synlig.",
 	"components.switch.hidden": "Skjult",
 	"components.switch.conditions": "Betingelserne skal være opfyldt",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Handlinger for tabel",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",
 	"components.tag-list.clear": "Klik, tryk på tilbagetasten, eller tryk på slettasten for at fjerne element {value}",
@@ -118,7 +118,7 @@ export default {
 	"components.tag-list.role-description": "Tagliste",
 	"components.tag-list.show-less": "Vis færre",
 	"components.tag-list.show-more-description": "Vælg for at få vist skjulte taglisteelementer",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Piletaster",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Flyt mellem tags",
 	"components.tag-list-item.tooltip-delete-key": "Tilbage/Slet",

@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Gweladwy.",
 	"components.switch.hidden": "Cudd",
 	"components.switch.conditions": "Rhaid bodloni’r amodau",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Camau gweithredu ar gyfer y tabl",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
 	"components.tag-list.clear": "Cliciwch, pwyswch yn ôl, neu pwyswch y bysell dileu i dynnu’r eitem {value}",
@@ -118,7 +118,7 @@ export default {
 	"components.tag-list.role-description": "Rhestr o Dagiau",
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Byselli Saeth",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Symud rhwng tagiau",
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",

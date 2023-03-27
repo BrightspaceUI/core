@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Sichtbar.",
 	"components.switch.hidden": "Ausgeblendet",
 	"components.switch.conditions": "Bedingungen müssen erfüllt sein",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Aktionen für Tabelle",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",
 	"components.tag-list.clear": "Klicken Sie, drücken Sie die Rücktaste, oder drücken Sie die Entfernen-Taste, um das Element {value} zu entfernen",
@@ -118,7 +118,7 @@ export default {
 	"components.tag-list.role-description": "Tag-Liste",
 	"components.tag-list.show-less": "Weniger anzeigen",
 	"components.tag-list.show-more-description": "Wählen Sie diese Option, um ausgeblendete Elemente der Tag-Liste anzuzeigen",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Pfeiltasten",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Zwischen Tags wechseln",
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",

@@ -102,11 +102,11 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Acciones de la tabla",
 	"components.tabs.next": "Desplazarse hacia adelante",
 	"components.tabs.previous": "Desplazarse hacia atrás",
 	"components.tag-list.clear": "Haga clic, presione Retroceso o presione la tecla Suprimir para eliminar el elemento {value}",
