@@ -1,10 +1,8 @@
-# Collapsible Content
-
-This component allows content to be collapsed and expanded within your web application.
-
-## Expand Collapse Content [d2l-expand-collapse-content]
+# Expand Collapse Content
 
 The `d2l-expand-collapse-content` element can be used to create expandable and collapsible content. This component only provides the logic to expand and collapse the content; controlling when and how it expands or collapses is the responsibility of the user.
+
+## Expand Collapse Content [d2l-expand-collapse-content]
 
 <!-- docs: demo live name:d2l-expand-collapse-content autoSize:false display:block size:small -->
 ```html

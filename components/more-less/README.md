@@ -1,10 +1,8 @@
-# Minimize long content
-
-This component assists in minimizing long content and a way to reveal it.
-
-## More-Less [d2l-more-less]
+# More/Less
 
 The `d2l-more-less` element can be used to minimize the display of long content, while providing a way to reveal the full content.
+
+## More-Less [d2l-more-less]
 
 <!-- docs: demo live name:d2l-more-less -->
 ```html
