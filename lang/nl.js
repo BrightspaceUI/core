@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Zichtbaar.",
 	"components.switch.hidden": "Verborgen",
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Acties voor tabel",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",
 	"components.tag-list.clear": "Klik, druk op Backspace of druk op de Delete-toets om item {value} te verwijderen",

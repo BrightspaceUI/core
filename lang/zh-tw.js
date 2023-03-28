@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "可見。",
 	"components.switch.hidden": "隱藏",
 	"components.switch.conditions": "必須符合條件",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "表格動作",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動",
 	"components.tag-list.clear": "按一下、按下退格鍵或按下刪除鍵以移除項目 {value}",
