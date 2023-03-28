@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "表示。",
 	"components.switch.hidden": "非表示",
 	"components.switch.conditions": "条件が一致する必要があります",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "テーブルのアクション",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール",
 	"components.tag-list.clear": "クリックする、Backspace キーを押す、または Delete キーを押すと項目 {value} が削除されます",
