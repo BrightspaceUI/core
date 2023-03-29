@@ -192,6 +192,7 @@ export class NewPositionEventDetails {
 	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
 	 */
 	reorder(list, { announceFn, keyFn }) {
+		console.log('reorder');
 		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
 
 		if (announceFn) {
@@ -382,6 +383,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!keyboardActive) keyboardActive = false;
 		const rootList = this._getRootList();
 		/** @ignore */
+		console.log('dispatch d2l-list-items-move');
 		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
 			detail: {
 				keyboardActive: keyboardActive,
@@ -478,6 +480,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragEnd(e) {
+		console.log('_onDragEnd', e);
 
 		const dragState = getDragState();
 		this.dragging = false;
