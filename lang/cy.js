@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Gweladwy.",
 	"components.switch.hidden": "Cudd",
 	"components.switch.conditions": "Rhaid bodloni’r amodau",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Camau gweithredu ar gyfer y tabl",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
 	"components.tag-list.clear": "Cliciwch, pwyswch yn ôl, neu pwyswch y bysell dileu i dynnu’r eitem {value}",

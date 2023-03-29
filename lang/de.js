@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Sichtbar.",
 	"components.switch.hidden": "Ausgeblendet",
 	"components.switch.conditions": "Bedingungen müssen erfüllt sein",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Aktionen für Tabelle",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",
 	"components.tag-list.clear": "Klicken Sie, drücken Sie die Rücktaste, oder drücken Sie die Entfernen-Taste, um das Element {value} zu entfernen",

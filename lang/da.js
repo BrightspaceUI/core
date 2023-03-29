@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Synlig.",
 	"components.switch.hidden": "Skjult",
 	"components.switch.conditions": "Betingelserne skal være opfyldt",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Handlinger for tabel",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",
 	"components.tag-list.clear": "Klik, tryk på tilbagetasten, eller tryk på slettasten for at fjerne element {value}",

@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "표시.",
 	"components.switch.hidden": "숨김",
 	"components.switch.conditions": "조건을 충족해야 합니다",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "표에 대한 작업",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",
 	"components.tag-list.clear": "항목 {value}을(를) 제거하려면 클릭하거나, 백스페이스 또는 삭제 키를 누릅니다.",

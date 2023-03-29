@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Görünür.",
 	"components.switch.hidden": "Gizli",
 	"components.switch.conditions": "Koşullar karşılanmalıdır",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Tablo için eylemler",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",
 	"components.tag-list.clear": "Öğe {value} değerini kaldırmak için tıklatın, geri al tuşuna veya sil tuşuna basın",
