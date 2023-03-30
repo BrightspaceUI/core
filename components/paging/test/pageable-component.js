@@ -18,10 +18,13 @@ class TestPageable extends PageableMixin(LitElement) {
 	_getItems() {
 		return this.shadowRoot.querySelector('slot').assignedElements().find(node => node.tagName === 'UL').querySelectorAll('li');
 	}
+	_getItemShowingCount() {
+		return this._getItems().length;
+	}
 	_handleSlotChange(e) {
 		const list = e.target.assignedElements().find(node => node.tagName === 'UL');
 		if (!this._mutationObserver) {
-			this._mutationObserver = new MutationObserver(() => this._setItemShowingCount(this._getItems().length));
+			this._mutationObserver = new MutationObserver(() => this._updateItemShowingCount());
 		} else {
 			this._mutationObserver.disconnect();
 		}
@@ -35,5 +38,6 @@ class TestPageableSimple extends PageableMixin(LitElement) {
 		return html`${this._renderPagerContainer()}`;
 	}
 	_getItemByIndex() { return null; }
+	_getItemShowingCount() { return 10; }
 }
 customElements.define('d2l-test-pageable-simple', TestPageableSimple);

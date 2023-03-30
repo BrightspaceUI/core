@@ -10,6 +10,7 @@ const tagName = defineCE(
 			return html`${this._renderPagerContainer()}`;
 		}
 		_getItemByIndex() { return null; }
+		_getItemShowingCount() { return 10; }
 	}
 );
 
@@ -48,5 +49,13 @@ describe('d2l-pager-load-more', () => {
 				resolve();
 			});
 		});
+	});
+
+	it('should have the right initial item counts', async() => {
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more></${tagName}`);
+		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
+		expect(pager._pageableInfo).to.eql({ itemCount: 30, itemShowingCount: 10 });
 	});
 });

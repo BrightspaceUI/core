@@ -188,6 +188,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return items[index];
 	}
 
+	_getItemShowingCount() {
+		return this.getItems().length;
+	}
+
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
@@ -226,13 +230,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 		this._updateItemShowingCountRequested = true;
 		setTimeout(() => {
-			this._setItemShowingCount(this.getItems().length);
+			this._updateItemShowingCount();
 			this._updateItemShowingCountRequested = false;
 		}, 0);
 	}
 
-	async _handleSlotChange(e) {
-		this._setItemShowingCount(this.getItems(e.target).length);
+	async _handleSlotChange() {
+		this._updateItemShowingCount();
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {

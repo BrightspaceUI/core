@@ -25,6 +25,11 @@ export const PageableMixin = superclass => class extends superclass {
 		});
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._updateItemShowingCount();
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -36,6 +41,9 @@ export const PageableMixin = superclass => class extends superclass {
 	/* must be implemented by consumer */
 	_getItemByIndex(index) { } // eslint-disable-line no-unused-vars
 
+	/* must be implemented by consumer */
+	_getItemShowingCount() { }
+
 	_getLastItemIndex() {
 		return this._itemShowingCount - 1;
 	}
@@ -44,8 +52,8 @@ export const PageableMixin = superclass => class extends superclass {
 		return html`<slot name="pager"></slot>`;
 	}
 
-	_setItemShowingCount(count) {
-		this._itemShowingCount = count;
+	_updateItemShowingCount() {
+		this._itemShowingCount = this._getItemShowingCount();
 	}
 
 	_updatePageableSubscriber(subscriber) {
