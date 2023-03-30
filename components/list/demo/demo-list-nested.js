@@ -169,7 +169,7 @@ class ListDemoNested extends LitElement {
 
 	_renderList(items, nested, includeControls = false, showLoadMore = false) {
 		return html`
-			<d2l-list ?grid="${!this.disableListGrid}" drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}">
+			<d2l-list ?grid="${!this.disableListGrid}" drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}" item-count="${this._items.length}">
 				${ includeControls ? this._renderListControls() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}
@@ -268,7 +268,6 @@ class ListDemoNested extends LitElement {
 			<d2l-pager-load-more slot="pager"
 				@d2l-pager-load-more="${this._handlePagerLoadMore}"
 				?has-more="${this._lastItemLoadedIndex < this._items.length - 1}"
-				item-count="${this._items.length}"
 				page-size="${this._remainingItemCount < this._pageSize ? this._remainingItemCount : this._pageSize}">
 			</d2l-pager-load-more>
 		`;

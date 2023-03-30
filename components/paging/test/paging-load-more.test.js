@@ -10,8 +10,6 @@ const tagName = defineCE(
 			return html`${this._renderPagerContainer()}`;
 		}
 		_getItemByIndex() { return null; }
-		async _getItemsShowingCount() { return 10; }
-		_getLastItemIndex() { return 9; }
 	}
 );
 
@@ -22,7 +20,7 @@ describe('d2l-pager-load-more', () => {
 	});
 
 	it('dispatches d2l-pager-load-more event when clicked', async() => {
-		const el = await fixture(`<${tagName}><d2l-pager-load-more slot="pager" has-more page-size="5" item-count="30"></d2l-pager-load-more></${tagName}`);
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more></${tagName}`);
 		const pager = el.querySelector('d2l-pager-load-more');
 		await pager.updateComplete;
 
@@ -31,7 +29,7 @@ describe('d2l-pager-load-more', () => {
 	});
 
 	it('does not dispatch d2l-pager-load-more event while loading', async() => {
-		const el = await fixture(`<${tagName}><d2l-pager-load-more slot="pager" has-more page-size="5" item-count="30"></d2l-pager-load-more></${tagName}`);
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more></${tagName}`);
 		const pager = el.querySelector('d2l-pager-load-more');
 		await pager.updateComplete;
 

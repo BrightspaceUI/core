@@ -27,12 +27,12 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-test-pageable>
+					<d2l-test-pageable item-count="12">
 						<ul>
 							<li><a href="https://some-website">item 1</a></li>
 							<li><a href="https://some-website">item 2</a></li>
 						</ul>
-						<d2l-pager-load-more id="pager1" slot="pager" has-more page-size="3" item-count="12"></d2l-pager-load-more>
+						<d2l-pager-load-more id="pager1" slot="pager" has-more page-size="3"></d2l-pager-load-more>
 					</d2l-test-pageable>
 					<script>
 						document.querySelector('#pager1').addEventListener('d2l-pager-load-more', window.handleLoadMore);

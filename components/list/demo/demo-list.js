@@ -201,7 +201,6 @@ class DemoList extends LitElement {
 				<d2l-pager-load-more slot="pager"
 					@d2l-pager-load-more="${this._handlePagerLoadMore}"
 					?has-more="${this._lastItemLoadedIndex < this.items.length - 1}"
-					item-count="${this.items.length}"
 					page-size="${remainingItemCount < this._pageSize ? remainingItemCount : this._pageSize}">
 				</d2l-pager-load-more>
 			</d2l-list>
