@@ -105,6 +105,7 @@ class DragState {
 
 	_cleanUpOnLeave() {
 		if (!this._activeDropTarget) return;
+		this._activeDropTarget._draggingOver = false;
 		this._activeDropTarget._dropLocation = dropLocation.void;
 		this._activeDropTarget._inTopArea = false;
 		this._activeDropTarget._inBottomArea = false;
@@ -363,7 +364,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	firstUpdated(changedProperties) {
 		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
-		this.addEventListener('dragleave', this._onHostDragLeave.bind(this));
 		super.firstUpdated(changedProperties);
 	}
 
@@ -738,14 +738,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
-		if (this === dragState.dragTarget) return;
 
 		// check if any of the drag targets are ancestors of the drop target
 		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
 			return isComposedAncestor(dragTarget, this);
 		});
 
-		if (invalidDropTarget) return;
+		if (invalidDropTarget) {
+			dragState.clear();
+			return;
+		}
 
 		// assert that both the source and target are from the same list - may allow this in the future
 		const targetRoot = dragState.dragTargets[0] && dragState.dragTargets[0]._getRootList();
@@ -754,10 +756,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		dragState.addDropTarget(this);
 		this._draggingOver = true;
 		e.dataTransfer.dropEffect = 'move';
-	}
-
-	_onHostDragLeave() {
-		this._draggingOver = false;
 	}
 
 	_onTouchCancel() {
@@ -798,7 +796,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!listItem) return;
 		// simulate host dragenter
 		if (listItem !== this && this._currentTouchListItem !== listItem) {
-			this._currentTouchListItem.dispatchEvent(createDragEvent('dragleave'));
 			listItem.dispatchEvent(createDragEvent('dragenter'));
 			this._currentTouchListItem = listItem;
 		}
