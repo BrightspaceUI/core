@@ -738,7 +738,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
-		if (this === dragState.dragTarget) return;
 
 		// check if any of the drag targets are ancestors of the drop target
 		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
