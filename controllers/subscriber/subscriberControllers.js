@@ -1,5 +1,11 @@
 import { cssEscape } from '../../helpers/dom.js';
 
+function promiseWithResolve() {
+	let promiseResolve;
+	const promise = new Promise(resolve => promiseResolve = resolve);
+	return Object.assign(promise, { resolve: promiseResolve });
+}
+
 class BaseController {
 	constructor(host, name, options = {}) {
 		if (!host || !name) throw new TypeError('SubscriberController: missing host or subscription name');
@@ -9,6 +15,7 @@ class BaseController {
 		this._name = name;
 		this._options = options;
 		this._eventName = `d2l-subscribe-${this._name}`;
+		this._updateComplete = Promise.resolve();
 	}
 }
 
@@ -111,7 +118,11 @@ export class EventSubscriberController extends BaseSubscriber {
 
 	hostConnected() {
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => this._subscribe());
+		this._updateComplete = promiseWithResolve();
+		requestAnimationFrame(() => {
+			this._subscribe();
+			this._updateComplete.resolve();
+		});
 	}
 
 	hostDisconnected() {

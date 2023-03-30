@@ -21,6 +21,11 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 		this._pageableIdSubscriber = new IdSubscriberController(this, 'pageable', { idPropertyName: 'pageableFor' });
 	}
 
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		await (this.pageableFor ? this._pageableIdSubscriber._updateComplete : this._pageableEventSubscriber._updateComplete);
+	}
+
 	_getPageableRegistries() {
 		return this.pageableFor ? this._pageableIdSubscriber.registries : [ this._pageableEventSubscriber.registry ];
 	}
