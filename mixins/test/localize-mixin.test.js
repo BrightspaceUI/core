@@ -363,7 +363,7 @@ describe('LocalizeMixin', () => {
 			const pluralLink = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: generateLink({ href: 'checkout' }) });
 
 			items.push('bread', 'eggs');
-			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
+			const pluralMap = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
 
 			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
@@ -372,7 +372,7 @@ describe('LocalizeMixin', () => {
 			expect(getRenderString(badTemplate)).to.equal('This is replaceable');
 			expect(getRenderString(tooltip)).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(getRenderString(pluralLink)).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
-			expect(getRenderString(val8)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
+			expect(getRenderString(pluralMap)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
 
 		let a;
