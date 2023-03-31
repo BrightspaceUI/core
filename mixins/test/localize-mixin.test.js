@@ -375,54 +375,53 @@ describe('LocalizeMixin', () => {
 			expect(getRenderString(pluralMap)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
 
-		let a;
 		[{
-			get renderString() { return elem.localizeHTML('typeChecker', { a }); },
+			replacements: { a: undefined },
 			type: 'undefined',
 			expect: 'O - '
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: null }); },
+			replacements: { a: null },
 			type: 'null',
 			expect: 'O - '
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: 1 }); },
+			replacements: { a: 1 },
 			type: 'Number',
 			expect: 'O - 1'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: {} }); },
+			replacements: { a: {} },
 			type: 'Object',
 			expect: 'O - [object Object]'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: false, b: new Date('3/31/2023') }); },
+			replacements: { a: false, b: new Date('3/31/2023') },
 			type: 'Date',
 			expect: 'F - Mar 31, 2023'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: [1, 2, 3] }); },
+			replacements: { a: true, c: [1, 2, 3] },
 			type: 'Array',
 			expect: 'T <em>123</em>'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: localizeMarkup`<b>bold</b>` }); },
+			replacements: { a: true, c: localizeMarkup`<b>bold</b>` },
 			type: 'localizeMarkup template object',
 			expect: 'T <em><b>bold</b></em>'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: [localizeMarkup`<br>`] }); },
+			replacements: { a: true, c: [localizeMarkup`<br>`] },
 			type: 'Array with template Object',
 			expect: 'T <em><br></em>'
 		},
 		{
-			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: '<test>' }); },
+			replacements: { a: true, c: '<test>' },
 			type: 'HTML as text',
 			expect: 'T <em><test></em>'
-		},
-		].forEach(t => it(`should handle ${t.type}`, () => {
-			expect(getRenderString(t.renderString)).to.equal(t.expect);
+		}].forEach(t => it(`should handle ${t.type}`, () => {
+			const renderString = getRenderString(elem.localizeHTML('typeChecker', t.replacements));
+			expect(renderString).to.equal(t.expect);
 		}));
 
 	});
