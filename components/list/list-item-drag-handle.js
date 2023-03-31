@@ -70,7 +70,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get styles() {
 		return [ buttonStyles, css`
 			:host {
-				display: inline-block;
+				display: flex;
 				margin: 0.25rem;
 			}
 			:host([hidden]) {
