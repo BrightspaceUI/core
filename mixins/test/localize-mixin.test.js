@@ -332,7 +332,7 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
-		it('should replace acceptable markup with correct HTML', async () => {
+		it('should replace acceptable markup with correct HTML', async() => {
 			const defaultTags = elem.localizeHTML('test1');
 			const manual = elem.localizeHTML('test2', { link: chunks => markup`<d2l-link href="http://d2l.com">${chunks}</d2l-link>` });
 			const disallowed = elem.localizeHTML('test3', { link: chunks => markup`<div>${chunks}</div>` });
@@ -343,23 +343,23 @@ describe('LocalizeMixin', () => {
 			const pluralLink = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: generateLink({ href: 'checkout' }) });
 
 			items.push('bread', 'eggs');
-			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => markup`<p>${i}</p>`)});
+			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => markup`<p>${i}</p>`) });
 
-			const getRenderString = (data) => {
+			const getRenderString = data => {
 				if (data.constructor === String) return data;
 				if (Array.isArray(data)) {
 					return data.map(e => getRenderString(e)).join('');
 				}
 				const { strings, values } = data;
-				const flatValues = [...values, ''].map((v, idx) => {
+				const flatValues = [...values, ''].map(v => {
 					if (typeof v === 'object') return getRenderString(v);
 					if (v.toString() === 'Symbol(lit-nothing)') {
-						return '{lit-nothing}'
+						return '{lit-nothing}';
 					}
 					return v;
 				});
 				return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="{lit-nothing}"/g, '');
-			}
+			};
 
 			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
