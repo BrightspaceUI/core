@@ -70,7 +70,6 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get styles() {
 		return [ buttonStyles, css`
 			:host {
-				align-items: center;
 				display: flex;
 				margin: 0.25rem;
 			}
@@ -83,7 +82,27 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 			.d2l-list-item-drag-handle-keyboard-button {
 				display: grid;
+				gap: 2px;
 				grid-auto-rows: 1fr 1fr;
+				position: relative;
+			}
+			.d2l-list-item-drag-handle-keyboard-button-up,
+			.d2l-list-item-drag-handle-keyboard-button-down {
+				height: 1.1rem;
+				left: -0.2rem;
+				position: absolute;
+				width: 1.3rem;
+			}
+			.d2l-list-item-drag-handle-keyboard-button-up {
+				top: -0.25rem;
+			}
+			.d2l-list-item-drag-handle-keyboard-button-down {
+				bottom: -0.25rem;
+			}
+			:host([dir="rtl"]) .d2l-list-item-drag-handle-keyboard-button-up,
+			:host([dir="rtl"]) .d2l-list-item-drag-handle-keyboard-button-down {
+				left: auto;
+				right: -0.2rem;
 			}
 			.d2l-list-item-drag-handle-dragger-button,
 			.d2l-list-item-drag-handle-keyboard-button {
@@ -96,9 +115,23 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			button::-moz-focus-inner {
 				border: 0;
 			}
-			.d2l-button-icon {
+			.d2l-button-dragger-icon {
 				height: 0.9rem;
 				width: 0.9rem;
+			}
+			.d2l-button-up-icon,
+			.d2l-button-down-icon {
+				border-radius: 0.1rem;
+				height: 0.85rem;
+				width: 0.9rem;
+			}
+			.d2l-button-up-icon {
+				border-top-left-radius: 0.3rem;
+				border-top-right-radius: 0.3rem;
+			}
+			.d2l-button-down-icon {
+				border-bottom-left-radius: 0.3rem;
+				border-bottom-right-radius: 0.3rem;
 			}
 			button,
 			button[disabled]:hover,
@@ -106,8 +139,16 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 				color: var(--d2l-color-ferrite);
 			}
-			button:hover,
-			button:focus {
+			.d2l-list-item-drag-handle-dragger-button:hover,
+			.d2l-list-item-drag-handle-dragger-button:focus {
+				background-color: var(--d2l-color-mica);
+			}
+			.d2l-list-item-drag-handle-keyboard-button:hover,
+			.d2l-list-item-drag-handle-keyboard-button:focus {
+				background-color: transparent;
+			}
+			.d2l-list-item-drag-handle-keyboard-button:hover > d2l-icon,
+			.d2l-list-item-drag-handle-keyboard-button:focus > d2l-icon {
 				background-color: var(--d2l-color-mica);
 			}
 			button[disabled] {
@@ -270,7 +311,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@keydown="${this._onInactiveKeyboard}"
 				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
-				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
+				<d2l-icon icon="tier1:dragger" class="d2l-button-dragger-icon"></d2l-icon>
 			</button>
 		`;
 	}
@@ -284,8 +325,10 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@focusout="${this._onFocusOutKeyboardButton}"
 				id="${this._buttonId}"
 				@keydown="${this._onActiveKeyboard}">
-				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
-				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
+				<d2l-icon icon="tier1:arrow-toggle-up" class="d2l-button-up-icon"></d2l-icon>
+				<d2l-icon icon="tier1:arrow-toggle-down" class="d2l-button-down-icon"></d2l-icon>
+				<div class="d2l-list-item-drag-handle-keyboard-button-up" @click="${this._dispatchActionUp}"></div>
+				<div class="d2l-list-item-drag-handle-keyboard-button-down" @click="${this._dispatchActionDown}"></div>
 			</button>
 			${this._displayKeyboardTooltip ? html`<d2l-tooltip align="start" for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
