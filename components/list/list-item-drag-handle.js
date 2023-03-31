@@ -89,14 +89,20 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			.d2l-list-item-drag-handle-keyboard-button-up,
 			.d2l-list-item-drag-handle-keyboard-button-down {
 				height: 1.1rem;
+				left: -0.2rem;
 				position: absolute;
-				width: 0.9rem;
+				width: 1.3rem;
 			}
 			.d2l-list-item-drag-handle-keyboard-button-up {
 				top: -0.25rem;
 			}
 			.d2l-list-item-drag-handle-keyboard-button-down {
 				bottom: -0.25rem;
+			}
+			:host([dir="rtl"]) .d2l-list-item-drag-handle-keyboard-button-up,
+			:host([dir="rtl"]) .d2l-list-item-drag-handle-keyboard-button-down {
+				left: auto;
+				right: -0.2rem;
 			}
 			.d2l-list-item-drag-handle-dragger-button,
 			.d2l-list-item-drag-handle-keyboard-button {
