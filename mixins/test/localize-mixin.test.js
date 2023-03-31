@@ -135,7 +135,8 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 				test3: 'This is <link>replaceable</link>',
 				test4: 'This is a <tooltip>tooltip-help</tooltip> within a sentence',
 				test5: 'This is a <tooltip-help-1>tooltip helper</tooltip-help-1> within a sentence. Here is <tooltip-help-2>another</tooltip-help-2>.',
-				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}'
+				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}',
+				typeChecker: '{a, select, true {T <i>{c}</i>} false {F - {b, date, medium}} other {O - {a}}}'
 			}
 		};
 	}
@@ -332,6 +333,25 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
+		const getRenderString = data => {
+			if (data.constructor === String || data.constructor === Number) return data;
+			if (Array.isArray(data)) {
+				return data.map(e => getRenderString(e)).join('');
+			}
+			const { strings, values } = data;
+
+			if (!strings || !values) return data;
+
+			const flatValues = [...values, ''].map(v => {
+				if (typeof v === 'object') return getRenderString(v);
+				if (v.toString() === 'Symbol(lit-nothing)') {
+					return '{lit-nothing}';
+				}
+				return v;
+			});
+			return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="{lit-nothing}"/g, '');
+		};
+
 		it('should replace acceptable markup with correct HTML', async() => {
 			const defaultTags = elem.localizeHTML('test1');
 			const manual = elem.localizeHTML('test2', { link: chunks => localizeMarkup`<d2l-link href="http://d2l.com">${chunks}</d2l-link>` });
@@ -345,22 +365,6 @@ describe('LocalizeMixin', () => {
 			items.push('bread', 'eggs');
 			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
 
-			const getRenderString = data => {
-				if (data.constructor === String) return data;
-				if (Array.isArray(data)) {
-					return data.map(e => getRenderString(e)).join('');
-				}
-				const { strings, values } = data;
-				const flatValues = [...values, ''].map(v => {
-					if (typeof v === 'object') return getRenderString(v);
-					if (v.toString() === 'Symbol(lit-nothing)') {
-						return '{lit-nothing}';
-					}
-					return v;
-				});
-				return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="{lit-nothing}"/g, '');
-			};
-
 			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
 
@@ -370,6 +374,57 @@ describe('LocalizeMixin', () => {
 			expect(getRenderString(pluralLink)).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
 			expect(getRenderString(val8)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
+
+		let a;
+		[{
+			get renderString() { return elem.localizeHTML('typeChecker', { a }); },
+			type: 'undefined',
+			expect: 'O - '
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: null }); },
+			type: 'null',
+			expect: 'O - '
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: 1 }); },
+			type: 'Number',
+			expect: 'O - 1'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: {} }); },
+			type: 'Object',
+			expect: 'O - [object Object]'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: false, b: new Date('3/31/2023') }); },
+			type: 'Date',
+			expect: 'F - Mar 31, 2023'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: [1, 2, 3] }); },
+			type: 'Array',
+			expect: 'T <em>123</em>'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: localizeMarkup`<b>bold</b>` }); },
+			type: 'localizeMarkup template object',
+			expect: 'T <em><b>bold</b></em>'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: [localizeMarkup`<br>`] }); },
+			type: 'Array with template Object',
+			expect: 'T <em><br></em>'
+		},
+		{
+			get renderString() { return elem.localizeHTML('typeChecker', { a: true, c: '<test>' }); },
+			type: 'HTML as text',
+			expect: 'T <em><test></em>'
+		},
+		].forEach(t => it(`should handle ${t.type}`, () => {
+			expect(getRenderString(t.renderString)).to.equal(t.expect);
+		}));
+
 	});
 
 	describe('browser language settings in dynamic mixin', () => {
