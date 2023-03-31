@@ -1,5 +1,5 @@
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { generateLink, generateTooltipHelp, markup } from '../../helpers/localize.js';
+import { generateLink, generateTooltipHelp, localizeMarkup } from '../../helpers/localize.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -334,8 +334,8 @@ describe('LocalizeMixin', () => {
 
 		it('should replace acceptable markup with correct HTML', async() => {
 			const defaultTags = elem.localizeHTML('test1');
-			const manual = elem.localizeHTML('test2', { link: chunks => markup`<d2l-link href="http://d2l.com">${chunks}</d2l-link>` });
-			const disallowed = elem.localizeHTML('test3', { link: chunks => markup`<div>${chunks}</div>` });
+			const manual = elem.localizeHTML('test2', { link: chunks => localizeMarkup`<d2l-link href="http://d2l.com">${chunks}</d2l-link>` });
+			const disallowed = elem.localizeHTML('test3', { link: chunks => localizeMarkup`<div>${chunks}</div>` });
 			const badTemplate = elem.localizeHTML('test3', { link: chunks => html`${chunks}` });
 			const tooltip = elem.localizeHTML('test4', { tooltip: generateTooltipHelp({ contents: 'Tooltip text' }) });
 
@@ -343,7 +343,7 @@ describe('LocalizeMixin', () => {
 			const pluralLink = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: generateLink({ href: 'checkout' }) });
 
 			items.push('bread', 'eggs');
-			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => markup`<p>${i}</p>`) });
+			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
 
 			const getRenderString = data => {
 				if (data.constructor === String) return data;

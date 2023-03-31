@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
-import { markup, validateMarkup } from '../helpers/localize.js';
+import { localizeMarkup, validateMarkup } from '../helpers/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
@@ -132,12 +132,12 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 		let formattedMessage = value;
 		try {
 			formattedMessage = translatedMessage.format({
-				b: chunks => markup`<strong>${chunks}</strong>`,
-				br: () => markup`<br>`,
-				em: chunks => markup`<em>${chunks}</em>`,
-				i: chunks => markup`<em>${chunks}</em>`,
-				p: chunks => markup`<p>${chunks}</p>`,
-				strong: chunks => markup`<strong>${chunks}</strong>`,
+				b: chunks => localizeMarkup`<strong>${chunks}</strong>`,
+				br: () => localizeMarkup`<br>`,
+				em: chunks => localizeMarkup`<em>${chunks}</em>`,
+				i: chunks => localizeMarkup`<em>${chunks}</em>`,
+				p: chunks => localizeMarkup`<p>${chunks}</p>`,
+				strong: chunks => localizeMarkup`<strong>${chunks}</strong>`,
 				...params
 			});
 			validateMarkup(formattedMessage);
