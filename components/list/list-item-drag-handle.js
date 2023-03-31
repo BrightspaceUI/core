@@ -80,14 +80,6 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				background-color: unset;
 				display: block;
 			}
-			.d2l-list-item-drag-handle-dragger-button > div {
-				align-items: center;
-				display: flex;
-				height: 24px;
-				justify-content: center;
-				margin: -3px;
-				width: 24px;
-			}
 			.d2l-list-item-drag-handle-keyboard-button {
 				display: grid;
 				gap: 2px;
@@ -299,7 +291,6 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_onInactiveKeyboard(e) {
 		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
-			e.stopPropagation();
 			this._dispatchAction(dragActions.active);
 			this._keyboardActive = true;
 			e.preventDefault();
@@ -314,9 +305,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@keydown="${this._onInactiveKeyboard}"
 				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
-				<div @click="${this._onInactiveKeyboard}">
-					<d2l-icon icon="tier1:dragger" class="d2l-button-dragger-icon"></d2l-icon>
-				</div>
+				<d2l-icon icon="tier1:dragger" class="d2l-button-dragger-icon"></d2l-icon>
 			</button>
 		`;
 	}
