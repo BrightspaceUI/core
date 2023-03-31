@@ -10,12 +10,11 @@ const disallowedTagsRegex = new RegExp(`<(?!${allowedAfterTriangleBracket})`);
 
 export function validateMarkup(content, applyRegex) {
 	if (content) {
-		if (content.map) return content.map(item => validateMarkup(item));
-		if (content._markup) return content;
+		if (content.map) return content.forEach(item => validateMarkup(item));
+		if (content._markup) return;
 		if (Object.hasOwn(content, '_$litType$')) throw markupError;
 		if (applyRegex && content.constructor === String && disallowedTagsRegex.test(content)) throw markupError;
 	}
-	return content;
 }
 
 export function markup(strings, ...expressions) {
@@ -24,7 +23,12 @@ export function markup(strings, ...expressions) {
 	return { ...html(strings, ...expressions), _markup: true };
 }
 
-export const linkGenerator = ({ href, target }) => {
+export function generateLink({ href, target }) {
 	import('../components/link/link.js');
 	return chunks => markup`<d2l-link href="${ifDefined(href)}" target="${ifDefined(target)}">${chunks}</d2l-link>`;
-};
+}
+
+export function generateTooltipHelp({ contents }) {
+	import('../components/tooltip/tooltip-help.js');
+	return chunks => markup`<d2l-tooltip-help inherit-font-style text="${ifDefined(chunks)}">${contents}</d2l-tooltip-help>`;
+}

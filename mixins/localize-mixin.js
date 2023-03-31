@@ -140,8 +140,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 				strong: chunks => markup`<strong>${chunks}</strong>`,
 				...params
 			});
-
-			formattedMessage = validateMarkup(formattedMessage);
+			validateMarkup(formattedMessage);
 		} catch (e) {
 			console.error(e);
 		}

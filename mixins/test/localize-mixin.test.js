@@ -1,4 +1,5 @@
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { generateLink, generateTooltipHelp, markup } from '../../helpers/localize.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -129,13 +130,12 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 	static get resources() {
 		return {
 			en: {
-				test1: 'This is [b]important[/b], this is [b][i]very important[/i][/b], and this is [span]not[/span]',
-				test2: 'This is [a]a link[/a]',
-				test3: 'This is [a two]a link[/a].[br]This is [a one]another one[/a]',
-				test4: 'This is a [tooltip-help]tooltip helper" onclick="import(`malicious.js`)[/tooltip-help] within a sentence',
-				test5: 'This is a [tooltip-help one]tooltip helper[/tooltip-help] within a sentence. Here is [tooltip-help two]another[/tooltip-help].',
-				test6: 'This is <script src="malicious.js"></script> fine',
-				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. [a]Checkout[/a]} other {Items in your cart:[html][a]Checkout[/a]}}'
+				test1: 'This is <b>important</b>, this is <b><i>very important</i></b>',
+				test2: 'This is <link>a link</link>',
+				test3: 'This is <link>replaceable</link>',
+				test4: 'This is a <tooltip>tooltip-help</tooltip> within a sentence',
+				test5: 'This is a <tooltip-help-1>tooltip helper</tooltip-help-1> within a sentence. Here is <tooltip-help-2>another</tooltip-help-2>.',
+				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}'
 			}
 		};
 	}
@@ -332,30 +332,43 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
-		it('should replace acceptable markup with correct HTML', () => {
-			const unsafeHTML = elem.localizeHTML('test1');
-			const val1 = unsafeHTML.values[0];
-			const val2 = elem.localizeHTML('test2', { link: 'href="http://d2l.com"' }).values[0];
-			const val3 = elem.localizeHTML('test3', { links: { one: 'href="http://d2l.com/brightspace"', two: 'href="http://d2l.com" small aria-label="Test Label" target="_blank"><div>Injected Link Contents</div' } }).values[0];
-			const val4 = elem.localizeHTML('test4', { tooltipHelp: 'Tooltip text' }).values[0];
-			const val5 = elem.localizeHTML('test5', { tooltipHelps: { one: 'Tooltip text', two: 'More tooltip text' } }).values[0];
-			const val6 = elem.localizeHTML('test6').values[0];
+		it('should replace acceptable markup with correct HTML', async () => {
+			const defaultTags = elem.localizeHTML('test1');
+			const manual = elem.localizeHTML('test2', { link: chunks => markup`<d2l-link href="http://d2l.com">${chunks}</d2l-link>` });
+			const disallowed = elem.localizeHTML('test3', { link: chunks => markup`<div>${chunks}</div>` });
+			const badTemplate = elem.localizeHTML('test3', { link: chunks => html`${chunks}` });
+			const tooltip = elem.localizeHTML('test4', { tooltip: generateTooltipHelp({ contents: 'Tooltip text' }) });
 
 			const items = ['milk'];
-			const val7 = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: 'href="checkout"' }).values[0];
+			const pluralLink = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: generateLink({ href: 'checkout' }) });
 
 			items.push('bread', 'eggs');
-			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: 'href="checkout"', _html: `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>` }).values[0];
+			const val8 = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => markup`<p>${i}</p>`)});
 
-			expect(unsafeHTML).to.have.property('_$litDirective$').that.has.property('directiveName', 'unsafeHTML');
-			expect(val1).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>, and this is [span]not[/span]');
-			expect(val2).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-			expect(val3).to.equal('This is <d2l-link href="http://d2l.com" small aria-label="Test Label" target="_blank"&gt;<div&gt;Injected Link Contents</div>a link</d2l-link>.<br>This is <d2l-link href="http://d2l.com/brightspace">another one</d2l-link>');
-			expect(val4).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper&quot; onclick=&quot;import(`malicious.js`)">Tooltip text</d2l-tooltip-help> within a sentence');
-			expect(val5).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip helper">Tooltip text</d2l-tooltip-help> within a sentence. Here is <d2l-tooltip-help inherit-font-style text="another">More tooltip text</d2l-tooltip-help>.');
-			expect(val6).to.equal('This is &lt;script src="malicious.js"&gt;&lt;/script&gt; fine');
-			expect(val7).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
-			expect(val8).to.equal('Items in your cart:<ul><li>milk</li><li>bread</li><li>eggs</li></ul><d2l-link href="checkout">Checkout</d2l-link>');
+			const getRenderString = (data) => {
+				if (data.constructor === String) return data;
+				if (Array.isArray(data)) {
+					return data.map(e => getRenderString(e)).join('');
+				}
+				const { strings, values } = data;
+				const flatValues = [...values, ''].map((v, idx) => {
+					if (typeof v === 'object') return getRenderString(v);
+					if (v.toString() === 'Symbol(lit-nothing)') {
+						return '{lit-nothing}'
+					}
+					return v;
+				});
+				return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="{lit-nothing}"/g, '');
+			}
+
+			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
+			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
+
+			expect(getRenderString(disallowed)).to.equal('This is <link>replaceable</link>');
+			expect(getRenderString(badTemplate)).to.equal('This is replaceable');
+			expect(getRenderString(tooltip)).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(getRenderString(pluralLink)).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
+			expect(getRenderString(val8)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
 	});
 
