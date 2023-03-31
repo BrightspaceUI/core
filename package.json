@@ -72,7 +72,7 @@
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
     "ifrau": "^0.40",
-    "intl-messageformat": "^7",
+    "intl-messageformat": "^10",
     "lit": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
