@@ -1,7 +1,7 @@
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { generateLink, generateTooltipHelp, localizeMarkup } from '../../helpers/localize.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { LitElement } from 'lit';
+import { LitElement, render } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { LocalizeDynamicMixin } from '../localize-dynamic-mixin.js';
 import { LocalizeMixin } from '../localize-mixin.js';
@@ -334,20 +334,8 @@ describe('LocalizeMixin', () => {
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
 		const getRenderString = data => {
-			if (data.constructor === String || data.constructor === Number) return data;
-			if (Array.isArray(data)) {
-				return data.map(e => getRenderString(e)).join('');
-			}
-			const { strings, values } = data;
-
-			if (!strings || !values) return data;
-
-			const flatValues = [...values, ''].map(v => {
-				if (typeof v === 'object') return getRenderString(v);
-				if (v.constructor === Symbol) return v.toString();
-				return v;
-			});
-			return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="Symbol\(lit-nothing\)"/g, '');
+			render(data, elem);
+			return elem.innerHTML.replace(/<!--[^]*?-->/g, '');
 		};
 
 		it('should replace acceptable markup with correct HTML', async() => {
@@ -366,9 +354,9 @@ describe('LocalizeMixin', () => {
 			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
 
-			expect(getRenderString(disallowed)).to.equal('This is <link>replaceable</link>');
+			expect(getRenderString(disallowed)).to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
 			expect(getRenderString(badTemplate)).to.equal('This is replaceable');
-			expect(getRenderString(tooltip)).to.equal('This is a <d2l-tooltip-help inherit-font-style text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(getRenderString(tooltip)).to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(getRenderString(pluralLink)).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
 			expect(getRenderString(pluralMap)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
@@ -416,7 +404,7 @@ describe('LocalizeMixin', () => {
 		{
 			replacements: { a: true, c: '<test>' },
 			type: 'HTML as text',
-			expect: 'T <em><test></em>'
+			expect: 'T <em>&lt;test&gt;</em>'
 		}].forEach(t => it(`should handle ${t.type}`, () => {
 			const renderString = getRenderString(elem.localizeHTML('typeChecker', t.replacements));
 			expect(renderString).to.equal(t.expect);
