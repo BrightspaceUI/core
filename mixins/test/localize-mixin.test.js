@@ -344,12 +344,10 @@ describe('LocalizeMixin', () => {
 
 			const flatValues = [...values, ''].map(v => {
 				if (typeof v === 'object') return getRenderString(v);
-				if (v.toString() === 'Symbol(lit-nothing)') {
-					return '{lit-nothing}';
-				}
+				if (v.constructor === Symbol) return v.toString();
 				return v;
 			});
-			return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="{lit-nothing}"/g, '');
+			return strings.reduce((acc, s, idx) => acc + s + flatValues[idx], '').replace(/\s[\w-]+="Symbol\(lit-nothing\)"/g, '');
 		};
 
 		it('should replace acceptable markup with correct HTML', async() => {
