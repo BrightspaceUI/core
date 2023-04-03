@@ -46,9 +46,10 @@ describe('d2l-list', () => {
 	};
 
 	const scrollTo = (selector, y) => {
-		return page.$eval(selector, (element, y) => {
+		return page.$eval(selector, async(element, y) => {
 			element.scrollIntoView();
 			element.scrollTo(0, y);
+			await new Promise(resolve => requestAnimationFrame(resolve));
 		}, y);
 	};
 
@@ -147,8 +148,14 @@ describe('d2l-list', () => {
 			{ name: 'some selected', selector: '#selectableSomeSelectedControls' },
 			{ name: 'all selected', selector: '#selectableAllSelectedControls' },
 			{ name: 'all selected pages', selector: '#selectableAllSelectedControlsPages' },
-			{ name: 'sticky top', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 0), screenshotOptions: { captureBeyondViewport: false } },
-			{ name: 'sticky scrolled', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 45), screenshotOptions: { captureBeyondViewport: false } }
+			{ name: 'sticky top', selector: '#stickyControls', action: async() => {
+				await scrollTo('#stickyControls > div', 45);
+				await scrollTo('#stickyControls > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled', selector: '#stickyControls', action: async() => {
+				await scrollTo('#stickyControls > div', 0);
+				await scrollTo('#stickyControls > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
