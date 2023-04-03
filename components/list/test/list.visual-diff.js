@@ -219,8 +219,7 @@ describe('d2l-list', () => {
 						return new Promise(resolve => setTimeout(resolve, 0));
 					});
 
-					//const options = info.screenshotOptions || {};
-					const options = {};
+					const options = info.screenshotOptions || {};
 					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector, 24));
 					options.clip = rect;
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), options);
