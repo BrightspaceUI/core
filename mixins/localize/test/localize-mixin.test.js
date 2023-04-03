@@ -123,6 +123,16 @@ const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 	}
 };
 
+const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+	static get localizeConfig() {
+		return {
+			importFunc: () => {
+				return { 'sync': 'Synchronous Content' };
+			}
+		};
+	}
+};
+
 const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superclass) {
 	static get resources() {
 		return {
@@ -154,6 +164,12 @@ const multiMixinTag = defineCE(
 
 const browserLangsTag = defineCE(
 	class extends Test3LocalizeMixin((LitElement)) {
+
+	}
+);
+
+const synchronousTag = defineCE(
+	class extends Test4LocalizeMixin((LitElement)) {
 
 	}
 );
@@ -453,6 +469,16 @@ describe('LocalizeMixin', () => {
 				expect(laborDay).to.equal(test.localizedTerm);
 			});
 		});
+	});
+
+	describe('synchronous importFunc', () => {
+
+		it('should handle synchrnoous implementations of importFunc', async() => {
+			const elem = await fixture(`<${synchronousTag}></${synchronousTag}>`);
+			const value = elem.localize('sync');
+			expect(value).to.equal('Synchronous Content');
+		});
+
 	});
 
 	describe('multiple localize and localize static mixin', () => {

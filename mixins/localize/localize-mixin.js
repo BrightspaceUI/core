@@ -204,7 +204,7 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 
 		for (const lang of [...langs, fallbackLang]) {
 
-			const resources = await importFunc(lang).catch(() => {});
+			const resources = await Promise.resolve(importFunc(lang)).catch(() => {});
 
 			if (resources) {
 
