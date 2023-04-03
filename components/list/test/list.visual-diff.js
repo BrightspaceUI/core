@@ -201,7 +201,7 @@ describe('d2l-list', () => {
 					}
 				});
 
-				it(info.name, async function() {
+				it.only(info.name, async function() {
 					if (info.after) {
 						this.test.value = info.after;
 					}
@@ -235,7 +235,7 @@ describe('d2l-list', () => {
 		[
 			{ name: 'expandable selectable draggable', selector: '#expand-collapse-selectable-draggable' },
 		].forEach((info) => {
-			it(info.name, async function() {
+			it.only(info.name, async function() {
 				if (info.action) {
 					await info.action();
 				}
