@@ -235,7 +235,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}, 0);
 	}
 
-	async _handleSlotChange() {
+	_handleSlotChange() {
 		this._updateItemShowingCount();
 
 		/** @ignore */
