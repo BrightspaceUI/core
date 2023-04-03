@@ -9,7 +9,7 @@ import IntlMessageFormat from 'intl-messageformat';
 const fallbackLang = 'en';
 const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'en-gb', 'es', 'es-es', 'fr', 'fr-fr', 'fr-on', 'hi', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-cn', 'zh-tw'];
 
-export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
+export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
 	static get properties() {
 		return {
@@ -193,7 +193,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class LocalizeMixinClass 
 
 });
 
-export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(superclass) {
+export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
 
@@ -230,7 +230,7 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 
 };
 
-export const LocalizeStaticMixin = superclass => class extends LocalizeMixin(superclass) {
+export const LocalizeStaticMixin = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
 		let resolvedLang = fallbackLang;

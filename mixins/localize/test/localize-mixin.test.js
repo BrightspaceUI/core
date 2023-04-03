@@ -1,5 +1,5 @@
+import { _LocalizeMixinBase, generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin, LocalizeStaticMixin } from '../localize-mixin.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { generateLink, generateTooltipHelp, LocalizeDynamicMixin, localizeMarkup, LocalizeMixin, LocalizeStaticMixin } from '../localize-mixin.js';
 import { LitElement, render } from 'lit';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
@@ -26,13 +26,13 @@ const Test2LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin
 
 };
 
-const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+const Test3LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
 		return new Promise((resolve) => {
 			const langResources = {
-				'en': { 'test3': 'This is English from Test3LocalizeMixin' },
-				'fr': { 'test3': 'This is French from Test3LocalizeMixin' }
+				'en': { 'test3': 'This is English from Test3LocalizeMixinBase' },
+				'fr': { 'test3': 'This is French from Test3LocalizeMixinBase' }
 			};
 			for (let i = 0; i < langs.length; i++) {
 				if (langResources[langs[i]]) {
@@ -50,12 +50,12 @@ const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
-const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+const Test4LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
 		return new Promise((resolve) => {
 			const langResources = {
-				'en': { 'test4': 'This is English from Test4LocalizeMixin' }
+				'en': { 'test4': 'This is English from Test4LocalizeMixinBase' }
 			};
 			for (let i = 0; i < langs.length; i++) {
 				if (langResources[langs[i]]) {
@@ -73,7 +73,7 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
-const Test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+const Test1LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
 	static get localizeConfig() {
 		return {
 			importFunc: () => {
@@ -87,7 +87,7 @@ const Test1LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 	}
 };
 
-const Test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+const Test2LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
 	static get localizeConfig() {
 		return {
 			importFunc: () => {
@@ -101,7 +101,7 @@ const Test2LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixi
 	}
 };
 
-const Test3LocalizeDynamicMixn = superclass => class extends LocalizeDynamicMixin(superclass) {
+const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
 
 	static translations = {
 		'en': { laborDay: 'Labor Day' },
@@ -140,26 +140,26 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 
 };
 
-const multiMixinTag = defineCE(
-	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
+const multiMixinTagStatic = defineCE(
+	class extends Test1LocalizeStaticMixin(Test3LocalizeMixinBase(Test2LocalizeStaticMixin(Test4LocalizeMixinBase(LitElement)))) {
 
 	}
 );
 
-const multiMixinTagDynamic = defineCE(
-	class extends Test1LocalizeDynamicMixn(Test2LocalizeDynamicMixn((LitElement))) {
+const multiMixinTag = defineCE(
+	class extends Test1LocalizeMixin(Test2LocalizeMixin((LitElement))) {
 
 	}
 );
 
 const browserLangsTag = defineCE(
-	class extends Test3LocalizeDynamicMixn((LitElement)) {
+	class extends Test3LocalizeMixin((LitElement)) {
 
 	}
 );
 
-const multiMixinTagDynamicConsolidated = defineCE(
-	class extends LocalizeDynamicMixin(LocalizeCoreElement((LitElement))) {
+const multiMixinTagConsolidated = defineCE(
+	class extends LocalizeMixin(LocalizeCoreElement((LitElement))) {
 		static get localizeConfig() {
 			return {
 				importFunc: () => {
@@ -174,7 +174,7 @@ const multiMixinTagDynamicConsolidated = defineCE(
 	}
 );
 
-class StaticEl extends LocalizeMixin(LitElement) {
+class StaticEl extends _LocalizeMixinBase(LitElement) {
 	static get properties() {
 		return {
 			name: {
@@ -409,7 +409,7 @@ describe('LocalizeMixin', () => {
 
 	});
 
-	describe('browser language settings in dynamic mixin', () => {
+	describe('browser language settings in mixin', () => {
 
 		const browserLangsFixture = `<${browserLangsTag}></${browserLangsTag}>`;
 		const initialBrowserLangs = navigator.languages;
@@ -457,68 +457,68 @@ describe('LocalizeMixin', () => {
 
 	describe('multiple localize and localize static mixin', () => {
 
+		const multiMixinFixtureStatic = `<${multiMixinTagStatic}></${multiMixinTagStatic}>`;
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
-		const multiMixinFixtureDynamic = `<${multiMixinTagDynamic}></${multiMixinTagDynamic}>`;
-		const multiMixinFixtureDynamicConsolidated = `<${multiMixinTagDynamicConsolidated}></${multiMixinTagDynamicConsolidated}>`;
+		const multiMixinFixtureConsolidated = `<${multiMixinTagConsolidated}></${multiMixinTagConsolidated}>`;
 
-		let elem, elemDynamic, elemDynamicConsolidated;
+		let elem, elemStatic, elemConsolidated;
 		beforeEach(async() => {
+			elemStatic = await fixture(multiMixinFixtureStatic);
 			elem = await fixture(multiMixinFixture);
-			elemDynamic = await fixture(multiMixinFixtureDynamic);
-			elemDynamicConsolidated = await fixture(multiMixinFixtureDynamicConsolidated);
+			elemConsolidated = await fixture(multiMixinFixtureConsolidated);
 		});
 
 		it('should localize text from all mixins', () => {
-			const val1 = elem.localize('test1');
-			const val2 = elem.localize('test2');
-			const val3 = elem.localize('test3');
-			const val4 = elem.localize('test4');
+			const val1 = elemStatic.localize('test1');
+			const val2 = elemStatic.localize('test2');
+			const val3 = elemStatic.localize('test3');
+			const val4 = elemStatic.localize('test4');
 
 			expect(val1).to.equal('This is English from Test1LocalizeStaticMixin');
 			expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
-			expect(val3).to.equal('This is English from Test3LocalizeMixin');
-			expect(val4).to.equal('This is English from Test4LocalizeMixin');
+			expect(val3).to.equal('This is English from Test3LocalizeMixinBase');
+			expect(val4).to.equal('This is English from Test4LocalizeMixinBase');
 		});
 
-		it('should localize text from inherited dynamic mixins', () => {
-			const val1 = elemDynamic.localize('testA');
-			const val2 = elemDynamic.localize('testB');
+		it('should localize text from inherited mixins', () => {
+			const val1 = elem.localize('testA');
+			const val2 = elem.localize('testB');
 
 			expect(val1).to.equal('Test A Content');
 			expect(val2).to.equal('Test B Content');
 		});
 
-		it('should localize text from inherited dynamic mixin and class itself', () => {
-			const val1 = elemDynamicConsolidated.localize('testC');
-			const val2 = elemDynamicConsolidated.localize('components.filter.clearAll');
+		it('should localize text from inherited mixin and class itself', () => {
+			const val1 = elemConsolidated.localize('testC');
+			const val2 = elemConsolidated.localize('components.filter.clearAll');
 
 			expect(val1).to.equal('Test C Content');
 			expect(val2).to.equal('Clear All');
 		});
 
 		it('should re-localize text from all mixins when locale changes', (done) => {
-			const val1Initial = elem.localize('test1');
-			const val2Initial = elem.localize('test2');
-			const val3Initial = elem.localize('test3');
-			const val4Initial = elem.localize('test4');
+			const val1Initial = elemStatic.localize('test1');
+			const val2Initial = elemStatic.localize('test2');
+			const val3Initial = elemStatic.localize('test3');
+			const val4Initial = elemStatic.localize('test4');
 
 			expect(val1Initial).to.equal('This is English from Test1LocalizeStaticMixin');
 			expect(val2Initial).to.equal('This is English from Test2LocalizeStaticMixin');
-			expect(val3Initial).to.equal('This is English from Test3LocalizeMixin');
-			expect(val4Initial).to.equal('This is English from Test4LocalizeMixin');
+			expect(val3Initial).to.equal('This is English from Test3LocalizeMixinBase');
+			expect(val4Initial).to.equal('This is English from Test4LocalizeMixinBase');
 			const myEventListener = () => {
-				const val1 = elem.localize('test1');
-				const val2 = elem.localize('test2');
-				const val3 = elem.localize('test3');
-				const val4 = elem.localize('test4');
+				const val1 = elemStatic.localize('test1');
+				const val2 = elemStatic.localize('test2');
+				const val3 = elemStatic.localize('test3');
+				const val4 = elemStatic.localize('test4');
 				expect(val1).to.equal('This is French from Test1LocalizeStaticMixin');
 				expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
-				expect(val3).to.equal('This is French from Test3LocalizeMixin');
-				expect(val4).to.equal('This is English from Test4LocalizeMixin');
-				elem.removeEventListener('d2l-localize-resources-change', myEventListener);
+				expect(val3).to.equal('This is French from Test3LocalizeMixinBase');
+				expect(val4).to.equal('This is English from Test4LocalizeMixinBase');
+				elemStatic.removeEventListener('d2l-localize-resources-change', myEventListener);
 				done();
 			};
-			elem.addEventListener('d2l-localize-resources-change', myEventListener);
+			elemStatic.addEventListener('d2l-localize-resources-change', myEventListener);
 			documentLocaleSettings.language = 'fr';
 		});
 	});

@@ -1,1 +1,1 @@
-export { LocalizeMixin } from './localize/localize-mixin.js';
+export { _LocalizeMixinBase as LocalizeMixin } from './localize/localize-mixin.js';

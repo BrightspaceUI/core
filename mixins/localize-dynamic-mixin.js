@@ -1,1 +1,1 @@
-export { LocalizeDynamicMixin } from './localize/localize-mixin.js';
+export { LocalizeMixin as LocalizeDynamicMixin } from './localize/localize-mixin.js';
