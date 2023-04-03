@@ -1,6 +1,6 @@
 # Localization Mixins
 
-The `LocalizeDynamicMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
+The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
 
 ## Providing Resources
 
@@ -27,14 +27,14 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 ### Static vs. Dynamic Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
 
 #### Example 1: Static Resources
 
 If your component has a small number of translations, it may make sense to store them locally within the component in a constant.
 
 ```javascript
-import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize-static-mixin.js';
+import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 class MyComponent extends LocalizeStaticMixin(LitElement) {
 
@@ -68,9 +68,9 @@ export default {
 
 Then create your `localizeConfig` getter:
 ```javascript
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
-class MyComponent extends LocalizeDynamicMixin(LitElement) {
+class MyComponent extends LocalizeMixin(LitElement) {
 
   static get localizeConfig() {
     return {
@@ -102,13 +102,13 @@ static get localizeConfig() {
 }
 ```
 
-**Note:** If using `LocalizeCoreElement` or a mixin that utilizes `LocalizeCoreElement` as well as `LocalizeDynamicMixin` or a mixin that uses `LocalizeDynamicMixin`, `LocalizeDynamicMixin` **must** appear before `LocalizeCoreElement` in the chain. For example:
+**Note:** If using `LocalizeCoreElement` or a mixin that utilizes `LocalizeCoreElement` as well as `LocalizeMixin` or a mixin that uses `LocalizeMixin`, `LocalizeMixin` **must** appear before `LocalizeCoreElement` in the chain. For example:
 
 ```javascript
 import { LocalizeCoreElement } from '@brightspace-ui/core/helpers/localize-core-element.js';
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
-class MyComponent extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
+class MyComponent extends LocalizeMixin(LocalizeCoreElement(LitElement)) {
   ...
 }
 ```

@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
-import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '../localize-mixin.js';
 
-class Greeting extends LocalizeDynamicMixin(LitElement) {
+class Greeting extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
