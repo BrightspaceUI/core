@@ -346,9 +346,9 @@ describe('LocalizeMixin', () => {
 
 		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 
-		const getRenderString = data => {
+		const renderToElem = data => {
 			render(data, elem);
-			return elem.innerHTML.replace(/<!--[^]*?-->/g, '');
+			return elem;
 		};
 
 		it('should replace acceptable markup with correct HTML', async() => {
@@ -364,14 +364,13 @@ describe('LocalizeMixin', () => {
 			items.push('bread', 'eggs');
 			const pluralMap = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
 
-			expect(getRenderString(defaultTags)).to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
-			expect(getRenderString(manual)).to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-
-			expect(getRenderString(disallowed)).to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
-			expect(getRenderString(badTemplate)).to.equal('This is replaceable');
-			expect(getRenderString(tooltip)).to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
-			expect(getRenderString(pluralLink)).to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
-			expect(getRenderString(pluralMap)).to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
+			expect(renderToElem(defaultTags)).lightDom.to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
+			expect(renderToElem(manual)).lightDom.to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
+			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
+			expect(renderToElem(badTemplate)).lightDom.to.equal('This is replaceable');
+			expect(renderToElem(tooltip)).lightDom.to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(renderToElem(pluralLink)).lightDom.to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
+			expect(renderToElem(pluralMap)).lightDom.to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});
 
 		[{
@@ -419,8 +418,8 @@ describe('LocalizeMixin', () => {
 			type: 'HTML as text',
 			expect: 'T <em>&lt;test&gt;</em>'
 		}].forEach(t => it(`should handle ${t.type}`, () => {
-			const renderString = getRenderString(elem.localizeHTML('typeChecker', t.replacements));
-			expect(renderString).to.equal(t.expect);
+			renderToElem(elem.localizeHTML('typeChecker', t.replacements));
+			expect(elem).lightDom.to.equal(t.expect);
 		}));
 
 	});
