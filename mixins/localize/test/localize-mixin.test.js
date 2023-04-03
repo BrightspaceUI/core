@@ -1,11 +1,8 @@
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { generateLink, generateTooltipHelp, localizeMarkup } from '../../helpers/localize.js';
-import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { generateLink, generateTooltipHelp, LocalizeDynamicMixin, localizeMarkup, LocalizeMixin, LocalizeStaticMixin } from '../localize-mixin.js';
 import { LitElement, render } from 'lit';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { LocalizeDynamicMixin } from '../localize-dynamic-mixin.js';
-import { LocalizeMixin } from '../localize-mixin.js';
-import { LocalizeStaticMixin } from '../localize-static-mixin.js';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { stub } from 'sinon';
 
 const Test1LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin(superclass) {

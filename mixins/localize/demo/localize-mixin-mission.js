@@ -1,6 +1,5 @@
-import { generateLink, localizeMarkup } from '../../helpers/localize.js';
+import { generateLink, LocalizeDynamicMixin, localizeMarkup } from '../localize-mixin.js';
 import { LitElement } from 'lit';
-import { LocalizeDynamicMixin } from '../../mixins/localize-dynamic-mixin.js';
 
 class Mission extends LocalizeDynamicMixin(LitElement) {
 

@@ -34,7 +34,7 @@ For components with local resources, use the `LocalizeStaticMixin` and implement
 If your component has a small number of translations, it may make sense to store them locally within the component in a constant.
 
 ```javascript
-import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize-static-mixin.js';
+import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 class MyComponent extends LocalizeStaticMixin(LitElement) {
 
@@ -68,7 +68,7 @@ export default {
 
 Then create your `localizeConfig` getter:
 ```javascript
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 class MyComponent extends LocalizeDynamicMixin(LitElement) {
 
@@ -106,7 +106,7 @@ static get localizeConfig() {
 
 ```javascript
 import { LocalizeCoreElement } from '@brightspace-ui/core/helpers/localize-core-element.js';
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 class MyComponent extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
   ...

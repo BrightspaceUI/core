@@ -1,4 +1,4 @@
-import { LocalizeDynamicMixin } from '../mixins/localize-dynamic-mixin.js';
+import { LocalizeDynamicMixin } from '../mixins/localize/localize-mixin.js';
 
 export const LocalizeCoreElement = superclass => class extends LocalizeDynamicMixin(superclass) {
 
