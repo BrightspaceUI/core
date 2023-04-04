@@ -1,15 +1,11 @@
+import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { html } from 'lit';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
-export const PageableMixin = superclass => class extends superclass {
+export const PageableMixin = superclass => class extends CollectionMixin(superclass) {
 
 	static get properties() {
 		return {
-			/**
-			 * Total number of items. If not specified, neither it nor the count of items showing will be displayed.
-			 * @type {number}
-			 */
-			itemCount: { type: Number, attribute: 'item-count', reflect: true },
 			_itemShowingCount: { state: true },
 		};
 	}
@@ -17,7 +13,6 @@ export const PageableMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
-		this.itemCount = -1;
 		this._itemShowingCount = 0;
 		this._pageableSubscriberRegistry = new SubscriberRegistryController(this, 'pageable', {
 			onSubscribe: this._updatePageableSubscriber.bind(this),

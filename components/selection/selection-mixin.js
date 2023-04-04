@@ -1,3 +1,4 @@
+import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -35,15 +36,10 @@ export class SelectionInfo {
 
 }
 
-export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
+export const SelectionMixin = superclass => class extends RtlMixin(CollectionMixin(superclass)) {
 
 	static get properties() {
 		return {
-			/**
-			 * Total number of items. Required when selecting all pages is allowed.
-			 * @type {number}
-			 */
-			itemCount: { type: Number, attribute: 'item-count' },
 			/**
 			 * Whether to render with single selection behaviour. If `selection-single` is specified, the nested `d2l-selection-input` elements will render radios instead of checkboxes, and the selection component will maintain a single selected item.
 			 * @type {boolean}
@@ -59,7 +55,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
-		this.itemCount = 0;
 		this.selectionSingle = false;
 		this._selectAllPages = false;
 		this._selectionObservers = new Map();
