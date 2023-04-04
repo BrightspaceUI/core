@@ -244,7 +244,7 @@ export const dropdownContentStyles = css`
 		height: 100vh;
 		position: fixed;
 		top: 0;
-		z-index: 998;
+		z-index: 1000;
 	}
 
 	:host([data-mobile][mobile-tray="right"]) .d2l-dropdown-content-width {
@@ -253,7 +253,7 @@ export const dropdownContentStyles = css`
 		height: 100vh;
 		position: fixed;
 		top: 0;
-		z-index: 998;
+		z-index: 1000;
 	}
 
 	:host([data-mobile][mobile-tray="bottom"]) .d2l-dropdown-content-width {
@@ -261,7 +261,7 @@ export const dropdownContentStyles = css`
 		border-bottom-right-radius: 0;
 		left: 0;
 		position: fixed;
-		z-index: 998;
+		z-index: 1000;
 	}
 
 	:host([data-mobile][mobile-tray="right"][opened]) .d2l-dropdown-content-width {
