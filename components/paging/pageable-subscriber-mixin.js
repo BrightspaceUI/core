@@ -23,7 +23,7 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 
 	async getUpdateComplete() {
 		await super.getUpdateComplete();
-		await (this.pageableFor ? this._pageableIdSubscriber._updateComplete : this._pageableEventSubscriber._updateComplete);
+		await (this.pageableFor ? this._pageableIdSubscriber._subscriptionComplete : this._pageableEventSubscriber._subscriptionComplete);
 	}
 
 	_getPageableRegistries() {
