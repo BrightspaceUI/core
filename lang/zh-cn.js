@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "可见。",
 	"components.switch.hidden": "隐藏",
 	"components.switch.conditions": "必须符合条件",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "对表格的操作",
 	"components.tabs.next": "向前滚动",
 	"components.tabs.previous": "向后滚动",
 	"components.tag-list.clear": "单击、按退格键或按 Delete 键以移除项目 {value}",

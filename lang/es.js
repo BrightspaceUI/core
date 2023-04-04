@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Acciones de la tabla",
 	"components.tabs.next": "Desplazarse hacia adelante",
 	"components.tabs.previous": "Desplazarse hacia atrás",
 	"components.tag-list.clear": "Haga clic, presione Retroceso o presione la tecla Suprimir para eliminar el elemento {value}",

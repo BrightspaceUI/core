@@ -46,9 +46,10 @@ describe('d2l-list', () => {
 	};
 
 	const scrollTo = (selector, y) => {
-		return page.$eval(selector, (element, y) => {
+		return page.$eval(selector, async(element, y) => {
 			element.scrollIntoView();
 			element.scrollTo(0, y);
+			await new Promise(resolve => requestAnimationFrame(resolve));
 		}, y);
 	};
 
@@ -147,8 +148,14 @@ describe('d2l-list', () => {
 			{ name: 'some selected', selector: '#selectableSomeSelectedControls' },
 			{ name: 'all selected', selector: '#selectableAllSelectedControls' },
 			{ name: 'all selected pages', selector: '#selectableAllSelectedControlsPages' },
-			{ name: 'sticky top', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 0) },
-			{ name: 'sticky scrolled', selector: '#stickyControls', action: () => scrollTo('#stickyControls > div', 45) }
+			{ name: 'sticky top', selector: '#stickyControls', action: async() => {
+				await scrollTo('#stickyControls > div', 45);
+				await scrollTo('#stickyControls > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled', selector: '#stickyControls', action: async() => {
+				await scrollTo('#stickyControls > div', 0);
+				await scrollTo('#stickyControls > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
@@ -211,8 +218,11 @@ describe('d2l-list', () => {
 					await page.evaluate(() => {
 						return new Promise(resolve => setTimeout(resolve, 0));
 					});
+
+					const options = info.screenshotOptions || {};
 					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector, 24));
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					options.clip = rect;
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), options);
 				});
 			});
 

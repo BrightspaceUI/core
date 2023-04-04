@@ -50,6 +50,7 @@ class DemoSnippet extends LitElement {
 			}
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
+				min-width: 0;
 				position: relative;
 			}
 			:host([full-width]) .d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo {

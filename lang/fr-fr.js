@@ -32,7 +32,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL non valide",
 	"components.form-element.valueMissing": "{label} est requis.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {{count} erreur trouvée dans les informations soumises} other {{count} erreurs trouvées dans les informations soumises}}",
-	"components.input-color.backgroundColor": "Couleur de l'arrière-plan",
+	"components.input-color.backgroundColor": "Couleur de l’arrière-plan",
 	"components.input-color.foregroundColor": "Couleur de l’avant-plan",
 	"components.input-color.none": "Aucune",
 	"components.input-date-range.endDate": "Date de fin",
@@ -106,7 +106,7 @@ export default {
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
-	"components.table-controls.label": "Actions for table",
+	"components.table-controls.label": "Actions du tableau",
 	"components.tabs.next": "Faire défiler vers l'avant",
 	"components.tabs.previous": "Faire défiler vers l'arrière",
 	"components.tag-list.clear": "Cliquez sur l’élément, appuyez sur la touche Retour arrière ou sur la touche Suppr pour supprimer l’élément {value}",
