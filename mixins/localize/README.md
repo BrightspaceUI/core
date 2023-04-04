@@ -127,59 +127,60 @@ render() {
 
 ## `localizeHTML()`
 
-You can include some basic markup in your localization resources and safely convert them to HTML with the `localizeHTML()` method.
+Rich formatting can be included in localization resources and safely converted to HTML with the `localizeHTML()` method.
 
-### Simple Markup
+### Basic Formatting
 
-#### Bold
+The following formatting elements are supported out-of-the-box:
 
-The `[b]bold[/b]` markup converts to the `<strong>` tag.
+* `<p>paragraphs</p>`
+* `line<br></br>breaks` (note the end tag is required)
+* `<b>bold</b>`
+* `<strong>strong</strong>`
+* `<i>italic</i>`
+* `<em>emphasis</em>`
 
-#### Italic
+Remember that `<strong>` is for content of greater importance (browsers show this visually using bold), while `<b>` only bolds the text visually without increasing its importance.
 
-The `[i]italic[/i]` markup converts to the `<em>` tag.
+Similarly `<em>` *emphasizes* a particular piece of text (browsers show this visually using italics), whereas `<i>` only italicizes the text visually without emphasis.
 
-#### Line Breaks
+### Links
 
-The `[br]` markup converts to the `<br>` tag.
+To wrap text in [a link](../../components/link/), define a unique tag in the localization resource:
 
-### Complex Markup
-
-For more complex markup, additional information must be provided as the second parameter.
-
-#### Links
-
-The `[a]link[/a]` markup converts to the `<d2l-link>` tag, and takes an attributes string in the `link` property.
-
-> Return [a]home[/a].
-
-```javascript
-this.localizeHTML('termName', { link: 'href="home.html"' });
+```json
+{
+  "myTerm": "Create a <linkNew>new assignment</linkNew>."
+}
 ```
 
-If a localization resource contains multiple links, give them unique identifiers and provide attributes from the `links` property instead:
-
-> Go [a home]home[/a] or [a back]return back[/a] to the previous page.
+Then import the `generateLink` helper and use it to provide the `href` and optional `target` as replacements:
 
 ```javascript
-this.localizeHTML('termName', {
-  links: {
-    home: 'href="home.html"',
-    back: 'href="back.html"'
-  }
+import { generateLink } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
+
+this.localizeHTML('myTerm', {
+  linkNew: generateLink({ href: 'new.html', target: '_blank' })
 });
 ```
 
-#### Help Tooltips
+### Help Tooltips
 
-The `[tooltip-help]help tooltip[/tooltip-help]` markup converts to the `<d2l-tooltip-help>` tag, and takes tooltip text in the `tooltipHelp` property.
+To use a [help tooltip](../../components/tooltip/), define a unique tag in the localization resource in addition to the tooltip's text:
 
-> An octopus is a member of the [tooltip-help]cephalopod[/tooltip-help] family.
-
-```javascript
-this.localizeHTML('termName', {
-  tooltipHelp: 'Cephalopods are members of the molluscan class Cephalopoda'
-});
+```json
+{
+  "octopus": "An octopus is a member of the <tooltip>cephalopod</tooltip> family.",
+  "cephalopodTooltip": "Cephalopods are members of the molluscan class Cephalopoda"
+}
 ```
 
-Similar to links, multiple help tooltips in a single term should use an identifier and the `tooltipHelps` property.
+Then import `generateTooltipHelp` and pass it the tooltip term value:
+
+```javascript
+import { generateTooltipHelp } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
+
+this.localizeHTML('octopus', {
+  tooltip: generateTooltipHelp(this.localize('cephalopodTooltip'))
+});
+```
