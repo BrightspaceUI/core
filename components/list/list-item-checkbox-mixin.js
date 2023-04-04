@@ -132,7 +132,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	_onCheckboxKeyDown(e) {
 		// handle the enter key
 		if (e.keyCode !== 13) return;
-		this.selected = !this.selected;
+		this.setSelected(!this.selected);
 	}
 
 	_onMouseEnterSelection() {
