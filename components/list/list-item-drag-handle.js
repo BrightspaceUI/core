@@ -3,6 +3,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { moveActions } from '../button/button-move.js';
@@ -42,7 +43,7 @@ let hasDisplayedKeyboardTooltip = false;
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
  */
-class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -128,6 +129,10 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._movingElement = false;
 	}
 
+	static get focusElementSelector() {
+		return '.d2l-list-item-drag-handle-button';
+	}
+
 	render() {
 		return this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger();
 	}
@@ -140,16 +145,6 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	activateKeyboardMode() {
 		this._dispatchAction(dragActions.active);
 		this._keyboardActive = true;
-	}
-
-	async focus() {
-		if (this._keyboardActive) {
-			const keyboardNode = this.shadowRoot.querySelector('d2l-button-move');
-			await keyboardNode.updateComplete;
-			keyboardNode.focus();
-		} else {
-			this.shadowRoot.querySelector('button').focus();
-		}
 	}
 
 	get _defaultLabel() {
@@ -282,7 +277,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_renderDragger() {
 		return html`
 			<button
-				class="d2l-list-item-drag-handle-dragger-button"
+				class="d2l-list-item-drag-handle-dragger-button d2l-list-item-drag-handle-button"
 				@click="${this._onDraggerButtonClick}"
 				@keydown="${this._onDraggerButtonKeydown}"
 				aria-label="${this._defaultLabel}"
@@ -295,6 +290,7 @@ class ListItemDragHandle extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_renderKeyboardDragging() {
 		return html`
 			<d2l-button-move
+				class="d2l-list-item-drag-handle-button"
 				@d2l-button-move-action="${this._onMoveButtonAction}"
 				@focusin="${this._onKeyboardButtonFocusIn}"
 				@focusout="${this._onKeyboardButtonFocusOut}"
