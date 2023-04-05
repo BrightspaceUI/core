@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button-move.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-button-move">
+
+			<h2>Move Button</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-move id="move-button" text="Reorder Item"></d2l-button-move>
+					<script>
+						document.querySelector('#move-button').addEventListener('d2l-button-move-action', e => {
+							console.log('d2l-button-move-action', e.target, e.detail);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Move Button Disabled</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-move text="Reorder Item" disabled></d2l-button-move>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Move Button Disabled with Tooltip</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-move text="Reorder Item" disabled disabled-tooltip="Optional disabled tooltip"></d2l-button-move>
+				</template>
+			</d2l-demo-snippet>
+
+	</body>
+</html>
