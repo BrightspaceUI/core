@@ -60,7 +60,7 @@ describe('d2l-dropdown-menu', () => {
 		await page.setViewport({ width: 300, height: 800 });
 		this.test.value = '#dropdown-menu-header-footer-mobile'; // Needed for retries
 		await open(page, '#dropdown-menu-header-footer-mobile');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
 	it('with-nopadding-header-footer', async function() {
