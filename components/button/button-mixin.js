@@ -1,4 +1,4 @@
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
 export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 

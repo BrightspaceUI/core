@@ -7,7 +7,7 @@ The `ProviderMixin` and `RequesterMixin` can be used to create a DI-like system 
 Apply the `ProviderMixin` to the component that will be responsible for providing some data to components that request it:
 
 ```js
-import { ProviderMixin } from '@brightspace-ui/core/mixins/provider-mixin.js';
+import { ProviderMixin } from '@brightspace-ui/core/mixins/provider/provider-mixin.js';
 
 class InterestingFactProvider extends ProviderMixin(LitElement) {
 	constructor() {
@@ -24,7 +24,7 @@ Once this has been set up, child components can request your provider's data via
 NB: due to its reliance on DOM events, `requestInstance()` needs to be called after the element has been attached to the DOM, such as in `connectedCallback()`.
 
 ```js
-import { RequesterMixin } from '@brightspace-ui/core/mixins/provider-mixin.js'
+import { RequesterMixin } from '@brightspace-ui/core/mixins/provider/provider-mixin.js'
 
 class InterestingFactUI extends RequesterMixin(LitElement) {
 	static get properties() {
@@ -55,7 +55,7 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 In the absence of a component context, the `requestInstance` helper may be used by providing the `node` context and the `key` for the instance.
 
 ```js
-import { requestInstance } from '@brightspace-ui/core/mixins/provider-mixin.js'
+import { requestInstance } from '@brightspace-ui/core/mixins/provider/provider-mixin.js'
 
 const factString = requestInstance(node, 'd2l-interesting-fact-string');
 const factObjectString = requestInstance(node, 'd2l-interesting-fact-object').fact;

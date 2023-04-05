@@ -2,7 +2,7 @@ import '../icons/icon.js';
 import { html, LitElement } from 'lit';
 import { MenuItemSelectableMixin } from './menu-item-selectable-mixin.js';
 import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A menu item component used for selection. Multiple checkboxes can be selected at once.

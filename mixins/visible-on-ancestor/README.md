@@ -7,7 +7,7 @@ The `VisibleOnAncestorMixin` adds a behavior to a component so that it is initia
 Apply the mixin and include the required `visibleOnAncestorStyles`.
 
 ```js
-import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '@brightspace-ui/core/mixins/visible-on-ancestor-mixin.js';
+import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '@brightspace-ui/core/mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 class MyComponent extends VisibleOnAncestorMixin(LitElement) {
   static get styles() {
     return [ visibleOnAncestorStyles, css`/* MyComponent styles */` ];

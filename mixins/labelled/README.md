@@ -9,7 +9,7 @@ Custom elements that extend the `LabelledMixin` may be labelled by native elemen
 Apply the `LabelledMixin` to the component containing the element that requires a label, and apply the `label` property defined by `LabelledMixin` as needed:
 
 ```js
-import { LabelledMixin } from '@brightspace-ui/core/mixins/labelled-mixin.js';
+import { LabelledMixin } from '@brightspace-ui/core/mixins/labelled/labelled-mixin.js';
 
 class CustomInput extends LabelledMixin(LitElement) {
   render() {
@@ -23,7 +23,7 @@ class CustomInput extends LabelledMixin(LitElement) {
 Optionally, to enable custom elements to act as labels, extend the `LabelMixin` and call `updateLabel()` to reflect the label value change when needed. Alternatively, a custom element within a labelling element's shadowDOM may dispatch the `d2l-label-change` event to update the label value.
 
 ```js
-import { LabelMixin } from '@brightspace-ui/core/mixins/labelled-mixin.js';
+import { LabelMixin } from '@brightspace-ui/core/mixins/labelled/labelled-mixin.js';
 
 class CustomLabel extends LabelMixin(LitElement) {
   static get properties() {

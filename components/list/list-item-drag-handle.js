@@ -3,11 +3,11 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { moveActions } from '../button/button-move.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = Object.freeze({
 	DOWN: 40,

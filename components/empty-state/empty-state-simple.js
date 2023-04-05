@@ -2,7 +2,7 @@ import '../button/button-subtle.js';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * The `d2l-empty-state-simple` component is an empty state component that displays a description. An empty state action component can be placed inside of the default slot to add an optional action.

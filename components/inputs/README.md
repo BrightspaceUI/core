@@ -23,7 +23,7 @@ Import the label styles and `RtlMixin` and include them in your component:
 
 ```javascript
 import {inputLabelStyles} from '@brightspace-ui/core/components/inputs/input-label-styles.js';
-import {RtlMixin} from '@brightspace-ui/core/mixins/rtl-mixin.js';
+import {RtlMixin} from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
 
 class MyElem extends RtlMixin(LitElement) {
 

@@ -9,7 +9,7 @@ The focusable elements can be provided in one of two ways:
 If the elements are known up-front and are in the element's local DOM scope, simply add the d2l-arrowkeys-focusable class.
 
 ```javascript
-import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
+import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys/arrow-keys-mixin.js';
 class MyElement extends ArrowKeysMixin(LitElement) {
   render() {
     return this.arrowKeysContainer(html`
@@ -28,7 +28,7 @@ customElements.define('my-element', MyElement);
 If the elements are not known up front, or the elements cannot be simply queried in the element's local DOM-scope, an async arrowKeysFocusablesProvider may be implemented.
 
 ```javascript
-import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
+import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys/arrow-keys-mixin.js';
 class MyElement extends ArrowKeysMixin(LitElement) {
   render() {
     return this.arrowKeysContainer(html`

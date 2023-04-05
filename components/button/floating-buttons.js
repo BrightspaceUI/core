@@ -3,7 +3,7 @@ import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
 import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
