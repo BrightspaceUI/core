@@ -1,6 +1,6 @@
 # Localization Mixins
 
-The `LocalizeDynamicMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
+The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
 
 ## Providing Resources
 
@@ -27,14 +27,14 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 ### Static vs. Dynamic Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
 
 #### Example 1: Static Resources
 
 If your component has a small number of translations, it may make sense to store them locally within the component in a constant.
 
 ```javascript
-import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize-static-mixin.js';
+import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 class MyComponent extends LocalizeStaticMixin(LitElement) {
 
@@ -68,9 +68,9 @@ export default {
 
 Then create your `localizeConfig` getter:
 ```javascript
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
-class MyComponent extends LocalizeDynamicMixin(LitElement) {
+class MyComponent extends LocalizeMixin(LitElement) {
 
   static get localizeConfig() {
     return {
@@ -102,13 +102,13 @@ static get localizeConfig() {
 }
 ```
 
-**Note:** If using `LocalizeCoreElement` or a mixin that utilizes `LocalizeCoreElement` as well as `LocalizeDynamicMixin` or a mixin that uses `LocalizeDynamicMixin`, `LocalizeDynamicMixin` **must** appear before `LocalizeCoreElement` in the chain. For example:
+**Note:** If using `LocalizeCoreElement` or a mixin that utilizes `LocalizeCoreElement` as well as `LocalizeMixin` or a mixin that uses `LocalizeMixin`, `LocalizeMixin` **must** appear before `LocalizeCoreElement` in the chain. For example:
 
 ```javascript
 import { LocalizeCoreElement } from '@brightspace-ui/core/helpers/localize-core-element.js';
-import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
-class MyComponent extends LocalizeDynamicMixin(LocalizeCoreElement(LitElement)) {
+class MyComponent extends LocalizeMixin(LocalizeCoreElement(LitElement)) {
   ...
 }
 ```
@@ -121,6 +121,66 @@ If your localized string contains arguments, pass them as a key-value object as 
 
 ```javascript
 render() {
-  return html`<p>${this.localize('hello', {firstName: 'Mary'})}</p>`;
+  return html`<p>${this.localize('hello', { firstName: 'Mary' })}</p>`;
 }
+```
+
+## `localizeHTML()`
+
+Rich formatting can be included in localization resources and safely converted to HTML with the `localizeHTML()` method.
+
+### Basic Formatting
+
+The following formatting elements are supported out-of-the-box:
+
+* `<p>paragraphs</p>`
+* `line<br></br>breaks` (note the end tag is required)
+* `<b>bold</b>`
+* `<strong>strong</strong>`
+* `<i>italic</i>`
+* `<em>emphasis</em>`
+
+Remember that `<strong>` is for content of greater importance (browsers show this visually using bold), while `<b>` only bolds the text visually without increasing its importance.
+
+Similarly `<em>` *emphasizes* a particular piece of text (browsers show this visually using italics), whereas `<i>` only italicizes the text visually without emphasis.
+
+### Links
+
+To wrap text in [a link](../../components/link/), define a unique tag in the localization resource:
+
+```json
+{
+  "myTerm": "Create a <linkNew>new assignment</linkNew>."
+}
+```
+
+Then import the `generateLink` helper and use it to provide the `href` and optional `target` as replacements:
+
+```javascript
+import { generateLink } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
+
+this.localizeHTML('myTerm', {
+  linkNew: generateLink({ href: 'new.html', target: '_blank' })
+});
+```
+
+### Help Tooltips
+
+To use a [help tooltip](../../components/tooltip/), define a unique tag in the localization resource in addition to the tooltip's text:
+
+```json
+{
+  "octopus": "An octopus is a member of the <tooltip>cephalopod</tooltip> family.",
+  "cephalopodTooltip": "Cephalopods are members of the molluscan class Cephalopoda"
+}
+```
+
+Then import `generateTooltipHelp` and pass it the tooltip term value:
+
+```javascript
+import { generateTooltipHelp } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
+
+this.localizeHTML('octopus', {
+  tooltip: generateTooltipHelp({ contents: this.localize('cephalopodTooltip') })
+});
 ```
