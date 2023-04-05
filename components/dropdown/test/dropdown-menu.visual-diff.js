@@ -24,7 +24,7 @@ describe('d2l-dropdown-menu', () => {
 
 	afterEach(async function() {
 		const dropdown = this.currentTest.value;
-		if (dropdown) await reset(page, dropdown);
+		if (dropdown) await page.reload();
 	});
 
 	it('initially opened', async function() {
@@ -57,12 +57,9 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	it('with-header-footer-mobile', async function() {
-		console.log('setViewport');
 		await page.setViewport({ width: 300, height: 800 });
 		this.test.value = '#dropdown-menu-header-footer-mobile'; // Needed for retries
-		console.log('open');
 		await open(page, '#dropdown-menu-header-footer-mobile');
-		console.log('screenshotAndCompare');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
