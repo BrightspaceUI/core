@@ -1,7 +1,7 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from '../button/button-mixin.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';

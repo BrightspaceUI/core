@@ -3,7 +3,7 @@ import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';

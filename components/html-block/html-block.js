@@ -6,7 +6,7 @@ import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mat
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 
-import { requestInstance } from '../../mixins/provider-mixin.js';
+import { requestInstance } from '../../mixins/provider/provider-mixin.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {

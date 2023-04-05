@@ -9,7 +9,7 @@ Apply the mixin, call its `renderInteractiveContainer` method from `render`, pro
 **Note:** consumers _must_ provide a focus delegate as mentioned. They _should not_ implement a `focus` method, since the mixin manages focus with its own implementation.
 
 ```js
-import { InteractiveMixin } from '@brightspace-ui/core/mixins/interactive-mixin.js';
+import { InteractiveMixin } from '@brightspace-ui/core/mixins/interactive/interactive-mixin.js';
 
 class MyComponent extends InteractiveMixin(LitElement) {
 

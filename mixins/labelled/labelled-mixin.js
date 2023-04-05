@@ -1,5 +1,5 @@
 
-import { cssEscape } from '../helpers/dom.js';
+import { cssEscape } from '../../helpers/dom.js';
 
 const getCommonAncestor = (elem1, elem2) => {
 

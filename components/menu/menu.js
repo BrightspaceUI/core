@@ -3,7 +3,7 @@ import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
-import { ThemeMixin } from '../../mixins/theme-mixin.js';
+import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,

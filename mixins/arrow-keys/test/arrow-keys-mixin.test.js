@@ -1,7 +1,7 @@
 import '../demo/arrow-keys-test.js';
 import { expect, fixture, html } from '@open-wc/testing';
-import { getComposedActiveElement } from '../../helpers/focus.js';
-import { keyDown } from '../../tools/dom-test-helpers.js';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { keyDown } from '../../../tools/dom-test-helpers.js';
 
 describe('ArrowKeysMixin', () => {
 

@@ -7,7 +7,7 @@ import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocus
 import { classMap } from 'lit/directives/class-map.js';
 import { html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 

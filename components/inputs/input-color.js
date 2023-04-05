@@ -4,7 +4,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

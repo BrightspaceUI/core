@@ -1,10 +1,10 @@
 import { css, html } from 'lit';
-import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getNextFocusable } from '../helpers/focus.js';
+import { getNextFocusable } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LocalizeCoreElement } from '../helpers/localize-core-element.js';
-import { offscreenStyles } from '../components/offscreen/offscreen.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../../components/offscreen/offscreen.js';
 
 const keyCodes = {
 	ENTER: 13,

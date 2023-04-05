@@ -1,4 +1,4 @@
-import '../../components/colors/colors.js';
+import '../../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../arrow-keys-mixin.js';
 

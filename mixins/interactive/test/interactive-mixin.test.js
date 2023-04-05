@@ -1,7 +1,7 @@
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
-import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
-import { keyDown } from '../../tools/dom-test-helpers.js';
+import { keyDown } from '../../../tools/dom-test-helpers.js';
 import { LitElement } from 'lit';
 
 const mixinTag = defineCE(

@@ -1,10 +1,10 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent.

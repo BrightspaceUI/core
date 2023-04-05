@@ -12,7 +12,7 @@ import '../../selection/selection-input.js';
 import { css, html } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
-import { RtlMixin } from '../../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
