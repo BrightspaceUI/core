@@ -15,65 +15,78 @@ describe('d2l-dropdown-menu', () => {
 		await page.bringToFront();
 	});
 
-	beforeEach(async() => {
-		const defaultViewportOptions = { width: 800, height: 800, deviceScaleFactor: 2 };
-		await page.setViewport(defaultViewportOptions);
-	});
-
 	after(async() => await browser.close());
 
 	afterEach(async function() {
 		const dropdown = this.currentTest.value;
-		if (dropdown) await page.reload();
+		if (dropdown) await reset(page, dropdown);
 	});
 
-	it('initially opened', async function() {
-		const rect = await getRect(page, '#dropdown-menu-initially-opened');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	describe('desktop', () => {
+
+		before(async() => {
+			const defaultViewportOptions = { width: 800, height: 800, deviceScaleFactor: 2 };
+			await page.setViewport(defaultViewportOptions);
+		});
+
+		it('initially opened', async function() {
+			const rect = await getRect(page, '#dropdown-menu-initially-opened');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('first-page', async function() {
+			this.test.value = '#dropdown-menu'; // Needed for retries
+			await open(page, '#dropdown-menu');
+			const rect = await getRect(page, '#dropdown-menu');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		/* Prevent regression to DE37329: reopening caused extra bottom spacing */
+		it('closed-reopened', async function() {
+			this.test.value = '#dropdown-menu'; // Needed for retries
+			await open(page, '#dropdown-menu');
+			await reset(page, '#dropdown-menu');
+			await open(page, '#dropdown-menu');
+			const rect = await getRect(page, '#dropdown-menu');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('with-header-footer', async function() {
+			this.test.value = '#dropdown-menu-header-footer'; // Needed for retries
+			await open(page, '#dropdown-menu-header-footer');
+			const rect = await getRect(page, '#dropdown-menu-header-footer');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('with-nopadding-header-footer', async function() {
+			this.test.value = '#dropdown-menu-header-footer-nopadding'; // Needed for retries
+			await open(page, '#dropdown-menu-header-footer-nopadding');
+			const rect = await getRect(page, '#dropdown-menu-header-footer-nopadding');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('dark theme', async function() {
+			this.test.value = '#dark'; // Needed for retries
+			await open(page, '#dark');
+			const rect = await getRect(page, '#dark');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 	});
 
-	it('first-page', async function() {
-		this.test.value = '#dropdown-menu'; // Needed for retries
-		await open(page, '#dropdown-menu');
-		const rect = await getRect(page, '#dropdown-menu');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	describe('mobile', () => {
+
+		before(async() => {
+			const defaultViewportOptions = { width: 300, height: 800 };
+			await page.setViewport(defaultViewportOptions);
+		});
+
+		it('with-header-footer-mobile', async function() {
+			this.test.value = '#dropdown-menu-header-footer-mobile'; // Needed for retries
+			await open(page, '#dropdown-menu-header-footer-mobile');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+
 	});
 
-	/* Prevent regression to DE37329: reopening caused extra bottom spacing */
-	it('closed-reopened', async function() {
-		this.test.value = '#dropdown-menu'; // Needed for retries
-		await open(page, '#dropdown-menu');
-		await reset(page, '#dropdown-menu');
-		await open(page, '#dropdown-menu');
-		const rect = await getRect(page, '#dropdown-menu');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('with-header-footer', async function() {
-		this.test.value = '#dropdown-menu-header-footer'; // Needed for retries
-		await open(page, '#dropdown-menu-header-footer');
-		const rect = await getRect(page, '#dropdown-menu-header-footer');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('with-header-footer-mobile', async function() {
-		// await page.setViewport({ width: 300, height: 800 });
-		this.test.value = '#dropdown-menu-header-footer-mobile'; // Needed for retries
-		await open(page, '#dropdown-menu-header-footer-mobile');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-	});
-
-	it('with-nopadding-header-footer', async function() {
-		this.test.value = '#dropdown-menu-header-footer-nopadding'; // Needed for retries
-		await open(page, '#dropdown-menu-header-footer-nopadding');
-		const rect = await getRect(page, '#dropdown-menu-header-footer-nopadding');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('dark theme', async function() {
-		this.test.value = '#dark'; // Needed for retries
-		await open(page, '#dark');
-		const rect = await getRect(page, '#dark');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
 });
