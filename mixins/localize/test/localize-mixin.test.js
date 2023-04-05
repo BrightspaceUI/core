@@ -137,13 +137,14 @@ const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superc
 	static get resources() {
 		return {
 			en: {
-				test1: 'This is <b>important</b>, this is <b><i>very important</i></b>',
+				test1: 'This is <strong>important</strong>, this is <strong><em>very important</em></strong>',
 				test2: 'This is <link>a link</link>',
 				test3: 'This is <link>replaceable</link>',
 				test4: 'This is a <tooltip>tooltip-help</tooltip> within a sentence',
 				test5: 'This is a <tooltip-help-1>tooltip helper</tooltip-help-1> within a sentence. Here is <tooltip-help-2>another</tooltip-help-2>.',
+				test6: 'This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized',
 				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}',
-				typeChecker: '{a, select, true {T <i>{c}</i>} false {F - {b, date, medium}} other {O - {a}}}'
+				typeChecker: '{a, select, true {T <em>{c}</em>} false {F - {b, date, medium}} other {O - {a}}}'
 			}
 		};
 	}
@@ -357,6 +358,7 @@ describe('LocalizeMixin', () => {
 			const disallowed = elem.localizeHTML('test3', { link: chunks => localizeMarkup`<div>${chunks}</div>` });
 			const badTemplate = elem.localizeHTML('test3', { link: chunks => html`${chunks}` });
 			const tooltip = elem.localizeHTML('test4', { tooltip: generateTooltipHelp({ contents: 'Tooltip text' }) });
+			const boldItalic = elem.localizeHTML('test6');
 
 			const items = ['milk'];
 			const pluralLink = elem.localizeHTML('pluralTest', { itemCount: items.length, item: items[0], link: generateLink({ href: 'checkout' }) });
@@ -369,6 +371,7 @@ describe('LocalizeMixin', () => {
 			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
 			expect(renderToElem(badTemplate)).lightDom.to.equal('This is replaceable');
 			expect(renderToElem(tooltip)).lightDom.to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
+			expect(renderToElem(boldItalic)).lightDom.to.equal('This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized');
 			expect(renderToElem(pluralLink)).lightDom.to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
 			expect(renderToElem(pluralMap)).lightDom.to.equal('Items in your cart:<p>milk</p><p>bread</p><p>eggs</p><d2l-link href="checkout">Checkout</d2l-link>');
 		});

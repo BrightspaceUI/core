@@ -137,10 +137,10 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		let formattedMessage = value;
 		try {
 			formattedMessage = translatedMessage.format({
-				b: chunks => localizeMarkup`<strong>${chunks}</strong>`,
+				b: chunks => localizeMarkup`<b>${chunks}</b>`,
 				br: () => localizeMarkup`<br>`,
 				em: chunks => localizeMarkup`<em>${chunks}</em>`,
-				i: chunks => localizeMarkup`<em>${chunks}</em>`,
+				i: chunks => localizeMarkup`<i>${chunks}</i>`,
 				p: chunks => localizeMarkup`<p>${chunks}</p>`,
 				strong: chunks => localizeMarkup`<strong>${chunks}</strong>`,
 				...params
