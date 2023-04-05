@@ -29,15 +29,10 @@ describe('ListItemDragHandle', () => {
 		});
 
 		it(`Dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
-			let action;
-			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');
-			setTimeout(() => {
-				actionArea.dispatchEvent(new Event('click'));
-			});
-			await oneEvent(actionArea, 'click');
-
-			expect(action).to.equal(dragActions.active);
+			setTimeout(() => actionArea.dispatchEvent(new Event('click')));
+			const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
+			expect(e.detail.action).to.equal(dragActions.active);
 		});
 
 		[
@@ -45,13 +40,10 @@ describe('ListItemDragHandle', () => {
 			{ keyPress: keyCodes.SPACE }
 		].forEach(testCase => {
 			it(`Dispatch drag handle action event for ${dragActions.active} when ${testCase.keyPress.key} is pressed.`, async() => {
-				let action;
-				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
 				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress.code));
-				await oneEvent(actionArea, 'keydown');
-
-				expect(action).to.equal(dragActions.active);
+				const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
+				expect(e.detail.action).to.equal(dragActions.active);
 			});
 		});
 	});
