@@ -167,7 +167,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"
-				class="d2l-label-text"
 				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
