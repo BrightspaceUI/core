@@ -2,8 +2,8 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
-import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -31,16 +31,29 @@ export const moveActions = Object.freeze({
 /**
  * A button component that provides a move action via a single button.
  */
-class ButtonMove extends ButtonMixin(RtlMixin(LitElement)) {
+class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
+			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * A description to be added to the button for accessibility when text on button does not provide enough context
 			 * @type {string}
 			 */
 			description: { type: String },
-
+			/**
+			 * Disables the button
+			 * @type {boolean}
+			 */
+			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			/**
 			 * REQUIRED: Accessible text for the button
 			 * @type {string}
@@ -129,11 +142,27 @@ class ButtonMove extends ButtonMixin(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-
+		this.disabled = false;
+		/** @ignore */
+		this.autofocus = false;
 		/** @internal */
 		this._buttonId = getUniqueId();
 		/** @internal */
 		this._describedById = getUniqueId();
+	}
+
+	static get focusElementSelector() {
+		return 'button';
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('click', this._handleClick, true);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('click', this._handleClick, true);
 	}
 
 	render() {
@@ -141,14 +170,13 @@ class ButtonMove extends ButtonMixin(RtlMixin(LitElement)) {
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
-				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
+				aria-label="${ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"
 				?disabled="${this.disabled && !this.disabledTooltip}"
 				id="${this._buttonId}"
 				@keydown="${this._handleKeydown}"
-				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
-				type="${this._getType()}">
+				type="button">
 				<d2l-icon icon="tier1:arrow-toggle-up" class="up-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" class="down-icon"></d2l-icon>
 				<div class="up-layer" @click="${this._handleUpClick}"></div>
@@ -165,6 +193,12 @@ class ButtonMove extends ButtonMixin(RtlMixin(LitElement)) {
 			detail: { action },
 			bubbles: false
 		}));
+	}
+
+	_handleClick(e) {
+		if (this.disabled) {
+			e.stopPropagation();
+		}
 	}
 
 	_handleDownClick() {
