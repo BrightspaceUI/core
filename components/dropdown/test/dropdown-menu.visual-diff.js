@@ -19,7 +19,7 @@ describe('d2l-dropdown-menu', () => {
 
 	afterEach(async function() {
 		const dropdown = this.currentTest.value;
-		if (dropdown) await reset(page, dropdown);
+		if (dropdown) await page.reload();
 	});
 
 	describe('desktop', () => {
@@ -77,7 +77,7 @@ describe('d2l-dropdown-menu', () => {
 	describe('mobile', () => {
 
 		before(async() => {
-			const defaultViewportOptions = { width: 300, height: 800 };
+			const defaultViewportOptions = { width: 300, height: 800, deviceScaleFactor: 1 };
 			await page.setViewport(defaultViewportOptions);
 		});
 
