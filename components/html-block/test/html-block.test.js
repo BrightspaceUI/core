@@ -1,6 +1,6 @@
 import '../html-block.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { provideInstance } from '../../../mixins/provider-mixin.js';
+import { provideInstance } from '../../../mixins/provider/provider-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 class TestRenderer {

@@ -1,7 +1,7 @@
 
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { FocusMixin } from '../focus-mixin.js';
-import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { LitElement } from 'lit';
 
 const mixinTag = defineCE(

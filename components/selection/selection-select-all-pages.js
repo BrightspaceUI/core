@@ -1,6 +1,6 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';

@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,

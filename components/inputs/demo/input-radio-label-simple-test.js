@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { radioStyles } from '../input-radio-styles.js';
-import { RtlMixin } from '../../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 class TestInputRadioLabelSimple extends RtlMixin(LitElement) {
 

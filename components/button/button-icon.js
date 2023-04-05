@@ -2,14 +2,14 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
+import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { ThemeMixin } from '../../mixins/theme-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.

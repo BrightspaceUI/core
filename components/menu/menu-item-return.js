@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitElement))) {
 

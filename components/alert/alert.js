@@ -5,7 +5,7 @@ import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A component for communicating important information relating to the state of the system and the user's work flow.

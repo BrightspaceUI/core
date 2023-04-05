@@ -1,4 +1,4 @@
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,

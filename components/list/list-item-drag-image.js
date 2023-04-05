@@ -4,7 +4,7 @@ import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitElement))) {

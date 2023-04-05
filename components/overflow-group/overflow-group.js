@@ -13,7 +13,7 @@ import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OVERFLOW_MINI_CLASS, OverflowGroupMixin } from './overflow-group-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const OPENER_STYLE = {
 	DEFAULT: 'default',

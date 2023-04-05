@@ -9,7 +9,7 @@ If the component has yet to render, focus will automatically be applied after `f
 Apply the mixin and set the static `focusElementSelector` to a CSS query selector which will match the element to which focus should be delegated.
 
 ```js
-import { FocusMixin } from '@brightspace-ui/core/mixins/focus-mixin.js';
+import { FocusMixin } from '@brightspace-ui/core/mixins/focus/focus-mixin.js';
 
 class MyComponent extends FocusMixin(LitElement) {
 

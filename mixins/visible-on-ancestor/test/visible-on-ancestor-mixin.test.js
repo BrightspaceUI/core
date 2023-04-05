@@ -1,5 +1,5 @@
 
-import '../../components/button/button-icon.js';
+import '../../../components/button/button-icon.js';
 import { defineCE, expect, fixture, html, nextFrame } from '@open-wc/testing';
 import { LitElement } from 'lit';
 

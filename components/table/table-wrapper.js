@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
 export const tableStyles = css`

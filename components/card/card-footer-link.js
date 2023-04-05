@@ -2,10 +2,10 @@ import '../colors/colors.js';
 import '../count-badge/count-badge-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * An icon link that can be placed in the `footer` slot.
