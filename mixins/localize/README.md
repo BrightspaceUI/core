@@ -181,6 +181,6 @@ Then import `generateTooltipHelp` and pass it the tooltip term value:
 import { generateTooltipHelp } from '@brightspace-ui/core/mixins/localize/localize-mixin.js';
 
 this.localizeHTML('octopus', {
-  tooltip: generateTooltipHelp(this.localize('cephalopodTooltip'))
+  tooltip: generateTooltipHelp({ contents: this.localize('cephalopodTooltip') })
 });
 ```
