@@ -163,10 +163,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				button::-moz-focus-inner {
 					border: 0;
 				}
-				button[disabled] {
-					cursor: default;
-					opacity: 0.5;
-				}
 				button[disabled]:hover > d2l-icon {
 					background-color: transparent;
 				}
