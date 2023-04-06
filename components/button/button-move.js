@@ -55,27 +55,27 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			 * Disables the down interaction
 			 * @type {boolean}
 			 */
-			disabledDown: { type: Boolean, attribute: 'disabled-down' },
+			disabledDown: { type: Boolean, attribute: 'disabled-down', reflect: true },
 			/**
 			 * Disables the end interaction
 			 * @type {boolean}
 			 */
-			disabledEnd: { type: Boolean, attribute: 'disabled-end' },
+			disabledEnd: { type: Boolean, attribute: 'disabled-end', reflect: true },
 			/**
 			 * Disables the home interaction
 			 * @type {boolean}
 			 */
-			disabledHome: { type: Boolean, attribute: 'disabled-home' },
+			disabledHome: { type: Boolean, attribute: 'disabled-home', reflect: true },
 			/**
 			 * Disables the left interaction
 			 * @type {boolean}
 			 */
-			disabledLeft: { type: Boolean, attribute: 'disabled-left' },
+			disabledLeft: { type: Boolean, attribute: 'disabled-left', reflect: true },
 			/**
 			 * Disables the right interaction
 			 * @type {boolean}
 			 */
-			disabledRight: { type: Boolean, attribute: 'disabled-right' },
+			disabledRight: { type: Boolean, attribute: 'disabled-right', reflect: true },
 			/**
 			 * Tooltip text when disabled
 			 * @type {string}
@@ -85,7 +85,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			 * Disables the up interaction
 			 * @type {boolean}
 			 */
-			disabledUp: { type: Boolean, attribute: 'disabled-up' },
+			disabledUp: { type: Boolean, attribute: 'disabled-up', reflect: true },
 			/**
 			 * REQUIRED: Accessible text for the button
 			 * @type {string}
