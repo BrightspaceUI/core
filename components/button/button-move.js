@@ -47,11 +47,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			description: { type: String },
 			/**
-			 * Disables the button
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
 			 * Disables the down interaction
 			 * @type {boolean}
 			 */
@@ -168,7 +163,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				button::-moz-focus-inner {
 					border: 0;
 				}
-				:host([disabled]) button {
+				button[disabled] {
 					cursor: default;
 					opacity: 0.5;
 				}
@@ -189,7 +184,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	constructor() {
 		super();
-		this.disabled = false;
 		/** @ignore */
 		this.autofocus = false;
 		/** @internal */
@@ -200,16 +194,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	static get focusElementSelector() {
 		return 'button';
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', this._handleClick, true);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('click', this._handleClick, true);
 	}
 
 	render() {
@@ -240,19 +224,12 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 		}));
 	}
 
-	_handleClick(e) {
-		if (this.disabled) {
-			e.stopPropagation();
-		}
-	}
-
 	_handleDownClick() {
 		if (this.disabledDown) return;
 		this._dispatchAction(moveActions.down);
 	}
 
 	_handleKeydown(e) {
-		if (this.disabled) return;
 
 		let action;
 		switch (e.keyCode) {
