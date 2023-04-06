@@ -5,13 +5,8 @@ export function getOpenEvent(page, selector) {
 }
 
 export async function open(page, selector) {
-	const openEvent = page.$eval(selector, (dropdown) => {
-		return new Promise((resolve) => {
-			dropdown.addEventListener('d2l-dropdown-open', resolve, { once: true });
-			dropdown.toggleOpen();
-		});
-	});
-
+	const openEvent = getOpenEvent(page, selector);
+	await page.$eval(selector, dropdown => dropdown.toggleOpen());
 	return openEvent;
 }
 
