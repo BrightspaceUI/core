@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { buttonStyles } from './button-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 const keyCodes = Object.freeze({
 	DOWN: 40,
@@ -31,7 +33,7 @@ export const moveActions = Object.freeze({
 /**
  * A button component that provides a move action via a single button.
  */
-class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
+class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -50,10 +52,40 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Disables the down interaction
+			 * @type {boolean}
+			 */
+			disabledDown: { type: Boolean, attribute: 'disabled-down' },
+			/**
+			 * Disables the end interaction
+			 * @type {boolean}
+			 */
+			disabledEnd: { type: Boolean, attribute: 'disabled-end' },
+			/**
+			 * Disables the home interaction
+			 * @type {boolean}
+			 */
+			disabledHome: { type: Boolean, attribute: 'disabled-home' },
+			/**
+			 * Disables the left interaction
+			 * @type {boolean}
+			 */
+			disabledLeft: { type: Boolean, attribute: 'disabled-left' },
+			/**
+			 * Disables the right interaction
+			 * @type {boolean}
+			 */
+			disabledRight: { type: Boolean, attribute: 'disabled-right' },
+			/**
 			 * Tooltip text when disabled
 			 * @type {string}
 			 */
 			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
+			 * Disables the up interaction
+			 * @type {boolean}
+			 */
+			disabledUp: { type: Boolean, attribute: 'disabled-up' },
 			/**
 			 * REQUIRED: Accessible text for the button
 			 * @type {string}
@@ -67,11 +99,21 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 		return [ buttonStyles,
 			css`
 				:host {
+					--d2l-button-move-background-color-focus: #ffffff;
+					--d2l-button-move-icon-background-color-hover: var(--d2l-color-mica);
+					--d2l-button-move-box-shadow-focus: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+					--d2l-icon-fill-color: var(--d2l-color-tungsten);
 					display: inline-block;
 					line-height: 0;
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				:host([theme="dark"]) {
+					--d2l-button-move-background-color-focus: #000000;
+					--d2l-button-move-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
+					--d2l-button-move-box-shadow-focus: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
+					--d2l-icon-fill-color: var(--d2l-color-sylvite);
 				}
 				button {
 					background-color: transparent;
@@ -90,11 +132,14 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 					width: 0.9rem;
 				}
 				button:focus {
-					background-color: #ffffff;
+					background-color: var(--d2l-button-move-background-color-focus);
 				}
 				button:hover > d2l-icon,
 				button:focus > d2l-icon {
-					background-color: var(--d2l-color-mica);
+					background-color: var(--d2l-button-move-icon-background-color-hover);
+				}
+				button:${unsafeCSS(getFocusPseudoClass())} {
+					box-shadow: var(--d2l-button-move-box-shadow-focus);
 				}
 				.up-icon {
 					border-top-left-radius: 0.3rem;
@@ -124,7 +169,6 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 					right: -0.2rem;
 				}
 
-
 				/* Firefox includes a hidden border which messes up button dimensions */
 				button::-moz-focus-inner {
 					border: 0;
@@ -135,6 +179,14 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 				}
 				button[disabled]:hover > d2l-icon {
 					background-color: transparent;
+				}
+				:host([disabled-up]) .up-icon,
+				:host([disabled-down]) .down-icon {
+					opacity: 0.5;
+				}
+				:host([disabled-up]) .up-layer,
+				:host([disabled-down]) .down-layer {
+					cursor: default;
 				}
 			`
 		];
@@ -206,31 +258,33 @@ class ButtonMove extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	_handleKeydown(e) {
+		if (this.disabled) return;
+
 		let action;
 		switch (e.keyCode) {
 			case keyCodes.UP:
-				action = moveActions.up;
+				if (!this.disabledUp) action = moveActions.up;
 				break;
 			case keyCodes.DOWN:
-				action = moveActions.down;
+				if (!this.disabledDown) action = moveActions.down;
 				break;
 			case keyCodes.LEFT:
-				action = moveActions.left;
+				if (!this.disabledLeft) action = moveActions.left;
 				break;
 			case keyCodes.RIGHT:
-				action = moveActions.right;
+				if (!this.disabledRight) action = moveActions.right;
 				break;
 			case keyCodes.HOME:
-				action = (e.ctrlKey ? moveActions.rootHome : moveActions.home);
+				if (!this.disabledHome) action = (e.ctrlKey ? moveActions.rootHome : moveActions.home);
 				break;
 			case keyCodes.END:
-				action = (e.ctrlKey ? moveActions.rootEnd : moveActions.end);
+				if (!this.disabledEnd) action = (e.ctrlKey ? moveActions.rootEnd : moveActions.end);
 				break;
 			default:
 				return;
 		}
 
-		this._dispatchAction(action);
+		if (action) this._dispatchAction(action);
 		e.preventDefault();
 		e.stopPropagation();
 
