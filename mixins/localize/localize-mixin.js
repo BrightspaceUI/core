@@ -106,7 +106,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		if (!value) return '';
 
 		let params = {};
-		if (arguments.length > 1 && arguments[1].constructor === Object) {
+		if (arguments.length > 1 && arguments[1]?.constructor === Object) {
 			// support for key-value replacements as a single arg
 			params = arguments[1];
 		} else {
