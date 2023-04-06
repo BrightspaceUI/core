@@ -254,6 +254,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleDownClick() {
+		if (this.disabledDown) return;
 		this._dispatchAction(moveActions.down);
 	}
 
@@ -291,6 +292,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleUpClick() {
+		if (this.disabledUp) return;
 		this._dispatchAction(moveActions.up);
 	}
 
