@@ -230,31 +230,6 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 
 };
 
-export const LocalizeStaticMixin = superclass => class extends _LocalizeMixinBase(superclass) {
-
-	static async getLocalizeResources(langs) {
-		let resolvedLang = fallbackLang;
-		const resolvedResources = Object.assign({}, this.resources[fallbackLang]);
-
-		langs.reverse().forEach((lang) => {
-			if (this.resources[lang]) {
-				resolvedLang = lang;
-				Object.assign(resolvedResources, this.resources[lang]);
-			}
-		});
-
-		return {
-			language: resolvedLang,
-			resources: resolvedResources
-		};
-	}
-
-	static get resources() {
-		return { 'en': {} };
-	}
-
-};
-
 export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
 
 const markupError = `localizeHTML() rich-text replacements must use localizeMarkup templates with only the following allowed elements: ${allowedTags}. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`;
