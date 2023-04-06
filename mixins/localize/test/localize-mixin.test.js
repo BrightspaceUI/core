@@ -285,6 +285,16 @@ describe('LocalizeMixin', () => {
 				errorSpy.restore();
 			});
 
+			it('should localize text without replacement arguments', () => {
+				const val = elem.localize('hello');
+				expect(val).to.equal('Hello {name}');
+			});
+
+			it('should localize text with undefined replacement arguments', () => {
+				const val = elem.localize('hello', undefined);
+				expect(val).to.equal('Hello {name}');
+			});
+
 			it('should localize text using object format', () => {
 				const val = elem.localize('hello', { name: 'Bill' });
 				expect(val).to.equal('Hello Bill');
