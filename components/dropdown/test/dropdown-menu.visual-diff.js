@@ -57,11 +57,11 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	it('with-header-footer-mobile', async function() {
-		console.log('before viewport');
-		await page.setViewport({ width: 300, height: 1200, deviceScaleFactor: 2 });
 		this.test.value = '#dropdown-menu-header-footer-mobile'; // Needed for retries
 		console.log('before open');
 		await open(page, '#dropdown-menu-header-footer-mobile');
+		console.log('before viewport');
+		await page.setViewport({ width: 300, height: 1200, deviceScaleFactor: 2 });
 		console.log('before screenshot');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		console.log('after screenshot');
