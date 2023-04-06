@@ -56,7 +56,7 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 ```html
 <script type="module">
   import { css, html, LitElement } from 'lit';
-  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
   import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
   import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 

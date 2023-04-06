@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../../components/demo/demo-page.js';
+			import '../../../components/inputs/input-checkbox.js';
+			import { css, html, LitElement } from 'lit';
+			import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
+			import { ifDefined } from 'lit/directives/if-defined.js';
+
+			class DemoInput extends LabelledMixin(LitElement) {
+				static get styles() {
+					return css`
+						:host {
+							disply: inline-block;
+						}
+						d2l-input-checkbox {
+							margin-bottom: 0;
+						}
+					`;
+				}
+				render() {
+					return html`
+						<d2l-input-checkbox aria-label="${ifDefined(this.label)}"></d2l-input-checkbox>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-input', DemoInput);
+
+			class DemoText extends LabelMixin(LitElement) {
+				static get properties() {
+					return {
+						text: { type: String }
+					};
+				}
+				static get styles() {
+					return css`
+						:host {
+							disply: inline-block;
+						}
+					`;
+				}
+				constructor() {
+					super();
+					this.text = '';
+				}
+				render() {
+					return html`
+						<span>${this.text}</span>
+					`;
+				}
+				updated(changedProperties) {
+					super.updated(changedProperties);
+					this.updateLabel(this.text);
+				}
+			}
+			customElements.define('d2l-demo-text', DemoText);
+
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="LabelMixin & LabelledMixin">
+
+			<h2>Default</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<table>
+						<tr>
+							<td><d2l-demo-input labelled-by="topping-1"></d2l-demo-input></td>
+							<td><span id="topping-1" class="d2l-label-text">Caramel</span></td>
+						</tr>
+						<tr>
+							<td><d2l-demo-input label="Sprinkles"></d2l-demo-input></td>
+							<td><span class="d2l-label-text">Sprinkles</span></td>
+						</tr>
+						<tr>
+							<td><d2l-demo-input labelled-by="topping-3"></d2l-demo-input></td>
+							<td><d2l-demo-text id="topping-3" class="d2l-label-text" text="Hard Chocolate Coating"></d2l-demo-text></td>
+						</tr>
+					</table>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

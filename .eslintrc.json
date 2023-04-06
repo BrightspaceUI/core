@@ -19,5 +19,13 @@
     "rules": {
       "quotes": 0
     }
+  },
+  {
+    "files": "mixins/demo/**.html",
+    "rules": {
+      "quotes": 0,
+      "no-undef": 0,
+      "indent": 0
+    }
   }]
 }

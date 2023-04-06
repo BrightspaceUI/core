@@ -1,10 +1,10 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
-import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
-import { InteractiveMixin } from '../../mixins/interactive-mixin.js';
+import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';

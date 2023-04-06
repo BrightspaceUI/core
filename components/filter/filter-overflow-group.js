@@ -3,7 +3,7 @@ import './filter-tags.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OverflowGroupMixin } from '../overflow-group/overflow-group-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 function createFilterItem(node) {
 	const dimensionSets = node.querySelectorAll('d2l-filter-dimension-set');

@@ -8,7 +8,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
@@ -412,7 +412,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 			await this._updateSize();
 			this._state = 'showing';
-			await this._updateComplete;
+			await this.updateComplete;
 
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();

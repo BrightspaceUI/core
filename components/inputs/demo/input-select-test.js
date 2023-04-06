@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 import { selectStyles } from '../input-select-styles.js';
 import { SkeletonMixin } from '../../../components/skeleton/skeleton-mixin.js';
 

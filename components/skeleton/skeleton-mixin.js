@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css } from 'lit';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
 // (and possibly elsewhere) to render a blank page

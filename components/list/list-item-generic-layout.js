@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable, isFocusable } from '../../helpers/focus.js';
-import { isInteractiveDescendant } from '../../mixins/interactive-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -100,7 +100,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				width: fit-content;
 			}
 
 			::slotted([slot="expand-collapse"]) {
