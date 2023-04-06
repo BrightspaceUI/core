@@ -9,6 +9,7 @@ class BaseController {
 		this._name = name;
 		this._options = options;
 		this._eventName = `d2l-subscribe-${this._name}`;
+		this._subscriptionComplete = Promise.resolve();
 	}
 }
 
@@ -111,7 +112,12 @@ export class EventSubscriberController extends BaseSubscriber {
 
 	hostConnected() {
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => this._subscribe());
+		this._subscriptionComplete = new Promise(resolve => {
+			requestAnimationFrame(() => {
+				this._subscribe();
+				resolve();
+			});
+		});
 	}
 
 	hostDisconnected() {

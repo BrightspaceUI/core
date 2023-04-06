@@ -64,8 +64,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
-		this._itemsShowingCount = 0;
-		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
 		this._childHasExpandCollapseToggle = false;
 
@@ -77,7 +75,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
+		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 	}
 
@@ -190,25 +188,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return items[index];
 	}
 
-	async _getItemsShowingCount() {
-		if (this.slot === 'nested') return this._itemsShowingCount;
-		else return this._getListItemsShowingTotalCount(false);
-	}
-
-	_getLastItemIndex() {
-		return this._itemsShowingCount - 1;
+	_getItemShowingCount() {
+		return this.getItems().length;
 	}
 
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
-	}
-
-	async _getListItemsShowingTotalCount(refresh) {
-		if (refresh) {
-			this._itemsShowingTotalCount = this.getItems().length;
-		}
-		return this._itemsShowingTotalCount;
 	}
 
 	_handleKeyDown(e) {
@@ -236,33 +222,26 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
 
-	_handleListItemsShowingCountChange() {
+	_handleListItemShowingCountChange() {
 		if (this.slot === 'nested') return;
 
 		// debounce the updates for first render case
-		if (this._updateItemsShowingTotalCountRequested) return;
+		if (this._updateItemShowingCountRequested) return;
 
-		this._updateItemsShowingTotalCountRequested = true;
-		setTimeout(async() => {
-			const oldCount = this._itemsShowingTotalCount;
-			const newCount = await this._getListItemsShowingTotalCount(true);
-			if (oldCount !== newCount) this._updatePagerCount(newCount);
-			this._updateItemsShowingTotalCountRequested = false;
+		this._updateItemShowingCountRequested = true;
+		setTimeout(() => {
+			this._updateItemShowingCount();
+			this._updateItemShowingCountRequested = false;
 		}, 0);
 	}
 
-	async _handleSlotChange(e) {
-		const items = this.getItems(e.target);
-		if (this._itemsShowingCount === items.length) return;
-		this._itemsShowingCount = items.length;
-
-		this._updatePagerCount(await this._getListItemsShowingTotalCount(true));
+	_handleSlotChange() {
+		this._updateItemShowingCount();
 
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-items-showing-count-change', {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
 			bubbles: true,
-			composed: true,
-			detail: { count: this._itemsShowingCount }
+			composed: true
 		}));
 	}
 
