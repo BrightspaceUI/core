@@ -20,7 +20,7 @@ Term values must conform to the [ICU Message Syntax](https://formatjs.io/docs/co
 
 ### Files
 
-Store localization resources in their own directory with nothing else in it. There should be one JavaScript file for each language.
+Store localization resources in their own directory with nothing else in it. There should be one JavaScript file for each supported locale.
 
 ```javascript
 // en.js
