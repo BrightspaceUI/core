@@ -96,7 +96,7 @@ Similarly `<em>` *emphasizes* a particular piece of text (browsers show this vis
 ```json
 {
   "myTerm": "This is <b>bold</b> but <em>not</em> all that <strong>important</strong>."
-};
+}
 ```
 
 #### Links
