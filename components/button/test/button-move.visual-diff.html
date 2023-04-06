@@ -11,14 +11,34 @@
 	<meta charset="UTF-8">
 </head>
 <body class="d2l-typography">
+
 	<div class="visual-diff">
-		<d2l-button-move id="normal" text="Reorder Item"></d2l-button-move>
+		<d2l-button-move id="normal-normal" text="Reorder Item"></d2l-button-move>
 	</div>
 	<div class="visual-diff">
-		<d2l-button-move id="disabled" text="Reorder Item" disabled></d2l-button-move>
+		<d2l-button-move id="normal-disabled-up" text="Reorder Item" disabled-up></d2l-button-move>
 	</div>
-	<div class="visual-diff" id="disabled-tooltip" style="height: 100px; padding: 0 90px; width: 20px;">
-		<d2l-button-move text="Reorder Item" disabled disabled-tooltip="Optional disabled tooltip"></d2l-button-move>
+	<div class="visual-diff">
+		<d2l-button-move id="normal-disabled-down" text="Reorder Item" disabled-down></d2l-button-move>
 	</div>
+	<div class="visual-diff">
+		<d2l-button-move id="normal-disabled" text="Reorder Item" disabled-up disabled-down disabled-left disabled-right disabled-home disabled-end></d2l-button-move>
+	</div>
+
+	<div class="visual-diff-dark" style="padding: 20px;">
+		<div class="visual-diff">
+			<d2l-button-move id="dark-normal" text="Reorder Item" theme="dark"></d2l-button-move>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-move id="dark-disabled-up" text="Reorder Item" theme="dark" disabled-up></d2l-button-move>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-move id="dark-disabled-down" text="Reorder Item" theme="dark" disabled-down></d2l-button-move>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-move id="dark-disabled" text="Reorder Item" theme="dark" disabled-up disabled-down disabled-left disabled-right disabled-home disabled-end></d2l-button-move>
+		</div>
+	</div>
+
 </body>
 </html>

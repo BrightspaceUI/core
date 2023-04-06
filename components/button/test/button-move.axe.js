@@ -9,12 +9,7 @@ describe('d2l-button-move', () => {
 	});
 
 	it('disabled', async() => {
-		const el = await fixture(html`<d2l-button-move text="Reorder Item" disabled></d2l-button-move>`);
-		await expect(el).to.be.accessible();
-	});
-
-	it('disabled-tooltip', async() => {
-		const el = await fixture(html`<d2l-button-move text="Reorder Item" disabled disabled-tooltip="tooltip text"></d2l-button-move>`);
+		const el = await fixture(html`<d2l-button-move text="Reorder Item" disabled-up disabled-down disabled-left disabled-right disabled-home disabled-end></d2l-button-move>`);
 		await expect(el).to.be.accessible();
 	});
 
