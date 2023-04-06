@@ -34,8 +34,7 @@ describe('d2l-button-move', () => {
 				{ name: 'disabled-down', selector: `#${category}-disabled-down` },
 				{ name: 'disabled-up-hover', selector: `#${category}-disabled-up`, action: selector => page.hover(selector) },
 				{ name: 'disabled-up-keyboard-focus', selector: `#${category}-disabled-up`, action: selector => focusWithKeyboard(page, selector) },
-				{ name: 'disabled-up-mouse-focus', selector: `#${category}-disabled-up`, action: selector => focusWithMouse(page, selector) },
-				{ name: 'disabled-tooltip', selector: `#${category}-disabled-tooltip`, action: selector => focusWithKeyboard(page, `${selector} d2l-button-move`) }
+				{ name: 'disabled-up-mouse-focus', selector: `#${category}-disabled-up`, action: selector => focusWithMouse(page, selector) }
 			].forEach(info => {
 
 				it(info.name, async function() {

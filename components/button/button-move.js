@@ -77,11 +77,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			disabledRight: { type: Boolean, attribute: 'disabled-right', reflect: true },
 			/**
-			 * Tooltip text when disabled
-			 * @type {string}
-			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
 			 * Disables the up interaction
 			 * @type {boolean}
 			 */
@@ -221,10 +216,9 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
-				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-label="${ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"
-				?disabled="${this.disabled && !this.disabledTooltip}"
+				?disabled="${this.disabledUp && this.disabledDown && this.disabledLeft && this.disabledRight && this.disabledHome && this.disabledEnd}"
 				id="${this._buttonId}"
 				@keydown="${this._handleKeydown}"
 				title="${ifDefined(this.text)}"
@@ -235,7 +229,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				<div class="down-layer" @click="${this._handleDownClick}"></div>
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
-		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 
