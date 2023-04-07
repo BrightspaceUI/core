@@ -16,7 +16,7 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
-		this._pageableInfo = { itemCount: null, itemShowingCount: 0 };
+		this._pageableInfo = null;
 		this._pageableEventSubscriber = new EventSubscriberController(this, 'pageable');
 		this._pageableIdSubscriber = new IdSubscriberController(this, 'pageable', { idPropertyName: 'pageableFor' });
 	}

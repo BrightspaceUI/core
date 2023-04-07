@@ -86,7 +86,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 	}
 
 	render() {
-		if (!this.hasMore) return nothing;
+		if (!this.hasMore || !this._pageableInfo) return nothing;
 		const { itemCount, itemShowingCount } = this._pageableInfo;
 
 		return html`
