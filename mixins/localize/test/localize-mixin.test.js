@@ -379,7 +379,7 @@ describe('LocalizeMixin', () => {
 			expect(renderToElem(defaultTags)).lightDom.to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(renderToElem(manual)).lightDom.to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
 			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
-			expect(renderToElem(badTemplate)).lightDom.to.equal('This is replaceable');
+			expect(renderToElem(badTemplate)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
 			expect(renderToElem(tooltip)).lightDom.to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(renderToElem(boldItalic)).lightDom.to.equal('This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized');
 			expect(renderToElem(pluralLink)).lightDom.to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
