@@ -72,6 +72,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		basic: 'The octopus has eight legs',
 		arguments: 'The {animalType} has {animalLegCount} legs',
 		richText: 'The octopus\'s name is <b>{octopusName}</b>',
+		escaped: `Bold octopus HTML: '<b>'{octopusName}'</b>'`,
 		select:
 `{bodyPart, select,
 	legs {The octopus has eight legs}
@@ -144,6 +145,13 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		key: 'richText',
 		arguments: {
 			octopusName: 'Larry'
+		}
+	},
+	{
+		name: 'Escaped',
+		key: 'escaped',
+		arguments: {
+			octopusName: 'Mary'
 		}
 	},
 	{
