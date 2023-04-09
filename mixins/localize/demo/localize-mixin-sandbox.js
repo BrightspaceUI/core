@@ -8,7 +8,6 @@ import '../../../components/menu/menu.js';
 import '../../../components/menu/menu-item.js';
 import { bodyCompactStyles, heading4Styles } from '../../../components/typography/styles.js';
 import { css, html, LitElement } from 'lit';
-/* eslint-disable-next-line no-unused-vars */
 import { generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin } from '../localize-mixin.js';
 import { parse } from '@formatjs/icu-messageformat-parser';
 
@@ -375,6 +374,9 @@ class Sandbox extends LocalizeMixin(LitElement) {
 			});
 		}
 	}
+
+	// hardcoded references so the imports are not removed
+	static _helpers = [ generateLink, generateTooltipHelp, localizeMarkup ];
 
 }
 
