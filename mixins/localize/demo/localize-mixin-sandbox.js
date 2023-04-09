@@ -263,7 +263,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 				</d2l-dropdown>
 			</div>
 		</h2>
-		<div id="result-text">${this._error || this.localizeHTML(this.selectedTemplate.key, { ...this.arguments, ...this.tags })}</div>
+		<div id="result-text">${this._error || this[localizeMethod](this.selectedTemplate.key, { ...this.arguments, ...this.tags })}</div>
 		`;
 	}
 
