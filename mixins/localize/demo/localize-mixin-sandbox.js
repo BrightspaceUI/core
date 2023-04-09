@@ -246,7 +246,9 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		<div ?hidden="${this._error}">
 			<h2 class="d2l-heading-4">Code</h2>
 			<d2l-code-view id="code" language="javascript">
-	this.${localizeMethod}('${this.selectedTemplate.key}'${renderedArgs.length ? `, {${renderedArgs.map(([k, val]) => `\n\t\t${k}: ${val.constructor === String && !this.tags[k] ? `'${val.toString()}'` : val.toString()}`).join(',')}\n}` : ''});
+				this.${localizeMethod}('${this.selectedTemplate.key}'${renderedArgs.length ? `, {${renderedArgs.map(([k, val]) => `
+					${k}: ${val.constructor === String && !this.tags[k] ? `'${val.toString()}'` : val.toString()}`).join(',')}
+				}` : ''});
 			</d2l-code-view>
 		</div>
 
