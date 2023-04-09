@@ -85,10 +85,12 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	other {The {animalType} has # legs}
 }`,
 		offset:
-`{octopusCount, plural, offset:1
+`{octopusCount, plural, offset:2
+	=0 {No octopuses have escaped through the drain.}
 	=1 {{octopusName} has escaped through the drain!}
-	one {{octopusName} and # other octopus have escaped through the drain!}
-	other {{octopusName} and # other octopuses have escaped through the drain!}
+	=2 {{octopusName} and {octopus2Name} have escaped through the drain!}
+	one {{octopusName}, {octopus2Name}, and # other octopus have escaped through the drain!}
+	other {{octopusName}, {octopus2Name}, and # other octopuses have escaped through the drain!}
 }`,
 		ordinal:
 `{rank, selectordinal,
@@ -174,7 +176,8 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		key: 'offset',
 		arguments: {
 			octopusCount: 2,
-			octopusName: 'Larry'
+			octopusName: 'Carrie',
+			octopus2Name: 'Harry'
 		}
 	},
 	{
