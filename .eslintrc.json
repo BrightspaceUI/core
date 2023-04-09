@@ -21,11 +21,9 @@
     }
   },
   {
-    "files": "mixins/demo/**.html",
+    "files": "**/demo/*",
     "rules": {
-      "quotes": 0,
-      "no-undef": 0,
-      "indent": 0
+      "quotes": 0
     }
   }]
 }

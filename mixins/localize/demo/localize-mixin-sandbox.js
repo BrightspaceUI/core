@@ -81,12 +81,13 @@ class Sandbox extends LocalizeMixin(LitElement) {
 }`,
 		plural:
 `{legCount, plural,
+	=0 {The {animalType} has no legs}
 	one {The {animalType} has # leg}
 	other {The {animalType} has # legs}
 }`,
 		offset:
 `{octopusCount, plural, offset:2
-	=0 {No octopuses have escaped through the drain.}
+	=0 {All octopuses are accounted for}
 	=1 {{octopusName} has escaped through the drain!}
 	=2 {{octopusName} and {octopus2Name} have escaped through the drain!}
 	one {{octopusName}, {octopus2Name}, and # other octopus have escaped through the drain!}
@@ -215,17 +216,13 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		return this.selectedTemplate.key === 'custom' ? this.shadowRoot.querySelector('#message').value : this.constructor.langResources[this.selectedTemplate.key];
 	}
 
-	firstUpdated() {
-		this.setVariables();
-	}
-
 	render() {
 
 		setTimeout(() => this.shadowRoot.querySelector('#code')?.forceUpdate(), 0);
 
-		const tags = this.variables.find(v => v.type === 'tag');
+		const tags = this.variables.find(v => v.type === 'tag') && Object.entries(this.tags).reduce((acc, [k, v]) => (acc[k] = eval(v)) && acc, {});
 		const localizeMethod = tags ? 'localizeHTML' : 'localize';
-		const renderedArgs = Object.entries(this.arguments).filter(([k, val]) => val && this.variables.find(v => v.name === k));
+		const renderedArgs = Object.entries({ ...this.arguments, ...this.tags }).filter(([k, val]) => val && this.variables.find(v => v.name === k));
 
 		return html`		
 		<div id="actions">
@@ -274,7 +271,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 				</d2l-dropdown>
 			</div>
 		</h2>
-		<div id="result-text">${this._error || this[localizeMethod](this.selectedTemplate.key, { ...this.arguments, ...this.tags })}</div>
+		<div id="result-text">${this._error || this[localizeMethod](this.selectedTemplate.key, { ...this.arguments, ...tags })}</div>
 		`;
 	}
 
@@ -298,8 +295,6 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	}
 
 	selectTemplate(key) {
-		//this.previousArgs = this.arguments;
-
 		this.selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
 		this.setVariables();
 		this.setArguments();
@@ -310,16 +305,16 @@ class Sandbox extends LocalizeMixin(LitElement) {
 			if (target.value === '') {
 				delete this.tags[target.name];
 				delete this.arguments[target.name];
-				this.requestUpdate();
-				return;
 			}
 			else {
 				this.tags[target.name] = (() => {
 					try {
-						return eval(`${target.value}`);
-					} catch (e) { return ; }
+						return eval(target.value) && target.value;
+					} catch (e) { return; }
 				})();
 			}
+			this.requestUpdate();
+			return;
 		}
 		this.arguments[target.name] = target.type === 'number' ? Number(target.value) : target.value;
 		this.requestUpdate();
@@ -337,7 +332,6 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	setCustomTemplate() {
 		this.selectTemplate('custom');
-		this.requestUpdate();
 	}
 
 	setVariables() {
@@ -382,7 +376,10 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	willUpdate(changedProperties) {
 		if (changedProperties.has('__resources')) {
 			Object.defineProperty(this.__resources, 'custom', {
-				get: () => ({ value: this.shadowRoot.querySelector('#message').value, language: this.__resources.basic.language }),
+				get: () => ({
+					value: this.shadowRoot.querySelector('#message').value,
+					language: this.__resources.basic.language
+				}),
 				configurable: true
 			});
 		}
