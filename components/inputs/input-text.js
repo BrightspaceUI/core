@@ -491,6 +491,13 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 					tooltip.updatePosition();
 				}
+			} else if (prop === 'type') {
+				const input = this.shadowRoot?.querySelector('.d2l-input');
+				setTimeout(() => {
+					if (input && this.value !== input.value) {
+						this._setValue(input.value, false);
+					}
+				}, 0);
 			}
 		});
 	}

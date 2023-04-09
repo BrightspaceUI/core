@@ -382,6 +382,15 @@ describe('d2l-input-text', () => {
 			expect(elem.value).to.equal('hello');
 		});
 
+		it('should change "value" property when input value is removed by type change', async() => {
+			const elem = await fixture(normalFixture);
+			elem.value = 'hello';
+			elem.type = 'number';
+			await elem.updateComplete;
+			await aTimeout(1);
+			expect(elem.value).to.equal('');
+		});
+
 		it('should NOT fire "change" event because of blur event', async() => {
 			const elem = await fixture(normalFixture);
 			let fired = false;
