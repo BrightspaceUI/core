@@ -589,7 +589,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this.focus();
 	}
 
-	_setValue(val, updateInput) {
+	async _setValue(val, updateInput) {
 
 		const oldVal = this.value;
 		this._prevValue = (oldVal === undefined) ? '' : oldVal;
@@ -606,6 +606,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		// input's value gets set from render(). So we manually reach in
 		// and update it when source of the change isn't the input itself.
 		if (updateInput) {
+			await this.updateComplete;
 			input.value = this.value;
 		}
 

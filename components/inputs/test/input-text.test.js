@@ -230,6 +230,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.required = true;
 			elem.value = 'hi';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
@@ -239,6 +240,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.minlength = 10;
 			elem.value = 'only nine';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('label must be at least 10 characters');
@@ -248,6 +250,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.minlength = 10;
 			elem.value = 'more than nine';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
@@ -265,6 +268,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.type = 'url';
 			elem.value = 'not a url';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('URL is not valid');
@@ -274,6 +278,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.type = 'url';
 			elem.value = 'https://aurl.ataninvalidtldthatdoesntactuallyexist';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.empty;
@@ -283,6 +288,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.type = 'email';
 			elem.value = 'not an email';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('Email is not valid');
@@ -292,6 +298,7 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(normalFixture);
 			elem.type = 'email';
 			elem.value = 'anemail@somedomain.ataninvalidtldthatdoesntactuallyexist';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.empty;
@@ -302,6 +309,7 @@ describe('d2l-input-text', () => {
 			elem.type = 'number';
 			elem.min = '10';
 			elem.value = '9';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be greater than or equal to 10.');
@@ -312,6 +320,7 @@ describe('d2l-input-text', () => {
 			elem.type = 'number';
 			elem.max = '100';
 			elem.value = '110';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be less than or equal to 100.');
@@ -323,6 +332,7 @@ describe('d2l-input-text', () => {
 			elem.min = '10';
 			elem.max = '100';
 			elem.value = '55';
+			await elem.updateComplete;
 
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
@@ -339,6 +349,18 @@ describe('d2l-input-text', () => {
 	});
 
 	describe('value', () => {
+
+		it('should update after other properties are updated', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" type="number" value="1"></d2l-input-text>`);
+			const input = getInput(elem);
+			elem.type = 'text';
+			elem.value = 'Text';
+			expect(input.type).to.equal('number');
+			expect(input.value).to.equal('1');
+			await elem.updateComplete;
+			expect(input.type).to.equal('text');
+			expect(input.value).to.equal('Text');
+		});
 
 		it('should fire uncomposed "change" event when input value changes', async() => {
 			const elem = await fixture(normalFixture);
