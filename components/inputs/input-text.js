@@ -599,7 +599,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (!input) return;
 
 		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
-		this.requestValidate(false);
 		this.setFormValue(this.value);
 
 		// Can't bind to input's value as Safari moves the cursor each time an
@@ -610,6 +609,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			input.value = this.value;
 		}
 
+		this.requestValidate(false);
 	}
 
 	_suppressEvent(e) {
