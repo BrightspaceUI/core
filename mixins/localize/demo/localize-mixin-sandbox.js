@@ -20,6 +20,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 			_error: { state: true }
 		};
 	}
+
 	static get styles() {
 		return [heading4Styles, bodyCompactStyles, css`
 			[hidden] {
@@ -143,11 +144,6 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		this.arguments = {};
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._selectTemplate(this.selectedTemplate);
-	}
-
 	static get localizeConfig() {
 		return {
 			importFunc: () => langResources
@@ -156,6 +152,11 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	get message() {
 		return this.selectedTemplate.key === 'custom' ? this.shadowRoot.querySelector('#message').value : langResources[this.selectedTemplate.key];
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this._selectTemplate(this.selectedTemplate);
 	}
 
 	render() {
@@ -236,6 +237,20 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		this._selectTemplate(target.dataset.template);
 	}
 
+	willUpdate(changedProperties) {
+		if (changedProperties.has('__resources')) {
+			Object.defineProperty(this.__resources, 'custom', {
+				get: () => ({
+					value: this.shadowRoot.querySelector('#message').value,
+					language: this.__resources.basic.language
+				}),
+				configurable: true
+			});
+		}
+	}
+
+	// hardcoded references so the imports are not removed
+	static _helpers = [ generateLink, generateTooltipHelp, localizeMarkup ];
 	_selectTemplate(key) {
 		this.selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
 		this._setVariables();
@@ -314,21 +329,6 @@ class Sandbox extends LocalizeMixin(LitElement) {
 			return vars;
 		})(ast, []);
 	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('__resources')) {
-			Object.defineProperty(this.__resources, 'custom', {
-				get: () => ({
-					value: this.shadowRoot.querySelector('#message').value,
-					language: this.__resources.basic.language
-				}),
-				configurable: true
-			});
-		}
-	}
-
-	// hardcoded references so the imports are not removed
-	static _helpers = [ generateLink, generateTooltipHelp, localizeMarkup ];
 
 }
 
