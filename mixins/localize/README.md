@@ -93,10 +93,16 @@ Remember that `<strong>` is for content of greater importance (browsers show thi
 
 Similarly `<em>` *emphasizes* a particular piece of text (browsers show this visually using italics), whereas `<i>` only italicizes the text visually without emphasis.
 
+Example:
+
 ```json
 {
   "myTerm": "This is <b>bold</b> but <em>not</em> all that <strong>important</strong>."
 }
+```
+
+```javascript
+this.localizeHTML('myTerm');
 ```
 
 #### Links
