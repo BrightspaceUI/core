@@ -69,8 +69,8 @@ If the localized string contains arguments, pass them as a key-value object as t
 
 ```javascript
 render() {
-  const message = this.localize('hello', { firstName: 'Mary' };
-  return html`<p>${message)}</p>`;
+  const message = this.localize('hello', { firstName: 'Mary' });
+  return html`<p>${message}</p>`;
 }
 ```
 
