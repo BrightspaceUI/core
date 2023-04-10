@@ -136,7 +136,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		const translatedMessage = new IntlMessageFormat(value, language);
 		let formattedMessage = value;
 		try {
-			formattedMessage = translatedMessage.format({
+			const unvalidated = translatedMessage.format({
 				b: chunks => localizeMarkup`<b>${chunks}</b>`,
 				br: () => localizeMarkup`<br>`,
 				em: chunks => localizeMarkup`<em>${chunks}</em>`,
@@ -145,7 +145,8 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 				strong: chunks => localizeMarkup`<strong>${chunks}</strong>`,
 				...params
 			});
-			validateMarkup(formattedMessage);
+			validateMarkup(unvalidated);
+			formattedMessage = unvalidated;
 		} catch (e) {
 			console.error(e);
 		}
