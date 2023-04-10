@@ -491,6 +491,13 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 					tooltip.updatePosition();
 				}
+			} else if (prop === 'type') {
+				const input = this.shadowRoot?.querySelector('.d2l-input');
+				setTimeout(() => {
+					if (input && this.value !== input.value) {
+						this._setValue(input.value, false);
+					}
+				}, 0);
 			}
 		});
 	}
@@ -589,7 +596,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this.focus();
 	}
 
-	_setValue(val, updateInput) {
+	async _setValue(val, updateInput) {
 
 		const oldVal = this.value;
 		this._prevValue = (oldVal === undefined) ? '' : oldVal;
@@ -599,16 +606,17 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (!input) return;
 
 		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
-		this.requestValidate(false);
 		this.setFormValue(this.value);
 
 		// Can't bind to input's value as Safari moves the cursor each time an
 		// input's value gets set from render(). So we manually reach in
 		// and update it when source of the change isn't the input itself.
 		if (updateInput) {
+			await this.updateComplete;
 			input.value = this.value;
 		}
 
+		this.requestValidate(false);
 	}
 
 	_suppressEvent(e) {
