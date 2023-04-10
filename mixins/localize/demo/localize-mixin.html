@@ -29,6 +29,10 @@
 				<d2l-sandbox selected-template="basic"></d2l-sandbox>
 			</d2l-demo-snippet>
 
+			<script>
+				document.querySelector('d2l-sandbox').addEventListener('d2l-sandbox-template-change', e => e.target.parentNode.forceCodeUpdate());
+			</script>
+
 		</d2l-demo-page>
 	</body>
 </html>

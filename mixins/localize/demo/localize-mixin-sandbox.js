@@ -16,7 +16,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			selectedTemplate: { type: String, attribute: 'selected-template' },
+			selectedTemplate: { type: String, attribute: 'selected-template', reflect: true },
 			_selectedTemplate: { state: true },
 			_error: { state: true }
 		};
@@ -219,6 +219,12 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.has('selectedTemplate')) {
+			this.dispatchEvent(new CustomEvent('d2l-sandbox-template-change'));
+		}
+	}
+
 	handleBuildGeneratorClick({ target }) {
 		target.parentElement.value = 'chunks => localizeMarkup`${chunks}`';
 		this._setArgument({ target: target.parentElement });
@@ -257,6 +263,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	// hardcoded references so the imports are not removed
 	static _helpers = [ generateLink, generateTooltipHelp, localizeMarkup ];
+
 	_selectTemplate(key) {
 		this.selectedTemplate = key;
 		this._selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
