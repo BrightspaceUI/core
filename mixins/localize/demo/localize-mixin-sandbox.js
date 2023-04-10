@@ -277,9 +277,8 @@ class Sandbox extends LocalizeMixin(LitElement) {
 					} catch (e) { return; }
 				})();
 			}
-			this.requestUpdate();
-			return;
 		}
+
 		this.arguments[target.name] = target.type === 'number' ? Number(target.value) : target.value;
 		this.requestUpdate();
 	}
