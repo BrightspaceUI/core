@@ -9,10 +9,10 @@ import '../../../components/menu/menu-item.js';
 import { bodyCompactStyles, heading4Styles } from '../../../components/typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin } from '../localize-mixin.js';
-import { langResources } from './lang/sandbox.js';
+import { langResources } from './lang/localize-sandbox.js';
 import { parse } from '@formatjs/icu-messageformat-parser';
 
-class Sandbox extends LocalizeMixin(LitElement) {
+class LocalizeSandbox extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -221,7 +221,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	updated(changedProperties) {
 		if (changedProperties.has('selectedTemplate')) {
-			this.dispatchEvent(new CustomEvent('d2l-sandbox-template-change'));
+			this.dispatchEvent(new CustomEvent('d2l-localize-sandbox-template-change'));
 		}
 	}
 
@@ -345,4 +345,4 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 }
 
-customElements.define('d2l-sandbox', Sandbox);
+customElements.define('d2l-localize-sandbox', LocalizeSandbox);

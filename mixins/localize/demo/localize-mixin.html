@@ -24,13 +24,13 @@
 				<d2l-mission></d2l-mission>
 			</d2l-demo-snippet>
 
-			<h2>Localize Mixin Sandbox</h2>
+			<h2>Sandbox</h2>
 			<d2l-demo-snippet>
-				<d2l-sandbox selected-template="basic"></d2l-sandbox>
+				<d2l-localize-sandbox selected-template="basic"></d2l-localize-sandbox>
 			</d2l-demo-snippet>
 
 			<script>
-				document.querySelector('d2l-sandbox').addEventListener('d2l-sandbox-template-change', e => e.target.parentNode.forceCodeUpdate());
+				document.querySelector('d2l-localize-sandbox').addEventListener('d2l-localize-sandbox-template-change', e => e.target.parentNode.forceCodeUpdate());
 			</script>
 
 		</d2l-demo-page>
