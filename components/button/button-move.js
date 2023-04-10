@@ -194,22 +194,23 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	render() {
 		return html`
-			<button
-				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
-				aria-label="${ifDefined(this.text)}"
-				?autofocus="${this.autofocus}"
-				?disabled="${this.disabledUp && this.disabledDown && this.disabledLeft && this.disabledRight && this.disabledHome && this.disabledEnd}"
-				id="${this._buttonId}"
-				@keydown="${this._handleKeydown}"
-				title="${ifDefined(this.text)}"
-				type="button">
-				<d2l-icon icon="tier1:arrow-toggle-up" class="up-icon"></d2l-icon>
-				<d2l-icon icon="tier1:arrow-toggle-down" class="down-icon"></d2l-icon>
-				<div class="up-layer" @click="${this._handleUpClick}"></div>
-				<div class="down-layer" @click="${this._handleDownClick}"></div>
-		</button>
-		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
-		`;
+			<div role="application">
+				<button
+					aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
+					aria-label="${ifDefined(this.text)}"
+					?autofocus="${this.autofocus}"
+					?disabled="${this.disabledUp && this.disabledDown && this.disabledLeft && this.disabledRight && this.disabledHome && this.disabledEnd}"
+					id="${this._buttonId}"
+					@keydown="${this._handleKeydown}"
+					title="${ifDefined(this.text)}"
+					type="button">
+					<d2l-icon icon="tier1:arrow-toggle-up" class="up-icon"></d2l-icon>
+					<d2l-icon icon="tier1:arrow-toggle-down" class="down-icon"></d2l-icon>
+					<div class="up-layer" @click="${this._handleUpClick}"></div>
+					<div class="down-layer" @click="${this._handleDownClick}"></div>
+			</button>
+			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
+		</div>`;
 	}
 
 	_dispatchAction(action) {
