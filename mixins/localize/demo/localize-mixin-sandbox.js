@@ -17,6 +17,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	static get properties() {
 		return {
 			selectedTemplate: { type: String, attribute: 'selected-template' },
+			_selectedTemplate: { state: true },
 			_error: { state: true }
 		};
 	}
@@ -151,7 +152,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	}
 
 	get message() {
-		return this.selectedTemplate.key === 'custom' ? this.shadowRoot.querySelector('#message').value : langResources[this.selectedTemplate.key];
+		return this._selectedTemplate.key === 'custom' ? this.shadowRoot.querySelector('#message').value : langResources[this._selectedTemplate.key];
 	}
 
 	connectedCallback() {
@@ -197,7 +198,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		<div ?hidden="${this._error}">
 			<h2 class="d2l-heading-4">Code</h2>
 			<d2l-code-view id="code" language="javascript">
-				this.${localizeMethod}('${this.selectedTemplate.key}'${renderedArgs.length ? `, {${renderedArgs.map(([k, val]) => `
+				this.${localizeMethod}('${this._selectedTemplate.key}'${renderedArgs.length ? `, {${renderedArgs.map(([k, val]) => `
 					${k}: ${val.constructor === String && !this.tags[k] ? `'${val.toString()}'` : val.toString()}`).join(',')}
 				}` : ''});
 			</d2l-code-view>
@@ -214,7 +215,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 				</d2l-dropdown>
 			</div>
 		</h2>
-		<div id="result-text">${this._error || this[localizeMethod](this.selectedTemplate.key, { ...this.arguments, ...tags })}</div>
+		<div id="result-text">${this._error || this[localizeMethod](this._selectedTemplate.key, { ...this.arguments, ...tags })}</div>
 		`;
 	}
 
@@ -238,6 +239,11 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	}
 
 	willUpdate(changedProperties) {
+
+		if (changedProperties.has('selectedTemplate')) {
+			this._selectTemplate(this.selectedTemplate);
+		}
+
 		if (changedProperties.has('__resources')) {
 			Object.defineProperty(this.__resources, 'custom', {
 				get: () => ({
@@ -252,7 +258,8 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	// hardcoded references so the imports are not removed
 	static _helpers = [ generateLink, generateTooltipHelp, localizeMarkup ];
 	_selectTemplate(key) {
-		this.selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
+		this.selectedTemplate = key;
+		this._selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
 		this._setVariables();
 		this._setArguments();
 	}
@@ -278,13 +285,13 @@ class Sandbox extends LocalizeMixin(LitElement) {
 	}
 
 	_setArguments() {
-		if (this.selectedTemplate.key === 'custom') {
+		if (this._selectedTemplate.key === 'custom') {
 			this.variables.forEach(({ name, type }) => {
 				if (type !== 'tag') this.arguments[name] ??= '';
 			});
 			return;
 		}
-		this.arguments = this.selectedTemplate.arguments || {};
+		this.arguments = this._selectedTemplate.arguments || {};
 	}
 
 	_setCustomTemplate() {
