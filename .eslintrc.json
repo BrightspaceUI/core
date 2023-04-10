@@ -14,14 +14,8 @@
   },
   {
     "files": [
-      "lang/*.js"
+      "**/lang/*.js"
     ],
-    "rules": {
-      "quotes": 0
-    }
-  },
-  {
-    "files": "**/demo/*",
     "rules": {
       "quotes": 0
     }
