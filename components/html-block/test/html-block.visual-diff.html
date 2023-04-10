@@ -221,7 +221,7 @@
 
 	<div class="visual-diff" style="width: 650px;">
 		<d2l-html-block id="math-inline" html="An equation...
-			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;
+			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34;&gt;
 				&lt;msup&gt;
 					&lt;mrow&gt;
 						&lt;mo&gt;(&lt;/mo&gt;
@@ -299,24 +299,29 @@
 
 	<div class="visual-diff" style="width: 400px;">
 		<d2l-html-block id="code-block" html="A grumpy bit of code...
-			&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
-				console.log(`Hi there ${name}.`);
-			}
-			helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;
+			&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;
+				function helloGrumpy(name) {
+					console.log(`Hi there ${name}.`);
+				}
+				helloGrumpy('Wizard');
+			&lt;/code&gt;&lt;/pre&gt;
 			...makes me smile.">
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="code-inline" html="The best type of donuts are he kind you assign in code, for example: &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;const jelly = 'donuts';lgt;/code&gt;. The next best type of thing you can assign in code is stuff you can ferment.">
+		<d2l-html-block id="code-inline" html="The best type of donuts are he kind you assign in code, for example: &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;const jelly = 'donuts';&lt;/code&gt;. The next best type of thing you can assign in code is stuff you can ferment.">
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff" style="width: 650px;">
-		<d2l-html-block id="math-block-and-code-block" html="&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
-				console.log(`Hi there ${name}.`);
-			}
-			helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;&quot;&gt;
+		<d2l-html-block id="math-block-and-code-block" html="
+			&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;
+				function helloGrumpy(name) {
+					console.log(`Hi there ${name}.`);
+				}
+				helloGrumpy('Wizard');
+			&lt;/code&gt;&lt;/pre&gt;
 			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;
 				&lt;msup&gt;
 					&lt;mrow&gt;
@@ -402,127 +407,6 @@
 				&lt;mo>=&lt;/mo&gt;
 				&lt;mn>0&lt;/mn&gt;
 			&lt;/math&gt;">
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="html-property" html="&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;mi&gt;x&lt;/mi&gt;
-			&lt;mo&gt;=&lt;/mo&gt;
-			&lt;mrow&gt;
-				&lt;mfrac&gt;
-					&lt;mrow&gt;
-						&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;
-						&lt;mi&gt;b&lt;/mi&gt;
-						&lt;mo&gt;&amp;#xB1;&lt;/mo&gt;
-						&lt;msqrt&gt;
-							&lt;msup&gt;
-								&lt;mi&gt;b&lt;/mi&gt;
-								&lt;mn&gt;2&lt;/mn&gt;
-							&lt;/msup&gt;
-							&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;
-							&lt;mn&gt;4&lt;/mn&gt;
-							&lt;mi&gt;a&lt;/mi&gt;
-							&lt;mi&gt;c&lt;/mi&gt;
-						&lt;/msqrt&gt;
-					&lt;/mrow&gt;
-					&lt;mrow&gt;
-						&lt;mn&gt;2&lt;/mn&gt;
-						&lt;mi&gt;a&lt;/mi&gt;
-					&lt;/mrow&gt;
-				&lt;/mfrac&gt;
-			&lt;/mrow&gt;
-			&lt;mtext&gt;.&lt;/mtext&gt;
-			&lt;mspace linebreak=&#34;newline&#34;&gt;&lt;/mspace&gt;
-			&lt;msup&gt;
-				&lt;mi&gt;e&lt;/mi&gt;
-				&lt;mrow&gt;
-					&lt;mi&gt;i&lt;/mi&gt;
-					&lt;mi&gt;π&lt;!-- π --&gt;&lt;/mi&gt;
-				&lt;/mrow&gt;
-			&lt;/msup&gt;
-			&lt;mo&gt;+&lt;/mo&gt;
-			&lt;mn&gt;1&lt;/mn&gt;
-			&lt;mo&gt;=&lt;/mo&gt;
-			&lt;mn&gt;0&lt;/mn&gt;
-			&lt;/math&gt;
-			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;
-				&lt;msup&gt;
-					&lt;mrow&gt;
-						&lt;mo&gt;(&lt;/mo&gt;
-						&lt;mrow&gt;
-							&lt;munderover&gt;
-								&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
-								&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
-									&lt;mi&gt;k&lt;/mi&gt;
-									&lt;mo&gt;=&lt;/mo&gt;
-									&lt;mn&gt;1&lt;/mn&gt;
-								&lt;/mrow&gt;
-								&lt;mi&gt;n&lt;/mi&gt;
-							&lt;/munderover&gt;
-							&lt;msub&gt;
-								&lt;mi&gt;a&lt;/mi&gt;
-								&lt;mi&gt;k&lt;/mi&gt;
-							&lt;/msub&gt;
-							&lt;msub&gt;
-								&lt;mi&gt;b&lt;/mi&gt;
-								&lt;mi&gt;k&lt;/mi&gt;
-							&lt;/msub&gt;
-						&lt;/mrow&gt;
-						&lt;mo&gt;)&lt;/mo&gt;
-					&lt;/mrow&gt;
-					&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
-						&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
-						&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
-						&lt;mn&gt;2&lt;/mn&gt;
-					&lt;/mrow&gt;
-				&lt;/msup&gt;
-				&lt;mo&gt;≤&lt;!-- ≤ --&gt;&lt;/mo&gt;
-				&lt;mrow&gt;
-					&lt;mo&gt;(&lt;/mo&gt;
-					&lt;mrow&gt;
-						&lt;munderover&gt;
-							&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
-							&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
-								&lt;mi&gt;k&lt;/mi&gt;
-								&lt;mo&gt;=&lt;/mo&gt;
-								&lt;mn&gt;1&lt;/mn&gt;
-							&lt;/mrow&gt;
-							&lt;mi&gt;n&lt;/mi&gt;
-						&lt;/munderover&gt;
-						&lt;msubsup&gt;
-							&lt;mi&gt;a&lt;/mi&gt;
-							&lt;mi&gt;k&lt;/mi&gt;
-							&lt;mn&gt;2&lt;/mn&gt;
-						&lt;/msubsup&gt;
-					&lt;/mrow&gt;
-					&lt;mo&gt;)&lt;/mo&gt;
-				&lt;/mrow&gt;
-				&lt;mrow&gt;
-					&lt;mo&gt;(&lt;/mo&gt;
-					&lt;mrow&gt;
-						&lt;munderover&gt;
-							&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
-							&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
-								&lt;mi&gt;k&lt;/mi&gt;
-								&lt;mo&gt;=&lt;/mo&gt;
-								&lt;mn&gt;1&lt;/mn&gt;
-							&lt;/mrow&gt;
-							&lt;mi&gt;n&lt;/mi&gt;
-						&lt;/munderover&gt;
-						&lt;msubsup&gt;
-							&lt;mi&gt;b&lt;/mi&gt;
-							&lt;mi&gt;k&lt;/mi&gt;
-							&lt;mn&gt;2&lt;/mn&gt;
-						&lt;/msubsup&gt;
-					&lt;/mrow&gt;
-					&lt;mo&gt;)&lt;/mo&gt;
-				&lt;/mrow&gt;
-			&lt;/math&gt;
-			&lt;div&gt;$$ {\color{red}x} + {\color{blue}y} = {\color{green}z} $$&lt;/div&gt;
-&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
-}
-helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 		</d2l-html-block>
 	</div>
 
