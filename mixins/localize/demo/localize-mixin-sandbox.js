@@ -16,8 +16,8 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			selectedTemplate: { type: String },
-			_error: { type: String }
+			selectedTemplate: { type: String, attribute: 'selected-template' },
+			_error: { state: true }
 		};
 	}
 	static get styles() {
@@ -141,7 +141,11 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		super();
 		this.tags = {};
 		this.arguments = {};
-		this.selectTemplate('basic');
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this._selectTemplate(this.selectedTemplate);
 	}
 
 	static get localizeConfig() {
@@ -174,18 +178,18 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		</div>
 		
 		<h2 class="d2l-heading-4">Message</h2>
-		<d2l-input-textarea id="message" label="Message" label-hidden @input="${this.setCustomTemplate}" value="${this.message}" max-rows="40" rows="3">
+		<d2l-input-textarea id="message" label="Message" label-hidden @input="${this._setCustomTemplate}" value="${this.message}" max-rows="40" rows="3">
 		</d2l-input-textarea>
 
 		<div ?hidden="${!this.variables.length}">
 			<h2 class="d2l-heading-4">Arguments</h2>
 			<div>${this.variables.map(({ name, type, defaultTag }) => (type === 'tag' ? html`
-				<d2l-input-text name="${name}" label="&lt;${name}&gt;${ defaultTag ? ' (default tag)' : ''}" value="${this.arguments[name]}" @input="${this.setArgument}" type="${type}">
+				<d2l-input-text name="${name}" label="&lt;${name}&gt;${ defaultTag ? ' (default tag)' : ''}" value="${this.arguments[name]}" @input="${this._setArgument}" type="${type}">
 					<d2l-button-icon slot="right" text="Generate a link" icon="tier1:link" @click="${this.handleGenerateLinkClick}"></d2l-button-icon>
 					<d2l-button-icon slot="right" text="Generate a tooltip" icon="tier1:messages" @click="${this.handleGenerateTooltipClick}"></d2l-button-icon>
 					<d2l-button-icon slot="right" text="Build a custom generator" icon="html-editor:source-editor" @click="${this.handleBuildGeneratorClick}"></d2l-button-icon>
 				</d2l-input-text>` : html`
-				<d2l-input-text type="${type}" name="${name}" label="{${name}}" value="${this.arguments[name]}" @input="${this.setArgument}"></d2l-input-text>`))}
+				<d2l-input-text type="${type}" name="${name}" label="{${name}}" value="${this.arguments[name]}" @input="${this._setArgument}"></d2l-input-text>`))}
 			</div>
 		</div>
 
@@ -215,30 +219,30 @@ class Sandbox extends LocalizeMixin(LitElement) {
 
 	handleBuildGeneratorClick({ target }) {
 		target.parentElement.value = 'chunks => localizeMarkup`${chunks}`';
-		this.setArgument({ target: target.parentElement });
+		this._setArgument({ target: target.parentElement });
 	}
 
 	handleGenerateLinkClick({ target }) {
 		target.parentElement.value = 'generateLink({ href: \'https://d2l.com\', target: \'_blank\' })';
-		this.setArgument({ target: target.parentElement });
+		this._setArgument({ target: target.parentElement });
 	}
 
 	handleGenerateTooltipClick({ target }) {
 		target.parentElement.value = 'generateTooltipHelp({ contents: \'Tooltip text\' })';
-		this.setArgument({ target: target.parentElement });
+		this._setArgument({ target: target.parentElement });
 	}
 
 	handleTemplateClick({ target }) {
-		this.selectTemplate(target.dataset.template);
+		this._selectTemplate(target.dataset.template);
 	}
 
-	selectTemplate(key) {
+	_selectTemplate(key) {
 		this.selectedTemplate = this.constructor.templates.find(t => t.key === key) || { key: 'custom' };
-		this.setVariables();
-		this.setArguments();
+		this._setVariables();
+		this._setArguments();
 	}
 
-	setArgument({ target }) {
+	_setArgument({ target }) {
 		if (target.type === 'tag') {
 			if (target.value === '') {
 				delete this.tags[target.name];
@@ -258,7 +262,7 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		this.requestUpdate();
 	}
 
-	setArguments() {
+	_setArguments() {
 		if (this.selectedTemplate.key === 'custom') {
 			this.variables.forEach(({ name, type }) => {
 				if (type !== 'tag') this.arguments[name] ??= '';
@@ -268,11 +272,11 @@ class Sandbox extends LocalizeMixin(LitElement) {
 		this.arguments = this.selectedTemplate.arguments || {};
 	}
 
-	setCustomTemplate() {
-		this.selectTemplate('custom');
+	_setCustomTemplate() {
+		this._selectTemplate('custom');
 	}
 
-	setVariables() {
+	_setVariables() {
 		this._error = null;
 		const ast = (() => {
 			try {
