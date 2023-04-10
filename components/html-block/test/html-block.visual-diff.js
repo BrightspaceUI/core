@@ -30,14 +30,12 @@ describe('d2l-html-block', () => {
 		{ name: 'inline-no-deferred-rendering', selector: '#inline-no-deferred-rendering' },
 		{ name: 'large-font-size', selector: '#large-font-size' },
 		{ name: 'overflowing', selector: '#overflowing' },
-		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.textContent = 'after update') },
+		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.html = 'after update') },
 		{ name: 'math (block)', selector: '#math-block' },
 		{ name: 'math (inline)', selector: '#math-inline' },
 		{ name: 'code (block)', selector: '#code-block' },
 		{ name: 'code (inline)', selector: '#code-inline' },
-		{ name: 'math (block) and code (block)', selector: '#math-block-and-code-block' },
-		{ name: 'using html property', selector: '#html-property' },
-		{ name: 'using both html property and slot', selector: '#html-property-and-slot' }
+		{ name: 'math (block) and code (block)', selector: '#math-block-and-code-block' }
 	].forEach((info) => {
 
 		it(info.name, async function() {
