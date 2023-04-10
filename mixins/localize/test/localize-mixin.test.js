@@ -1,38 +1,17 @@
-import { _LocalizeMixinBase, generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin, LocalizeStaticMixin } from '../localize-mixin.js';
+import { _LocalizeMixinBase, generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin } from '../localize-mixin.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { LitElement, render } from 'lit';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { stub } from 'sinon';
 
-const Test1LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin(superclass) {
-
-	static get resources() {
-		return {
-			'en': { 'test1': 'This is English from Test1LocalizeStaticMixin' },
-			'fr': { 'test1': 'This is French from Test1LocalizeStaticMixin' }
-		};
-	}
-
-};
-
-const Test2LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin(superclass) {
-
-	static get resources() {
-		return {
-			'en': { 'test2': 'This is English from Test2LocalizeStaticMixin' }
-		};
-	}
-
-};
-
-const Test3LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
+const Test1LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
 		return new Promise((resolve) => {
 			const langResources = {
-				'en': { 'test3': 'This is English from Test3LocalizeMixinBase' },
-				'fr': { 'test3': 'This is French from Test3LocalizeMixinBase' }
+				'en': { 'test3': 'This is English from Test1LocalizeMixinBase' },
+				'fr': { 'test3': 'This is French from Test1LocalizeMixinBase' }
 			};
 			for (let i = 0; i < langs.length; i++) {
 				if (langResources[langs[i]]) {
@@ -50,12 +29,12 @@ const Test3LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(su
 
 };
 
-const Test4LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
+const Test2LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
 		return new Promise((resolve) => {
 			const langResources = {
-				'en': { 'test4': 'This is English from Test4LocalizeMixinBase' }
+				'en': { 'test4': 'This is English from Test2LocalizeMixinBase' }
 			};
 			for (let i = 0; i < langs.length; i++) {
 				if (langResources[langs[i]]) {
@@ -133,26 +112,50 @@ const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 	}
 };
 
-const Test1LocalizeHTML = superclass => class extends LocalizeStaticMixin(superclass) {
-	static get resources() {
+const Test5LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+	static get localizeConfig() {
 		return {
-			en: {
-				test1: 'This is <strong>important</strong>, this is <strong><em>very important</em></strong>',
-				test2: 'This is <link>a link</link>',
-				test3: 'This is <link>replaceable</link>',
-				test4: 'This is a <tooltip>tooltip-help</tooltip> within a sentence',
-				test5: 'This is a <tooltip-help-1>tooltip helper</tooltip-help-1> within a sentence. Here is <tooltip-help-2>another</tooltip-help-2>.',
-				test6: 'This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized',
-				pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}',
-				typeChecker: '{a, select, true {T <em>{c}</em>} false {F - {b, date, medium}} other {O - {a}}}'
+			importFunc: (lang) => {
+				if (lang === 'fr') {
+					return { 'test1': 'This is French from Test5LocalizeMixin' };
+				}
+				return { 'test1': 'This is English from Test5LocalizeMixin' };
 			}
 		};
 	}
+};
 
+const Test6LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+	static get localizeConfig() {
+		return {
+			importFunc: () => {
+				return { 'test2': 'This is English from Test6LocalizeMixin' };
+			}
+		};
+	}
+};
+
+const Test1LocalizeHTML = superclass => class extends LocalizeMixin(superclass) {
+	static get localizeConfig() {
+		return {
+			importFunc: () => {
+				return {
+					test1: 'This is <strong>important</strong>, this is <strong><em>very important</em></strong>',
+					test2: 'This is <link>a link</link>',
+					test3: 'This is <link>replaceable</link>',
+					test4: 'This is a <tooltip>tooltip-help</tooltip> within a sentence',
+					test5: 'This is a <tooltip-help-1>tooltip helper</tooltip-help-1> within a sentence. Here is <tooltip-help-2>another</tooltip-help-2>.',
+					test6: 'This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized',
+					pluralTest: '{itemCount, plural, =0 {Cart is empty} =1 {You have {item} in your cart. <link>Checkout</link>} other {Items in your cart:<html></html><link>Checkout</link>}}',
+					typeChecker: '{a, select, true {T <em>{c}</em>} false {F - {b, date, medium}} other {O - {a}}}'
+				};
+			}
+		};
+	}
 };
 
 const multiMixinTagStatic = defineCE(
-	class extends Test1LocalizeStaticMixin(Test3LocalizeMixinBase(Test2LocalizeStaticMixin(Test4LocalizeMixinBase(LitElement)))) {
+	class extends Test5LocalizeMixin(Test1LocalizeMixinBase(Test6LocalizeMixin(Test2LocalizeMixinBase(LitElement)))) {
 
 	}
 );
@@ -493,7 +496,7 @@ describe('LocalizeMixin', () => {
 
 	});
 
-	describe('multiple localize and localize static mixin', () => {
+	describe('multiple localize mixins', () => {
 
 		const multiMixinFixtureStatic = `<${multiMixinTagStatic}></${multiMixinTagStatic}>`;
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
@@ -512,10 +515,10 @@ describe('LocalizeMixin', () => {
 			const val3 = elemStatic.localize('test3');
 			const val4 = elemStatic.localize('test4');
 
-			expect(val1).to.equal('This is English from Test1LocalizeStaticMixin');
-			expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
-			expect(val3).to.equal('This is English from Test3LocalizeMixinBase');
-			expect(val4).to.equal('This is English from Test4LocalizeMixinBase');
+			expect(val1).to.equal('This is English from Test5LocalizeMixin');
+			expect(val2).to.equal('This is English from Test6LocalizeMixin');
+			expect(val3).to.equal('This is English from Test1LocalizeMixinBase');
+			expect(val4).to.equal('This is English from Test2LocalizeMixinBase');
 		});
 
 		it('should localize text from inherited mixins', () => {
@@ -540,19 +543,19 @@ describe('LocalizeMixin', () => {
 			const val3Initial = elemStatic.localize('test3');
 			const val4Initial = elemStatic.localize('test4');
 
-			expect(val1Initial).to.equal('This is English from Test1LocalizeStaticMixin');
-			expect(val2Initial).to.equal('This is English from Test2LocalizeStaticMixin');
-			expect(val3Initial).to.equal('This is English from Test3LocalizeMixinBase');
-			expect(val4Initial).to.equal('This is English from Test4LocalizeMixinBase');
+			expect(val1Initial).to.equal('This is English from Test5LocalizeMixin');
+			expect(val2Initial).to.equal('This is English from Test6LocalizeMixin');
+			expect(val3Initial).to.equal('This is English from Test1LocalizeMixinBase');
+			expect(val4Initial).to.equal('This is English from Test2LocalizeMixinBase');
 			const myEventListener = () => {
 				const val1 = elemStatic.localize('test1');
 				const val2 = elemStatic.localize('test2');
 				const val3 = elemStatic.localize('test3');
 				const val4 = elemStatic.localize('test4');
-				expect(val1).to.equal('This is French from Test1LocalizeStaticMixin');
-				expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
-				expect(val3).to.equal('This is French from Test3LocalizeMixinBase');
-				expect(val4).to.equal('This is English from Test4LocalizeMixinBase');
+				expect(val1).to.equal('This is French from Test5LocalizeMixin');
+				expect(val2).to.equal('This is English from Test6LocalizeMixin');
+				expect(val3).to.equal('This is French from Test1LocalizeMixinBase');
+				expect(val4).to.equal('This is English from Test2LocalizeMixinBase');
 				elemStatic.removeEventListener('d2l-localize-resources-change', myEventListener);
 				done();
 			};
