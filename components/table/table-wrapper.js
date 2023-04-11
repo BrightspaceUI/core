@@ -343,7 +343,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	_getItems() {
-		return this._table?.querySelectorAll('tbody>tr:not(.d2l-table-header):not(tr[header])') || [];
+		return this._table?.querySelectorAll(':not(thead) > tr:not(.d2l-table-header):not([header])') || [];
 	}
 
 	_getItemShowingCount() {

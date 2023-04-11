@@ -18,8 +18,8 @@ const fruits = ['Apples', 'Oranges', 'Bananas'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
-	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
-	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
+	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: false },
+	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: false },
 	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
 	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
 	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
@@ -65,8 +65,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper>
-				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}">
+			<d2l-table-wrapper item-count="500">
+				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
 						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
@@ -86,14 +86,16 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
-						${[1, 2].map(() => html`
-							<tr>
-								<th scope="col" sticky></th>
-								${thText.map(text => html`<th scope="col">${text}</th>`)}
-							</tr>
-						`)}
 					</thead>
 					<tbody>
+						<tr class="d2l-table-header">
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
+						<tr header>
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
 								<th scope="row" sticky>
