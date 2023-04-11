@@ -215,9 +215,7 @@ class HtmlBlock extends LitElement {
 	}
 
 	render() {
-		if (this.html && this.noDeferredRendering) {
-			throw new Error('Cannot use html attribute with no-deferred-rendering.');
-		}
+		this._validateHtml();
 
 		const renderContainerClasses = {
 			'd2l-html-block-rendered': true,
@@ -308,6 +306,17 @@ class HtmlBlock extends LitElement {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 		renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
+	}
+
+	_validateHtml() {
+		if (this._validatingHtmlTimeout) clearTimeout(this._validatingHtmlTimeout);
+
+		this._validatingHtmlTimeout = setTimeout(() => {
+			this._validatingHtmlTimeout = undefined;
+			if (this.html && this.noDeferredRendering) {
+				throw new Error('<d2l-html-block>: Cannot use html attribute with no-deferred-rendering.');
+			}
+		}, 3000);
 	}
 
 }
