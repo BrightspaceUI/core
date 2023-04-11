@@ -314,7 +314,7 @@ class HtmlBlock extends LitElement {
 		this._validatingHtmlTimeout = setTimeout(() => {
 			this._validatingHtmlTimeout = undefined;
 			if (this.html && this.noDeferredRendering) {
-				throw new Error('<d2l-html-block>: Cannot use html attribute with no-deferred-rendering.');
+				throw new Error('<d2l-html-block>: "html" attribute is not supported with "no-deferred-rendering".');
 			}
 		}, 3000);
 	}
