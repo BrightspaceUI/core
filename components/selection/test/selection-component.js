@@ -30,7 +30,6 @@ class TestPageable extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		return html`<slot></slot>`;
 	}
-
 	_getItemByIndex() {
 		return null;
 	}
