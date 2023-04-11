@@ -18,7 +18,7 @@ export const dropdownContentStyles = css`
 		text-align: left;
 		top: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		width: 100%;
-		z-index: 1000; /* position on top of floating buttons */
+		z-index: 998; /* position on top of floating buttons */
 	}
 
 	:host([theme="dark"]) {

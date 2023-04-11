@@ -42,7 +42,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				position: -webkit-sticky;
 				position: sticky;
 				right: 0;
-				z-index: 999;
+				z-index: 997;
 			}
 
 			:host([_floating][always-float]) {

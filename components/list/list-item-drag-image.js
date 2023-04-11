@@ -88,7 +88,7 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitEl
 				position: absolute;
 				text-align: center;
 				top: 30px;
-				z-index: 1000; /* must be higher than the skeleton z-index (999) */
+				z-index: 998; /* must be higher than the skeleton z-index */
 			}
 			:host([dir="rtl"]) .count {
 				left: 14px;

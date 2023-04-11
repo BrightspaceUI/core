@@ -114,7 +114,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host([_fullscreen-within]) {
 				position: fixed; /* required for Safari */
-				z-index: 1000; /* must be greater than floating workflow buttons */
+				z-index: 998; /* must be greater than floating workflow buttons */
 			}
 
 			:host([dragging]) d2l-list-item-generic-layout {
