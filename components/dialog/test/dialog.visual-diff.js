@@ -31,6 +31,8 @@ describe('d2l-dialog', () => {
 				await reset(page, '#dialogRtl');
 				await reset(page, '#dialogResize');
 				await reset(page, '#dialogNoFooterContent');
+				await reset(page, '#dialogFullHeight');
+				await reset(page, '#dialogFullHeightNarrow');
 			});
 
 			[
@@ -135,6 +137,16 @@ describe('d2l-dialog', () => {
 							));
 						});
 					});
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+				});
+
+				it('full-height', async function() {
+					await open(page, '#dialogFullHeight');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+				});
+
+				it('full-height narrow', async function() {
+					await open(page, '#dialogFullHeightNarrow');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 

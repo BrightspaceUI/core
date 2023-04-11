@@ -34,6 +34,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			describeContent: { type: Boolean, attribute: 'describe-content' },
 
 			/**
+			 * Whether to render the dialog at the maximum height
+			 */
+			fullHeight: { type: Boolean, attribute: 'full-height' },
+
+			/**
 			 * The preferred width (unit-less) for the dialog
 			 */
 			width: { type: Number },
