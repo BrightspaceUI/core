@@ -84,6 +84,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		super();
 		this.async = false;
 		this.describeContent = false;
+		this.fullHeight = false;
 		this.width = 600;
 		this._handleResize = this._handleResize.bind(this);
 	}
