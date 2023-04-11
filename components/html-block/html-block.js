@@ -134,7 +134,6 @@ const getRenderers = async() => {
 
 /**
  * A component for displaying user-authored HTML.
- * @slot - Provide your user-authored HTML
  */
 class HtmlBlock extends LitElement {
 
