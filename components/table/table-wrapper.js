@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { PageableMixin } from '../paging/pageable-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
@@ -166,7 +167,7 @@ export const tableStyles = css`
  * @slot - Content to wrap
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  */
-export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
+export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -282,6 +283,8 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
+
 		// hack: grades/groups/outcomes in the LE use this CSS class on the
 		// body to apply special CSS to the page when tables are sticky
 		// Ideally they should be adding this class to the body.
@@ -333,6 +336,18 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
 		});
+	}
+
+	_getItemByIndex(index) {
+		return this._getItems()[index];
+	}
+
+	_getItems() {
+		return this._table?.querySelectorAll('tbody>tr:not(.d2l-table-header):not(tr[header])') || [];
+	}
+
+	_getItemShowingCount() {
+		return this._getItems().length;
 	}
 
 	async _handleControlsChange() {
@@ -404,6 +419,7 @@ export class TableWrapper extends RtlMixin(SelectionMixin(LitElement)) {
 	async _handleTableChange() {
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
+		this._updateItemShowingCount();
 		this._applyClassNames();
 		this._updateStickyTops();
 	}
