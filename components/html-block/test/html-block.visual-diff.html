@@ -26,64 +26,60 @@
 	</div>
 
 	<div class="visual-diff">
-		<d2l-html-block id="typography">
-			Just a text node...
-			<h1>heading 1</h1>
-			<h2>heading 2</h2>
-			<h3>heading 3</h3>
-			<h4>heading 4</h4>
-			<h5>heading 5</h5>
-			<h6>heading 6</h6>
-			<div><strong>strong</strong></div>
-			<div><b>bold</b></div>
-			<div>text</div>
-			<pre>preformatted</pre>
-			<p>paragraph</p>
-			<ul>
-				<li>unordered item 1</li>
-				<li>unordered item 2</li>
-			</ul>
-			<ol>
-				<li>ordered item 1</li>
-				<li>ordered item 2</li>
-			</ol>
-			<div><a href="https://d2l.com">anchor</a></div>
-			<p dir="rtl">rtl paragraph</p>
+		<d2l-html-block id="typography" html="Just a text node...
+			&lt;h1&gt;heading 1&lt;/h1&gt;
+			&lt;h2&gt;heading 2&lt;/h2&gt;
+			&lt;h3&gt;heading 3&lt;/h3&gt;
+			&lt;h4&gt;heading 4&lt;/h4&gt;
+			&lt;h5&gt;heading 5&lt;/h5&gt;
+			&lt;h6&gt;heading 6&lt;/h6&gt;
+			&lt;div&gt;&lt;strong&gt;strong&lt;/strong&gt;&lt;/div&gt;
+			&lt;div&gt;&lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;
+			&lt;div&gt;text&lt;/div&gt;
+			&lt;pre&gt;preformatted&lt;/pre&gt;
+			&lt;p&gt;paragraph&lt;/p&gt;
+			&lt;ul&gt;
+				&lt;li&gt;unordered item 1&lt;/li&gt;
+				&lt;li&gt;unordered item 2&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ol&gt;
+				&lt;li&gt;ordered item 1&lt;/li&gt;
+				&lt;li&gt;ordered item 2&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;div&gt;&lt;a href=&quot;https://d2l.com&quot;&gt;anchor&lt;/a&gt;&lt;/div&gt;
+			&lt;p dir=&quot;rtl&quot;&gt;rtl paragraph&lt;/p&gt;">
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-html-block id="compact" compact>
-			Just a text node...
-			<h1>heading 1</h1>
-			<h2>heading 2</h2>
-			<h3>heading 3</h3>
-			<h4>heading 4</h4>
-			<h5>heading 5</h5>
-			<h6>heading 6</h6>
-			<div><strong>strong</strong></div>
-			<div><b>bold</b></div>
-			<div>text</div>
-			<pre>preformatted</pre>
-			<p>paragraph</p>
-			<ul>
-				<li>unordered item 1</li>
-				<li>unordered item 2</li>
-			</ul>
-			<ol>
-				<li>ordered item 1</li>
-				<li>ordered item 2</li>
-			</ol>
-			<div><a href="https://d2l.com">anchor</a></div>
-			<p dir="rtl">rtl paragraph</p>
+		<d2l-html-block id="compact" compact html="Just a text node...
+			&lt;h1&gt;heading 1&lt;/h1&gt;
+			&lt;h2&gt;heading 2&lt;/h2&gt;
+			&lt;h3&gt;heading 3&lt;/h3&gt;
+			&lt;h4&gt;heading 4&lt;/h4&gt;
+			&lt;h5&gt;heading 5&lt;/h5&gt;
+			&lt;h6&gt;heading 6&lt;/h6&gt;
+			&lt;div&gt;&lt;strong&gt;strong&lt;/strong&gt;&lt;/div&gt;
+			&lt;div&gt;&lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;
+			&lt;div&gt;text&lt;/div&gt;
+			&lt;pre&gt;preformatted&lt;/pre&gt;
+			&lt;p&gt;paragraph&lt;/p&gt;
+			&lt;ul&gt;
+				&lt;li&gt;unordered item 1&lt;/li&gt;
+				&lt;li&gt;unordered item 2&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ol&gt;
+				&lt;li&gt;ordered item 1&lt;/li&gt;
+				&lt;li&gt;ordered item 2&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;div&gt;&lt;a href=&quot;https://d2l.com&quot;&gt;anchor&lt;/a&gt;&lt;/div&gt;
+			&lt;p dir=&quot;rtl&quot;&gt;rtl paragraph&lt;/p&gt;">
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff" id="inline" style="width: 500px;">
 		<span>Here's an inline html-block:</span>
-		<d2l-html-block inline>
-			I'm inline!
-		</d2l-html-block>
+		<d2l-html-block inline html="I'm inline!"></d2l-html-block>
 		<span>Pretty cool!</span>
 	</div>
 
@@ -96,355 +92,117 @@
 	</div>
 
 	<div class="visual-diff" style="width: 500px;">
-		<d2l-html-block id="large-font-size">
-			<div style="font-size: 42px;">
-				Just a text node...
-				<h1>heading 1</h1>
-				<h2>heading 2</h2>
-				<h3>heading 3</h3>
-				<h4>heading 4</h4>
-				<h5>heading 5</h5>
-				<h6>heading 6</h6>
-				<div><strong>strong</strong></div>
-				<div><b>bold</b></div>
-				<div>text</div>
-				<pre>preformatted</pre>
-				<p>paragraph</p>
-				<ul>
-					<li>unordered item 1</li>
-					<li>unordered item 2</li>
-				</ul>
-				<ol>
-					<li>ordered item 1</li>
-					<li>ordered item 2</li>
-				</ol>
-				<div><a href="https://d2l.com">anchor</a></div>
-				<p dir="rtl">rtl paragraph</p>
-			</div>
+		<d2l-html-block id="large-font-size" html="&lt;div style=&quot;font-size: 42px;&quot;&gt;
+			Just a text node...
+			&lt;h1&gt;heading 1&lt;/h1&gt;
+			&lt;h2&gt;heading 2&lt;/h2&gt;
+			&lt;h3&gt;heading 3&lt;/h3&gt;
+			&lt;h4&gt;heading 4&lt;/h4&gt;
+			&lt;h5&gt;heading 5&lt;/h5&gt;
+			&lt;h6&gt;heading 6&lt;/h6&gt;
+			&lt;div&gt;&lt;strong&gt;strong&lt;/strong&gt;&lt;/div&gt;
+			&lt;div&gt;&lt;b&gt;bold&lt;/b&gt;&lt;/div&gt;
+			&lt;div&gt;text&lt;/div&gt;
+			&lt;pre&gt;preformatted&lt;/pre&gt;
+			&lt;p&gt;paragraph&lt;/p&gt;
+			&lt;ul&gt;
+				&lt;li&gt;unordered item 1&lt;/li&gt;
+				&lt;li&gt;unordered item 2&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ol&gt;
+				&lt;li&gt;ordered item 1&lt;/li&gt;
+				&lt;li&gt;ordered item 2&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;div&gt;&lt;a href=&quot;https://d2l.com&quot;&gt;anchor&lt;/a&gt;&lt;/div&gt;
+			&lt;p dir=&quot;rtl&quot;&gt;rtl paragraph&lt;/p&gt;
+		&lt;/div&gt;">		
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff" style="width: 500px;">
-		<d2l-html-block id="overflowing">
-			<div style="border: 1px solid black; white-space: nowrap; width: 600px;">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam!
-			</div>
+		<d2l-html-block id="overflowing" html="&lt;div style=&quot;border: 1px solid black; white-space: nowrap; width: 600px;&quot;&gt;
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam!
+		&lt;/div&gt;">
 		</d2l-html-block>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-html-block id="update-content">
-			before update
-		</d2l-html-block>
+		<d2l-html-block id="update-content" html="before update"></d2l-html-block>
 	</div>
 
 	<div class="visual-diff" style="width: 650px;">
-		<d2l-html-block id="math-block">
-			<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-				<msup>
-					<mrow>
-						<mo>(</mo>
-						<mrow>
-							<munderover>
-								<mo>∑<!-- ∑ --></mo>
-								<mrow class="MJX-TeXAtom-ORD">
-									<mi>k</mi>
-									<mo>=</mo>
-									<mn>1</mn>
-								</mrow>
-								<mi>n</mi>
-							</munderover>
-							<msub>
-								<mi>a</mi>
-								<mi>k</mi>
-							</msub>
-							<msub>
-								<mi>b</mi>
-								<mi>k</mi>
-							</msub>
-						</mrow>
-						<mo>)</mo>
-					</mrow>
-					<mrow class="MJX-TeXAtom-ORD">
-						<mspace width="negativethinmathspace"></mspace>
-						<mspace width="negativethinmathspace"></mspace>
-						<mn>2</mn>
-					</mrow>
-				</msup>
-				<mo>≤<!-- ≤ --></mo>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>a</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>b</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-				<mspace linebreak="newline"></mspace>
-				<msup>
-					<mi>e</mi>
-					<mrow>
-						<mi>i</mi>
-						<mi>π<!-- π --></mi>
-					</mrow>
-				</msup>
-				<mo>+</mo>
-				<mn>1</mn>
-				<mo>=</mo>
-				<mn>0</mn>
-			</math>
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 650px;">
-		<d2l-html-block id="math-inline">
-			An equation...
-			<math xmlns="http://www.w3.org/1998/Math/MathML">
-				<msup>
-					<mrow>
-						<mo>(</mo>
-						<mrow>
-							<munderover>
-								<mo>∑<!-- ∑ --></mo>
-								<mrow class="MJX-TeXAtom-ORD">
-									<mi>k</mi>
-									<mo>=</mo>
-									<mn>1</mn>
-								</mrow>
-								<mi>n</mi>
-							</munderover>
-							<msub>
-								<mi>a</mi>
-								<mi>k</mi>
-							</msub>
-							<msub>
-								<mi>b</mi>
-								<mi>k</mi>
-							</msub>
-						</mrow>
-						<mo>)</mo>
-					</mrow>
-					<mrow class="MJX-TeXAtom-ORD">
-						<mspace width="negativethinmathspace"></mspace>
-						<mspace width="negativethinmathspace"></mspace>
-						<mn>2</mn>
-					</mrow>
-				</msup>
-				<mo>≤<!-- ≤ --></mo>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>a</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>b</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-			</math> embedded inline with text, and showing placement of indicies for summations.
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="code-block">
-			A grumpy bit of code...
-			<pre class="d2l-code d2l-code-dark"><code class="language-javascript">function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
-}
-helloGrumpy('Wizard');</code></pre>
-			...makes me smile.
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="code-inline">
-			The best type of donuts are he kind you assign in code, for example: <code class="d2l-code d2l-code-dark language-javascript">const jelly = 'donuts';</code>. The next best type of thing you can assign in code is stuff you can ferment.
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 650px;">
-		<d2l-html-block id="math-block-and-code-block">
-			<pre class="d2l-code d2l-code-dark"><code class="language-javascript">function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
-}
-helloGrumpy('Wizard');</code></pre>
-			<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-				<msup>
-					<mrow>
-						<mo>(</mo>
-						<mrow>
-							<munderover>
-								<mo>∑<!-- ∑ --></mo>
-								<mrow class="MJX-TeXAtom-ORD">
-									<mi>k</mi>
-									<mo>=</mo>
-									<mn>1</mn>
-								</mrow>
-								<mi>n</mi>
-							</munderover>
-							<msub>
-								<mi>a</mi>
-								<mi>k</mi>
-							</msub>
-							<msub>
-								<mi>b</mi>
-								<mi>k</mi>
-							</msub>
-						</mrow>
-						<mo>)</mo>
-					</mrow>
-					<mrow class="MJX-TeXAtom-ORD">
-						<mspace width="negativethinmathspace"></mspace>
-						<mspace width="negativethinmathspace"></mspace>
-						<mn>2</mn>
-					</mrow>
-				</msup>
-				<mo>≤<!-- ≤ --></mo>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>a</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-				<mrow>
-					<mo>(</mo>
-					<mrow>
-						<munderover>
-							<mo>∑<!-- ∑ --></mo>
-							<mrow class="MJX-TeXAtom-ORD">
-								<mi>k</mi>
-								<mo>=</mo>
-								<mn>1</mn>
-							</mrow>
-							<mi>n</mi>
-						</munderover>
-						<msubsup>
-							<mi>b</mi>
-							<mi>k</mi>
-							<mn>2</mn>
-						</msubsup>
-					</mrow>
-					<mo>)</mo>
-				</mrow>
-				<mspace linebreak="newline"></mspace>
-				<msup>
-					<mi>e</mi>
-					<mrow>
-						<mi>i</mi>
-						<mi>π<!-- π --></mi>
-					</mrow>
-				</msup>
-				<mo>+</mo>
-				<mn>1</mn>
-				<mo>=</mo>
-				<mn>0</mn>
-			</math>
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="html-property" html="&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;mi&gt;x&lt;/mi&gt;
-			&lt;mo&gt;=&lt;/mo&gt;
-			&lt;mrow&gt;
-				&lt;mfrac&gt;
+		<d2l-html-block id="math-block" html="&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;
+			&lt;msup&gt;
+				&lt;mrow&gt;
+					&lt;mo&gt;(&lt;/mo&gt;
 					&lt;mrow&gt;
-						&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;
-						&lt;mi&gt;b&lt;/mi&gt;
-						&lt;mo&gt;&amp;#xB1;&lt;/mo&gt;
-						&lt;msqrt&gt;
-							&lt;msup&gt;
-								&lt;mi&gt;b&lt;/mi&gt;
-								&lt;mn&gt;2&lt;/mn&gt;
-							&lt;/msup&gt;
-							&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;
-							&lt;mn&gt;4&lt;/mn&gt;
+						&lt;munderover&gt;
+							&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+							&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+								&lt;mi&gt;k&lt;/mi&gt;
+								&lt;mo&gt;=&lt;/mo&gt;
+								&lt;mn&gt;1&lt;/mn&gt;
+							&lt;/mrow&gt;
+							&lt;mi&gt;n&lt;/mi&gt;
+						&lt;/munderover&gt;
+						&lt;msub&gt;
 							&lt;mi&gt;a&lt;/mi&gt;
-							&lt;mi&gt;c&lt;/mi&gt;
-						&lt;/msqrt&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+						&lt;/msub&gt;
+						&lt;msub&gt;
+							&lt;mi&gt;b&lt;/mi&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+						&lt;/msub&gt;
 					&lt;/mrow&gt;
-					&lt;mrow&gt;
-						&lt;mn&gt;2&lt;/mn&gt;
+					&lt;mo&gt;)&lt;/mo&gt;
+				&lt;/mrow&gt;
+				&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+					&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
+					&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
+					&lt;mn&gt;2&lt;/mn&gt;
+				&lt;/mrow&gt;
+			&lt;/msup&gt;
+			&lt;mo&gt;≤&lt;!-- ≤ --&gt;&lt;/mo&gt;
+			&lt;mrow&gt;
+				&lt;mo&gt;(&lt;/mo&gt;
+				&lt;mrow&gt;
+					&lt;munderover&gt;
+						&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+						&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+							&lt;mo&gt;=&lt;/mo&gt;
+							&lt;mn&gt;1&lt;/mn&gt;
+						&lt;/mrow&gt;
+						&lt;mi&gt;n&lt;/mi&gt;
+					&lt;/munderover&gt;
+					&lt;msubsup&gt;
 						&lt;mi&gt;a&lt;/mi&gt;
-					&lt;/mrow&gt;
-				&lt;/mfrac&gt;
+						&lt;mi&gt;k&lt;/mi&gt;
+						&lt;mn&gt;2&lt;/mn&gt;
+					&lt;/msubsup&gt;
+				&lt;/mrow&gt;
+				&lt;mo&gt;)&lt;/mo&gt;
 			&lt;/mrow&gt;
-			&lt;mtext&gt;.&lt;/mtext&gt;
+			&lt;mrow&gt;
+				&lt;mo&gt;(&lt;/mo&gt;
+				&lt;mrow&gt;
+					&lt;munderover&gt;
+						&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+						&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+							&lt;mo&gt;=&lt;/mo&gt;
+							&lt;mn&gt;1&lt;/mn&gt;
+						&lt;/mrow&gt;
+						&lt;mi&gt;n&lt;/mi&gt;
+					&lt;/munderover&gt;
+					&lt;msubsup&gt;
+						&lt;mi&gt;b&lt;/mi&gt;
+						&lt;mi&gt;k&lt;/mi&gt;
+						&lt;mn&gt;2&lt;/mn&gt;
+					&lt;/msubsup&gt;
+				&lt;/mrow&gt;
+				&lt;mo&gt;)&lt;/mo&gt;
+			&lt;/mrow&gt;
 			&lt;mspace linebreak=&#34;newline&#34;&gt;&lt;/mspace&gt;
 			&lt;msup&gt;
 				&lt;mi&gt;e&lt;/mi&gt;
@@ -453,11 +211,112 @@ helloGrumpy('Wizard');</code></pre>
 					&lt;mi&gt;π&lt;!-- π --&gt;&lt;/mi&gt;
 				&lt;/mrow&gt;
 			&lt;/msup&gt;
-			&lt;mo&gt;+&lt;/mo&gt;
-			&lt;mn&gt;1&lt;/mn&gt;
-			&lt;mo&gt;=&lt;/mo&gt;
-			&lt;mn&gt;0&lt;/mn&gt;
-			&lt;/math&gt;
+			&lt;mo>+&lt;/mo&gt;
+			&lt;mn>1&lt;/mn&gt;
+			&lt;mo>=&lt;/mo&gt;
+			&lt;mn>0&lt;/mn&gt;
+		&lt;/math&gt;">
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 650px;">
+		<d2l-html-block id="math-inline" html="An equation...
+			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34;&gt;
+				&lt;msup&gt;
+					&lt;mrow&gt;
+						&lt;mo&gt;(&lt;/mo&gt;
+						&lt;mrow&gt;
+							&lt;munderover&gt;
+								&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+								&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+									&lt;mi&gt;k&lt;/mi&gt;
+									&lt;mo&gt;=&lt;/mo&gt;
+									&lt;mn&gt;1&lt;/mn&gt;
+								&lt;/mrow&gt;
+								&lt;mi&gt;n&lt;/mi&gt;
+							&lt;/munderover&gt;
+							&lt;msub&gt;
+								&lt;mi&gt;a&lt;/mi&gt;
+								&lt;mi&gt;k&lt;/mi&gt;
+							&lt;/msub&gt;
+							&lt;msub&gt;
+								&lt;mi&gt;b&lt;/mi&gt;
+								&lt;mi&gt;k&lt;/mi&gt;
+							&lt;/msub&gt;
+						&lt;/mrow&gt;
+						&lt;mo&gt;)&lt;/mo&gt;
+					&lt;/mrow&gt;
+					&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+						&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
+						&lt;mspace width=&#34;negativethinmathspace&#34;&gt;&lt;/mspace&gt;
+						&lt;mn&gt;2&lt;/mn&gt;
+					&lt;/mrow&gt;
+				&lt;/msup&gt;
+				&lt;mo&gt;≤&lt;!-- ≤ --&gt;&lt;/mo&gt;
+				&lt;mrow&gt;
+					&lt;mo&gt;(&lt;/mo&gt;
+					&lt;mrow&gt;
+						&lt;munderover&gt;
+							&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+							&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+								&lt;mi&gt;k&lt;/mi&gt;
+								&lt;mo&gt;=&lt;/mo&gt;
+								&lt;mn&gt;1&lt;/mn&gt;
+							&lt;/mrow&gt;
+							&lt;mi&gt;n&lt;/mi&gt;
+						&lt;/munderover&gt;
+						&lt;msubsup&gt;
+							&lt;mi&gt;a&lt;/mi&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+							&lt;mn&gt;2&lt;/mn&gt;
+						&lt;/msubsup&gt;
+					&lt;/mrow&gt;
+					&lt;mo&gt;)&lt;/mo&gt;
+				&lt;/mrow&gt;
+				&lt;mrow&gt;
+					&lt;mo&gt;(&lt;/mo&gt;
+					&lt;mrow&gt;
+						&lt;munderover&gt;
+							&lt;mo&gt;∑&lt;!-- ∑ --&gt;&lt;/mo&gt;
+							&lt;mrow class=&#34;MJX-TeXAtom-ORD&#34;&gt;
+								&lt;mi&gt;k&lt;/mi&gt;
+								&lt;mo&gt;=&lt;/mo&gt;
+								&lt;mn&gt;1&lt;/mn&gt;
+							&lt;/mrow&gt;
+							&lt;mi&gt;n&lt;/mi&gt;
+						&lt;/munderover&gt;
+						&lt;msubsup&gt;
+							&lt;mi&gt;b&lt;/mi&gt;
+							&lt;mi&gt;k&lt;/mi&gt;
+							&lt;mn&gt;2&lt;/mn&gt;
+						&lt;/msubsup&gt;
+					&lt;/mrow&gt;
+					&lt;mo&gt;)&lt;/mo&gt;
+				&lt;/mrow&gt;
+			&lt;/math&gt; embedded inline with text, and showing placement of indicies for summations.">
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 400px;">
+		<d2l-html-block id="code-block" html="A grumpy bit of code...
+			&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
+	console.log(`Hi there ${name}.`);
+}
+helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;
+			...makes me smile.">
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 400px;">
+		<d2l-html-block id="code-inline" html="The best type of donuts are he kind you assign in code, for example: &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;const jelly = 'donuts';&lt;/code&gt;. The next best type of thing you can assign in code is stuff you can ferment.">
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 650px;">
+		<d2l-html-block id="math-block-and-code-block" html="&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
+	console.log(`Hi there ${name}.`);
+}
+helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;
 			&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;
 				&lt;msup&gt;
 					&lt;mrow&gt;
@@ -530,18 +389,19 @@ helloGrumpy('Wizard');</code></pre>
 					&lt;/mrow&gt;
 					&lt;mo&gt;)&lt;/mo&gt;
 				&lt;/mrow&gt;
-			&lt;/math&gt;
-			&lt;div&gt;$$ {\color{red}x} + {\color{blue}y} = {\color{green}z} $$&lt;/div&gt;
-&lt;pre class=&#34;d2l-code d2l-code-dark&#34;&gt;&lt;code class=&#34;language-javascript&#34;&gt;function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
-}
-helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
-		</d2l-html-block>
-	</div>
-
-	<div class="visual-diff" style="width: 400px;">
-		<d2l-html-block id="html-property-and-slot" html="&lt;div&gt;I should not be visible!&lt;div&gt;">
-			<div>I should be visible!</div>
+				&lt;mspace linebreak=&#34;newline&#34;&gt;&lt;/mspace&gt;
+				&lt;msup&gt;
+					&lt;mi&gt;e&lt;/mi&gt;
+					&lt;mrow&gt;
+						&lt;mi&gt;i&lt;/mi&gt;
+						&lt;mi&gt;π&lt;!-- π --&gt;&lt;/mi&gt;
+					&lt;/mrow&gt;
+				&lt;/msup&gt;
+				&lt;mo>+&lt;/mo&gt;
+				&lt;mn>1&lt;/mn&gt;
+				&lt;mo>=&lt;/mo&gt;
+				&lt;mn>0&lt;/mn&gt;
+			&lt;/math&gt;">
 		</d2l-html-block>
 	</div>
 

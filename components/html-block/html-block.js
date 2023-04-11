@@ -134,7 +134,6 @@ const getRenderers = async() => {
 
 /**
  * A component for displaying user-authored HTML.
- * @slot - Provide your user-authored HTML
  */
 class HtmlBlock extends LitElement {
 
@@ -194,7 +193,6 @@ class HtmlBlock extends LitElement {
 		this.html = '';
 		this.inline = false;
 		this.noDeferredRendering = false;
-		this._hasSlottedContent = false;
 
 		this._contextObserverControllerResolve = undefined;
 		this._contextObserverControllerInitialized = new Promise(resolve => {
@@ -210,33 +208,14 @@ class HtmlBlock extends LitElement {
 		});
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-
-		if (!this._contentObserver || this.noDeferredRendering) return;
-
-		const slot = this.shadowRoot.querySelector('slot');
-		if (slot) {
-			const slottedNodes = slot.assignedNodes({ flatten: true });
-			this._hasSlottedContent = this._hasSlottedElements(slottedNodes);
-
-			slottedNodes.forEach(
-				node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
-			);
-		}
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (this._contentObserver) this._contentObserver.disconnect();
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._updateContextKeys();
 	}
 
 	render() {
+		this._validateHtml();
+
 		const renderContainerClasses = {
 			'd2l-html-block-rendered': true,
 			'd2l-html-block-compact': this.compact
@@ -244,17 +223,17 @@ class HtmlBlock extends LitElement {
 
 		return html`
 			<div class="${classMap(renderContainerClasses)}"></div>
-			<slot @slotchange="${this._handleSlotChange}"></slot>
+			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
 		`;
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this._hasSlottedContent) {
+		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 		if (await this._contextChanged()) {
-			if (this._hasSlottedContent) this._render();
+			if (this.noDeferredRendering) this._renderInline();
 			else if (this.html !== undefined && this.html !== null) {
 				await this._updateRenderContainer();
 			}
@@ -279,22 +258,8 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _handleSlotChange(e) {
-		if (!e.target || !this.shadowRoot) return;
-		const slot = this.shadowRoot.querySelector('slot');
-		const slottedNodes = slot.assignedNodes({ flatten: true });
-
-		if (!this.html && this._hasSlottedElements(slottedNodes)) {
-			this._hasSlottedContent = true;
-			await this._render(e.target);
-		} else {
-			this._hasSlottedContent = false;
-		}
-	}
-
-	_hasSlottedElements(slottedNodes) {
-		if (!slottedNodes || slottedNodes.length === 0) return false;
-		if (slottedNodes.filter(node => node.nodeType === Node.ELEMENT_NODE || node.textContent).length === 0) return false;
-		return true;
+		if (!e.target || !this.shadowRoot || !this.noDeferredRendering) return;
+		await this._renderInline(e.target);
 	}
 
 	async _processRenderers(elem) {
@@ -316,11 +281,6 @@ class HtmlBlock extends LitElement {
 		}
 	}
 
-	async _render(slot) {
-		if (this.noDeferredRendering) await this._renderInline(slot);
-		else this._stamp(slot);
-	}
-
 	async _renderInline(slot) {
 		if (!this.shadowRoot) return;
 		if (!slot) slot = this.shadowRoot.querySelector('slot');
@@ -330,32 +290,6 @@ class HtmlBlock extends LitElement {
 
 		if (!noDeferredRenderingContainer) return;
 		await this._processRenderers(noDeferredRenderingContainer);
-	}
-
-	_stamp(slot) {
-		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-
-		const stampHTML = async nodes => {
-			renderContainer.innerHTML = '';
-			if (!nodes || nodes.length === 0) return;
-
-			// Nodes must be cloned into the render container before processing, as
-			// some renderers require connected nodes (e.g. MathJax).
-			nodes.forEach(node => renderContainer.appendChild(node.cloneNode(true)));
-			await this._processRenderers(renderContainer);
-		};
-
-		if (this._contentObserver) this._contentObserver.disconnect();
-
-		if (!slot) slot = this.shadowRoot.querySelector('slot');
-		const slottedNodes = slot.assignedNodes({ flatten: true });
-
-		this._contentObserver = new MutationObserver(() => stampHTML(slottedNodes));
-		slottedNodes.forEach(
-			node => this._contentObserver.observe(node, { attributes: true, childList: true, subtree: true })
-		);
-
-		stampHTML(slottedNodes);
 	}
 
 	_updateContextKeys() {
@@ -371,6 +305,17 @@ class HtmlBlock extends LitElement {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 		renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
+	}
+
+	_validateHtml() {
+		if (this._validatingHtmlTimeout) clearTimeout(this._validatingHtmlTimeout);
+
+		this._validatingHtmlTimeout = setTimeout(() => {
+			this._validatingHtmlTimeout = undefined;
+			if (this.html && this.noDeferredRendering) {
+				throw new Error('<d2l-html-block>: "html" attribute is not supported with "no-deferred-rendering".');
+			}
+		}, 3000);
 	}
 
 }
