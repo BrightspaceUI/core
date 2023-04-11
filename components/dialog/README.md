@@ -71,6 +71,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 |--|--|--|
 | `title-text` | String, required | Text displayed in the header of the dialog |
 | `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
+| `full-height` | Boolean | Whether to render the dialog at the maximum height |
 | `opened` | Boolean | Whether or not the dialog is open |
 | `width` | Number, default: `600` | The preferred width (unit-less) for the dialog |
 

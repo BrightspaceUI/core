@@ -43,10 +43,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_autoSize: { state: true },
-			_fullHeight: { state: true },
 			_fullscreenWithin: { state: true },
 			_height: { state: true },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
+			_isFullHeight: { state: true },
 			_left: { state: true },
 			_margin: { state: true },
 			_nestedShowing: { state: true },
@@ -66,24 +66,24 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
-		this._fullHeight = false;
 		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
+		this._isFullHeight = false;
 		this._height = 0;
-		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
-		this._parentDialog = null;
-		this._nestedShowing = false;
-		this._state = null;
 		this._left = 0;
+		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
+		this._nestedShowing = false;
 		this._overflowBottom = false;
 		this._overflowTop = false;
+		this._parentDialog = null;
 		this._scroll = false;
+		this._state = null;
 		this._top = 0;
-		this._width = 0;
-		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
-		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
+		this._updateSize = this._updateSize.bind(this);
+		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
+		this._width = 0;
 	}
 
 	async connectedCallback() {
@@ -252,24 +252,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			: window.innerHeight - this._margin.top - this._margin.bottom;
 		let preferredHeight = 2;
 
-		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
-		if (header) preferredHeight += Math.ceil(header.getBoundingClientRect().height);
+		if (this.fullHeight) {
+			preferredHeight = 2 * this._width;
+		} else {
+			const header = this.shadowRoot.querySelector('.d2l-dialog-header');
+			if (header) preferredHeight += Math.ceil(header.getBoundingClientRect().height);
 
-		const contentOuter = this.shadowRoot.querySelector('.d2l-dialog-content');
-		const content = this.shadowRoot.querySelector('.d2l-dialog-content > div');
+			const contentOuter = this.shadowRoot.querySelector('.d2l-dialog-content');
+			const content = this.shadowRoot.querySelector('.d2l-dialog-content > div');
 
-		/* required to properly calculate the preferred height when there are top
-		margins at the beginning of slotted content */
-		if (contentOuter && content) {
-			const offsetDiff = content.offsetTop - contentOuter.offsetTop;
-			preferredHeight += content.offsetHeight + offsetDiff;
+			/* required to properly calculate the preferred height when there are top
+			margins at the beginning of slotted content */
+			if (contentOuter && content) {
+				const offsetDiff = content.offsetTop - contentOuter.offsetTop;
+				preferredHeight += content.offsetHeight + offsetDiff;
+			}
+
+			const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
+			if (footer) preferredHeight += Math.ceil(footer.getBoundingClientRect().height);
 		}
 
-		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
-		if (footer) preferredHeight += Math.ceil(footer.getBoundingClientRect().height);
-
 		const exceedsHeight = preferredHeight > availableHeight;
-		this._fullHeight = !this._ifrauContextInfo && exceedsHeight;
+		this._isFullHeight = !this._ifrauContextInfo && exceedsHeight;
 
 		const height = exceedsHeight ? availableHeight : preferredHeight;
 		return height;
@@ -448,7 +452,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
 			if (this._ifrauContextInfo) styles.bottom = 'auto';
 			if (this._left) styles.left = `${this._left}px`;
-			if (this._height && !this._fullHeight) styles.height = `${this._height}px`;
+			if (this._height && !this._isFullHeight) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
 		} else if (iframeTopOverride && this._ifrauContextInfo) {
@@ -457,7 +461,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		const dialogOuterClasses = {
 			'd2l-dialog-outer': true,
-			'd2l-dialog-outer-full-height': this._autoSize && this._fullHeight,
+			'd2l-dialog-outer-full-height': this._autoSize && this._isFullHeight,
 			'd2l-dialog-outer-overflow-bottom': this._overflowBottom,
 			'd2l-dialog-outer-overflow-top': this._overflowTop,
 			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
