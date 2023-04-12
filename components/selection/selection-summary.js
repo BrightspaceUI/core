@@ -50,10 +50,13 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	}
 
 	_updateSelectSummary() {
-		if (this._provider && this._provider.selectionSingle) return;
+		if (this._provider?.selectionSingle) {
+			this._summary = null;
+			return;
+		}
 
 		let count;
-		if (this._provider && this._provider.selectionCountOverride !== undefined) {
+		if (this._provider?.selectionCountOverride !== undefined) {
 			count = this._provider.selectionCountOverride;
 			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
 				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
@@ -62,7 +65,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			 * If lazy loading is not supported (ex. d2l-table-wrapper), then skip this.
 			 */
 			let includePlus = false;
-			if (this._provider && this._provider._getLazyLoadItems) {
+			if (this._provider?._getLazyLoadItems) {
 				const lazyLoadListItems = this._provider._getLazyLoadItems();
 				if (lazyLoadListItems.size > 0) {
 					for (const selectedItemKey of this.selectionInfo.keys) {
@@ -74,7 +77,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 				}
 			}
 
-			count = this.selectionInfo.state === SelectionInfo.states.allPages ?
+			count = (this._provider && this.selectionInfo.state === SelectionInfo.states.allPages) ?
 				this._provider.itemCount : this.selectionInfo.keys.length;
 
 			if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
