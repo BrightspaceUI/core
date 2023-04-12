@@ -16,6 +16,7 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		this._itemShowingCount = 0;
 		this._pageableSubscriberRegistry = new SubscriberRegistryController(this, 'pageable', {
 			onSubscribe: this._updatePageableSubscriber.bind(this),
+			onUnsubscribe: this._clearPageableSubscriber.bind(this),
 			updateSubscribers: this._updatePageableSubscribers.bind(this)
 		});
 	}
@@ -31,6 +32,10 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		if (changedProperties.has('itemCount') || changedProperties.has('_itemShowingCount')) {
 			this._pageableSubscriberRegistry.updateSubscribers();
 		}
+	}
+
+	_clearPageableSubscriber(subscriber) {
+		subscriber._pageableInfo = null;
 	}
 
 	/* must be implemented by consumer */

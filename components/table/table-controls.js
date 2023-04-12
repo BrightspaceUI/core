@@ -1,6 +1,4 @@
-import '../selection/selection-select-all-pages.js';
-import '../selection/selection-summary.js';
-import { css, html, nothing } from 'lit';
+import { css } from 'lit';
 import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
@@ -30,19 +28,13 @@ class TableControls extends SelectionControls {
 		`];
 	}
 
-	_getSelectionControlsLabel() {
-		return this.localize('components.table-controls.label');
+	constructor() {
+		super();
+		this._noSelectAll = true;
 	}
 
-	_renderSelection() {
-		return html`
-			<d2l-selection-summary
-				aria-hidden="true"
-				no-selection-text="${this.localize('components.selection.select-all')}"
-			>
-			</d2l-selection-summary>
-			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
-		`;
+	_getSelectionControlsLabel() {
+		return this.localize('components.table-controls.label');
 	}
 }
 

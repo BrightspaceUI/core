@@ -4,8 +4,10 @@ import './selection-select-all-pages.js';
 import './selection-summary.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PageableSubscriberMixin } from '../paging/pageable-subscriber-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
@@ -13,7 +15,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  * Controls for selection components (e.g. list, table-wrapper) containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  */
-export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+export class SelectionControls extends PageableSubscriberMixin(SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -33,6 +35,7 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
 			_hasActions: { state: true },
+			_noSelectionText: { state: true },
 			_scrolled: { type: Boolean, reflect: true }
 		};
 	}
@@ -147,6 +150,18 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
+		if (changedProperties.has('_pageableInfo')) {
+			this._noSelectionText = this._getNoSelectionText();
+		}
+	}
+
+	_getNoSelectionText() {
+		if (!this._pageableInfo) return null;
+		const { itemShowingCount: count, itemCount: totalCount } = this._pageableInfo;
+
+		return (totalCount === null || count === totalCount)
+			? this.localize('components.pageable.info', { count, countFormatted: formatNumber(count) })
+			: this.localize('components.pageable.info-with-total', { totalCount, countFormatted: formatNumber(count), totalCountFormatted: formatNumber(totalCount) });
 	}
 
 	_getSelectionControlsContainerClasses() {
@@ -166,12 +181,8 @@ export class SelectionControls extends SelectionObserverMixin(RtlMixin(LocalizeC
 
 	_renderSelection() {
 		return html`
-			<d2l-selection-select-all></d2l-selection-select-all>
-			<d2l-selection-summary
-				aria-hidden="true"
-				no-selection-text="${this.localize('components.selection.select-all')}"
-			>
-			</d2l-selection-summary>
+			${!this._noSelectAll ? html`<d2l-selection-select-all></d2l-selection-select-all>` : nothing}
+			<d2l-selection-summary no-selection-text="${this._noSelectionText}"></d2l-selection-summary>
 			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
 		`;
 	}

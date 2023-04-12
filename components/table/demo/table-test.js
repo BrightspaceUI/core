@@ -65,8 +65,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper>
-				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}">
+			<d2l-table-wrapper item-count="500">
+				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
 						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
@@ -86,14 +86,16 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
-						${[1, 2].map(() => html`
-							<tr>
-								<th scope="col" sticky></th>
-								${thText.map(text => html`<th scope="col">${text}</th>`)}
-							</tr>
-						`)}
 					</thead>
 					<tbody>
+						<tr class="d2l-table-header">
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
+						<tr header>
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
 								<th scope="row" sticky>

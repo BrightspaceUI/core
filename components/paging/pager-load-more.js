@@ -86,7 +86,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 	}
 
 	render() {
-		if (!this.hasMore) return nothing;
+		if (!this.hasMore || !this._pageableInfo) return nothing;
 		const { itemCount, itemShowingCount } = this._pageableInfo;
 
 		return html`
@@ -101,7 +101,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 				${itemCount !== null ? html`
 					<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
 					<span class="separator"></span>
-					<span class="info">${this.localize('components.pager-load-more.info', { showingCount: formatNumber(itemShowingCount), totalCount: itemCount, totalCountFormatted: formatNumber(itemCount) })}</span>
+					<span class="info">${this.localize('components.pageable.info-with-total', { countFormatted: formatNumber(itemShowingCount), totalCount: itemCount, totalCountFormatted: formatNumber(itemCount) })}</span>
 				` : nothing}
 			`}
 		</button>

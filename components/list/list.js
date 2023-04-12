@@ -183,8 +183,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_getItemByIndex(index) {
-		const items = this.getItems();
-		if (index > items.length - 1) return;
+		const items = this.getItems() || [];
 		return items[index];
 	}
 
