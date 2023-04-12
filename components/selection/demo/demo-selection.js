@@ -20,6 +20,9 @@ class DemoBase extends LitElement {
 class DemoSelection extends SelectionMixin(DemoBase) {}
 
 class DemoPageable extends PageableMixin(DemoBase) {
+	_getItemByIndex() {
+		return null;
+	}
 	_getItemShowingCount() {
 		return 3;
 	}

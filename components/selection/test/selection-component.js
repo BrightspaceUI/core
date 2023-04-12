@@ -3,7 +3,7 @@ import { PageableMixin } from '../../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection-mixin.js';
 import { SelectionObserverMixin } from '../selection-observer-mixin.js';
 
-class TestSelection extends SelectionMixin(LitElement) {
+class TestBase extends LitElement {
 	static get styles() {
 		return css`
 			:host {
@@ -18,6 +18,8 @@ class TestSelection extends SelectionMixin(LitElement) {
 	}
 }
 
+class TestSelection extends SelectionMixin(TestBase) {}
+
 class TestSelectionObserver extends SelectionObserverMixin(LitElement) {}
 
 class TestSelectionObserverShadow extends SelectionObserverMixin(LitElement) {
@@ -26,10 +28,7 @@ class TestSelectionObserverShadow extends SelectionObserverMixin(LitElement) {
 	}
 }
 
-class TestPageable extends PageableMixin(SelectionMixin(LitElement)) {
-	render() {
-		return html`<slot></slot>`;
-	}
+class TestPageable extends PageableMixin(TestBase) {
 	_getItemByIndex() {
 		return null;
 	}
@@ -38,7 +37,10 @@ class TestPageable extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 }
 
+class TestSelectionPageable extends SelectionMixin(TestPageable) {}
+
 customElements.define('d2l-test-selection', TestSelection);
 customElements.define('d2l-test-selection-observer', TestSelectionObserver);
 customElements.define('d2l-test-selection-observer-shadow', TestSelectionObserverShadow);
 customElements.define('d2l-test-pageable', TestPageable);
+customElements.define('d2l-test-selection-pageable', TestSelectionPageable);
