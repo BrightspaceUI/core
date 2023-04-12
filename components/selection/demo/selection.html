@@ -8,6 +8,7 @@
 			import '../../demo/demo-page.js';
 			import '../../dropdown/dropdown-menu.js';
 			import '../../menu/menu.js';
+			import '../../paging/pager-load-more.js';
 			import '../selection-action.js';
 			import '../selection-action-dropdown.js';
 			import '../selection-action-menu-item.js';
@@ -93,6 +94,45 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Selection controls with pageable + selection</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-selection-pageable item-count="5">
+						<d2l-selection-controls select-all-pages-allowed>
+							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+						</d2l-selection-controls>
+
+						<ul>
+							<li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
+							<li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+							<li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
+						</ul>
+						<d2l-pager-load-more has-more page-size="1"></d2l-pager-load-more>
+					</d2l-demo-selection-pageable>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection controls with pageable (no selection)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-pageable item-count="5">
+						<d2l-selection-controls>
+							<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+							<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+						</d2l-selection-controls>
+
+						<ul>
+							<li><d2l-selection-input key="geo" label="Geography"></d2l-selection-input>Geography</li>
+							<li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+							<li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
+						</ul>
+						<d2l-pager-load-more has-more page-size="1"></d2l-pager-load-more>
+					</d2l-demo-pageable>
+				</template>
+			</d2l-demo-snippet>
 
 			<h2>No-sticky selection controls</h2>
 
@@ -120,17 +160,18 @@
 					<div class="d2l-selection-collections">
 						<div class="d2l-selection-collection">
 							Pick Your Toppings
-							<d2l-selection-controls selection-for="collection-1">
+							<d2l-selection-controls selection-for="collection-1" pageable-for="collection-1" select-all-pages-allowed>
 								<d2l-selection-action selection-for="collection-1" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
 							</d2l-selection-controls>
 
-							<d2l-demo-selection id="collection-1">
+							<d2l-demo-selection-pageable id="collection-1" item-count="5">
 								<ul>
 									<li><d2l-selection-input key="let" label="Lettuce" selected></d2l-selection-input>Lettuce</li>
 									<li><d2l-selection-input key="tom" label="Tomato"></d2l-selection-input>Tomato</li>
 									<li><d2l-selection-input key="onion" label="Onion"></d2l-selection-input>Onion</li>
 								</ul>
-							</d2l-demo-selection>
+								<d2l-pager-load-more has-more page-size="1"></d2l-pager-load-more>
+							</d2l-demo-selection-pageable>
 							<d2l-selection-action selection-for="collection-1" text="Save" requires-selection></d2l-selection-action>
 						</div>
 
