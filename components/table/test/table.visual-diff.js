@@ -15,6 +15,19 @@ async function getRect(page, id, wrapperId) {
 	}, id);
 }
 
+async function showSection(page, targetSection) {
+	const sections = [
+		'd2l-test-table-visual-diff',
+		'd2l-test-table-sticky-visual-diff',
+		'd2l-test-table-controls-visual-diff',
+		'd2l-test-table-paging-visual-diff',
+	];
+	const actions = sections.map(section => page.$eval(section, (elem, section, targetSection) => {
+		section === targetSection ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', 'hidden');
+	}, section, targetSection));
+	await Promise.all(actions);
+}
+
 describe('d2l-table', () => {
 
 	const visualDiff = new VisualDiff('table', import.meta.url);
@@ -58,9 +71,7 @@ describe('d2l-table', () => {
 					describe('nonstick', () => {
 
 						before(async() => {
-							await page.$eval('d2l-test-table-visual-diff', elem => elem.removeAttribute('hidden'));
-							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await showSection(page, 'd2l-test-table-visual-diff');
 						});
 
 						[
@@ -108,9 +119,7 @@ describe('d2l-table', () => {
 					describe('sticky', () => {
 
 						before(async() => {
-							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.removeAttribute('hidden'));
-							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await showSection(page, 'd2l-test-table-sticky-visual-diff');
 						});
 
 						[
@@ -142,9 +151,7 @@ describe('d2l-table', () => {
 					describe('table-controls', () => {
 
 						before(async() => {
-							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-controls-visual-diff', elem => elem.removeAttribute('hidden'));
+							await showSection(page, 'd2l-test-table-controls-visual-diff');
 						});
 
 						[
@@ -168,6 +175,23 @@ describe('d2l-table', () => {
 									});
 								});
 
+							});
+						});
+
+					});
+
+					describe('paging', () => {
+
+						before(async() => {
+							await showSection(page, 'd2l-test-table-paging-visual-diff');
+						});
+
+						[
+							'table-with-paging',
+						].forEach((id) => {
+							it(id, async function() {
+								const rect = await getRect(page, id, 'd2l-test-table-paging-visual-diff');
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
 

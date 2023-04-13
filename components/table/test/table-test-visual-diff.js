@@ -1,4 +1,5 @@
 import '../table-col-sort-button.js';
+import '../demo/table-test.js';
 import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
