@@ -10,6 +10,7 @@ import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PageableSubscriberMixin } from './pageable-subscriber-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const nativeFocus = document.createElement('div').focus;
 
@@ -17,7 +18,7 @@ const nativeFocus = document.createElement('div').focus;
  *  A pager component for load-more paging.
  * @fires d2l-pager-load-more - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
  */
-class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
+class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {

@@ -58,7 +58,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	constructor() {
 		super();
 
-		this.showPager = false;
+		this.paging = false;
 		this.stickyControls = false;
 		this.visibleBackground = false;
 		this._data = data();
