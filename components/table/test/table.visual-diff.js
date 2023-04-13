@@ -22,9 +22,9 @@ async function showSection(page, targetSection) {
 		'd2l-test-table-controls-visual-diff',
 		'd2l-test-table-paging-visual-diff',
 	];
-	const actions = sections.map(section => page.$eval(section, elem => {
+	const actions = sections.map(section => page.$eval(section, (elem, section, targetSection) => {
 		section === targetSection ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', 'hidden');
-	}));
+	}, section, targetSection));
 	await Promise.all(actions);
 }
 
