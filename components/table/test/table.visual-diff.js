@@ -190,7 +190,7 @@ describe('d2l-table', () => {
 							'table-with-paging',
 						].forEach((id) => {
 							it(id, async function() {
-								const rect = await getRect(page, id, 'd2l-test-table-visual-diff');
+								const rect = await getRect(page, id, 'd2l-test-table-paging-visual-diff');
 								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
