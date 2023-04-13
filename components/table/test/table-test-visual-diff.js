@@ -494,11 +494,6 @@ class TestTableVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="d2l-visual-diff">
-				<div id="table-with-paging">
-					<d2l-test-table condensed type="${type}" paging></d2l-test-table>
-				</div>
-			</div>
 		`;
 	}
 
