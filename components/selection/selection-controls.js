@@ -181,8 +181,8 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 
 	_renderSelection() {
 		return html`
-			${!this._noSelectAll ? html`<d2l-selection-select-all></d2l-selection-select-all>` : nothing}
-			<d2l-selection-summary no-selection-text="${this._noSelectionText}"></d2l-selection-summary>
+			${this._provider && !this._noSelectAll ? html`<d2l-selection-select-all></d2l-selection-select-all>` : nothing}
+			<d2l-selection-summary no-selection-text="${ifDefined(this._noSelectionText)}"></d2l-selection-summary>
 			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
 		`;
 	}

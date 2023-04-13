@@ -107,15 +107,21 @@
 	</div>
 
 	<div class="visual-diff">
-		<d2l-selection-select-all id="select-all"></d2l-selection-select-all>
+		<d2l-test-selection>
+			<d2l-selection-select-all id="select-all"></d2l-selection-select-all>
+		</d2l-test-selection>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-selection-select-all id="select-all-disabled" disabled></d2l-selection-select-all>
+		<d2l-test-selection>
+			<d2l-selection-select-all id="select-all-disabled" disabled></d2l-selection-select-all>
+		</d2l-test-selection>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-selection-select-all id="select-all-selection"></d2l-selection-select-all>
+		<d2l-test-selection>
+			<d2l-selection-select-all id="select-all-selection"></d2l-selection-select-all>
+		</d2l-test-selection>
 	</div>
 
 	<div class="visual-diff">
@@ -467,6 +473,16 @@
 				<li><d2l-selection-input label="item 1" key="key1"></d2l-selection-input>Item 1</li>
 			</ul>
 		</d2l-test-pageable>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection-pageable id="controls-with-selection-pageable">
+			<d2l-selection-controls></d2l-selection-controls>
+
+			<ul>
+				<li><d2l-selection-input label="item 1" key="key1"></d2l-selection-input>Item 1</li>
+			</ul>
+		</d2l-test-selection-pageable>
 	</div>
 
 </body>

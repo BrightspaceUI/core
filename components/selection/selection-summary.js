@@ -50,7 +50,10 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	}
 
 	_updateSelectSummary() {
-		if (this._provider && this._provider.selectionSingle) return;
+		if (this._provider?.selectionSingle) {
+			this._summary = null;
+			return;
+		}
 
 		let count;
 		if (this._provider && this._provider.selectionCountOverride !== undefined) {
@@ -74,7 +77,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 				}
 			}
 
-			count = this.selectionInfo.state === SelectionInfo.states.allPages ?
+			count = (this._provider && this.selectionInfo.state === SelectionInfo.states.allPages) ?
 				this._provider.itemCount : this.selectionInfo.keys.length;
 
 			if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
