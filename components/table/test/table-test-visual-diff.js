@@ -1,4 +1,5 @@
 import '../table-col-sort-button.js';
+import '../demo/table-test.js';
 import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
@@ -492,6 +493,11 @@ class TestTableVisualDiff extends LitElement {
 						</tbody>
 					</table>
 				</d2l-table-wrapper>
+			</div>
+			<div class="d2l-visual-diff">
+				<div id="table-with-paging">
+					<d2l-test-table condensed type="${type}" paging></d2l-test-table>
+				</div>
 			</div>
 		`;
 	}

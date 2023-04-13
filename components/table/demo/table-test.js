@@ -4,14 +4,16 @@ import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
 import '../../selection/selection-action-menu-item.js';
 import '../../selection/selection-input.js';
 
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
@@ -33,11 +35,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	static get properties() {
 		return {
+			paging: { type: Boolean, reflect: true },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
-			_sortField: { attribute: false, type: String },
-			_sortDesc: { attribute: false, type: Boolean }
+			_sortField: { state: true },
+			_sortDesc: { state: true }
 		};
 	}
 
@@ -54,7 +57,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	constructor() {
 		super();
+
+		this.showPager = false;
+		this.stickyControls = false;
+		this.visibleBackground = false;
 		this._data = data();
+		this._sortField = undefined;
+		this._sortDesc = false;
 	}
 
 	render() {
@@ -65,7 +74,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper item-count="500">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
@@ -112,8 +121,22 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						`)}
 					</tbody>
 				</table>
+				${this.paging ? html`<d2l-pager-load-more slot="pager"
+					has-more
+					page-size="3"
+					@d2l-pager-load-more="${this._handlePagerLoadMore}"
+				></d2l-pager-load-more>` : nothing}
 			</d2l-table-wrapper>
 		`;
+	}
+
+	_handlePagerLoadMore(e) {
+		const startIndex = this._data.length + 1;
+		for (let i = 0; i < e.target.pageSize; i++) {
+			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+		}
+		this.requestUpdate();
+		e.detail.complete();
 	}
 
 	_handleSort(e) {

@@ -81,7 +81,8 @@ describe('d2l-table', () => {
 							'overflow',
 							'no-column-border',
 							'no-column-border-legacy',
-							'col-sort-button'
+							'col-sort-button',
+							'table-with-paging'
 						].forEach((id) => {
 							it(id, async function() {
 								const rect = await getRect(page, id, 'd2l-test-table-visual-diff');

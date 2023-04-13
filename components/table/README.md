@@ -292,6 +292,10 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 </tr>
 ```
 
+## Pageable Tables
+
+Load-More paging functionality can be implemented in tables by placing a `d2l-pager-load-more` in `d2l-table-wrapper`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
+
 ## Table Controls [d2l-table-controls]
 
 The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `controls` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.

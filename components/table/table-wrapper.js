@@ -166,6 +166,7 @@ export const tableStyles = css`
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
+ * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
 export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitElement))) {
 
@@ -246,6 +247,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
 				width: 100%;
 			}
+			slot[name="pager"]::slotted(*) {
+				margin-top: 12px;
+			}
 		`;
 	}
 
@@ -279,6 +283,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
 			${this.stickyHeaders ? slot : html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`}
+			${this._renderPagerContainer()}
 		`;
 	}
 
