@@ -16,6 +16,7 @@ import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
@@ -117,7 +118,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
-class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)))) {
+class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {

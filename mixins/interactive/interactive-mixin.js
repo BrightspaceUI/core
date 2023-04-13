@@ -5,6 +5,7 @@ import { getNextFocusable } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../../components/offscreen/offscreen.js';
+import { RtlMixin } from '../rtl/rtl-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -18,7 +19,7 @@ export function isInteractiveDescendant(node) {
 	});
 }
 
-export const InteractiveMixin = superclass => class extends LocalizeCoreElement(superclass) {
+export const InteractiveMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
