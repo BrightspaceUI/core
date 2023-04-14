@@ -447,6 +447,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._isFocusing = false;
 		this._isHovering = false;
 		this._resizeRunSinceTruncationCheck = false;
+		this._showing = false;
 		this._viewportMargin = defaultViewportMargin;
 	}
 
