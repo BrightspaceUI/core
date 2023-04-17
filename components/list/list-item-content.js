@@ -1,17 +1,17 @@
 import '../colors/colors.js';
 import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
-
+import { SkeletonMixin, skeletonStyles } from '../skeleton/skeleton-mixin.js';
 /**
  * A component for consistent layout of primary and secondary text in a list item.
  * @slot - Primary text of the list item
  * @slot secondary - Secondary text of the list item
  * @slot supporting-info - Information that supports the list item
  */
-class ListItemContent extends LitElement {
+class ListItemContent extends SkeletonMixin(LitElement) {
 
 	static get styles() {
-		return [ bodySmallStyles, bodyCompactStyles, css`
+		return [ bodySmallStyles, bodyCompactStyles, skeletonStyles, css`
 			:host {
 				min-width: 0;
 			}
@@ -52,9 +52,11 @@ class ListItemContent extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-list-item-content-text d2l-body-compact"><div><slot></slot></div></div>
-			<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="secondary"></slot></div>
-			<div class="d2l-list-item-content-text-supporting-info d2l-body-small"><slot name="supporting-info"></slot></div>
+			<div class="${this.skeleton ? 'd2l-skeletize' : ''}">
+				<div class="d2l-list-item-content-text d2l-body-compact"><div><slot></slot></div></div>
+				<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="secondary"></slot></div>
+				<div class="d2l-list-item-content-text-supporting-info d2l-body-small"><slot name="supporting-info"></slot></div>
+			</div>
 		`;
 	}
 

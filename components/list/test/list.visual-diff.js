@@ -96,6 +96,7 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
+			{ name: 'skeleton', selector: '#itemContentSkeleton' },
 			{ name: 'no padding', selector: '#itemContentNoPadding' },
 			{ name: 'long wrapping', selector: '#itemContentLongWrap' },
 			{ name: 'long single line ellipsis', selector: '#itemContentLongSingleLineEllipsis' },
