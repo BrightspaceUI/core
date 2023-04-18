@@ -191,6 +191,7 @@ describe('d2l-list', () => {
 		] },
 		{ category: 'expand-collapse', tests: [
 			{ name: 'default', selector: '#expand-collapse-default' },
+			{ name: 'skeleton', selector: '#expand-collapse-skeleton' },
 			{ name: 'default expanded', selector: '#expand-collapse-default-expanded' },
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },

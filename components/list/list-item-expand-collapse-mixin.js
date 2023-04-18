@@ -2,11 +2,12 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const dragIntervalDelay = 100;
 const dragHoverDropTime = 1000;
 
-export const ListItemExpandCollapseMixin = superclass => class extends superclass {
+export const ListItemExpandCollapseMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -127,6 +128,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends superclas
 		}
 		return html`
 			<d2l-button-icon
+				class="d2l-skeletize"
 				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
 				aria-expanded="${this.expanded ? 'true' : 'false'}"
 				text="${this.label}"
