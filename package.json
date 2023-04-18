@@ -22,7 +22,8 @@
     "test:axe": "d2l-test-runner aXe",
     "test:headless": "d2l-test-runner",
     "test:headless:watch": "d2l-test-runner --watch",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
+    "test:vdiff": "d2l-test-runner vdiff"
   },
   "files": [
     "custom-elements.json",

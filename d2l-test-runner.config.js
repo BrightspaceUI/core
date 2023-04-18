@@ -2,6 +2,7 @@ const pattern = type => `+(components|controllers|directives|helpers|mixins|temp
 
 export default {
 	pattern,
+	vdiff: true,
 	groups: [{
 		name: 'aXe',
 		files: pattern('axe'),
