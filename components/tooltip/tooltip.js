@@ -459,7 +459,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this._showing = val;
 			this.requestUpdate('showing', oldVal);
-			this._showingChanged(val);
+			this._showingChanged(val, oldVal !== undefined); // don't dispatch hide event when initializing
 		}
 	}
 
@@ -882,7 +882,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	async _showingChanged(newValue) {
+	async _showingChanged(newValue, dispatch) {
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
 		if (newValue) {
@@ -895,9 +895,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.setAttribute('aria-hidden', 'false');
 			await this.updateComplete;
 			await this.updatePosition();
-			this.dispatchEvent(new CustomEvent(
-				'd2l-tooltip-show', { bubbles: true, composed: true }
-			));
+			if (dispatch) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tooltip-show', { bubbles: true, composed: true }
+				));
+			}
 
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
@@ -908,9 +910,11 @@ class Tooltip extends RtlMixin(LitElement) {
 				clearDismissible(this._dismissibleId);
 				this._dismissibleId = null;
 			}
-			this.dispatchEvent(new CustomEvent(
-				'd2l-tooltip-hide', { bubbles: true, composed: true }
-			));
+			if (dispatch) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tooltip-hide', { bubbles: true, composed: true }
+				));
+			}
 		}
 	}
 

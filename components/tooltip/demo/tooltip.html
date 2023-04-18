@@ -198,6 +198,11 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<script>
+			document.addEventListener('d2l-tooltip-show', e => console.log('d2l-tooltip-show', e.target));
+			document.addEventListener('d2l-tooltip-hide', e => console.log('d2l-tooltip-hide', e.target));
+		</script>
+
 	</d2l-demo-page>
 
 </body>
