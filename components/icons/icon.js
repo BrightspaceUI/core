@@ -6,8 +6,9 @@ import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { WaitForMeMixin } from '../../tools/web-test-runner-helpers.js';
 
-class Icon extends RtlMixin(LitElement) {
+class Icon extends WaitForMeMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -35,9 +36,17 @@ class Icon extends RtlMixin(LitElement) {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._iconWaitHandle = this.setWaitHandle();
+	}
+
 	render() {
 		return html`${runAsync(this.icon, () => this._getIcon(), {
-			success: (icon) => icon
+			success: (icon) => {
+				this.clearWaitHandle(this._iconWaitHandle);
+				return icon;
+			}
 		}, { pendingState: false })}`;
 	}
 

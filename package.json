@@ -23,7 +23,8 @@
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group default",
     "test:headless:watch": "web-test-runner --group default --watch",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
+    "test:visual-diff": "web-test-runner --group visual-diff --playwright --browsers chromium --concurrency 5"
   },
   "files": [
     "custom-elements.json",
@@ -53,6 +54,7 @@
     "@rollup/plugin-replace": "^5",
     "@web/dev-server": "^0.2",
     "@web/test-runner": "^0.16",
+    "@web/test-runner-commands": "^0.6",
     "@web/test-runner-playwright": "^0.10",
     "axe-core": "^4",
     "chalk": "^5",
