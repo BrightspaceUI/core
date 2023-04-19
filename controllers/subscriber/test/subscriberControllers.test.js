@@ -276,7 +276,7 @@ describe('EventSubscriberController', () => {
 	it('Call onError if we did not find a registry component', () => {
 		const subscriber = elem.querySelector('#error');
 
-		clock.tick(100);
+		clock.tick(400);
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
 		expect(subscriber._onErrorRegistryIds).to.eql([ undefined ]);
 	});
@@ -285,7 +285,7 @@ describe('EventSubscriberController', () => {
 		const subscriber = elem.querySelector('#delayed');
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
 
-		clock.tick(100);
+		clock.tick(40);
 		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow') ]);
 		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
