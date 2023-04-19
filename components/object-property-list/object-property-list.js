@@ -8,6 +8,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * A dot-separated list of object properties.
  * @slot - Items of the type d2l-object-property-list-item* to be added to the container
+ * @slot status - Slot for a single `d2l-status-indicator` to be rendered before the list
  */
 class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 	static get properties() {
