@@ -21,8 +21,8 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		});
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	connectedCallback() {
+		super.connectedCallback();
 		this._updateItemShowingCount();
 	}
 
@@ -56,13 +56,12 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		this._itemShowingCount = this._getItemShowingCount();
 	}
 
-	_updatePageableSubscriber(subscriber, doUpdate = true) {
-		if (doUpdate) this._updateItemShowingCount();
+	_updatePageableSubscriber(subscriber) {
 		subscriber._pageableInfo = { itemShowingCount: this._itemShowingCount, itemCount: this.itemCount };
 	}
 
 	_updatePageableSubscribers(subscribers) {
-		subscribers.forEach(subscriber => this._updatePageableSubscriber(subscriber, false));
+		subscribers.forEach(subscriber => this._updatePageableSubscriber(subscriber));
 	}
 
 };
