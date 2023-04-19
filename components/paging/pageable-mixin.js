@@ -56,12 +56,13 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		this._itemShowingCount = this._getItemShowingCount();
 	}
 
-	_updatePageableSubscriber(subscriber) {
+	_updatePageableSubscriber(subscriber, doUpdate = true) {
+		if (doUpdate) this._updateItemShowingCount();
 		subscriber._pageableInfo = { itemShowingCount: this._itemShowingCount, itemCount: this.itemCount };
 	}
 
 	_updatePageableSubscribers(subscribers) {
-		subscribers.forEach(subscriber => this._updatePageableSubscriber(subscriber));
+		subscribers.forEach(subscriber => this._updatePageableSubscriber(subscriber, false));
 	}
 
 };
