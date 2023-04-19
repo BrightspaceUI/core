@@ -211,8 +211,10 @@ export class IdSubscriberController extends BaseSubscriber {
 
 		if (this._registries.get(registryId) === registryComponent) return registryComponent;
 
-		if (registryComponent) this._subscribe(registryComponent, registryId);
-		else {
+		if (registryComponent) {
+			const success = this._subscribe(registryComponent, registryId);
+			if (!success && this._options.onError) this._options.onError(registryId);
+		} else {
 			this._registries.delete(registryId);
 			this._registryControllers.delete(registryId);
 			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registryId);
