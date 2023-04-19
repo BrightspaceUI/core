@@ -1,8 +1,9 @@
 
 import { defineCE, expect, fixture, nextFrame } from '@open-wc/testing';
 import { EventSubscriberController, IdSubscriberController, SubscriberRegistryController } from '../subscriberControllers.js';
-import { LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import sinon from 'sinon';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 const registries = defineCE(
 	class extends LitElement {
@@ -80,6 +81,16 @@ const eventSubscriberCombined = defineCE(generateSubscriber('event', 'test-subsc
 const idSubscriberSeparate = defineCE(generateSubscriber('id', 'test-subscribe-id'));
 const idSubscriberCombined = defineCE(generateSubscriber('id', 'test-subscribe'));
 
+const indirectSlotRegistries = defineCE(class extends LitElement {
+	render() {
+		return html`${unsafeHTML(`
+			<${registries} id="registry-shadow">
+				<slot></slot>
+			</${registries}>
+		`)}`;
+	}
+});
+
 describe('SubscriberRegistryController', () => {
 
 	describe('With multiple different subscriber registries', () => {
@@ -101,7 +112,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._eventSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._idSubscribers.subscribers.size).to.equal(1);
 			expect(registry._idSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
+			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#event'), elem.querySelector('#id') ]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -180,7 +191,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(2);
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
+			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#event'), elem.querySelector('#id') ]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -236,16 +247,24 @@ describe('SubscriberRegistryController', () => {
 });
 
 describe('EventSubscriberController', () => {
-	let elem;
+	let elem, clock;
 
 	beforeEach(async() => {
+		clock = sinon.useFakeTimers({ toFake: ['setTimeout'] });
 		elem = await fixture(`<div>
 			<${registries} id="registry">
 				<${eventSubscriberSeparate} id="success"></${eventSubscriberSeparate}>
 			</${registries}>
+			<${indirectSlotRegistries} id="registry-wrapper">
+				<${eventSubscriberSeparate} id="delayed"></${eventSubscriberSeparate}>
+			</${indirectSlotRegistries}>
 			<${eventSubscriberSeparate} id="error"></${eventSubscriberSeparate}>
 		</div>`);
 		await elem.updateComplete;
+	});
+
+	afterEach(() => {
+		clock.restore();
 	});
 
 	it('Call onSubscribe after subscribing and getting the registry component', () => {
@@ -256,27 +275,46 @@ describe('EventSubscriberController', () => {
 
 	it('Call onError if we did not find a registry component', () => {
 		const subscriber = elem.querySelector('#error');
+
+		clock.tick(100);
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
 		expect(subscriber._onErrorRegistryIds).to.eql([ undefined ]);
+	});
+
+	it('should keep checking if the registry is not immediately found', () => {
+		const subscriber = elem.querySelector('#delayed');
+		expect(subscriber._onSubscribeRegistries).to.eql([]);
+
+		clock.tick(100);
+		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow') ]);
+		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
 });
 
 describe('IdSubscriberController', () => {
-	let elem;
+	let elem, clock;
+
 	const fixtureHtml = `<div>
 		<${registries} id="registry-1">
 			<${idSubscriberSeparate} id="nested" for="registry-1"></${idSubscriberSeparate}>
 		</${registries}>
 		<${registries} id="registry-2"></${registries}>
+		<${registries} id="registry-3"></${registries}>
 		<${idSubscriberSeparate} id="single" for="registry-1"></${idSubscriberSeparate}>
 		<${idSubscriberSeparate} id="multiple" for="registry-1 registry-2 non-existant "></${idSubscriberSeparate}>
+		<${idSubscriberSeparate} id="delayed" for="registry-3-changed"></${idSubscriberSeparate}>
 		<${idSubscriberSeparate} id="error" for="non-existant"></${idSubscriberSeparate}>
 	</div>`;
 
 	describe('Adding and removing', () => {
 		beforeEach(async() => {
+			clock = sinon.useFakeTimers({ toFake: ['setTimeout'] });
 			elem = await fixture(fixtureHtml);
 			await elem.updateComplete;
+		});
+
+		afterEach(() => {
+			clock.restore();
 		});
 
 		it('Call onSubscribe after subscribing and getting the registry component', () => {
@@ -351,6 +389,18 @@ describe('IdSubscriberController', () => {
 			expect(registry1._idSubscribers.subscribers.has(singleSubscriber)).to.be.false;
 			expect(registry2._idSubscribers.subscribers.has(singleSubscriber)).to.be.true;
 		});
+
+		it('should keep checking if the registry is not immediately found', () => {
+			const subscriber = elem.querySelector('#delayed');
+			const registry3 = elem.querySelector('#registry-3');
+
+			registry3.id = 'registry-3-changed';
+			expect(subscriber._onSubscribeRegistries).to.eql([]);
+
+			clock.tick(100);
+			expect(subscriber._onSubscribeRegistries).to.eql([ registry3 ]);
+			expect(subscriber._onErrorRegistryIds).to.eql([]);
+		});
 	});
 
 	describe('Error handling', () => {
@@ -361,6 +411,7 @@ describe('IdSubscriberController', () => {
 			elem = await fixture(fixtureHtml);
 			await elem.updateComplete;
 		});
+
 		afterEach(() => {
 			clock.restore();
 		});

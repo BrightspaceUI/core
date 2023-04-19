@@ -9,11 +9,39 @@ class BaseController {
 		this._name = name;
 		this._options = options;
 		this._eventName = `d2l-subscribe-${this._name}`;
-		this._subscriptionComplete = Promise.resolve();
 	}
 }
 
 class BaseSubscriber extends BaseController {
+	constructor() {
+		super(...arguments);
+
+		this._subscriptionComplete = Promise.resolve();
+		this._timeouts = new Set();
+	}
+
+	hostDisconnected() {
+		this._timeouts.forEach(timeoutId => clearTimeout(timeoutId));
+	}
+
+	_keepTrying(callback, interval, maxTime, errorPayload, elapsedTime = 0) {
+		const response = callback();
+
+		if (response) return response;
+		if (elapsedTime >= maxTime) {
+			if (this._options.onError) this._options.onError(errorPayload);
+			return response;
+		}
+
+		return new Promise(resolve => {
+			const timeoutId = setTimeout(async() => {
+				this._timeouts.delete(timeoutId);
+				resolve(await this._keepTrying(callback, interval, maxTime, errorPayload, elapsedTime + interval));
+			}, interval);
+			this._timeouts.add(timeoutId);
+		});
+	}
+
 	_subscribe(target = this._host, targetLabel) {
 		const isBroadcast = target === this._host;
 
@@ -25,10 +53,7 @@ class BaseSubscriber extends BaseController {
 		target.dispatchEvent(evt);
 
 		const { registry, registryController } = evt.detail;
-		if (!registry) {
-			if (this._options.onError) this._options.onError();
-			return;
-		}
+		if (!registry) return false;
 
 		if (targetLabel) {
 			this._registries.set(targetLabel, registry);
@@ -39,6 +64,7 @@ class BaseSubscriber extends BaseController {
 		}
 
 		if (this._options.onSubscribe) this._options.onSubscribe(registry);
+		return true;
 	}
 }
 
@@ -111,16 +137,11 @@ export class EventSubscriberController extends BaseSubscriber {
 	}
 
 	hostConnected() {
-		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		this._subscriptionComplete = new Promise(resolve => {
-			requestAnimationFrame(() => {
-				this._subscribe();
-				resolve();
-			});
-		});
+		this._subscriptionComplete = this._keepTrying(() => this._subscribe(), 20, 100);
 	}
 
 	hostDisconnected() {
+		super.hostDisconnected();
 		if (this._registryController) this._registryController.unsubscribe(this._host);
 	}
 
@@ -135,7 +156,6 @@ export class IdSubscriberController extends BaseSubscriber {
 		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._registries = new Map();
 		this._registryControllers = new Map();
-		this._timeouts = new Set();
 	}
 
 	get registries() {
@@ -143,8 +163,8 @@ export class IdSubscriberController extends BaseSubscriber {
 	}
 
 	hostDisconnected() {
+		super.hostDisconnected();
 		if (this._registryObserver) this._registryObserver.disconnect();
-		this._timeouts.forEach(timeoutId => clearTimeout(timeoutId));
 		this._registryControllers.forEach(controller => {
 			controller.unsubscribe(this._host);
 		});
@@ -182,26 +202,14 @@ export class IdSubscriberController extends BaseSubscriber {
 
 		registryIds = registryIds.trim().split(' ');
 		registryIds.forEach(registryId => {
-			this._updateRegistry(registryId, 0);
+			this._keepTrying(() => this._updateRegistry(registryId), 100, 3000, registryId);
 		});
 	}
 
-	_updateRegistry(registryId, elapsedTime) {
-		let registryComponent = this._host.getRootNode().querySelector(`#${cssEscape(registryId)}`);
-		if (!registryComponent && this._options.onError) {
-			if (elapsedTime < 3000) {
-				const timeoutId = setTimeout(() => {
-					this._timeouts.delete(timeoutId);
-					this._updateRegistry(registryId, elapsedTime + 100);
-				}, 100);
-				this._timeouts.add(timeoutId);
-			} else {
-				this._options.onError(registryId);
-			}
-		}
+	_updateRegistry(registryId) {
+		const registryComponent = this._host.getRootNode().querySelector(`#${cssEscape(registryId)}`) || undefined;
 
-		registryComponent = registryComponent || undefined;
-		if (this._registries.get(registryId) === registryComponent) return;
+		if (this._registries.get(registryId) === registryComponent) return registryComponent;
 
 		if (registryComponent) this._subscribe(registryComponent, registryId);
 		else {
@@ -209,6 +217,8 @@ export class IdSubscriberController extends BaseSubscriber {
 			this._registryControllers.delete(registryId);
 			if (this._options.onUnsubscribe) this._options.onUnsubscribe(registryId);
 		}
+
+		return registryComponent;
 	}
 
 }
