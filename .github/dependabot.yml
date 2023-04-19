@@ -6,4 +6,3 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "@formatjs/intl-pluralrules"
-      - dependency-name: "intl-messageformat"
