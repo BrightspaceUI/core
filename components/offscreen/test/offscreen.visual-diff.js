@@ -10,24 +10,28 @@ describe('d2l-offscreen', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/offscreen/test/offscreen.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
-		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	[
-		'wc',
-		'style',
-		'sass'
-	].forEach((name) => {
-		['ltr', 'rtl'].forEach((dir) => {
-			const test = `${name}-${dir}`;
-			it(test, async function() {
-				const rect = await visualDiff.getRect(page, `#${test}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	['ltr', 'rtl'].forEach((dir) => {
+		describe(dir, () => {
+			before(async() => {
+				await page.goto(`${visualDiff.getBaseUrl()}/components/offscreen/test/offscreen.visual-diff.html?dir=${dir}`, { waitUntil: ['networkidle0', 'load'] });
+				await page.bringToFront();
+			});
+
+			[
+				'wc',
+				'style',
+				'sass'
+			].forEach((name) => {
+
+				it(name, async function() {
+					const rect = await visualDiff.getRect(page, `#${name}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
 			});
 		});
 	});
-
 });

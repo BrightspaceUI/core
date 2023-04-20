@@ -3,6 +3,10 @@
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script>
+			const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+			if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+		</script>
 		<script type="module">
 			import '../offscreen.js';
 			import '../demo/offscreen-demo.js';
@@ -13,37 +17,19 @@
 	</head>
 	<body>
 		<div class="visual-diff">
-			<div id="wc-ltr">
+			<div id="wc">
 				<p>Offscreen text:</p>
 				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
 			</div>
 		</div>
 		<div class="visual-diff">
-			<div id="style-ltr">
+			<div id="style">
 				<p>Offscreen text:</p>
 				<d2l-offscreen-demo></d2l-offscreen-demo>
 			</div>
 		</div>
 		<div class="visual-diff">
-			<div id="sass-ltr">
-				<p>Offscreen text:</p>
-				<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>
-			</div>
-		</div>
-		<div class="visual-diff">
-			<div id="wc-rtl" dir="rtl">
-				<p>Offscreen text:</p>
-				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
-			</div>
-		</div>
-		<div class="visual-diff">
-			<div id="style-rtl" dir="rtl">
-				<p>Offscreen text:</p>
-				<d2l-offscreen-demo></d2l-offscreen-demo>
-			</div>
-		</div>
-		<div class="visual-diff">
-			<div id="sass-rtl" dir="rtl">
+			<div id="sass">
 				<p>Offscreen text:</p>
 				<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>
 			</div>
