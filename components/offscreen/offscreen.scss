@@ -3,6 +3,7 @@
 	$offset: -10000px;
 
 	position: absolute !important;
+	inset-inline-start: $offset;
 	left: $offset;
 	overflow: hidden;
 	width: 1px;

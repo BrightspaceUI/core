@@ -4,6 +4,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 export const offscreenStyles = css`
 	.d2l-offscreen {
 		height: 1px;
+		inset-inline-start: -10000px;
 		left: -10000px;
 		overflow: hidden;
 		position: absolute !important;
@@ -25,6 +26,7 @@ class Offscreen extends RtlMixin(LitElement) {
 		return css`
 			:host {
 				height: 1px;
+				inset-inline-start: -10000px;
 				left: -10000px;
 				overflow: hidden;
 				position: absolute !important;
