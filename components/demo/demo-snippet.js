@@ -67,7 +67,7 @@ class DemoSnippet extends LitElement {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
-				border-left: 1px solid var(--d2l-color-mica);
+				border-inline-start: 1px solid var(--d2l-color-mica);
 				flex: 0 0 auto;
 				padding: 6px;
 			}
