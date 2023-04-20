@@ -1,6 +1,6 @@
 import '../html-block.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { provideInstance } from '../../../mixins/provider-mixin.js';
+import { expect, fixture, html, oneEvent, unsafeStatic } from '@open-wc/testing';
+import { provideInstance } from '../../../mixins/provider/provider-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 class TestRenderer {
@@ -98,28 +98,26 @@ provideInstance(document, 'html-block-renderer-loader', {
 
 describe('d2l-html-block', () => {
 
+	const getHtml = (firstAttrName, secondAttrName) => {
+		return `<span ${firstAttrName}="1">first</span><span ${secondAttrName || firstAttrName}="2">second</span>`;
+	};
+
 	const emptyReplacementFixture = html`
 		<d2l-html-block></d2l-html-block>
 	`;
 	const replacementFixture = html`
-		<d2l-html-block>
-			<span data-replace-id="1">first</span><span data-replace-id="2">second</span>
-		</d2l-html-block>
+		<d2l-html-block html="${getHtml('data-replace-id')}"></d2l-html-block>
 	`;
 	const asyncReplacementFixture = html`
-		<d2l-html-block>
-			<span data-async-replace-id="1">first</span><span data-async-replace-id="2">second</span>
-		</d2l-html-block>
+		<d2l-html-block html="${getHtml('data-async-replace-id')}"></d2l-html-block>
 	`;
 	const noDeferredRenderingReplacementFixture = html`
 		<d2l-html-block no-deferred-rendering>
-			<div><span data-replace-id="1">first</span><span data-no-inline-replace-id="2">second</span></div>
+			<div>${unsafeStatic(getHtml('data-replace-id', 'data-no-inline-replace-id'))}</div>
 		</d2l-html-block>
 	`;
 	const multipleRendererReplacementsFixture = html`
-		<d2l-html-block>
-			<span data-replace-id="1">first</span><span data-secondary-replace-id="2">second</span>
-		</d2l-html-block>
+		<d2l-html-block html="${getHtml('data-replace-id', 'data-secondary-replace-id')}"></d2l-html-block>
 	`;
 
 	it('should construct', () => {

@@ -10,6 +10,7 @@
 		import '../../colors/colors.js';
 		import '../../demo/demo-page.js';
 		import '../../inputs/input-text.js';
+		import '../../link/link.js';
 		import '../tooltip.js';
 		import '../tooltip-help.js';
 	</script>
@@ -70,9 +71,13 @@
 		<h2>Tooltip (info)</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-button id="tooltip-info">Hover for Info</d2l-button>
-				<d2l-tooltip for="tooltip-info">
-					Your info message will display here
+				<d2l-button id="tooltip-preview">Preview</d2l-button>
+				<d2l-tooltip for="tooltip-preview">
+					Tooltip for the Preview button.
+				</d2l-tooltip>
+				<d2l-button id="tooltip-settings">Settings</d2l-button>
+				<d2l-tooltip for="tooltip-settings">
+					Tooltip for the Settings button.
 				</d2l-tooltip>
 			</template>
 		</d2l-demo-snippet>
@@ -154,6 +159,14 @@
 					<d2l-tooltip for="tooltip-long" show-truncated-only>
 						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
+					<d2l-link id="link-short" href="https://www.d2l.com" overflow-ellipsis>Short Text</d2l-link>
+					<d2l-tooltip for="link-short" show-truncated-only>
+						This tooltip will not show.
+					</d2l-tooltip>
+					<d2l-link id="link-long" href="https://www.d2l.com" overflow-ellipsis>Very Very Very Very Long Text</d2l-link>
+					<d2l-tooltip for="link-long" show-truncated-only>
+						Very Very Very Very Long Text - this tooltip will show because the text is truncating.
+					</d2l-tooltip>
 				</div>
 			</template>
 		</d2l-demo-snippet>
@@ -184,6 +197,11 @@
 				</p>
 			</template>
 		</d2l-demo-snippet>
+
+		<script>
+			document.addEventListener('d2l-tooltip-show', e => console.log('d2l-tooltip-show', e.target));
+			document.addEventListener('d2l-tooltip-hide', e => console.log('d2l-tooltip-hide', e.target));
+		</script>
 
 	</d2l-demo-page>
 

@@ -7,6 +7,10 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../../button/button-subtle.js';
+			import '../../dropdown/dropdown-button-subtle.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
 			import '../tabs.js';
 			import '../tab-panel.js';
 		</script>
@@ -16,37 +20,6 @@
 		<d2l-demo-page page-title="d2l-tabs">
 
 			<h2>Tabs</h2>
-
-			<div style="margin-bottom: 30px;">
-				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
-				<d2l-button-subtle id="add-selected" text="Add Selected"></d2l-button-subtle>
-				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
-			</div>
-			<script>
-				let newPanelId = 0;
-				const addPanel = selected => {
-					newPanelId += 1;
-					const panel = document.createElement('d2l-tab-panel');
-					panel.selected = selected;
-					panel.text = `New Panel ${newPanelId}`;
-					panel.textContent = `Content for new panel ${newPanelId}`;
-					const tabs = document.querySelector('d2l-tabs');
-					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
-					if (panels.length < 2) tabs.appendChild(panel);
-					else tabs.insertBefore(panel, panels[1]);
-				};
-				
-				document.querySelector('#add').addEventListener('click', () => addPanel(false));
-				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true));
-
-				document.querySelector('#remove').addEventListener('click', () => {
-					const tabs = document.querySelector('d2l-tabs');
-					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
-					if (panels.length === 0) return;
-					if (panels.length === 1) tabs.removeChild(panels[0]);
-					else tabs.removeChild(panels[1]);
-				});
-			</script>
 
 			<d2l-demo-snippet>
 				<template>
@@ -62,7 +35,36 @@
 
 			<h3>Tabs (with slot)</h3>
 
-			<d2l-demo-snippet>
+			<div style="margin-bottom: 30px;">
+				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
+				<d2l-button-subtle id="add-selected" text="Add Selected"></d2l-button-subtle>
+				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
+			</div>
+			<script>
+				let newPanelId = 0;
+				const addPanel = (selected, tabs) => {
+					newPanelId += 1;
+					const panel = document.createElement('d2l-tab-panel');
+					panel.selected = selected;
+					panel.text = `New Panel ${newPanelId}`;
+					panel.textContent = `Content for new panel ${newPanelId}`;
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length < 2) tabs.appendChild(panel);
+					else tabs.insertBefore(panel, panels[1]);
+				};
+				const removePanel = (tabs) => {
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length === 0) return;
+					if (panels.length === 1) tabs.removeChild(panels[0]);
+					else tabs.removeChild(panels[1]);
+				};
+
+				document.querySelector('#add').addEventListener('click', () => addPanel(false, document.querySelector('#withSlot').querySelector('d2l-tabs')));
+				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true, document.querySelector('#withSlot').querySelector('d2l-tabs')));
+				document.querySelector('#remove').addEventListener('click', () => removePanel(document.querySelector('#withSlot').querySelector('d2l-tabs')));
+			</script>
+
+			<d2l-demo-snippet id="withSlot">
 				<template>
 					<d2l-tabs>
 						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
@@ -70,7 +72,18 @@
 						<d2l-tab-panel text="Earth Sciences">Tab content for Earth Sciences</d2l-tab-panel>
 						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
 						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
-						<d2l-button-subtle slot="ext" text="Search" icon="tier1:search"></d2l-button-subtle>
+						<d2l-dropdown-button-subtle slot="ext" text="Explore Topics">
+							<d2l-dropdown-menu>
+								<d2l-menu label="Astronomy">
+									<d2l-menu-item text="Introduction"></d2l-menu-item>
+									<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+									<d2l-menu-item text="The Solar System"></d2l-menu-item>
+									<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+									<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+									<d2l-menu-item text="The Universe"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-dropdown-menu>
+						</d2l-dropdown-button-subtle>
 					</d2l-tabs>
 				</template>
 			</d2l-demo-snippet>

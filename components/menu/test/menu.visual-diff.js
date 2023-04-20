@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-menu', () => {
 
@@ -19,8 +19,10 @@ describe('d2l-menu', () => {
 	[
 		'separator',
 		'long',
+		'long-unbreakable',
 		'hidden',
 		'link',
+		'link-long',
 		'supporting'
 	].forEach((id) => {
 		it(id, async function() {
@@ -46,7 +48,7 @@ describe('d2l-menu', () => {
 		});
 
 		it('focus', async function() {
-			await page.focus('#normal-b');
+			await focusWithKeyboard(page, '#normal-b');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -58,7 +60,7 @@ describe('d2l-menu', () => {
 		});
 
 		it('first item focus', async function() {
-			await page.focus('#normal-first');
+			await focusWithKeyboard(page, '#normal-first');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -70,7 +72,7 @@ describe('d2l-menu', () => {
 		});
 
 		it('last item focus', async function() {
-			await page.focus('#normal-last');
+			await focusWithKeyboard(page, '#normal-last');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -93,7 +95,7 @@ describe('d2l-menu', () => {
 		});
 
 		it('focus', async function() {
-			await page.focus('#disabled-item');
+			await focusWithKeyboard(page, '#disabled-item');
 			const rect = await visualDiff.getRect(page, '#disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -206,7 +208,7 @@ describe('d2l-menu', () => {
 		});
 
 		it('focus', async function() {
-			await page.focus('#dark-item');
+			await focusWithKeyboard(page, '#dark-item');
 			const rect = await visualDiff.getRect(page, '#dark');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});

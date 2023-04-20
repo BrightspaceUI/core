@@ -6,9 +6,26 @@
   "overrides": [{
     "files": [
       "**/demo/**.html",
-      "helpers/getLocalizeResources.js" ],
+      "helpers/getLocalizeResources.js"
+    ],
     "rules": {
       "no-console": 0
+    }
+  },
+  {
+    "files": [
+      "lang/*.js"
+    ],
+    "rules": {
+      "quotes": 0
+    }
+  },
+  {
+    "files": "mixins/demo/**.html",
+    "rules": {
+      "quotes": 0,
+      "no-undef": 0,
+      "indent": 0
     }
   }]
 }

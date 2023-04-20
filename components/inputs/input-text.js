@@ -1,17 +1,18 @@
+import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PerfMonitor } from '../../helpers/perfMonitor.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -154,10 +155,20 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			unit: { type: String },
 			/**
+			 * Accessible label for the unit which will not be visually rendered
+			 * @type {string}
+			 */
+			unitLabel: { attribute: 'unit-label', type: String },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
 			value: { type: String },
+			/**
+			 * Alignment of the value text within the input
+			 * @type {'start'|'end'}
+			 */
+			valueAlign: { attribute: 'value-align', type: String },
 			_firstSlotWidth: { type: Number },
 			_hasAfterContent: { type: Boolean, attribute: false },
 			_focused: { type: Boolean },
@@ -175,6 +186,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				:host([value-align="end"]) {
+					--d2l-input-text-align: end;
 				}
 				.d2l-input-label {
 					display: inline-block;
@@ -209,6 +223,11 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 				}
 				.d2l-input-inside-after {
 					right: 0;
+				}
+				.d2l-input-unit {
+					color: var(--d2l-color-galena);
+					font-size: 0.7rem;
+					margin-top: 0.05rem;
 				}
 				.d2l-input-inside-before .d2l-input-unit {
 					margin-left: 12px;
@@ -245,6 +264,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this.readonly = false;
 		this.required = false;
 		this.type = 'text';
+		this.valueAlign = 'start';
 		this._value = '';
 
 		this._descriptionId = getUniqueId();
@@ -256,6 +276,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._lastSlotWidth = 0;
+		this._missingUnitLabelErrorHasBeenThrown = false;
 		this._prevValue = '';
 
 		this._handleBlur = this._handleBlur.bind(this);
@@ -263,6 +284,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._handleMouseEnter = this._handleMouseEnter.bind(this);
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
 		this._perfMonitor = new PerfMonitor(this);
+		this._validatingUnitTimeout = null;
 	}
 
 	get value() { return this._value; }
@@ -307,7 +329,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	/** @ignore */
 	get validity() {
 		const elem = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
-		if (!elem.validity.valid) {
+		if (elem && !elem.validity.valid) {
 			return elem.validity;
 		}
 		return super.validity;
@@ -335,6 +357,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		super.firstUpdated(changedProperties);
 
 		this._setValue(this.value, true);
+		this._validateUnit();
 
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
@@ -390,8 +413,8 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
 		const isValid = ariaInvalid !== 'true' || this.disabled;
-		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
-		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
+		const invalidIconSide = ((this.dir === 'rtl' && this.valueAlign === 'start') || (this.dir !== 'rtl' && this.valueAlign === 'end')) ? 'left' : 'right';
+		const invalidIconOffset = Math.max((invalidIconSide === 'left') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
@@ -437,33 +460,44 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					<div class="d2l-input-inside-after" @keypress="${this._suppressEvent}">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
-					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
 				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._handleAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
 		`;
+
+		let label = nothing;
 		if (this.label && !this.labelHidden && !this.labelledBy) {
-			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${this.unit ? html`<span class="d2l-offscreen"> ${this.unit}</span>` : ''}</label>
-				${input}`;
+			const unitLabel = this._getUnitLabel();
+			label = html`<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>`;
 		}
-		return input;
+
+		let tooltip = nothing;
+		if (this.validationError && !this.skeleton && !this.noValidate) {
+			tooltip = html`<d2l-tooltip state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
+		}
+
+		return html`${tooltip}${label}${input}`;
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'unit') {
-				if (this.unit && this.unit !== '%') {
-					throw new Error('Invalid unit value for d2l-input-text.');
-				}
+			if (prop === 'unit' || prop === 'unitLabel') {
 				this._updateInputLayout();
+				this._validateUnit();
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 					tooltip.updatePosition();
 				}
+			} else if (prop === 'type') {
+				const input = this.shadowRoot?.querySelector('.d2l-input');
+				setTimeout(() => {
+					if (input && this.value !== input.value) {
+						this._setValue(input.value, false);
+					}
+				}, 0);
 			}
 		});
 	}
@@ -476,8 +510,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			label = this.getAttribute('aria-label');
 		}
 		if (label) {
-			const unitLabel = this.unit ? ` ${this.unit}` : '';
-			return `${label}${unitLabel}`;
+			return `${label}${this._getUnitLabel()}`;
 		}
 		return undefined;
 	}
@@ -487,6 +520,12 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			return this.type;
 		}
 		return 'text';
+	}
+
+	_getUnitLabel() {
+		if (!this.unit) return '';
+		const unitLabel = this.unitLabel || this.unit;
+		return ` ${unitLabel}`;
 	}
 
 	_handleAfterSlotChange(e) {
@@ -550,22 +589,14 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_handleSlotChange() {
-		// requestUpdate needed for legacy-Edge
-		if (navigator.userAgent.indexOf('Edge/') > -1) {
-			this.requestUpdate();
-			this.updateComplete.then(() => {
-				this._updateInputLayout();
-			});
-		} else {
-			this._updateInputLayout();
-		}
+		this._updateInputLayout();
 	}
 
 	_handleUnitClick() {
 		this.focus();
 	}
 
-	_setValue(val, updateInput) {
+	async _setValue(val, updateInput) {
 
 		const oldVal = this.value;
 		this._prevValue = (oldVal === undefined) ? '' : oldVal;
@@ -575,16 +606,17 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (!input) return;
 
 		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
-		this.requestValidate(false);
 		this.setFormValue(this.value);
 
 		// Can't bind to input's value as Safari moves the cursor each time an
 		// input's value gets set from render(). So we manually reach in
 		// and update it when source of the change isn't the input itself.
 		if (updateInput) {
+			await this.updateComplete;
 			input.value = this.value;
 		}
 
+		this.requestValidate(false);
 	}
 
 	_suppressEvent(e) {
@@ -616,6 +648,21 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			this._lastSlotWidth = 0;
 		}
 
+	}
+
+	_validateUnit() {
+		if (this._missingUnitLabelErrorHasBeenThrown) return;
+		clearTimeout(this._validatingUnitTimeout);
+		// don't error immediately in case it doesn't get set immediately
+		this._validatingUnitTimeout = setTimeout(() => {
+			this._validatingUnitTimeout = null;
+			const hasUnit = (typeof this.unit === 'string') && this.unit.length > 0;
+			const hasUnitLabel = (typeof this.unitLabel === 'string') && this.unitLabel.length > 0;
+			if (hasUnit && this.unit !== '%' && !hasUnitLabel) {
+				this._missingUnitLabelErrorHasBeenThrown = true;
+				throw new Error(`<d2l-input-text>: missing required attribute "unit-label" for unit "${this.unit}"`);
+			}
+		}, 3000);
 	}
 
 }

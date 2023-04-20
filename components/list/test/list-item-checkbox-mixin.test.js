@@ -17,8 +17,8 @@ describe('ListItemCheckboxMixin', () => {
 	// will log "ListItemCheckboxMixin requires a key."
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
-			'disabled selected',
-			'disabled selected selectable',
+			'selection-disabled selected',
+			'selection-disabled selected selectable',
 			'selected',
 			'selected selectable'
 		];
@@ -33,16 +33,16 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Does not render checkbox or action area when not selectable', () => {
 		const cases = [{
 			input: '',
-			expected: { selectable: false, disabled: false, selected: false }
+			expected: { selectable: false, selectionDisabled: false, selected: false }
 		}, {
-			input: 'disabled',
-			expected: { selectable: false, disabled: true, selected: false }
+			input: 'selection-disabled',
+			expected: { selectable: false, selectionDisabled: true, selected: false }
 		}, {
-			input: 'disabled selected',
-			expected: { selectable: false, disabled: true, selected: true }
+			input: 'selection-disabled selected',
+			expected: { selectable: false, selectionDisabled: true, selected: true }
 		}, {
 			input: 'selected',
-			expected: { selectable: false, disabled: false, selected: true }
+			expected: { selectable: false, selectionDisabled: false, selected: true }
 		}];
 		for (const test of cases) {
 			it(test.input || 'empty', async() => {
@@ -61,12 +61,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Dispatches custom event when checkbox is checked', () => {
 		const cases = [{
 			input: 'selectable',
-			initial: { selectable: true, disabled: false, selected: false },
-			expected: { selectable: true, disabled: false, selected: true }
+			initial: { selectable: true, selectionDisabled: false, selected: false },
+			expected: { selectable: true, selectionDisabled: false, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: { selectable: true, disabled: false, selected: true },
-			expected: { selectable: true, disabled: false, selected: false }
+			initial: { selectable: true, selectionDisabled: false, selected: true },
+			expected: { selectable: true, selectionDisabled: false, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
@@ -87,45 +87,60 @@ describe('ListItemCheckboxMixin', () => {
 		}
 	});
 
-	describe('Dispatches custom event when action area is clicked', () => {
+	describe('Dispatches custom event when action area is selected', () => {
+		const actions = [ 'click', 'enter' ];
 		const cases = [{
 			input: 'selectable',
-			initial: { selectable: true, disabled: false, selected: false },
-			expected: { selectable: true, disabled: false, selected: true }
+			initial: { selectable: true, selectionDisabled: false, selected: false },
+			expected: { selectable: true, selectionDisabled: false, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: { selectable: true, disabled: false, selected: true },
-			expected: { selectable: true, disabled: false, selected: false }
+			initial: { selectable: true, selectionDisabled: false, selected: true },
+			expected: { selectable: true, selectionDisabled: false, selected: false }
 		}];
+
 		for (const test of cases) {
-			it(test.input, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
-				Object.keys(test.initial).forEach(prop =>
-					expect(element[prop]).to.be.equal(test.initial[prop]));
-				// simulate an action area click
-				setTimeout(() => {
-					const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
-					actionArea.dispatchEvent(new Event('click'));
+			for (const action of actions) {
+				it(`${test.input} ${action}`, async() => {
+					const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
+					Object.keys(test.initial).forEach(prop =>
+						expect(element[prop]).to.be.equal(test.initial[prop]));
+					// simulate an action area selection
+					setTimeout(() => {
+						let actionArea = null;
+						switch (action) {
+							case 'click':
+								actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
+								actionArea.dispatchEvent(new Event('click'));
+								break;
+							case 'enter':
+								actionArea = element.shadowRoot.querySelector('d2l-selection-input');
+								actionArea.dispatchEvent(new KeyboardEvent('keydown', {
+									keyCode: 13 // Enter
+								}));
+								break;
+						}
+					});
+
+					const { detail } = await oneEvent(element, 'd2l-list-item-selected');
+					expect(detail.selected).to.equal(test.expected.selected);
+
+					Object.keys(test.expected).forEach(prop =>
+						expect(element[prop]).to.be.equal(test.expected[prop]));
 				});
-
-				const { detail } = await oneEvent(element, 'd2l-list-item-selected');
-				expect(detail.selected).to.equal(test.expected.selected);
-
-				Object.keys(test.expected).forEach(prop =>
-					expect(element[prop]).to.be.equal(test.expected[prop]));
-			});
+			}
 		}
 	});
 
-	describe('Does not dispatch event when item is disabled', () => {
+	describe('Does not dispatch event when item has selection disabled', () => {
 		const cases = [{
-			input: 'disabled selected selectable',
-			initial: { selectable: true, disabled: true, selected: true },
-			expected: { selectable: true, disabled: true, selected: true }
+			input: 'selection-disabled selected selectable',
+			initial: { selectable: true, selectionDisabled: true, selected: true },
+			expected: { selectable: true, selectionDisabled: true, selected: true }
 		}, {
-			input: 'disabled selectable',
-			initial: { selectable: true, disabled: true, selected: false },
-			expected: { selectable: true, disabled: true, selected: false }
+			input: 'selection-disabled selectable',
+			initial: { selectable: true, selectionDisabled: true, selected: false },
+			expected: { selectable: true, selectionDisabled: true, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {

@@ -46,9 +46,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			inactive: { type: Boolean, reflect: true },
-			__blurBackground: { type: String },
-			__contentHeight: { type: String },
-			__transitionAdded: { type: Boolean }
+			__blurBackground: { state: true },
+			__maxHeight: { state: true },
+			__transitionAdded: { state: true }
 		};
 	}
 
@@ -62,7 +62,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				overflow: hidden;
 			}
 			.d2l-more-less-transition {
-				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition: max-height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.d2l-more-less-blur {
 				display: none;
@@ -83,12 +83,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 
-		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
-		this.__transitionAdded = false;
-
 		this.expanded = false;
 		this.height = '4em';
 		this.inactive = false;
+
+		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
+		this.__transitionAdded = false;
+		this.__maxHeight = this.height;
 
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
@@ -135,9 +136,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
 		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
-		if (this.__content.offsetParent !== null) {
-			this.__init_setBaseHeight();
-		}
 		this.__init_setupBlurColour();
 		this.__init_setupListeners();
 
@@ -160,7 +158,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			'd2l-more-less-transition': this.__transitionAdded
 		};
 		return html`
-			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
+			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ maxHeight: `${this.__maxHeight}` })}>
 				<slot></slot>
 			</div>
 			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}` })}></div>
@@ -204,17 +202,17 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__adjustToContent_makeActive() {
 		this.inactive = false;
-		this.__contentHeight = this.height;
+		this.__maxHeight = this.height;
 	}
 
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__contentHeight = 'unset';
+		this.__maxHeight = `${this.__content.scrollHeight}px`;
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		this.__contentHeight = `${contentHeight}px`;
+		this.__maxHeight = `${contentHeight}px`;
 	}
 
 	__computeAriaExpanded() {
@@ -231,7 +229,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__expand() {
 		this.__transitionAdded = true;
-		this.__contentHeight = `${this.__content.scrollHeight}px`;
+		this.__maxHeight = `${this.__content.scrollHeight}px`;
 		this.expanded = true;
 	}
 
@@ -266,7 +264,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__init_setBaseHeight() {
-		this.__contentHeight = this.height;
+		this.__maxHeight = this.height;
 
 		requestAnimationFrame(() => {
 			this.__init_measureBaseHeight();
@@ -341,7 +339,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__shrink() {
 		this.__transitionAdded = true;
-		this.__contentHeight = this.height;
+		this.__maxHeight = this.height;
 		this.expanded = false;
 	}
 

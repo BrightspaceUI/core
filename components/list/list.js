@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
 	TAB: 9
@@ -12,7 +13,7 @@ export const listSelectionStates = SelectionInfo.states;
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
  * @slot - Slot for list items (ex. `d2l-list-item`, `d2l-list-item-button`, or custom items)
- * @slot header - Slot for `d2l-list-header` to be rendered above the list
+ * @slot controls - Slot for `d2l-list-controls` to be rendered above the list
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
@@ -63,14 +64,19 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
-		this._itemsShowingCount = 0;
-		this._itemsShowingTotalCount = 0;
 		this._listItemChanges = [];
+		this._childHasExpandCollapseToggle = false;
+
+		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
+			onSubscribe: this._updateActiveSubscriber.bind(this),
+			updateSubscribers: this._updateActiveSubscribers.bind(this)
+		});
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-list-items-showing-count-change', this._handleListItemsShowingCountChange);
+		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
+		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 	}
 
 	disconnectedCallback() {
@@ -80,7 +86,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
+		// check if list items are expandable on first render so we adjust sibling spacing appropriately
+		this._handleListIemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
 
 			// batch the changes from select-all and nested lists
@@ -106,30 +113,17 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 		});
 
-		if (typeof(IntersectionObserver) === 'function') {
-			this._intersectionObserver = new IntersectionObserver(entries => {
-				const slot = this.shadowRoot.querySelector('slot[name="header"]');
-				const header = slot.assignedNodes({ flatten: true }).find(node => {
-					return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST-HEADER';
-				});
-				if (!header) return;
-				const entry = entries[0];
-				header._scrolled = !entry.isIntersecting;
-			});
-			this._intersectionObserver.observe(this.shadowRoot.querySelector('.d2l-list-top-sentinel'));
-		}
-
 	}
 
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<div class="d2l-list-top-sentinel"></div>
-			<div role="${role}" class="d2l-list-container">
-				<slot name="header"></slot>
+			<slot name="controls"></slot>
+			<slot name="header"></slot>
+			<div role="${role}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-				${this._renderPagerContainer()}
 			</div>
+			${this._renderPagerContainer()}
 		`;
 	}
 
@@ -189,71 +183,73 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_getItemByIndex(index) {
-		const items = this.getItems();
-		if (index > items.length - 1) return;
+		const items = this.getItems() || [];
 		return items[index];
 	}
 
-	async _getItemsShowingCount() {
-		if (this.slot === 'nested') return this._itemsShowingCount;
-		else return this._getListItemsShowingTotalCount(false);
+	_getItemShowingCount() {
+		return this.getItems().length;
 	}
 
-	_getLastItemIndex() {
-		return this._itemsShowingCount - 1;
-	}
-
-	async _getListItemsShowingTotalCount(refresh) {
-		if (refresh) {
-			this._itemsShowingTotalCount = await this.getItems().reduce(async(count, item) => {
-				await item.updateComplete;
-				if (item._selectionProvider) {
-					return (await count + await item._selectionProvider._getListItemsShowingTotalCount(true));
-				} else {
-					return await count;
-				}
-			}, this._itemsShowingCount);
-		}
-		return this._itemsShowingTotalCount;
+	_getLazyLoadItems() {
+		const items = this.getItems();
+		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
 
 	_handleKeyDown(e) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
 		if (!this.shadowRoot) return;
-		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
-			: getNextFocusable(this, false, true, true));
+		const listSlot = this.shadowRoot.querySelector('slot:not([name])');
+		const focusable = (e.shiftKey ? getPreviousFocusable(listSlot) : getNextFocusable(listSlot, false, true, true));
 		if (focusable) focusable.focus();
 	}
 
-	_handleListItemsShowingCountChange() {
+	_handleListIemNestedChange(e) {
+		if (e) {
+			e.stopPropagation();
+		}
+		const items = this.getItems();
+		let aChildHasToggleEnabled = false;
+		for (const item of items) {
+			if (item.expandable) {
+				aChildHasToggleEnabled = true;
+				break;
+			}
+		}
+		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
+		this._listChildrenUpdatedSubscribers.updateSubscribers();
+	}
+
+	_handleListItemShowingCountChange() {
 		if (this.slot === 'nested') return;
 
 		// debounce the updates for first render case
-		if (this._updateItemsShowingTotalCountRequested) return;
+		if (this._updateItemShowingCountRequested) return;
 
-		this._updateItemsShowingTotalCountRequested = true;
-		setTimeout(async() => {
-			const oldCount = this._itemsShowingTotalCount;
-			const newCount = await this._getListItemsShowingTotalCount(true);
-			if (oldCount !== newCount) this._updatePagerCount(newCount);
-			this._updateItemsShowingTotalCountRequested = false;
+		this._updateItemShowingCountRequested = true;
+		setTimeout(() => {
+			this._updateItemShowingCount();
+			this._updateItemShowingCountRequested = false;
 		}, 0);
 	}
 
-	async _handleSlotChange(e) {
-		const items = this.getItems(e.target);
-		if (this._itemsShowingCount === items.length) return;
-		this._itemsShowingCount = items.length;
-
-		this._updatePagerCount(await this._getListItemsShowingTotalCount(true));
+	_handleSlotChange() {
+		this._updateItemShowingCount();
 
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-items-showing-count-change', {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
 			bubbles: true,
-			composed: true,
-			detail: { count: this._itemsShowingCount }
+			composed: true
 		}));
+	}
+
+	_updateActiveSubscriber(subscriber) {
+		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+	}
+
+	_updateActiveSubscribers(subscribers) {
+		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle));
 	}
 
 }

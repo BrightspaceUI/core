@@ -60,6 +60,7 @@ export const radioStyles = css`
 		font-weight: 400;
 		line-height: 1.2rem;
 		margin-bottom: 0.9rem;
+		overflow-wrap: anywhere;
 		padding-left: 1.7rem;
 		padding-right: 0;
 		vertical-align: middle;

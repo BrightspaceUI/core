@@ -18,6 +18,7 @@ Tables are used to display tabular data in rows and columns. They can allow user
   * There are more than just a few dimensions
   * The dimensions need to be sortable
   * The dimensions need to be easily compared across rows (ie- scannable)
+* Specify [column and row headings](https://www.w3.org/WAI/tutorials/tables/) so data is meaningful to screen reader users
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -28,7 +29,7 @@ Tables are used to display tabular data in rows and columns. They can allow user
 ## Responsive Behavior
 If the browser window is too narrow to display the table’s contents, a scroll button appears. This alerts users to overflowing content and provides a way for users to scroll horizontally. The scroll button sticks to the top of the screen so that it's available as long as the table is in the viewport.
 
-<!-- docs: demo name:d2l-test-table size:large -->
+<!-- docs: demo size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
@@ -44,7 +45,7 @@ If the viewport is very narrow — for example, on a mobile device — it may be
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
-<!-- docs: demo live name:d2l-test-table display:block -->
+<!-- docs: demo live name:d2l-table-wrapper display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -62,15 +63,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
     { name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
   ];
 
-  class TestTable extends LitElement {
-
-    static get properties() {
-      return {
-        noColumnBorder: { attribute: 'no-column-border', type: Boolean },
-        type: { type: String },
-        stickyHeaders: { attribute: 'sticky-headers', type: Boolean }
-      };
-    }
+  class SampleTable extends LitElement {
 
     static get styles() {
       return tableStyles;
@@ -80,7 +73,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
       const type = this.type === 'light' ? 'light' : 'default';
 
       return html`
-        <d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
+        <d2l-table-wrapper>
           <table class="d2l-table">
             <thead>
               <tr>
@@ -102,9 +95,9 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
     }
 
   }
-  customElements.define('d2l-test-table', TestTable);
+  customElements.define('d2l-sample-table', SampleTable);
 </script>
-<d2l-test-table></d2l-test-table>
+<d2l-sample-table></d2l-sample-table>
 ```
 
 <!-- docs: start hidden content -->
@@ -298,3 +291,100 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
   <td>this row is selected</td>
 </tr>
 ```
+
+## Pageable Tables
+
+Load-More paging functionality can be implemented in tables by placing a `d2l-pager-load-more` in `d2l-table-wrapper`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
+
+## Table Controls [d2l-table-controls]
+
+The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `controls` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+
+<!-- docs: demo live name:d2l-table-controls display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
+  import '@brightspace-ui/core/components/table/table-controls.js';
+  import { html, LitElement } from 'lit';
+  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+
+  class SampleTableWithControls extends LitElement {
+
+    static get properties() {
+      return {
+        _data: { state: true }
+      }
+    }
+
+    static get styles() {
+      return tableStyles;
+    }
+
+    constructor() {
+      super();
+      this._data = {
+        a: { checked: true },
+        b: { checked: false },
+      };
+    }
+
+    render() {
+      return html`
+        <d2l-table-wrapper>
+          <d2l-table-controls slot="controls">
+            <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+            <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+          </d2l-table-controls>
+          <table class="d2l-table">
+            <thead>
+              <tr>
+                <th><d2l-selection-select-all></d2l-selection-select-all></th>
+                <th>Column B</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${Object.keys(this._data).map((key, i) => html`
+                <tr>
+                  <td>
+                    <d2l-selection-input key="${key}" label="${key}" ?selected="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
+                </tr>
+              `)}
+            </tbody>
+          </table>
+        </d2l-table-wrapper>
+      `;
+    }
+
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = e.target.selected;
+      this.requestUpdate();
+    }
+
+  }
+  customElements.define('d2l-sample-table-with-controls', SampleTableWithControls);
+</script>
+<!-- docs: start hidden content -->
+<style>
+  #demo-element {
+    margin-bottom: 300px;
+    margin-top: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
+<d2l-sample-table-with-controls></d2l-sample-table-with-controls>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `no-selection` | Boolean | Whether to render the selection summary |
+| `no-sticky` | Boolean | Disables sticky positioning for the controls |
+| `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
+<!-- docs: end hidden content -->

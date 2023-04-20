@@ -5,6 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const valueSetFixture = html`<d2l-input-search label="search" value="foo"></d2l-input-search>`;
 const noClearFixture = html`<d2l-input-search label="search" value="foo" no-clear></d2l-input-search>`;
+const searchOnInputFixture = html`<d2l-input-search label="search" value="foo" search-on-input></d2l-input-search>`;
 
 function assertSearchVisibility(elem, isVisible) {
 	const visibleButton = elem.shadowRoot.querySelector('d2l-button-icon');
@@ -21,6 +22,10 @@ function getClearButton(elem) {
 
 function getSearchButton(elem) {
 	return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]');
+}
+
+function getTextInput(elem) {
+	return elem.shadowRoot.querySelector('d2l-input-text');
 }
 
 function pressEnter(elem) {
@@ -91,6 +96,29 @@ describe('d2l-input-search', () => {
 			setTimeout(() => getSearchButton(elem).click());
 			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
 			expect(detail.value).to.equal('');
+		});
+
+		it('should fire "search" event when search input changes in search-on-input mode', async() => {
+			const elem = await fixture(searchOnInputFixture);
+			elem.value = 'foobar';
+			setTimeout(() => getTextInput(elem).dispatchEvent(new Event('input')));
+			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
+			expect(detail.value).to.equal('foobar');
+		});
+
+		it('should fire "search" event only once after two consecutive input events', async() => {
+			const elem = await fixture(searchOnInputFixture);
+			let searchEventsFired = 0;
+			elem.addEventListener('d2l-input-search-searched', () => {
+				searchEventsFired += 1;
+			});
+			setTimeout(() => {
+				getTextInput(elem).dispatchEvent(new Event('input'));
+				getTextInput(elem).dispatchEvent(new Event('input'));
+			});
+			await oneEvent(elem, 'd2l-input-search-searched');
+			await new Promise(resolve => setTimeout(resolve, 50));
+			expect(searchEventsFired).to.equal(1);
 		});
 
 	});

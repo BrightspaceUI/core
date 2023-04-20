@@ -7,15 +7,16 @@ import { css, html, LitElement } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
@@ -117,7 +118,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
-class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)))) {
+class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -271,18 +272,38 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
+		const tryUpdateHiddenContentWidth = () => {
+			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			if (isNaN(width)) return false; // hidden elements will have "auto" width
+			this._hiddenContentWidth = `${width}px`;
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-time-hidden-content-width-change',
+				{ bubbles: true, composed: false }
+			));
+			return true;
+		};
+
 		this.addEventListener('d2l-localize-resources-change', async() => {
 			await this.updateComplete;
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
 			this.requestUpdate();
-			this.updateComplete.then(() => this._onResize(hiddenContent));
+			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		this._hiddenContentResizeObserver = new ResizeObserver(() => this._onResize(hiddenContent));
-		this._hiddenContentResizeObserver.observe(hiddenContent);
+		// resize observer needed to handle case where it's initially hidden
+		if (!tryUpdateHiddenContentWidth()) {
+			this._hiddenContentResizeObserver = new ResizeObserver(() => {
+				if (tryUpdateHiddenContentWidth()) {
+					this._hiddenContentResizeObserver.disconnect();
+					this._hiddenContentResizeObserver = null;
+				}
+			});
+			this._hiddenContentResizeObserver.observe(hiddenContent);
+		}
 
 	}
 
@@ -428,15 +449,5 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 	}
 
-	_onResize(hiddenContent) {
-		const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
-		this._hiddenContentWidth = `${width}px`;
-
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-input-time-hidden-content-width-change',
-			{ bubbles: true, composed: false }
-		));
-	}
 }
 customElements.define('d2l-input-time', InputTime);

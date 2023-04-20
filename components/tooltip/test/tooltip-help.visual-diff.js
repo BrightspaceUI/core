@@ -1,12 +1,12 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRect, show } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip-help', () => {
 
 	const visualDiff = new VisualDiff('tooltip-help', import.meta.url);
 	const tooltipHelpSelector = '#help-tooltip-basic';
+	const tooltipHelpSelectorSkeleton = '#help-tooltip-skeleton';
 
 	let browser, page;
 
@@ -40,16 +40,16 @@ describe('d2l-tooltip-help', () => {
 			});
 
 			if (testCase.focus) {
-				await page.$eval(tooltipHelpSelector, (elem) => forceFocusVisible(elem));
+				await focusWithKeyboard(page, tooltipHelpSelector);
 			}
 			if (testCase.hover) {
 				await page.hover(tooltipHelpSelector);
+				if (!testCase.focus) {
+					await openEvent;
+				}
 			}
 			if (testCase.click) {
 				await page.click(tooltipHelpSelector);
-			}
-
-			if (testCase.focus || testCase.hover || testCase.click) {
 				await openEvent;
 			}
 
@@ -95,7 +95,7 @@ describe('d2l-tooltip-help', () => {
 					});
 				});
 
-				await page.$eval(`${selector} d2l-tooltip-help`, (elem) => forceFocusVisible(elem));
+				await focusWithKeyboard(page, `${selector} d2l-tooltip-help`);
 				await openEvent;
 
 				const rect = await visualDiff.getRect(page, selector);
@@ -105,6 +105,27 @@ describe('d2l-tooltip-help', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
+		});
+	});
+
+	[
+		{ case: 'help tooltip skeleton' },
+		{ case: 'help tooltip skeleton and hovered', hover: true },
+		{ case: 'help tooltip skeleton and focused', focus: true },
+		{ case: 'help tooltip skeleton and hovered and focused', hover: true, focus: true }
+	].forEach((testCase) => {
+
+		it(testCase.case, async function() {
+
+			if (testCase.focus) {
+				await focusWithKeyboard(page, tooltipHelpSelectorSkeleton);
+			}
+			if (testCase.hover) {
+				await page.hover(tooltipHelpSelectorSkeleton);
+			}
+
+			const rect = await visualDiff.getRect(page, tooltipHelpSelectorSkeleton);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 

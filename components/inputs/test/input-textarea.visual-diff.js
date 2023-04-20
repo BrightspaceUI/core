@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-textarea', () => {
 
@@ -18,23 +18,23 @@ describe('d2l-input-textarea', () => {
 
 	[
 		{ name: 'default', selector: '#default' },
-		{ name: 'default-focus', selector: '#default', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'default-focus', selector: '#default', action: selector => focusWithKeyboard(page, selector) },
 		{ name: 'disabled', selector: '#disabled' },
 		{ name: 'label-hidden', selector: '#label-hidden' },
 		{ name: 'wrapping', selector: '#wrapping' },
 		{ name: 'placeholder', selector: '#placeholder' },
-		{ name: 'placeholder-focus', selector: '#placeholder', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'placeholder-focus', selector: '#placeholder', action: selector => focusWithKeyboard(page, selector) },
 		{ name: 'placeholder-disabled', selector: '#placeholder-disabled' },
 		{ name: 'rows', selector: '#rows' },
 		{ name: 'max-rows', selector: '#max-rows', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5\nline 6') },
 		{ name: 'required', selector: '#required' },
 		{ name: 'invalid', selector: '#invalid' },
-		{ name: 'invalid-focus', selector: '#invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'invalid-focus', selector: '#invalid', action: selector => focusWithKeyboard(page, selector) },
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
 		{ name: 'skeleton', selector: '#skeleton' },
 		{ name: 'no-border-padding', selector: '#no-border-padding' },
-		{ name: 'no-border-padding-focus', selector: '#no-border-padding', action: selector => page.$eval(selector, elem => elem.focus()) }
+		{ name: 'no-border-padding-focus', selector: '#no-border-padding', action: selector => focusWithKeyboard(page, selector) }
 	].forEach(info => {
 
 		it(info.name, async function() {
@@ -49,13 +49,13 @@ describe('d2l-input-textarea', () => {
 
 		[
 			{ name: 'basic', selector: '#sass-basic' },
-			{ name: 'basic-focus', selector: '#sass-basic', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'basic-focus', selector: '#sass-basic', action: selector => focusWithKeyboard(page, selector) },
 			{ name: 'disabled', selector: '#sass-disabled' },
 			{ name: 'placeholder', selector: '#sass-placeholder' },
-			{ name: 'placeholder-focus', selector: '#sass-placeholder', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'placeholder-focus', selector: '#sass-placeholder', action: selector => focusWithKeyboard(page, selector) },
 			{ name: 'placeholder-disabled', selector: '#sass-placeholder-disabled' },
 			{ name: 'invalid', selector: '#sass-invalid' },
-			{ name: 'invalid-focus', selector: '#sass-invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'invalid-focus', selector: '#sass-invalid', action: selector => focusWithKeyboard(page, selector) },
 			{ name: 'invalid-disabled', selector: '#sass-invalid-disabled' },
 			{ name: 'invalid-rtl', selector: '#sass-invalid-rtl' }
 		].forEach(info => {

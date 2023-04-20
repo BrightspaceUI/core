@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-checkbox', () => {
 
@@ -30,7 +30,7 @@ describe('d2l-input-checkbox', () => {
 				});
 				if (state !== 'disabled') {
 					it(`${id}-focus`, async function() {
-						await page.$eval(`#${id}`, (elem) => elem.focus());
+						await focusWithKeyboard(page, `#${id}`);
 						const rect = await visualDiff.getRect(page, `#${id}`);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
@@ -41,6 +41,7 @@ describe('d2l-input-checkbox', () => {
 
 	[
 		'multiline',
+		'multiline-unbreakable',
 		'hidden-label',
 		'spacer'
 	].forEach((type) => {

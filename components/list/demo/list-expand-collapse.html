@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import './demo-list-nested.js';
+		import './demo-list-nested-lazy-load.js';
+	</script>
+</head>
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-list (with expand/collapse)">
+		<h2>Draggable & Selectable (with grid)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					expanded
+					include-action-href
+					include-secondary-actions
+					include-list-controls></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" draggable selectable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryTextOnly" draggable selectable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Draggable & Selectable (without grid)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					expanded
+					include-secondary-actions
+					include-list-controls
+					disable-list-grid></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Selectable</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" selectable expandable expanded></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Draggable</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryAndSupportingText" draggable expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Expandable</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryTextOnlyDeepNesting" expandable></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Button list item</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					include-secondary-actions
+					include-list-controls
+					use-button-item></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Load More</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="primaryTextOnlyDeepNesting" expandable expanded show-load-more></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>One Child</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested demo-item-key="oneChild" expandable include-action-href></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>No Primary Action</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested
+					demo-item-key="imgPrimaryAndSupporting"
+					draggable
+					selectable
+					expandable
+					no-primary-action></d2l-demo-list-nested>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Lazy Loaded Children</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-demo-list-nested-lazy-load></d2l-demo-list-nested-lazy-load>
+			</template>
+		</d2l-demo-snippet>
+	</d2l-demo-page>
+
+	<script>
+		document.body.addEventListener('d2l-list-items-move', e => {
+			console.log('d2l-list-items-move', e.detail);
+		});
+	</script>
+
+</body>
+</html>

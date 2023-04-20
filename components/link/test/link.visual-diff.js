@@ -37,6 +37,8 @@ describe('d2l-link', () => {
 				'wc-main',
 				'wc-small',
 				'wc-inline',
+				'wc-inline-paragraph',
+				'wc-overflow-ellipsis',
 				'sass-standard',
 				'sass-main',
 				'sass-small'
@@ -49,20 +51,6 @@ describe('d2l-link', () => {
 
 		});
 
-	});
-
-	[
-		'wc-standard',
-		'sass-standard'
-	].forEach((name) => {
-		it(`focus-${name}`, async function() {
-			await page.evaluate((name) => {
-				const elem = document.querySelector(`#${name}`);
-				elem.focus();
-			}, name);
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
 	});
 
 });

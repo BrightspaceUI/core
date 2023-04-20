@@ -1,11 +1,13 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { CountBadgeMixin } from './count-badge-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-class CountBadgeIcon extends CountBadgeMixin(LitElement) {
+class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -22,9 +24,9 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 
 	static get styles() {
 		return [super.styles, css`
-		:host(.focus-visible) d2l-icon,
 		:host([focus-ring]) d2l-icon,
-		d2l-icon.focus-visible {
+		:host(:${unsafeCSS(getFocusPseudoClass())}) d2l-icon,
+		d2l-icon:${unsafeCSS(getFocusPseudoClass())} {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 			outline: none;
 		}
@@ -75,6 +77,10 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		this._badgeId = getUniqueId();
 	}
 
+	static get focusElementSelector() {
+		return 'd2l-icon';
+	}
+
 	render() {
 		let numberStyles = {
 			border: '2px solid white',
@@ -105,8 +111,8 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			${this.renderCount(numberStyles)}
 			<div class="d2l-skeletize d2l-count-badge-wrapper">
 				<d2l-icon id="${this._badgeId}"
-					icon="${this.icon}" 
-					tabindex="${ifDefined(tabbable ? '0' : undefined)}" 
+					icon="${this.icon}"
+					tabindex="${ifDefined(tabbable ? '0' : undefined)}"
 					aria-labelledby="${ifDefined(this.getAriaLabelId())}"
 					role="img">
 				</d2l-icon>

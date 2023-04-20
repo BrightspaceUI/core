@@ -1,8 +1,8 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
-async function getRect(page, id) {
-	return await page.$eval('d2l-test-table-visual-diff', (wrapper, id) => {
+async function getRect(page, id, wrapperId) {
+	return await page.$eval(wrapperId, (wrapper, id) => {
 		const elem = wrapper.shadowRoot.querySelector(`#${id}`);
 		const leftMargin = (elem.offsetLeft < 10 ? 0 : 10);
 		const topMargin = (elem.offsetTop < 10 ? 0 : 10);
@@ -15,11 +15,38 @@ async function getRect(page, id) {
 	}, id);
 }
 
+async function showSection(page, targetSection) {
+	const sections = [
+		'd2l-test-table-visual-diff',
+		'd2l-test-table-sticky-visual-diff',
+		'd2l-test-table-controls-visual-diff',
+		'd2l-test-table-paging-visual-diff',
+	];
+	const actions = sections.map(section => page.$eval(section, (elem, section, targetSection) => {
+		section === targetSection ? elem.removeAttribute('hidden') : elem.setAttribute('hidden', 'hidden');
+	}, section, targetSection));
+	await Promise.all(actions);
+}
+
 describe('d2l-table', () => {
 
 	const visualDiff = new VisualDiff('table', import.meta.url);
 
 	let browser, page;
+
+	const setProperties = (selector, properties) => {
+		return page.$eval(selector, (element, properties) => {
+			Object.keys(properties).forEach(key => element[key] = properties[key]);
+		}, properties);
+	};
+
+	const scrollTo = (selector, y) => {
+		return page.$eval(selector, (element, y) => {
+			element.scrollIntoView();
+			element.scrollTo(0, y);
+		}, y);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -44,8 +71,7 @@ describe('d2l-table', () => {
 					describe('nonstick', () => {
 
 						before(async() => {
-							await page.$eval('d2l-test-table-visual-diff', elem => elem.removeAttribute('hidden'));
-							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await showSection(page, 'd2l-test-table-visual-diff');
 						});
 
 						[
@@ -69,7 +95,7 @@ describe('d2l-table', () => {
 							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
-								const rect = await getRect(page, id);
+								const rect = await getRect(page, id, 'd2l-test-table-visual-diff');
 								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
@@ -83,10 +109,8 @@ describe('d2l-table', () => {
 						});
 
 						it('col-sort-button-focus', async function() {
-							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
-								wrapper.shadowRoot.querySelector('d2l-table-col-sort-button').focus();
-							});
-							const rect = await getRect(page, 'col-sort-button');
+							await focusWithKeyboard(page, ['d2l-test-table-visual-diff', 'd2l-table-col-sort-button']);
+							const rect = await getRect(page, 'col-sort-button', 'd2l-test-table-visual-diff');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
@@ -95,8 +119,7 @@ describe('d2l-table', () => {
 					describe('sticky', () => {
 
 						before(async() => {
-							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
-							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.removeAttribute('hidden'));
+							await showSection(page, 'd2l-test-table-sticky-visual-diff');
 						});
 
 						[
@@ -120,6 +143,55 @@ describe('d2l-table', () => {
 									}, id, position);
 									await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 								});
+							});
+						});
+
+					});
+
+					describe('table-controls', () => {
+
+						before(async() => {
+							await showSection(page, 'd2l-test-table-controls-visual-diff');
+						});
+
+						[
+							{ name: 'no-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: false, stickyHeaders: false, visibleBackground: false }) },
+							{ name: 'sticky-controls', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: false, visibleBackground: false }) },
+							{ name: 'all-sticky', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true, visibleBackground: false }) },
+							{ name: 'visible-background', action: () => setProperties('pierce/#table-controls > d2l-test-table', { stickyControls: true, stickyHeaders: true, visibleBackground: true }) },
+						].forEach(condition1 => {
+							describe(condition1.name, () => {
+
+								before(condition1.action);
+
+								[
+									{ name: '1-top', action: () => scrollTo('pierce/#table-controls', 0) },
+									{ name: '2-scrolled', action: () => scrollTo('pierce/#table-controls', 1000) },
+								].forEach(condition2 => {
+									it(condition2.name, async function() {
+										await condition2.action();
+										const rect = await getRect(page, 'table-controls', 'd2l-test-table-controls-visual-diff');
+										await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+									});
+								});
+
+							});
+						});
+
+					});
+
+					describe('paging', () => {
+
+						before(async() => {
+							await showSection(page, 'd2l-test-table-paging-visual-diff');
+						});
+
+						[
+							'table-with-paging',
+						].forEach((id) => {
+							it(id, async function() {
+								const rect = await getRect(page, id, 'd2l-test-table-paging-visual-diff');
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
 

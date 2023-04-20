@@ -118,6 +118,7 @@ The `d2l-dl-wrapper` component can be combined with `descriptionListStyles` to a
 | Property | Type | Description | Default Value
 |---|---|---|---|
 | `breakpoint` | Number | Width for component to use a stacked layout. | 240 |
+| `force-stacked` | Boolean | Force the component to always use a stacked layout; will override breakpoint attribute | false |
 
 <!-- docs: end hidden content -->
 

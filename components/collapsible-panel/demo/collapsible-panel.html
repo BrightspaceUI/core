@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../collapsible-panel.js';
+			import '../collapsible-panel-summary-item.js';
+			import '../../button/button-icon.js';
+			import '../../button/button-subtle.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../inputs/input-search.js';
+			import '../../filter/filter.js';
+			import '../../filter/filter-dimension-set.js';
+			import '../../link/link.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../../status-indicator/status-indicator.js';
+			import '../../demo/demo-page.js';
+		</script>
+		<style>
+			.background {
+				background-color: var(--d2l-color-gypsum);
+				margin: -18px;
+				padding: 18px;
+			}
+
+			.spacer d2l-collapsible-panel {
+				margin-bottom: 1rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-collapsible-panel">
+			<h2>Simple</h2>
+			<d2l-demo-snippet>
+				<div class="spacer">
+					<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+						<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+				</div>
+			</d2l-demo-snippet>
+
+			<h2>Subtle</h2>
+			<d2l-demo-snippet>
+				<div class="background spacer">
+					<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="subtle">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="subtle">
+						<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+					</d2l-collapsible-panel>
+				</div>
+			</d2l-demo-snippet>
+
+			<h2>Inline</h2>
+			<d2l-demo-snippet>
+				<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam.
+				</d2l-collapsible-panel>
+
+				<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline">
+					<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam.
+				</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>Inline with large padding</h2>
+			<d2l-demo-snippet>
+				<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline" padding-type="large">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam.
+				</d2l-collapsible-panel>
+				<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline" padding-type="large">
+					<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam.
+				</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>Multi-line summary and interactive content</h2>
+			<d2l-demo-snippet>
+				<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+					<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+					<d2l-collapsible-panel-summary-item slot="summary" text="1 release condition"></d2l-collapsible-panel-summary-item>
+					<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+					<div style="display: flex; gap: 0.3rem; margin-bottom: 1.2rem;">
+						<d2l-input-search label="search" placeholder="Search Students"></d2l-input-search>
+						<d2l-button-subtle text="Evaluate All"></d2l-button-subtle>
+						<d2l-filter>
+							<d2l-filter-dimension-set key="Filter" text="Filter">
+							</d2l-filter-dimension-set>
+						</d2l-filter>
+					</div>
+					<div>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</div>
+				</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>With custom action and header content</h2>
+			<d2l-demo-snippet>
+					<d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
+						<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more slot="actions">
+							<d2l-dropdown-menu>
+								<d2l-menu>
+									<d2l-menu-item text="Duplicate"></d2l-menu-item>
+									<d2l-menu-item text="Delete"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-dropdown-menu>
+						</d2l-dropdown-more>
+						<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+							<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
+							<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
+							<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+						</div>
+						<d2l-collapsible-panel-summary-item slot="summary" text="Always available"></d2l-collapsible-panel-summary-item>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+					</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>With long title</h2>
+			<d2l-demo-snippet>
+					<d2l-collapsible-panel panel-title="https://en.wikipedia.org/wiki/William_Thomson,_1st_Baron_Kelvin (the guy who invented absolute zero and some other cool thermodynamics stuff)" expand-collapse-label="Session on January 1">
+						<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more slot="actions">
+							<d2l-dropdown-menu>
+								<d2l-menu>
+									<d2l-menu-item text="Duplicate"></d2l-menu-item>
+									<d2l-menu-item text="Delete"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-dropdown-menu>
+						</d2l-dropdown-more>
+						<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+							<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
+							<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
+							<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+						</div>
+						<d2l-collapsible-panel-summary-item slot="summary" text="Always available"></d2l-collapsible-panel-summary-item>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor. Praesent lobortis libero in libero sagittis consectetur. Maecenas ut velit efficitur, consectetur augue vitae, finibus turpis. In id tempor quam. Integer sed facilisis mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut a volutpat lacus. Suspendisse potenti. Quisque egestas erat urna, et accumsan est accumsan sit amet. Sed luctus vestibulum lacus. Mauris nisi orci, rhoncus sed est sit amet, pretium facilisis felis.
+					</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>Headings</h2>
+			<d2l-demo-snippet class="spacer">
+					<d2l-collapsible-panel heading-level="1" panel-title="Heading Level 1">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel heading-level="2" panel-title="Heading Level 2">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel heading-level="3" panel-title="Heading Level 3">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel heading-level="4" panel-title="Heading Level 4">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel heading-style="2" panel-title="Heading Style 2">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+
+					<d2l-collapsible-panel heading-style="4" heading-level="2" panel-title="Heading Style 4">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+					</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+
+			<h2>Loooooong</h2>
+			<d2l-demo-snippet>
+					<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+						<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+						<d2l-collapsible-panel-summary-item slot="summary" text="1 release condition"></d2l-collapsible-panel-summary-item>
+						<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a feugiat mi, in consectetur justo. Suspendisse finibus placerat purus, quis volutpat libero. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec tempor bibendum tempor. Suspendisse potenti. Quisque auctor purus id magna laoreet finibus. Maecenas eleifend est id velit vulputate finibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum semper lorem nibh, gravida maximus libero hendrerit eu. Sed congue turpis ac iaculis laoreet. In commodo orci sit amet mollis facilisis. Pellentesque eu viverra metus. Nunc convallis laoreet augue, vitae sollicitudin 	nisl facilisis id. Aliquam sollicitudin fermentum dui, non convallis nulla facilisis quis.</p>
+
+						<p>Fusce lacus magna, efficitur in bibendum sit amet, egestas sit amet libero. Aenean nec felis ut justo maximus scelerisque in eget eros. Nam tincidunt nisi ipsum, vitae pretium augue vehicula a. Donec eget diam et ex posuere dictum eget id dui. Sed elementum felis in condimentum mattis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas volutpat dui semper mi semper, id varius purus sagittis. Praesent fringilla vel magna nec porttitor. Nulla nec gravida magna. Donec vitae dui consequat, ornare velit at, maximus turpis. Morbi porttitor massa eu tempus pretium. Nunc at justo eu erat dictum volutpat et ac lacus. Etiam congue ut massa vel tempor. Curabitur pellentesque nec massa a elementum. Nulla non dictum velit.</p>
+
+						<p>Duis risus mauris, egestas vel metus venenatis, vulputate placerat purus. Maecenas a congue risus. Cras auctor, massa id tincidunt tempor, nisi sem eleifend arcu, a gravida magna mauris ac ligula. Suspendisse quis purus commodo, faucibus orci ultricies, semper tortor. Proin at neque enim. Sed dapibus augue sit amet ligula tempor, interdum ornare nulla imperdiet. Nulla dolor ante, bibendum a velit a, molestie tincidunt nibh. Ut a viverra turpis. Vivamus vel dolor pulvinar, molestie libero ac, sollicitudin neque. Mauris dictum sem non dui pellentesque euismod. Integer mi velit, finibus ut libero eu, posuere commodo mi. Etiam sit amet leo metus. Ut ornare magna in tortor aliquet, quis condimentum ex lacinia. Sed ultricies sollicitudin est, et tempor ante rutrum vitae.</p>
+
+						<p>Quisque porttitor sollicitudin ligula, ut egestas tortor fringilla sed. Morbi porta libero velit, et venenatis massa facilisis nec. Nulla facilisi. In semper, ex ut egestas finibus, felis sem cursus orci, vel molestie sem leo vitae est. Cras vehicula massa et sapien pulvinar facilisis. Nam feugiat congue libero ut tristique. Ut id luctus arcu. Proin id augue eu est porttitor pretium. Ut bibendum semper rhoncus. Nullam a ligula faucibus, aliquet lectus sodales, dictum ipsum. Proin eget dapibus velit, sit amet egestas lorem. Vivamus suscipit sem turpis, nec sodales nibh ultrices vitae. Nulla augue sem, blandit sit amet fringilla at, tincidunt quis lacus.</p>
+
+						<p>Vestibulum enim leo, lobortis nec faucibus at, dictum rhoncus odio. Suspendisse dapibus, quam sed condimentum fermentum, est tellus malesuada justo, ut gravida libero dolor eu felis. Integer turpis dui, rhoncus sit amet dignissim eget, laoreet viverra magna. Nam varius arcu orci, sed consequat eros dictum nec. Nunc finibus quis diam id tincidunt. Quisque sed nunc ultrices, feugiat purus ac, iaculis leo. Morbi elementum, tellus sit amet eleifend tempor, magna massa eleifend turpis, id aliquam est ante vitae arcu. Vivamus non dapibus magna. Sed maximus fringilla sem, ac lacinia mi condimentum ac. Duis id eros nibh. Donec eget lectus et mi vulputate sollicitudin consequat quis lacus. Aliquam dui nibh, congue eu iaculis sed, fermentum a felis. Curabitur id magna sed urna lobortis hendrerit. Sed placerat nisl sit amet erat vulputate suscipit. Vestibulum sed efficitur odio. Sed dapibus nibh ac neque convallis tempus.</p>
+					</d2l-collapsible-panel>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>

@@ -3,6 +3,7 @@ import '../selection-action.js';
 import '../selection-action-dropdown.js';
 import '../selection-action-menu-item.js';
 import './selection-component.js';
+import '../selection-controls.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
@@ -82,6 +83,26 @@ describe('d2l-selection-action-menu-item', () => {
 		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
 		item.click();
 		expect(dispatched).to.be.false;
+	});
+
+});
+
+describe('d2l-selection-controls', () => {
+
+	it('should construct', () => {
+		runConstructor('d2l-selection-controls');
+	});
+
+	it('should set default label', async() => {
+		const el = await fixture(html`<d2l-selection-controls></d2l-selection-controls>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.equal('Actions for selection');
+	});
+
+	it('should not set action label if there are no actions or selection options', async() => {
+		const el = await fixture(html`<d2l-selection-controls no-selection></d2l-selection-controls>`);
+		const section = el.shadowRoot.querySelector('section');
+		expect(section.getAttribute('aria-label')).to.be.null;
 	});
 
 });
@@ -291,6 +312,13 @@ describe('SelectionObserverMixin', () => {
 					<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
 					<d2l-selection-input key="key3" label="label3"></d2l-selection-input>
 				</d2l-test-selection>
+
+				<d2l-test-selection id="d2l-test-selection-2"></d2l-test-selection>
+				<d2l-test-selection id="d2l-test-selection-3">
+					<d2l-selection-action></d2l-selection-action>
+				</d2l-test-selection>
+				<d2l-test-selection id="d2l-test-selection-4"></d2l-test-selection>
+				<d2l-test-selection-observer-shadow selection-for="d2l-test-selection-2"></d2l-test-selection-observer-shadow>
 			</div>
 		`);
 		await el.querySelector('#obs1').updateComplete;
@@ -322,11 +350,12 @@ describe('SelectionObserverMixin', () => {
 	});
 
 	it('unregisters observers', async() => {
+		expect(collection._selectionObservers.size).to.equal(2);
 		el.removeChild(el.querySelector('d2l-selection-action'));
 		await collection.updateComplete;
 		expect(collection._selectionObservers.size).to.equal(1);
 
-		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection"';
+		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection';
 		await collection.updateComplete;
 		expect(collection._selectionObservers.size).to.equal(0);
 	});
@@ -349,7 +378,60 @@ describe('SelectionObserverMixin', () => {
 		await observer.updateComplete;
 		expect(observer._provider).to.equal(newProvider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
-
 	});
 
+	it('should unsubscribe and remove provider/observer when selectionFor is cleared', async() => {
+		const observer = el.querySelector('d2l-selection-action');
+		expect(collection._selectionObservers.size).to.equal(2);
+		expect(observer._provider).to.equal(collection);
+		expect(observer._selectionForObserver).not.to.be.undefined;
+
+		observer.selectionFor = '';
+		await observer.updateComplete;
+		expect(collection._selectionObservers.size).to.equal(1);
+		expect(observer._provider).to.be.undefined;
+		expect(observer._selectionForObserver).to.be.undefined;
+	});
+
+	it('should resubscribe/observe when disconnected and reconnected', async() => {
+		const observer = el.querySelector('d2l-selection-action');
+
+		el.removeChild(observer);
+		await collection.updateComplete;
+		expect(collection._selectionObservers.size).to.equal(1);
+		expect(observer._selectionForObserver).to.be.undefined;
+		expect(observer._provider).to.be.undefined;
+
+		el.appendChild(observer);
+		await nextFrame();
+		await nextFrame();
+		await collection.updateComplete;
+		expect(collection._selectionObservers.size).to.equal(2);
+		expect(observer._selectionForObserver).not.to.be.undefined;
+		expect(observer._provider).not.to.be.undefined;
+	});
+
+	it('should automatically subscribe any child selection-observers', async() => {
+		const collection2 = el.querySelector('#d2l-test-selection-2');
+		const observer = el.querySelector('d2l-test-selection-observer-shadow').shadowRoot.querySelector('d2l-test-selection-observer');
+		expect(observer._provider).to.equal(collection2);
+		expect(collection2._selectionObservers.size).to.equal(2);
+	});
+
+	it('should attach to a new provider when connected in a different context', async() => {
+		const collection3 = el.querySelector('#d2l-test-selection-3');
+		const collection4 = el.querySelector('#d2l-test-selection-4');
+		const observer = collection3.querySelector('d2l-selection-action');
+		expect(collection3._selectionObservers.size).to.equal(1);
+		expect(collection4._selectionObservers.size).to.equal(0);
+
+		collection4.appendChild(observer);
+		await nextFrame();
+		await nextFrame();
+		await collection4.updateComplete;
+		await collection3.updateComplete;
+		expect(collection3._selectionObservers.size).to.equal(0);
+		expect(collection4._selectionObservers.size).to.equal(1);
+		expect(observer._provider).to.equal(collection4);
+	});
 });

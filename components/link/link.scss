@@ -9,13 +9,23 @@
 		text-decoration: none;
 		cursor: pointer;
 	}
-	&:hover,
-	&:focus,
-	&.d2l-link-focus {
+	&:hover {
 		color: $d2l-color-celestine-minus-1;
 		text-decoration: underline;
-		outline-width: 0;
 	}
+	&:focus-visible {
+		border-radius: 2px;
+		outline: 2px solid $d2l-color-celestine;
+		outline-offset: 1px;
+		text-decoration: underline;
+	}
+	.d2l-focus-visible-not-supported &:focus {
+		border-radius: 2px;
+		outline: 2px solid $d2l-color-celestine;
+		outline-offset: 1px;
+		text-decoration: underline;
+	}
+
 	&[main] {
 		font-weight: 700;
 	}

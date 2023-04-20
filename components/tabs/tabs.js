@@ -2,16 +2,16 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
-import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
+import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,7 +52,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyfillMixin(LitElement)))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -96,7 +96,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				display: flex;
 				max-height: 60px;
 				opacity: 1;
-				transform: translateY(0);
+				transform: none;
 			}
 			.d2l-tabs-container {
 				box-sizing: border-box;
@@ -164,7 +164,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				background-color: transparent;
 				border: 1px solid transparent;
 				border-radius: 15px;
-				box-shadow: 0 0 0 4px rgba(0, 0, 0, 0);
 				box-sizing: border-box;
 				cursor: pointer;
 				display: inline-block;
@@ -183,15 +182,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 				border: 0;
 			}
 			.d2l-tabs-scroll-button[disabled]:hover,
-			.d2l-tabs-scroll-button[disabled].focus-visible {
+			.d2l-tabs-scroll-button[disabled]:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: transparent;
 			}
 			.d2l-tabs-scroll-button:hover,
-			.d2l-tabs-scroll-button.focus-visible {
+			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-gypsum);
 			}
-			.d2l-tabs-scroll-button.focus-visible {
-				border-color: var(--d2l-color-celestine);
+			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
 				margin-top: 0;
@@ -415,6 +414,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	_calculateScrollPosition(selectedTabInfo, measures) {
 
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
+
+		if (!measures.tabRects[selectedTabIndex]) return 0;
+
 		const selectedTabMeasures = measures.tabRects[selectedTabIndex];
 
 		const isOverflowingLeft = (selectedTabMeasures.offsetLeft + this._translationValue < 0);
@@ -636,10 +638,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 			this._updateMeasures();
 		}
 
-		Promise.all(animPromises).then(() => {
-			this._updateMeasures();
-			return this._updateScrollPosition(selectedTabInfo);
-		});
+		if (selectedTabInfo) {
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				return this._updateScrollPosition(selectedTabInfo);
+			});
+		}
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tabs-initialized', { bubbles: true, composed: true }

@@ -26,24 +26,29 @@ export const dialogStyles = css`
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		box-sizing: content-box;
+		box-sizing: border-box;
 		position: fixed; /* also required for native to override position: absolute */
-		top: 100px;
+		top: 75px;
 	}
 
 	:host([_state="showing"]) > .d2l-dialog-outer {
 		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
-		animation: d2l-dialog-open 200ms ease-in;
+		animation: d2l-dialog-open 200ms ease-out;
 	}
 
 	@keyframes d2l-dialog-close {
-		0% { transform: translateY(0); }
-		100% { transform: translateY(-50px); }
+		0% { opacity: 1; transform: translateY(0); }
+		100% { opacity: 0; transform: translateY(-50px); }
 	}
 
 	@keyframes d2l-dialog-open {
-		0% { transform: translateY(-50px); }
-		100% { transform: translateY(0); }
+		0% { opacity: 0; transform: translateY(-50px); }
+		100% { opacity: 1; transform: translateY(0); }
+	}
+
+	.d2l-dialog-outer.d2l-dialog-outer-full-height {
+		bottom: 1.5rem;
+		top: 1.5rem;
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
@@ -75,6 +80,7 @@ export const dialogStyles = css`
 
 	:host([_state="showing"]) dialog::backdrop {
 		opacity: 0.7;
+		transition-timing-function: ease-out;
 	}
 
 	d2l-focus-trap {

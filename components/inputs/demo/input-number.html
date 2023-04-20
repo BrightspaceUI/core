@@ -98,6 +98,13 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Denominator</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-number max="5" min="0" label="Grade" label-hidden required unit="/5" unit-label="out of 5" value="3" value-align="end"></d2l-input-number>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 		<script>
 			document.body.addEventListener('change', e => console.log('change', e.srcElement.value));

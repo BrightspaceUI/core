@@ -1,3 +1,4 @@
+import { focusWithKeyboard } from '@brightspace-ui/visual-diff';
 
 export async function open(page, selector) {
 	const openEvent = page.$eval(selector, (elem) => {
@@ -81,4 +82,14 @@ export function getRectTooltip(page, selector, tooltipIndex) {
 			height: height + 20
 		};
 	}, tooltipIndex);
+}
+
+export async function focusOnInput(page, selector, inputSelector) {
+	setTimeout(() => focusWithKeyboard(page, [selector, inputSelector]));
+	return page.$eval(selector, (elem) => {
+		elem.blur();
+		return new Promise((resolve) => {
+			elem.addEventListener('d2l-tooltip-show', () => requestAnimationFrame(resolve), { once: true });
+		});
+	});
 }

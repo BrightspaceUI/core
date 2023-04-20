@@ -120,14 +120,18 @@ Focus helper functions to easily select focusable DOM nodes
 ```js
 import { ... } from '@brightspace-ui/core/helpers/focus.js';
 
-// focuses on an element and forces a visible focus ring
-forceFocusVisible(node);
-
 // gets the active element, including shadow DOM active elements
 getComposedActiveElement()
 
 // gets the first focusable descendant given a node, including those within the shadow DOM
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
+
+// gets the focus pseudo-class to used in selectors (focus-visible if supported, or focus)
+// Usage:
+//	css`
+//		some-element:${unsafeCSS(getFocusPseudoClass())} { ... }
+//	`
+getFocusPseudoClass()
 
 // gets the last focusable descendant given a node, including those within the shadow DOM
 getLastFocusableDescendant(node, includeHidden)
@@ -144,9 +148,8 @@ getPreviousFocusableAncestor(node, includeHidden, includeTabbablesOnly)
 // returns true/false whether the element is focusable
 isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled)
 
-// returns true and focuses on node or its nearest focusable ancestor;
-// or false if node and its ancestors are not focusable
-tryApplyFocus(node)
+// returns true/false whether the :focus-visible is supported
+isFocusVisibleSupported()
 ```
 
 ## Gesture - Swipe
@@ -169,6 +172,19 @@ element.addEventListener('d2l-gesture-swipe', (e) => {
         e.detail.duration              // ms
     );
 });
+```
+
+## offsetParent-legacy
+
+A ponyfill for [offsetParent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent) for "legacy" `offsetParent` behaviour, which will include any ancestor shadow DOMs when searching for the closest positioned ancestor. The native browser behaviour was changed in 2022 to not leak nodes within a shadow tree.
+
+To use the ponyfill, import `getLegacyOffsetParent` (and/or `getLegacyOffsetTop`, `getLegacyOffsetLeft`):
+
+```js
+import { getLegacyOffsetParent } from '@brightspace-ui/core/helpers/offsetParent-legacy.js';
+
+// Replace `element.offsetParent` with:
+const offsetParent = getLegacyOffsetParent(element);
 ```
 
 ## queueMicrotask

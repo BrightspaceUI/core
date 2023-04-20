@@ -1,5 +1,6 @@
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
+import '../filter-dimension-set-empty-state.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { spy } from 'sinon';
@@ -31,6 +32,48 @@ describe('d2l-filter-dimension-set', () => {
 			expect(values[0].key).to.equal('1');
 			expect(values[1].key).to.equal('2');
 			expect(values[2].key).to.equal('newValue');
+		});
+
+		it('handles search-empty-state slot change', async() => {
+			const elem = await fixture(dimensionfixture);
+			const eventSpy = spy(elem, 'dispatchEvent');
+
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'search-empty-state';
+			setTimeout(() => elem.appendChild(emptyState));
+
+			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(e.detail.dimensionKey).to.equal('dim');
+			expect(e.detail.changes.size).to.equal(1);
+			expect(e.detail.changes.get('searchEmptyState').actionHref).to.equal('https://d2l.com');
+			expect(e.detail.changes.get('searchEmptyState').actionText).to.equal('Click me');
+			expect(e.detail.changes.get('searchEmptyState').description).to.equal('Description');
+			expect(eventSpy).to.be.calledOnce;
+		});
+
+		it('handles set-empty-state slot change', async() => {
+			const elem = await fixture(dimensionfixture);
+			const eventSpy = spy(elem, 'dispatchEvent');
+
+			const emptyState = document.createElement('d2l-filter-dimension-set-empty-state');
+			emptyState.actionHref = 'https://d2l.com';
+			emptyState.actionText = 'Click me';
+			emptyState.description = 'Description';
+			emptyState.slot = 'set-empty-state';
+			setTimeout(() => elem.appendChild(emptyState));
+
+			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(e.detail.dimensionKey).to.equal('dim');
+			expect(e.detail.changes.size).to.equal(1);
+			expect(e.detail.changes.get('setEmptyState').actionHref).to.equal('https://d2l.com');
+			expect(e.detail.changes.get('setEmptyState').actionText).to.equal('Click me');
+			expect(e.detail.changes.get('setEmptyState').description).to.equal('Description');
+			expect(eventSpy).to.be.calledOnce;
 		});
 	});
 

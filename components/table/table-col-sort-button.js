@@ -1,7 +1,8 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { css, html, LitElement, unsafeCSS } from 'lit';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
@@ -55,7 +56,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:hover {
 				text-decoration: underline;
 			}
-			button:focus-visible {
+			button:focus-visible,
+			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.2rem;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;

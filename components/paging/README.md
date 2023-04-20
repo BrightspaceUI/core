@@ -7,15 +7,8 @@ The paging components and mixins can be used to provide consistent paging functi
 <script type="module">
   import '@brightspace-ui/core/components/paging/pager-load-more.js';
 </script>
-<d2l-pager-load-more has-more page-size="3" item-count="15"></d2l-pager-load-more>
+<d2l-pager-load-more has-more page-size="3"></d2l-pager-load-more>
 ```
-
-## Best Practices
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Consider the performance impact of acquiring the optional total `item-count`. The `item-count` provides useful context for the user, but counting large numbers of rows can be detrimental to performance. As a very general guide, when the total number of rows that needs to be counted is < 50,000, it's not a performance concern.
-<!-- docs: end dos -->
-<!-- docs: end best practices -->
 
 ## Load More Paging [d2l-pager-load-more]
 
@@ -24,10 +17,10 @@ The `d2l-pager-load-more` component can be used in conjunction with pageable com
 See [Pageable Lists](../../components/list/#pageable-lists).
 
 ```html
-<d2l-list>
+<d2l-list item-count="85">
   <d2l-list-item ...></d2l-list-item>
   <d2l-list-item ...></d2l-list-item>
-  <d2l-pager-load-more slot="pager" has-more page-size="10" item-count="85"></d2l-pager-load-more>
+  <d2l-pager-load-more slot="pager" has-more page-size="10"></d2l-pager-load-more>
 </d2l-list>
 ```
 
@@ -44,7 +37,6 @@ pager.addEventListener('d2l-pager-load-more', e => {
 | Property | Type | Description |
 |---|---|---|
 | `has-more` | Boolean, default: `false` | Whether there are more items that can be loaded. |
-| `item-count` | Number | Total number of items. If not specified, neither it nor the count of items showing will be displayed. |
 | `page-size` | Number, default: 50 | The number of additional items to load. |
 
 ### Events

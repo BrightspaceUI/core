@@ -1,13 +1,13 @@
 import '../colors/colors.js';
-import { css, html } from 'lit';
+import { css, html, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(FocusVisiblePolyfillMixin(superclass))) {
+export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -59,7 +59,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container.focus-visible {
+			.d2l-switch-container:${unsafeCSS(getFocusPseudoClass())} {
 				border-color: var(--d2l-color-celestine);
 			}
 			:host([disabled]) .d2l-switch-container {
@@ -221,9 +221,9 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(Focus
 	}
 
 	get _labelContent() {
-		return html`<span 
-						@click='${this._handleClick}' 
-						@mouseenter='${this._handleSwitchHover}' 
+		return html`<span
+						@click='${this._handleClick}'
+						@mouseenter='${this._handleSwitchHover}'
 						@mouseleave='${this._handleSwitchHoverLeave}'>
 						${this.text}
 					</span>`;

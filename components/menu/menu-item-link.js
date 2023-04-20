@@ -48,8 +48,6 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 					overflow-x: hidden;
 					padding: 0.75rem 1rem;
 					text-decoration: none;
-					text-overflow: ellipsis;
-					white-space: nowrap;
 				}
 			`
 		];

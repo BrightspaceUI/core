@@ -105,6 +105,7 @@ class DragState {
 
 	_cleanUpOnLeave() {
 		if (!this._activeDropTarget) return;
+		this._activeDropTarget._draggingOver = false;
 		this._activeDropTarget._dropLocation = dropLocation.void;
 		this._activeDropTarget._inTopArea = false;
 		this._activeDropTarget._inBottomArea = false;
@@ -395,6 +396,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
+	_dispatchMoveAroundCollapsedItem(listItem, moveAbove) {
+		const parentListItem = this._getParentList();
+		if (parentListItem) {
+			const parentItems = parentListItem.getItems();
+			const nextItemIdex = parentItems.indexOf(listItem);
+			this._dispatchListItemsMove([this], parentItems[nextItemIdex], moveAbove ? moveLocations.above : moveLocations.below, true);
+		} else {
+			this._dispatchMoveRootItem(moveAbove);
+		}
+	}
+
 	_dispatchMoveListItemFirst(moveToRoot) {
 		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
@@ -410,42 +422,54 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemNest() {
 		const listItem = this._getPreviousListItemSibling();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			this._dispatchListItemsMove([this], listItem, moveLocations.nest, true);
 		}
 	}
 
 	_dispatchMoveListItemNext() {
-		const listItem = this._getNextListItemSibling();
-		if (listItem) {
-			const nestedList = listItem._getNestedList();
+		const nextListItemSibling = this._getNextListItemSibling();
+		// if next sibling is collapsed - move item below it
+		if (nextListItemSibling && nextListItemSibling.expandable && !nextListItemSibling.expanded) {
+			this._dispatchMoveAroundCollapsedItem(nextListItemSibling, false);
+		} else if (nextListItemSibling) {
+			this._expandListItemOnKeyboardMove(nextListItemSibling);
+			const nestedList = nextListItemSibling._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
 				this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+				this._dispatchListItemsMove([this], nextListItemSibling, moveLocations.below, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.below, true);
+			} else {
+				this._dispatchMoveRootItem(false);
 			}
 		}
 	}
 
 	_dispatchMoveListItemPrevious() {
-		const listItem = this._getPreviousListItemSibling();
-		if (listItem) {
-			const nestedList = listItem._getNestedList();
+		const previousListItemSibling = this._getPreviousListItemSibling();
+		// if previous sibling is collapsed - move item above it
+		if (previousListItemSibling && previousListItemSibling.expandable && !previousListItemSibling.expanded) {
+			this._dispatchMoveAroundCollapsedItem(previousListItemSibling, true);
+		} else if (previousListItemSibling) {
+			const nestedList = previousListItemSibling._getNestedList();
 			const items = (nestedList ? nestedList.getItems() : []);
 			if (items.length > 0) {
 				this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
 			} else {
-				this._dispatchListItemsMove([this], listItem, moveLocations.above, true);
+				this._dispatchListItemsMove([this], previousListItemSibling, moveLocations.above, true);
 			}
 		} else {
 			const parentListItem = this._getParentListItem();
 			if (parentListItem) {
 				this._dispatchListItemsMove([this], parentListItem, moveLocations.above, true);
+			} else {
+				this._dispatchMoveRootItem(true);
 			}
 		}
 	}
@@ -453,7 +477,25 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_dispatchMoveListItemUnnest() {
 		const listItem = this._getParentListItem();
 		if (listItem) {
+			this._expandListItemOnKeyboardMove(listItem);
 			this._dispatchListItemsMove([this], listItem, moveLocations.below, true);
+		}
+	}
+
+	_dispatchMoveRootItem(moveAbove) {
+		const rootList = this._getRootList();
+		const items = rootList.getItems();
+		const currentIndex = items.indexOf(this);
+		if (moveAbove && currentIndex !== 0) {
+			this._dispatchListItemsMove([this], items[currentIndex - 1], moveLocations.above, true);
+		} else if (!moveAbove && currentIndex !== items.length - 1) {
+			this._dispatchListItemsMove([this], items[currentIndex + 1], moveLocations.below, true);
+		}
+	}
+
+	_expandListItemOnKeyboardMove(listItem) {
+		if (this._keyboardActive && listItem.expandable && !listItem.expanded) {
+			listItem._toggleExpandCollapse();
 		}
 	}
 
@@ -557,17 +599,34 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		}
 
-		const rootList = this._getRootList(this);
-		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
-
-		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
+		const getDragImage = (count, includePlusSign) => {
 			let dragImage = this.shadowRoot.querySelector('d2l-list-item-drag-image');
 			if (!dragImage) {
 				dragImage = document.createElement('d2l-list-item-drag-image');
 				this.shadowRoot.appendChild(dragImage);
 			}
-			dragImage.count = selectionInfo.keys.length;
-			e.dataTransfer.setDragImage(dragImage, 24, 26);
+			dragImage.count = count;
+			dragImage.includePlusSign = includePlusSign;
+			return dragImage;
+		};
+
+		const rootList = this._getRootList(this);
+		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
+		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
+			const lazyLoadListItems = this._getFlattenedListItems().lazyLoadListItems;
+			let includePlus = false;
+			if (lazyLoadListItems.size > 0) {
+				for (const selectedItemKey of selectionInfo.keys) {
+					if (lazyLoadListItems.has(selectedItemKey)) {
+						includePlus = true;
+						break;
+					}
+				}
+			}
+			e.dataTransfer.setDragImage(getDragImage(selectionInfo.keys.length, includePlus), 24, 26);
+		} else if (rootList.dragMultiple && this.expandable) {
+			const flattenedListItems = this._getFlattenedListItems(this);
+			e.dataTransfer.setDragImage(getDragImage(flattenedListItems.listItems.size, flattenedListItems.lazyLoadListItems.size > 0), 24, 26);
 		} else {
 			if (this.shadowRoot) {
 				const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
@@ -679,14 +738,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onHostDragEnter(e) {
 		const dragState = getDragState();
-		if (this === dragState.dragTarget) return;
 
 		// check if any of the drag targets are ancestors of the drop target
 		const invalidDropTarget = dragState.dragTargets.find(dragTarget => {
 			return isComposedAncestor(dragTarget, this);
 		});
 
-		if (invalidDropTarget) return;
+		if (invalidDropTarget) {
+			dragState.clear();
+			return;
+		}
 
 		// assert that both the source and target are from the same list - may allow this in the future
 		const targetRoot = dragState.dragTargets[0] && dragState.dragTargets[0]._getRootList();

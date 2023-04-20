@@ -1,6 +1,6 @@
-import { getRectTooltip } from './input-helper.js';
+import { focusOnInput, getRectTooltip } from './input-helper.js';
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, inputNum) {
 	return await page.$eval(selector, (elem, inputNum) => {
@@ -68,11 +68,11 @@ describe('d2l-input-date-time-range', () => {
 	});
 
 	it('basic-focus', async function() {
+		setTimeout(() => focusWithKeyboard(page, '#basic'));
 		await page.$eval('#basic', (elem) => {
 			return new Promise((resolve) => {
 				elem.blur(); // Reset focus
 				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-				elem.focus();
 			});
 		});
 		const rect = await visualDiff.getRect(page, '#basic');
@@ -183,17 +183,6 @@ describe('d2l-input-date-time-range', () => {
 					});
 				}
 			}, inputSelector, date, waitForTime);
-		}
-
-		async function focusOnInput(page, selector, inputSelector) {
-			return page.$eval(selector, (elem, inputSelector) => {
-				elem.blur();
-				const input = elem.shadowRoot.querySelector(inputSelector);
-				return new Promise((resolve) => {
-					elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-					input.focus();
-				});
-			}, inputSelector);
 		}
 
 		// Needed for retries

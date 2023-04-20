@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-template-primary-secondary', () => {
 	const visualDiff = new VisualDiff('primary-secondary', import.meta.url);
@@ -36,10 +36,7 @@ describe('d2l-template-primary-secondary', () => {
 	}
 
 	async function focusHandle(page, selector) {
-		return page.$eval(selector, (elem) => {
-			const handle = elem.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-			handle.focus();
-		});
+		return focusWithKeyboard(page, [selector, '.d2l-template-primary-secondary-divider']);
 	}
 
 	describe('mobile', () => {
@@ -71,6 +68,7 @@ describe('d2l-template-primary-secondary', () => {
 			{ testName: 'hidden-footer', options: {} },
 			{ testName: 'hidden-footer-expanded', options: { position: { dir: directions.UP, steps: 5 } } },
 			{ testName: 'hidden-footer-collapsed', options: { position: { dir: directions.DOWN, steps: 5 } } },
+			{ testName: 'short-content', options: {} },
 		].forEach((test) => {
 			it(test.testName, async function() {
 				await page.bringToFront();
@@ -104,14 +102,19 @@ describe('d2l-template-primary-secondary', () => {
 
 		[
 			{ testName: 'fixed', options: {} },
+			{ testName: 'fixed-secondary-first', options: {} },
 			{ testName: 'resizable', options: {} },
 			{ testName: 'expanded', options: { position: { dir: directions.LEFT, steps: 10 } } },
 			{ testName: 'collapsed', options: { position: { dir: directions.RIGHT, steps: 5 } } },
 			{ testName: 'focus', options: { focus: true } },
 			{ testName: 'focus-expanded', options: { focus: true, position: { dir: directions.LEFT, steps: 10 } } },
+			{ testName: 'focus-expanded-rtl', options: { focus: true, position: { dir: directions.RIGHT, steps: 10 } } },
+			{ testName: 'focus-expanded-secondary-first', options: { focus: true, position: { dir: directions.RIGHT, steps: 10 } } },
+			{ testName: 'focus-expanded-rtl-secondary-first', options: { focus: true, position: { dir: directions.LEFT, steps: 10 } } },
 			{ testName: 'focus-collapsed', options: { focus: true, position: { dir: directions.RIGHT, steps: 5 } } },
 			{ testName: 'focus-collapsed-rtl', options: { focus: true, position: { dir: directions.LEFT, steps: 5 } } },
-			{ testName: 'focus-expanded-rtl', options: { focus: true, position: { dir: directions.RIGHT, steps: 10 } } },
+			{ testName: 'focus-collapsed-secondary-first', options: { focus: true, position: { dir: directions.LEFT, steps: 5 } } },
+			{ testName: 'focus-collapsed-rtl-secondary-first', options: { focus: true, position: { dir: directions.RIGHT, steps: 5 } } },
 			{ testName: 'background-shading-primary', options: {} },
 			{ testName: 'background-shading-primary-rtl', options: {} },
 			{ testName: 'background-shading-secondary', options: {} },
@@ -120,6 +123,7 @@ describe('d2l-template-primary-secondary', () => {
 			{ testName: 'width-fullscreen', options: {} },
 			{ testName: 'width-normal', options: {} },
 			{ testName: 'width-normal-collapsed', options: { focus: true, position: { dir: directions.RIGHT, steps: 5 } } },
+			{ testName: 'short-content', options: {} },
 		].forEach((test) => {
 			it(test.testName, async function() {
 				await page.bringToFront();

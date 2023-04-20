@@ -1,14 +1,15 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
-import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
+import { css, html, LitElement, unsafeCSS } from 'lit';
+import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { ThemeMixin } from '../../mixins/theme-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
@@ -62,6 +63,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					display: inline-block;
+					line-height: 0;
 				}
 				:host([hidden]) {
 					display: none;
@@ -69,7 +71,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				:host([translucent]) {
 					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
-					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
+					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 4px white;
 					--d2l-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
@@ -115,7 +117,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
-				button.focus-visible {
+				button:${unsafeCSS(getFocusPseudoClass())} {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
@@ -165,7 +167,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"
-				class="d2l-label-text"
 				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"

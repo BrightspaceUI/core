@@ -14,10 +14,11 @@
 			import '../list-item-content.js';
 			import './list-item-custom.js';
 			import '../list-item.js';
-			import '../list-header.js';
+			import '../list-controls.js';
 			import '../list.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
+			import '../../paging/pager-load-more.js';
 			import '../../selection/selection-action.js';
 		</script>
 	</head>
@@ -30,10 +31,10 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid>
-						<d2l-list-header slot="header">
+						<d2l-list-controls slot="controls">
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-						</d2l-list-header>
+						</d2l-list-controls>
 						<d2l-list-item selectable key="L1-1" label="Label for L1-1">
 							<d2l-list-item-content>
 								<div>Earth Sciences (L1)</div>
@@ -111,6 +112,8 @@
 						<d2l-list-item selectable key="L1-3" label="Label for L1-3">
 							<div>Computer Science (L1)</div>
 						</d2l-list-item>
+						<d2l-pager-load-more slot="pager" has-more page-size="5">
+						</d2l-pager-load-more>
 					</d2l-list>
 				</template>
 			</d2l-demo-snippet>
@@ -120,10 +123,10 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid>
-						<d2l-list-header slot="header">
+						<d2l-list-controls slot="controls">
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-						</d2l-list-header>
+						</d2l-list-controls>
 						<d2l-demo-list-item-custom key="L1-1"></d2l-demo-list-item-custom>
 						<d2l-demo-list-item-custom key="L1-2"></d2l-demo-list-item-custom>
 						<d2l-demo-list-item-custom key="L1-3"></d2l-demo-list-item-custom>
@@ -137,6 +140,11 @@
 			setTimeout(() => {
 				document.querySelector('d2l-list').addEventListener('d2l-list-selection-changes', (e) => {
 					console.log('d2l-list-selection-changes', e.detail);
+				});
+
+				document.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more', (e) => {
+					console.log('Load more requested!');
+					setTimeout(() => e.detail.complete(), 2000);
 				});
 			}, 1000);
 		</script>

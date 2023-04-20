@@ -5,8 +5,6 @@
 	<script type="module">
 		import '../../../test/typography-preload.js';
 		import '../tooltip-help.js';
-		import { forceFocusVisible } from '../../../helpers/focus.js';
-		window.forceFocusVisible = forceFocusVisible;
 	</script>
 	<title>d2l-tooltip-help</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
@@ -68,6 +66,12 @@
 			<d2l-tooltip-help text="Helpful label." inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
 			Now we have some more text. And here's a bit more text.
 		</p>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-tooltip-help id="help-tooltip-skeleton" text="More information." skeleton>
+			Here is some more information
+		</d2l-tooltip-help>
 	</div>
 
 </body>

@@ -2,11 +2,13 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+
+const INPUT_TIMEOUT_MS = 400;
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
@@ -16,6 +18,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	static get properties() {
 		return {
+			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
+			 */
+			description: { type: String, reflect: true },
 			/**
 			 * Disables the input
 			 * @type {boolean}
@@ -45,6 +52,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 * @type {string}
 			 */
 			placeholder: { type: String },
+			/**
+			 * Dispatch search events after each input event
+			 * @type {boolean}
+			 */
+			searchOnInput: { type: Boolean, attribute: 'search-on-input' },
 			/**
 			 * Value of the input
 			 * @type {string}
@@ -76,9 +88,11 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	constructor() {
 		super();
+		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
 		this.disabled = false;
 		this.noClear = false;
+		this.searchOnInput = false;
 		this.value = '';
 	}
 
@@ -115,6 +129,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			<d2l-input-text
 				label="${ifDefined(this.label)}"
 				label-hidden
+				description="${this.description}"
 				?disabled="${this.disabled}"
 				@input="${this._handleInput}"
 				@keypress="${this._handleInputKeyPress}"
@@ -145,6 +160,12 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		return showSearch;
 	}
 
+	_debounceInput() {
+		clearTimeout(this._inputTimeout);
+		this._setLastSearchValue(this.value);
+		this._inputTimeout = setTimeout(() => this._dispatchEvent(), INPUT_TIMEOUT_MS);
+	}
+
 	_dispatchEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-search-searched',
@@ -163,6 +184,9 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	_handleInput(e) {
 		this.value = e.target.value;
+		if (this.searchOnInput) {
+			this._debounceInput();
+		}
 	}
 
 	_handleInputKeyPress(e) {

@@ -56,9 +56,11 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 | Property | Type | Description |
 |---|---|---|
 | `label` | String, required | Accessible label for the input |
+| `description` | String | Additional information communicated in the `aria-describedby` on the input |
 | `disabled` | Boolean | Disables the input |
 | `maxlength` | Number | Imposes an upper character limit |
 | `no-clear` | Boolean | Prevents the "clear" button from appearing |
+| `search-on-input` | Boolean | Dispatch search events after each input event |
 | `placeholder` | String, default:`'Search...'` | Placeholder text |
 | `value` | String, default: `''` | Value of the input |
 
@@ -82,4 +84,5 @@ To make your usage of `d2l-input-search` accessible, use the following property 
 
 | Attribute | Description |
 |---|---|
-| label | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Not visible. |
+| `description` | Use when label on input does not provide enough context. |
+| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Not visible. |

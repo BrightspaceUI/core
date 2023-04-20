@@ -1,5 +1,5 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-number', () => {
 	const visualDiff = new VisualDiff('input-number', import.meta.url);
@@ -43,7 +43,7 @@ describe('d2l-input-number', () => {
 	});
 
 	it('simple focus', async function() {
-		await page.$eval('#simple', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#simple');
 		const rect = await visualDiff.getRect(page, '#simple');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -55,13 +55,13 @@ describe('d2l-input-number', () => {
 	});
 
 	it('invalid focus', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('invalid focus then fix then blur', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await changeValue(page, '#required', 10);
 		await page.$eval('#required', (elem) => elem.blur());
 		const rect = await visualDiff.getRect(page, '#required');

@@ -30,7 +30,7 @@ class CodeView extends LitElement {
 		if (Prism.languages[language]) {
 			this._dependenciesPromise = Promise.resolve();
 		} else {
-			this._dependenciesPromise = import(`./node_modules/prismjs/components/prism-${language}.min.js`);
+			this._dependenciesPromise = import(`../../node_modules/prismjs/components/prism-${language}.min.js`);
 		}
 		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);

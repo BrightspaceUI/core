@@ -1,10 +1,16 @@
 import '../list.js';
+import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
+import '../../selection/selection-action.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 const normalFixture = html`
 	<d2l-list>
+		<d2l-list-controls slot="controls">
+			<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+			<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+		</d2l-list-controls>
 		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>

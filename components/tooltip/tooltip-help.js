@@ -1,17 +1,18 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  */
-class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
+class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -38,7 +39,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodySmallStyles, css`
+		return [super.styles, bodySmallStyles, css`
 			:host {
 				display: inline-block;
 			}
@@ -59,7 +60,7 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
-			#d2l-tooltip-help-text.focus-visible {
+			#d2l-tooltip-help-text:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.05rem;
 				outline: 2px solid var(--d2l-color-celestine);
 				outline-offset: 0.05rem;
@@ -75,6 +76,9 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 			d2l-tooltip {
 				cursor: text;
+			}
+			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
+				text-decoration: none;
 			}
 		`];
 	}
@@ -100,15 +104,18 @@ class TooltipHelp extends FocusMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	render() {
 		const classes = {
-			'd2l-body-small': !this.inheritFontStyle
+			'd2l-body-small': !this.inheritFontStyle,
+			'd2l-skeletize': true
 		};
 		return html`
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" type="button">
 				${this.text}
 			</button>
-			<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
-				<slot></slot>
-			</d2l-tooltip>
+			${!this.skeleton ? html`
+				<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
+					<slot></slot>
+				</d2l-tooltip>
+			` : nothing }
 		`;
 	}
 

@@ -2,14 +2,14 @@ import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -46,13 +46,20 @@ class Resizer {
 	constructor() {
 		this.contentRect = null;
 		this.contentBounds = null;
+		this.isCollapsed = false;
 		this.isMobile = false;
-		this.panelSize = 0;
 		this.isRtl = false;
+		this.panelSize = 0;
+		this.secondaryFirst = false;
+		this._wasCollapsed = false;
 	}
 
 	clampHeight(height) {
 		return clamp(height, this.contentBounds.minHeight, this.contentBounds.maxHeight);
+	}
+
+	clampMaxHeight(height) {
+		return Math.min(height, this.contentBounds.maxHeight);
 	}
 
 	clampWidth(width) {
@@ -112,15 +119,18 @@ class DesktopKeyboardResizer extends Resizer {
 		if (this.isMobile) {
 			return;
 		}
-		const leftKeyCode = this.isRtl ? keyCodes.RIGHT : keyCodes.LEFT;
-		const rightKeyCode = this.isRtl ? keyCodes.LEFT : keyCodes.RIGHT;
-		if (e.keyCode !== leftKeyCode && e.keyCode !== rightKeyCode) {
+		if (e.keyCode !== keyCodes.LEFT && e.keyCode !== keyCodes.RIGHT) {
 			return;
 		}
 		e.preventDefault();
+
+		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
+		const isFlipped = this.isRtl ^ this.secondaryFirst;
+		const direction = e.keyCode === keyCodes.LEFT && !isFlipped
+			|| e.keyCode === keyCodes.RIGHT && isFlipped ? 1 : -1;
 		let secondaryWidth;
 		if (this.panelSize === 0) {
-			if (e.keyCode === leftKeyCode) {
+			if (direction === 1) {
 				secondaryWidth = this.contentBounds.minWidth;
 			} else {
 				secondaryWidth = 0;
@@ -129,7 +139,6 @@ class DesktopKeyboardResizer extends Resizer {
 			const steps = clamp(Math.round((this.contentBounds.maxWidth - this.contentBounds.minWidth) / desktopStepDelta), desktopMinSteps, desktopMaxSteps);
 			const delta = (this.contentBounds.maxWidth - this.contentBounds.minWidth) / steps;
 
-			const direction = e.keyCode === leftKeyCode ? 1 : -1;
 			const desiredWidth = this.panelSize + delta * direction;
 			const desiredSteppedWidth = this.contentBounds.minWidth + delta * Math.round((desiredWidth - this.contentBounds.minWidth) / delta);
 
@@ -152,17 +161,18 @@ class DesktopMouseResizer extends Resizer {
 		this._onMouseDown = this._onMouseDown.bind(this);
 		this._onTouchMove = this._onTouchMove.bind(this);
 		this._onMouseMove = this._onMouseMove.bind(this);
-		this._onResizeEnd = this._onResizeEnd.bind(this);
+		this._onMouseUp = this._onMouseUp.bind(this);
+		this._onTouchEnd = this._onTouchEnd.bind(this);
 		this._target = null;
 	}
 
 	connect(target) {
 		target.addEventListener('touchstart', this._onTouchStart);
 		target.addEventListener('touchmove', this._onTouchMove);
-		target.addEventListener('touchend', this._onResizeEnd);
+		target.addEventListener('touchend', this._onTouchEnd);
 		target.addEventListener('mousedown', this._onMouseDown);
 		window.addEventListener('mousemove', this._onMouseMove);
-		window.addEventListener('mouseup', this._onResizeEnd);
+		window.addEventListener('mouseup', this._onMouseUp);
 		this._target = target;
 	}
 
@@ -170,22 +180,28 @@ class DesktopMouseResizer extends Resizer {
 		if (this._target) {
 			this._target.removeEventListener('touchstart', this._onTouchStart);
 			this._target.removeEventListener('touchmove', this._onTouchMove);
-			this._target.removeEventListener('touchend', this._onResizeEnd);
+			this._target.removeEventListener('touchend', this._onTouchEnd);
 			this._target.removeEventListener('mousedown', this._onMouseDown);
 		}
 		window.removeEventListener('mousemove', this._onMouseMove);
-		window.removeEventListener('mouseup', this._onResizeEnd);
+		window.removeEventListener('mouseup', this._onMouseUp);
 		this._target = null;
+	}
+
+	_clampMaxWidth(width) {
+		return Math.min(width, this.contentBounds.maxWidth);
 	}
 
 	_computeContentX(clientX) {
 		const x = clientX - this.contentRect.left;
-		return this.isRtl ? x : this.contentRect.width - x;
+		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
+		return this.isRtl ^ this.secondaryFirst ? x : this.contentRect.width - x;
 	}
 
 	_onMouseDown(e) {
 		if (!this.isMobile) {
 			e.preventDefault();
+			this._wasCollapsed = this.isCollapsed;
 			this._resizeStart(e.clientX);
 		}
 	}
@@ -197,11 +213,19 @@ class DesktopMouseResizer extends Resizer {
 		this._resize(e.clientX);
 	}
 
-	_onResizeEnd() {
-		if (this._isResizing) {
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+	_onMouseUp(e) {
+		if (!this._isResizing) {
+			return;
 		}
+		this._resizeEnd(e.clientX);
+	}
+
+	_onTouchEnd(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		const touch = e.changedTouches[0].clientX;
+		this._resizeEnd(touch);
 	}
 
 	_onTouchMove(e) {
@@ -211,27 +235,39 @@ class DesktopMouseResizer extends Resizer {
 		const touch = e.touches[0];
 		this._resize(touch.clientX);
 	}
-
 	_onTouchStart(e) {
 		if (!this.isMobile) {
-			e.preventDefault();
+			if (e.cancelable) e.preventDefault();
+			this._wasCollapsed = this.isCollapsed;
 			const touch = e.touches[0];
 			this._resizeStart(touch.clientX);
 		}
 	}
-
 	_resize(clientX) {
-		let actualSecondaryWidth;
 		const x = this._computeContentX(clientX);
-		const collapseThreshold = this.contentBounds.minWidth / 2;
-		const desiredSecondaryWidth = x + this._offset;
-		if (desiredSecondaryWidth < collapseThreshold) {
-			actualSecondaryWidth = 0;
-		} else {
-			actualSecondaryWidth = this.clampWidth(desiredSecondaryWidth);
+		const secondaryWidth = x + this._offset;
+		this.dispatchResize(this._clampMaxWidth(secondaryWidth), false);
+	}
+
+	_resizeEnd(clientX) {
+		if (!this._isResizing) {
+			return;
 		}
-		const animateResize = desiredSecondaryWidth < actualSecondaryWidth || actualSecondaryWidth === 0;
-		this.dispatchResize(actualSecondaryWidth, animateResize);
+		const expandedCollapseThreshold = this.contentBounds.minWidth * 0.75;
+		const collapsedCollapseThreshold = this.contentBounds.minWidth * 0.1;
+		const x = this._computeContentX(clientX);
+		const desiredSecondaryWidth = x + this._offset;
+		if (
+			(this._wasCollapsed && desiredSecondaryWidth < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryWidth < expandedCollapseThreshold)
+		) {
+			this.dispatchResize(0, true);
+		}
+		else if (desiredSecondaryWidth < this.contentBounds.minWidth) {
+			this.dispatchResize(this.contentBounds.minWidth, true);
+		}
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 	_resizeStart(clientX) {
@@ -298,6 +334,7 @@ class MobileMouseResizer extends Resizer {
 
 	constructor() {
 		super();
+		this._isDragging = false;
 		this._onMouseDown = this._onMouseDown.bind(this);
 		this._onMouseMove = this._onMouseMove.bind(this);
 		this._onMouseUp = this._onMouseUp.bind(this);
@@ -322,10 +359,12 @@ class MobileMouseResizer extends Resizer {
 
 	_onMouseDown(e) {
 		if (this.isMobile) {
+			this._wasCollapsed = this.isCollapsed;
 			this.dispatchResizeStart();
 			e.preventDefault();
 			const y = e.clientY - this.contentRect.top;
 			this._offset = y - (this.contentRect.height - this.panelSize);
+			this._isDragging = false;
 			this._isResizing = true;
 			this._target.focus();
 		}
@@ -336,24 +375,31 @@ class MobileMouseResizer extends Resizer {
 			return;
 		}
 		const y = e.clientY - this.contentRect.top;
-
-		let actualSecondaryHeight;
-		const collapseThreshold = this.contentBounds.minHeight / 2;
-		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
-		if (desiredSecondaryHeight < collapseThreshold) {
-			actualSecondaryHeight = 0;
-		} else {
-			actualSecondaryHeight = this.clampHeight(desiredSecondaryHeight);
-		}
-		const animateResize = desiredSecondaryHeight < actualSecondaryHeight || actualSecondaryHeight === 0;
-		this.dispatchResize(actualSecondaryHeight, animateResize);
+		const secondaryHeight = this.clampMaxHeight(this.contentRect.height - y + this._offset);
+		this._isDragging = true;
+		this.dispatchResize(secondaryHeight, false);
 	}
 
-	_onMouseUp() {
-		if (this._isResizing) {
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+	_onMouseUp(e) {
+		if (!this._isResizing) {
+			return;
 		}
+		const expandedCollapseThreshold = this.contentBounds.minHeight * 0.75;
+		const collapsedCollapseThreshold = this.contentBounds.minHeight * 0.1;
+		const y = e.clientY - this.contentRect.top;
+		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
+		if (
+			this._isDragging
+			&& ((this._wasCollapsed && desiredSecondaryHeight < collapsedCollapseThreshold)
+			|| (!this._wasCollapsed && desiredSecondaryHeight < expandedCollapseThreshold))
+		) {
+			if (desiredSecondaryHeight !== 0) this.dispatchResize(0, true);
+		}
+		else if (this._isDragging && desiredSecondaryHeight < this.contentBounds.minHeight) {
+			this.dispatchResize(this.contentBounds.minHeight, true);
+		}
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 }
@@ -361,52 +407,72 @@ class MobileMouseResizer extends Resizer {
 class MobileTouchResizer extends Resizer {
 	constructor() {
 		super();
+		this.isExpanded = false;
+		this._wasExpanded = false;
 		this._onResizeStart = this._onResizeStart.bind(this);
 		this._onTouchMove = this._onTouchMove.bind(this);
 		this._onResizeEnd = this._onResizeEnd.bind(this);
-		this._target = null;
+		this._targetDivider = null;
+		this._targetSecondary = null;
 	}
 
-	connect(target) {
-		target.addEventListener('touchstart', this._onResizeStart);
-		target.addEventListener('touchmove', this._onTouchMove);
-		target.addEventListener('touchend', this._onResizeEnd);
-		this._target = target;
+	connect(targetDivider, targetSecondary) {
+		targetDivider.addEventListener('touchstart', this._onResizeStart);
+		targetDivider.addEventListener('touchmove', this._onTouchMove);
+		targetDivider.addEventListener('touchend', this._onResizeEnd);
+		this._targetDivider = targetDivider;
+
+		targetSecondary.addEventListener('touchstart', this._onResizeStart);
+		targetSecondary.addEventListener('touchmove', this._onTouchMove);
+		targetSecondary.addEventListener('touchend', this._onResizeEnd);
+		this._targetSecondary = targetSecondary;
 	}
 
 	disconnect() {
-		if (this._target) {
-			this._target.removeEventListener('touchstart', this._onResizeStart);
-			this._target.removeEventListener('touchmove', this._onTouchMove);
-			this._target.removeEventListener('touchend', this._onResizeEnd);
+		if (this._targetDivider) {
+			this._targetDivider.removeEventListener('touchstart', this._onResizeStart);
+			this._targetDivider.removeEventListener('touchmove', this._onTouchMove);
+			this._targetDivider.removeEventListener('touchend', this._onResizeEnd);
 		}
-		this._target = null;
-	}
+		this._targetDivider = null;
 
-	_computeTouchDirection() {
-		const oldest = this._touches[0];
-		const newest = this._touches[this._touches.length - 1];
-		if (oldest === newest) {
-			return 0;
+		if (this._targetSecondary) {
+			this._targetSecondary.removeEventListener('touchstart', this._onResizeStart);
+			this._targetSecondary.removeEventListener('touchmove', this._onTouchMove);
+			this._targetSecondary.removeEventListener('touchend', this._onResizeEnd);
 		}
-		return newest - oldest;
+		this._targetSecondary = null;
 	}
 
 	_onResizeEnd() {
-		if (this._isResizing) {
-			if (this.panelSize > this.contentBounds.minHeight && this.panelSize < this.contentBounds.maxHeight) {
-				let secondaryHeight;
-				const touchDirection = this._computeTouchDirection();
-				if (touchDirection >= 0) {
-					secondaryHeight = this.contentBounds.minHeight;
-				} else {
-					secondaryHeight = this.contentBounds.maxHeight;
-				}
-				this.dispatchResize(secondaryHeight, true);
-			}
-			this._isResizing = false;
-			this.dispatchResizeEnd();
+		if (!this._isResizing) {
+			return;
 		}
+		let secondaryHeight;
+		const expandedShrinkThreshold = this.contentBounds.minHeight + (this.contentBounds.maxHeight - this.contentBounds.minHeight) * 0.9;
+		const expandThreshold = this.contentBounds.minHeight + (this.contentBounds.maxHeight - this.contentBounds.minHeight) * 0.1;
+		const collapseThreshold = this.contentBounds.minHeight * 0.9;
+		const collapsedExpandThreshold = this.contentBounds.minHeight * 0.1;
+		if (
+			(!this._wasCollapsed && this.panelSize < collapseThreshold)
+			|| (this._wasCollapsed && this.panelSize < collapsedExpandThreshold)
+		) {
+			secondaryHeight = 0;
+		}
+		else if (
+			(this._wasExpanded && this.panelSize < expandedShrinkThreshold)
+			|| (this._wasCollapsed && this.panelSize < expandThreshold)
+			|| (!this._wasExpanded && !this._wasCollapsed && this.panelSize < expandThreshold && this.panelSize > collapseThreshold)
+		) {
+			secondaryHeight = this.contentBounds.minHeight;
+		}
+		else {
+			secondaryHeight = this.contentBounds.maxHeight;
+		}
+		this.dispatchResize(secondaryHeight, true);
+
+		this._isResizing = false;
+		this.dispatchResizeEnd();
 	}
 
 	_onResizeStart(e) {
@@ -417,6 +483,8 @@ class MobileTouchResizer extends Resizer {
 			this._isResizing = true;
 			this._touches = [];
 			this._trackTouch(touch);
+			this._wasCollapsed = this.isCollapsed;
+			this._wasExpanded = this.isExpanded;
 		}
 	}
 
@@ -427,18 +495,19 @@ class MobileTouchResizer extends Resizer {
 		const touch = e.touches[0];
 		const curTouch = touch.screenY;
 		const delta = curTouch - this._prevTouch;
-		const curScroll = this._target.scrollTop;
+		const isScrollingDivider = this._targetDivider.contains(e.target);
+		const curScroll = this._targetSecondary.scrollTop;
 		this._trackTouch(touch);
 
 		let isScrollable;
 		let secondaryHeight = this.panelSize;
 		if (delta > 0) {
-			if (curScroll === 0) {
-				secondaryHeight = this.clampHeight(this.panelSize - delta);
+			if (isScrollingDivider ||  curScroll === 0) {
+				secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			}
 			isScrollable = curScroll > 0;
 		} else if (delta < 0) {
-			secondaryHeight = this.clampHeight(this.panelSize - delta);
+			secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			isScrollable = secondaryHeight === this.contentBounds.maxHeight;
 		}
 		if (!isScrollable && e.cancelable) {
@@ -467,7 +536,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
-class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -487,6 +556,12 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			 * @type {boolean}
 			 */
 			resizable: { type: Boolean, reflect: true },
+			/**
+			 * When set to true, the secondary panel will be displayed on the left (or the
+			 * right in RTL) in the desktop view. This attribute has no effect on the mobile view.
+			 * @type {boolean}
+			 */
+			secondaryFirst: { type: Boolean, attribute: 'secondary-first', reflect: true },
 			/**
 			 * The key used to persist the divider's position to local storage. This key
 			 * should not be shared between pages so that users can save different divider
@@ -571,6 +646,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				min-width: ${desktopMinSize}px;
 				overflow-x: hidden;
 				overflow-y: scroll;
+				width: 100%;
 			}
 
 			/* prevent margin colapse on slotted children */
@@ -584,7 +660,15 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				background-color: var(--d2l-color-gypsum);
 			}
 			:host([resizable]) [data-is-collapsed] aside {
-				display: none;
+				visibility: hidden;
+			}
+			:host([resizable]:not([dir="rtl"]):not([secondary-first])) aside,
+			:host([resizable][dir="rtl"][secondary-first]) aside {
+				float: left;
+			}
+			:host([resizable][dir="rtl"]:not([secondary-first])) aside,
+			:host([resizable]:not([dir="rtl"])[secondary-first]) aside {
+				float: right;
 			}
 			.d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-mica);
@@ -658,14 +742,16 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				display: inline-block;
 				width: 0.1rem;
 			}
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left {
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-right,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
-			:host(:not([dir="rtl"])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
+			:host(:not([dir="rtl"]):not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
+			:host([dir="rtl"][secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
 				display: none;
 			}
-			:host([dir="rtl"]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
+			:host(:not([dir="rtl"])[secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right,
+			:host([dir="rtl"]:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
 				display: none;
 			}
 			d2l-icon {
@@ -689,8 +775,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				background-color: var(--d2l-color-mica);
 				box-shadow: none;
 			}
-			:host([resizable]) .d2l-template-primary-secondary-divider.focus-visible,
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible {
+			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())},
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-celestine);
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
@@ -699,8 +785,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: var(--d2l-color-ferrite);
 			}
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after {
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: white;
 			}
 
@@ -827,13 +913,13 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					height: 1rem;
 					width: 2.2rem;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
+				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
 					right: 17px;
 					width: 2.6rem;
 				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
+				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					left: 17px;
 					right: auto;
 				}
@@ -841,7 +927,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile {
+				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
 				}
@@ -887,6 +973,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 		this.backgroundShading = 'none';
 		this.resizable = false;
+		this.secondaryFirst = false;
 		this.widthType = 'fullscreen';
 
 		this._animateResize = false;
@@ -921,22 +1008,31 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 	render() {
 		let tabindex;
+		const size = this._size ?? 0;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
-			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${this._size}px`;
+			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${size}px`;
 			tabindex = 0;
 		}
-		const separatorVal = this._size && Math.round(this._size);
+		const separatorVal = size && Math.round(size);
 		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
 		};
 		const keyboardHelpText = this._isMobile ? this.localize('templates.primary-secondary.keyboardVertical') : this.localize('templates.primary-secondary.keyboardHorizontal');
+		const primarySection = html`<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>`;
+		const secondarySection = html`
+			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
+				<div class="d2l-template-primary-secondary-divider-shadow"></div>
+				<aside class="${classMap(scrollClasses)}">
+					<slot name="secondary"></slot>
+				</aside>
+			</div>`;
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
-					<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>
+					${this.secondaryFirst && !this._isMobile ? secondarySection : primarySection}
 					<d2l-offscreen id="${this._keyboardDescId}">${keyboardHelpText}</d2l-offscreen>
 					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator aria-label="${this.localize('templates.primary-secondary.adjustableSplitView')}" aria-describedby="${this._keyboardDescId}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
@@ -954,17 +1050,11 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 								</d2l-icon-custom>
 							</div>
 							<div class="d2l-template-primary-secondary-divider-handle-mobile">
-								${this._size === 0 ? html`<d2l-icon icon="tier1:chevron-up"></d2l-icon>` : html`<d2l-icon icon="tier1:chevron-down"></d2l-icon>`}
+								<d2l-icon icon=${size === 0 ? 'tier1:chevron-up' : 'tier1:chevron-down'}></d2l-icon>
 							</div>
 						</div>
 					</div>
-					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
-						<div class="d2l-template-primary-secondary-divider-shadow">
-						</div>
-						<aside class="${classMap(scrollClasses)}">
-							<slot name="secondary"></slot>
-						</aside>
-					</div>
+					${this.secondaryFirst && !this._isMobile ? primarySection : secondarySection}
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
 					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
@@ -975,6 +1065,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+		if (changedProperties.has('_isCollapsed')) {
+			this._desktopMouseResizer.isCollapsed = this._isCollapsed;
+			this._mobileMouseResizer.isCollapsed = this._isCollapsed;
+			this._mobileTouchResizer.isCollapsed = this._isCollapsed;
+		}
+		if (changedProperties.has('_isExpanded')) {
+			this._mobileTouchResizer.isExpanded = this._isExpanded;
+		}
 		if (changedProperties.has('_size')) {
 			if (this.storageKey) {
 				const key = computeSizeKey(this.storageKey);
@@ -985,16 +1083,24 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				}
 			}
 		}
-		if (!this._secondary) {
-			this._secondary = this.shadowRoot.querySelector('aside');
+		if (changedProperties.has('secondaryFirst')) {
+			this._desktopKeyboardResizer.secondaryFirst = this.secondaryFirst;
+			this._desktopMouseResizer.secondaryFirst = this.secondaryFirst;
+		}
+		if (!this._divider) {
 			this._divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+		}
+		if (changedProperties.has('_isMobile') && this._isMobile) {
+			this._secondary = this.shadowRoot.querySelector('aside');
+			if (this._divider.isConnected && this._secondary.isConnected) {
+				this._mobileTouchResizer.connect(this._divider, this._secondary);
+			}
 		}
 		if (this._divider.isConnected && !this._hasConnectedResizers) {
 			this._desktopKeyboardResizer.connect(this._divider);
 			this._desktopMouseResizer.connect(this._divider);
 			this._mobileKeyboardResizer.connect(this._divider);
 			this._mobileMouseResizer.connect(this._divider);
-			this._mobileTouchResizer.connect(this._secondary);
 			this._hasConnectedResizers = true;
 		}
 	}

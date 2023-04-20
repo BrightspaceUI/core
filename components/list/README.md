@@ -2,7 +2,7 @@
 
 A list displays a collection of objects of the same type. A list is primarily used in order to help users navigate to a full-page representation of a single object, or to select several items and execute an action on them.
 
-<!-- docs: demo autoSize:false size:large -->
+<!-- docs: demo display:block autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
@@ -14,7 +14,7 @@ A list displays a collection of objects of the same type. A list is primarily us
   import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
@@ -102,7 +102,7 @@ When using `d2l-list`, the `grid` attribute will enable the table-like keyboard 
 
 The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
 
-<!-- docs: demo live name:d2l-list autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -110,7 +110,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item selectable label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
@@ -156,7 +156,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ## Selection Lists
 
-The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-header` component can be added to `d2l-list`'s `header` slot to provide select-all and bulk actions.
+The `d2l-list` supports selectable items within a list, including both single and multi selection. Selection is enabled when `d2l-list-item`s have the `selectable` attribute. When items are selectable, multiple selection is the default behaviour, however the `selection-single` attribute can be applied to the `d2l-list` to enable single selection. A `d2l-list-controls` component can be added to `d2l-list`'s `controls` slot to provide select-all and bulk actions.
 
 ### Accessibility Properties
 
@@ -164,20 +164,20 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 
 ### Example
 
-<!-- docs: demo code autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
 
-<d2l-list style="width: 100%">
-  <d2l-list-header slot="header">
+<d2l-list>
+  <d2l-list-controls slot="controls" no-sticky>
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-  </d2l-list-header>
+  </d2l-list-controls>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
     <d2l-list-item-content>
       <div>Earth Sciences</div>
@@ -187,6 +187,67 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
   <d2l-list-item selectable key="ast" label="Astronomy">
     <d2l-list-item-content>
       <div>Astronomy</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+</d2l-list>
+```
+
+## Expandable Lists
+
+The `d2l-list` supports expandable items within a list. Expand and collapse toggle is enabled when `d2l-list-item`s have the `expandable` and `key` attributes set. When items are expandable the default state is collapsed. If you would like the default state to be expanded, add the `expanded` attribute to the `d2l-list-item`.
+
+### Expandable List Accessibility Properties
+
+If a `d2l-list-item` is expandable then it should have a `label` attribute that corresponds to the hidden label for the expand/collapse toggle.
+
+### Expandable List Example
+
+<!-- docs: demo code display:block autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+</script>
+
+<d2l-list grid>
+  <d2l-list-controls slot="controls">
+    <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+  </d2l-list-controls>
+  <d2l-list-item selectable expandable key="expand-1" label="Expandable item #1">
+    <d2l-list-item-content>
+      <div>Expandable item #1</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+    <d2l-list grid slot="nested">
+      <d2l-list-item selectable key="nested-1" label="Nested 1">
+        <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+      </d2l-list-item>
+      <d2l-list-item selectable key="nested-2" label="Nested 2">
+        <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+      </d2l-list-item>
+    </d2l-list>
+  </d2l-list-item>
+  <d2l-list-item selectable expandable expanded key="expand-2" label="Expandable item #2">
+    <d2l-list-item-content>
+      <div>Expandable Item #2</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+    <d2l-list grid slot="nested">
+      <d2l-list-item selectable key="nested-3" label="Nested 3">
+        <d2l-list-item-content><div>Nested item #3</div></d2l-list-item-content>
+      </d2l-list-item>
+      <d2l-list-item selectable key="nested-4" label="Nested 4">
+        <d2l-list-item-content><div>Nested item #4</div></d2l-list-item-content>
+      </d2l-list-item>
+    </d2l-list>
+  </d2l-list-item>
+  <d2l-list-item selectable key="expand-3" label="Item with no children">
+    <d2l-list-item-content>
+      <div>Item with no children</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
@@ -211,7 +272,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 ### Example
 
-<!-- docs: demo code autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -261,28 +322,36 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
   }
   customElements.define('d2l-my-drag-drop-elem', ListDemoDragAndDropUsage);
 </script>
-<d2l-my-drag-drop-elem style="width: 100%;"></d2l-my-drag-drop-elem>
+<d2l-my-drag-drop-elem></d2l-my-drag-drop-elem>
 ```
 
-## List Header [d2l-list-header]
+## List Controls [d2l-list-controls]
 
-The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-list-header autoSize:false size:medium -->
+<!-- docs: demo live name:d2l-list-controls display:block autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
   import '@brightspace-ui/core/components/selection/selection-action.js';
 </script>
+<!-- docs: start hidden content -->
+<style>
+  #demo-element {
+    margin-bottom: 300px;
+    margin-top: 0;
+  }
+</style>
+<!-- docs: end hidden content -->
 
-<d2l-list style="width: 100%">
-  <d2l-list-header slot="header">
+<d2l-list>
+  <d2l-list-controls slot="controls">
     <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
     <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-  </d2l-list-header>
+  </d2l-list-controls>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
     <d2l-list-item-content>
       <div>Earth Sciences</div>
@@ -304,7 +373,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 | Property | Type | Description |
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
-| `no-sticky` | Boolean | Disables sticky positioning for the header |
+| `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
 
@@ -341,12 +410,13 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | Property | Type | Description |
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
-| `disabled` | Boolean | Disables the input |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
+| `expandable` | Boolean | Whether or not to show the expand/collapse toggle. |
+| `expanded` | Boolean | Whether the item is expanded. Requires `expandable` to be set. |
 | `href` | String | Address of item link if navigable |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
@@ -355,6 +425,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
+| `selection-disabled` | Boolean | Disables selection |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
 ### Methods
@@ -366,6 +437,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ### Events
 
 - `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
+- `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
 ### Breakpoints Property
@@ -388,7 +460,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
 
-<!-- docs: demo live name:d2l-list-item-button -->
+<!-- docs: demo live name:d2l-list-item-button display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -396,7 +468,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item-button href="http://www.d2l.com" selectable key="1" label="Geomorphology and GIS">
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
@@ -412,22 +484,26 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 | Property | Type | Description |
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
-| `disabled` | Boolean | Disables the input |
+| `button-disabled` | Boolean | Disables the primary action button |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
+| `expandable` | Boolean | Whether or not to show the expand/collapse toggle. |
+| `expanded` | Boolean | Whether the item is expanded. Requires `expandable` to be set. |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
+| `selection-disabled` | Boolean | Disables selection |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
 ### Events
 
 - `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
+- `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
 ## ListItemMixin
@@ -471,7 +547,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 
 The `d2l-list-item-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
 
-<!-- docs: demo live name:d2l-list-item-content -->
+<!-- docs: demo live name:d2l-list-item-content display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -479,7 +555,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list style="width: 100%">
+<d2l-list>
   <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Item 1</div>

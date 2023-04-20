@@ -3,7 +3,8 @@ import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
-export const BACKDROP_ROLE = 'd2l-backdrop-role';
+const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
+const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -66,7 +67,8 @@ class Backdrop extends LitElement {
 				transition: none;
 			}
 			@media (prefers-reduced-motion: reduce) {
-				:host {
+				:host,
+				:host([slow-transition]) {
 					transition: none;
 				}
 			}
@@ -158,22 +160,15 @@ function hideAccessible(target) {
 
 			if (child.tagName === 'SCRIPT' || child.tagName === 'STYLE') continue;
 			if (path.indexOf(child) !== -1) continue;
-			if (child.hasAttribute('d2l-backdrop-hidden')) continue;
+			if (child.hasAttribute(BACKDROP_HIDDEN)) continue;
 
-			const role = child.getAttribute('role');
-			if (role) child.setAttribute(BACKDROP_ROLE, role);
-			child.setAttribute('role', 'presentation');
-
-			if (child.nodeName === 'FORM' || child.nodeName === 'A') {
-				const ariaHidden = child.getAttribute('aria-hidden');
-				if (ariaHidden) child.setAttribute('d2l-backdrop-aria-hidden', ariaHidden);
-				child.setAttribute('aria-hidden', 'true');
+			if (child.hasAttribute('aria-hidden')) {
+				child.setAttribute(BACKDROP_ARIA_HIDDEN, child.getAttribute('aria-hidden'));
 			}
+			child.setAttribute('aria-hidden', 'true');
 
-			child.setAttribute('d2l-backdrop-hidden', 'd2l-backdrop-hidden');
+			child.setAttribute(BACKDROP_HIDDEN, BACKDROP_HIDDEN);
 			hiddenElements.push(child);
-
-			hideAccessibleChildren(child);
 		}
 	};
 
@@ -202,21 +197,13 @@ export function preventBodyScroll() {
 function showAccessible(elems) {
 	for (let i = 0; i < elems.length; i++) {
 		const elem = elems[i];
-		const role = elem.getAttribute(BACKDROP_ROLE);
-		if (role) {
-			elem.setAttribute('role', role);
-			elem.removeAttribute(BACKDROP_ROLE);
-		} else {
-			elem.removeAttribute('role');
-		}
-		const ariaHidden = elem.getAttribute('d2l-backdrop-aria-hidden');
-		if (ariaHidden) {
-			elem.setAttribute('aria-hidden', ariaHidden);
-			elem.removeAttribute('d2l-backdrop-aria-hidden');
+		if (elem.hasAttribute(BACKDROP_ARIA_HIDDEN)) {
+			elem.setAttribute('aria-hidden', elem.getAttribute(BACKDROP_ARIA_HIDDEN));
+			elem.removeAttribute(BACKDROP_ARIA_HIDDEN);
 		} else {
 			elem.removeAttribute('aria-hidden');
 		}
-		elem.removeAttribute('d2l-backdrop-hidden');
+		elem.removeAttribute(BACKDROP_HIDDEN);
 	}
 }
 

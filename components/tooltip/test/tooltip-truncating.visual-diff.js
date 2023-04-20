@@ -1,6 +1,6 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRect } from './tooltip-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip truncating', () => {
 
@@ -30,9 +30,7 @@ describe('d2l-tooltip truncating', () => {
 
 		it(testCase.name, async function() {
 			const selector = `#${testCase.name}`;
-			await page.$eval(`${selector}${testCase.focus}`, (content) => {
-				content.focus();
-			});
+			await focusWithKeyboard(page, `${selector}${testCase.focus}`);
 			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 		});

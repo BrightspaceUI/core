@@ -35,6 +35,8 @@ class ExpandCollapseContent extends LitElement {
 	static get styles() {
 		return css`
 			:host {
+				--d2l-expand-collapse-content-transition-duration: 0.2s;
+				--d2l-expand-collapse-content-transition-function: cubic-bezier(0.4, 0.4, 0.25, 1);
 				display: block;
 			}
 
@@ -43,17 +45,26 @@ class ExpandCollapseContent extends LitElement {
 			}
 
 			.d2l-expand-collapse-content-container {
-				display: none;
+				display: block;
+				opacity: 0;
 				overflow: hidden;
-				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition:
+					height var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function),
+					opacity var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function);
 			}
 
-			.d2l-expand-collapse-content-container:not([data-state="collapsed"]) {
-				display: block;
+			.d2l-expand-collapse-content-container[data-state="collapsed"] {
+				display: none;
 			}
 
 			.d2l-expand-collapse-content-container[data-state="expanded"] {
 				overflow: visible;
+			}
+
+
+			.d2l-expand-collapse-content-container[data-state="expanded"],
+			.d2l-expand-collapse-content-container[data-state="expanding"] {
+				opacity: 1;
 			}
 
 			/* prevent margin colapse on slotted children */

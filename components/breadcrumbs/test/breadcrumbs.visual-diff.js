@@ -14,17 +14,21 @@ describe('d2l-breadcrumbs', () => {
 		await page.bringToFront();
 	});
 
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
+	});
+
 	after(async() => await browser.close());
 
 	[
-		'default-mode',
-		'current-page',
-		'constrained-width',
-		'compact'
-	].forEach((testName) => {
-		it(testName, async function() {
-			const selector = `#${testName}`;
-			const rect = await visualDiff.getRect(page, selector);
+		{ name:'default-mode', selector: '#default-mode' },
+		{ name:'current-page', selector: '#current-page' },
+		{ name:'constrained-width', selector: '#constrained-width' },
+		{ name:'compact', selector: '#compact' }
+	].forEach(info => {
+		it(info.name, async function() {
+			const rect = await visualDiff.getRect(page, info.selector);
+			if (info.action) await info.action(info.selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});

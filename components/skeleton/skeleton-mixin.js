@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css } from 'lit';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
 // (and possibly elsewhere) to render a blank page
@@ -28,7 +28,7 @@ export const skeletonStyles = css`
 		position: absolute;
 		right: 0;
 		top: 0;
-		z-index: 999;
+		z-index: 997;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize::before {

@@ -6,10 +6,13 @@ import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 let logAccessibilityWarning = true;
+
+/* only one tooltip is to be shown at once - track the active tooltip so it can be hidden if necessary */
+let activeTooltip = null;
 
 const pointerLength = 16;
 const pointerOverhang = 7; /* how far the pointer extends outside the content */
@@ -184,10 +187,13 @@ class Tooltip extends RtlMixin(LitElement) {
 				box-sizing: border-box;
 				color: white;
 				display: inline-block;
+				height: 0;
+				overflow: hidden;
 				position: absolute;
 				text-align: left;
 				visibility: hidden;
 				white-space: normal;
+				width: 0;
 				z-index: 1001; /* position on top of floating buttons */
 			}
 
@@ -200,8 +206,12 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
+			:host([force-show]),
 			:host([showing]) {
+				height: auto;
+				overflow: visible;
 				visibility: visible;
+				width: auto;
 			}
 
 			.d2l-tooltip-pointer {
@@ -449,7 +459,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this._showing = val;
 			this.requestUpdate('showing', oldVal);
-			this._showingChanged(val);
+			this._showingChanged(val, oldVal !== undefined); // don't dispatch hide event when initializing
 		}
 	}
 
@@ -465,6 +475,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (activeTooltip === this) activeTooltip = null;
 		this._removeListeners();
 		window.removeEventListener('resize', this._onTargetResize);
 		clearDismissible(this._dismissibleId);
@@ -871,27 +882,39 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	async _showingChanged(newValue) {
+	async _showingChanged(newValue, dispatch) {
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
 		if (newValue) {
+			if (!this.forceShow) {
+				if (activeTooltip) activeTooltip.hide();
+				activeTooltip = this;
+			}
+
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
 			await this.updateComplete;
 			await this.updatePosition();
-			this.dispatchEvent(new CustomEvent(
-				'd2l-tooltip-show', { bubbles: true, composed: true }
-			));
+			if (dispatch) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tooltip-show', { bubbles: true, composed: true }
+				));
+			}
+
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
+			if (activeTooltip === this) activeTooltip = null;
+
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
 				this._dismissibleId = null;
 			}
-			this.dispatchEvent(new CustomEvent(
-				'd2l-tooltip-hide', { bubbles: true, composed: true }
-			));
+			if (dispatch) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tooltip-hide', { bubbles: true, composed: true }
+				));
+			}
 		}
 	}
 

@@ -1,6 +1,6 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRect, getRectTooltip, open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-date', () => {
 
@@ -37,16 +37,14 @@ describe('d2l-input-date', () => {
 	});
 
 	it('value-focus', async function() {
-		await page.$eval('#value', (elem) => {
-			elem.focus();
-			elem._inputTextFocusShowTooltip = true;
-		});
+		await focusWithKeyboard(page, '#value');
+		await page.$eval('#value', (elem) => elem._inputTextFocusShowTooltip = true);
 		const rect = await getRectTooltip(page, '#value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('empty-text-focus', async function() {
-		await page.$eval('#empty-text', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#empty-text');
 		const rect = await visualDiff.getRect(page, '#empty-text');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -140,8 +138,8 @@ describe('d2l-input-date', () => {
 	describe('calendar dropdown', () => {
 
 		async function openClick(page, selector) {
+			await focusWithKeyboard(page, selector);
 			return await page.$eval(selector, (elem) => {
-				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				const e = new Event(
 					'mouseup',
@@ -196,8 +194,8 @@ describe('d2l-input-date', () => {
 				// min-value="2018-02-13" max-value="2018-02-27"
 
 				async function setValueBlur(page, selector, value) {
+					await focusWithKeyboard(page, selector);
 					await page.$eval(selector, async(elem, value) => {
-						elem.focus();
 						const input = elem.shadowRoot.querySelector('d2l-input-text');
 						input.value = value;
 						const e = new Event(
@@ -218,7 +216,7 @@ describe('d2l-input-date', () => {
 					});
 
 					it('focus', async function() {
-						await page.$eval('#min-max', (elem) => elem.focus());
+						await focusWithKeyboard(page, '#min-max');
 						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
@@ -516,14 +514,14 @@ describe('d2l-input-date', () => {
 			afterEach(async() => await reset(page, '#required'));
 
 			it('required focus then blur', async function() {
-				await page.$eval('#required', (elem) => elem.focus());
+				await focusWithKeyboard(page, '#required');
 				await page.$eval('#required', (elem) => elem.blur());
 				const rect = await visualDiff.getRect(page, '#required');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('required focus then blur then fix', async function() {
-				await page.$eval('#required', (elem) => elem.focus());
+				await focusWithKeyboard(page, '#required');
 				await page.$eval('#required', (elem) => elem.blur());
 				await page.$eval('#required', (elem) => {
 					elem.value = '2020-01-01';

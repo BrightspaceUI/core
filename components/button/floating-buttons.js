@@ -2,7 +2,8 @@ import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
@@ -41,7 +42,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				position: -webkit-sticky;
 				position: sticky;
 				right: 0;
-				z-index: 999;
+				z-index: 997;
 			}
 
 			:host([_floating][always-float]) {
@@ -224,7 +225,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	_getBoundingAncestor() {
 
 		const boundingAncestor = getBoundingAncestor(this);
-		const offsetParent = this.offsetParent;
+		const offsetParent = getLegacyOffsetParent(this);
 		if (!offsetParent) {
 			return null;
 		}

@@ -339,15 +339,76 @@ describe('d2l-input-number', () => {
 				fixture: maxExclusiveFixture,
 				value: 10,
 				expectedError: 'Number must be less than 10.'
+			},
+			{
+				name: 'should be invalid if number is less than updated min',
+				fixture: minFixture,
+				value: 10,
+				change: { prop: 'min', value: 15 },
+				expectedError: 'Number must be greater than or equal to 15.'
+			},
+			{
+				name: 'should be valid if number is greater than updated min',
+				fixture: minFixture,
+				value: 3,
+				change: { prop: 'min', value: 0 },
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is greater than updated max',
+				fixture: maxFixture,
+				value: 8,
+				change: { prop: 'max', value: 5 },
+				expectedError: 'Number must be less than or equal to 5.'
+			},
+			{
+				name: 'should be valid if number is less than updated max',
+				fixture: maxFixture,
+				value: 12,
+				change: { prop: 'max', value: 15 },
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is equal to min and minExclusive added',
+				fixture: minFixture,
+				value: 5,
+				change: { prop: 'minExclusive', value: true },
+				expectedError: 'Number must be greater than 5.'
+			},
+			{
+				name: 'should be valid if number is equal to min and minExclusive removed',
+				fixture: minExclusiveFixture,
+				value: 5,
+				change: { prop: 'minExclusive', value: false },
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is equal to max and maxExclusive added',
+				fixture: maxFixture,
+				value: 10,
+				change: { prop: 'maxExclusive', value: true },
+				expectedError: 'Number must be less than 10.'
+			},
+			{
+				name: 'should be valid if number is equal to max and maxExclusive removed',
+				fixture: maxFixture,
+				value: 10,
+				change: { prop: 'maxExclusive', value: false },
+				expectedError: ''
 			}
 		].forEach((test) => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture);
 				if (test.value !== null) elem.value = test.value;
 				await elem.updateComplete;
+				if (test.change) {
+					elem[test.change.prop] = test.change.value;
+					await elem.updateComplete;
+				}
 				const errors = await elem.validate();
 				if (test.expectedError) expect(errors).to.contain(test.expectedError);
 				else expect(errors).to.be.empty;
+				expect(elem.invalid).to.equal(!!test.expectedError);
 			});
 		});
 	});

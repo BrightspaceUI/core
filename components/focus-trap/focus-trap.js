@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
-import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
@@ -71,7 +71,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 	_focusFirst() {
 		const focusable = this.shadowRoot &&
 			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
-		if (focusable) forceFocusVisible(focusable);
+		if (focusable) focusable.focus();
 		this.dispatchEvent(new CustomEvent('d2l-focus-trap-enter', { bubbles: true, composed: true }));
 	}
 
@@ -94,9 +94,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
 				// Delay to re-apply the focus effects as a visual clue when there is only one focusable element
-				setTimeout(() => {
-					forceFocusVisible(firstFocusable);
-				}, 50);
+				setTimeout(() => firstFocusable.focus(), 50);
 				return;
 			}
 		}
@@ -120,9 +118,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {
 				// Delay to re-apply the focus effects as a visual clue when there is only one focusable element
-				setTimeout(() => {
-					forceFocusVisible(lastFocusable);
-				}, 50);
+				setTimeout(() => lastFocusable.focus(), 50);
 				return;
 			}
 		}

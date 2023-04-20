@@ -3,17 +3,19 @@ import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class ListItemDragImage extends SkeletonMixin(RtlMixin(LitElement)) {
+class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
 			/**
 			 * @ignore
 			 */
-			count: { type: Number }
+			count: { type: Number },
+			includePlusSign: { type: Boolean, attribute: 'include-plus-sign' }
 		};
 	}
 
@@ -86,7 +88,7 @@ class ListItemDragImage extends SkeletonMixin(RtlMixin(LitElement)) {
 				position: absolute;
 				text-align: center;
 				top: 30px;
-				z-index: 1000; /* must be higher than the skeleton z-index (999) */
+				z-index: 998; /* must be higher than the skeleton z-index */
 			}
 			:host([dir="rtl"]) .count {
 				left: 14px;
@@ -103,7 +105,7 @@ class ListItemDragImage extends SkeletonMixin(RtlMixin(LitElement)) {
 	render() {
 		return html`
 			<div class="first">
-				<div class="count d2l-body-small">${formatNumber(this.count)}</div>
+				<div class="count d2l-body-small">${this.includePlusSign ? this.localize('components.count-badge.plus', { number: this.count }) : formatNumber(this.count)}</div>
 				<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
 					<path fill="#494c4e" d="M8 16v1c0 .5-.4 1-1 1H6c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 16v1c0 .5-.4 1-1 1h-1c-.6 0-1-.5-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 11v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 11v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1v-1c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 6v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M13 6v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1h1c.6 0 1 .4 1 1M8 1v1c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1M13 1v1c0 .6-.4 1-1 1h-1c-.6 0-1-.4-1-1V1c0-.5.4-1 1-1h1c.6 0 1 .5 1 1"/>
 				</svg>

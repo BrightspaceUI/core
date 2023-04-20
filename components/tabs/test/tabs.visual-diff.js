@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tabs', () => {
 
@@ -8,12 +7,10 @@ describe('d2l-tabs', () => {
 
 	let browser, page;
 
-	const focusTabs = (selector) => {
-		return page.$eval(selector, (elem) => {
-			return new Promise((resolve) => {
-				elem.focus();
-				requestAnimationFrame(resolve);
-			});
+	const focusTabs = async(selector) => {
+		await focusWithKeyboard(page, selector);
+		await page.evaluate(() => {
+			new Promise(resolve => requestAnimationFrame(resolve));
 		});
 	};
 
@@ -118,20 +115,14 @@ describe('d2l-tabs', () => {
 				});
 
 				it('focus next', async function() {
-					await page.$eval('#focus-next', (elem) => {
-						const buttonElement = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container > button');
-						forceFocusVisible(buttonElement);
-					});
 					const rect = await visualDiff.getRect(page, '#focus-next');
+					await focusWithKeyboard(page, ['#focus-next', '.d2l-tabs-scroll-next-container > button']);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('focus previous', async function() {
 					const rect = await visualDiff.getRect(page, '#focus-previous');
-					await page.$eval('#focus-previous', (elem) => {
-						const buttonElement = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container > button');
-						forceFocusVisible(buttonElement);
-					});
+					await focusWithKeyboard(page, ['#focus-previous', '.d2l-tabs-scroll-previous-container > button']);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 			});

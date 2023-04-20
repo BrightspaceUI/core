@@ -2,7 +2,7 @@ import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -23,12 +23,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * State of the input
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean },
+			selected: { type: Boolean, reflect: true },
 			/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
+			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Private. Force hovering state of input
 			 * @ignore

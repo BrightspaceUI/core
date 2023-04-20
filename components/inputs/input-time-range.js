@@ -4,12 +4,12 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { formatDateInISOTime, formatTimeInISO, getAdjustedTime, getDateFromISOTime, isValidTime, parseISOTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export function getShiftedEndTime(startValue, endValue, prevStartValue, inclusive) {

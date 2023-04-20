@@ -8,7 +8,7 @@
 		import '../../../components/list/list.js';
 		import '../../../components/list/list-item.js';
 		import '../../../components/list/list-item-content.js';
-		import '../../../components/list/list-header.js';
+		import '../../../components/list/list-controls.js';
 		import '../../../components/selection/selection-action.js';
 	</script>
 	<title>d2l-template-primary-secondary</title>
@@ -50,9 +50,9 @@
 			</div>
 			<div slot="primary">
 				<d2l-list item-count="50" extend-separators>
-					<d2l-list-header slot="header">
+					<d2l-list-controls slot="controls">
 						<d2l-selection-action icon="tier1:plus-default" text="Action"></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item selectable key="primary-1" label="Item 1">
 						<d2l-list-item-content>
 							<div>Primary Item 1</div>
@@ -75,9 +75,9 @@
 			</div>
 			<div slot="secondary">
 				<d2l-list item-count="50" extend-separators>
-					<d2l-list-header slot="header">
+					<d2l-list-controls slot="controls">
 						<d2l-selection-action icon="tier1:plus-default" text="Action"></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item selectable selected key="secondary-1" label="Item 1">
 						<d2l-list-item-content>
 							<div>Secondary Item 1</div>

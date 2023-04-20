@@ -26,14 +26,22 @@ describe('d2l-dialog-fullscreen', () => {
 			});
 
 			beforeEach(async() => {
-				await reset(page, '#dialog');
-				await reset(page, '#dialogLong');
-				await reset(page, '#dialogRtl');
-				await reset(page, '#dialogNoFooterContent');
-				await reset(page, '#dialogHorizontalOverflow');
+				const resetPromises = [
+					'#dialog',
+					'#dialogLong',
+					'#dialogRtl',
+					'#dialogNoFooterContent',
+					'#dialogHorizontalOverflow',
+					'#dialogSetWidth',
+					'#dialogSetWidthBelowMin',
+					'#dialogSetWidthAboveMax'
+				].map(id => reset(page, id));
+
+				await Promise.all(resetPromises);
 			});
 
 			[
+				{ category: 'wider', viewport: { width: 1400, height: 700 } },
 				{ category: 'wide', viewport: { width: 800, height: 500 } },
 				{ category: 'narrow', viewport: { width: 600, height: 500 } },
 				{ category: 'landscape', viewport: { width: 600, height: 320 } },
@@ -47,6 +55,21 @@ describe('d2l-dialog-fullscreen', () => {
 
 					it('opened', async function() {
 						await open(page, '#dialog');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+					});
+
+					it('openedSetWidth', async function() {
+						await open(page, '#dialogSetWidth');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+					});
+
+					it('openedSetWidthBelowMin', async function() {
+						await open(page, '#dialogSetWidthBelowMin');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+					});
+
+					it('openedSetWidthAboveMax', async function() {
+						await open(page, '#dialogSetWidthAboveMax');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 

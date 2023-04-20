@@ -40,7 +40,7 @@
 				});
 
 			</script>
-			<d2l-demo-snippet fullscreen>
+			<d2l-demo-snippet full-width>
 				<d2l-tag-list description="A bunch of example tags">
 					<d2l-tag-list-item text="Example 1"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
@@ -55,7 +55,7 @@
 			</d2l-demo-snippet>
 
 			<h2>Clearable Tag List</h2>
-			<d2l-demo-snippet fullscreen>
+			<d2l-demo-snippet full-width>
 				<d2l-tag-list description="A bunch of example tags" clearable>
 					<d2l-tag-list-item text="Example 1"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
@@ -68,7 +68,7 @@
 					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
 				<script type="module">
-					import { forceFocusVisible, getNextFocusable } from '../../../helpers/focus.js';
+					import { getNextFocusable } from '../../../helpers/focus.js';
 
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
 						e.target.parentNode.removeChild(e.target);
@@ -82,13 +82,13 @@
 							e.target.removeChild(tag);
 						});
 						// consumer must move focus someplace logical
-						forceFocusVisible(nextFocusable);
+						nextFocusable?.focus();
 					});
 				</script>
 			</d2l-demo-snippet>
 
 			<h2>Tag List with Interactive</h2>
-			<d2l-demo-snippet fullscreen>
+			<d2l-demo-snippet full-width>
 				<div grid>
 					<d2l-tag-list description="A bunch of example tags" clearable>
 						<d2l-tag-list-item text="Example Tag"></d2l-tag-list-item>
@@ -103,7 +103,7 @@
 			</d2l-demo-snippet>
 
 			<h2>Tag List - Custom Tooltip Description</h2>
-			<d2l-demo-snippet fullscreen>
+			<d2l-demo-snippet full-width>
 				<d2l-tag-list description="A bunch of example tags">
 					<d2l-tag-list-item text="Longer Example Tag - much much much much much longer" description="display text and description value when truncated"></d2l-tag-list-item>
 					<d2l-tag-list-item text="Example Tag 5" description="custom tooltip text - display description only when not truncated"></d2l-tag-list-item>

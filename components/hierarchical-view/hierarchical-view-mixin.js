@@ -125,6 +125,11 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 
 		requestAnimationFrame(() => {
+			/* If the view was disconnected before this could run, just bail. There can be some
+			odd race conditions with d2l-overflow-group where this can happen and results in
+			JavaScript errors finding the root view. */
+			if (!this.isConnected) return;
+
 			if (typeof(IntersectionObserver) !== 'function') {
 				this.__autoSize(this);
 			}

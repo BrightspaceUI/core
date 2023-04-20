@@ -1,6 +1,7 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { css, html, LitElement, unsafeCSS } from 'lit';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -62,7 +63,7 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host(.focus-visible) > .d2l-tab-text {
+			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);

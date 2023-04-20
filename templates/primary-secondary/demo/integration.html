@@ -9,35 +9,51 @@
 			import '../primary-secondary.js';
 			import '../../../components/button/button.js';
 			import '../../../components/button/button-icon.js';
+			import '../../../components/card/card.js';
+			import '../../../components/card/card-footer-link.js';
+			import '../../../components/collapsible-panel/collapsible-panel.js';
+			import '../../../components/collapsible-panel/collapsible-panel-summary-item.js';
 			import '../../../components/demo/demo-page.js';
 			import '../../../components/dialog/dialog-fullscreen.js';
 			import '../../../components/dropdown/dropdown-button-subtle.js';
+			import '../../../components/dropdown/dropdown-content.js';
 			import '../../../components/dropdown/dropdown-menu.js';
 			import '../../../components/dropdown/dropdown-more.js';
+			import '../../../components/inputs/input-textarea.js';
+			import '../../../components/list/list-controls.js';
+			import '../../../components/list/list-item-content.js';
+			import '../../../components/list/list-item.js';
+			import '../../../components/list/list.js';
 			import '../../../components/menu/menu.js';
 			import '../../../components/menu/menu-item.js';
 			import '../../../components/selection/selection-action.js';
 			import '../../../components/selection/selection-action-dropdown.js';
 			import '../../../components/selection/selection-action-menu-item.js';
 			import '../../../components/tooltip/tooltip.js';
-			import '../../../components/list/list-header.js';
-			import '../../../components/list/list-item-content.js';
-			import '../../../components/list/list-item.js';
-			import '../../../components/list/list.js';
 		</script>
 		<style>
 			html {
-				--d2l-list-header-background-color: #f1f5fb;
+				--d2l-list-controls-background-color: #f1f5fb;
+			}
+			.cards {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+			}
+			d2l-card {
+				flex: none;
+				height: 190px;
+				width: 140px;
 			}
 		</style>
 	</head>
 	<body>
 		<d2l-template-primary-secondary resizable storage-key="demo-index">
-			<div slot="header" style="background-color: #dddddd;">I'm in the <b>header</b> slot of the <b>d2l-template-primary-secondary</b> component!</div>
+			<div slot="controls" style="background-color: #dddddd;">I'm in the <b>controls</b> slot of the <b>d2l-template-primary-secondary</b> component!</div>
 			<div slot="primary">
 
 				<d2l-list item-count="50" extend-separators>
-					<d2l-list-header slot="header" select-all-pages-allowed>
+					<d2l-list-controls slot="controls" select-all-pages-allowed>
 						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
@@ -62,7 +78,7 @@
 							</d2l-dropdown-menu>
 						</d2l-dropdown-button-subtle>
 						<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 						<d2l-list-item-content>
@@ -183,7 +199,7 @@
 				<div style="height: 100px;"></div>
 
 				<d2l-list item-count="50">
-					<d2l-list-header slot="header" select-all-pages-allowed>
+					<d2l-list-controls slot="controls" select-all-pages-allowed>
 						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
@@ -208,7 +224,7 @@
 							</d2l-dropdown-menu>
 						</d2l-dropdown-button-subtle>
 						<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 						<d2l-list-item-content>
@@ -326,28 +342,72 @@
 				</d2l-list>
 
 			</div>
-			<div slot="secondary">
-					<d2l-button id="open">Show Dialog</d2l-button>
-					<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title">
-						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
-						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
-						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
-						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
-						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
-						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
-						<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
-						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
-					</d2l-dialog-fullscreen>
-					<script>
-						document.querySelector('#open').addEventListener('click', () => {
-							document.querySelector('#dialogFullscreen').opened = true;
-						});
-						document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
-						});
-					</script>
-				<p>I'm in the <b>secondary</b> slot of the <b>d2l-template-primary-secondary</b> component!</p>
-				Quisque justo risus, elementum quis condimentum vitae, venenatis sit amet nisl. Vivamus interdum pretium libero dictum eleifend. Donec eros tortor, facilisis eget maximus in, malesuada a magna. Nulla ac felis turpis. Donec pellentesque est in rhoncus tempus. Proin ac purus porttitor, interdum est a, venenatis mi. Maecenas nunc nulla, viverra ut ornare id, luctus eu nulla. Pellentesque massa turpis, porta ut tincidunt ut, ullamcorper vitae urna. Nam congue euismod placerat. Vestibulum aliquet, metus vitae viverra posuere, lacus urna hendrerit turpis, vel laoreet ligula odio et nisl. Mauris id lectus magna. Sed gravida tincidunt sapien quis dapibus.Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spankerDeadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spankerDeadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker
+			<div slot="secondary" style="padding: 1rem;">
+				<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title">
+					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog-fullscreen>
+				<d2l-collapsible-panel panel-title="Availability" expanded>
+					<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+					<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+					<d2l-button-icon slot="actions" icon="tier1:gear" id="open" text="Settings"></d2l-button-icon>
+					<d2l-dropdown-more slot="actions">
+						<d2l-dropdown-menu>
+							<d2l-menu>
+								<d2l-menu-item text="Duplicate"></d2l-menu-item>
+								<d2l-menu-item text="Delete"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
+					<div class="cards">
+						<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+									<d2l-dropdown-content>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+									</d2l-dropdown-content>
+							</d2l-dropdown-more>
+							<div slot="content">EARTH101</div>
+							<div slot="footer">
+								<d2l-card-footer-link id="googleDriveLink1" icon="tier1:google-drive" text="Google Drive" secondary-count="100" href="https://www.google.ca/drive/">
+									<d2l-tooltip slot="tooltip" for="googleDriveLink1">Go to Google Drive</d2l-tooltip>
+								</d2l-card-footer-link>
+								<d2l-card-footer-link id="rssFeedLink1" icon="tier1:rss" text="RSS Feed" secondary-count="1">
+									<d2l-tooltip slot="tooltip" for="rssFeedLink1">RSS Feed</d2l-tooltip>
+								</d2l-card-footer-link>
+							</div>
+						</d2l-card>
+						<d2l-card align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg">
+							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+									<d2l-dropdown-content>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+									</d2l-dropdown-content>
+							</d2l-dropdown-more>
+							<div slot="content">ART201</div>
+						</d2l-card>
+					</div>
+					<d2l-input-textarea label="Extra Text" label-hidden rows="6" value="This is a d2l-input-textarea." style="margin-top: 1rem;"></d2l-input-textarea>
+				</d2l-collapsible-panel>
+				<script>
+					document.querySelector('#open').addEventListener('click', () => {
+						document.querySelector('#dialogFullscreen').opened = true;
+					});
+					document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {
+						console.log('confirm action:', e.detail.action);
+					});
+				</script>
+				<p>
+					Quisque justo risus, elementum quis condimentum vitae, venenatis sit amet nisl. Vivamus interdum pretium libero dictum eleifend. Donec eros tortor, facilisis eget maximus in, malesuada a magna. Nulla ac felis turpis. Donec pellentesque est in rhoncus tempus. Proin ac purus porttitor, interdum est a, venenatis mi. Maecenas nunc nulla, viverra ut ornare id, luctus eu nulla. Pellentesque massa turpis, porta ut tincidunt ut, ullamcorper vitae urna. Nam congue euismod placerat. Vestibulum aliquet, metus vitae viverra posuere, lacus urna hendrerit turpis, vel laoreet ligula odio et nisl. Mauris id lectus magna. Sed gravida tincidunt sapien quis dapibus.Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spankerDeadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spankerDeadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker
+				</p>
 			</div>
 			<div slot="footer">I'm in the <b>footer</b> slot of the <b>d2l-template-primary-secondary</b> component!</div>
 		</d2l-template-primary-secondary>

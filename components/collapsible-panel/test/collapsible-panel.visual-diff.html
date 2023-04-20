@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script>
+		const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+		if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+	</script>
+	<script type="module">
+		import '../../button/button-icon.js';
+		import '../../link/link.js';
+		import '../../status-indicator/status-indicator.js';
+		import '../../typography/typography.js';
+		import '../collapsible-panel.js';
+		import '../collapsible-panel-summary-item.js';
+	</script>
+	<title>d2l-collapsible-panel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			padding: 1rem;
+			width: 600px;
+		}
+		.visual-diff.no-overflow {
+			overflow: hidden;
+			padding: 0;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff" id="default">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions for the specific course and so on and so on">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-expand-event">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-expanded-sticky">
+		<d2l-collapsible-panel expanded panel-title="Availability Dates and Conditions">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-summary-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-large-padding">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff" id="default-large-padding-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff" id="default-large-padding-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" padding-type="large">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="default-long">
+		<d2l-collapsible-panel no-sticky panel-title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="subtle">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" type="subtle">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-expanded-sticky">
+		<d2l-collapsible-panel expanded panel-title="Availability Dates and Conditions" type="subtle">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="subtle">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, 	dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-summary-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" type="subtle">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-large-padding">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="subtle" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff" id="subtle-large-padding-expanded">
+		<d2l-collapsible-panel no-sticky expandeds panel-title="Availability Dates and Conditions" type="subtle" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff" id="subtle-large-padding-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="subtle" padding-type="large">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="subtle-long">
+		<d2l-collapsible-panel no-sticky panel-title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" type="subtle">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="inline">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" type="inline">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline-expanded-sticky">
+		<d2l-collapsible-panel expanded panel-title="Availability Dates and Conditions" type="inline">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="inline">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline-summary-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" type="inline">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff no-overflow" id="inline-large-padding">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="inline" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff no-overflow" id="inline-large-padding-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions" type="inline" padding-type="large">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+	<div class="visual-diff no-overflow" id="inline-large-padding-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions" type="inline" padding-type="large">
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="inline-long">
+		<d2l-collapsible-panel no-sticky panel-title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" type="inline">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="custom">
+		<d2l-collapsible-panel no-sticky panel-title="Availability Dates and Conditions">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+			<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+				<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
+				<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
+				<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+			</div>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="custom-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Availability Dates and Conditions">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+			<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+				<d2l-status-indicator state="none" text="Due Today"></d2l-status-indicator>
+				<p class="d2l-body-small">Posts: 1 thread, 1 reply</p>
+				<d2l-link small href="https://www.d2l.com" target="blank">Link</d2l-link>
+			</div>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="custom-summary">
+		<d2l-collapsible-panel no-sticky panel-title="Submission 1">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+			<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+				<d2l-status-indicator state="none" text="Pending Evaluation"></d2l-status-indicator>
+				<p class="d2l-body-small">Submitted On: Jul 20, 2021 - 2:23 PM</p>
+				<d2l-link small href="https://www.d2l.com" target="blank">Link to post</d2l-link>
+			</div>
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			<d2l-collapsible-panel-summary-item slot="summary" text="1 release condition"></d2l-collapsible-panel-summary-item>
+			<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+
+	<div class="visual-diff" id="custom-summary-expanded">
+		<d2l-collapsible-panel no-sticky expanded panel-title="Submission 1">
+			<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon>
+			<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+			<div slot="header" style="align-items: center; display: flex; gap: 0.6rem;">
+				<d2l-status-indicator state="none" text="Pending Evaluation"></d2l-status-indicator>
+				<p class="d2l-body-small">Submitted On: Jul 20, 2021 - 2:23 PM</p>
+				<d2l-link small href="https://www.d2l.com" target="blank">Link to post</d2l-link>
+			</div>
+			<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+			<d2l-collapsible-panel-summary-item slot="summary" text="1 release condition"></d2l-collapsible-panel-summary-item>
+			<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+		</d2l-collapsible-panel>
+	</div>
+</body>
+</html>

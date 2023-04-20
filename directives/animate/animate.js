@@ -1,5 +1,5 @@
 import { directive, PartType } from 'lit/directive.js';
-import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable, isFocusVisibleSupported } from '../../helpers/focus.js';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { noChange } from 'lit';
@@ -9,6 +9,11 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const showTransitionDuration = 300;
 const hideTransitionDuration = 200;
 const moveYValue = 20;
+
+function isFocusVisibleApplied(node) {
+	if (!node) return false;
+	return isFocusVisibleSupported() && node.parentNode?.querySelector(':focus-visible') === node;
+}
 
 class AnimationState {
 
@@ -106,7 +111,7 @@ class AnimationState {
 			this.styleAttrUse = true;
 		}
 
-		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null ? true : false;
+		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null;
 		if (hasHiddenAttr) {
 			this.elem.removeAttribute('hidden');
 		}
@@ -180,7 +185,7 @@ class AnimationState {
 
 		// if focus is inside and was placed by keyboard, move it to next focusable
 		const activeElem = getComposedActiveElement();
-		if (activeElem && activeElem.classList.contains('focus-visible')) {
+		if (activeElem && isFocusVisibleApplied(activeElem)) {
 			const focusIsInside = isComposedAncestor(this.elem, activeElem);
 			if (focusIsInside) {
 				const nextFocusable = getNextFocusable(activeElem);

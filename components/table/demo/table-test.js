@@ -1,45 +1,47 @@
 import '../../inputs/input-checkbox.js';
 import '../table-col-sort-button.js';
-import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../../mixins/rtl-mixin.js';
-import { tableStyles } from '../table-wrapper.js';
+import '../table-controls.js';
+import '../../dropdown/dropdown-button-subtle.js';
+import '../../dropdown/dropdown-menu.js';
+import '../../menu/menu.js';
+import '../../menu/menu-item.js';
+import '../../paging/pager-load-more.js';
+import '../../selection/selection-action.js';
+import '../../selection/selection-action-dropdown.js';
+import '../../selection/selection-action-menu-item.js';
+import '../../selection/selection-input.js';
+
+import { css, html, nothing } from 'lit';
+import { tableStyles, TableWrapper } from '../table-wrapper.js';
+import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
+const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
-const data = function() { return [
-	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: false },
-	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: false },
+const data = () => [
+	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
+	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
 	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
 	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
 	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
 	{ name: 'Hawaii', fruit: { 'apples': 129875, 'oranges': 856765, 'bananas': 123 }, selected: false },
 	{ name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
-];};
+];
 
 const formatter = new Intl.NumberFormat('en-US');
 
-class TestTable extends RtlMixin(LitElement) {
+class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper')) {
 
 	static get properties() {
 		return {
-			/**
-			 * Hides the column borders on "default" table type
-			 * @type {boolean}
-			 */
-			noColumnBorder: { attribute: 'no-column-border', type: Boolean },
-			/**
-			 * Type of table style to apply
-			 * @type {'default'|'light'}
-			 */
-			type: { type: String },
-			/**
-			 * Whether header row is sticky
-			 * @type {boolean}
-			 */
-			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
-			stickyHeadersHorizontalScroll: { attribute: 'sticky-headers-horizontal-scroll', type: Boolean },
-			_sortField: { attribute: false, type: String },
-			_sortDesc: { attribute: false, type: Boolean }
+			paging: { type: Boolean, reflect: true },
+			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
+			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
+			_data: { state: true },
+			_sortField: { state: true },
+			_sortDesc: { state: true }
 		};
 	}
 
@@ -48,20 +50,24 @@ class TestTable extends RtlMixin(LitElement) {
 			:host {
 				display: block;
 			}
+			:host([visible-background]) {
+				--d2l-table-controls-background-color: #dddddd;
+			}
 		`];
 	}
 
 	constructor() {
 		super();
-		this.noColumnBorder = false;
-		this.sortDesc = false;
-		this.stickyHeaders = false;
-		this.type = 'default';
+
+		this.paging = false;
+		this.stickyControls = false;
+		this.visibleBackground = false;
 		this._data = data();
+		this._sortField = undefined;
+		this._sortDesc = false;
 	}
 
 	render() {
-		const type = this.type === 'light' ? 'light' : 'default';
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
 				return b.fruit[this._sortField] - a.fruit[this._sortField];
@@ -69,33 +75,69 @@ class TestTable extends RtlMixin(LitElement) {
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}" ?sticky-headers-horizontal-scroll="${this.stickyHeadersHorizontalScroll}">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
+				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
+					<d2l-selection-action
+						text="Sticky controls"
+						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleStickyControls}"
+					></d2l-selection-action>
+					<d2l-selection-action
+						text="Sticky headers"
+						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleStickyHeaders}"
+					></d2l-selection-action>
+				</d2l-table-controls>
+
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th scope="col">Order</th>
-							<th sticky scope="col">Country</th>
+							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 					</thead>
 					<tbody>
-						${sorted.map((row, index) => html`
-							<tr ?selected="${row.selected}">
-								<td>${++index}</td>
-								<th sticky scope="row">
-									<d2l-input-checkbox
-										?checked="${row.selected}"
-										@change="${this._selectRow}"
-										style="margin-bottom: 0;">
-											${row.name}
-									</d2l-input-checkbox></th>
-								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
+						<tr class="d2l-table-header">
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
+						<tr header>
+							<th scope="col" sticky></th>
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
+						</tr>
+						${sorted.map(row => html`
+							<tr ?selected="${row.selected}" data-name="${row.name}">
+								<th scope="row" sticky>
+									<d2l-selection-input
+										@d2l-selection-change="${this._selectRow}"
+										?selected="${row.selected}"
+										key="${row.name}"
+										label="${row.name}">
+									</d2l-selection-input>
+								</th>
+								<th scope="row">${row.name}</th>
+								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
 					</tbody>
 				</table>
+				${this.paging ? html`<d2l-pager-load-more slot="pager"
+					has-more
+					page-size="3"
+					@d2l-pager-load-more="${this._handlePagerLoadMore}"
+				></d2l-pager-load-more>` : nothing}
 			</d2l-table-wrapper>
 		`;
+	}
+
+	_handlePagerLoadMore(e) {
+		const startIndex = this._data.length + 1;
+		for (let i = 0; i < e.target.pageSize; i++) {
+			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+		}
+		this.requestUpdate();
+		e.detail.complete();
 	}
 
 	_handleSort(e) {
@@ -118,13 +160,18 @@ class TestTable extends RtlMixin(LitElement) {
 	}
 
 	_selectRow(e) {
-		const country = e.target.innerText;
-		this._data.forEach((row) => {
-			if (row.name === country) {
-				row.selected = e.target.checked;
-				this.requestUpdate();
-			}
-		});
+		const country = e.target.parentNode.parentNode.dataset.name;
+		const row = this._data.find(row => row.name === country);
+		row.selected = e.target.selected;
+		this.requestUpdate();
+	}
+
+	_toggleStickyControls() {
+		this.stickyControls = !this.stickyControls;
+	}
+
+	_toggleStickyHeaders() {
+		this.stickyHeaders = !this.stickyHeaders;
 	}
 
 }

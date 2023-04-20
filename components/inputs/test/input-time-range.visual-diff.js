@@ -1,6 +1,6 @@
-import { getRectTooltip, resetInnerTimeInput } from './input-helper.js';
+import { focusOnInput, getRectTooltip, resetInnerTimeInput } from './input-helper.js';
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, timePickerIndex) {
 	return await page.$eval(selector, (elem, timePickerIndex) => {
@@ -65,7 +65,7 @@ describe('d2l-input-time-range', () => {
 	});
 
 	it('basic-focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#basic');
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -135,17 +135,6 @@ describe('d2l-input-time-range', () => {
 
 		describe('bad input', () => {
 
-			async function focusOnInput(page, selector, inputSelector) {
-				return page.$eval(selector, (elem, inputSelector) => {
-					elem.blur();
-					const input = elem.shadowRoot.querySelector(inputSelector);
-					return new Promise((resolve) => {
-						elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-						input.focus();
-					});
-				}, inputSelector);
-			}
-
 			describe('function', () => {
 				beforeEach(async() => {
 					await page.$eval('#basic', (elem) => elem.blur());
@@ -159,9 +148,7 @@ describe('d2l-input-time-range', () => {
 
 				it('open start', async function() {
 					await resetInnerTimeInput(page, '#basic'); // Needed for retries
-					await page.$eval('#basic', (elem) => {
-						elem.focus();
-					});
+					await focusWithKeyboard(page, '#basic');
 					await page.keyboard.press('Enter');
 					const rect = await getRect(page, '#basic', 0);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -169,9 +156,7 @@ describe('d2l-input-time-range', () => {
 
 				it('open end', async function() {
 					await resetInnerTimeInput(page, '#basic'); // Needed for retries
-					await page.$eval('#basic', (elem) => {
-						elem.focus();
-					});
+					await focusWithKeyboard(page, '#basic');
 					await page.keyboard.press('Tab');
 					await page.keyboard.press('Enter');
 					const rect = await getRect(page, '#basic', 1);

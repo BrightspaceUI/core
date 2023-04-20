@@ -16,28 +16,60 @@
 			<h2>Default</h2>
 			<d2l-demo-snippet overflow-hidden>
 				<template>
-					<d2l-test-table type="default"></d2l-test-table>
+					<d2l-test-table type="default" sticky-controls></d2l-test-table>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Default, Sticky</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-test-table type="default" sticky-headers></d2l-test-table>
+					<d2l-test-table type="default" sticky-headers sticky-controls></d2l-test-table>
 				</template>
 			</d2l-demo-snippet>
 
 			 <h2>Light</h2>
 			<d2l-demo-snippet overflow-hidden>
 				<template>
-					<d2l-test-table type="light"></d2l-test-table>
+					<d2l-test-table type="light" sticky-controls></d2l-test-table>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Light, Sticky</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-test-table type="light" sticky-headers></d2l-test-table>
+					<d2l-test-table type="light" sticky-headers sticky-controls></d2l-test-table>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Default, Paging</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-table type="default" sticky-controls paging></d2l-test-table>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Default, Visible controls background</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-table type="default" sticky-headers sticky-controls visible-background></d2l-test-table>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Default, Sticky columns</h2>
+			<d2l-demo-snippet overflow-hidden>
+				<template>
+					<div style="overflow: auto; width: 300px;">
+						<d2l-test-table type="default" sticky-headers sticky-controls></d2l-test-table>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Default with Scroll-Wrapper (no sticky)</h2>
+			<d2l-demo-snippet overflow-hidden>
+				<template>
+					<div style="height: 300px; overflow: auto;">
+						<d2l-test-table type="default" sticky-controls style="width: 300px;"></d2l-test-table>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 

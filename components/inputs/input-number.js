@@ -1,11 +1,11 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit';
 import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -164,10 +164,20 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			unit: { type: String },
 			/**
+			 * Accessible label for the unit which will not be visually rendered
+			 * @type {string}
+			 */
+			unitLabel: { attribute: 'unit-label', type: String },
+			/**
 			 * Value of the input
 			 * @type {number}
 			 */
 			value: { type: Number, converter: numberConverter },
+			/**
+			 * Alignment of the value text within the input
+			 * @type {'start'|'end'}
+			 */
+			valueAlign: { attribute: 'value-align', type: String },
 			/**
 			 * @ignore
 			 */
@@ -201,6 +211,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		this.maxExclusive = false;
 		this.minExclusive = false;
 		this.required = false;
+		this.valueAlign = 'start';
 
 		this._formattedValue = '';
 		this._hintType = HINT_TYPES.NONE;
@@ -306,6 +317,15 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		return super.validationMessage;
 	}
 
+	/** @ignore */
+	get validity() {
+		const elem = this.shadowRoot && this.shadowRoot.querySelector('d2l-input-text');
+		if (elem && !elem.validity.valid) {
+			return elem.validity;
+		}
+		return super.validity;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-localize-resources-change', () => {
@@ -317,6 +337,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	}
 
 	render() {
+		const valueAlign = (this.valueAlign === 'end') ? 'end' : 'start';
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
@@ -331,6 +352,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?hide-invalid-icon="${this.hideInvalidIcon}"
 				id="${this._inputId}"
 				input-width="${this.inputWidth}"
+				@invalid-change="${this._handleInvalidChange}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden || this.labelledBy}"
 				.labelRequired="${false}"
@@ -340,7 +362,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				unit="${ifDefined(this.unit)}"
-				.value="${this._formattedValue}">
+				unit-label="${ifDefined(this.unitLabel)}"
+				.value="${this._formattedValue}"
+				value-align="${valueAlign}">
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>
@@ -352,27 +376,35 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
+		let checkValidity = false;
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this.setFormValue(this.value);
-
-				let rangeUnderflowCondition = false;
-				if (typeof(this.min) === 'number') {
-					rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
-				}
-
-				let rangeOverflowCondition = false;
-				if (typeof(this.max) === 'number') {
-					rangeOverflowCondition = this.maxExclusive ? this.value >= this.max : this.value > this.max;
-				}
-
-				this.setValidity({
-					rangeUnderflow: rangeUnderflowCondition,
-					rangeOverflow: rangeOverflowCondition
-				});
-				this.requestValidate(true);
+				checkValidity = true;
+			} else if ((prop === 'min' && oldVal !== undefined)
+				|| (prop === 'max' && oldVal !== undefined)
+				|| (prop === 'minExclusive' && oldVal !== undefined)
+				|| (prop === 'maxExclusive' && oldVal !== undefined)) {
+				checkValidity = true;
 			}
 		});
+
+		if (checkValidity) {
+			let rangeUnderflowCondition = false;
+			if (typeof(this.min) === 'number') {
+				rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
+			}
+			let rangeOverflowCondition = false;
+			if (typeof(this.max) === 'number') {
+				rangeOverflowCondition = this.maxExclusive ? this.value >= this.max : this.value > this.max;
+			}
+
+			this.setValidity({
+				rangeUnderflow: rangeUnderflowCondition,
+				rangeOverflow: rangeOverflowCondition
+			});
+			this.requestValidate(true);
+		}
 	}
 
 	async validate() {
@@ -386,7 +418,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 
 	_getTooltip() {
 		if (this.disabled) return null;
-		if (this.validationError && this.childErrors.size === 0) {
+		if (this.validationError && this.childErrors.size === 0 && !this.noValidate) {
 			return html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>`;
 		}
 		let lang = '';
@@ -454,6 +486,10 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		if (e.inputType !== 'insertText') {
 			this._hintType = HINT_TYPES.NONE;
 		}
+	}
+
+	_handleInvalidChange() {
+		this.requestValidate(true);
 	}
 
 	_handleKeyPress(e) {

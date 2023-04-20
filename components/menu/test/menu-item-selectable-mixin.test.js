@@ -10,12 +10,12 @@ describe('MenuItemSelectableMixin', () => {
 
 	describe('accessibility', () => {
 
-		it('has no "aria-checked by default', async() => {
+		it('has "aria-checked" false by default', async() => {
 			const elem = await fixture(`<${tag}></${tag}>`);
-			expect(elem.hasAttribute('aria-checked')).to.be.false;
+			expect(elem.getAttribute('aria-checked')).to.equal('false');
 		});
 
-		it('has no "aria-checked when selected', async() => {
+		it('has "aria-checked" true when selected', async() => {
 			const elem = await fixture(`<${tag} selected></${tag}>`);
 			expect(elem.getAttribute('aria-checked')).to.equal('true');
 		});
@@ -27,11 +27,11 @@ describe('MenuItemSelectableMixin', () => {
 			expect(elem.getAttribute('aria-checked')).to.equal('true');
 		});
 
-		it('removes "aria-checked when unselected', async() => {
+		it('sets "aria-checked" to false when unselected', async() => {
 			const elem = await fixture(`<${tag} selected></${tag}>`);
 			elem.selected = false;
 			await elem.updateComplete;
-			expect(elem.hasAttribute('aria-checked')).to.be.false;
+			expect(elem.getAttribute('aria-checked')).to.equal('false');
 		});
 
 	});

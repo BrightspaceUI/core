@@ -18,16 +18,13 @@ class TestPageable extends PageableMixin(LitElement) {
 	_getItems() {
 		return this.shadowRoot.querySelector('slot').assignedElements().find(node => node.tagName === 'UL').querySelectorAll('li');
 	}
-	async _getItemsShowingCount() {
+	_getItemShowingCount() {
 		return this._getItems().length;
-	}
-	_getLastItemIndex() {
-		return this._getItems().length - 1;
 	}
 	_handleSlotChange(e) {
 		const list = e.target.assignedElements().find(node => node.tagName === 'UL');
 		if (!this._mutationObserver) {
-			this._mutationObserver = new MutationObserver(async() => this._updatePagerCount(await this._getItemsShowingCount()));
+			this._mutationObserver = new MutationObserver(() => this._updateItemShowingCount());
 		} else {
 			this._mutationObserver.disconnect();
 		}
@@ -35,3 +32,12 @@ class TestPageable extends PageableMixin(LitElement) {
 	}
 }
 customElements.define('d2l-test-pageable', TestPageable);
+
+class TestPageableSimple extends PageableMixin(LitElement) {
+	render() {
+		return html`${this._renderPagerContainer()}`;
+	}
+	_getItemByIndex() { return null; }
+	_getItemShowingCount() { return 10; }
+}
+customElements.define('d2l-test-pageable-simple', TestPageableSimple);

@@ -1,4 +1,4 @@
-import { findComposedAncestor, getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling } from './dom.js';
+import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -12,18 +12,6 @@ const focusableElements = {
 	select: true,
 	textarea: true
 };
-
-export function forceFocusVisible(elem, includeTabbablesOnly) {
-	if (!isFocusable(elem, false, includeTabbablesOnly)) {
-		elem = getFirstFocusableDescendant(elem);
-	}
-	if (!elem) return;
-	elem.addEventListener('blur', () => {
-		elem.classList.remove('focus-visible');
-	}, { once: true });
-	elem.classList.add('focus-visible');
-	elem.focus();
-}
 
 export function getComposedActiveElement() {
 	let node = document.activeElement;
@@ -50,6 +38,10 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate, incl
 	}
 
 	return null;
+}
+
+export function getFocusPseudoClass() {
+	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
 
 export function getLastFocusableDescendant(node, includeHidden) {
@@ -175,22 +167,28 @@ export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDi
 
 	if (_isFocusable && !includeHidden) {
 		// only perform visibility check if absolutely necessary
-		if (nodeName !== 'body' && node.offsetParent === null) return false;
+		if (nodeName !== 'body' && !isVisible(node)) return false;
 	}
 
 	return _isFocusable;
 
 }
 
-export function tryApplyFocus(elem) {
-	if (isFocusable(elem)) {
-		forceFocusVisible(elem);
-		return true;
+let _isFocusVisibleSupported;
+
+export function isFocusVisibleSupported() {
+	if (_isFocusVisibleSupported === undefined) {
+		const style = document.createElement('style');
+		try {
+			document.head.appendChild(style);
+			style.sheet.insertRule(':focus-visible { color: inherit; }');
+			_isFocusVisibleSupported = true;
+		} catch (error) {
+			_isFocusVisibleSupported = false;
+		} finally {
+			style.remove();
+		}
 	}
-	const focusable = findComposedAncestor(elem, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
-	if (focusable) {
-		forceFocusVisible(focusable);
-		return true;
-	}
-	return false;
+
+	return _isFocusVisibleSupported;
 }

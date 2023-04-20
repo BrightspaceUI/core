@@ -1,11 +1,11 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export const checkboxStyles = css`
@@ -42,7 +42,7 @@ export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
 	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus,
-	:host(.d2l-hovering) input[type="checkbox"].d2l-input-checkbox {
+	:host(.d2l-hovering) input[type="checkbox"]:not(:disabled).d2l-input-checkbox {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-width: 0;
@@ -120,8 +120,8 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					margin-bottom: 0;
 				}
 				label {
-					display: inline-block;
-					white-space: nowrap;
+					display: flex;
+					overflow-wrap: anywhere;
 				}
 				.d2l-input-checkbox-wrapper {
 					display: inline-block;

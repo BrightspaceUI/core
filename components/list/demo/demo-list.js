@@ -10,7 +10,7 @@ import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
 import '../../selection/selection-action-menu-item.js';
 import '../../tooltip/tooltip.js';
-import '../list-header.js';
+import '../list-controls.js';
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
@@ -148,7 +148,7 @@ class DemoList extends LitElement {
 		const remainingItemCount = this.items.length - loadedItems.length;
 		return html`
 			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}">
-				<d2l-list-header slot="header" select-all-pages-allowed>
+				<d2l-list-controls slot="controls" select-all-pages-allowed>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
 						<d2l-dropdown-menu>
@@ -173,7 +173,7 @@ class DemoList extends LitElement {
 						</d2l-dropdown-menu>
 					</d2l-dropdown-button-subtle>
 					<d2l-selection-action icon="tier1:gear" text="Settings" requires-selection></d2l-selection-action>
-				</d2l-list-header>
+				</d2l-list-controls>
 				${repeat(loadedItems, item => item.key, item => {
 					const tooltipButtonId = getUniqueId();
 					return html`
@@ -201,7 +201,6 @@ class DemoList extends LitElement {
 				<d2l-pager-load-more slot="pager"
 					@d2l-pager-load-more="${this._handlePagerLoadMore}"
 					?has-more="${this._lastItemLoadedIndex < this.items.length - 1}"
-					item-count="${this.items.length}"
 					page-size="${remainingItemCount < this._pageSize ? remainingItemCount : this._pageSize}">
 				</d2l-pager-load-more>
 			</d2l-list>

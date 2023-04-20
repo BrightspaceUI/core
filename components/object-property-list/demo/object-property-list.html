@@ -10,6 +10,7 @@
 			import '../object-property-list.js';
 			import '../object-property-list-item.js';
 			import '../object-property-list-item-link.js';
+			import '../../status-indicator/status-indicator.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -17,7 +18,7 @@
 
 			<h2>Object Property List: Single item</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet overflow-hidden>
 				<template>
 					<d2l-object-property-list>
 						<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
@@ -27,9 +28,10 @@
 
 			<h2>Object Property List: All item variants</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet overflow-hidden>
 				<template>
 					<d2l-object-property-list>
+						<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 						<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 						<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
 						<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
@@ -40,12 +42,41 @@
 
 			<h2>Object Property List: Long items to demonstrate word-wrap</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet overflow-hidden>
 				<template>
 					<d2l-object-property-list>
 						<d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
 						<d2l-object-property-list-item icon="tier1:alert" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
 					</d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Object Property List: Skeleton item count set</h2>
+
+			<d2l-demo-snippet overflow-hidden>
+				<template>
+					<d2l-object-property-list skeleton-count="3"></d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Object Property List: Hidden items</h2>
+
+			<d2l-demo-snippet overflow-hidden>
+				<template>
+					<d2l-object-property-list>
+						<d2l-object-property-list-item text="Item 1"></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="Item 2 (Hidden)" hidden></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="Item 3"></d2l-object-property-list-item>
+						<d2l-object-property-list-item text="Item 4 (Hidden)" hidden></d2l-object-property-list-item>
+					</d2l-object-property-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Object Property List: No external whitespace (still contains internal whitespace in the component renderers)</h2>
+
+			<d2l-demo-snippet overflow-hidden>
+				<template>
+					<d2l-object-property-list><d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator><d2l-object-property-list-item text="Example item"></d2l-object-property-list-item><d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item><d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link><d2l-object-property-list-item-link text="Example link with icon" href="https://www.d2l.com/" icon="tier1:alert"></d2l-object-property-list-item-link></d2l-object-property-list>
 				</template>
 			</d2l-demo-snippet>
 

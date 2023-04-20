@@ -3,6 +3,7 @@
 There are various input components available:
 
 - [Checkboxes (input-checkbox*)](docs/input-checkbox.md)
+- [Color Input (input-color)](docs/input-color.md)
 - [Date & Time Inputs (input-date, input-time, input-date-time)](docs/input-date-time.md)
 - [Numeric Inputs (input-number, input-percent)](docs/input-numeric.md)
 - [Radio Buttons (input-radio-*)](docs/input-radio.md)
@@ -22,7 +23,7 @@ Import the label styles and `RtlMixin` and include them in your component:
 
 ```javascript
 import {inputLabelStyles} from '@brightspace-ui/core/components/inputs/input-label-styles.js';
-import {RtlMixin} from '@brightspace-ui/core/mixins/rtl-mixin.js';
+import {RtlMixin} from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
 
 class MyElem extends RtlMixin(LitElement) {
 

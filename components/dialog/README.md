@@ -32,13 +32,14 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 * Label primary actions with clear and predictable language. Use verbs like, “Add” or “Save” that indicate the outcome of a dialog rather than, “OK” or “Close”
 * Keep dialog titles concise
 * Maintain a language relationship between the action that triggered the dialog, dialog title, and dialog primary button.
+* When it is necessary to stack multiple dialogs, ensure the stacked dialog is nested within the DOM of the dialog containing the opener
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
 * Don’t use a dialog when you could reasonably use an alternative that preserves user context, like expanding options inline
 * Don’t use a dialog to show error, success, or warning messages. Use an inline or toast alert instead.
 * Avoid creating large, complex dialogs
-* Avoid invoking a dialog from another dialog (nested dialogs)
+* Avoid opening a dialog from within other dialogs (stacking dialogs)
 * Avoid a title length that could easily wrap to two lines
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
@@ -70,6 +71,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 |--|--|--|
 | `title-text` | String, required | Text displayed in the header of the dialog |
 | `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
+| `full-height` | Boolean | Whether to render the dialog at the maximum height |
 | `opened` | Boolean | Whether or not the dialog is open |
 | `width` | Number, default: `600` | The preferred width (unit-less) for the dialog |
 
@@ -256,15 +258,27 @@ document.querySelector('#open').addEventListener('click', () => {
 });
 ```
 
-## Focus Management
+## Accessibility
+
+### Focus Management
 
 When opened, focus will be automatically placed within the dialog. The element to be focused will either be the content element having the optional `autofocus` attribute, or a focusable element identified by the dialog depending on the type of dialog. For `d2l-dialog` and `d2l-dialog-fullscreen`, the first focusable element will be focused. For `d2l-dialog-confirm`, the least destructive action will be focused, which is assumed to be the first non-primary button in the footer.
 
-### Specifying an `autofocus` Element (Optional)
+#### Specifying an `autofocus` Element (Optional)
 
 To specify which element should be focused, add the `autofocus` attribute to that element. An element with the `autofocus` attribute will receive focus if the element has a `tabindex` value of `0` or `-1`, or is a naturally focusable element (e.g. button).
 
 Note that the element must be in the dialog content's DOM scope and not within another component's Shadow DOM.
+
+### Announcing the dialog text
+
+When using `d2l-dialog` or `d2l-dialog-fullscreen` the dialog text will not be announced by screen readers. Screen readers will announce the presence of a dialog, the dialog title, and the currently focused element. For example, the general dialog example at the top of this page reads "Dialog Title dialog. clickable Done button.". The text "Some dialog content" is not announced.
+
+To announce the dialog text, use one of the following methods:
+
+1. Use `d2l-dialog-confirm` instead
+2. Add `describe-content="true"` (if using `d2l-dialog`)
+3. Set `autofocus` on the first text element (see above for details)
 
 <!-- docs: start hidden content -->
 ## Future Improvements

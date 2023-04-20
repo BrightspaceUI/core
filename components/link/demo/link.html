@@ -8,6 +8,14 @@
 			import '../../demo/demo-page.js';
 			import '../link.js';
 		</script>
+		<style>
+			.truncate-container {
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 6px;
+				max-width: 400px;
+				padding: 0.6rem;
+			}
+		</style>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-link">
@@ -30,6 +38,22 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-link small href="https://www.d2l.com">Small Link</d2l-link>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Inline</h2>
+			<d2l-demo-snippet>
+				<template>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. <d2l-link href="https://www.d2l.com">Standard Link</d2l-link> Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Overflow-Ellipsis</h2>
+			<d2l-demo-snippet>
+				<template>
+					<div class="truncate-container">
+						<d2l-link href="https://www.d2l.com" overflow-ellipsis>A really long link that will overflow its container.</d2l-link>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 

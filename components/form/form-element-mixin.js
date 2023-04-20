@@ -155,7 +155,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element.defaultError', { label });
 	}
 
-	/** @ignore */
+	/** @ignore Note: this may be our custom FormElementValidityState or native ValidityState depending on the source. */
 	get validity() {
 		return this._validity;
 	}

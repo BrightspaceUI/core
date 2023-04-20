@@ -6,7 +6,7 @@ Components to assist with displaying user-authored HTML within your webpage.
 
 The `d2l-html-block` element is a web component for displaying user-authored HTML. It includes styles for headings, lists, anchors and other elements.  In addition, it provides integration with MathJax for rendering MathML.
 
-Place the user-authored HTML within the `d2l-html-block` and the component will stamp the content into its local DOM where styles will be applied, and math typeset.
+Pass the user-authored HTML into the `html` attribute of the `d2l-html-block` and the component will stamp the content into its local DOM where styles will be applied, and math typeset.
 
 <!-- docs: demo live name:d2l-html-block autoSize:false size:small -->
 ```html
@@ -14,8 +14,7 @@ Place the user-authored HTML within the `d2l-html-block` and the component will 
   import '@brightspace-ui/core/components/html-block/html-block.js';
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
-<d2l-html-block>
-  <!-- docs: start hidden content -->
+<d2l-html-block html="
   <style>
     div {
       --d2l-icon-fill-color: var(--d2l-color-cinnabar);
@@ -35,35 +34,13 @@ Place the user-authored HTML within the `d2l-html-block` and the component will 
       justify-content: center;
     }
   </style>
-<!-- docs: end hidden content --><div class="warning-container">
-    <d2l-icon icon="tier3:alert"></d2l-icon>
+  <div class=&quot;warning-container&quot;>
+    <d2l-icon icon=&quot;tier3:alert&quot;></d2l-icon>
     <span>
       <b>Important:</b> user-authored HTML must be trusted or properly sanitized!
     </span>
-  </div>
+  </div>">
 </d2l-html-block>
-```
-
-To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https://lit.dev/docs/api/directives/#unsafeHTML) directive to avoid escaping the HTML.
-
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-  import '@brightspace-ui/core/components/icons/icon.js';
-
-  class SomeComponent extends LitElement {
-    render() {
-      return html`
-        <d2l-html-block>
-          ${unsafeHTML(this._unsafeHTML)}
-        </d2l-html-block>`;
-    }
-  }
-
-  customElements.define('d2l-some-component', SomeComponent);
-</script>
-<d2l-some-component></d2l-some-component>
 ```
 
 ### Rendering MathML and LaTeX
@@ -78,8 +55,8 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/components/icons/icon.js';
   import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
-<d2l-html-block>
-  <math xmlns="http://www.w3.org/1998/Math/MathML">
+<d2l-html-block html="
+  <math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;>
     <msqrt>
       <mn>3</mn>
       <mi>x</mi>
@@ -87,15 +64,15 @@ Examples are provided to display how user-authored math can be embedded within y
       <mn>1</mn>
     </msqrt>
     <mo>+</mo>
-    <mo stretchy="false">(</mo>
+    <mo stretchy=&quot;false&quot;>(</mo>
     <mn>1</mn>
     <mo>+</mo>
     <mi>x</mi>
     <msup>
-      <mo stretchy="false">)</mo>
+      <mo stretchy=&quot;false&quot;>)</mo>
       <mn>2</mn>
     </msup>
-  </math>
+  </math>">
 </d2l-html-block>
 ```
 
@@ -107,9 +84,7 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/components/html-block/html-block.js';
   import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
-<d2l-html-block>
-    $$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
-</d2l-html-block>
+<d2l-html-block html="$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$"></d2l-html-block>
 ```
 
 ### Add Context Automatically to Demos and Tests

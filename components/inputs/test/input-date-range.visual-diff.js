@@ -1,6 +1,6 @@
-import { getRectTooltip } from './input-helper.js';
+import { focusOnInput, getRectTooltip } from './input-helper.js';
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 async function getRect(page, selector, dateInputNum) {
 	return await page.$eval(selector, (elem, dateInputNum) => {
@@ -104,11 +104,11 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('basic-focus', async function() {
+		setTimeout(() => focusWithKeyboard(page, '#basic'));
 		await page.$eval('#basic', (elem) => {
 			return new Promise((resolve) => {
 				elem.blur(); // Reset focus
 				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-				elem.focus();
 			});
 		});
 		const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
@@ -116,7 +116,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('required focus then blur', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();
@@ -126,7 +126,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('required focus then blur then fix', async function() {
-		await page.$eval('#required', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#required');
 		await page.$eval('#required', (elem) => {
 			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
 			inputElem.blur();
@@ -175,17 +175,6 @@ describe('d2l-input-date-range', () => {
 		const dateLaterInRange = '07/07/2021';
 		const dateAfterMax = '10/31/2025';
 		const dateFurtherAfterMax = '12/31/2027';
-
-		async function focusOnInput(page, selector, inputSelector) {
-			return page.$eval(selector, (elem, inputSelector) => {
-				elem.blur();
-				const input = elem.shadowRoot.querySelector(inputSelector);
-				return new Promise((resolve) => {
-					elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-					input.focus();
-				});
-			}, inputSelector);
-		}
 
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);

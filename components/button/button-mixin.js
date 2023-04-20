@@ -1,7 +1,6 @@
-import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
-export const ButtonMixin = superclass => class extends FocusMixin(FocusVisiblePolyfillMixin(superclass)) {
+export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 
 	static get properties() {
 		return {

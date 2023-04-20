@@ -1,17 +1,20 @@
+import '../offscreen/screen-reader-pause.js';
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A single object property, to be used within an object-property-list,
  * with an optional icon.
  */
-export class ObjectPropertyListItem extends RtlMixin(LitElement) {
+export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
+			hidden: { type: Boolean },
 			/**
 			 * Name of an optional icon to display
 			 * @type {string}
@@ -22,50 +25,83 @@ export class ObjectPropertyListItem extends RtlMixin(LitElement) {
 			 * @type {string}
 			 */
 			text: { type: String },
+			_showSeparator: { state: true },
 		};
 	}
 
 	static get styles() {
-		return [offscreenStyles, css`
+		return [super.styles, css`
+			:host {
+				vertical-align: middle;
+			}
+			:host([hidden]) {
+				display: none;
+			}
 			d2l-icon {
-				height: 0.9rem;
-				width: 0.9rem;
+				height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
+				width: 1.2857em;
 			}
 			.separator {
-				display: var(--d2l-object-property-list-item-separator-display, inline);
-				margin: 0 0.05rem;
+				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
 				color: var(--d2l-color-galena);
 			}
 			.item-icon {
-				margin: -0.1rem 0.3rem 0 0;
+				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
+				margin-top: -0.1rem;
 			}
-			:host([dir="rtl"]) .item-icon {
-				margin: -0.1rem 0 0 0.3rem;
+			:host([skeleton]) d2l-icon {
+				color: var(--d2l-color-sylvite);
+			}
+			:host([skeleton]) .d2l-skeletize {
+				display: inline-block;
+				max-width: 80%;
+				overflow: hidden;
+				vertical-align: middle;
+				white-space: nowrap;
 			}
 		`];
+	}
+
+	constructor() {
+		super();
+		this._showSeparator = true;
 	}
 
 	render() {
 		return html`
 			${this._renderIcon()}
-			<span>${this.text}</span>
+			${this._renderText()}
 			${this._renderSeparator()}
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('hidden')) this._onHidden();
+	}
+
+	_onHidden() {
+		/** Dispatched when the visibility of the item changes */
+		this.dispatchEvent(new CustomEvent('d2l-object-property-list-item-visibility-change', { bubbles: true, composed: true }));
+	}
+
 	_renderIcon() {
-		return this.icon ? html`<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>` : nothing;
+		return this.icon && !this.skeleton ? html`<d2l-icon icon="${this.icon}" class="item-icon"></d2l-icon>` : nothing;
 	}
 
 	_renderSeparator() {
-		return html`
+		return this._showSeparator ? html`
 			<span class="separator">
-				<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
-				<d2l-icon icon="tier1:bullet" aria-hidden="true"></d2l-icon>
+				<d2l-screen-reader-pause></d2l-screen-reader-pause>
+				<d2l-icon icon="tier1:bullet"></d2l-icon>
 			</span>
-		`;
+		` : nothing;
+	}
+
+	_renderText() {
+		return html`<span class="d2l-skeletize" aria-hidden="${this.skeleton ? 'true' : 'false'}">${this.text}</span>`;
 	}
 }
 

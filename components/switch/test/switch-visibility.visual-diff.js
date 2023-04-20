@@ -1,5 +1,5 @@
+import { focusWithKeyboard, resetFocus, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-switch-visibility', () => {
 
@@ -10,6 +10,10 @@ describe('d2l-switch-visibility', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
+	});
+
+	beforeEach(async() => {
+		await resetFocus(page);
 	});
 
 	after(async() => await browser.close());
@@ -52,11 +56,11 @@ describe('d2l-switch-visibility', () => {
 
 			it('on with conditions and conditions focused', async function() {
 				const selector = '#on-with-conditions';
+				setTimeout(() => focusWithKeyboard(page, [selector, '#conditions-help']));
 				await page.$eval(selector, async(elem) => {
 					return new Promise((resolve) => {
 						const conditionsHelpTooltip = elem.shadowRoot.querySelector('#conditions-help');
 						conditionsHelpTooltip.addEventListener('d2l-tooltip-show', resolve);
-						conditionsHelpTooltip.focus();
 					});
 				});
 
@@ -68,7 +72,7 @@ describe('d2l-switch-visibility', () => {
 				rect.width += 120;
 				rect.height += 170;
 
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect, captureBeyondViewport: false });
 			});
 
 		});

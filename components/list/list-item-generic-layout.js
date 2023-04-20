@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable, isFocusable } from '../../helpers/focus.js';
-import { isInteractiveDescendant } from '../../mixins/interactive-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -62,7 +62,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				display: grid;
 				grid-template-columns:
 					[start outside-control-start] minmax(0, min-content)
-					[control-start outside-control-end] minmax(0, min-content)
+					[expand-collapse-start outside-control-end] minmax(0, min-content)
+					[control-start expand-collapse-end] minmax(0, min-content)
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
@@ -79,7 +80,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				z-index: 6; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
+				z-index: 7; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
 			}
 
 			::slotted([slot="drop-target"]) {
@@ -87,10 +88,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				position: absolute;
 				top: 0;
 				width: 100%;
-				z-index: 5;
+				z-index: 6;
 			}
 
 			::slotted([slot="outside-control"]),
+			::slotted([slot="expand-collapse"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
 			::slotted([slot="actions"]) {
@@ -98,7 +100,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				width: 2.2rem;
+			}
+
+			::slotted([slot="expand-collapse"]) {
+				cursor: pointer;
+				grid-column: expand-collapse-start / expand-collapse-end;
+				z-index: 2;
 			}
 
 			::slotted([slot="control"]) {
@@ -117,7 +124,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				justify-self: end;
-				z-index: 4;
+				z-index: 5;
 			}
 
 			::slotted([slot="outside-control-action"]),
@@ -136,14 +143,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 				height: 100%;
 				width: 100%;
-				z-index: 2;
+				z-index: 3;
 			}
 			:host([no-primary-action]) ::slotted([slot="control-action"]) {
 				grid-column: control-start / control-end;
 			}
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
-				z-index: 3;
+				z-index: 4;
 			}
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
 				display: none;
@@ -154,7 +161,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="control-container"]) {
-				grid-column: control-start / end;
+				grid-column: expand-collapse-start / end;
 				grid-row: 1 / 2;
 			}
 		`;
@@ -192,13 +199,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
 			<slot name="drop-target"></slot>
-			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
-			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
-			<slot name="content" class="d2l-cell" data-cell-num="7" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
+			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="nested"></slot>
 		`;
 	}
@@ -436,14 +444,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_onKeydown(event) {
 		if (!this.gridActive) return;
+
 		let node = null;
 		let preventDefault = true;
 		switch (event.keyCode) {
-			case keyCodes.ENTER:
-			case keyCodes.SPACE:
-				node = getComposedActiveElement();
-				node.click();
-				break;
 			case keyCodes.RIGHT:
 				node = getComposedActiveElement();
 				if (this.dir === 'rtl') {

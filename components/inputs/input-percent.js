@@ -1,11 +1,11 @@
 import './input-number.js';
 import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
@@ -74,7 +74,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		return [ super.styles,
 			css`
 				:host {
-					--d2l-input-text-align: end;
 					display: inline-block;
 					position: relative;
 					width: 100%;
@@ -130,7 +129,8 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				unit="%"
-				value="${ifDefined(this.value)}">
+				value="${ifDefined(this.value)}"
+				value-align="end">
 					<slot slot="after" name="after"></slot>
 			</d2l-input-number>
 		`;

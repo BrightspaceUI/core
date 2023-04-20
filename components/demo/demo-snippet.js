@@ -1,6 +1,8 @@
 import './code-view.js';
-import '../button/button-icon.js';
+import '../button/button-subtle.js';
 import '../switch/switch.js';
+import '../dropdown/dropdown.js';
+import '../dropdown/dropdown-content.js';
 import { css, html, LitElement } from 'lit';
 
 class DemoSnippet extends LitElement {
@@ -8,12 +10,13 @@ class DemoSnippet extends LitElement {
 	static get properties() {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
-			fullscreen: { type: Boolean, reflect: true },
+			fullWidth: { type: Boolean, reflect: true, attribute: 'full-width' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
-			_dir: { type: String, attribute: false },
+			_fullscreen: { state: true },
 			_hasSkeleton: { type: Boolean, attribute: false },
+			_settingsPeek: { state: true },
 			_skeletonOn: { type: Boolean, reflect: false }
 		};
 	}
@@ -31,15 +34,27 @@ class DemoSnippet extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([fullscreen]) {
+			:host([full-width]) {
 				max-width: unset;
 			}
 			.d2l-demo-snippet-demo-wrapper {
 				display: flex;
 			}
+			.d2l-demo-snippet-demo-wrapper.fullscreen {
+				background-color: white;
+				height: 100vh;
+				inset: 0;
+				overflow: auto;
+				position: absolute;
+				z-index: 2;
+			}
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
+				min-width: 0;
 				position: relative;
+			}
+			:host([full-width]) .d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo {
+				width: 100vw;
 			}
 			:host([overflow-hidden]) .d2l-demo-snippet-demo {
 				overflow: hidden;
@@ -47,13 +62,40 @@ class DemoSnippet extends LitElement {
 			.d2l-demo-snippet-demo-padding {
 				padding: 18px;
 			}
-			:host([no-padding]) .d2l-demo-snippet-demo-padding {
+			:host([no-padding]) .d2l-demo-snippet-demo-padding,
+			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo-padding {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
 				border-left: 1px solid var(--d2l-color-mica);
 				flex: 0 0 auto;
 				padding: 6px;
+			}
+			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-settings {
+				position: sticky;
+				top: 0;
+			}
+			d2l-dropdown.settings-dropdown {
+				background-color: white;
+				border-radius: 6px;
+				box-shadow: 0 0 0 1px var(--d2l-color-celestine-minus-1);
+				position: fixed;
+				right: 1rem;
+				top: -0.25rem;
+				translate: 0 -1.5rem;
+				z-index: 9999; /* stack on top of sticky headers */
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				d2l-dropdown.settings-dropdown {
+					transition: translate 0.15s, box-shadow 0.15s;
+				}
+			}
+			d2l-dropdown.settings-dropdown.peek,
+			d2l-dropdown.settings-dropdown:hover,
+			d2l-dropdown.settings-dropdown:focus-within,
+			d2l-dropdown.settings-dropdown:has(d2l-button-subtle[active]) {
+				box-shadow: 0 -1px 0 1px white;
+				translate: 0;
 			}
 			d2l-code-view {
 				border: none;
@@ -65,13 +107,13 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-		`;
+`;
 	}
 
 	constructor() {
 		super();
-		this.fullscreen = false;
-		this._dir = document.documentElement.dir;
+		this.fullWidth = false;
+		this._fullscreen = false;
 		this._hasSkeleton = false;
 		this._skeletonOn = false;
 	}
@@ -81,20 +123,25 @@ class DemoSnippet extends LitElement {
 	}
 
 	render() {
-		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
 		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
+		const switches = html`
+			<d2l-switch text="Fullscreen" ?on="${this._fullscreen}" @change="${this._handleFullscreenChange}"></d2l-switch><br />
+			${skeleton}`;
+		const settings = this.fullWidth && this._fullscreen ? html`
+			<d2l-dropdown class="settings-dropdown ${this._settingsPeek ? 'peek' : ''}">
+				<d2l-button-subtle primary icon="tier1:gear" text="Settings" class="d2l-dropdown-opener"></d2l-button-subtle>
+				<d2l-dropdown-content>${switches}</d2l-dropdown-content>
+			</d2l-dropdown>` : html`<div class="d2l-demo-snippet-settings">${switches}</div>`;
+
 		return html`
-			<div class="d2l-demo-snippet-demo-wrapper">
-				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
+			<div class="d2l-demo-snippet-demo-wrapper ${this._fullscreen ? 'fullscreen' : ''}">
+				<div class="d2l-demo-snippet-demo">
 					<div class="d2l-demo-snippet-demo-padding">
 						<slot name="_demo"></slot>
 						<slot></slot>
 					</div>
 				</div>
-				<div class="d2l-demo-snippet-settings">
-					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br>
-					${skeleton}
-				</div>
+				${settings}
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
 		`;
@@ -123,9 +170,6 @@ class DemoSnippet extends LitElement {
 		const doApply = (nodes, isRoot) => {
 			for (let i = 0; i < nodes.length; i++) {
 				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					/* only sprout dir on root or custom element so devs don't think that
-					[dir="rtl"].some-class will work. they must use :host([dir="rtl"]) in their
-					custom element's CSS since RTLMixin only sprouts [dir="rtl"] on host */
 					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
 						if (typeof(value) === 'boolean') {
 							if (value) {
@@ -181,9 +225,14 @@ class DemoSnippet extends LitElement {
 			.replace(/=""/g, '');           // replace empty strings for boolean attributes (="")
 	}
 
-	_handleDirChange(e) {
-		this._dir = e.target.on ? 'rtl' : 'ltr';
-		this._applyAttr('dir', this._dir, true);
+	async _handleFullscreenChange(e) {
+		this._fullscreen = e.target.on;
+		this._settingsPeek = this._fullscreen;
+		const event = new CustomEvent('d2l-demo-snippet-fullscreen-toggle', { bubbles: true, composed: true });
+		this.dispatchEvent(event);
+		await this.updateComplete;
+		await new Promise(r => setTimeout(r, 1000));
+		this._settingsPeek = false;
 	}
 
 	_handleSkeletonChange(e) {

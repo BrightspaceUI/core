@@ -3,7 +3,7 @@ import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A "d2l-button" opener for dropdown content.

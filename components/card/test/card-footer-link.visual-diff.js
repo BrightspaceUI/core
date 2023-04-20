@@ -1,6 +1,5 @@
-/*global forceFocusVisible */
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-card-footer-link', () => {
 
@@ -23,11 +22,11 @@ describe('d2l-card-footer-link', () => {
 
 	[
 		{ name: 'no-secondary', selector: '#no-secondary' },
-		{ name: 'no-secondary-focus', selector: '#no-secondary-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+		{ name: 'no-secondary-focus', selector: '#no-secondary-focus', action: (selector) => focusWithKeyboard(page, selector) },
 		{ name: 'secondary-notification', selector: '#secondary-notification' },
-		{ name: 'secondary-notification-focus', selector: '#secondary-notification-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+		{ name: 'secondary-notification-focus', selector: '#secondary-notification-focus', action: (selector) => focusWithKeyboard(page, selector) },
 		{ name: 'secondary-count', selector: '#secondary-count' },
-		{ name: 'secondary-count-focus', selector: '#secondary-count-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) }
+		{ name: 'secondary-count-focus', selector: '#secondary-count-focus', action: (selector) => focusWithKeyboard(page, selector) }
 	].forEach((info) => {
 
 		it(info.name, async function() {

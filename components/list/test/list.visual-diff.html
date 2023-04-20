@@ -2,6 +2,11 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script>
+			if (window.location.search.includes('dir=rtl')) {
+				document.documentElement.setAttribute('dir', 'rtl');
+			}
+		</script>
 		<script type="module">
 			import '../../colors/colors.js';
 			import '../../button/button-icon.js';
@@ -11,7 +16,7 @@
 			import '../../tooltip/tooltip.js';
 			import '../../typography/typography.js';
 			import '../list.js';
-			import '../list-header.js';
+			import '../list-controls.js';
 			import '../list-item.js';
 			import '../list-item-button.js';
 			import '../list-item-content.js';
@@ -19,14 +24,29 @@
 		<title>d2l-list</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
+		<style>
+			.clamp-single {
+				overflow: hidden;
+				overflow-wrap: anywhere;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.clamp-multi {
+				-webkit-box-orient: vertical;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				overflow-wrap: anywhere;
+			}
+		</style>
 	</head>
 	<body class="d2l-typography">
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="stickyHeader">
+			<div class="visual-diff" id="stickyControls">
 				<div style="height: 200px; overflow: scroll;">
 					<d2l-list>
-						<d2l-list-header slot="header"></d2l-list-header>
+						<d2l-list-controls slot="controls"></d2l-list-controls>
 						<d2l-list-item label="Item 1" selectable key="1">
 							<d2l-list-item-content>
 								<div>Item 1</div>
@@ -191,6 +211,90 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongWrap">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Overflow: wrap. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary">Overflow: wrap. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info">Overflow: wrap. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongSingleLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-single">Overflow: single-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary" class="clamp-single">Overflow: single-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info" class="clamp-single">Overflow: single-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongUnbreakableSingleLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-single">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+							<div slot="secondary" class="clamp-single">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</div>
+							<div slot="supporting-info" class="clamp-single">ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongSingleLineEllipsisNested">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div><div class="clamp-single">Overflow: single-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+							<div slot="secondary"><div class="clamp-single">Overflow: single-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+							<div slot="supporting-info"><div class="clamp-single">Overflow: single-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div></div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentShortSingleLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-single">Overflow: single-line, ellipsis. Primary text.</div>
+							<div slot="secondary" class="clamp-single">Overflow: single-line, ellipsis. Secondary Info.</div>
+							<div slot="supporting-info" class="clamp-single">Overflow: single-line, ellipsis. Supporting Info.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="itemContentLongMultiLineEllipsis">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div class="clamp-multi">Overflow: multi-line, ellipsis. Primary text. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="secondary" class="clamp-multi">Overflow: multi-line, ellipsis. Secondary Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+							<div slot="supporting-info" class="clamp-multi">Overflow: multi-line, ellipsis. Supporting Info. Lookout take a caulk rope's end Jack Ketch Admiral of the Black yard jury mast barque no prey, no pay port.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="href">
 				<d2l-list>
 					<d2l-list-item href="http://www.d2l.com">
@@ -217,10 +321,45 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="buttonDisabled">
+				<d2l-list>
+					<d2l-list-item-button button-disabled>
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item-button>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="selectable">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="selectableHref">
+				<d2l-list>
+					<d2l-list-item href="http://www.d2l.com" selectable key="href" label="Introductory Earth Sciences">
+						<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						<div slot="actions">
+						  <d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+		
+		<div style="width: 400px;">
+			<div class="visual-diff" id="selectableButton">
+				<d2l-list>
+					<d2l-list-item-button label="Item 2" selection-disabled selectable key="2">Item 3</d2l-list-item-button>
+					<d2l-list-item-button label="Item 2" selection-disabled button-disabled selectable key="2">Item 4</d2l-list-item-button>
 				</d2l-list>
 			</div>
 		</div>
@@ -252,21 +391,21 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableHeader">
+			<div class="visual-diff" id="selectableControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="noSelectableHeader">
+			<div class="visual-diff" id="noSelectableControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-selection no-sticky>
+					<d2l-list-controls slot="controls" no-selection no-sticky>
 						<d2l-button-subtle text="Action"></d2l-button-subtle>
-					</d2l-list-header>
+					</d2l-list-controls>
 					<d2l-list-item label="Item 1">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2">Item 2</d2l-list-item>
 				</d2l-list>
@@ -277,37 +416,37 @@
 			<div class="visual-diff" id="selectableSelected">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableSomeSelectedHeader">
+			<div class="visual-diff" id="selectableSomeSelectedControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableAllSelectedHeader">
+			<div class="visual-diff" id="selectableAllSelectedControls">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="selectableAllSelectedHeaderPages">
+			<div class="visual-diff" id="selectableAllSelectedControlsPages">
 				<d2l-list item-count="50">
-					<d2l-list-header slot="header" select-all-pages-allowed no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" select-all-pages-allowed no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -456,7 +595,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-none-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
@@ -491,9 +630,9 @@
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-								<d2l-list>
+								</d2l-list>
 							</d2l-list-item>
-						<d2l-list>
+						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -502,7 +641,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-some-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
@@ -537,9 +676,9 @@
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-								<d2l-list>
+								</d2l-list>
 							</d2l-list-item>
-						<d2l-list>
+						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -548,7 +687,7 @@
 		<div style="width: 600px;">
 			<div class="visual-diff" id="nested-all-selected">
 				<d2l-list>
-					<d2l-list-header slot="header" no-sticky></d2l-list-header>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
@@ -583,9 +722,187 @@
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-								<d2l-list>
+								</d2l-list>
 							</d2l-list-item>
-						<d2l-list>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-default">
+				<d2l-list>
+					<d2l-list-item expandable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-skeleton">
+				<d2l-list>
+					<d2l-list-item skeleton expandable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-default-expanded">
+				<d2l-list>
+					<d2l-list-item expandable expanded key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-selectable">
+				<d2l-list>
+					<d2l-list-item expandable expanded selectable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded selectable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item selectable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-draggable">
+				<d2l-list>
+					<d2l-list-item expandable expanded draggable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item draggable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded draggable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item draggable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item draggable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-selectable-draggable">
+				<d2l-list>
+					<d2l-list-item expandable expanded selectable draggable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable draggable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded selectable draggable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item selectable draggable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable draggable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			</div>

@@ -4,29 +4,27 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
+	static get properties() {
+		return {
+			/**
+			 * Disables the primary action button
+			 * @type {boolean}
+			 */
+			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true }
+		};
+	}
 
 	static get styles() {
 
 		const styles = [ css`
-			:host {
+			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			:host([button-disabled]) [slot="content-action"] {
+				pointer-events: none;
 			}
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
-			}
-			:host([_hovering]) [slot="control-container"]::before,
-			:host([_hovering]) [slot="control-container"]::after,
-			:host([_focusing]) [slot="control-container"]::before,
-			:host([_focusing]) [slot="control-container"]::after {
-				border-top-color: transparent;
-			}
-			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"],
-			:host(:not([disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
-				background-color: white;
-				border-color: #b6cbe8; /* celestine alpha 0.3 */
-			}
-			:host(:not([disabled]):not([skeleton])[_hovering]) [slot="outside-control-container"] {
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
 			button {
 				background-color: transparent;
@@ -37,11 +35,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				outline: none;
 				width: 100%;
 			}
-			/* simply hide the button action layer rather than disabling button so
-			 that the cursor pointer ins't displayed when hovering skeleton */
-			:host([skeleton]) button {
-				display: none;
-			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -51,6 +44,12 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	constructor() {
 		super();
 		this._primaryActionId = getUniqueId();
+		this.buttonDisabled = false;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
 	}
 
 	_onButtonClick() {
@@ -59,7 +58,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}"></button>`;
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" ?disabled="${this.buttonDisabled}"></button>`;
 	}
 
 };

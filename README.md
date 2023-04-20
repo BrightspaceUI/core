@@ -65,18 +65,17 @@ npm install @brightspace-ui/core
 * Helpers
   * [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
 * Mixins
-  * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
+  * [ArrowKeysMixin](mixins/arrow-keys/): manage focus with arrow keys
   * [AsyncContainerMixin](mixins/async-container/): manage collective async state
-  * [FocusMixin](mixins/focus-mixin.md): delegate focus to a nested element when `focus()` is called
-  * [FocusVisiblePolyfillMixin](mixins/focus-visible-polyfill-mixin.md): components can use the `:focus-visible` pseudo-class polyfill
+  * [FocusMixin](mixins/focus/): delegate focus to a nested element when `focus()` is called
   * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
-  * [InteractiveMixin](mixins/interactive-mixin.md): enables toggling interactive elements inside of nested grids
-  * [LabelledMixin](mixins/labelled-mixin.md): label custom elements by referencing elements across DOM scopes
-  * [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
-  * [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
-  * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
+  * [InteractiveMixin](mixins/interactive/): enables toggling interactive elements inside of nested grids
+  * [LabelledMixin](mixins/labelled/): label custom elements by referencing elements across DOM scopes
+  * [LocalizeMixin](mixins/localize/): localize text in your components
+  * [ProviderMixin](mixins/provider/): provide and consume data across elements in a DI-like fashion
+  * [RtlMixin](mixins/rtl/): enable components to define RTL styles
   * [SkeletonMixin](components/skeleton/): make components skeleton-aware
-  * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
+  * [VisibleOnAncestorMixin](mixins/visible-on-ancestor/): display element on-hover of an ancestor
 * Templates
   * [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
 
@@ -133,10 +132,10 @@ The golden snapshots in source control must be updated by the [visual-diff GitHu
 To run the tests locally to help troubleshoot or develop new tests, first install these dependencies:
 
 ```shell
-npm install @brightspace-ui/visual-diff@X mocha@Y puppeteer@Z  --no-save
+npm install @brightspace-ui/visual-diff@X  --no-save
 ```
 
-Replace `X`, `Y` and `Z` with [the current versions](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
+Replace `X` with [the current version](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
 
 Then run the tests:
 

@@ -1,6 +1,6 @@
+import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
 import { getRect, open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-time', () => {
 
@@ -40,7 +40,7 @@ describe('d2l-input-time', () => {
 	});
 
 	it('focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
+		await focusWithKeyboard(page, '#basic');
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		await reset(page, '#basic');
@@ -168,8 +168,8 @@ describe('d2l-input-time', () => {
 		});
 
 		it('dropdown open click', async function() {
+			await focusWithKeyboard(page, '#dropdown');
 			await page.$eval('#dropdown', (elem) => {
-				elem.focus();
 				const input = elem.shadowRoot.querySelector('input');
 				const e = new Event(
 					'mouseup',

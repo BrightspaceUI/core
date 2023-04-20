@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { fixSvg } from './fix-svg.js';
 import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 

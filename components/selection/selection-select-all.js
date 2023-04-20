@@ -1,6 +1,6 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
@@ -44,7 +44,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 	}
 
 	render() {
-		if (this._provider && this._provider.selectionSingle) return;
+		if (!this._provider || this._provider.selectionSingle) return;
 
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
