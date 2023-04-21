@@ -42,7 +42,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -94,7 +94,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Charger {count} de plus",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
+	"components.pageable.info": "{count, plural, one {{countFormatted} élément} other {{countFormatted} éléments}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} élément} other {{countFormatted} de {totalCountFormatted} éléments}}",
 	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",
 	"components.selection.action-hint": "Sélectionner un élément pour exécuter cette action.",
@@ -103,8 +103,8 @@ export default {
 	"components.selection.selected": "{count} sélectionné(s)",
 	"components.selection.selected-plus": "{count}+ sélectionné",
 	"components.selection-controls.label": "Actions à sélectionner",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-controls.label": "Actions pour la table",

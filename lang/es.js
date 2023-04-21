@@ -94,8 +94,8 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
 	"components.pager-load-more.action": "Cargar {count} más",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} elemento} other {{countFormatted} de {totalCountFormatted} elemento}}",
+	"components.pageable.info": "{count, plural, one {{countFormatted} elemento} other {{countFormatted} elementos}}",
+	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} item} elemento {{countFormatted} de {totalCountFormatted} elementos}}",
 	"components.pager-load-more.status-loading": "Cargando más elementos",
 	"components.selection.action-hint": "Seleccione un elemento para realizar esta acción.",
 	"components.selection.select-all": "Seleccionar todo",
@@ -103,8 +103,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.table-controls.label": "Acciones de la tabla",
