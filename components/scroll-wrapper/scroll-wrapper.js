@@ -148,11 +148,14 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		super();
 		this.hideActions = false;
 		this.scrollers = {};
+		this._allScrollers = [];
 		this._container = null;
 		this._hScrollbar = true;
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+		this._syncDriver = null;
+		this._syncDriverTimeout = null;
 		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
 		this._synchronizeScroll = this._synchronizeScroll.bind(this);
 	}
@@ -228,6 +231,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			this._container.removeAttribute('tabindex');
 			this._container.removeEventListener('scroll', this._synchronizeScroll);
 			this._container.removeEventListener('scroll', this._checkScrollThresholds);
+			this._secondaryScrollers.forEach(element => element.removeEventListener('scroll', this._synchronizeScroll));
 		}
 	}
 
@@ -244,7 +248,14 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	_synchronizeScroll(e) {
-		this._secondaryScrollers.forEach(element => element.scrollLeft = e.target.scrollLeft);
+		if (this._syncDriver && e.target !== this._syncDriver) return;
+		if (this._syncDriverTimeout) clearTimeout(this._syncDriverTimeout);
+
+		this._syncDriver = e.target;
+		this._allScrollers.forEach(element => {
+			if (element && element !== e.target) element.scrollLeft = e.target.scrollLeft;
+		});
+		this._syncDriverTimeout = setTimeout(() => this._syncDriver = null, 100);
 	}
 
 	_updateScrollTargets() {
@@ -253,6 +264,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this._container = this.scrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
 		this._secondaryScrollers = this.scrollers?.secondary || [];
 		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
+		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
 
 		if (this._container) {
 			this._container.style.overflowX = 'auto';
@@ -262,7 +274,10 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		}
 
 		if (this._secondaryScrollers.length) {
-			this._secondaryScrollers.forEach(element => element.style.overflowX = 'hidden');
+			this._secondaryScrollers.forEach(element => {
+				element.style.overflowX = 'hidden';
+				element.addEventListener('scroll', this._synchronizeScroll);
+			});
 			this._container.addEventListener('scroll', this._synchronizeScroll);
 		}
 	}
