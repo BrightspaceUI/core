@@ -142,8 +142,8 @@ export const tableStyles = css`
 
 	/* all header cells */
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th,
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > *,
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr[header] > * {
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > *,
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > * {
 		position: -webkit-sticky;
 		position: sticky;
 		z-index: 2;
@@ -152,10 +152,10 @@ export const tableStyles = css`
 	/* header cells that are also sticky */
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th.d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky],
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > .d2l-table-sticky-cell,
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > [sticky],
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr[header] > .d2l-table-sticky-cell,
-	d2l-table-wrapper[sticky-headers]:not([scroll-wrapper]) .d2l-table > * > tr[header] > [sticky] {
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > .d2l-table-sticky-cell,
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > [sticky],
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > .d2l-table-sticky-cell,
+	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > [sticky] {
 		z-index: 3;
 	}
 
@@ -170,18 +170,18 @@ export const tableStyles = css`
 	}
 
 	/* sticky + scroll-wrapper */
-	d2l-table-wrapper[sticky-headers][scroll-wrapper] .d2l-table {
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
 		display: block;
 	}
 
-	d2l-table-wrapper[sticky-headers][scroll-wrapper] .d2l-table > thead {
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
 		display: block;
 		position: sticky;
 		top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius-sticky-offset, 0px));
 		z-index: 2;
 	}
 
-	d2l-table-wrapper[sticky-headers][scroll-wrapper] .d2l-table > tbody {
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > tbody {
 		display: block;
 	}
 `;
@@ -215,11 +215,11 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				type: Boolean
 			},
 			/**
-			 * Whether to wrap the table in a scroll-wrapper (enabled by default when sticky-headers is false).
+			 * When used in combo with `sticky-headers`, whether to additionally wrap the table in a scroll-wrapper. Requires sticky headers to be in a separate thead.
 			 * @type {boolean}
 			 */
-			scrollWrapper: {
-				attribute: 'scroll-wrapper',
+			stickyHeadersScrollWrapper: {
+				attribute: 'sticky-headers-scroll-wrapper',
 				reflect: true,
 				type: Boolean
 			},
@@ -290,6 +290,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		super();
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
+		this.stickyHeadersScrollWrapper = false;
 		this.type = 'default';
 
 		this._controls = null;
@@ -314,7 +315,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
-		const useScrollWrapper = this.scrollWrapper || !this.stickyHeaders;
+		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
@@ -424,7 +425,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._table = e.target.assignedNodes({ flatten: true }).find(
 			node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TABLE' && node.classList.contains('d2l-table'))
 		);
-		this._tableScrollers = (this.scrollWrapper && this.stickyHeaders) ? {
+		this._tableScrollers = (this.stickyHeadersScrollWrapper && this.stickyHeaders) ? {
 			primary: this._table?.querySelector('tbody'),
 			secondary: this._table?.querySelector('thead'),
 		} : {};
@@ -484,7 +485,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	_syncColumnWidths() {
-		if (!this._table || !this.stickyHeaders || !this.scrollWrapper) return;
+		if (!this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper) return;
 
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
@@ -511,7 +512,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		let rowTop = hasStickyControls ? this._controls.offsetHeight + 6 : 0; // +6 for the internal `margin-bottom`.
 		this.style.setProperty('--d2l-table-sticky-top', `${rowTop}px`);
 
-		if (!this._table || !this.stickyHeaders || this.scrollWrapper) return;
+		if (!this._table || !this.stickyHeaders || this.stickyHeadersScrollWrapper) return;
 
 		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
 		stickyRows.forEach(r => {
