@@ -45,7 +45,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			requestAnimationFrame(() => this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false));
 		}
 		if (this.splitScrollers) {
-			this._scrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };
+			this._customScrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };
 		}
 	}
 
@@ -67,7 +67,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
 
 		return html`
-			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .scrollers="${ifDefined(this._scrollers)}">
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .customScrollers="${ifDefined(this._customScrollers)}">
 				${contents}
 			</d2l-scroll-wrapper>
 		`;

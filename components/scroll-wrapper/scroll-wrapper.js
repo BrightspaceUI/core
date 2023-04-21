@@ -18,20 +18,20 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * An object containing custom primary/secondary scroll containers
+			 * @type {Object}
+			 */
+			customScrollers: {
+				attribute: false,
+				type: Object
+			},
+			/**
 			 * Whether to hide left/right scroll buttons
 			 * @type {boolean}
 			 */
 			hideActions: {
 				attribute: 'hide-actions',
 				type: Boolean
-			},
-			/**
-			 * An object containing custom primary/secondary scroll containers
-			 * @type {Object}
-			 */
-			scrollers: {
-				attribute: false,
-				type: Object
 			},
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
@@ -146,8 +146,8 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.customScrollers = {};
 		this.hideActions = false;
-		this.scrollers = {};
 		this._allScrollers = [];
 		this._container = null;
 		this._hScrollbar = true;
@@ -189,7 +189,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		if (changedProperties.has('scrollers')) this._updateScrollTargets();
+		if (changedProperties.has('customScrollers')) this._updateScrollTargets();
 		if (changedProperties.has('_hScrollbar')) this._updateTabIndex();
 	}
 
@@ -261,8 +261,8 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	_updateScrollTargets() {
 		this._disconnectAll();
 
-		this._container = this.scrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		this._secondaryScrollers = this.scrollers?.secondary || [];
+		this._container = this.customScrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._secondaryScrollers = this.customScrollers?.secondary || [];
 		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
 		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
 

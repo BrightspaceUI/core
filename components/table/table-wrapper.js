@@ -318,7 +318,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper .scrollers="${ifDefined(this._tableScrollers)}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${ifDefined(this._tableScrollers)}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
