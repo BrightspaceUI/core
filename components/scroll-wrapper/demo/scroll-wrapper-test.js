@@ -36,7 +36,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		this.scroll = 0;
 		this.splitScrollers = false;
 		this.width = 300;
-		this._customScrollers = null;
+		this._customScrollers = {};
 	}
 
 	firstUpdated(changedProperties) {

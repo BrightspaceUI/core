@@ -299,7 +299,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
-		this._tableScrollers = null;
+		this._tableScrollers = {};
 	}
 
 	disconnectedCallback() {
@@ -427,7 +427,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._tableScrollers = (this.scrollWrapper && this.stickyHeaders) ? {
 			primary: this._table?.querySelector('tbody'),
 			secondary: this._table?.querySelector('thead'),
-		} : undefined;
+		} : {};
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
