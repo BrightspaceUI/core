@@ -26,6 +26,11 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				attribute: 'hide-actions',
 				type: Boolean
 			},
+			/**
+			 * The DOM context in which to search for custom scroll containers
+			 * @type {HTMLElement}
+			 */
+			scrollerContext: { attribute: false, type: HTMLElement },
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
 				reflect: true,
@@ -56,7 +61,6 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
 				outline: none;
-				overflow-x: auto;
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
 			.d2l-scroll-wrapper-container:${unsafeCSS(getFocusPseudoClass())} {
@@ -155,9 +159,23 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._container = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+
+		const context = this.scrollerContext || this;
+		const primaryScroller = context.querySelector('.d2l-scroll-wrapper-primary');
+		this._container = primaryScroller || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._container.style.overflowX = 'auto';
+
+		if (primaryScroller) {
+			this._secondaryScrollers = context.querySelectorAll('.d2l-scroll-wrapper-secondary');
+			this._secondaryScrollers.forEach(element => element.style.overflowX = 'hidden');
+			this._container.addEventListener('scroll', e => {
+				this._secondaryScrollers.forEach(element => element.scrollLeft = e.target.scrollLeft);
+			});
+		}
+
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._resizeObserver.observe(this._container);
+		this._container.addEventListener('scroll', this._checkScrollThresholds.bind(this));
 	}
 
 	render() {
@@ -173,7 +191,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}" tabindex="${ifDefined(tabindex)}"><slot></slot></div>
+			<div class="d2l-scroll-wrapper-container" tabindex="${ifDefined(tabindex)}"><slot></slot></div>
 		`;
 	}
 

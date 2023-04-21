@@ -89,14 +89,14 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				</d2l-table-controls>
 
 				<table class="d2l-table">
-					<thead>
+					<thead class="${ifDefined(this.scrollWrapper ? 'd2l-scroll-wrapper-secondary' : undefined)}">
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
 							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="${ifDefined(this.scrollWrapper ? 'd2l-scroll-wrapper-primary' : undefined)}">
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
 							${thText.map(text => html`<th scope="col">${text}</th>`)}

@@ -58,7 +58,7 @@
 			<h2>Default, Sticky columns</h2>
 			<d2l-demo-snippet overflow-hidden>
 				<template>
-					<div style="overflow: auto; width: 300px;">
+					<div style="overflow: auto; width: 400px;">
 						<d2l-test-table type="default" sticky-headers sticky-controls></d2l-test-table>
 					</div>
 				</template>
@@ -67,9 +67,16 @@
 			<h2>Default with Scroll-Wrapper (no sticky)</h2>
 			<d2l-demo-snippet overflow-hidden>
 				<template>
-					<div style="height: 300px; overflow: auto;">
-						<d2l-test-table type="default" sticky-controls style="width: 300px;"></d2l-test-table>
+					<div style="height: 400px; overflow: auto;">
+						<d2l-test-table type="default" sticky-controls style="width: 400px;"></d2l-test-table>
 					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Scroll-wrapper + sticky</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-table sticky-headers sticky-controls scroll-wrapper style="width: 400px;"></d2l-test-table>
 				</template>
 			</d2l-demo-snippet>
 

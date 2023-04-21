@@ -9,6 +9,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		return {
 			hideActions: { attribute: 'hide-actions', type: Boolean },
 			scroll: { attribute: 'scroll', type: Number },
+			splitScrollers: { attribute: 'split-scrollers', type: Boolean },
 			width: { type: Number }
 		};
 	}
@@ -21,6 +22,10 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			.d2l-scroll-wrapper-gradient {
 				background: linear-gradient(to right, #e66465, #9198e5);
 				height: 100px;
+			}
+			.d2l-scroll-wrapper-gradient-secondary {
+				background: linear-gradient(to left, #e66465, #9198e5);
+				height: 40px;
 			}
 		`;
 	}
@@ -44,9 +49,19 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		const style = {
 			width: `${this.width}px`
 		};
+
+		const contents = this.splitScrollers ? html`
+			<div class="d2l-scroll-wrapper-secondary">
+				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">Secondary scroller (Can't scroll independently)</div>
+			</div>
+			<div class="d2l-scroll-wrapper-primary">
+				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
+			</div>
+		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
+
 		return html`
 			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}">
-				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
+				${contents}
 			</d2l-scroll-wrapper>
 		`;
 	}
