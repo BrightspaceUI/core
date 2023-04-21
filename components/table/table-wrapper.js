@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -300,6 +299,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
+		this._tableScrollers = null;
 	}
 
 	disconnectedCallback() {
@@ -318,7 +318,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${ifDefined(this._tableScrollers)}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}

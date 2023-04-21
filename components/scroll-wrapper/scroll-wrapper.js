@@ -146,7 +146,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.customScrollers = {};
+		this.customScrollers = null;
 		this.hideActions = false;
 		this._allScrollers = [];
 		this._container = null;

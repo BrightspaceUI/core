@@ -1,6 +1,5 @@
 import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -37,6 +36,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		this.scroll = 0;
 		this.splitScrollers = false;
 		this.width = 300;
+		this._customScrollers = null;
 	}
 
 	firstUpdated(changedProperties) {
@@ -67,7 +67,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
 
 		return html`
-			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .customScrollers="${ifDefined(this._customScrollers)}">
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .customScrollers="${this._customScrollers}">
 				${contents}
 			</d2l-scroll-wrapper>
 		`;
