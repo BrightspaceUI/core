@@ -1,5 +1,6 @@
 import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -34,15 +35,18 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		super();
 		this.hideActions = false;
 		this.scroll = 0;
+		this.splitScrollers = false;
 		this.width = 300;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.scroll === 0) return;
-		requestAnimationFrame(() => {
-			this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false);
-		});
+		if (this.scroll !== 0) {
+			requestAnimationFrame(() => this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false));
+		}
+		if (this.splitScrollers) {
+			this._scrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };
+		}
 	}
 
 	render() {
@@ -51,16 +55,19 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		};
 
 		const contents = this.splitScrollers ? html`
-			<div class="d2l-scroll-wrapper-secondary">
+			<div class="secondary">
 				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">Secondary scroller (Can't scroll independently)</div>
 			</div>
-			<div class="d2l-scroll-wrapper-primary">
+			<div class="primary">
 				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
+			</div>
+			<div class="secondary">
+				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">Secondary scroller (Can't scroll independently)</div>
 			</div>
 		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
 
 		return html`
-			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}">
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .scrollers="${ifDefined(this._scrollers)}">
 				${contents}
 			</d2l-scroll-wrapper>
 		`;

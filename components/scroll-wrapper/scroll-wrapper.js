@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -27,10 +26,13 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * The DOM context in which to search for custom scroll containers
-			 * @type {HTMLElement}
+			 * An object containing custom primary/secondary scroll containers
+			 * @type {Object}
 			 */
-			scrollerContext: { attribute: false, type: HTMLElement },
+			scrollers: {
+				attribute: false,
+				type: Object
+			},
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
 				reflect: true,
@@ -145,41 +147,27 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.hideActions = false;
+		this.scrollers = {};
 		this._container = null;
 		this._hScrollbar = true;
-		this._resizeObserver = null;
+		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
+		this._synchronizeScroll = this._synchronizeScroll.bind(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
+		this._disconnectAll();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
-		const context = this.scrollerContext || this;
-		const primaryScroller = context.querySelector('.d2l-scroll-wrapper-primary');
-		this._container = primaryScroller || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		this._container.style.overflowX = 'auto';
-
-		if (primaryScroller) {
-			this._secondaryScrollers = context.querySelectorAll('.d2l-scroll-wrapper-secondary');
-			this._secondaryScrollers.forEach(element => element.style.overflowX = 'hidden');
-			this._container.addEventListener('scroll', e => {
-				this._secondaryScrollers.forEach(element => element.scrollLeft = e.target.scrollLeft);
-			});
-		}
-
-		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
-		this._resizeObserver.observe(this._container);
-		this._container.addEventListener('scroll', this._checkScrollThresholds.bind(this));
+		this._updateScrollTargets();
 	}
 
 	render() {
-		const tabindex = this._hScrollbar ? '0' : undefined;
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
 				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
@@ -191,8 +179,15 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container" tabindex="${ifDefined(tabindex)}"><slot></slot></div>
+			<div class="d2l-scroll-wrapper-container"><slot></slot></div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('scrollers')) this._updateScrollTargets();
+		if (changedProperties.has('_hScrollbar')) this._updateTabIndex();
 	}
 
 	checkScrollbar() {
@@ -225,6 +220,17 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	}
 
+	_disconnectAll() {
+		this._resizeObserver?.disconnect();
+
+		if (this._container) {
+			this._container.style.removeProperty('overflow-x');
+			this._container.removeAttribute('tabindex');
+			this._container.removeEventListener('scroll', this._synchronizeScroll);
+			this._container.removeEventListener('scroll', this._checkScrollThresholds);
+		}
+	}
+
 	_scrollLeft() {
 		if (!this._container) return;
 		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
@@ -237,6 +243,35 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this.scrollDistance(scrollDistance, true);
 	}
 
+	_synchronizeScroll(e) {
+		this._secondaryScrollers.forEach(element => element.scrollLeft = e.target.scrollLeft);
+	}
+
+	_updateScrollTargets() {
+		this._disconnectAll();
+
+		this._container = this.scrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._secondaryScrollers = this.scrollers?.secondary || [];
+		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
+
+		if (this._container) {
+			this._container.style.overflowX = 'auto';
+			this._resizeObserver.observe(this._container);
+			this._container.addEventListener('scroll', this._checkScrollThresholds);
+			this._updateTabIndex();
+		}
+
+		if (this._secondaryScrollers.length) {
+			this._secondaryScrollers.forEach(element => element.style.overflowX = 'hidden');
+			this._container.addEventListener('scroll', this._synchronizeScroll);
+		}
+	}
+
+	_updateTabIndex() {
+		if (!this._container) return;
+		if (this._hScrollbar) this._container.tabIndex = 0;
+		else this._container.removeAttribute('tabindex');
+	}
 }
 
 customElements.define('d2l-scroll-wrapper', ScrollWrapper);
