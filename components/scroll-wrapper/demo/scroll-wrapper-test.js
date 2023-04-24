@@ -10,7 +10,8 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			hideActions: { attribute: 'hide-actions', type: Boolean },
 			scroll: { attribute: 'scroll', type: Number },
 			splitScrollers: { attribute: 'split-scrollers', type: Boolean },
-			width: { type: Number }
+			width: { type: Number },
+			_customScrollers: { state: true }
 		};
 	}
 
@@ -50,8 +51,9 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const width = this.splitScrollers ? this.width - 2 : this.width; // when scrollers are split, the wrapper borders take up some extra space
 		const style = {
-			width: `${this.width}px`
+			width: `${width}px`
 		};
 
 		const contents = this.splitScrollers ? html`
