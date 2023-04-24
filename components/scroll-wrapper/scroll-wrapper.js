@@ -7,6 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
 const SCROLL_AMOUNT = 0.8;
+const PRINT_MEDIA_QUERY_LIST = matchMedia('print');
 
 /**
  *
@@ -38,6 +39,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				reflect: true,
 				type: Boolean
 			},
+			_printMode: { state: true },
 			_scrollbarLeft: {
 				attribute: 'scrollbar-left',
 				reflect: true,
@@ -127,20 +129,6 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
 				display: none;
 			}
-
-			/* hide wrapper visuals from print view */
-			@media print {
-				.d2l-scroll-wrapper-actions {
-					display: none;
-				}
-				.d2l-scroll-wrapper-container {
-					overflow-x: visible;
-				}
-				:host([h-scrollbar]) .d2l-scroll-wrapper-container {
-					border-left: none;
-					border-right: none;
-				}
-			}
 		`;
 	}
 
@@ -151,18 +139,26 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this._allScrollers = [];
 		this._container = null;
 		this._hScrollbar = true;
+		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
 		this._syncDriver = null;
 		this._syncDriverTimeout = null;
 		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
+		this._handlePrintChange = this._handlePrintChange.bind(this);
 		this._synchronizeScroll = this._synchronizeScroll.bind(this);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		PRINT_MEDIA_QUERY_LIST?.addEventListener('change', this._handlePrintChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._disconnectAll();
+		PRINT_MEDIA_QUERY_LIST?.removeEventListener('change', this._handlePrintChange);
 	}
 
 	firstUpdated(changedProperties) {
@@ -171,6 +167,9 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		// when printing, just get scroll-wrapper out of the way
+		if (this._printMode) return html`<slot></slot>`;
+
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
 				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
@@ -231,7 +230,21 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			this._container.removeAttribute('tabindex');
 			this._container.removeEventListener('scroll', this._synchronizeScroll);
 			this._container.removeEventListener('scroll', this._checkScrollThresholds);
-			this._secondaryScrollers.forEach(element => element.removeEventListener('scroll', this._synchronizeScroll));
+			this._secondaryScrollers.forEach(element => {
+				element.style.removeProperty('overflow-x');
+				element.removeEventListener('scroll', this._synchronizeScroll);
+			});
+		}
+	}
+
+	async _handlePrintChange() {
+		if (!this._printMode) {
+			this._disconnectAll();
+		}
+		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
+		if (!this._printMode) {
+			await this.updateComplete;
+			this._updateScrollTargets();
 		}
 	}
 
@@ -260,6 +273,8 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	_updateScrollTargets() {
 		this._disconnectAll();
+
+		if (this._printMode) return;
 
 		this._container = this.customScrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
 		this._secondaryScrollers = this.customScrollers?.secondary || [];
