@@ -94,7 +94,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "預留位置項目",
 	"components.overflow-group.moreActions": "其他動作",
 	"components.pager-load-more.action": "再載入 {count} 個",
-	"components.pageable.info": "{count, plural, other {{countFormatted} items}}",
+	"components.pageable.info": "{count, plural, other {{countFormatted} 個項目}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted} 項，共 {totalCountFormatted} 項}}",
 	"components.pager-load-more.status-loading": "正在載入更多項目",
 	"components.selection.action-hint": "選取項目以執行此動作。",
