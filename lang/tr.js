@@ -94,7 +94,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Yer Tutucu Öğesi",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.pager-load-more.action": "{count} Tane Daha Yükle",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
+	"components.pageable.info": "{count, plural, one {{countFormatted} öğe} other {{countFormatted} öğe}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} / {totalCountFormatted} öğe} other {{countFormatted} / {totalCountFormatted} öğe}}",
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
 	"components.selection.action-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin.",

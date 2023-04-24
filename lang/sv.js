@@ -94,7 +94,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Platshållarobjekt",
 	"components.overflow-group.moreActions": "Fler åtgärder",
 	"components.pager-load-more.action": "Läs in {count} till",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
+	"components.pageable.info": "{count, plural, one {{countFormatted} objekt} other {{countFormatted} objekt}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} av {totalCountFormatted} objekt} other {{countFormatted} av {totalCountFormatted} objekt}}",
 	"components.pager-load-more.status-loading": "Läser in fler objekt",
 	"components.selection.action-hint": "Välj ett objekt för att utföra åtgärden.",
