@@ -296,6 +296,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				element.addEventListener('scroll', this._synchronizeScroll);
 			});
 			this._container.addEventListener('scroll', this._synchronizeScroll);
+			this._synchronizeScroll({ target: this._container });
 		}
 	}
 
