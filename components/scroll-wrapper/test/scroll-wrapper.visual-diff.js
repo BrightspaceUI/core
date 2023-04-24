@@ -21,7 +21,7 @@ describe('d2l-scroll-wrapper', () => {
 				await page.bringToFront();
 			});
 
-			['show-actions', 'hide-actions'].forEach((actions) => {
+			['show-actions', 'hide-actions', 'split-scrollers'].forEach((actions) => {
 				[
 					'smaller',
 					'same',
@@ -56,6 +56,11 @@ describe('d2l-scroll-wrapper', () => {
 
 		it('hide-actions', async function() {
 			const rect = await visualDiff.getRect(page, '#show-actions-overflow-both');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('split-scrollers', async function() {
+			const rect = await visualDiff.getRect(page, '#split-scrollers-overflow-both');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
