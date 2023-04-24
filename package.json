@@ -51,7 +51,7 @@
     "@rollup/plugin-dynamic-import-vars": "^2",
     "@rollup/plugin-node-resolve": "^15",
     "@rollup/plugin-replace": "^5",
-    "@web/dev-server": "^0.1",
+    "@web/dev-server": "^0.2",
     "@web/test-runner": "^0.15",
     "@web/test-runner-playwright": "^0.9",
     "axe-core": "^4",
