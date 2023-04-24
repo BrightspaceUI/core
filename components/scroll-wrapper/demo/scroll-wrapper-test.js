@@ -51,9 +51,8 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const width = this.splitScrollers ? this.width - 2 : this.width; // when scrollers are split, the wrapper borders take up some extra space
 		const style = {
-			width: `${width}px`
+			width: `${this.width}px`
 		};
 
 		const contents = this.splitScrollers ? html`

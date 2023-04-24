@@ -137,6 +137,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this.customScrollers = {};
 		this.hideActions = false;
 		this._allScrollers = [];
+		this._baseContainer = null;
 		this._container = null;
 		this._hScrollbar = true;
 		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
@@ -216,7 +217,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	_checkScrollThresholds() {
 		if (!this._container) return;
-		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.abs(this._container.scrollLeft);
+		const lowerScrollValue = this._container.scrollWidth - this._baseContainer.offsetWidth - Math.abs(this._container.scrollLeft);
 		this._scrollbarLeft = (this._container.scrollLeft === 0);
 		this._scrollbarRight = (lowerScrollValue <= 0);
 
@@ -276,7 +277,8 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 		if (this._printMode) return;
 
-		this._container = this.customScrollers?.primary || this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._baseContainer = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._container = this.customScrollers?.primary || this._baseContainer;
 		this._secondaryScrollers = this.customScrollers?.secondary || [];
 		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
 		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
