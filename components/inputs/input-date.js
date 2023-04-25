@@ -278,7 +278,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
-					atomic="true"
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -291,7 +290,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden || this.labelledBy}"
 					.labelRequired="${false}"
-					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"

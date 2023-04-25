@@ -39,12 +39,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * ADVANCED: Specifies whether or not the screen reader should always present changes to the live region as a whole.
-			 * This only applies if live is set to polite or assertive.
-			 * @type {string}
-			 */
-			atomic: { type: String },
-			/**
 			 * Specifies which types of values can be autofilled by the browser
 			 * @type {string}
 			 */
@@ -79,11 +73,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
-			 * ADVANCED: Set the priority with which screen readers should treat updates to the input's live text region
-			 * @type {string}
-			 */
-			live: { type: String },
 			/**
 			 * For number inputs, maximum value
 			 * @type {string}
@@ -426,12 +415,10 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		const input = html`
 			<div class="d2l-input-container">
 				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
-					<input aria-atomic="${ifDefined(this.atomic)}"
-						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
+					<input aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 						aria-invalid="${ifDefined(ariaInvalid)}"
 						aria-label="${ifDefined(this._getAriaLabel())}"
-						aria-live="${ifDefined(this.live)}"
 						aria-required="${ifDefined(ariaRequired)}"
 						?required="${this.required}"
 						autocomplete="${ifDefined(this.autocomplete)}"
