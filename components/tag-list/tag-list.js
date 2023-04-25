@@ -354,8 +354,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		setTimeout(() => focusableElem.focus(), this.clearFocusTimeout);
 	}
 
-	_handleKeyboardTooltipShown() {
-		this._hasShownKeyboardTooltip = true;
+	_handleKeyboardTooltipShown(e) {
+		if (!this._hasShownKeyboardTooltip) this._hasShownKeyboardTooltip = true;
+		else if (this.clearable && !this.contains(e.detail?.relatedTarget)) {
+			const key = this.localize('components.tag-list-item.tooltip-delete-key');
+			const description = this.localize('components.tag-list-item.tooltip-delete-key-desc');
+			announce(`${key} - ${description}`);
+		}
 	}
 
 	async _handleResize() {

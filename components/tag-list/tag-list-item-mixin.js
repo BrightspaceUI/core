@@ -140,6 +140,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
+			if (this.keyboardTooltipItem && this._keyboardTooltipShown && this.clearable) {
+				/** @ignore */
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tag-list-item-tooltip-show',
+					{ bubbles: true, composed: true, detail: { relatedTarget: e.relatedTarget } }
+				));
+			}
 
 			this._displayKeyboardTooltip = (this.keyboardTooltipItem && !this._keyboardTooltipShown);
 			await this.updateComplete;
