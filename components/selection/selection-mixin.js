@@ -133,6 +133,15 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		this._updateSelectionObservers();
 	}
 
+	_focusSelectAll() {
+		for (let observer of this._selectionObservers.values()){
+			if (observer.tagName === 'D2L-SELECTION-SELECT-ALL') {
+				observer.focus();
+				break;
+			}
+		}
+	}
+
 	_handleRadioKeyDown(e) {
 		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
