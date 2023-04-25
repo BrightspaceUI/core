@@ -37,13 +37,24 @@ describe('d2l-scroll-wrapper', () => {
 				});
 			});
 
-			it('focus', async function() {
-				await focusWithKeyboard(page, '#show-actions-overflow-right > d2l-test-scroll-wrapper');
-				const rect = await visualDiff.getRect(page, '#show-actions-overflow-right');
+		});
+	});
+
+	describe('focus', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/scroll-wrapper/test/scroll-wrapper.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+		});
+
+		['show-actions', 'split-scrollers'].forEach((type) => {
+			it(type, async function() {
+				await focusWithKeyboard(page, `#${type}-overflow-right > d2l-test-scroll-wrapper`);
+				const rect = await visualDiff.getRect(page, `#${type}-overflow-right`);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
-
 		});
+
 	});
 
 	describe('print', () => {

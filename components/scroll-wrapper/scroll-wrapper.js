@@ -9,6 +9,31 @@ const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* leg
 const SCROLL_AMOUNT = 0.8;
 const PRINT_MEDIA_QUERY_LIST = matchMedia('print');
 
+let focusStyleSheet;
+function getFocusStyleSheet() {
+	if (!focusStyleSheet) {
+		focusStyleSheet = new CSSStyleSheet();
+		focusStyleSheet.replaceSync(css`
+		.d2l-scroll-wrapper-focus:${unsafeCSS(getFocusPseudoClass())} {
+			box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+			outline: none;
+		}`);
+	}
+	return focusStyleSheet;
+}
+
+function getStyleSheetInsertionPoint(elem) {
+	if (elem.nodeType === Node.DOCUMENT_NODE || elem.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+		if (elem.querySelector('.d2l-scroll-wrapper-focus') !== null) {
+			return elem;
+		}
+	}
+	if (elem.parentNode) {
+		return getStyleSheetInsertionPoint(elem.parentNode);
+	}
+	return null;
+}
+
 /**
  *
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
@@ -64,11 +89,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			}
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
-				outline: none;
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
-			}
-			.d2l-scroll-wrapper-container:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 				border-left: 1px dashed var(--d2l-color-mica);
@@ -228,6 +249,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 		if (this._container) {
 			this._container.style.removeProperty('overflow-x');
+			this._container.classList.remove('d2l-scroll-wrapper-focus');
 			this._container.removeAttribute('tabindex');
 			this._container.removeEventListener('scroll', this._synchronizeScroll);
 			this._container.removeEventListener('scroll', this._checkScrollThresholds);
@@ -284,6 +306,14 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
 
 		if (this._container) {
+			this._container.classList.add('d2l-scroll-wrapper-focus');
+			const styleRoot = getStyleSheetInsertionPoint(this._container);
+			if (styleRoot && 'adoptedStyleSheets' in styleRoot) {
+				const sheet = getFocusStyleSheet();
+				if (styleRoot.adoptedStyleSheets.indexOf(sheet) === -1) {
+					styleRoot.adoptedStyleSheets = [...styleRoot.adoptedStyleSheets, sheet];
+				}
+			}
 			this._container.style.overflowX = 'auto';
 			this._resizeObserver.observe(this._container);
 			this._container.addEventListener('scroll', this._checkScrollThresholds);
