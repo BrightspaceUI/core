@@ -7,9 +7,9 @@ const propertyNames = ['Selectable', 'Draggable', 'Expandable'];
 
 const styles = css`
 	d2l-list:not([slot="nested"]) {
+		border: solid 1px black;
 		margin: 1rem;
 		padding: 1rem;
-		border: solid 1px black;
 	}
 	d2l-list:not([slot="nested"]) > d2l-list-item > d2l-list-item-content {
 		color: blue;
