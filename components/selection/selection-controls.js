@@ -25,6 +25,11 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			 */
 			noSelection: { type: Boolean, attribute: 'no-selection' },
 			/**
+			 * ADVANCED: Text to display if no items are selected (overrides pageable counts)
+			 * @type {string}
+			 */
+			noSelectionText: { type: String, attribute: 'no-selection-text' },
+			/**
 			 * Disables sticky positioning for the controls
 			 * @type {boolean}
 			 */
@@ -150,8 +155,11 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
-		if (changedProperties.has('_pageableInfo')) {
-			this._noSelectionText = this._getNoSelectionText();
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('noSelectionText') || changedProperties.has('_pageableInfo')) {
+			this._noSelectionText = this.noSelectionText ? this.noSelectionText : this._getNoSelectionText();
 		}
 	}
 
