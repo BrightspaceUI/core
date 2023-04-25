@@ -134,7 +134,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	}
 
 	_focusSelectAll() {
-		for (let observer of this._selectionObservers.values()){
+		for (const observer of this._selectionObservers.values()) {
 			if (observer.tagName === 'D2L-SELECTION-SELECT-ALL') {
 				observer.focus();
 				break;
