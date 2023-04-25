@@ -159,7 +159,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 
 	willUpdate(changedProperties) {
 		if (changedProperties.has('noSelectionText') || changedProperties.has('_pageableInfo')) {
-			this._noSelectionText = this.noSelectionText ? this.noSelectionText : this._getNoSelectionText();
+			this._noSelectionText = this.noSelectionText || this._getNoSelectionText();
 		}
 	}
 
