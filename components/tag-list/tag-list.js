@@ -356,10 +356,18 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 	_handleKeyboardTooltipShown(e) {
 		if (!this._hasShownKeyboardTooltip) this._hasShownKeyboardTooltip = true;
-		else if (this.clearable && !this.contains(e.detail?.relatedTarget)) {
-			const key = this.localize('components.tag-list-item.tooltip-delete-key');
-			const description = this.localize('components.tag-list-item.tooltip-delete-key-desc');
-			announce(`${key} - ${description}`);
+		else if (!this.contains(e.detail?.relatedTarget)) {
+			const arrows = this.localize('components.tag-list-item.tooltip-arrow-keys');
+			const arrowsDescription = this.localize('components.tag-list-item.tooltip-arrow-keys-desc');
+
+			let message = `${arrows} - ${arrowsDescription}`;
+			if (this.clearable) {
+				const del = this.localize('components.tag-list-item.tooltip-delete-key');
+				const delDescription = this.localize('components.tag-list-item.tooltip-delete-key-desc');
+				message += `; ${del} - ${delDescription}`;
+			}
+
+			announce(message);
 		}
 	}
 
@@ -403,7 +411,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._chomp();
 
 		this._contentReady = true;
-		if (!this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-item', 'keyboard-tooltip-item');
+		this._items[0].setAttribute('keyboard-tooltip-item', true);
+		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
 	}
 
 	async _toggleHiddenTagVisibility(e) {
