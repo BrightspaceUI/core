@@ -63,6 +63,7 @@ describe('d2l-selection', () => {
 			{ name: 'with-pageable', selector: '#controls-with-pageable', action: () => scrollIntoView('#controls-with-pageable') },
 			{ name: 'with-pageable-more', selector: '#controls-with-pageable-more', action: () => scrollIntoView('#controls-with-pageable-more') },
 			{ name: 'with-selection-pageable', selector: '#controls-with-selection-pageable', action: () => scrollIntoView('#controls-with-selection-pageable') },
+			{ name: 'with-custom-no-selection-text', selector: '#controls-with-custom-no-selection-text', action: () => scrollIntoView('#controls-with-custom-no-selection-text') },
 		].forEach(runTest);
 	});
 
