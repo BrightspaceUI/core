@@ -228,7 +228,7 @@ describe('d2l-filter', () => {
 
 		describe('opener', () => {
 			after(async() => {
-				await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
+				await page.reload({ waitUntil: ['networkidle0', 'load'] });
 			});
 
 			it('multiple-over-99', async function() {
