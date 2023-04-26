@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, nothing } from 'lit';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -30,7 +31,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			 * @ignore
 			 */
 			keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
-			_displayKeyboardTooltip: { state: true }
+			/**
+			 * @ignore
+			 */
+			keyboardTooltipShown: { type: Boolean, attribute: 'keyboard-tooltip-shown' }
 		};
 	}
 
@@ -127,9 +131,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;
-		this._displayKeyboardTooltip = false;
+		this.keyboardTooltipShown = false;
 		this._id = getUniqueId();
-		this._keyboardTooltipShown = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -140,15 +143,24 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
+			const tagList = findComposedAncestor(this, elem => elem.tagName === 'D2L-TAG-LIST');
+			if (this.keyboardTooltipItem && this.keyboardTooltipShown && !isComposedAncestor(tagList, e.relatedTarget)) {
+				const arrows = this.localize('components.tag-list-item.tooltip-arrow-keys');
+				const arrowsDescription = this.localize('components.tag-list-item.tooltip-arrow-keys-desc');
 
-			this._displayKeyboardTooltip = (this.keyboardTooltipItem && !this._keyboardTooltipShown);
+				let message = `${arrows} - ${arrowsDescription}`;
+				if (this.clearable) {
+					const del = this.localize('components.tag-list-item.tooltip-delete-key');
+					const delDescription = this.localize('components.tag-list-item.tooltip-delete-key-desc');
+					message += `; ${del} - ${delDescription}`;
+				}
+
+				announce(message);
+			}
+
 			await this.updateComplete;
 
 			container.focus();
-		});
-
-		this.addEventListener('blur', () => {
-			this._displayKeyboardTooltip = false;
 		});
 
 		this.addEventListener('keydown', this._handleKeydown);
@@ -167,11 +179,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_handleKeyboardTooltipHide() {
-		if (this._keyboardTooltipShown) this._displayKeyboardTooltip = false;
+		this.keyboardTooltipShown = true;
 	}
 
 	_handleKeyboardTooltipShow() {
-		this._keyboardTooltipShown = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-tooltip-show',
@@ -181,7 +192,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 	_handleKeydown(e) {
 		const openKeys = e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER;
-		if (this._displayKeyboardTooltip && openKeys) this._displayKeyboardTooltip = false;
+		if (this.keyboardTooltipItem && !this.keyboardTooltipShown && openKeys) this.keyboardTooltipShown = true;
 
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
@@ -194,7 +205,9 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			<div class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-title')}</div>
 			<ul>
 				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-arrow-keys')}</span> - ${this.localize('components.tag-list-item.tooltip-arrow-keys-desc')}</li>
-				<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-delete-key')}</span> - ${this.localize('components.tag-list-item.tooltip-delete-key-desc')}</li>
+				${this.clearable ? html`
+					<li><span class="d2l-tag-list-item-tooltip-title-key">${this.localize('components.tag-list-item.tooltip-delete-key')}</span> - ${this.localize('components.tag-list-item.tooltip-delete-key-desc')}</li>
+				` : nothing}
 			</ul>
 		`;
 	}
@@ -209,7 +222,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const hasDescription = !!options.description;
 
 		let tooltip = nothing;
-		if (this._displayKeyboardTooltip) {
+		if (this.keyboardTooltipItem && !this.keyboardTooltipShown) {
 			tooltip = html`
 				<d2l-tooltip
 					align="start"

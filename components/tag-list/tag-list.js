@@ -355,7 +355,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	_handleKeyboardTooltipShown() {
-		this._hasShownKeyboardTooltip = true;
+		if (!this._hasShownKeyboardTooltip) this._hasShownKeyboardTooltip = true;
 	}
 
 	async _handleResize() {
@@ -398,7 +398,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._chomp();
 
 		this._contentReady = true;
-		if (!this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-item', 'keyboard-tooltip-item');
+		this._items[0].setAttribute('keyboard-tooltip-item', true);
+		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
 	}
 
 	async _toggleHiddenTagVisibility(e) {
