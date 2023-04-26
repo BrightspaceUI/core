@@ -9,7 +9,9 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		return {
 			hideActions: { attribute: 'hide-actions', type: Boolean },
 			scroll: { attribute: 'scroll', type: Number },
-			width: { type: Number }
+			splitScrollers: { attribute: 'split-scrollers', type: Boolean },
+			width: { type: Number },
+			_customScrollers: { state: true }
 		};
 	}
 
@@ -22,6 +24,16 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 				background: linear-gradient(to right, #e66465, #9198e5);
 				height: 100px;
 			}
+			.d2l-scroll-wrapper-gradient-secondary {
+				background: linear-gradient(to left, #e66465, #9198e5);
+				height: 40px;
+				position: relative;
+			}
+			.d2l-scroll-wrapper-gradient-secondary button {
+				inset-inline-end: 0;
+				position: absolute;
+				top: 0;
+			}
 		`;
 	}
 
@@ -29,24 +41,46 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		super();
 		this.hideActions = false;
 		this.scroll = 0;
+		this.splitScrollers = false;
 		this.width = 300;
+		this._customScrollers = {};
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.scroll === 0) return;
-		requestAnimationFrame(() => {
-			this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false);
-		});
+		if (this.scroll !== 0) {
+			requestAnimationFrame(() => this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false));
+		}
+		if (this.splitScrollers) {
+			this._customScrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };
+		}
 	}
 
 	render() {
 		const style = {
 			width: `${this.width}px`
 		};
-		return html`
-			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}">
+
+		const secondaryScroller = html`
+			<div class="secondary">
+				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">
+					Secondary scroller (No mouse scroll)
+					<button>Focus</button>
+				</div>
+			</div>
+		`;
+
+		const contents = this.splitScrollers ? html`
+			${secondaryScroller}
+			<div class="primary">
 				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
+			</div>
+			${secondaryScroller}
+		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
+
+		return html`
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .customScrollers="${this._customScrollers}">
+				${contents}
 			</d2l-scroll-wrapper>
 		`;
 	}

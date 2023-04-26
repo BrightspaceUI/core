@@ -2,12 +2,37 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
 const SCROLL_AMOUNT = 0.8;
+const PRINT_MEDIA_QUERY_LIST = matchMedia('print');
+
+let focusStyleSheet;
+function getFocusStyleSheet() {
+	if (!focusStyleSheet) {
+		focusStyleSheet = new CSSStyleSheet();
+		focusStyleSheet.replaceSync(css`
+		.d2l-scroll-wrapper-focus:${unsafeCSS(getFocusPseudoClass())} {
+			box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+			outline: none;
+		}`);
+	}
+	return focusStyleSheet;
+}
+
+function getStyleSheetInsertionPoint(elem) {
+	if (elem.nodeType === Node.DOCUMENT_NODE || elem.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+		if (elem.querySelector('.d2l-scroll-wrapper-focus') !== null) {
+			return elem;
+		}
+	}
+	if (elem.parentNode) {
+		return getStyleSheetInsertionPoint(elem.parentNode);
+	}
+	return null;
+}
 
 /**
  *
@@ -18,6 +43,14 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * An object containing custom primary/secondary scroll containers
+			 * @type {Object}
+			 */
+			customScrollers: {
+				attribute: false,
+				type: Object
+			},
 			/**
 			 * Whether to hide left/right scroll buttons
 			 * @type {boolean}
@@ -31,6 +64,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				reflect: true,
 				type: Boolean
 			},
+			_printMode: { state: true },
 			_scrollbarLeft: {
 				attribute: 'scrollbar-left',
 				reflect: true,
@@ -55,12 +89,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			}
 			.d2l-scroll-wrapper-container {
 				box-sizing: border-box;
-				outline: none;
-				overflow-x: auto;
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
-			}
-			.d2l-scroll-wrapper-container:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 				border-left: 1px dashed var(--d2l-color-mica);
@@ -121,47 +150,48 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
 				display: none;
 			}
-
-			/* hide wrapper visuals from print view */
-			@media print {
-				.d2l-scroll-wrapper-actions {
-					display: none;
-				}
-				.d2l-scroll-wrapper-container {
-					overflow-x: visible;
-				}
-				:host([h-scrollbar]) .d2l-scroll-wrapper-container {
-					border-left: none;
-					border-right: none;
-				}
-			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this.customScrollers = {};
 		this.hideActions = false;
+		this._allScrollers = [];
+		this._baseContainer = null;
 		this._container = null;
 		this._hScrollbar = true;
-		this._resizeObserver = null;
+		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
+		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
+		this._syncDriver = null;
+		this._syncDriverTimeout = null;
+		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
+		this._handlePrintChange = this._handlePrintChange.bind(this);
+		this._synchronizeScroll = this._synchronizeScroll.bind(this);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		PRINT_MEDIA_QUERY_LIST?.addEventListener('change', this._handlePrintChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
+		this._disconnectAll();
+		PRINT_MEDIA_QUERY_LIST?.removeEventListener('change', this._handlePrintChange);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._container = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
-		this._resizeObserver.observe(this._container);
+		this._updateScrollTargets();
 	}
 
 	render() {
-		const tabindex = this._hScrollbar ? '0' : undefined;
+		// when printing, just get scroll-wrapper out of the way
+		if (this._printMode) return html`<slot></slot>`;
+
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
 				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
@@ -173,8 +203,15 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}" tabindex="${ifDefined(tabindex)}"><slot></slot></div>
+			<div class="d2l-scroll-wrapper-container"><slot></slot></div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('customScrollers')) this._updateScrollTargets();
+		if (changedProperties.has('_hScrollbar')) this._updateTabIndex();
 	}
 
 	checkScrollbar() {
@@ -201,10 +238,37 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	_checkScrollThresholds() {
 		if (!this._container) return;
-		const lowerScrollValue = this._container.scrollWidth - this._container.offsetWidth - Math.abs(this._container.scrollLeft);
+		const lowerScrollValue = this._container.scrollWidth - this._baseContainer.offsetWidth - Math.abs(this._container.scrollLeft);
 		this._scrollbarLeft = (this._container.scrollLeft === 0);
 		this._scrollbarRight = (lowerScrollValue <= 0);
 
+	}
+
+	_disconnectAll() {
+		this._resizeObserver?.disconnect();
+
+		if (this._container) {
+			this._container.style.removeProperty('overflow-x');
+			this._container.classList.remove('d2l-scroll-wrapper-focus');
+			this._container.removeAttribute('tabindex');
+			this._container.removeEventListener('scroll', this._synchronizeScroll);
+			this._container.removeEventListener('scroll', this._checkScrollThresholds);
+			this._secondaryScrollers.forEach(element => {
+				element.style.removeProperty('overflow-x');
+				element.removeEventListener('scroll', this._synchronizeScroll);
+			});
+		}
+	}
+
+	async _handlePrintChange() {
+		if (!this._printMode) {
+			this._disconnectAll();
+		}
+		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
+		if (!this._printMode) {
+			await this.updateComplete;
+			this._updateScrollTargets();
+		}
 	}
 
 	_scrollLeft() {
@@ -219,6 +283,58 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this.scrollDistance(scrollDistance, true);
 	}
 
+	_synchronizeScroll(e) {
+		if (this._syncDriver && e.target !== this._syncDriver) return;
+		if (this._syncDriverTimeout) clearTimeout(this._syncDriverTimeout);
+
+		this._syncDriver = e.target;
+		this._allScrollers.forEach(element => {
+			if (element && element !== e.target) element.scrollLeft = e.target.scrollLeft;
+		});
+		this._syncDriverTimeout = setTimeout(() => this._syncDriver = null, 100);
+	}
+
+	_updateScrollTargets() {
+		this._disconnectAll();
+
+		if (this._printMode) return;
+
+		this._baseContainer = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
+		this._container = this.customScrollers?.primary || this._baseContainer;
+		this._secondaryScrollers = this.customScrollers?.secondary || [];
+		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
+		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
+
+		if (this._container) {
+			this._container.classList.add('d2l-scroll-wrapper-focus');
+			const styleRoot = getStyleSheetInsertionPoint(this._container);
+			if (styleRoot && 'adoptedStyleSheets' in styleRoot) {
+				const sheet = getFocusStyleSheet();
+				if (styleRoot.adoptedStyleSheets.indexOf(sheet) === -1) {
+					styleRoot.adoptedStyleSheets = [...styleRoot.adoptedStyleSheets, sheet];
+				}
+			}
+			this._container.style.overflowX = 'auto';
+			this._resizeObserver.observe(this._container);
+			this._container.addEventListener('scroll', this._checkScrollThresholds);
+			this._updateTabIndex();
+		}
+
+		if (this._secondaryScrollers.length) {
+			this._secondaryScrollers.forEach(element => {
+				element.style.overflowX = 'hidden';
+				element.addEventListener('scroll', this._synchronizeScroll);
+			});
+			this._container.addEventListener('scroll', this._synchronizeScroll);
+			this._synchronizeScroll({ target: this._container });
+		}
+	}
+
+	_updateTabIndex() {
+		if (!this._container) return;
+		if (this._hScrollbar) this._container.tabIndex = 0;
+		else this._container.removeAttribute('tabindex');
+	}
 }
 
 customElements.define('d2l-scroll-wrapper', ScrollWrapper);
