@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, nothing } from 'lit';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -142,12 +143,19 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
-			if (this.keyboardTooltipItem && this.keyboardTooltipShown) {
-				/** @ignore */
-				this.dispatchEvent(new CustomEvent(
-					'd2l-tag-list-item-tooltip-show',
-					{ bubbles: true, composed: true, detail: { relatedTarget: e.relatedTarget } }
-				));
+			const tagList = findComposedAncestor(this, elem => elem.tagName === 'D2L-TAG-LIST');
+			if (this.keyboardTooltipItem && this.keyboardTooltipShown && !isComposedAncestor(tagList, e.relatedTarget)) {
+				const arrows = this.localize('components.tag-list-item.tooltip-arrow-keys');
+				const arrowsDescription = this.localize('components.tag-list-item.tooltip-arrow-keys-desc');
+
+				let message = `${arrows} - ${arrowsDescription}`;
+				if (this.clearable) {
+					const del = this.localize('components.tag-list-item.tooltip-delete-key');
+					const delDescription = this.localize('components.tag-list-item.tooltip-delete-key-desc');
+					message += `; ${del} - ${delDescription}`;
+				}
+
+				announce(message);
 			}
 
 			await this.updateComplete;
