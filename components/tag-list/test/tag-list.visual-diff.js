@@ -35,7 +35,7 @@ describe('d2l-tag-list', () => {
 			await page.$eval('#default', async(elem) => {
 				const firstListItem = elem.children[0];
 				firstListItem.keyboardTooltipItem = true;
-				firstListItem._keyboardTooltipShown = false;
+				firstListItem.keyboardTooltipShown = false;
 				await firstListItem.updateComplete;
 			});
 			await page.keyboard.press('Tab');
