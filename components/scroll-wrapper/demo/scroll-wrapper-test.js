@@ -28,6 +28,14 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 				background: linear-gradient(to left, #e66465, #9198e5);
 				height: 40px;
 			}
+			.d2l-scroll-wrapper-gradient-secondary {
+				position: relative;
+				white-space: nowrap;
+			}
+			.secondary button {
+				position: absolute;
+				inset-inline-end: 0;
+			}
 		`;
 	}
 
@@ -55,16 +63,21 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			width: `${this.width}px`
 		};
 
-		const contents = this.splitScrollers ? html`
+		const secondaryScroller = html`
 			<div class="secondary">
-				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">Secondary scroller (Can't scroll independently)</div>
+				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">
+					Secondary scroller (No mouse scroll)
+					<button>Focus</button>
+				</div>
 			</div>
+		`;
+
+		const contents = this.splitScrollers ? html`
+			${secondaryScroller}
 			<div class="primary">
 				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
 			</div>
-			<div class="secondary">
-				<div class="d2l-scroll-wrapper-gradient-secondary" style="${styleMap(style)}">Secondary scroller (Can't scroll independently)</div>
-			</div>
+			${secondaryScroller}
 		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
 
 		return html`

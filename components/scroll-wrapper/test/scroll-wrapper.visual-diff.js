@@ -37,6 +37,15 @@ describe('d2l-scroll-wrapper', () => {
 				});
 			});
 
+			it('split-scrollers-secondary-focus-scroll', async function() {
+				await page.$eval('#split-scrollers-secondary-focus-scroll', elem => {
+					const button = elem.querySelector('d2l-test-scroll-wrapper').shadowRoot.querySelector('button');
+					button.focus();
+				});
+				const rect = await visualDiff.getRect(page, '#split-scrollers-secondary-focus-scroll');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
 		});
 	});
 
