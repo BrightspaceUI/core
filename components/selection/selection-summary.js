@@ -44,7 +44,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('_provider') || changedProperties.has('selectionInfo')) {
+		if (changedProperties.has('_provider') || changedProperties.has('selectionInfo') || changedProperties.has('noSelectionText')) {
 			this._updateSelectSummary();
 		}
 	}

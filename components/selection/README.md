@@ -486,6 +486,7 @@ When using lists, use the list-specific `d2l-list-controls` instead, which exten
 | Property | Type | Description |
 |---|---|---|
 | `no-selection` | Boolean | Whether to render select-all and selection summary |
+| `no-selection-text` | String | Text to display if no items are selected (overrides pageable counts) |
 | `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
