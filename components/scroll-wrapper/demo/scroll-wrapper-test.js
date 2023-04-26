@@ -27,14 +27,12 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			.d2l-scroll-wrapper-gradient-secondary {
 				background: linear-gradient(to left, #e66465, #9198e5);
 				height: 40px;
-			}
-			.d2l-scroll-wrapper-gradient-secondary {
 				position: relative;
 				white-space: nowrap;
 			}
-			.secondary button {
-				position: absolute;
+			.d2l-scroll-wrapper-gradient-secondary button {
 				inset-inline-end: 0;
+				position: absolute;
 			}
 		`;
 	}
