@@ -17,23 +17,20 @@ describe('d2l-meter-circle', () => {
 	after(async() => await browser.close());
 
 	[
-		{ title: 'no-progress', fixture: '#no-progress' },
-		{ title: 'has-progress', fixture: '#has-progress' },
-		{ title: 'completed', fixture: '#completed' },
-		{ title: 'round-to-zero', fixture: '#round-to-zero' },
-		{ title: 'max-zero-with-value', fixture: '#max-zero-with-value' },
-		{ title: 'no-progress-scaled', fixture: '#no-progress-scaled' },
-		{ title: 'has-progress-scaled', fixture: '#has-progress-scaled' },
-		{ title: 'completed-scaled', fixture: '#completed-scaled' },
-		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl' },
-		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl' },
-		{ title: 'completed-rtl', fixture: '#completed-rtl' },
-		{ title: 'no-progress-light', fixture: '#no-progress-light' },
-		{ title: 'has-progress-light', fixture: '#has-progress-light' },
-		{ title: 'completed-light', fixture: '#completed-light' }
-	].forEach((testData) => {
-		it(testData.title, async function() {
-			const rect = await visualDiff.getRect(page, testData.fixture);
+		'no-progress',
+		'progress',
+		'progress-rtl',
+		'complete',
+		'percent',
+		'percent-rtl',
+		'round-to-zero',
+		'max-zero-with-value',
+		'foreground-light',
+		'scaled-larger',
+		'scaled-smaller'
+	].forEach(name => {
+		it(name, async function() {
+			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});

@@ -17,25 +17,34 @@ describe('d2l-meter-linear', () => {
 	after(async() => await browser.close());
 
 	[
-		{ title: 'no-progress', fixture: '#no-progress' },
-		{ title: 'has-progress', fixture: '#has-progress' },
-		{ title: 'completed', fixture: '#completed' },
-		{ title: 'max-zero-value-zero', fixture: '#max-zero-value-zero' },
-		{ title: 'round-to-zero', fixture: '#round-to-zero' },
-		{ title: 'over-100', fixture: '#over-100' },
-		{ title: 'max-zero-with-value', fixture: '#max-zero-with-value' },
-		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl' },
-		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl' },
-		{ title: 'completed-rtl', fixture: '#completed-rtl' },
-		{ title: 'over-100-rtl', fixture: '#over-100-rtl' },
-		{ title: 'no-progress-light', fixture: '#no-progress-light' },
-		{ title: 'has-progress-light', fixture: '#has-progress-light' },
-		{ title: 'completed-light', fixture: '#completed-light' },
-		{ title: 'over-100-light', fixture: '#over-100-light' }
-	].forEach((testData) => {
-		it(testData.title, async function() {
-			const rect = await visualDiff.getRect(page, testData.fixture);
+		'normal-no-progress',
+		'normal-progress',
+		'normal-complete',
+		'normal-percent',
+		'normal-text',
+		'normal-text-fraction',
+		'normal-text-percent',
+		'normal-foreground-light',
+		'normal-text-fraction-rtl',
+		'normal-text-percent-rtl',
+		'normal-max-zero-value-zero',
+		'normal-round-to-zero',
+		'normal-over-100',
+		'normal-max-zero-with-value',
+		'text-inline-no-progress',
+		'text-inline-progress',
+		'text-inline-complete',
+		'text-inline-percent',
+		'text-inline-text-fraction',
+		'text-inline-text-percent',
+		'text-inline-foreground-light',
+		'text-inline-text-fraction-rtl',
+		'text-inline-text-percent-rtl'
+	].forEach(name => {
+		it(name, async function() {
+			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
+
 });
