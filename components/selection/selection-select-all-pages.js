@@ -40,7 +40,10 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 	}
 
 	_handleClick() {
-		if (this._provider) this._provider.setSelectionForAll(true, true);
+		if (!this._provider) return;
+
+		this._provider.setSelectionForAll(true, true);
+		this._provider._focusSelectAll();
 	}
 
 }
