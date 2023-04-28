@@ -41,7 +41,14 @@ Linear meters show a horizontal progress bar.
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
 </script>
-<d2l-meter-linear value="3" max="10"></d2l-meter-linear>
+<style>
+  d2l-meter-linear {
+    width: 170px;
+  }
+</style>
+<d2l-meter-linear value="8" max="10" text="Activities"></d2l-meter-linear>
+<d2l-meter-linear value="8" max="10" text="Activities: {x/y}" percent></d2l-meter-linear>
+<d2l-meter-linear value="8" max="10" text-inline text="Activities"></d2l-meter-linear>
 ```
 
 <!-- docs: start hidden content -->

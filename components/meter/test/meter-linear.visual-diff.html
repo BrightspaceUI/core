@@ -9,54 +9,88 @@
 	<title>d2l-meter-linear</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<style>
+		.dark-background {
+			background-color: var(--d2l-color-celestine);
+			padding: 1rem;
+		}
+		.visual-diff {
+			width: 250px;
+		}
+	</style>
 </head>
 <body class="d2l-typography">
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="no-progress" value="0" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
+
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-no-progress" value="0" max="10"></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="has-progress" value="3" max="10" text="Activities" text-inline percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-progress" value="4" max="10"></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="completed" value="10" max="10" text="{%} Activities"></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-complete" value="10" max="10"></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="max-zero-value-zero" value="0" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-percent" value="4" max="10" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="round-to-zero" value="0.004" max="100" text="Visited: {x/y}" percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-text" value="4" max="10" text="You're doing great!"></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="over-100" value="15" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-text-fraction" value="4" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear id="max-zero-with-value" value="10" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-text-percent" value="4" max="10" text="Visited: {%}"></d2l-meter-linear>
 	</div>
-	<!-- rtl versions-->
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear dir="rtl" id="no-progress-rtl" value="0" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
+	<div class="visual-diff dark-background">
+		<d2l-meter-linear id="normal-foreground-light" value="4" max="10" text="Visited: {%}" foreground-light></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear dir="rtl" id="has-progress-rtl" value="3" max="10" text="Activities" text-inline percent></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-text-fraction-rtl" dir="rtl" value="4" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear dir="rtl" id="completed-rtl" value="10" max="10" text="{%} Activities"></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-text-percent-rtl" dir="rtl" value="4" max="10" text="Visited: {%}"></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="width: 250px;">
-		<d2l-meter-linear dir="rtl" id="over-100-rtl" value="15" max="10" text="{%} Activities"></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-max-zero-value-zero" value="0" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<!-- Test foreground-light versions-->
-	<div class="visual-diff" style="background-color: darkblue; width: 90px;">
-		<d2l-meter-linear id="no-progress-light" value="0" max="10" foreground-light></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-round-to-zero" value="0.004" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="background-color: darkgreen; width: 90px;">
-		<d2l-meter-linear id="has-progress-light" value="16" max="47" foreground-light></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-over-100" value="15" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="background-color: darkred; width: 90px;">
-		<d2l-meter-linear id="completed-light" value="5" max="5" foreground-light></d2l-meter-linear>
+	<div class="visual-diff">
+		<d2l-meter-linear id="normal-max-zero-with-value" value="5" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>
 	</div>
-	<div class="visual-diff" style="background-color: darkred; width: 90px;">
-		<d2l-meter-linear id="over-100-light" value="15" max="10" foreground-light></d2l-meter-linear>
+
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-no-progress" value="0" max="10" text-inline></d2l-meter-linear>
 	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-progress" value="4" max="10" text-inline></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-complete" value="10" max="10" text-inline></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-percent" value="4" max="10" text-inline percent></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-text-fraction" value="4" max="10" text-inline text="Visited"></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-text-percent" value="4" max="10" text-inline text="Visited" percent></d2l-meter-linear>
+	</div>
+	<div class="visual-diff dark-background">
+		<d2l-meter-linear id="text-inline-foreground-light" value="4" max="10" text-inline text="Visited" percent foreground-light></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-text-fraction-rtl" dir="rtl" value="4" max="10" text-inline text="Visited"></d2l-meter-linear>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-linear id="text-inline-text-percent-rtl" dir="rtl" value="4" max="10" text-inline text="Visited" percent></d2l-meter-linear>
+	</div>
+
 </body>
 </html>

@@ -17,7 +17,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 */
 			percent: { type: Boolean },
 			/**
-			 * Context information for the meter
+			 * Context information for the meter. If the text contains {%} or {x/y}, they will be replaced with a percentage or fraction respectively.
 			 * @type {string}
 			 */
 			text: { type: String },

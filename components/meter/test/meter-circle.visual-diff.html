@@ -10,52 +10,51 @@
 	<title>d2l-meter-circle</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<style>
+		.dark-background {
+			background-color: var(--d2l-color-celestine);
+			padding: 1rem;
+		}
+		.visual-diff {
+			width: 90px;
+		}
+	</style>
 </head>
 <body class="d2l-typography">
-	<div class="visual-diff" style="width: 90px;">
+
+	<div class="visual-diff">
 		<d2l-meter-circle id="no-progress" value="0" max="10"></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 90px;">
-		<d2l-meter-circle id="has-progress" value="16" max="47"></d2l-meter-circle>
+	<div class="visual-diff">
+		<d2l-meter-circle id="progress" value="16" max="47"></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 90px;">
-		<d2l-meter-circle id="completed" value="5" max="5"></d2l-meter-circle>
+	<div class="visual-diff">
+		<d2l-meter-circle id="progress-rtl" dir="rtl" value="16" max="47"></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 90px;">
+	<div class="visual-diff">
+		<d2l-meter-circle id="complete" value="5" max="5"></d2l-meter-circle>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-circle id="percent" value="16" max="47" percent></d2l-meter-circle>
+	</div>
+	<div class="visual-diff">
+		<d2l-meter-circle id="percent-rtl" dir="rtl" value="16" max="47" percent></d2l-meter-circle>
+	</div>
+	<div class="visual-diff">
 		<d2l-meter-circle id="round-to-zero" value="0.004" max="100"></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 90px;">
+	<div class="visual-diff">
 		<d2l-meter-circle id="max-zero-with-value" value="10" max="0"></d2l-meter-circle>
 	</div>
-	<!-- Test scaled versions-->
-	<div class="visual-diff" style="width: 170px;">
-		<d2l-meter-circle id="no-progress-scaled" value="0" max="10"  style="width: 300%;"></d2l-meter-circle>
+	<div class="visual-diff dark-background">
+		<d2l-meter-circle id="foreground-light" value="16" max="47" foreground-light></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 170px;">
-		<d2l-meter-circle id="has-progress-scaled" value="7" max="10"  style="width: 450%;"></d2l-meter-circle>
+	<div class="visual-diff">
+		<d2l-meter-circle id="scaled-larger" value="16" max="47" style="width: 300%;"></d2l-meter-circle>
 	</div>
-	<div class="visual-diff" style="width: 170px;">
-		<d2l-meter-circle id="completed-scaled" value="10" max="10"  style="width: 30%;"></d2l-meter-circle>
+	<div class="visual-diff">
+		<d2l-meter-circle id="scaled-smaller" value="16" max="47" style="width: 30%;"></d2l-meter-circle>
 	</div>
-	<!-- Test rtl versions -->
-	<div class="visual-diff" style="width: 90px;">
-		<d2l-meter-circle dir="rtl" id="no-progress-rtl" value="0" max="10"></d2l-meter-circle>
-	</div>
-	<div class="visual-diff" style="width: 90px;">
-		<d2l-meter-circle dir="rtl" id="has-progress-rtl" value="16" max="47"></d2l-meter-circle>
-	</div>
-	<div class="visual-diff" style="width: 90px;">
-		<d2l-meter-circle dir="rtl" id="completed-rtl" value="5" max="5"></d2l-meter-circle>
-	</div>
-	<!-- Test foreground-light versions-->
-	<div class="visual-diff" style="background-color: darkblue; width: 90px;">
-		<d2l-meter-circle id="no-progress-light" value="0" max="10" foreground-light></d2l-meter-circle>
-	</div>
-	<div class="visual-diff" style="background-color: darkgreen; width: 90px;">
-		<d2l-meter-circle id="has-progress-light" value="16" max="47" foreground-light></d2l-meter-circle>
-	</div>
-	<div class="visual-diff" style="background-color: darkred; width: 90px;">
-		<d2l-meter-circle id="completed-light" value="5" max="5" foreground-light></d2l-meter-circle>
-	</div>
+
 </body>
 </html>
