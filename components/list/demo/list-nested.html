@@ -31,6 +31,94 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid>
+						<d2l-list-item key="L1-1" label="Label for L1-1">
+							<d2l-list-item-content>
+								<div>Earth Sciences (L1)</div>
+								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all">
+								<d2l-list-item key="L2-1" label="Label for L2-1">
+									<d2l-list-item-content>
+										<div>Introductory Earth Sciences (L2)</div>
+										<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" grid separators="all">
+										<d2l-list-item key="L3-1" label="Label for L3-1">
+											<d2l-list-item-content>
+												<div>Glaciation (L3)</div>
+												<div slot="supporting-info">Supporting Info</div>
+											</d2l-list-item-content>
+											<d2l-list slot="nested" grid separators="all">
+												<d2l-list-item key="L4-1" label="Label for L4-1">
+													<d2l-list-item-content>
+														<div>Ice Sheets (L4)</div>
+														<div slot="supporting-info">Supporting Info</div>
+													</d2l-list-item-content>
+												</d2l-list-item>
+												<d2l-list-item key="L4-2" label="Label for L4-2">
+													<d2l-list-item-content>
+														<div>Alpine Glaciers (L4)</div>
+														<div slot="supporting-info">Supporting Info</div>
+													</d2l-list-item-content>
+												</d2l-list-item>
+											</d2l-list>
+										</d2l-list-item>
+										<d2l-list-item key="L3-2" label="Label for L3-2">
+											<d2l-list-item-content>
+												<div>Weathering (L3)</div>
+												<div slot="supporting-info">Supporting Info</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+										<d2l-list-item key="L3-3" label="Label for L3-3">
+											<d2l-list-item-content>
+												<div>Volcanism (L3)</div>
+												<div slot="supporting-info">Supporting Info</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+									</d2l-list>
+								</d2l-list-item>
+								<d2l-list-item key="L2-2" label="Label for L2-2">
+									<d2l-list-item-content>
+										<div>Flow and Transport Through Fractured Rocks (L2)</div>
+										<div slot="supporting-info">Fractures are ubiquitous in geologic media and important in disciplines such as physical and contaminant hydrogeology, geotechnical engineering, civil and environmental engineering, petroleum engineering among other areas. Despite the importance of fractures, its characterization and predictions of groundwater flow and contaminant transport are fraught with significant difficulties. Students are taught to deal with fractures in hydrogeology, to conceptualize them, and to build reliable models for predicting groundwater flow and contaminant transport.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item key="L2-3" label="Label for L2-3">
+									<d2l-list-item-content>
+										<div>Applied Wetland Science (L2)</div>
+										<div slot="supporting-info">Advanced concepts on wetland ecosystems in the context of regional and global earth systems processes such as carbon and nitrogen cycling and climate change, applications of wetland paleoecology, use of isotopes and other geochemical tools in wetland science, and wetland engineering in landscape rehabilitation and ecotechnology. Current issues in Canada and abroad will be examined.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item key="L1-2" label="Label for L1-2">
+							<div>Biology (L1)</div>
+						</d2l-list-item>
+						<d2l-list-item key="L1-3" label="Label for L1-3">
+							<div>Computer Science (L1)</div>
+						</d2l-list-item>
+						<d2l-pager-load-more slot="pager" has-more page-size="5">
+						</d2l-pager-load-more>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - Selectable</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
 						<d2l-list-controls slot="controls">
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
@@ -138,13 +226,17 @@
 
 		<script>
 			setTimeout(() => {
-				document.querySelector('d2l-list').addEventListener('d2l-list-selection-changes', (e) => {
-					console.log('d2l-list-selection-changes', e.detail);
+				document.querySelectorAll('d2l-list').forEach(list => {
+					list.addEventListener('d2l-list-selection-changes', (e) => {
+						console.log('d2l-list-selection-changes', e.detail);
+					});
 				});
 
-				document.querySelector('d2l-pager-load-more').addEventListener('d2l-pager-load-more', (e) => {
-					console.log('Load more requested!');
-					setTimeout(() => e.detail.complete(), 2000);
+				document.querySelectorAll('d2l-pager-load-more').forEach(pager => {
+					pager.addEventListener('d2l-pager-load-more', (e) => {
+						console.log('Load more requested!');
+						setTimeout(() => e.detail.complete(), 2000);
+					});
 				});
 			}, 1000);
 		</script>
