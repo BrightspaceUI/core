@@ -6,6 +6,10 @@ import { css, html, LitElement, nothing } from 'lit';
 const propertyNames = ['Selectable', 'Draggable', 'Expandable'];
 
 const styles = css`
+	:host {
+		display: block;
+		width: 700px;
+	}
 	d2l-list:not([slot="nested"]) {
 		border: solid 1px black;
 		margin: 1rem;

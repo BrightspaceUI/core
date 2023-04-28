@@ -12,11 +12,6 @@ describe('d2l-list-nested', () => {
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
 	});
 
-	beforeEach(async() => {
-		await visualDiff.resetFocus(page);
-		await page.mouse.move(-1, -1);
-	});
-
 	after(async() => await browser.close());
 
 	['ltr', 'rtl'].forEach(dir => {
@@ -32,9 +27,6 @@ describe('d2l-list-nested', () => {
 				{ name: 'one list all possible combos', selector: '#one-list-all-possible-combos' }
 			].forEach((info) => {
 				it(info.name, async function() {
-					await page.evaluate(() => {
-						return new Promise(resolve => setTimeout(resolve, 0));
-					});
 					const rect = await visualDiff.getRect(page, info.selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
