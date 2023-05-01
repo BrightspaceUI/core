@@ -103,7 +103,7 @@ describe('d2l-collapsible-panel', () => {
 		it('should not expand on click', async() => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" skeleton>
-					<div slot=header>Header</div>
+					<div slot="header">Header</div>
 					<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
 					Panel Content
 				</d2l-collapsible-panel>

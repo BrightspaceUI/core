@@ -98,9 +98,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			:host([padding-type="large"][type="inline"]) {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
-			:host([skeleton]) {
-				pointer-events: none;
-			}
 			.d2l-collapsible-panel {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.4rem;
@@ -389,7 +386,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderHeader() {
-
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-header-primary">
@@ -398,7 +394,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 						<slot name="actions"></slot>
 					</div>
 					<div class="d2l-collapsible-panel-opener">
-						<d2l-icon-custom size="tier1" class='d2l-skeletize'>
+						<d2l-icon-custom size="tier1" class="d2l-skeletize">
 							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
 								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
