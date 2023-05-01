@@ -7,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const normalizeHeadingNumber = (number) => {
 	number = parseInt(number);
@@ -26,7 +27,7 @@ const defaultHeading = 3;
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
  */
-class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
+class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -82,7 +83,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
+		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
 			:host {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
@@ -96,6 +97,9 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			}
 			:host([padding-type="large"][type="inline"]) {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
+			}
+			:host([skeleton]) {
+				pointer-events: none;
 			}
 			.d2l-collapsible-panel {
 				border: 1px solid var(--d2l-color-mica);
@@ -385,6 +389,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	_renderHeader() {
+
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-header-primary">
@@ -393,7 +398,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 						<slot name="actions"></slot>
 					</div>
 					<div class="d2l-collapsible-panel-opener">
-						<d2l-icon-custom size="tier1">
+						<d2l-icon-custom size="tier1" class='d2l-skeletize'>
 							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
 								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
@@ -414,6 +419,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
+			'd2l-skeletize': true,
 			[`d2l-heading-${headingStyle}`]: true,
 		};
 
@@ -449,6 +455,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	_toggleExpand() {
+		if (this.skeleton) return;
 		this.expanded = !this.expanded;
 	}
 }
