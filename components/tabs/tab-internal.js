@@ -2,13 +2,14 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
 	SPACE: 32
 };
 
-class Tab extends RtlMixin(LitElement) {
+class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -20,7 +21,7 @@ class Tab extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				box-sizing: border-box;
 				display: inline-block;
@@ -54,6 +55,9 @@ class Tab extends RtlMixin(LitElement) {
 				-webkit-transition: box-shadow 0.2s;
 				transition: box-shadow 0.2s;
 				width: calc(100% - 1.2rem);
+			}
+			:host([skeleton]) .d2l-tab-selected-indicator {
+				position: absolute; /* make sure skeleton styles do not override this */
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
 				margin-left: 0;
@@ -89,7 +93,7 @@ class Tab extends RtlMixin(LitElement) {
 					transition: none;
 				}
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -117,8 +121,8 @@ class Tab extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="d2l-tab-text">${this.text}</div>
-			<div class="d2l-tab-selected-indicator"></div>
+			<div class="d2l-tab-text d2l-skeletize">${this.text}</div>
+			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}
 
