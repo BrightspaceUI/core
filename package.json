@@ -57,7 +57,7 @@
     "axe-core": "^4",
     "chalk": "^5",
     "eslint": "^8",
-    "eslint-config-brightspace": "^0.21",
+    "eslint-config-brightspace": "^0.23",
     "glob-all": "^3",
     "lit-analyzer": "^1",
     "messageformat-validator": "^2",
