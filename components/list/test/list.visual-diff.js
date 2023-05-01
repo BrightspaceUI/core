@@ -53,13 +53,6 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
-	const wait = (selector, milliseconds) => {
-		return page.$eval(selector, async(elem, milliseconds) => {
-			await elem.updateComplete;
-			await new Promise(resolve => setTimeout(resolve, milliseconds));
-		}, milliseconds);
-	};
-
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
@@ -187,7 +180,11 @@ describe('d2l-list', () => {
 		{ category: 'nested', tests: [
 			{ name: 'none-selected', selector: '#nested-none-selected' },
 			{ name: 'some-selected', selector: '#nested-some-selected' },
-			{ name: 'all-selected', selector: '#nested-all-selected', action: () => wait('#nested-all-selected d2l-list-controls', 100) }
+			{ name: 'all-selected', selector: '#nested-all-selected', action: async() => await page.waitForFunction(() => {
+				const listControls = document.querySelector('#nested-all-selected d2l-list-controls');
+				const selectionSummary = listControls.shadowRoot.querySelector('d2l-selection-summary');
+				return selectionSummary._summary === '5 selected';
+			}) }
 		] },
 		{ category: 'expand-collapse', tests: [
 			{ name: 'default', selector: '#expand-collapse-default' },
