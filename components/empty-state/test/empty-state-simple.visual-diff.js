@@ -8,7 +8,7 @@ describe('d2l-empty-state-simple', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.goto(
 			`${visualDiff.getBaseUrl()}/components/empty-state/test/empty-state-simple.visual-diff.html`,

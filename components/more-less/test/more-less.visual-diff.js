@@ -36,7 +36,7 @@ describe('d2l-more-less', () => {
 	};
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await browser.newPage();
 		await visualDiff.disableAnimations(page);
 		await page.setViewport({ width: 800, height: 1100, deviceScaleFactor: 2 });

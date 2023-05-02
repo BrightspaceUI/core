@@ -42,7 +42,7 @@ describe('d2l-template-primary-secondary', () => {
 	describe('mobile', () => {
 
 		before(async() => {
-			browser = await puppeteer.launch();
+			browser = await puppeteer.launch({ headless: 'new' });
 			page = await visualDiff.createPage(browser, { viewport: { width: 767, height: 2000 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-mobile.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
@@ -92,7 +92,7 @@ describe('d2l-template-primary-secondary', () => {
 	describe('desktop', () => {
 
 		before(async() => {
-			browser = await puppeteer.launch();
+			browser = await puppeteer.launch({ headless: 'new' });
 			page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 4000 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-desktop.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
@@ -144,7 +144,7 @@ describe('d2l-template-primary-secondary', () => {
 	describe('persist', () => {
 
 		before(async() => {
-			browser = await puppeteer.launch();
+			browser = await puppeteer.launch({ headless: 'new' });
 			page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 300 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-persist.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
@@ -168,7 +168,7 @@ describe('d2l-template-primary-secondary', () => {
 	describe('stacking', () => {
 
 		before(async() => {
-			browser = await puppeteer.launch();
+			browser = await puppeteer.launch({ headless: 'new' });
 			page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 1000 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-stacking.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();

@@ -9,7 +9,7 @@ describe('d2l-tooltip truncating', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tooltip/test/tooltip-truncating.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

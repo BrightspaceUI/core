@@ -8,7 +8,7 @@ describe('colors', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/colors/test/colors.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

@@ -8,7 +8,7 @@ describe('d2l-breadcrumbs', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/breadcrumbs/test/breadcrumbs.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

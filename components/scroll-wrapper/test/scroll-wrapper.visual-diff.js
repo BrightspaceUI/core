@@ -7,7 +7,7 @@ describe('d2l-scroll-wrapper', () => {
 
 	let browser, page;
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 	});
 

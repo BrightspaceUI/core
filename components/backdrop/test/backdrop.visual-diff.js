@@ -8,7 +8,7 @@ describe('d2l-backdrop', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/backdrop/test/backdrop.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

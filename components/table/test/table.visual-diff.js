@@ -48,7 +48,7 @@ describe('d2l-table', () => {
 	};
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.setViewport({ width: 500, height: 300, deviceScaleFactor: 2 });
 	});

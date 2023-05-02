@@ -8,7 +8,7 @@ describe('d2l-selection', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/selection/test/selection.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

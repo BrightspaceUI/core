@@ -7,7 +7,7 @@ describe('d2l-filter-tags', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 1700, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/filter/test/filter-tags.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

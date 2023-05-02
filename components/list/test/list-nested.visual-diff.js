@@ -8,7 +8,7 @@ describe('d2l-list-nested', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
 	});
 

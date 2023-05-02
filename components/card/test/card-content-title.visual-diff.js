@@ -8,7 +8,7 @@ describe('d2l-card-content-title', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/card/test/card-content-title.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

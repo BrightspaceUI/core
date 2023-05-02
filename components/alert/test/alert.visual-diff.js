@@ -8,7 +8,7 @@ describe('d2l-alert', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/alert/test/alert.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

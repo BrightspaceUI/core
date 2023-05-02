@@ -15,7 +15,7 @@ describe('d2l-tabs', () => {
 	};
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2000 } });
 	});
 

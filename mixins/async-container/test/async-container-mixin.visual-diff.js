@@ -18,7 +18,7 @@ describe('d2l-async-container-mixin', function() {
 	};
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/mixins/async-container/test/async-container-mixin.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

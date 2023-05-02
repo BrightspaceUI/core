@@ -9,7 +9,7 @@ describe('d2l-dropdown-content', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 400 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/dropdown/test/dropdown-content.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();

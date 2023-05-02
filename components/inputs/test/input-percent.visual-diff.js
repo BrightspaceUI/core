@@ -7,7 +7,7 @@ describe('d2l-input-percent', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ headless: 'new' });
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-percent.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
