@@ -47,6 +47,21 @@ describe('d2l-tabs', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('skeleton', async function() {
+			const rect = await visualDiff.getRect(page, '#skeleton');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('skeleton no text', async function() {
+			const rect = await visualDiff.getRect(page, '#skeleton-no-text');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('ellipsis', async function() {
+			const rect = await visualDiff.getRect(page, '#ellipsis');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('non-selected tab focus', async function() {
 			await focusTabs('#no-panel-selected');
 			await page.keyboard.press('ArrowRight');

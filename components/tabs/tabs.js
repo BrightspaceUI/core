@@ -12,6 +12,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,7 +53,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -72,7 +73,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [super.styles, bodyCompactStyles, css`
 			:host {
 				--d2l-tabs-background-color: white;
 				box-sizing: border-box;
@@ -192,6 +193,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
+			:host([skeleton]) .d2l-tabs-scroll-button {
+				visibility: hidden;
+			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
 				margin-top: 0;
 				-webkit-transition: margin-top 200ms ease-out;
@@ -310,6 +314,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 		const tabsLayoutClasses = {
 			'd2l-tabs-layout': true,
 			'd2l-body-compact': true,
+			'd2l-skeletize-container': true,
 			'd2l-tabs-layout-anim': this._state === 'anim',
 			'd2l-tabs-layout-shown': this._state === 'shown'
 		};
@@ -348,6 +353,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									data-state="${tabInfo.state}"
+									?skeleton="${this.skeleton}"
 									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
