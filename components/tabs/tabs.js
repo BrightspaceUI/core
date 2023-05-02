@@ -193,6 +193,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
+			:host([skeleton]) .d2l-tabs-scroll-button {
+				visibility: hidden;
+			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
 				margin-top: 0;
 				-webkit-transition: margin-top 200ms ease-out;
@@ -334,7 +337,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 					class="d2l-tabs-container"
 					style="${styleMap(tabsContainerStyles)}">
 					<div class="d2l-tabs-scroll-previous-container">
-						<button class="d2l-tabs-scroll-button d2l-skeletize"
+						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollPrevious}"
 							title="${this.localize('components.tabs.previous')}">
 							<d2l-icon icon="tier1:chevron-left"></d2l-icon>
@@ -358,7 +361,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 						</div>
 					`)}
 					<div class="d2l-tabs-scroll-next-container">
-						<button class="d2l-tabs-scroll-button d2l-skeletize"
+						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollNext}"
 							title="${this.localize('components.tabs.next')}">
 							<d2l-icon icon="tier1:chevron-right"></d2l-icon>

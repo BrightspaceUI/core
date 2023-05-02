@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -37,6 +38,10 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
+			:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
+				bottom: 0.15rem;
+				top: 0.15rem;
+			}
 			:host(:first-child) .d2l-tab-text {
 				margin-left: 0;
 			}
@@ -58,6 +63,9 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 			}
 			:host([skeleton]) .d2l-tab-selected-indicator {
 				position: absolute; /* make sure skeleton styles do not override this */
+			}
+			.d2l-tab-text-skeletize-override {
+				min-width: 50px;
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
 				margin-left: 0;
@@ -120,8 +128,15 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
+		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
+		const textClasses = {
+			'd2l-tab-text': true,
+			'd2l-skeletize': true,
+			'd2l-tab-text-skeletize-override': overrideSkeletonText
+		};
+
 		return html`
-			<div class="d2l-tab-text d2l-skeletize">${this.text}</div>
+			<div class="${classMap(textClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</div>
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}
