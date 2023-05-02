@@ -680,6 +680,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = true;
 		if (this._dimensions.length === 1) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
+			announce(this._dimensions[0].introductoryText);
 		}
 		this._stopPropagation(e);
 	}
