@@ -234,7 +234,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					no-padding-header
 					no-padding
 					?opened="${this.opened}"
-					?trap-focus="${!this._isDimensionEmpty(this._dimensions[0])}">
+					>
 					${header}
 					${dimensions}
 				</d2l-dropdown-content>`
@@ -681,6 +681,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (this._dimensions.length === 1) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
 			announce(this._dimensions[0].introductoryText);
+			const searchInput = this.shadowRoot
+			&& this.shadowRoot.querySelector('d2l-input-search');
+			if (searchInput) searchInput.focus();
+
 		}
 		this._stopPropagation(e);
 	}

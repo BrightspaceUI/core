@@ -14,7 +14,7 @@ export function announce(message) {
 	}
 	if (!container) {
 		container = document.createElement('div');
-		container.setAttribute('aria-live', 'polite');
+		container.setAttribute('aria-live', 'assertive');
 		container.style.display = 'inline-block';
 		container.style.position = 'fixed';
 		container.style.height = '0';
