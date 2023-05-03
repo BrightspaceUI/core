@@ -102,7 +102,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.4rem;
 			}
-			:host(:not([expanded])) .d2l-collapsible-panel {
+			:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
 				cursor: pointer;
 			}
 			:host([type="subtle"]) .d2l-collapsible-panel {
@@ -124,8 +124,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel-header {
 				border-radius: 0.4rem;
-				cursor: pointer;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
+			}
+			:host(:not([skeleton])) .d2l-collapsible-panel-header {
+				cursor: pointer;
 			}
 			:host([type="inline"]) .d2l-collapsible-panel-header {
 				border-radius: 0;
@@ -374,6 +376,11 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_handleSummarySlotChange(e) {
 		const content = e.target.assignedNodes({ flatten: true });
+		for (const element of content) {
+			if (this.skeleton) element.setAttribute('skeleton', true);
+			else element.removeAttribute('skeleton');
+		}
+
 		this._hasSummary = content?.length > 0;
 	}
 
