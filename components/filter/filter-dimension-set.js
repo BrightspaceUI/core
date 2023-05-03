@@ -12,6 +12,11 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * The introductory text to display at the top of the filter dropdown
+			 * @type {string}
+			 */
+			introductoryText: { type: String, attribute: 'introductory-text' },
+			/**
 			 * REQUIRED: Unique key to represent this dimension in the filter
 			 * @type {string}
 			 */
@@ -36,11 +41,6 @@ class FilterDimensionSet extends LitElement {
 			 * @type {boolean}
 			 */
 			selectionSingle: { type: Boolean, attribute: 'selection-single' },
-			/**
-			 * The introductory text to display at the top of the filter dropdown
-			 * @type {string}
-			 */
-			introductoryText: { type: String, attribute: 'introductory-text' },
 			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 * @type {string}
