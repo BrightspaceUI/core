@@ -123,7 +123,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
 			.d2l-collapsible-panel-before {
-				grid-row:1/-1;
+				grid-row: 1/-1;
 			}
 			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
 				margin: 0.3rem 0;
@@ -132,7 +132,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			.d2l-collapsible-panel-header {
 				border-radius: 0.4rem;
 				cursor: pointer;
-				display:grid;
+				display: grid;
 				grid-template-columns: auto 1fr;
 				grid-template-rows: auto auto;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
@@ -185,7 +185,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 				display: flex;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
 			}
-			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary{
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
 				margin-inline-start: 0.75rem;
 			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
