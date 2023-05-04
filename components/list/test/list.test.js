@@ -6,6 +6,11 @@ import '../list-item-content.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
+const keyCodes = Object.freeze({
+	UP: { name: 'up arrow', key: 'ArrowUp' },
+	DOWN: { name: 'down arrow', cokeyde: 'ArrowDown' }
+});
+
 const selectionInputRendering = async item => {
 	return new Promise(resolve => {
 		const intervalId = setInterval(() => {
@@ -33,6 +38,52 @@ describe('d2l-list', () => {
 
 		it('should construct list', () => {
 			runConstructor('d2l-list');
+		});
+
+	});
+
+	describe('navigation', () => {
+
+		[
+			{ keyPress: keyCodes.UP },
+			{ keyPress: keyCodes.DOWN }
+		].forEach(testCase => {
+			it(`Focus stays inside the list when in grid mode after ${testCase.keyPress.name} is pressed`, async() => {
+				const elem = await fixture(html`
+				<div>
+					<d2l-list id="L1">
+						<d2l-list-item selectable key="L1-1" label="L1-1"></d2l-list-item>
+					</d2l-list>
+					<d2l-list id="L2" grid>
+						<d2l-list-item key="L2-1" label="L2-1"></d2l-list-item>
+						<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+						<d2l-list-item key="L2-3" label="L2-3"></d2l-list-item>
+					</d2l-list>
+					<d2l-list id="L3">
+						<d2l-list-item selectable key="L3-1" label="L3-1"></d2l-list-item>
+					</d2l-list>
+				</div>
+			`);
+				await elem.updateComplete;
+				await elem.querySelector('#L1').updateComplete;
+				await elem.querySelector('#L2').updateComplete;
+				await elem.querySelector('#L3').updateComplete;
+				await elem.querySelector('[key="L1-1"]').updateComplete;
+				await elem.querySelector('[key="L2-1"]').updateComplete;
+				await elem.querySelector('[key="L2-2"]').updateComplete;
+				await elem.querySelector('[key="L2-3"]').updateComplete;
+				await elem.querySelector('[key="L3-1"]').updateComplete;
+				await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
+
+				const listItem = elem.querySelector('[key="L2-2"]');
+				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
+				listItem.focus();
+
+				const event = new KeyboardEvent('keydown', { key: testCase.keyPress.key });
+				setTimeout(() => listItemLayout.dispatchEvent(event));
+				await oneEvent(listItemLayout, 'keydown');
+				expect(listItem.hasAttribute('_focusing')).to.be.true;
+			});
 		});
 
 	});
