@@ -376,12 +376,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_handleSummarySlotChange(e) {
 		const content = e.target.assignedNodes({ flatten: true });
-		for (const element of content) {
-			if (element.tagName !== 'D2L-COLLAPSIBLE-PANEL-SUMMARY-ITEM') continue;
-			if (this.skeleton && !element.skeleton) element.skeleton = true;
-			else if (!this.skeleton && element.skeleton) element.skeleton = false;
-		}
-
 		this._hasSummary = content?.length > 0;
 	}
 
