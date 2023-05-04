@@ -77,6 +77,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			noSticky: { attribute: 'no-sticky', type: Boolean },
 			_focused: { state: true },
 			_hasSummary: { state: true },
+			_hasBefore: { state: true },
 			_scrolled: { state: true },
 		};
 	}
@@ -121,9 +122,19 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			:host([heading-style="4"]) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
+			.d2l-collapsible-panel-before {
+				grid-row:1/-1;
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
+				margin: 0.3rem 0;
+				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
 			.d2l-collapsible-panel-header {
 				border-radius: 0.4rem;
 				cursor: pointer;
+				display:grid;
+				grid-template-columns: auto 1fr;
+				grid-template-rows: auto auto;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
 			}
 			:host([type="inline"]) .d2l-collapsible-panel-header {
@@ -152,6 +163,9 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 				overflow-y: hidden;
 				user-select: none;
 			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
+				margin-inline-start: 0.75rem;
+			}
 
 			.d2l-collapsible-panel.focused {
 				outline: var(--d2l-collapsible-panel-focus-outline);
@@ -170,6 +184,9 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			.d2l-collapsible-panel-header-secondary {
 				display: flex;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary{
+				margin-inline-start: 0.75rem;
 			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
 				cursor: default;
@@ -286,6 +303,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
 			'has-summary': this._hasSummary,
+			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
@@ -364,6 +382,12 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 		}
 	}
 
+	_handleHeaderStartSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._hasBefore = content?.length > 0;
+	}
+
 	_handlePanelClick(e) {
 		if (!this.expanded) {
 			this._toggleExpand();
@@ -387,6 +411,9 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	_renderHeader() {
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
+				<div class="d2l-collapsible-panel-before">
+					<slot name="before" @slotchange="${this._handleHeaderStartSlotChange}"></slot>
+				</div>
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">

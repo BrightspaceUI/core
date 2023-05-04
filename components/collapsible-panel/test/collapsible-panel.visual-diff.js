@@ -82,6 +82,7 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'inline-large-padding-expanded', selector: '#inline-large-padding-expanded' },
 			{ name: 'inline-long', selector: '#inline-long' },
 			{ name: 'custom', selector: '#custom' },
+			{ name: 'custom-before', selector: '#custom-before' },
 			{ name: 'custom-expanded', selector: '#custom-expanded' },
 			{ name: 'custom-summary', selector: '#custom-summary' },
 			{ name: 'custom-summary-expanded', selector: '#custom-summary-expanded' },
@@ -116,6 +117,7 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'inline-expanded', selector: '#inline-expanded' },
 			{ name: 'inline-summary', selector: '#inline-summary' },
 			{ name: 'custom', selector: '#custom' },
+			{ name: 'custom-before', selector: '#custom-before' },
 			{ name: 'custom-expanded', selector: '#custom-expanded' },
 			{ name: 'custom-summary', selector: '#custom-summary' },
 		].forEach((info) => {
