@@ -189,6 +189,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 | Property | Type | Description |
 |---|---|---|
+| `header-text` | String | The header text to display as the list header |
 | `introductory-text` | String | The introductory text to display at the top of the filter dropdown |
 | `key` | String, required | Unique identifier for the dimension |
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |

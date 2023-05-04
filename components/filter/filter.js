@@ -18,7 +18,7 @@ import '../menu/menu-item.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
 
-import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
+import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -69,7 +69,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, offscreenStyles, css`
+		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles, offscreenStyles, css`
 			[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -162,6 +162,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-empty-state-container {
 				padding: 0.9rem;
+			}
+
+			.list-header-text {
+				color: var(--d2l-color-ferrite);
+				margin: 0;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -487,6 +492,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			if (count === 0) return searchResults;
 		}
 
+		let listHeader = nothing;
+		if (dimension.headerText && dimension.searchValue === '') {
+			listHeader = html`
+				<d2l-list-item>
+					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
+				</d2l-list-item>
+			`;
+		}
+
 		return html`
 			${searchResults}
 			<d2l-list
@@ -496,6 +510,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				grid
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
+				${listHeader}
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						?selection-disabled="${item.disabled}"
@@ -736,8 +751,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
+					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
 					info.searchType = dimension.searchType;
+					info.searchValue = '';
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					info.searchEmptyState = dimension.getSearchEmptyState();

@@ -259,6 +259,7 @@ describe('d2l-filter', () => {
 
 			[
 				'introductory-text',
+				'header-text',
 				'single-selection-select-all',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
@@ -320,6 +321,7 @@ describe('d2l-filter', () => {
 
 			[
 				'single-set-introductory-text',
+				'single-set-header-text',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection-no-search',
 				'single-set-multi-selection-no-search-select-all',
