@@ -20,8 +20,8 @@ const defaultHeading = 3;
 
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
- * @slot header - Slot for supporting header content
  * @slot before - Slot for content to be placed at the left side of the header, aligned with the title and header slot
+ * @slot header - Slot for supporting header content
  * @slot summary - Slot for the summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item`
  * @slot default - Slot for the expanded content
  * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
