@@ -115,6 +115,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 
 | Slot | Type | Description |
 |--|--|--|
+| `before` | optional | Slot for content to be placed at the left side of the header, aligned with the title and header slot |
 | `header` | optional | Supporting header content |
 | `actions` | optional | Buttons and dropdown openers to be placed in top right corner of header |
 | `summary` | optional | Summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item` |
@@ -132,6 +133,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
 | `padding-type` | String | Optionally set horizontal padding of inline panels |
 | `panel-title` | String | The title of the panel |
+| `skeleton` | Boolean | Renders the panel title and the expand/collapse icon as skeleton loaders |
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
 
