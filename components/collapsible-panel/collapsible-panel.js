@@ -21,6 +21,7 @@ const defaultHeading = 3;
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
  * @slot header - Slot for supporting header content
+ * @slot before - Slot for content to be placed at the left side of the header, aligned with the title and header slot
  * @slot summary - Slot for the summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item`
  * @slot default - Slot for the expanded content
  * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
@@ -77,6 +78,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			noSticky: { attribute: 'no-sticky', type: Boolean },
 			_focused: { state: true },
+			_hasBefore: { state: true },
 			_hasSummary: { state: true },
 			_scrolled: { state: true },
 		};
@@ -122,8 +124,19 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			:host([heading-style="4"]) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
+			.d2l-collapsible-panel-before {
+				grid-row: 1/-1;
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
+				margin: 0.3rem 0;
+				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
 			.d2l-collapsible-panel-header {
 				border-radius: 0.4rem;
+				cursor: pointer;
+				display: grid;
+				grid-template-columns: auto 1fr;
+				grid-template-rows: auto auto;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
 			}
 			:host(:not([skeleton])) .d2l-collapsible-panel-header {
@@ -155,6 +168,9 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				overflow-y: hidden;
 				user-select: none;
 			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
+				margin-inline-start: 0.75rem;
+			}
 
 			.d2l-collapsible-panel.focused {
 				outline: var(--d2l-collapsible-panel-focus-outline);
@@ -172,7 +188,11 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel-header-secondary {
 				display: flex;
+				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
+				margin-inline-start: 0.75rem;
 			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
 				cursor: default;
@@ -289,6 +309,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
 			'has-summary': this._hasSummary,
+			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
@@ -344,6 +365,12 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		}
 	}
 
+	_handleBeforeSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._hasBefore = content?.length > 0;
+	}
+
 	_handleExpandCollapse(e) {
 		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
 		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
@@ -390,6 +417,9 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	_renderHeader() {
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
+				<div class="d2l-collapsible-panel-before">
+					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
+				</div>
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
