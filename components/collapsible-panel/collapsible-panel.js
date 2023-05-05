@@ -21,6 +21,7 @@ const defaultHeading = 3;
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
  * @slot header - Slot for supporting header content
+ * @slot before - Slot for content to be placed at the left side of the header, aligned with the title and header slot
  * @slot summary - Slot for the summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item`
  * @slot default - Slot for the expanded content
  * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
@@ -417,7 +418,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-before">
-					<slot name="before" @slotchange="${this._handleHeaderStartSlotChange}"></slot>
+					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderPanelTitle()}
