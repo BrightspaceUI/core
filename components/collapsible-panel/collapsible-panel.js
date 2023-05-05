@@ -76,8 +76,8 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			 */
 			noSticky: { attribute: 'no-sticky', type: Boolean },
 			_focused: { state: true },
-			_hasSummary: { state: true },
 			_hasBefore: { state: true },
+			_hasSummary: { state: true },
 			_scrolled: { state: true },
 		};
 	}
@@ -183,6 +183,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			}
 			.d2l-collapsible-panel-header-secondary {
 				display: flex;
+				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
 			}
 			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
@@ -359,6 +360,12 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 		}
 	}
 
+	_handleBeforeSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._hasBefore = content?.length > 0;
+	}
+
 	_handleExpandCollapse(e) {
 		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
 		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
@@ -380,12 +387,6 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 		if (e.target !== header) {
 			e.stopPropagation();
 		}
-	}
-
-	_handleHeaderStartSlotChange(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-
-		this._hasBefore = content?.length > 0;
 	}
 
 	_handlePanelClick(e) {
