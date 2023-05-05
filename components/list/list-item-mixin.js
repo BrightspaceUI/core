@@ -169,7 +169,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			.d2l-list-item-content-extend-separators > [slot="content"] {
+			.d2l-list-item-content-extend-separators > [slot="content"],
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}

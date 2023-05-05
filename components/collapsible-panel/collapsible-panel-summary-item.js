@@ -1,11 +1,12 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component for a "summary item" child component that describes the content in a collapsible panel.
  */
-class CollapsiblePanelSummaryItem extends LitElement {
+class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -18,7 +19,7 @@ class CollapsiblePanelSummaryItem extends LitElement {
 	}
 
 	static get styles() {
-		return [bodySmallStyles, css`
+		return [super.styles, bodySmallStyles, css`
 			:host {
 				color: var(--d2l-color-galena);
 				display: block;
@@ -38,7 +39,7 @@ class CollapsiblePanelSummaryItem extends LitElement {
 	}
 
 	render() {
-		return html`<p class="d2l-body-small">${this.text}</p>`;
+		return html`<p class="d2l-body-small d2l-skeletize">${this.text}</p>`;
 	}
 }
 
