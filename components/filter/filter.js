@@ -510,8 +510,22 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				grid
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
+				${dimension.values.filter(item => item.selectedOnOpen).map(item => html`
+					<d2l-list-item
+						?selection-disabled="${item.disabled}"
+						?hidden="${item.hidden}"
+						key="${item.key}"
+						label="${item.text}"
+						selectable
+						?selected="${item.selected}">
+						<div class="d2l-filter-dimension-set-value d2l-body-compact">
+							<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+							${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+						</div>
+					</d2l-list-item>
+				`)}
 				${listHeader}
-				${dimension.values.map(item => html`
+				${dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
 					<d2l-list-item
 						?selection-disabled="${item.disabled}"
 						?hidden="${item.hidden}"
@@ -692,6 +706,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleDropdownOpen(e) {
+		for (const dimension of this._dimensions) {
+			for (const value of dimension.values) {
+				if (value.selected) value.selectedOnOpen = true;
+			}
+		}
 		this.opened = true;
 		if (this._dimensions.length === 1) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
