@@ -11,6 +11,15 @@ const keyCodes = Object.freeze({
 	DOWN: { name: 'down arrow', key: 40 }
 });
 
+const awaitListElementUpdates = async(rootElement, queries) => {
+	await rootElement.updateComplete;
+	for (const query of queries) {
+		const element = rootElement.querySelector(query);
+		await element.updateComplete;
+	}
+	await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
+};
+
 const selectionInputRendering = async item => {
 	return new Promise(resolve => {
 		const intervalId = setInterval(() => {
@@ -64,16 +73,16 @@ describe('d2l-list', () => {
 						</d2l-list>
 					</div>
 				`);
-				await elem.updateComplete;
-				await elem.querySelector('#L1').updateComplete;
-				await elem.querySelector('#L2').updateComplete;
-				await elem.querySelector('#L3').updateComplete;
-				await elem.querySelector('[key="L1-1"]').updateComplete;
-				await elem.querySelector('[key="L2-1"]').updateComplete;
-				await elem.querySelector('[key="L2-2"]').updateComplete;
-				await elem.querySelector('[key="L2-3"]').updateComplete;
-				await elem.querySelector('[key="L3-1"]').updateComplete;
-				await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
+				await awaitListElementUpdates(elem, [
+					'#L1',
+					'#L2',
+					'#L3',
+					'[key="L1-1"]',
+					'[key="L2-1"]',
+					'[key="L2-2"]',
+					'[key="L2-3"]',
+					'[key="L3-1"]',
+				]);
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
@@ -106,15 +115,15 @@ describe('d2l-list', () => {
 						</d2l-list-item>
 					</d2l-list>	
 				`);
-				await elem.updateComplete;
-				await elem.querySelector('#L2').updateComplete;
-				await elem.querySelector('#L3').updateComplete;
-				await elem.querySelector('[key="L1-1"]').updateComplete;
-				await elem.querySelector('[key="L2-1"]').updateComplete;
-				await elem.querySelector('[key="L2-2"]').updateComplete;
-				await elem.querySelector('[key="L3-1"]').updateComplete;
-				await elem.querySelector('[key="L3-2"]').updateComplete;
-				await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
+				await awaitListElementUpdates(elem, [
+					'#L2',
+					'#L3',
+					'[key="L1-1"]',
+					'[key="L2-1"]',
+					'[key="L2-2"]',
+					'[key="L3-1"]',
+					'[key="L3-2"]',
+				]);
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
@@ -139,10 +148,10 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			await elem.updateComplete;
-			await elem.querySelector('[key="L1-1"]').updateComplete;
-			await elem.querySelector('[key="L1-2"]').updateComplete;
-			await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
+			await awaitListElementUpdates(elem, [
+				'[key="L1-1"]',
+				'[key="L1-2"]',
+			]);
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable item is clicked', async() => {
@@ -186,12 +195,12 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await elem.updateComplete;
-			await elem.querySelector('[key="L1-1"]').updateComplete;
-			await elem.querySelector('[slot="nested"]').updateComplete;
-			await elem.querySelector('[key="L2-1"]').updateComplete;
-			await elem.querySelector('[key="L2-2"]').updateComplete;
-			await new Promise(resolve => requestAnimationFrame(resolve)); // US143322: Needed by Firefox
+			await awaitListElementUpdates(elem, [
+				'[key="L1-1"]',
+				'[slot="nested"]',
+				'[key="L2-1"]',
+				'[key="L2-2"]',
+			]);
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable leaf item is clicked', async() => {
