@@ -501,46 +501,75 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			`;
 		}
 
-		return html`
-			${searchResults}
-			<d2l-list
-				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
-				@d2l-list-selection-change="${this._handleChangeSetDimension}"
-				extend-separators
-				grid
-				?selection-single="${dimension.selectionSingle}"
-				separators="between">
-				${dimension.values.filter(item => item.selectedOnOpen).map(item => html`
-					<d2l-list-item
-						?selection-disabled="${item.disabled}"
-						?hidden="${item.hidden}"
-						key="${item.key}"
-						label="${item.text}"
-						selectable
-						?selected="${item.selected}">
-						<div class="d2l-filter-dimension-set-value d2l-body-compact">
-							<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
-							${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
-						</div>
-					</d2l-list-item>
-				`)}
+		if (dimension.selectedFirst) {
+			return html`
+				${searchResults}
+				<d2l-list
+					id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
+					@d2l-list-selection-change="${this._handleChangeSetDimension}"
+					extend-separators
+					grid
+					?selection-single="${dimension.selectionSingle}"
+					separators="between">
+					${dimension.values.filter(item => item.selectedOnOpen).map(item => html`
+						<d2l-list-item
+							?selection-disabled="${item.disabled}"
+							?hidden="${item.hidden}"
+							key="${item.key}"
+							label="${item.text}"
+							selectable
+							?selected="${item.selected}">
+							<div class="d2l-filter-dimension-set-value d2l-body-compact">
+								<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+								${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+							</div>
+						</d2l-list-item>
+					`)}
+					${listHeader}
+					${dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
+						<d2l-list-item
+							?selection-disabled="${item.disabled}"
+							?hidden="${item.hidden}"
+							key="${item.key}"
+							label="${item.text}"
+							selectable
+							?selected="${item.selected}">
+							<div class="d2l-filter-dimension-set-value d2l-body-compact">
+								<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+								${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+							</div>
+						</d2l-list-item>
+					`)}
+				</d2l-list>
+			`;
+		} else {
+			return html`
+				${searchResults}
 				${listHeader}
-				${dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
-					<d2l-list-item
-						?selection-disabled="${item.disabled}"
-						?hidden="${item.hidden}"
-						key="${item.key}"
-						label="${item.text}"
-						selectable
-						?selected="${item.selected}">
-						<div class="d2l-filter-dimension-set-value d2l-body-compact">
-							<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
-							${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
-						</div>
-					</d2l-list-item>
-				`)}
-			</d2l-list>
-		`;
+				<d2l-list
+					id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
+					@d2l-list-selection-change="${this._handleChangeSetDimension}"
+					extend-separators
+					grid
+					?selection-single="${dimension.selectionSingle}"
+					separators="between">
+					${dimension.values.map(item => html`
+						<d2l-list-item
+							?selection-disabled="${item.disabled}"
+							?hidden="${item.hidden}"
+							key="${item.key}"
+							label="${item.text}"
+							selectable
+							?selected="${item.selected}">
+							<div class="d2l-filter-dimension-set-value d2l-body-compact">
+								<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+								${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+							</div>
+						</d2l-list-item>
+					`)}
+				</d2l-list>
+			`;
+		}
 	}
 
 	_dispatchChangeEvent(dimension, change) {
@@ -709,6 +738,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		for (const dimension of this._dimensions) {
 			for (const value of dimension.values) {
 				if (value.selected) value.selectedOnOpen = true;
+				else value.selectedOnOpen = false;
 			}
 		}
 		this.opened = true;
@@ -774,6 +804,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.introductoryText = dimension.introductoryText;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
+					info.selectedFirst = dimension.selectedFirst;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					info.searchEmptyState = dimension.getSearchEmptyState();
