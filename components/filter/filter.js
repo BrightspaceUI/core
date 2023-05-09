@@ -166,7 +166,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.list-header-text {
 				color: var(--d2l-color-ferrite);
-				margin: 0;
+				margin: 0.55rem 0.9rem;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -495,16 +495,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		let listHeader = nothing;
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
-				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
-				</d2l-list-item>
+				<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
 			`;
 		}
 
 		return html`
 			${searchResults}
 			<d2l-list
-				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
+				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}-selected"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
@@ -524,7 +522,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						</div>
 					</d2l-list-item>
 				`)}
-				${listHeader}
+			</d2l-list>
+			${listHeader}
+			<d2l-list
+				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
+				@d2l-list-selection-change="${this._handleChangeSetDimension}"
+				extend-separators
+				grid
+				?selection-single="${dimension.selectionSingle}"
+				separators="between">
 				${dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
 					<d2l-list-item
 						?selection-disabled="${item.disabled}"
