@@ -611,6 +611,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				// if a tab was removed, include old info to animate it away
 				if (newTabInfos.findIndex(newInfo => newInfo.id === info.id) === -1) {
 					info.state = 'removing';
+					info.selected = false;
 					newTabInfos.splice(index, 0, info);
 				}
 			});
@@ -618,9 +619,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this._tabInfos = newTabInfos;
 
 		if (this._tabInfos.length > 0 && !selectedTabInfo) {
-			this._tabInfos[0].activeFocusable = true;
-			this._tabInfos[0].selected = true;
-			selectedTabInfo = this._tabInfos[0];
+			selectedTabInfo = this._tabInfos.find(tabInfo => tabInfo.state !== 'removing');
+			if (selectedTabInfo) {
+				selectedTabInfo.activeFocusable = true
+				selectedTabInfo.selected = true;
+			}
 		}
 
 		await this.updateComplete;
