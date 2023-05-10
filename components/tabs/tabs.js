@@ -621,7 +621,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		if (this._tabInfos.length > 0 && !selectedTabInfo) {
 			selectedTabInfo = this._tabInfos.find(tabInfo => tabInfo.state !== 'removing');
 			if (selectedTabInfo) {
-				selectedTabInfo.activeFocusable = true
+				selectedTabInfo.activeFocusable = true;
 				selectedTabInfo.selected = true;
 			}
 		}
