@@ -12,6 +12,11 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * The header text to display as the list header
+			 * @type {string}
+			 */
+			headerText: { type: String, attribute: 'header-text' },
+			/**
 			 * The introductory text to display at the top of the filter dropdown
 			 * @type {string}
 			 */
@@ -56,6 +61,7 @@ class FilterDimensionSet extends LitElement {
 
 	constructor() {
 		super();
+		this.headerText = '';
 		this.introductoryText = '';
 		this.loading = false;
 		this.searchType = 'automatic';
