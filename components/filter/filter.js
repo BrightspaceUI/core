@@ -495,16 +495,21 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		let listHeader = nothing;
+		let offscreenHeader = nothing;
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
 				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
+					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
 				</d2l-list-item>
+			`;
+			offscreenHeader = html`
+				<h4 class="d2l-offscreen">${dimension.headerText}</h4>
 			`;
 		}
 
 		return html`
 			${searchResults}
+			${offscreenHeader}
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
