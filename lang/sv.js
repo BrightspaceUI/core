@@ -19,7 +19,7 @@ export default {
 	"components.filter.loading": "Läser in filter",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Inga filter tillämpade.} one {{number} filter tillämpat.} other {{number} filter tillämpade.}}",
 	"components.filter.filters": "Filter",
-	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
+	"components.filter.headerTextDescription": "{headerText}. Selected filters appear first.",
 	"components.filter.noFilters": "Inga tillgängliga filter",
 	"components.filter.searchResults": "{number, plural, =0 {Inga sökresultat} one {{number} sökresultat} other {{number} sökresultat}}",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",

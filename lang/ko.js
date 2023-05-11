@@ -19,7 +19,7 @@ export default {
 	"components.filter.loading": "필터 로드 중",
 	"components.filter.filterCountDescription": "{number, plural, =0 {적용된 필터 없음.} other {{number}개 필터 적용됨.}}",
 	"components.filter.filters": "개 필터",
-	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
+	"components.filter.headerTextDescription": "{headerText}. Selected filters appear first.",
 	"components.filter.noFilters": "사용 가능한 필터가 없습니다",
 	"components.filter.searchResults": "{number, plural, =0 {검색 결과 없음} other {{number}개 검색 결과}}",
 	"components.filter.singleDimensionDescription": "필터 기준: {filterName}",

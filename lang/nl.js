@@ -19,7 +19,7 @@ export default {
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
 	"components.filter.filters": "Filters", // mfv-translated
-	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
+	"components.filter.headerTextDescription": "{headerText}. Selected filters appear first.",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",

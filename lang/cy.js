@@ -19,7 +19,7 @@ export default {
 	"components.filter.loading": "Wrthi’n llwytho hidlyddion",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Dim hidlyddion wedi’i gweithredu.} one {{number} hidlydd wedi’i weithredu.} other {{number} hidlyddion wedi’u gweithredu.}}",
 	"components.filter.filters": "Hidlyddion",
-	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
+	"components.filter.headerTextDescription": "{headerText}. Selected filters appear first.",
 	"components.filter.noFilters": "Dim hidlyddion ar gael",
 	"components.filter.searchResults": "{number, plural, =0 {Dim canlyniadau chwilio} one {{number} canlyniad chwilio} other {{number} canlyniadau chwilio}}",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
