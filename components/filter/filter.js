@@ -167,6 +167,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			.list-header-text {
 				color: var(--d2l-color-ferrite);
 				margin: 0;
+				padding-bottom: 0.05rem;
+				padding-top: 0.65rem;
 			}
 
 			.d2l-filter-dimension-info-message {
@@ -493,11 +495,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		let listHeader = nothing;
+		let offscreenHeader = nothing;
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
 				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
+					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
 				</d2l-list-item>
+			`;
+			offscreenHeader = html`
+				<h4 class="d2l-offscreen">${dimension.headerText}</h4>
 			`;
 		}
 

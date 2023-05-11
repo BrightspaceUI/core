@@ -98,4 +98,31 @@ describe('d2l-collapsible-panel', () => {
 		});
 	});
 
+	describe('skeleton', () => {
+
+		it('should not expand on click', async() => {
+			const elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title" skeleton>
+					<div slot="header">Header</div>
+					<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+					Panel Content
+				</d2l-collapsible-panel>
+			`);
+
+			const selectors = [
+				'.d2l-collapsible-panel',
+				'.d2l-collapsible-panel-header',
+				'.d2l-collapsible-panel-header-actions',
+				'.d2l-collapsible-panel-header-secondary',
+				'button.d2l-offscreen'
+			];
+
+			for (const selector of selectors) {
+				elem.shadowRoot.querySelector(selector).click();
+				await elem.updateComplete;
+				expect(elem.expanded).to.be.false;
+			}
+		});
+	});
+
 });

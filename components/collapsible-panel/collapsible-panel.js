@@ -7,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const normalizeHeadingNumber = (number) => {
 	number = parseInt(number);
@@ -19,6 +20,7 @@ const defaultHeading = 3;
 
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
+ * @slot before - Slot for content to be placed at the left side of the header, aligned with the title and header slot
  * @slot header - Slot for supporting header content
  * @slot summary - Slot for the summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item`
  * @slot default - Slot for the expanded content
@@ -26,7 +28,7 @@ const defaultHeading = 3;
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
  */
-class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
+class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -76,13 +78,14 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			 */
 			noSticky: { attribute: 'no-sticky', type: Boolean },
 			_focused: { state: true },
+			_hasBefore: { state: true },
 			_hasSummary: { state: true },
 			_scrolled: { state: true },
 		};
 	}
 
 	static get styles() {
-		return [heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
+		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
 			:host {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
@@ -101,7 +104,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.4rem;
 			}
-			:host(:not([expanded])) .d2l-collapsible-panel {
+			:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
 				cursor: pointer;
 			}
 			:host([type="subtle"]) .d2l-collapsible-panel {
@@ -121,10 +124,23 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			:host([heading-style="4"]) {
 				--d2l-collapsible-panel-header-spacing: 0.3rem;
 			}
+			.d2l-collapsible-panel-before {
+				grid-row: 1/-1;
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
+				margin: 0.3rem 0;
+				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
 			.d2l-collapsible-panel-header {
 				border-radius: 0.4rem;
 				cursor: pointer;
+				display: grid;
+				grid-template-columns: auto 1fr;
+				grid-template-rows: auto auto;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
+			}
+			:host(:not([skeleton])) .d2l-collapsible-panel-header {
+				cursor: pointer;
 			}
 			:host([type="inline"]) .d2l-collapsible-panel-header {
 				border-radius: 0;
@@ -152,6 +168,9 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 				overflow-y: hidden;
 				user-select: none;
 			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
+				margin-inline-start: 0.75rem;
+			}
 
 			.d2l-collapsible-panel.focused {
 				outline: var(--d2l-collapsible-panel-focus-outline);
@@ -169,7 +188,11 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			}
 			.d2l-collapsible-panel-header-secondary {
 				display: flex;
+				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			}
+			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
+				margin-inline-start: 0.75rem;
 			}
 			.d2l-collapsible-panel-header-secondary ::slotted(*) {
 				cursor: default;
@@ -286,6 +309,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
 			'has-summary': this._hasSummary,
+			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
@@ -341,6 +365,12 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 		}
 	}
 
+	_handleBeforeSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._hasBefore = content?.length > 0;
+	}
+
 	_handleExpandCollapse(e) {
 		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
 		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
@@ -387,13 +417,16 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	_renderHeader() {
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
+				<div class="d2l-collapsible-panel-before">
+					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
+				</div>
 				<div class="d2l-collapsible-panel-header-primary">
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions"></slot>
 					</div>
 					<div class="d2l-collapsible-panel-opener">
-						<d2l-icon-custom size="tier1">
+						<d2l-icon-custom size="tier1" class="d2l-skeletize">
 							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
 								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
@@ -414,6 +447,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
+			'd2l-skeletize': true,
 			[`d2l-heading-${headingStyle}`]: true,
 		};
 
@@ -449,6 +483,7 @@ class CollapsiblePanel extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	_toggleExpand() {
+		if (this.skeleton) return;
 		this.expanded = !this.expanded;
 	}
 }
