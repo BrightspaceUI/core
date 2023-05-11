@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "Chargement des filtres",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Aucun filtre appliqué.} one {{number} filtre appliqué.} other {{number} filtres appliqués.}}",
 	"components.filter.filters": "Filtres",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "Aucun filtre disponible",
 	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",

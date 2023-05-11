@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "फिल्टर्स लोड किए जा रहे हैं",
 	"components.filter.filterCountDescription": "{number, plural, =0 {कोई फ़िल्टर लागू नहीं किए गए} one {1 फ़िल्टर लागू किया गया।} other {{number} फ़िल्टर्स लागू किए गए।}}",
 	"components.filter.filters": "फ़िल्टर्स",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "कोई उपलब्ध फ़िल्टर्स नहीं",
 	"components.filter.searchResults": "{number, plural, =0 {कोई खोज परिणाम नहीं} one {{number} खोज परिणाम} other {{number} खोज परिणाम}}",
 	"components.filter.singleDimensionDescription": "इसके अनुसार फ़िल्टर करें: {filterName}",

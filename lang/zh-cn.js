@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "正在加载筛选器",
 	"components.filter.filterCountDescription": "{number, plural, =0 {未应用筛选器。} other {已应用 {number} 个筛选器。}}",
 	"components.filter.filters": "个筛选条件",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "无可用筛选器",
 	"components.filter.searchResults": "{number, plural, =0 {无搜索结果} other {{number} 个搜索结果}}",
 	"components.filter.singleDimensionDescription": "筛选依据：{filterName}",

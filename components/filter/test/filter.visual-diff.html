@@ -94,6 +94,34 @@
 				</d2l-filter>
 			</div>
 			<div class="visual-diff">
+				<d2l-filter id="single-set-multi-selection-selected-first">
+					<d2l-filter-dimension-set key="course" text="Course" selected-first>
+						<d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology" count="23" disabled></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English" count="1012" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="12"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="math" text="Math" count="10968"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-empty-state slot="search-empty-state" description="No search results." action-text="Go here" action-href="https://d2l.com/"></d2l-filter-dimension-set-empty-state>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</div>
+			<div class="visual-diff">
+				<d2l-filter id="single-set-multi-selection-header-text-selected-first">
+					<d2l-filter-dimension-set key="course" text="Course" header-text="Related Courses at Your Company" selected-first>
+						<d2l-filter-dimension-set-value key="art" text="Art" count="0" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology" count="23" disabled></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English" count="1012" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title" count="12"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="math" text="Math" count="10968"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-empty-state slot="search-empty-state" description="No search results." action-text="Go here" action-href="https://d2l.com/"></d2l-filter-dimension-set-empty-state>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</div>
+			<div class="visual-diff">
 				<d2l-filter id="single-set-multi-selection-no-search">
 					<d2l-filter-dimension-set key="course" text="Course" search-type="none">
 						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
@@ -145,16 +173,6 @@
 				</d2l-filter>
 			</div>
 			<div class="visual-diff">
-				<d2l-filter id="single-set-header-text">
-					<d2l-filter-dimension-set key="course" header-text="Seasons" text="Seasons" selection-single>
-						<d2l-filter-dimension-set-value key="fall" text="Fall"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="winter" text="Winter" disabled></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="spring" text="Spring"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
-					</d2l-filter-dimension-set>
-				</d2l-filter>
-			</div>
-			<div class="visual-diff">
 				<d2l-filter id="single-set-press-clear">
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
 						<d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
@@ -190,7 +208,7 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-filter id="multiple-selected">
-					<d2l-filter-dimension-set key="course" header-text="Related Courses at Your Company" text="Course" select-all>
+					<d2l-filter-dimension-set key="course" header-text="Related Courses at Your Company" text="Course" select-all selected-first>
 						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="biology" text="Biology" disabled></d2l-filter-dimension-set-value>

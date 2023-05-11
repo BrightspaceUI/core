@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "正在載入篩選條件",
 	"components.filter.filterCountDescription": "{number, plural, =0 {未套用篩選器。} other {已套用 {number} 個篩選器。}}",
 	"components.filter.filters": "篩選器",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "沒有可用的篩選條件",
 	"components.filter.searchResults": "{number, plural, =0 {無搜尋結果} other {{number} 個搜尋結果}}",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",

@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "يتم تحميل عوامل التصفية",
 	"components.filter.filterCountDescription": "{number, plural, =0 {لم يتم تطبيق عوامل تصفية.} one {تم تطبيق {number} عامل تصفية} ‏other {تم تطبيق {number} من عوامل التصفية.}}",
 	"components.filter.filters": "عوامل التصفية",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
 	"components.filter.searchResults": "{number, plural, =0 {ما من نتائج بحث} one {{number} نتيجة بحث}‏ other {{number} من نتائج البحث}}",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",

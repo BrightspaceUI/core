@@ -19,6 +19,7 @@ export default {
 	"components.filter.loading": "Filtreler yükleniyor",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Filtre uygulanmadı.} one {{number} filtre uygulandı.} other {{number} filtre uygulandı.}}",
 	"components.filter.filters": "Filtre",
+	"components.filter.headerTextDescription": "{headerText}. Selected items at top.",
 	"components.filter.noFilters": "Uygun filtre yok",
 	"components.filter.searchResults": "{number, plural, =0 {Arama sonucu yok} one {{number} arama sonucu} other {{number} arama sonucu}}",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",

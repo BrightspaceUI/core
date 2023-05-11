@@ -54,6 +54,8 @@ describe('d2l-filter', () => {
 				'single-selection-select-all',
 				'multi-selection',
 				'multi-selection-header-text',
+				'multi-selection-header-text-selected-first',
+				'multi-selection-selected-first',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
 				'multi-selection-all-selected'
@@ -79,6 +81,7 @@ describe('d2l-filter', () => {
 					{ selector: 'single-selection-select-all', search: 'w' },
 					{ selector: 'multi-selection', search: 'empty' },
 					{ selector: 'multi-selection-header-text', search: 'a' },
+					{ selector: 'multi-selection-selected-first', search: 'a' },
 					{ selector: 'multi-selection-all-selected', search: 'st' }
 				].forEach(info => {
 					it(info.selector, async function() {
@@ -190,6 +193,8 @@ describe('d2l-filter', () => {
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection',
 				'single-set-multi-selection-header-text',
+				'single-set-multi-selection-header-text-selected-first',
+				'single-set-multi-selection-selected-first',
 				'single-set-multi-selection-no-search',
 				'single-set-multi-selection-no-search-select-all',
 				'single-set-multi-selection-all-selected',
@@ -262,9 +267,10 @@ describe('d2l-filter', () => {
 
 			[
 				'introductory-text',
-				'header-text',
 				'single-selection-select-all',
 				'multi-selection-header-text',
+				'multi-selection-header-text-selected-first',
+				'multi-selection-selected-first',
 				'multi-selection-no-search',
 				'multi-selection-no-search-select-all',
 				'multi-selection-all-selected'
@@ -325,9 +331,10 @@ describe('d2l-filter', () => {
 
 			[
 				'single-set-introductory-text',
-				'single-set-header-text',
 				'single-set-single-selection-select-all',
 				'single-set-multi-selection-header-text',
+				'single-set-multi-selection-header-text-selected-first',
+				'single-set-multi-selection-selected-first',
 				'single-set-multi-selection-no-search',
 				'single-set-multi-selection-no-search-select-all',
 				'single-set-multi-selection-all-selected',
