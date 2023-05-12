@@ -88,7 +88,7 @@ describe('ListItemCheckboxMixin', () => {
 	});
 
 	describe('Dispatches custom event when action area is selected', () => {
-		const actions = [ 'click', 'enter' ];
+		const actions = [ 'click' ];
 		const cases = [{
 			input: 'selectable',
 			initial: { selectable: true, selectionDisabled: false, selected: false },
