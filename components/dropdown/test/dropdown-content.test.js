@@ -35,6 +35,25 @@ const openOnHoverFixture = html`
 	</div>
 `;
 
+const dropdownWithHeader = html`
+	<div>
+		<div id="optionallyFocusable">
+		<d2l-dropdown>
+					<button class="another-class d2l-dropdown-opener"></button>
+					<d2l-dropdown-content trap-focus>
+						<div slot="header">
+							<a id="focusable_header" href="http://www.desire2learn.com">b</a>
+						</div>
+						<p id="non_focusable_inside">a</p>
+						<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+			<p id="non_focusable_outside">c</p>
+			<button id="focusable_outside">out here</button>
+		</div>
+	</div>
+`;
+
 describe('d2l-dropdown', () => {
 
 	let dropdown, content;
@@ -422,6 +441,19 @@ describe('d2l-dropdown', () => {
 			await focusTrap.updateComplete;
 			expect(focusTrap.trap).to.be.false;
 		});
+
+		it('should focus the first focusable element when entered', async() => {
+			const dropdownFixture = await fixture(dropdownWithHeader);
+			const dropdown = dropdownFixture.querySelector('d2l-dropdown-content');
+			dropdown.setAttribute('opened', true);
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+
+			// Need to wait 2 frames for focus trap focus
+			await nextFrame();
+			await nextFrame();
+			expect(document.activeElement).to.equal(dropdown.querySelector('#focusable_header'));
+		});
+
 	});
 
 	describe('open-on-hover option', () => {
