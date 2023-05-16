@@ -24,7 +24,9 @@ const keyCodes = Object.freeze({
 	LEFT: 37,
 	UP: 38,
 	RIGHT: 39,
-	DOWN: 40
+	DOWN: 40,
+	ENTER: 13,
+	SPACE: 32
 });
 
 function isMobile() {
@@ -303,27 +305,36 @@ class MobileKeyboardResizer extends Resizer {
 		if (!this.isMobile) {
 			return;
 		}
-		if (e.keyCode !== keyCodes.UP && e.keyCode !== keyCodes.DOWN) {
+		if (e.keyCode !== keyCodes.UP && e.keyCode !== keyCodes.DOWN && e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) {
 			return;
 		}
 		let secondaryHeight;
-		if (this.panelSize === 0) {
-			if (e.keyCode === keyCodes.UP) {
-				secondaryHeight = this.contentBounds.minHeight;
+		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
+			if (this.panelSize === 0) {
+				secondaryHeight = this.restoreSize || this.contentBounds.minHeight;
 			} else {
+				this.restoreSize = this.panelSize;
 				secondaryHeight = 0;
 			}
 		} else {
-			const delta = (this.contentBounds.maxHeight - this.contentBounds.minHeight) / (this._steps - 1);
-			const direction = e.keyCode === keyCodes.UP ? 1 : -1;
-			const desiredHeight = this.panelSize + delta * direction;
-			const desiredSteppedHeight = this.contentBounds.minHeight + delta * Math.round((desiredHeight - this.contentBounds.minHeight) / delta);
-
-			const actualSecondaryHeight = this.clampHeight(desiredSteppedHeight);
-			if (desiredSteppedHeight < actualSecondaryHeight) {
-				secondaryHeight = 0;
+			if (this.panelSize === 0) {
+				if (e.keyCode === keyCodes.UP) {
+					secondaryHeight = this.contentBounds.minHeight;
+				} else {
+					secondaryHeight = 0;
+				}
 			} else {
-				secondaryHeight = actualSecondaryHeight;
+				const delta = (this.contentBounds.maxHeight - this.contentBounds.minHeight) / (this._steps - 1);
+				const direction = e.keyCode === keyCodes.UP ? 1 : -1;
+				const desiredHeight = this.panelSize + delta * direction;
+				const desiredSteppedHeight = this.contentBounds.minHeight + delta * Math.round((desiredHeight - this.contentBounds.minHeight) / delta);
+
+				const actualSecondaryHeight = this.clampHeight(desiredSteppedHeight);
+				if (desiredSteppedHeight < actualSecondaryHeight) {
+					secondaryHeight = 0;
+				} else {
+					secondaryHeight = actualSecondaryHeight;
+				}
 			}
 		}
 		this.dispatchResize(secondaryHeight, true);
