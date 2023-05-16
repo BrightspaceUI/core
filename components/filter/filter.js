@@ -667,6 +667,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleDimensionShowStart(e) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
+		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		if (dimension.introductoryText) announce(dimension.introductoryText);
 		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
@@ -680,6 +682,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = true;
 		if (this._dimensions.length === 1) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
+			if (this._dimensions[0].introductoryText) announce(this._dimensions[0].introductoryText);
 		}
 		this._stopPropagation(e);
 	}
