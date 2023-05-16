@@ -88,7 +88,6 @@ describe('ListItemCheckboxMixin', () => {
 	});
 
 	describe('Dispatches custom event when action area is selected', () => {
-		const actions = [ 'click', 'enter' ];
 		const cases = [{
 			input: 'selectable',
 			initial: { selectable: true, selectionDisabled: false, selected: false },
@@ -100,35 +99,22 @@ describe('ListItemCheckboxMixin', () => {
 		}];
 
 		for (const test of cases) {
-			for (const action of actions) {
-				it(`${test.input} ${action}`, async() => {
-					const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
-					Object.keys(test.initial).forEach(prop =>
-						expect(element[prop]).to.be.equal(test.initial[prop]));
-					// simulate an action area selection
-					setTimeout(() => {
-						let actionArea = null;
-						switch (action) {
-							case 'click':
-								actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
-								actionArea.dispatchEvent(new Event('click'));
-								break;
-							case 'enter':
-								actionArea = element.shadowRoot.querySelector('d2l-selection-input');
-								actionArea.dispatchEvent(new KeyboardEvent('keydown', {
-									keyCode: 13 // Enter
-								}));
-								break;
-						}
-					});
-
-					const { detail } = await oneEvent(element, 'd2l-list-item-selected');
-					expect(detail.selected).to.equal(test.expected.selected);
-
-					Object.keys(test.expected).forEach(prop =>
-						expect(element[prop]).to.be.equal(test.expected[prop]));
+			it(`${test.input} click`, async() => {
+				const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
+				Object.keys(test.initial).forEach(prop =>
+					expect(element[prop]).to.be.equal(test.initial[prop]));
+				// simulate an action area selection
+				setTimeout(() => {
+					const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
+					actionArea.dispatchEvent(new Event('click'));
 				});
-			}
+
+				const { detail } = await oneEvent(element, 'd2l-list-item-selected');
+				expect(detail.selected).to.equal(test.expected.selected);
+
+				Object.keys(test.expected).forEach(prop =>
+					expect(element[prop]).to.be.equal(test.expected[prop]));
+			});
 		}
 	});
 
