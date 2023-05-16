@@ -40,6 +40,11 @@ class FilterSearchDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="full-manual" text="Full Manual" search-type="full-manual" header-text="Related Roles at D2L" selected-first>
+					${this._fullDataSingle.map(value => html`
+						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+					`)}
+				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="auto" text="Automatic Search" search-type="automatic">
 					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
@@ -58,7 +63,8 @@ class FilterSearchDemo extends LitElement {
 		}
 
 		e.detail.dimensions.forEach(dimension => {
-			if (!dimension.dimensionKey.includes('event')) return;
+			const manualSearchKeys = ['event', 'event-single', 'full-manual'];
+			if (!manualSearchKeys.includes(dimension.dimensionKey)) return;
 
 			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
 			if (dimension.cleared) {
@@ -78,8 +84,37 @@ class FilterSearchDemo extends LitElement {
 		console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
 	}
 
+	_handleFullManualSearch(e) {
+		const keysToDisplay = [];
+		if (e.detail.value === '') {
+			keysToDisplay.push('admin', 'instructor');
+			// for (const selectedItem of Object.keys(this._selectedFilters)) {
+			// 	if (!keysToDisplay.includes(selectedItem)) keysToDisplay.push(selectedItem);
+			// }
+			this._fullData.forEach(value => {
+				if (value.selected) {
+					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);
+				}
+			});
+		} else {
+			this._fullData.forEach(value => {
+				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
+					keysToDisplay.push(value.key);
+				}
+			});
+		}
+
+		setTimeout(() => {
+			e.detail.searchCompleteCallback(keysToDisplay);
+			// eslint-disable-next-line no-console
+			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
+		}, 2000);
+	}
+
 	_handleSearch(e) {
-		if (!e.detail.key.includes('event')) return;
+		const searchKeys = ['event', 'event-single'];
+		if (e.detail.key === 'full-manual') this._handleFullManualSearch(e);
+		if (!searchKeys.includes(e.detail.key)) return;
 
 		const keysToDisplay = [];
 		this._fullData.forEach(value => {

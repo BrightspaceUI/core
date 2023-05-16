@@ -741,6 +741,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		this._setSelectedOnOpen(dimension);
+		if (dimension.searchType === 'full-manual') {
+			this._search(dimension);
+		}
 		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
@@ -753,7 +756,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleDropdownOpen(e) {
 		this.opened = true;
 		if (this._dimensions.length === 1) {
-			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
+			const dimension = this._dimensions[0];
+			this._dispatchDimensionFirstOpenEvent(dimension.key);
+			if (dimension.searchType === 'full-manual') {
+				this._search(dimension);
+			}
 		}
 		this._stopPropagation(e);
 	}
@@ -768,32 +775,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleSearch(e) {
 		const dimension = this._getActiveDimension();
-		const searchValue = e.detail.value.trim();
-		dimension.searchValue = searchValue;
-
-		if (dimension.searchType === 'automatic' || searchValue === '') {
-			this._performDimensionSearch(dimension);
-		} else if (dimension.searchType === 'manual') {
-			dimension.loading = true;
-			this.requestUpdate();
-
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					key: dimension.key,
-					value: searchValue,
-					searchCompleteCallback: function(keysToDisplay) {
-						requestAnimationFrame(() => {
-							dimension.searchKeysToDisplay = keysToDisplay;
-							this._performDimensionSearch(dimension);
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
-				}
-			}));
-		}
+		dimension.searchValue = e.detail.value.trim();
+		this._search(dimension);
 	}
 
 	_handleSlotChange(e) {
@@ -879,7 +862,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					if (dimension.searchValue === '') {
+					if (dimension.searchType !== 'full-manual' && dimension.searchValue === '') {
 						value.hidden = false;
 						return;
 					}
@@ -900,6 +883,32 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (singleDimension && this.opened) {
 			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 			dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+		}
+	}
+
+	_search(dimension) {
+		if (dimension.searchType === 'automatic' || (dimension.searchType === 'manual' && dimension.searchValue === '')) {
+			this._performDimensionSearch(dimension);
+		} else if (dimension.searchType === 'manual' || dimension.searchType === 'full-manual') {
+			dimension.loading = true;
+			this.requestUpdate();
+
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: dimension.searchValue,
+					searchCompleteCallback: function(keysToDisplay) {
+						requestAnimationFrame(() => {
+							dimension.searchKeysToDisplay = keysToDisplay;
+							this._performDimensionSearch(dimension);
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
 		}
 	}
 
