@@ -302,7 +302,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (!listItem._tryFocus()) {
 				// ultimate fallback to generic method for getting next/previous focusable
 				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
-				if (nextFocusable && this._isContainedInSameList(curListItem, nextFocusable)) {
+				if (nextFocusable && this._isContainedInSameRootList(curListItem, nextFocusable)) {
 					nextFocusable.focus();
 				}
 			}
@@ -445,7 +445,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
-	_isContainedInSameList(item, node) {
+	_isContainedInSameRootList(item, node) {
 		const rootList = item?.getRootList?.(item);
 		return isComposedAncestor(rootList, node);
 	}
