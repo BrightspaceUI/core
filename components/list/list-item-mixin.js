@@ -440,6 +440,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._tryFocus();
 	}
 
+	getRootList(node) {
+		if (!node) node = this;
+		let rootList;
+		while (node) {
+			if (node.tagName === 'D2L-LIST') rootList = node;
+			node = getComposedParent(node);
+		}
+		return rootList;
+	}
+
 	async highlight() {
 		if (this._highlight) return;
 		const elem = this.shadowRoot.querySelector('[slot="outside-control-container"]');
@@ -487,7 +497,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	_getListItems(listItems, lazyLoadListItems, listItem) {
 		if (!listItem) {
-			const rootList = this._getRootList();
+			const rootList = this.getRootList();
 			const rootListItems = rootList.getItems();
 			rootListItems.forEach(listItem => this._getListItems(listItems, lazyLoadListItems, listItem));
 		} else {
@@ -542,16 +552,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			if (this._isListItem(previousElement)) return previousElement;
 			previousElement = previousElement.previousElementSibling;
 		}
-	}
-
-	_getRootList(node) {
-		if (!node) node = this;
-		let rootList;
-		while (node) {
-			if (node.tagName === 'D2L-LIST') rootList = node;
-			node = getComposedParent(node);
-		}
-		return rootList;
 	}
 
 	_isListItem(node) {
