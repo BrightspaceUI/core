@@ -311,9 +311,9 @@ class MobileKeyboardResizer extends Resizer {
 		let secondaryHeight;
 		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
 			if (this.panelSize === 0) {
-				secondaryHeight = this.restoreSize || this.contentBounds.minHeight;
+				secondaryHeight = this._restoreSize || this.contentBounds.minHeight;
 			} else {
-				this.restoreSize = this.panelSize;
+				this._restoreSize = this.panelSize;
 				secondaryHeight = 0;
 			}
 		} else {
