@@ -555,7 +555,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
 				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
+					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
 				</d2l-list-item>
 			`;
 		}
