@@ -234,13 +234,13 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 	}
 
 	_handleKeyDown(e) {
-		// space pressed... prevent default browser scroll
-		if (e.keyCode === 32) e.preventDefault();
+		// enter/space pressed... prevent default browser scroll
+		if (e.keyCode === 13 || e.keyCode === 32) e.preventDefault();
 	}
 
 	_handleKeyUp(e) {
-		// space pressed... toggle state
-		if (e.keyCode === 32) this._toggleState();
+		// enter/space pressed... toggle state
+		if (e.keyCode === 13 || e.keyCode === 32) this._toggleState();
 	}
 
 	_handleSwitchHover() {

@@ -381,7 +381,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_dispatchListItemsMove(sourceItems, targetItem, moveLocation, keyboardActive) {
 		if (!keyboardActive) keyboardActive = false;
-		const rootList = this._getRootList();
+		const rootList = this.getRootList();
 		/** @ignore */
 		rootList.dispatchEvent(new CustomEvent('d2l-list-items-move', {
 			detail: {
@@ -408,13 +408,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_dispatchMoveListItemFirst(moveToRoot) {
-		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		const list = (moveToRoot ? this.getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
 		this._dispatchListItemsMove([this], items[0], moveLocations.above, true);
 	}
 
 	_dispatchMoveListItemLast(moveToRoot) {
-		const list = (moveToRoot ? this._getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
+		const list = (moveToRoot ? this.getRootList() : findComposedAncestor(this, node => node.tagName === 'D2L-LIST'));
 		const items = list.getItems();
 		this._dispatchListItemsMove([this], items[items.length - 1], moveLocations.below, true);
 	}
@@ -483,7 +483,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_dispatchMoveRootItem(moveAbove) {
-		const rootList = this._getRootList();
+		const rootList = this.getRootList();
 		const items = rootList.getItems();
 		const currentIndex = items.indexOf(this);
 		if (moveAbove && currentIndex !== 0) {
@@ -610,7 +610,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			return dragImage;
 		};
 
-		const rootList = this._getRootList(this);
+		const rootList = this.getRootList(this);
 		const selectionInfo = rootList.getSelectionInfo(rootList.dragMultiple);
 		if (rootList.dragMultiple && selectionInfo.keys.length > 1) {
 			const lazyLoadListItems = this._getFlattenedListItems().lazyLoadListItems;
@@ -750,8 +750,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}
 
 		// assert that both the source and target are from the same list - may allow this in the future
-		const targetRoot = dragState.dragTargets[0] && dragState.dragTargets[0]._getRootList();
-		if (this._getRootList() !== targetRoot) return;
+		const targetRoot = dragState.dragTargets[0] && dragState.dragTargets[0].getRootList();
+		if (this.getRootList() !== targetRoot) return;
 
 		dragState.addDropTarget(this);
 		this._draggingOver = true;
