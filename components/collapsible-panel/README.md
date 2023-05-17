@@ -87,7 +87,7 @@ The collapsible panel is a container that can show or hide additional content. I
 
 ## Collapsible Panel [d2l-collapsible-panel]
 
-The `d2l-collapsible-panel` element is a container that provides specific layout slots such as `header`, `summary`, `actions`, and a default slot for the expanded content.
+The `d2l-collapsible-panel` element is a container that provides specific layout slots such as `before`, `header`, `summary`, `actions`, and a default slot for the expanded content.
 
 <!-- docs: demo live name:d2l-collapsible-panel -->
 ```html
@@ -205,7 +205,7 @@ Use an inline collapsible panel to progressively disclose sections of a complex 
 ## Summary Items [d2l-collapsible-panel-summary-item]
 An optional summary can help the user understand what’s inside the collapsible panel without having to expand it. This can be helpful if the user needs more than the heading to explain what’s inside.
 
-<!-- docs: demo -->
+<!-- docs: demo live name:d2l-collapsible-panel-summary-item -->
 ```html
 <script type="module">
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
