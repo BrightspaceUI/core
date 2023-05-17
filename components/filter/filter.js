@@ -22,6 +22,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles 
 import { css, html, LitElement, nothing } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -554,7 +555,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
 				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text">${dimension.headerText}</h4>
+					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
 				</d2l-list-item>
 			`;
 		}
@@ -562,6 +563,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return html`
 			${searchResults}
 			<d2l-list
+				@focusin="${this._handleDimensionFocus}"
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
@@ -574,7 +576,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			</d2l-list>
 		`;
 	}
-
 	_dispatchChangeEvent(dimension, change) {
 		this._setDimensionChangeEvent(dimension, change, false);
 
@@ -703,6 +704,21 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldResizeDropdown) {
 			this._requestDropdownResize();
 		}
+	}
+
+	_handleDimensionFocus(e) {
+		const dimension = this._getActiveDimension();
+		if (!dimension.headerText) return;
+
+		const targetList = findComposedAncestor(e.target, node => node.tagName === 'D2L-LIST');
+		const relatedTargetList = findComposedAncestor(e.relatedTarget, node => node.tagName === 'D2L-LIST');
+		if (targetList === relatedTargetList) return;
+
+		let headerAnnounceText = dimension.headerText;
+		if (dimension.selectedFirst) {
+			headerAnnounceText = this.localize('components.filter.headerTextDescription', { headerText: dimension.headerText });
+		}
+		announce(headerAnnounceText);
 	}
 
 	_handleDimensionHide() {
