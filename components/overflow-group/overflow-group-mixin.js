@@ -61,12 +61,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				type: String,
 				attribute: 'opener-type'
 			},
-			_chompIndex: {
-				state: true
-			},
-			_mini: {
-				state: true
-			}
+			_chompIndex: { state: true },
+			_mini: { state: true },
+			_wrapping: { state: true }
 		};
 	}
 
@@ -80,7 +77,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 			.d2l-overflow-group-container {
 				display: flex;
-				flex-wrap: wrap;
 				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
@@ -102,6 +98,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._mini = this.openerType === OPENER_TYPE.ICON;
 		this._overflowContainerHidden = false;
 		this._slotItems = [];
+		this._wrapping = false;
 
 		this.autoShow = false;
 		this.maxToShow = -1;
@@ -133,8 +130,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		});
 
 		const containerStyles = {
-			minHeight: this.autoShow ? 'none' : `${this._itemHeight}px`,
-			maxHeight: this.autoShow ? 'none' : `${this._itemHeight}px`
+			flexWrap: this._wrapping ? 'wrap' : 'nowrap',
+			minHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
+			maxHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto')
 		};
 
 		return html`
@@ -142,7 +140,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowContainer}
 			</div>
-			<slot name="adjacent"></slot>	
+			<slot name="adjacent"></slot>
 		`;
 	}
 
@@ -255,6 +253,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 
 		}
+
 		// if there is at least one showing and no more to be hidden, enable collapsing overflow container to mini overflow container
 		this._overflowContainerHidden = this._itemLayouts.length === showing.count;
 		if (!this._overflowContainerHidden && (isSoftOverflowing || isForcedOverflowing)) {
@@ -275,6 +274,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		}
 		const overflowOverflowing = (showing.width + this._overflowContainerWidth >= this._availableWidth);
 		const swapToMini = overflowOverflowing && !this._overflowContainerHidden;
+
+		const requiredWidth = (isSoftOverflowing || isForcedOverflowing) ? showing.width + this._overflowContainerWidth : showing.width;
+		this._wrapping = (requiredWidth > this._availableWidth);
 
 		this._mini = this.openerType === OPENER_TYPE.ICON || swapToMini;
 		this._chompIndex = this._overflowContainerHidden ? null : showing.count;
