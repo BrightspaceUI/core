@@ -477,6 +477,108 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" sticky-headers id="grades-row-header">
+					<table class="d2l-table">
+						<thead>
+							<tr>
+								<th rowspan="2" class="top" sticky>Name</th>
+								<th colspan="5" style="z-index: 3">
+									Category
+									<span style="position: relative;">
+										&nbsp;&#8964;
+										<div style="background-color: blue; color: white; position: absolute; top: 20px; left: 0px; padding: 10px; width: 145px; height: 175px;">Dropdown simulator</div>
+									</span>
+								</th>
+							</tr>
+							<tr>
+								<th style="white-space: nowrap">Item 1</th>
+								<th style="white-space: nowrap">Item 2</th>
+								<th style="white-space: nowrap">Item 3</th>
+								<th style="white-space: nowrap">Item 4</th>
+								<th style="white-space: nowrap">Item 5</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th sticky style="white-space: nowrap">Albert, Eddie</th>
+								<td>5/10</td>
+								<td>9/10</td>
+								<td>3/5</td>
+								<td>9/10</td>
+								<td class="over">9/10</td>
+							</tr>
+							<tr>
+								<th sticky style="white-space: nowrap">Bedelia, Bonnie</th>
+								<td>3/10</td>
+								<td>7/10</td>
+								<td>5/5</td>
+								<td>7/10</td>
+								<td>7/10</td>
+							</tr>
+							<tr>
+								<th sticky style="white-space: nowrap">Benson, Robbie</th>
+								<td>8/10</td>
+								<td>6/10</td>
+								<td>1/5</td>
+								<td>6/10</td>
+								<td>6/10</td>
+							</tr>
+						</tbody>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" sticky-headers id="grades-column-header">
+					<table class="d2l-table">
+						<thead>
+							<tr>
+								<th rowspan="2" class="top" sticky>Name</th>
+								<th colspan="5">Category</th>
+							</tr>
+							<tr>
+								<th style="white-space: nowrap">Item 1</th>
+								<th style="white-space: nowrap">Item 2</th>
+								<th style="white-space: nowrap">Item 3</th>
+								<th style="white-space: nowrap">Item 4</th>
+								<th style="white-space: nowrap">Item 5</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th sticky style="white-space: nowrap; z-index: 2">
+									Albert, Eddie
+									<span style="position: relative;">
+										&nbsp;&#8964;
+										<div style="background-color: blue; color: white; position: absolute; top: 20px; left: 0px; padding: 10px; width: 145px; height: 175px;">Dropdown simulator</div>
+									</span>
+								</th>
+								<td>5/10</td>
+								<td>9/10</td>
+								<td>3/5</td>
+								<td>9/10</td>
+								<td class="over">9/10</td>
+							</tr>
+							<tr>
+								<th sticky style="white-space: nowrap">Bedelia, Bonnie</th>
+								<td>3/10</td>
+								<td>7/10</td>
+								<td>5/5</td>
+								<td>7/10</td>
+								<td>7/10</td>
+							</tr>
+							<tr>
+								<th sticky style="white-space: nowrap">Benson, Robbie</th>
+								<td>8/10</td>
+								<td>6/10</td>
+								<td>1/5</td>
+								<td>6/10</td>
+								<td>6/10</td>
+							</tr>
+						</tbody>
+					</table>
+				</d2l-table-wrapper>
+			</div>
 		`;
 	}
 
