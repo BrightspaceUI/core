@@ -16,6 +16,9 @@ const styles = css`
 	.minimize-width {
 		width: 1.5rem;
 	}
+	.d2l-table > * > tr > td {
+		vertical-align: top;
+	}
 `;
 
 class ListNestedIterationsHelper extends LitElement {
