@@ -276,7 +276,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	update(changedProperties) {
-		if (changedProperties.has('opened') && this.opened && this._dimensions.length === 1) {
+		if (
+			changedProperties.has('opened')
+			&& this.opened
+			&& this._dimensions.length === 1
+			&& this._dimensions[0].selectedFirst
+		) {
 			this._setSelectedOnOpen(this._dimensions[0]);
 		}
 		super.update(changedProperties);
@@ -741,7 +746,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
-		this._setSelectedOnOpen(dimension);
+		if (dimension.selectedFirst) this._setSelectedOnOpen(dimension);
 		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
@@ -772,6 +777,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._getActiveDimension();
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
+
+		if (dimension.selectedFirst && searchValue === '') {
+			this._setSelectedOnOpen(dimension);
+		}
 
 		if (dimension.searchType === 'automatic' || searchValue === '') {
 			this._performDimensionSearch(dimension);
