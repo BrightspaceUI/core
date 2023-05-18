@@ -23,8 +23,8 @@ describe('d2l-list-nested', () => {
 			});
 
 			[
-				{ name: 'separate lists all possible combos', selector: '#separate-lists-all-possible-combos' },
-				{ name: 'one list all possible combos', selector: '#one-list-all-possible-combos' }
+				{ name: 'all-iterations-non-draggable', selector: '#non-draggable' },
+				{ name: 'all-iterations-draggable', selector: '#draggable' }
 			].forEach((info) => {
 				it(info.name, async function() {
 					const rect = await visualDiff.getRect(page, info.selector);
