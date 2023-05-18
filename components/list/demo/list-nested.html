@@ -251,10 +251,19 @@
 					});
 				});
 
-				document.querySelector('#draggable-switch').addEventListener('change', (e) => {
-					const listIterations = document.querySelector('d2l-demo-list-nested-iterations-helper');
-					listIterations.draggable = e.target.on;
-				});
+				const setupSwitch = () => {
+					const draggableSwitch = document.querySelector('#draggable-switch');
+					if (!draggableSwitch) {
+						setTimeout(setupSwitch, 1000);
+					} else {
+						draggableSwitch.addEventListener('change', (e) => {
+							const listIterations = document.querySelector('d2l-demo-list-nested-iterations-helper');
+							listIterations.draggable = e.target.on;
+						});
+					}
+				};
+
+				setupSwitch();
 			}, 1000);
 		</script>
 
