@@ -9,7 +9,7 @@ describe('d2l-list-nested', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1300, height: 7000 } });
 	});
 
 	after(async() => await browser.close());
