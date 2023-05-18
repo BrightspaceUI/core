@@ -13,12 +13,6 @@ const styles = css`
 		margin: 1rem;
 		padding: 1rem;
 	}
-	d2l-list:not([slot="nested"]) > d2l-list-item > d2l-list-item-content {
-		color: blue;
-	}
-	d2l-list-item {
-		box-shadow: -1px 0 0 0 red;
-	}
 	.minimize-width {
 		width: 1.5rem;
 	}
