@@ -87,14 +87,22 @@ class ListNestedIterationsHelper extends LitElement {
 	}
 
 	_getChildItems(childOptions) {
-		const childText = 'L2 List Item';
+		const childL2Text = 'L2 List Item';
+		const childL3Text = 'L3 List Item';
 		const items = [];
 
 		for (let i = 0; i < 3; i++) {
 			const childKey = `child-${i}-${childOptions[0]}-${childOptions[1]}`;
 			items.push(html`
-				<d2l-list-item key="${childKey}" label="${childText}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" ?expandable="${childOptions[1] && i !== 1}">
-					<d2l-list-item-content>${childText}</d2l-list-item-content>
+				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" ?expandable="${childOptions[1] && i !== 1}">
+					<d2l-list-item-content>${childL2Text}</d2l-list-item-content>
+					${i === 1  || !childOptions[1] ? nothing : html`
+						<d2l-list slot="nested">
+							<d2l-list-item key="${`${childKey}-child`}" label="${childL3Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}">
+								<d2l-list-item-content>${childL3Text}</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					`}
 				</d2l-list-item>
 			`);
 		}
@@ -110,7 +118,7 @@ class ListNestedIterationsHelper extends LitElement {
 			items.push(html`
 				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.draggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}">
 					<d2l-list-item-content>${parentText}</d2l-list-item-content>
-					${i !== 0 ? nothing : html`
+					${i === 1 || (i === 2 && !parentOptions[1]) ? nothing : html`
 						<d2l-list slot="nested">${nested}</d2l-list>
 					`}
 				</d2l-list-item>
