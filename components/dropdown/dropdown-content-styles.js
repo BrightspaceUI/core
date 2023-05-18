@@ -241,7 +241,7 @@ export const dropdownContentStyles = css`
 	:host([data-mobile][mobile-tray="left"]) .d2l-dropdown-content-width {
 		border-bottom-left-radius: 0;
 		border-top-left-radius: 0;
-		height: 100vh;
+		bottom: 0;
 		position: fixed;
 		top: 0;
 		z-index: 1000;
@@ -250,7 +250,7 @@ export const dropdownContentStyles = css`
 	:host([data-mobile][mobile-tray="right"]) .d2l-dropdown-content-width {
 		border-bottom-right-radius: 0;
 		border-top-right-radius: 0;
-		height: 100vh;
+		bottom: 0;
 		position: fixed;
 		top: 0;
 		z-index: 1000;
