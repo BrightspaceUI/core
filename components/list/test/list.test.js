@@ -3,7 +3,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const keyCodes = Object.freeze({
@@ -87,6 +87,8 @@ describe('d2l-list', () => {
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				listItem.focus();
+				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
 				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
 				setTimeout(() => listItemLayout.dispatchEvent(event));
 				await oneEvent(listItemLayout, 'keydown');
@@ -128,6 +130,8 @@ describe('d2l-list', () => {
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				listItem.focus();
+				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
 				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
 				setTimeout(() => listItemLayout.dispatchEvent(event));
 				await oneEvent(listItemLayout, 'keydown');
@@ -154,6 +158,8 @@ describe('d2l-list', () => {
 			const listItem = elem.querySelector('[key="L1-2"]');
 			const listItemLayout = elem.querySelector('[key="L1-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 			listItem.focus();
+			await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
 			const event = new KeyboardEvent('keydown', { keyCode: keyCodes.UP.key });
 			setTimeout(() => listItemLayout.dispatchEvent(event));
 			await oneEvent(listItemLayout, 'keydown');
