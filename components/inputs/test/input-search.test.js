@@ -1,6 +1,7 @@
-import '../input-search.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { INPUT_TIMEOUT_MS, SUPPRESS_ENTER_TIMEOUT_MS } from '../input-search.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { useFakeTimers } from 'sinon';
 
 const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const valueSetFixture = html`<d2l-input-search label="search" value="foo"></d2l-input-search>`;
@@ -98,27 +99,64 @@ describe('d2l-input-search', () => {
 			expect(detail.value).to.equal('');
 		});
 
-		it('should fire "search" event when search input changes in search-on-input mode', async() => {
-			const elem = await fixture(searchOnInputFixture);
-			elem.value = 'foobar';
-			setTimeout(() => getTextInput(elem).dispatchEvent(new Event('input')));
-			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
-			expect(detail.value).to.equal('foobar');
-		});
+		describe('fake timer', () => {
 
-		it('should fire "search" event only once after two consecutive input events', async() => {
-			const elem = await fixture(searchOnInputFixture);
-			let searchEventsFired = 0;
-			elem.addEventListener('d2l-input-search-searched', () => {
-				searchEventsFired += 1;
+			let clock;
+			beforeEach(() => {
+				clock = useFakeTimers();
 			});
-			setTimeout(() => {
+
+			afterEach(() => clock.restore());
+
+			it('should fire "search" event when search input changes in search-on-input mode', async() => {
+				const elem = await fixture(searchOnInputFixture);
+				let detail;
+				elem.addEventListener('d2l-input-search-searched', (e) => detail = e.detail);
+				getTextInput(elem).value = 'foobar';
+				getTextInput(elem).dispatchEvent(new Event('input'));
+				clock.tick(INPUT_TIMEOUT_MS + 1);
+				expect(detail.value).to.equal('foobar');
+			});
+
+			it('should fire "search" event only once after two consecutive input events', async() => {
+				const elem = await fixture(searchOnInputFixture);
+				let searchEventsFired = 0;
+				elem.addEventListener('d2l-input-search-searched', () => searchEventsFired += 1);
 				getTextInput(elem).dispatchEvent(new Event('input'));
 				getTextInput(elem).dispatchEvent(new Event('input'));
+				clock.tick(INPUT_TIMEOUT_MS);
+				expect(searchEventsFired).to.equal(1);
 			});
-			await oneEvent(elem, 'd2l-input-search-searched');
-			await new Promise(resolve => setTimeout(resolve, 50));
-			expect(searchEventsFired).to.equal(1);
+
+			it('should NOT fire "search" event when ENTER is pressed twice within 1s', async() => {
+				const elem = await fixture(normalFixture);
+				let searchEventsFired = 0;
+				elem.addEventListener('d2l-input-search-searched', () => searchEventsFired += 1);
+				pressEnter(elem);
+				pressEnter(elem);
+				expect(searchEventsFired).to.equal(1);
+			});
+
+			it('should fire "search" event when ENTER is pressed twice within 1s but value changes in between', async() => {
+				const elem = await fixture(normalFixture);
+				let searchEventsFired = 0;
+				elem.addEventListener('d2l-input-search-searched', () => searchEventsFired += 1);
+				pressEnter(elem);
+				elem.value = 'newval';
+				pressEnter(elem);
+				expect(searchEventsFired).to.equal(2);
+			});
+
+			it('should fire "search" event when ENTER is pressed twice after 1s', async() => {
+				const elem = await fixture(normalFixture);
+				let searchEventsFired = 0;
+				elem.addEventListener('d2l-input-search-searched', () => searchEventsFired += 1);
+				pressEnter(elem);
+				clock.tick(SUPPRESS_ENTER_TIMEOUT_MS);
+				pressEnter(elem);
+				expect(searchEventsFired).to.equal(2);
+			});
+
 		});
 
 	});
