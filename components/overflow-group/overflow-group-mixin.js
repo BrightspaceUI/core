@@ -107,15 +107,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this.openerType = OPENER_TYPE.DEFAULT;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._observeItems();
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
-
-		this._itemObserver.disconnect();
 
 		if (this._isObservingResize) {
 			this._isObservingResize = false;
@@ -377,7 +370,14 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		requestAnimationFrame(async() => {
 			await this._getItems();
 
-			this._observeItems();
+			this._slotItems.forEach(item => {
+				this._itemObserver.observe(item, {
+					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+					attributeFilter: ['disabled', 'text', 'selected'],
+					childList: false,
+					subtree: true
+				});
+			});
 
 			if (this.autoShow) {
 				this._autoDetectBoundaries(this._slotItems);
@@ -385,18 +385,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 			this._chomp();
 			this.requestUpdate();
-		});
-	}
-
-	_observeItems() {
-		this._itemObserver.disconnect();
-		this._slotItems.forEach(item => {
-			this._itemObserver.observe(item, {
-				attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
-				attributeFilter: ['disabled', 'text', 'selected'],
-				childList: false,
-				subtree: true
-			});
 		});
 	}
 
