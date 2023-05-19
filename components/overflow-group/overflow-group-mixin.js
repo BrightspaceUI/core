@@ -90,10 +90,11 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
+		this._itemObserver = new MutationObserver(this._handleItemMutation);
 		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
 		this._hasResized = false;
-		this._isObserving = false;
+		this._isObservingResize = false;
 		this._itemHeight = 0;
 		this._mini = this.openerType === OPENER_TYPE.ICON;
 		this._overflowContainerHidden = false;
@@ -109,8 +110,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (this._isObserving) {
-			this._isObserving = false;
+		if (this._isObservingResize) {
+			this._isObservingResize = false;
 			this._resizeObserver.disconnect();
 		}
 	}
@@ -147,8 +148,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	update(changedProperties) {
 		super.update(changedProperties);
 
-		if (!this._isObserving) {
-			this._isObserving = true;
+		if (!this._isObservingResize) {
+			this._isObservingResize = true;
 			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
 		}
 
@@ -370,8 +371,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			await this._getItems();
 
 			this._slotItems.forEach(item => {
-				const observer = new MutationObserver(this._handleItemMutation);
-				observer.observe(item, {
+				this._itemObserver.observe(item, {
 					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 					attributeFilter: ['disabled', 'text', 'selected'],
 					childList: false,
@@ -387,4 +387,5 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			this.requestUpdate();
 		});
 	}
+
 };
