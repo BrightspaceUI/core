@@ -244,12 +244,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				showing.count += 1;
 				itemLayout.isChomped = false;
 				itemLayout.trigger = 'soft-show';
-
 			} else {
 				isSoftOverflowing = true;
 				itemLayout.isChomped = true;
 				itemLayout.trigger = 'soft-hide';
-
 			}
 
 		}
@@ -272,6 +270,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				itemLayoutOverflowing.isChomped = true;
 			}
 		}
+
 		const overflowOverflowing = (showing.width + this._overflowContainerWidth >= this._availableWidth);
 		const swapToMini = overflowOverflowing && !this._overflowContainerHidden;
 
@@ -297,8 +296,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				isChomped: false,
 				isHidden: itemHidden,
 				width: Math.ceil(parseFloat(computedStyles.width) || 0)
-					+ parseInt(computedStyles.marginRight) || 0
-					+ parseInt(computedStyles.marginLeft) || 0,
+					+ (parseInt(computedStyles.marginRight) || 0)
+					+ (parseInt(computedStyles.marginLeft) || 0),
 				node: node
 			};
 		});
