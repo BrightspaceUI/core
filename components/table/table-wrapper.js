@@ -156,7 +156,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > [sticky],
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > [sticky] {
-		z-index: 3;
+		z-index: 4;
 	}
 
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
