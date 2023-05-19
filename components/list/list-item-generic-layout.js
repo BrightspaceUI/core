@@ -302,7 +302,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (!listItem._tryFocus()) {
 				// ultimate fallback to generic method for getting next/previous focusable
 				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
-				if (nextFocusable && this._isContainedInSameRootList(curListItem, nextFocusable)) {
+				const nextListItem = findComposedAncestor(nextFocusable, (node) => node.role === 'rowgroup' || node.role === 'listitem');
+				if (nextListItem && this._isContainedInSameRootList(curListItem, nextListItem)) {
 					nextFocusable.focus();
 				}
 			}

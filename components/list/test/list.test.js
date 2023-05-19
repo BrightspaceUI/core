@@ -136,6 +136,30 @@ describe('d2l-list', () => {
 				expect(focusedElement.hasAttribute('_focusing')).to.be.true;
 			});
 		});
+
+		it('Focus stays in list with list controls when in grid mode when up arrow is pressed', async() => {
+			const elem = await fixture(html`
+				 <d2l-list grid>
+					<d2l-list-controls slot="controls"></d2l-list-controls>
+					<d2l-list-item key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			await awaitListElementUpdates(elem, [
+				'[slot="controls"]',
+				'[key="L1-1"]',
+				'[key="L1-2"]',
+			]);
+
+			const listItem = elem.querySelector('[key="L1-2"]');
+			const listItemLayout = elem.querySelector('[key="L1-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
+			listItem.focus();
+			const event = new KeyboardEvent('keydown', { keyCode: keyCodes.UP.key });
+			setTimeout(() => listItemLayout.dispatchEvent(event));
+			await oneEvent(listItemLayout, 'keydown');
+
+			expect(listItem.hasAttribute('_focusing')).to.be.true;
+		});
 	});
 
 	describe('flat', () => {
