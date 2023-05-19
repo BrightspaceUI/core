@@ -70,7 +70,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
-		this.label = '';
+		this.label = undefined;
 		this._listItemChanges = [];
 		this._childHasExpandCollapseToggle = false;
 
@@ -124,7 +124,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const role = !this.grid ? 'list' : 'application';
-		const ariaLabel = this.label && this.slot !== 'nested' ? this.label : undefined;
+		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>

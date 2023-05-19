@@ -62,7 +62,7 @@ describe('d2l-list', () => {
 		it('should not set aria-label on list when label is not defined', async() => {
 			const elem = await fixture(html`<d2l-list></d2l-list>`);
 			const list = elem.shadowRoot.querySelector('[role="list"]');
-			expect(list.getAttribute('aria-label')).to.be.null;
+			expect(list.hasAttribute('aria-label')).to.be.false;
 		});
 
 		it('should not set aria-label on nested lists', async() => {
@@ -77,7 +77,7 @@ describe('d2l-list', () => {
 					</d2l-list>	
 				`);
 			const nestedList = elem.querySelector('#L2').shadowRoot.querySelector('[role="application"]');
-			expect(nestedList.getAttribute('aria-label')).to.be.null;
+			expect(nestedList.hasAttribute('aria-label')).to.be.false;
 		});
 
 	});
