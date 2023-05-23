@@ -1,25 +1,8 @@
+import '../../colors/colors.js';
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { tableStyles } from '../../table/table-wrapper.js';
-
-const styles = css`
-	:host {
-		display: block;
-	}
-	d2l-list:not([slot="nested"]) {
-		border: solid 1px black;
-		margin: 1rem;
-		padding: 1rem;
-	}
-	.minimize-width {
-		width: 1.5rem;
-	}
-	.d2l-table > * > tr > td {
-		vertical-align: top;
-	}
-`;
 
 class ListNestedIterationsHelper extends LitElement {
 	static get properties() {
@@ -29,7 +12,44 @@ class ListNestedIterationsHelper extends LitElement {
 	}
 
 	static get styles() {
-		return [tableStyles, styles];
+		return css`
+			:host {
+				display: block;
+			}
+			table {
+				border-collapse: collapse;
+				font-size: 0.8rem;
+				width: 100%;
+				table-layout: fixed;
+			}
+			table > * > tr > * {
+				border: 1px solid var(--d2l-color-mica);
+				font-weight: 400;
+				height: 41px;
+				padding: 0.5rem 1rem;
+				text-align: start;
+				vertical-align: middle;
+			}
+			table > * > tr > td {
+				vertical-align: top;
+			}
+			table > thead > tr > th,
+			table > * > tr.header > th {
+				background-color: var(--d2l-color-regolith);
+				font-size: 0.7rem;
+				height: 27px;
+				line-height: 0.9rem;
+			}
+
+			d2l-list:not([slot="nested"]) {
+				border: solid 1px black;
+				margin: 1rem;
+				padding: 1rem;
+			}
+			.minimize-width {
+				width: 4.5rem;
+			}
+		`;
 	}
 
 	constructor() {
@@ -46,13 +66,13 @@ class ListNestedIterationsHelper extends LitElement {
 		];
 
 		const tableRows = selectableOptions.map(option => html`
-			<tr class="d2l-table-header">
+			<tr class="header">
 				<th rowspan="2" scope="rowgroup">${option.name}</th>
 				<th scope="row">Exp/Collapsible Children</th>
 				<td>${this._createList([option.parent, true], [option.child, true])}</td>
 				<td>${this._createList([option.parent, false], [option.child, true])}</td>
 			</tr>
-			<tr class="d2l-table-header">
+			<tr class="header">
 				<th scope="row">Non-Exp/Collapsible Children</th>
 				<td>${this._createList([option.parent, true], [option.child, false])}</td>
 				<td>${this._createList([option.parent, false], [option.child, false])}</td>
@@ -60,21 +80,19 @@ class ListNestedIterationsHelper extends LitElement {
 		`);
 
 		return html`
-			<d2l-table-wrapper>
-				<table class="d2l-table">
-					<thead>
-						<tr>
-							<th class="minimize-width"></th>
-							<th class="minimize-width"></th>
-							<th scope="col">Exp/Collapsible Parent</th>
-							<th scope="col">Non-Exp/Collapsible Parent</th>
-						</tr>
-					</thead>
-					<tbody>
-						${tableRows}
-					</tbody>
-				</table>
-			</d2l-table-wrapper>
+			<table>
+				<thead>
+					<tr>
+						<th class="minimize-width"></th>
+						<th class="minimize-width"></th>
+						<th scope="col">Exp/Collapsible Parent</th>
+						<th scope="col">Non-Exp/Collapsible Parent</th>
+					</tr>
+				</thead>
+				<tbody>
+					${tableRows}
+				</tbody>
+			</table>
 		`;
 	}
 
