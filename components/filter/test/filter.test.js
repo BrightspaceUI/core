@@ -78,6 +78,26 @@ describe('d2l-filter', () => {
 		});
 	});
 
+	describe('header-text', () => {
+		it('should set label on dimension set list when header-text is defined', async() => {
+			const elem = await fixture(html`
+				<d2l-filter>
+					<d2l-filter-dimension-set header-text="Test Header" key="dim" text="Dim" select-all>
+						<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.getAttribute('label')).to.equal('Test Header');
+		});
+
+		it('should not set label on dimension set list when header-text is not defined', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.hasAttribute('label')).to.be.false;
+		});
+	});
+
 	describe('info messages', () => {
 		it('set dimension - empty state', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
