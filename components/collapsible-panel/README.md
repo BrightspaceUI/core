@@ -210,8 +210,6 @@ An optional summary can help the user understand what’s inside the collapsible
 <script type="module">
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
-import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-import '@brightspace-ui/core/components/form/form.js';
 import { css, html, LitElement } from 'lit';
 import { labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
@@ -220,7 +218,6 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 
 	static get properties() {
 		return {
-      _addons: { state: true },
 			_icingType: { state: true },
 			_icingTypes: { state: true },
 		};
@@ -240,11 +237,6 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 
 	constructor() {
 		super();
-		this._addons = [
-			{ id: 'name', text: 'Personalized name', checked: false },
-			{ id: 'candles', text: 'Candles', checked: false },
-			{ id: 'cutlery', text: 'Plates and forks', checked: false },
-		];
 		this._icingTypes = ['Buttercream frosting', 'Cream cheese frosting', 'Royal icing', 'Swiss meringue buttercream'];
 		this._icingType = this._icingTypes[0];
 	}
@@ -252,38 +244,18 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 	render() {
 		return html`
 			<d2l-collapsible-panel panel-title="Cake Decoration">
-				${this._renderSummaryItems()}
+				<d2l-collapsible-panel-summary-item slot="summary" text="${this._icingType}"></d2l-collapsible-panel-summary-item>
 
 				<p class="d2l-label-text">Icing type</p>
 				<select class="d2l-input-select" @change="${this._onChangeSelect}">
 					${this._icingTypes.map((option) => html`<option>${option}</option>`)}
 				</select>
-
-				<p class="d2l-label-text">Add-ons</p>
-				${this._addons.map((item) => (
-					html`<d2l-input-checkbox id="${item.id}" @change="${this._onChangeCheckbox}">${item.text}</d2l-input-checkbox>`
-				))}
 			</d2l-collapsible-panel>
 		`;
 	}
 
-	_onChangeCheckbox(e) {
-		const index = this._addons.findIndex((obj => obj.id === e.target.getAttribute('id')));
-		this._addons[index].checked = e.target.checked;
-		this.requestUpdate();
-	}
-
 	_onChangeSelect(e) {
 		this._icingType = e.target.value;
-	}
-
-	_renderSummaryItems() {
-		return html`
-			<d2l-collapsible-panel-summary-item slot="summary" text="${this._icingType}"></d2l-collapsible-panel-summary-item>
-			${this._addons.filter(item => item.checked).map((item) => (
-				html`<d2l-collapsible-panel-summary-item slot="summary" text="${item.text}"></d2l-collapsible-panel-summary-item>`
-			))}
-		`;
 	}
 }
 customElements.define('d2l-collapsible-panel-daylight-demo', CollapsiblePanelDaylightDemo);
