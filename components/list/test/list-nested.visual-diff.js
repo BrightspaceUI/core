@@ -9,7 +9,7 @@ describe('d2l-list-nested', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1300, height: 7000 } });
 	});
 
 	after(async() => await browser.close());
@@ -23,8 +23,8 @@ describe('d2l-list-nested', () => {
 			});
 
 			[
-				{ name: 'separate lists all possible combos', selector: '#separate-lists-all-possible-combos' },
-				{ name: 'one list all possible combos', selector: '#one-list-all-possible-combos' }
+				{ name: 'all-iterations-non-draggable', selector: '#non-draggable' },
+				{ name: 'all-iterations-draggable', selector: '#draggable' }
 			].forEach((info) => {
 				it(info.name, async function() {
 					const rect = await visualDiff.getRect(page, info.selector);

@@ -55,6 +55,10 @@ describe('d2l-table', () => {
 
 	after(async() => await browser.close());
 
+	beforeEach(async() => {
+		await page.evaluate(() => window.scrollTo(0, 0));
+	});
+
 	['ltr', 'rtl'].forEach((dir) => {
 		describe(dir, () => {
 			['default', 'light'].forEach((type) => {
@@ -138,6 +142,21 @@ describe('d2l-table', () => {
 						].forEach((id) => {
 							['top', 'down', 'over'].forEach((position) => {
 								it(`${id}-${position}`, async function() {
+									await page.$eval('d2l-test-table-sticky-visual-diff', (wrapper, id, position) => {
+										wrapper.shadowRoot.querySelector(`#${id} .${position}`).scrollIntoView();
+									}, id, position);
+									await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+								});
+							});
+						});
+
+						[
+							'grades-row-header',
+							'grades-column-header'
+						].forEach((id) => {
+							['top', 'over'].forEach((position) => {
+								it(`${id}-${position}`, async function() {
+									await page.evaluate(() => window.scrollTo(0, 0));
 									await page.$eval('d2l-test-table-sticky-visual-diff', (wrapper, id, position) => {
 										wrapper.shadowRoot.querySelector(`#${id} .${position}`).scrollIntoView();
 									}, id, position);

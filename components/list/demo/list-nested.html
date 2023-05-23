@@ -20,6 +20,9 @@
 			import '../../menu/menu-item.js';
 			import '../../paging/pager-load-more.js';
 			import '../../selection/selection-action.js';
+			import '../../switch/switch.js';
+
+			import './demo-list-nested-iterations-helper.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -222,6 +225,15 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>All Iterations</h2>
+
+			<d2l-demo-snippet full-width>
+				<template>
+					<d2l-switch id="draggable-switch" text="Draggable"></d2l-switch>
+					<d2l-demo-list-nested-iterations-helper></d2l-demo-list-nested-iterations-helper>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 
 		<script>
@@ -238,6 +250,20 @@
 						setTimeout(() => e.detail.complete(), 2000);
 					});
 				});
+
+				const setupSwitch = () => {
+					const draggableSwitch = document.querySelector('#draggable-switch');
+					if (!draggableSwitch) {
+						setTimeout(setupSwitch, 1000);
+					} else {
+						draggableSwitch.addEventListener('change', (e) => {
+							const listIterations = document.querySelector('d2l-demo-list-nested-iterations-helper');
+							listIterations.draggable = e.target.on;
+						});
+					}
+				};
+
+				setupSwitch();
 			}, 1000);
 		</script>
 
