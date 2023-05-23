@@ -135,6 +135,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 |---|---|---|
 | `drag-multiple` | Boolean | Whether the user can drag multiple items |
 | `grid` | Boolean | Enables keyboard grid for supported list items. See [Accessibility](#accessibility). |
+| `label` | String | Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists. |
 | `selection-single` | Boolean | Whether to render with single selection behaviour. If `selection-single` is specified, the list-items will render with radios instead of checkboxes, and the list component will maintain a single selected item. |
 | `separators` | String | Display separators (`all` (default), `between`, `none`) |
 | `extend-separators` | Boolean | Whether to extend the separators beyond the content's edge |

@@ -51,6 +51,37 @@ describe('d2l-list', () => {
 
 	});
 
+	describe('label', () => {
+
+		it('should set aria-label on list when label is defined', async() => {
+			const elem = await fixture(html`<d2l-list label="Test Label"></d2l-list>`);
+			const list = elem.shadowRoot.querySelector('[role="list"]');
+			expect(list.getAttribute('aria-label')).to.equal('Test Label');
+		});
+
+		it('should not set aria-label on list when label is not defined', async() => {
+			const elem = await fixture(html`<d2l-list></d2l-list>`);
+			const list = elem.shadowRoot.querySelector('[role="list"]');
+			expect(list.hasAttribute('aria-label')).to.be.false;
+		});
+
+		it('should not set aria-label on nested lists', async() => {
+			const elem = await fixture(html`
+					<d2l-list id="L1" grid>
+						<d2l-list-item>
+							<d2l-list id="L2" slot="nested" grid label="Test Label">
+								<d2l-list-item></d2l-list-item>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+					</d2l-list>	
+				`);
+			const nestedList = elem.querySelector('#L2').shadowRoot.querySelector('[role="application"]');
+			expect(nestedList.hasAttribute('aria-label')).to.be.false;
+		});
+
+	});
+
 	describe('navigation', () => {
 
 		[
