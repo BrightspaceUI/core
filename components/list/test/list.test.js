@@ -3,7 +3,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const keyCodes = Object.freeze({
@@ -51,6 +51,37 @@ describe('d2l-list', () => {
 
 	});
 
+	describe('label', () => {
+
+		it('should set aria-label on list when label is defined', async() => {
+			const elem = await fixture(html`<d2l-list label="Test Label"></d2l-list>`);
+			const list = elem.shadowRoot.querySelector('[role="list"]');
+			expect(list.getAttribute('aria-label')).to.equal('Test Label');
+		});
+
+		it('should not set aria-label on list when label is not defined', async() => {
+			const elem = await fixture(html`<d2l-list></d2l-list>`);
+			const list = elem.shadowRoot.querySelector('[role="list"]');
+			expect(list.hasAttribute('aria-label')).to.be.false;
+		});
+
+		it('should not set aria-label on nested lists', async() => {
+			const elem = await fixture(html`
+					<d2l-list id="L1" grid>
+						<d2l-list-item>
+							<d2l-list id="L2" slot="nested" grid label="Test Label">
+								<d2l-list-item></d2l-list-item>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+					</d2l-list>	
+				`);
+			const nestedList = elem.querySelector('#L2').shadowRoot.querySelector('[role="application"]');
+			expect(nestedList.hasAttribute('aria-label')).to.be.false;
+		});
+
+	});
+
 	describe('navigation', () => {
 
 		[
@@ -87,6 +118,8 @@ describe('d2l-list', () => {
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				listItem.focus();
+				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
 				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
 				setTimeout(() => listItemLayout.dispatchEvent(event));
 				await oneEvent(listItemLayout, 'keydown');
@@ -128,6 +161,8 @@ describe('d2l-list', () => {
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				listItem.focus();
+				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
 				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
 				setTimeout(() => listItemLayout.dispatchEvent(event));
 				await oneEvent(listItemLayout, 'keydown');
@@ -135,6 +170,32 @@ describe('d2l-list', () => {
 				const focusedElement = elem.querySelector(`[key=${testCase.expectedFocus}`);
 				expect(focusedElement.hasAttribute('_focusing')).to.be.true;
 			});
+		});
+
+		it('Focus stays in list with list controls when in grid mode when up arrow is pressed', async() => {
+			const elem = await fixture(html`
+				 <d2l-list grid>
+					<d2l-list-controls slot="controls"></d2l-list-controls>
+					<d2l-list-item key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			await awaitListElementUpdates(elem, [
+				'[slot="controls"]',
+				'[key="L1-1"]',
+				'[key="L1-2"]',
+			]);
+
+			const listItem = elem.querySelector('[key="L1-2"]');
+			const listItemLayout = elem.querySelector('[key="L1-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
+			listItem.focus();
+			await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
+
+			const event = new KeyboardEvent('keydown', { keyCode: keyCodes.UP.key });
+			setTimeout(() => listItemLayout.dispatchEvent(event));
+			await oneEvent(listItemLayout, 'keydown');
+
+			expect(listItem.hasAttribute('_focusing')).to.be.true;
 		});
 	});
 

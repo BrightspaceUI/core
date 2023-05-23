@@ -8,7 +8,8 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-const INPUT_TIMEOUT_MS = 400;
+export const INPUT_TIMEOUT_MS = 400;
+export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
@@ -90,6 +91,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		super();
 		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
+		this._suppressEnter = false;
 		this.disabled = false;
 		this.noClear = false;
 		this.searchOnInput = false;
@@ -194,14 +196,19 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			return;
 		}
 		e.preventDefault();
-		this._setLastSearchValue(this.value);
-		this._dispatchEvent();
+		const hasChanged = this._setLastSearchValue(this.value);
+		if (!this._suppressEnter || hasChanged) {
+			this._suppressEnter = true;
+			setTimeout(() => this._suppressEnter = false, SUPPRESS_ENTER_TIMEOUT_MS);
+			this._dispatchEvent();
+		}
 	}
 
 	_setLastSearchValue(val) {
 		const oldVal = this._lastSearchValue;
 		this._lastSearchValue = val;
 		this.requestUpdate('lastSearchValue', oldVal);
+		return (oldVal !== val);
 	}
 
 }
