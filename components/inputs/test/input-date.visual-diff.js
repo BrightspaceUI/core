@@ -563,4 +563,14 @@ describe('d2l-input-date', () => {
 			});
 		});
 	});
+
+	describe('defects', () => {
+
+		it('DE53025', async function() {
+			const rect = await visualDiff.getRect(page, '#de53025');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 });
