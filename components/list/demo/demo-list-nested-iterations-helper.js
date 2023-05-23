@@ -19,8 +19,8 @@ class ListNestedIterationsHelper extends LitElement {
 			table {
 				border-collapse: collapse;
 				font-size: 0.8rem;
-				width: 100%;
 				table-layout: fixed;
+				width: 100%;
 			}
 			table > * > tr > * {
 				border: 1px solid var(--d2l-color-mica);
