@@ -495,12 +495,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 
 		let listHeader = nothing;
+		let listLabel = undefined;
 		if (dimension.headerText && dimension.searchValue === '') {
 			listHeader = html`
 				<d2l-list-item>
 					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
 				</d2l-list-item>
 			`;
+			listLabel = dimension.headerText;
 		}
 
 		return html`
@@ -510,7 +512,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
-				label="${ifDefined(dimension.headerText)}"
+				label="${ifDefined(listLabel)}"
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
 				${listHeader}

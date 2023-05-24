@@ -61,7 +61,7 @@ class FilterDimensionSet extends LitElement {
 
 	constructor() {
 		super();
-		this.headerText = undefined;
+		this.headerText = '';
 		this.introductoryText = '';
 		this.loading = false;
 		this.searchType = 'automatic';
