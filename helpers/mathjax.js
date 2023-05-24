@@ -43,12 +43,36 @@ class HtmlBlockMathRenderer {
 
 		const context = JSON.parse(contextVal) || {};
 
-		await typesetMath(elem, {
+		if (!elem.querySelector('math') && !(context.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
+
+		const mathJaxConfig = {
 			deferTypeset: true,
 			renderLatex: context.renderLatex,
 			outputScale: context.outputScale || 1,
 			window: window
+		};
+
+		await loadMathJax(mathJaxConfig);
+
+		// MathJax 3 does not support newlines, but it does persist styles, so add custom styles to mimic a linebreak
+		// This work-around should be removed when linebreaks are natively supported.
+		// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
+		// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
+		elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+			elm.style.display = 'block';
+			elm.style.height = '0.5rem';
 		});
+
+		// If we're using deferred rendering, we need to create a document structure
+		// within the element so MathJax can appropriately process math.
+		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
+
+		await window.MathJax.startup.promise;
+		window.D2L = window.D2L || {};
+
+		if (!window.D2L.renderingPromise) window.D2L.renderingPromise = Promise.resolve();
+		window.D2L.renderingPromise = window.D2L.renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
+		await window.D2L.renderingPromise;
 	}
 
 }
@@ -213,39 +237,4 @@ export function loadMathJax(mathJaxConfig) {
 
 	return win.D2L.mathJaxLoaded;
 
-}
-
-export async function typesetMath(elem, options) {
-	if (!elem.querySelector('math') && !(options.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
-
-	const win = options.window;
-
-	const mathJaxConfig = {
-		deferTypeset: options.deferTypeset,
-		renderLatex: options.renderLatex,
-		outputScale: options.outputScale || 1,
-		window: win
-	};
-
-	await loadMathJax(mathJaxConfig);
-
-	// MathJax 3 does not support newlines, but it does persist styles, so add custom styles to mimic a linebreak
-	// This work-around should be removed when linebreaks are natively supported.
-	// MathJax issue: https://github.com/mathjax/MathJax/issues/2312
-	// A duplicate that explains our exact issue: https://github.com/mathjax/MathJax/issues/2495
-	elem.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
-		elm.style.display = 'block';
-		elm.style.height = '0.5rem';
-	});
-
-	// If we're using deferred rendering, we need to create a document structure
-	// within the element so MathJax can appropriately process math.
-	if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
-
-	await win.MathJax.startup.promise;
-	win.D2L = win.D2L || {};
-
-	if (!win.D2L.renderingPromise) win.D2L.renderingPromise = Promise.resolve();
-	win.D2L.renderingPromise = win.D2L.renderingPromise.then(() => win.MathJax.typesetShadow(elem.getRootNode(), elem));
-	await win.D2L.renderingPromise;
 }
