@@ -55,6 +55,13 @@ const multiDimensionFixture = html`
 			<d2l-filter-dimension-set-value key="2" text="Value 2" selected></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
+const headerTextFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set header-text="Test Header" key="dim" text="Dim" select-all>
+			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>
+`;
 
 describe('d2l-filter', () => {
 
@@ -75,6 +82,31 @@ describe('d2l-filter', () => {
 
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
 			expect(elem.shadowRoot.querySelector('d2l-selection-select-all')).to.be.null;
+		});
+	});
+
+	describe('header-text', () => {
+		it('should set label on dimension set list when header-text is defined', async() => {
+			const elem = await fixture(headerTextFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.getAttribute('label')).to.equal('Test Header');
+		});
+
+		it('should not set label on dimension set list when header-text is defined while searching', async() => {
+			const elem = await fixture(headerTextFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+
+			elem._handleSearch({ detail: { value: 'V' } });
+			elem.requestUpdate();
+			await elem.updateComplete;
+
+			expect(list.hasAttribute('label')).to.be.false;
+		});
+
+		it('should not set label on dimension set list when header-text is not defined', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.hasAttribute('label')).to.be.false;
 		});
 	});
 

@@ -12,6 +12,11 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users.
+			 * @type {string}
+			 */
+			headerText: { type: String, attribute: 'header-text' },
+			/**
 			 * The introductory text to display at the top of the filter dropdown
 			 * @type {string}
 			 */
@@ -56,6 +61,7 @@ class FilterDimensionSet extends LitElement {
 
 	constructor() {
 		super();
+		this.headerText = '';
 		this.introductoryText = '';
 		this.loading = false;
 		this.searchType = 'automatic';

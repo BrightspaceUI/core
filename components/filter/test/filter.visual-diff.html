@@ -84,6 +84,16 @@
 				</d2l-filter>
 			</div>
 			<div class="visual-diff">
+				<d2l-filter id="single-set-multi-selection-header-text">
+					<d2l-filter-dimension-set key="course" header-text="Related Courses at Your Company" text="Course">
+						<d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology" count="23" disabled></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English" count="1012"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</div>
+			<div class="visual-diff">
 				<d2l-filter id="single-set-multi-selection-no-search">
 					<d2l-filter-dimension-set key="course" text="Course" search-type="none">
 						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
@@ -170,7 +180,7 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-filter id="multiple-selected">
-					<d2l-filter-dimension-set key="course" text="Course" select-all>
+					<d2l-filter-dimension-set key="course" header-text="Related Courses at Your Company" text="Course" select-all>
 						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="biology" text="Biology" disabled></d2l-filter-dimension-set-value>
