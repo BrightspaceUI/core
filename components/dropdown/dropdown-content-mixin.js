@@ -1043,7 +1043,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	_handleFocusTrapEnter() {
 		if (this.__applyFocus && !this.noAutoFocus) {
-			const content = this.getContentContainer();
+			const content = this.__getWidthContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
 				// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap

@@ -36,6 +36,14 @@ describe('d2l-collapsible-panel', () => {
 		});
 	}
 
+	const scrollTo = (selector, y) => {
+		return page.$eval(selector, async(element, y) => {
+			const position = element.getBoundingClientRect();
+			window.scrollTo(0, position.top + y);
+			await new Promise(resolve => requestAnimationFrame(resolve));
+		}, y);
+	};
+
 	describe('ltr', () => {
 
 		before(async() => {
@@ -47,7 +55,6 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'default', selector: '#default' },
 			{ name: 'default-focus', selector: '#default', action: focusElement },
 			{ name: 'default-expanded', selector: '#default-expanded' },
-			{ name: 'default-expanded-sticky', selector: '#default-expanded-sticky' },
 			{ name: 'default-expanded-focus', selector: '#default-expanded', action: focusElement },
 			{ name: 'default-expand-event', selector: '#default-expand-event', action: expandPanel },
 			{ name: 'default-summary', selector: '#default-summary' },
@@ -61,7 +68,6 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'subtle', selector: '#subtle' },
 			{ name: 'subtle-focus', selector: '#subtle', action: focusElement },
 			{ name: 'subtle-expanded', selector: '#subtle-expanded' },
-			{ name: 'subtle-expanded-sticky', selector: '#subtle-expanded-sticky' },
 			{ name: 'subtle-expanded-focus', selector: '#subtle-expanded', action: focusElement },
 			{ name: 'subtle-summary', selector: '#subtle-summary' },
 			{ name: 'subtle-summary-expanded', selector: '#subtle-summary-expanded' },
@@ -73,7 +79,6 @@ describe('d2l-collapsible-panel', () => {
 			{ name: 'inline', selector: '#inline' },
 			{ name: 'inline-focus', selector: '#inline', action: focusElement },
 			{ name: 'inline-expanded', selector: '#inline-expanded' },
-			{ name: 'inline-expanded-sticky', selector: '#inline-expanded-sticky' },
 			{ name: 'inline-expanded-focus', selector: '#inline-expanded', action: focusElement },
 			{ name: 'inline-summary', selector: '#inline-summary' },
 			{ name: 'inline-summary-expanded', selector: '#inline-summary-expanded' },
@@ -93,6 +98,21 @@ describe('d2l-collapsible-panel', () => {
 				if (info.action) await info.action(info.selector);
 				const rect = await visualDiff.getRect(page, info.selector);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+
+		[
+			{ name: 'default-expanded-sticky-top', selector: '#default-expanded-sticky', scroll: 0 },
+			{ name: 'default-expanded-sticky-scrolled', selector: '#default-expanded-sticky', scroll: 35 },
+			{ name: 'subtle-expanded-sticky-top', selector: '#subtle-expanded-sticky', scroll: 0 },
+			{ name: 'subtle-expanded-sticky-scrolled', selector: '#subtle-expanded-sticky', scroll: 35 },
+			{ name: 'inline-expanded-sticky-top', selector: '#inline-expanded-sticky', scroll: 0 },
+			{ name: 'inline-expanded-sticky-scrolled', selector: '#inline-expanded-sticky', scroll: 35 }
+		].forEach((info) => {
+			it(info.name, async function() {
+				await scrollTo(info.selector, info.scroll);
+				const rect = await visualDiff.getRect(page, info.selector);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 			});
 		});
 	});

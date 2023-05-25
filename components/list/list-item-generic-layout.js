@@ -283,7 +283,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 
-		let listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+		const curListItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+		let listItem = curListItem;
 
 		while (num > 0) {
 			const tempListItem = (previous ? this._getPreviousFlattenedListItem(listItem) : this._getNextFlattenedListItem(listItem));
@@ -301,7 +302,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (!listItem._tryFocus()) {
 				// ultimate fallback to generic method for getting next/previous focusable
 				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
-				if (nextFocusable) nextFocusable.focus();
+				const nextListItem = findComposedAncestor(nextFocusable, (node) => node.role === 'rowgroup' || node.role === 'listitem');
+				if (nextListItem && this._isContainedInSameRootList(curListItem, nextListItem)) {
+					nextFocusable.focus();
+				}
 			}
 		}
 
@@ -442,9 +446,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
+	_isContainedInSameRootList(item, node) {
+		const rootList = item?.getRootList?.(item);
+		return isComposedAncestor(rootList, node);
+	}
+
 	_onKeydown(event) {
 		if (!this.gridActive) return;
-
 		let node = null;
 		let preventDefault = true;
 		switch (event.keyCode) {

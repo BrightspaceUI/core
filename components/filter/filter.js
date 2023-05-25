@@ -276,8 +276,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	update(changedProperties) {
-		if (changedProperties.has('opened') && this.opened && this._dimensions.length === 1) {
-			this._setSelectedOnOpen(this._dimensions[0]);
+		if (
+			changedProperties.has('opened')
+			&& this.opened
+			&& this._dimensions.length === 1
+			&& this._dimensions[0].selectedFirst
+		) {
+			this._setSelectedOnRender(this._dimensions[0]);
 		}
 		super.update(changedProperties);
 	}
@@ -501,10 +506,22 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			if (count === 0) return searchResults;
 		}
 
+		let listHeader = nothing;
+		let listLabel = undefined;
+		if (dimension.headerText && dimension.searchValue === '') {
+			listHeader = html`
+				<d2l-list-item>
+					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
+				</d2l-list-item>
+			`;
+			listLabel = dimension.headerText;
+		}
+
 		let selectedListItems = nothing;
 		let listItems = nothing;
 		if (dimension.selectedFirst) {
-			selectedListItems = dimension.values.filter(item => item.selectedOnOpen).map(item => html`
+			if (listLabel) listLabel = this.localize('components.filter.selectedFirstListLabel', { headerText: dimension.headerText });
+			selectedListItems = dimension.values.filter(item => item.selectedOnRender).map(item => html`
 				<d2l-list-item
 					?selection-disabled="${item.disabled}"
 					?hidden="${item.hidden}"
@@ -519,7 +536,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-list-item>	
 			`);
 
-			listItems = dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
+			listItems = dimension.values.filter(item => !item.selectedOnRender).map(item => html`
 				<d2l-list-item
 					?selection-disabled="${item.disabled}"
 					?hidden="${item.hidden}"
@@ -550,33 +567,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			`);
 		}
 
-		let listHeader = nothing;
-		let offscreenHeader = nothing;
-		if (dimension.headerText && dimension.searchValue === '') {
-			const isHeadingAtTop = !(dimension.selectedFirst && selectedListItems.length > 0);
-			listHeader = html`
-				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text" aria-hidden="${isHeadingAtTop ? 'true' : 'false'}">${dimension.headerText}</h4>
-				</d2l-list-item>
-			`;
-
-			let offscreenHeaderText = dimension.headerText;
-			if (!isHeadingAtTop) {
-				offscreenHeaderText = this.localize('components.filter.headerTextDescription', { headerText: dimension.headerText });
-			}
-			offscreenHeader = html`
-				<h4 class="d2l-offscreen">${offscreenHeaderText}</h4>
-			`;
-		}
-
 		return html`
 			${searchResults}
-			${offscreenHeader}
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
+				label="${ifDefined(listLabel)}"
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
 				${selectedListItems}
@@ -740,7 +738,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleDimensionShowStart(e) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
-		this._setSelectedOnOpen(dimension);
+		if (dimension.introductoryText) announce(dimension.introductoryText);
+		if (dimension.selectedFirst) this._setSelectedOnRender(dimension);
 		if (dimension.searchType === 'full-manual') {
 			this._search(dimension);
 		}
@@ -761,6 +760,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			if (dimension.searchType === 'full-manual') {
 				this._search(dimension);
 			}
+			if (this._dimensions[0].introductoryText) announce(this._dimensions[0].introductoryText);
 		}
 		this._stopPropagation(e);
 	}
@@ -775,6 +775,37 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleSearch(e) {
 		const dimension = this._getActiveDimension();
+		const searchValue = e.detail.value.trim();
+		dimension.searchValue = searchValue;
+
+		if (dimension.selectedFirst) {
+			this._setSelectedOnRender(dimension);
+		}
+
+		if (dimension.searchType === 'automatic' || searchValue === '') {
+			this._performDimensionSearch(dimension);
+		} else if (dimension.searchType === 'manual') {
+			dimension.loading = true;
+			this.requestUpdate();
+
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: searchValue,
+					searchCompleteCallback: function(keysToDisplay) {
+						requestAnimationFrame(() => {
+							dimension.searchKeysToDisplay = keysToDisplay;
+							this._performDimensionSearch(dimension);
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
+		}
+	}
 		dimension.searchValue = e.detail.value.trim();
 		this._search(dimension);
 	}
@@ -943,10 +974,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		});
 	}
 
-	_setSelectedOnOpen(dimension) {
+	_setSelectedOnRender(dimension) {
 		for (const value of dimension.values) {
-			if (value.selected) value.selectedOnOpen = true;
-			else value.selectedOnOpen = false;
+			if (value.selected) value.selectedOnRender = true;
+			else value.selectedOnRender = false;
 		}
 	}
 

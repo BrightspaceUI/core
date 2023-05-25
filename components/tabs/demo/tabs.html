@@ -24,6 +24,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-tabs>
+						<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
 						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
 						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
 						<d2l-tab-panel text="Earth &amp; Planetary Sciences">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
@@ -39,6 +40,7 @@
 				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
 				<d2l-button-subtle id="add-selected" text="Add Selected"></d2l-button-subtle>
 				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
+				<d2l-button-subtle id="remove-multiple" text="Remove Multiple"></d2l-button-subtle>
 			</div>
 			<script>
 				let newPanelId = 0;
@@ -58,10 +60,20 @@
 					if (panels.length === 1) tabs.removeChild(panels[0]);
 					else tabs.removeChild(panels[1]);
 				};
+				const removePanels = (tabs) => {
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length === 0) return;
+					if (panels.length === 1) tabs.removeChild(panels[0]);
+					else {
+						tabs.removeChild(panels[1]);
+						tabs.removeChild(panels[0]);
+					}
+				};
 
 				document.querySelector('#add').addEventListener('click', () => addPanel(false, document.querySelector('#withSlot').querySelector('d2l-tabs')));
 				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true, document.querySelector('#withSlot').querySelector('d2l-tabs')));
 				document.querySelector('#remove').addEventListener('click', () => removePanel(document.querySelector('#withSlot').querySelector('d2l-tabs')));
+				document.querySelector('#remove-multiple').addEventListener('click', () => removePanels(document.querySelector('#withSlot').querySelector('d2l-tabs')));
 			</script>
 
 			<d2l-demo-snippet id="withSlot">

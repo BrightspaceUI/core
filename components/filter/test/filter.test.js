@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { spy, stub } from 'sinon';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -55,6 +55,19 @@ const multiDimensionFixture = html`
 			<d2l-filter-dimension-set-value key="2" text="Value 2" selected></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
+const headerTextFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set header-text="Test Header" key="dim" text="Dim" select-all>
+			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
+const selectedFirstFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set key="dim" text="Dim" select-all selected-first>
+			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
 
 describe('d2l-filter', () => {
 
@@ -75,6 +88,113 @@ describe('d2l-filter', () => {
 
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
 			expect(elem.shadowRoot.querySelector('d2l-selection-select-all')).to.be.null;
+		});
+	});
+
+	describe('header-text', () => {
+		it('should set label on dimension set list when header-text is defined', async() => {
+			const elem = await fixture(headerTextFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.getAttribute('label')).to.equal('Test Header');
+		});
+
+		it('should not set label on dimension set list when header-text is defined while searching', async() => {
+			const elem = await fixture(headerTextFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+
+			elem._handleSearch({ detail: { value: 'V' } });
+			elem.requestUpdate();
+			await elem.updateComplete;
+
+			expect(list.hasAttribute('label')).to.be.false;
+		});
+
+		it('should not set label on dimension set list when header-text is not defined', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			const list = elem.shadowRoot.querySelector('d2l-list');
+			expect(list.hasAttribute('label')).to.be.false;
+		});
+	});
+
+	describe('selected-first', () => {
+		it('should not set selectedOnRender after dimension is opened', async() => {
+			const elem = await fixture(selectedFirstFixture);
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+
+			elem.opened = true;
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
+			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.false;
+
+			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+			setTimeout(() => listItem2.setSelected(true));
+			await oneEvent(elem, 'd2l-filter-change');
+
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.false;
+		});
+
+		it('should set selectedOnRender when dimension is re-opened in multi-dimension', async() => {
+			const elem = await fixture(html`
+				<d2l-filter id="multi">
+					<d2l-filter-dimension-set key="1" text="Dim 1" selected-first>
+						<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="2" text="Dim 2" >
+						<d2l-filter-dimension-set-value key="1" text="Value 1"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`);
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
+
+			elem.opened = true;
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+
+			setTimeout(() => dimensions[0].click());
+			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+
+			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+			setTimeout(() => listItem2.setSelected(true));
+			await oneEvent(elem, 'd2l-filter-change');
+			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
+			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.false;
+
+			setTimeout(() => dimensions[1].click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			setTimeout(() => dimensions[0].click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+
+			await waitUntil(() => value2.selectedOnRender, 'selectedOnRender recalculated', { timeout: 3000 });
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.true;
+		});
+
+		it('should set selectedOnRender when dimension is searched', async() => {
+			const elem = await fixture(selectedFirstFixture);
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+
+			elem.opened = true;
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
+			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
+
+			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+			setTimeout(() => listItem2.setSelected(true));
+			await oneEvent(elem, 'd2l-filter-change');
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.false;
+
+			elem._handleSearch({ detail: { value: 'V' } });
+			elem.requestUpdate();
+			await elem.updateComplete;
+			expect(value1.selectedOnRender).to.be.true;
+			expect(value2.selectedOnRender).to.be.true;
 		});
 	});
 

@@ -61,12 +61,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				type: String,
 				attribute: 'opener-type'
 			},
-			_chompIndex: {
-				state: true
-			},
-			_mini: {
-				state: true
-			}
+			_chompIndex: { state: true },
+			_mini: { state: true },
+			_wrapping: { state: true }
 		};
 	}
 
@@ -80,7 +77,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 			.d2l-overflow-group-container {
 				display: flex;
-				flex-wrap: wrap;
 				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
@@ -94,14 +90,16 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
+		this._itemObserver = new MutationObserver(this._handleItemMutation);
 		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
 
 		this._hasResized = false;
-		this._isObserving = false;
+		this._isObservingResize = false;
 		this._itemHeight = 0;
 		this._mini = this.openerType === OPENER_TYPE.ICON;
 		this._overflowContainerHidden = false;
 		this._slotItems = [];
+		this._wrapping = false;
 
 		this.autoShow = false;
 		this.maxToShow = -1;
@@ -112,8 +110,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (this._isObserving) {
-			this._isObserving = false;
+		if (this._isObservingResize) {
+			this._isObservingResize = false;
 			this._resizeObserver.disconnect();
 		}
 	}
@@ -133,8 +131,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		});
 
 		const containerStyles = {
-			minHeight: this.autoShow ? 'none' : `${this._itemHeight}px`,
-			maxHeight: this.autoShow ? 'none' : `${this._itemHeight}px`
+			flexWrap: this._wrapping ? 'wrap' : 'nowrap',
+			minHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
+			maxHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto')
 		};
 
 		return html`
@@ -142,15 +141,15 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowContainer}
 			</div>
-			<slot name="adjacent"></slot>	
+			<slot name="adjacent"></slot>
 		`;
 	}
 
 	update(changedProperties) {
 		super.update(changedProperties);
 
-		if (!this._isObserving) {
-			this._isObserving = true;
+		if (!this._isObservingResize) {
+			this._isObservingResize = true;
 			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
 		}
 
@@ -246,15 +245,14 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				showing.count += 1;
 				itemLayout.isChomped = false;
 				itemLayout.trigger = 'soft-show';
-
 			} else {
 				isSoftOverflowing = true;
 				itemLayout.isChomped = true;
 				itemLayout.trigger = 'soft-hide';
-
 			}
 
 		}
+
 		// if there is at least one showing and no more to be hidden, enable collapsing overflow container to mini overflow container
 		this._overflowContainerHidden = this._itemLayouts.length === showing.count;
 		if (!this._overflowContainerHidden && (isSoftOverflowing || isForcedOverflowing)) {
@@ -273,8 +271,12 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				itemLayoutOverflowing.isChomped = true;
 			}
 		}
+
 		const overflowOverflowing = (showing.width + this._overflowContainerWidth >= this._availableWidth);
 		const swapToMini = overflowOverflowing && !this._overflowContainerHidden;
+
+		const requiredWidth = (isSoftOverflowing || isForcedOverflowing) ? showing.width + this._overflowContainerWidth : showing.width;
+		this._wrapping = (requiredWidth > this._availableWidth);
 
 		this._mini = this.openerType === OPENER_TYPE.ICON || swapToMini;
 		this._chompIndex = this._overflowContainerHidden ? null : showing.count;
@@ -295,8 +297,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				isChomped: false,
 				isHidden: itemHidden,
 				width: Math.ceil(parseFloat(computedStyles.width) || 0)
-					+ parseInt(computedStyles.marginRight) || 0
-					+ parseInt(computedStyles.marginLeft) || 0,
+					+ (parseInt(computedStyles.marginRight) || 0)
+					+ (parseInt(computedStyles.marginLeft) || 0),
 				node: node
 			};
 		});
@@ -369,8 +371,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			await this._getItems();
 
 			this._slotItems.forEach(item => {
-				const observer = new MutationObserver(this._handleItemMutation);
-				observer.observe(item, {
+				this._itemObserver.observe(item, {
 					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 					attributeFilter: ['disabled', 'text', 'selected'],
 					childList: false,
@@ -386,4 +387,5 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			this.requestUpdate();
 		});
 	}
+
 };
