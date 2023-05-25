@@ -123,6 +123,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				visibility: hidden;
 				width: auto;
 			}
+			.d2l-input-date-hidden-text > div {
+				padding-left: 2rem; /* simulates space taken up by the icon */
+			}
 			d2l-calendar {
 				padding: 0.25rem 0.6rem;
 			}
@@ -268,9 +271,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			</d2l-dropdown-content>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-text">
-				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
-				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
-				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
+				<div>${formattedWideDate}</div>
+				<div>${shortDateFormat}</div>
+				<div>${this.emptyText}</div>
 			</div>
 			${errorTooltip}
 			${infoTooltip}

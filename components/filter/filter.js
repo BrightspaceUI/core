@@ -506,9 +506,21 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			if (count === 0) return searchResults;
 		}
 
+		let listHeader = nothing;
+		let listLabel = undefined;
+		if (dimension.headerText && dimension.searchValue === '') {
+			listHeader = html`
+				<d2l-list-item>
+					<h4 class="d2l-heading-4 list-header-text" aria-hidden="true">${dimension.headerText}</h4>
+				</d2l-list-item>
+			`;
+			listLabel = dimension.headerText;
+		}
+
 		let selectedListItems = nothing;
 		let listItems = nothing;
 		if (dimension.selectedFirst) {
+			if (listLabel) listLabel = this.localize('components.filter.headerTextDescription', { headerText: listLabel });
 			selectedListItems = dimension.values.filter(item => item.selectedOnOpen).map(item => html`
 				<d2l-list-item
 					?selection-disabled="${item.disabled}"
@@ -555,28 +567,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			`);
 		}
 
-		let listHeader = nothing;
-		let offscreenHeader = nothing;
-		if (dimension.headerText && dimension.searchValue === '') {
-			const isHeadingAtTop = !(dimension.selectedFirst && selectedListItems.length > 0);
-			listHeader = html`
-				<d2l-list-item>
-					<h4 class="d2l-heading-4 list-header-text" aria-hidden="${isHeadingAtTop ? 'true' : 'false'}">${dimension.headerText}</h4>
-				</d2l-list-item>
-			`;
-
-			let offscreenHeaderText = dimension.headerText;
-			if (!isHeadingAtTop) {
-				offscreenHeaderText = this.localize('components.filter.headerTextDescription', { headerText: dimension.headerText });
-			}
-			offscreenHeader = html`
-				<h4 class="d2l-offscreen">${offscreenHeaderText}</h4>
-			`;
-		}
-
 		return html`
 			${searchResults}
-			${offscreenHeader}
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"

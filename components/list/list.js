@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
@@ -36,6 +37,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @type {boolean}
 			 */
 			grid: { type: Boolean },
+			/**
+			 * Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists.
+			 * @type {string}
+ 			 */
+			label: { type: String },
 			/**
 			 * Display separators. Valid values are "all" (default), "between", "none"
 			 * @type {'all'|'between'|'none'}
@@ -117,10 +123,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const role = !this.grid ? 'list' : 'application';
+		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div role="${role}">
+			<div role="${role}" aria-label="${ifDefined(ariaLabel)}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 			</div>
 			${this._renderPagerContainer()}

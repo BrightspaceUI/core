@@ -12,7 +12,7 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * The header text to display as the list header
+			 * A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users.
 			 * @type {string}
 			 */
 			headerText: { type: String, attribute: 'header-text' },
