@@ -282,7 +282,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			&& this._dimensions.length === 1
 			&& this._dimensions[0].selectedFirst
 		) {
-			this._setSelectedOnOpen(this._dimensions[0]);
+			this._setSelectedOnRender(this._dimensions[0]);
 		}
 		super.update(changedProperties);
 	}
@@ -520,8 +520,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		let selectedListItems = nothing;
 		let listItems = nothing;
 		if (dimension.selectedFirst) {
-			if (listLabel) listLabel = this.localize('components.filter.headerTextDescription', { headerText: listLabel });
-			selectedListItems = dimension.values.filter(item => item.selectedOnOpen).map(item => html`
+			if (listLabel) listLabel = this.localize('components.filter.selectedFirstListLabel', { headerText: dimension.headerText });
+			selectedListItems = dimension.values.filter(item => item.selectedOnRender).map(item => html`
 				<d2l-list-item
 					?selection-disabled="${item.disabled}"
 					?hidden="${item.hidden}"
@@ -536,7 +536,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-list-item>	
 			`);
 
-			listItems = dimension.values.filter(item => !item.selectedOnOpen).map(item => html`
+			listItems = dimension.values.filter(item => !item.selectedOnRender).map(item => html`
 				<d2l-list-item
 					?selection-disabled="${item.disabled}"
 					?hidden="${item.hidden}"
@@ -574,6 +574,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
+				label="${ifDefined(listLabel)}"
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
 				${selectedListItems}
@@ -738,7 +739,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
-		if (dimension.selectedFirst) this._setSelectedOnOpen(dimension);
+		if (dimension.selectedFirst) this._setSelectedOnRender(dimension);
 		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
@@ -771,7 +772,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		dimension.searchValue = searchValue;
 
 		if (dimension.selectedFirst && searchValue === '') {
-			this._setSelectedOnOpen(dimension);
+			this._setSelectedOnRender(dimension);
 		}
 
 		if (dimension.searchType === 'automatic' || searchValue === '') {
@@ -937,10 +938,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		});
 	}
 
-	_setSelectedOnOpen(dimension) {
+	_setSelectedOnRender(dimension) {
 		for (const value of dimension.values) {
-			if (value.selected) value.selectedOnOpen = true;
-			else value.selectedOnOpen = false;
+			if (value.selected) value.selectedOnRender = true;
+			else value.selectedOnRender = false;
 		}
 	}
 
