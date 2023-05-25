@@ -77,7 +77,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseup', this.__onMouseUp);
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
-		this.addEventListener('touchstart', this.__onTouchStart);
 
 		if (this.openOnHover) {
 			document.body.addEventListener('mouseup', this._onOutsideClick);
@@ -91,7 +90,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseup', this.__onMouseUp);
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
-		this.removeEventListener('touchstart', this.__onTouchStart);
 
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
@@ -282,12 +280,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				this.openDropdown(false);
 			}
 		} else this.toggleOpen(true);
-	}
-
-	__onTouchStart(e) {
-		// elements external to the dropdown content such as primary-secondary template should not be reacting
-		// to touchstart events originating inside the dropdown content
-		e.stopPropagation();
 	}
 
 	/* used by open-on-hover option */
