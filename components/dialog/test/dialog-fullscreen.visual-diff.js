@@ -31,6 +31,7 @@ describe('d2l-dialog-fullscreen', () => {
 					'#dialogLong',
 					'#dialogRtl',
 					'#dialogNoFooterContent',
+					'#dialogNoPadding',
 					'#dialogHorizontalOverflow',
 					'#dialogSetWidth',
 					'#dialogSetWidthBelowMin',
@@ -90,6 +91,11 @@ describe('d2l-dialog-fullscreen', () => {
 
 				it('no footer content', async function() {
 					await open(page, '#dialogNoFooterContent');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
+				});
+
+				it('no padding', async function() {
+					await open(page, '#dialogNoPadding');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 				});
 

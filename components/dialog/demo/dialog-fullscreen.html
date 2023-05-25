@@ -86,13 +86,40 @@
 							document.querySelector('#dialogFullscreen').opened = true;
 						});
 						document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
+							console.log('dialog action:', e.detail.action);
 						});
 					</script>
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Fullscreen Dialog with Content Overflow</h2>
+			<h2>Fullscreen Dialog (no-padding)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openNoPadding">Show Dialog</d2l-button>
+					<d2l-dialog-fullscreen id="dialogFullscreenNoPadding" title-text="Fullscreen Title" no-padding>
+						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+						<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+
+						<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog-fullscreen>
+					<script>
+						document.querySelector('#openNoPadding').addEventListener('click', () => {
+							document.querySelector('#dialogFullscreenNoPadding').opened = true;
+						});
+						document.querySelector('#dialogFullscreenNoPadding').addEventListener('d2l-dialog-close', (e) => {
+							console.log('dialog action:', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Fullscreen Dialog (overflowing content)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -152,7 +179,7 @@
 							document.querySelector('#dialogFullscreenOverflow').opened = true;
 						});
 						document.querySelector('#dialogFullscreenOverflow').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
+							console.log('dialog action:', e.detail.action);
 						});
 					</script>
 				</template>
@@ -180,7 +207,7 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Fullscreen Dialog using width property</h2>
+			<h2>Fullscreen Dialog (width)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -232,7 +259,7 @@
 							document.querySelector('#dialogWidth').opened = true;
 						});
 						document.querySelector('#dialogWidth').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
+							console.log('dialog action:', e.detail.action);
 						});
 					</script>
 				</template>
