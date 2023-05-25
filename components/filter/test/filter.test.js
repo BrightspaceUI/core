@@ -170,12 +170,12 @@ describe('d2l-filter', () => {
 			setTimeout(() => dimensions[0].click());
 			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 
-			await waitUntil(() => value2.selectedOnRender, 'SelectedOnRender recalculated', { timeout: 3000 });
+			await waitUntil(() => value2.selectedOnRender, 'selectedOnRender recalculated', { timeout: 3000 });
 			expect(value1.selectedOnRender).to.be.true;
 			expect(value2.selectedOnRender).to.be.true;
 		});
 
-		it('should set selectedOnRender when dimension search is cleared', async() => {
+		it('should set selectedOnRender when dimension is searched', async() => {
 			const elem = await fixture(selectedFirstFixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 
@@ -183,12 +183,6 @@ describe('d2l-filter', () => {
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
 			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.false;
-
-			elem._handleSearch({ detail: { value: 'V' } });
-			elem.requestUpdate();
-			await elem.updateComplete;
 
 			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
 			setTimeout(() => listItem2.setSelected(true));
@@ -196,10 +190,9 @@ describe('d2l-filter', () => {
 			expect(value1.selectedOnRender).to.be.true;
 			expect(value2.selectedOnRender).to.be.false;
 
-			elem._handleSearch({ detail: { value: '' } });
+			elem._handleSearch({ detail: { value: 'V' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
-
 			expect(value1.selectedOnRender).to.be.true;
 			expect(value2.selectedOnRender).to.be.true;
 		});

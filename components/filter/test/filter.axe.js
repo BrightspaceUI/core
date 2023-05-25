@@ -18,12 +18,12 @@ const singleSetDimensionSingleSelectionOnFixture = html`
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 const singleSetSelectedFirstFixture = html`
-<d2l-filter>
-	<d2l-filter-dimension-set key="dim" introductory-text="Intro" header-text="Header" text="Dim" select-all selected-first>
-		<d2l-filter-dimension-set-value key="value-1" text="Value 1"></d2l-filter-dimension-set-value>
-		<d2l-filter-dimension-set-value key="value-2" text="Value 2" selected></d2l-filter-dimension-set-value>
-	</d2l-filter-dimension-set>
-</d2l-filter>`;
+	<d2l-filter>
+		<d2l-filter-dimension-set key="dim" introductory-text="Intro" header-text="Header" text="Dim" select-all selected-first>
+			<d2l-filter-dimension-set-value key="value-1" text="Value 1"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="value-2" text="Value 2" selected></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
 const multiDimensionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="1" introductory-text="Intro" text="Dim 1" select-all>

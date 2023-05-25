@@ -771,7 +771,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.selectedFirst && searchValue === '') {
+		if (dimension.selectedFirst) {
 			this._setSelectedOnRender(dimension);
 		}
 
