@@ -294,6 +294,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		window.addEventListener('resize', this.__onResize);
 		this.addEventListener('blur', this.__onAutoCloseFocus, true);
+		this.addEventListener('touchstart', this.__onTouchStart);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('click', this.__onAutoCloseClick, true);
 		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
@@ -305,6 +306,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		super.disconnectedCallback();
 		if (this.mediaQueryList.removeEventListener) this.mediaQueryList.removeEventListener('change', this._handleMobileResize);
 		this.removeEventListener('blur', this.__onAutoCloseFocus);
+		this.removeEventListener('touchstart', this.__onTouchStart);
 		window.removeEventListener('resize', this.__onResize);
 		if (document.body) {
 			// DE41322: document.body can be null in some scenarios
@@ -528,6 +530,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	__onResize() {
 		this.resize();
+	}
+
+	__onTouchStart(e) {
+		// elements external to the dropdown content such as primary-secondary template should not be reacting
+		// to touchstart events originating inside the dropdown content
+		e.stopPropagation();
 	}
 
 	async __openedChanged(newValue) {
