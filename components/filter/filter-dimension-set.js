@@ -33,7 +33,7 @@ class FilterDimensionSet extends LitElement {
 			loading: { type: Boolean },
 			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
-			 * @type {'none'|'automatic'|'manual'}
+			 * @type {'none'|'automatic'|'manual'|'full-manual'}
 			 */
 			searchType: { type: String, attribute: 'search-type' },
 			/**

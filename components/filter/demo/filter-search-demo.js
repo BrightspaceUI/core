@@ -84,19 +84,13 @@ class FilterSearchDemo extends LitElement {
 		console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
 	}
 
-	_handleFullManualSearch(e) {
-		const keysToDisplay = [];
-		if (e.detail.value === '') {
-			keysToDisplay.push('admin', 'instructor');
-			// for (const selectedItem of Object.keys(this._selectedFilters)) {
-			// 	if (!keysToDisplay.includes(selectedItem)) keysToDisplay.push(selectedItem);
-			// }
-			this._fullData.forEach(value => {
-				if (value.selected) {
-					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);
-				}
-			});
-		} else {
+	_handleSearch(e) {
+		const searchKeys = ['event', 'event-single', 'full-manual'];
+		if (!searchKeys.includes(e.detail.key)) return;
+
+		let keysToDisplay = [];
+		if (e.detail.key === 'full-manual') keysToDisplay = this._performFullManualSearch(e.detail.value);
+		else {
 			this._fullData.forEach(value => {
 				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
 					keysToDisplay.push(value.key);
@@ -109,26 +103,26 @@ class FilterSearchDemo extends LitElement {
 			// eslint-disable-next-line no-console
 			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
 		}, 2000);
+
 	}
 
-	_handleSearch(e) {
-		const searchKeys = ['event', 'event-single'];
-		if (e.detail.key === 'full-manual') this._handleFullManualSearch(e);
-		if (!searchKeys.includes(e.detail.key)) return;
-
+	_performFullManualSearch(searchValue) {
 		const keysToDisplay = [];
-		this._fullData.forEach(value => {
-			if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
-				keysToDisplay.push(value.key);
-			}
-		});
-
-		setTimeout(() => {
-			e.detail.searchCompleteCallback(keysToDisplay);
-			// eslint-disable-next-line no-console
-			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
-		}, 2000);
-
+		if (searchValue === '') {
+			keysToDisplay.push('admin', 'instructor');
+			this._fullData.forEach(value => {
+				if (value.selected) {
+					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);
+				}
+			});
+		} else {
+			this._fullData.forEach(value => {
+				if (value.text.toLowerCase().indexOf(searchValue.toLowerCase()) > -1) {
+					keysToDisplay.push(value.key);
+				}
+			});
+		}
+		return keysToDisplay;
 	}
 
 }

@@ -41,7 +41,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
  * @fires d2l-filter-dimension-empty-state-action - Dispatched when an empty state action button is clicked
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
- * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
+ * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" or "full-manual" search-type is searched
  */
 class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
@@ -658,7 +658,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._dimensions.forEach(dimension => {
 			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
 				dimension.searchValue = '';
-				this._performDimensionSearch(dimension);
+				this._search(dimension);
 			}
 			this._performDimensionClear(dimension);
 		});
@@ -697,7 +697,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				}
 				this._activeFiltersSubscribers.updateSubscribers();
 			} else if (prop === 'values') {
-				if (dimension.searchValue) shouldSearch = true;
+				if (dimension.searchValue || dimension.searchType === 'full-manual') shouldSearch = true;
 				shouldRecount = true;
 				shouldResizeDropdown = true;
 				this._activeFiltersSubscribers.updateSubscribers();
@@ -781,32 +781,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.selectedFirst) {
 			this._setSelectedOnRender(dimension);
 		}
-
-		if (dimension.searchType === 'automatic' || searchValue === '') {
-			this._performDimensionSearch(dimension);
-		} else if (dimension.searchType === 'manual') {
-			dimension.loading = true;
-			this.requestUpdate();
-
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					key: dimension.key,
-					value: searchValue,
-					searchCompleteCallback: function(keysToDisplay) {
-						requestAnimationFrame(() => {
-							dimension.searchKeysToDisplay = keysToDisplay;
-							this._performDimensionSearch(dimension);
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
-				}
-			}));
-		}
-	}
-		dimension.searchValue = e.detail.value.trim();
 		this._search(dimension);
 	}
 
@@ -918,7 +892,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_search(dimension) {
-		if (dimension.searchType === 'automatic' || (dimension.searchType === 'manual' && dimension.searchValue === '')) {
+		if (dimension.searchType === 'automatic' || (dimension.searchType !== 'full-manual' && dimension.searchValue === '')) {
 			this._performDimensionSearch(dimension);
 		} else if (dimension.searchType === 'manual' || dimension.searchType === 'full-manual') {
 			dimension.loading = true;
