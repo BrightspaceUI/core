@@ -612,10 +612,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
-	_dispatchDimensionFirstOpenEvent(key) {
-		if (!this._openedDimensions.includes(key)) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: key } }));
-			this._openedDimensions.push(key);
+	_dispatchDimensionFirstOpenEvent(dimension) {
+		if (!this._openedDimensions.includes(dimension.key)) {
+			if (dimension.searchType === 'full-manual') {
+				this._search(dimension);
+			}
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
+			this._openedDimensions.push(dimension.key);
 		}
 	}
 
@@ -740,10 +743,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
 		if (dimension.selectedFirst) this._setSelectedOnRender(dimension);
-		if (dimension.searchType === 'full-manual') {
-			this._search(dimension);
-		}
-		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
+		this._dispatchDimensionFirstOpenEvent(dimension);
 	}
 
 	_handleDropdownClose(e) {
@@ -756,10 +756,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = true;
 		if (this._dimensions.length === 1) {
 			const dimension = this._dimensions[0];
-			this._dispatchDimensionFirstOpenEvent(dimension.key);
-			if (dimension.searchType === 'full-manual') {
-				this._search(dimension);
-			}
+			this._dispatchDimensionFirstOpenEvent(dimension);
 			if (this._dimensions[0].introductoryText) announce(this._dimensions[0].introductoryText);
 		}
 		this._stopPropagation(e);

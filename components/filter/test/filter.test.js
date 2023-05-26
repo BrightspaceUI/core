@@ -800,7 +800,7 @@ describe('d2l-filter', () => {
 				expect(eventSpy).to.not.have.been.called;
 			});
 
-			it('single set dimension fires search event on open for full-manual search-type', async() => {
+			it('single set dimension fires search event on first open for full-manual search-type', async() => {
 				const elem = await fixture(html`
 					<d2l-filter>
 						<d2l-filter-dimension-set key="dim" text="dim" search-type="full-manual"></d2l-filter-dimension-set>
@@ -811,7 +811,7 @@ describe('d2l-filter', () => {
 				await oneEvent(elem, 'd2l-filter-dimension-search');
 			});
 
-			it('multi set dimension fires search event on dimension show for full-manual search-type', async() => {
+			it('multi set dimension fires search event on first dimension open for full-manual search-type', async() => {
 				const elem = await fixture(html`
 					<d2l-filter>
 						<d2l-filter-dimension-set key="dim" text="dim" search-type="full-manual">
