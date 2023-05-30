@@ -126,7 +126,6 @@ class FilterDimensionSet extends LitElement {
 				disabled: value.disabled,
 				key: value.key,
 				selected: value.selected,
-				selectedOnRender: false,
 				text: value.text
 			};
 		});
