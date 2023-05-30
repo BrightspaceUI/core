@@ -7,6 +7,7 @@ import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocus
 import { classMap } from 'lit/directives/class-map.js';
 import { html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
@@ -325,6 +326,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__content = this.getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
+		const contentObserver = new ResizeObserver(this.__onContentResize.bind(this));
+		contentObserver.observe(this.__content);
 	}
 
 	updated(changedProperties) {
@@ -526,6 +529,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const opener = this.__getOpener();
 		opener.getOpenerElement().focus();
 
+	}
+
+	__onContentResize(entries) {
+		if (!entries || entries.length === 0) return;
+		this.__toggleOverflowY(false);
 	}
 
 	__onResize() {
