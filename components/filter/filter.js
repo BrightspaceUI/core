@@ -953,8 +953,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_updateDimensionShouldBubble(dimension) {
 		for (const value of dimension.values) {
-			if (value.selected) value.shouldBubble = true;
-			else value.shouldBubble = false;
+			value.shouldBubble = value.selected;
 		}
 	}
 
