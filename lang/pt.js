@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "Não há filtros disponíveis",
 	"components.filter.searchResults": "{number, plural, =0 {Sem resultados para a pesquisa} one {{number} resultado para a pesquisa} other {{number} resultados para a pesquisa}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
 	"components.form-element.defaultError": "{label} é inválido.",
 	"components.form-element.defaultFieldLabel": "Campo",

@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "个筛选条件",
 	"components.filter.noFilters": "无可用筛选器",
 	"components.filter.searchResults": "{number, plural, =0 {无搜索结果} other {{number} 个搜索结果}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "筛选依据：{filterName}",
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",

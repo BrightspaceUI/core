@@ -42,6 +42,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectAll: { type: Boolean, attribute: 'select-all' },
 			/**
+			 * Whether to render the selected items at the top of the filter
+			 * @type {boolean}
+			 */
+			selectedFirst: { type: Boolean, attribute: 'selected-first' },
+			/**
 			 * Whether only one value can be selected at a time for this dimension
 			 * @type {boolean}
 			 */
@@ -66,6 +71,7 @@ class FilterDimensionSet extends LitElement {
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;
+		this.selectedFirst = false;
 		this.selectionSingle = false;
 		this.text = '';
 		this.valueOnlyActiveFilterText = false;

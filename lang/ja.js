@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "フィルタ",
 	"components.filter.noFilters": "使用可能なフィルタはありません",
 	"components.filter.searchResults": "{number, plural, =0 {検索結果なし} other {{number} 件の検索結果}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",

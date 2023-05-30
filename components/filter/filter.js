@@ -275,6 +275,18 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		`;
 	}
 
+	update(changedProperties) {
+		if (
+			changedProperties.has('opened')
+			&& this.opened
+			&& this._dimensions.length === 1
+			&& this._dimensions[0].selectedFirst
+		) {
+			this._updateDimensionShouldBubble(this._dimensions[0]);
+		}
+		super.update(changedProperties);
+	}
+
 	requestFilterClearAll() {
 		this._handleClearAll();
 	}
@@ -505,6 +517,17 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			listLabel = dimension.headerText;
 		}
 
+		let selectedListItems = nothing;
+		let listItems = nothing;
+		if (dimension.selectedFirst) {
+			if (listLabel) listLabel = this.localize('components.filter.selectedFirstListLabel', { headerText: dimension.headerText });
+			selectedListItems = dimension.values.filter(item => item.shouldBubble).map(item => this._createSetDimensionItem(item));
+
+			listItems = dimension.values.filter(item => !item.shouldBubble).map(item => this._createSetDimensionItem(item));
+		} else {
+			listItems = dimension.values.map(item => this._createSetDimensionItem(item));
+		}
+
 		return html`
 			${searchResults}
 			<d2l-list
@@ -515,22 +538,27 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				label="${ifDefined(listLabel)}"
 				?selection-single="${dimension.selectionSingle}"
 				separators="between">
+				${selectedListItems}
 				${listHeader}
-				${dimension.values.map(item => html`
-					<d2l-list-item
-						?selection-disabled="${item.disabled}"
-						?hidden="${item.hidden}"
-						key="${item.key}"
-						label="${item.text}"
-						selectable
-						?selected="${item.selected}">
-						<div class="d2l-filter-dimension-set-value d2l-body-compact">
-							<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
-							${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
-						</div>
-					</d2l-list-item>
-				`)}
+				${listItems}
 			</d2l-list>
+		`;
+	}
+
+	_createSetDimensionItem(item) {
+		return html`
+			<d2l-list-item
+				?selection-disabled="${item.disabled}"
+				?hidden="${item.hidden}"
+				key="${item.key}"
+				label="${item.text}"
+				selectable
+				?selected="${item.selected}">
+				<div class="d2l-filter-dimension-set-value d2l-body-compact">
+					<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+				</div>
+			</d2l-list-item>
 		`;
 	}
 
@@ -689,6 +717,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
+		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
 		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
@@ -719,6 +748,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._getActiveDimension();
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
+
+		if (dimension.selectedFirst) {
+			this._updateDimensionShouldBubble(dimension);
+		}
 
 		if (dimension.searchType === 'automatic' || searchValue === '') {
 			this._performDimensionSearch(dimension);
@@ -763,6 +796,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.introductoryText = dimension.introductoryText;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
+					info.selectedFirst = dimension.selectedFirst;
 					info.selectionSingle = dimension.selectionSingle;
 					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					info.searchEmptyState = dimension.getSearchEmptyState();
@@ -915,6 +949,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_updateActiveFiltersSubscribers(subscribers) {
 		this._updateActiveFilters();
 		subscribers.forEach(subscriber => subscriber.updateActiveFilters(this.id, this._activeFilters));
+	}
+
+	_updateDimensionShouldBubble(dimension) {
+		for (const value of dimension.values) {
+			value.shouldBubble = value.selected;
+		}
 	}
 
 }

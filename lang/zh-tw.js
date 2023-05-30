@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "篩選器",
 	"components.filter.noFilters": "沒有可用的篩選條件",
 	"components.filter.searchResults": "{number, plural, =0 {無搜尋結果} other {{number} 個搜尋結果}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",

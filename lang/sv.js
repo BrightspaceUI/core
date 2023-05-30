@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Inga tillgängliga filter",
 	"components.filter.searchResults": "{number, plural, =0 {Inga sökresultat} one {{number} sökresultat} other {{number} sökresultat}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",
 	"components.form-element.defaultError": "{label} är ogiltig.",
 	"components.form-element.defaultFieldLabel": "Fält",

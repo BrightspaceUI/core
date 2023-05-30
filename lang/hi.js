@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "फ़िल्टर्स",
 	"components.filter.noFilters": "कोई उपलब्ध फ़िल्टर्स नहीं",
 	"components.filter.searchResults": "{number, plural, =0 {कोई खोज परिणाम नहीं} one {{number} खोज परिणाम} other {{number} खोज परिणाम}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "इसके अनुसार फ़िल्टर करें: {filterName}",
 	"components.form-element.defaultError": "{label} अमान्य है।",
 	"components.form-element.defaultFieldLabel": "फ़ील्ड",

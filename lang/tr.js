@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Uygun filtre yok",
 	"components.filter.searchResults": "{number, plural, =0 {Arama sonucu yok} one {{number} arama sonucu} other {{number} arama sonucu}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",
 	"components.form-element.defaultError": "{label} geçersiz.",
 	"components.form-element.defaultFieldLabel": "Alan",

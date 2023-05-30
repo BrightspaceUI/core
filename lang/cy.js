@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Hidlyddion",
 	"components.filter.noFilters": "Dim hidlyddion ar gael",
 	"components.filter.searchResults": "{number, plural, =0 {Dim canlyniadau chwilio} one {{number} canlyniad chwilio} other {{number} canlyniadau chwilio}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",

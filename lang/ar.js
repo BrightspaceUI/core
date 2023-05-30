@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "عوامل التصفية",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
 	"components.filter.searchResults": "{number, plural, =0 {ما من نتائج بحث} one {{number} نتيجة بحث}‏ other {{number} من نتائج البحث}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
 	"components.form-element.defaultError": "{label} غير صالحة.",
 	"components.form-element.defaultFieldLabel": "الحقل",

@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Filters", // mfv-translated
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
 	"components.form-element.defaultError": "{label} is ongeldig.",
 	"components.form-element.defaultFieldLabel": "Veld",

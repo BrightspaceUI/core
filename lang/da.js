@@ -21,6 +21,7 @@ export default {
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",
 	"components.filter.searchResults": "{number, plural, =0 {Ingen søgeresultater} one {{number} søgeresultat} other {{number} søgeresultater}}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filtrer efter: {filterName}",
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
