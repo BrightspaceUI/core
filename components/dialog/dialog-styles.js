@@ -98,6 +98,8 @@ export const dialogStyles = css`
 		box-sizing: border-box;
 		flex: none;
 		padding: 19px 30px 23px 30px;
+		position: relative; /* stack header overflow shadow on top of content */
+		z-index: 1; /* stack header overflow shadow on top of content */
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-top .d2l-dialog-header {
@@ -118,9 +120,6 @@ export const dialogStyles = css`
 		flex: 1 0 0;
 		overflow: hidden; /* scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash */
 		padding: 0 30px;
-	}
-
-	.d2l-dialog-content > div {
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
 	}
 
@@ -132,6 +131,7 @@ export const dialogStyles = css`
 		box-sizing: border-box;
 		flex: none;
 		padding: 30px 30px 12px 30px; /* 18px margin below footer children */
+		position: relative; /* stack footer overflow shadow on top of content */
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-bottom .d2l-dialog-footer {
