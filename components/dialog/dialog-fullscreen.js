@@ -27,7 +27,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * @type {boolean}
 			 */
 			async: { type: Boolean },
-
+			/**
+			 * Render with no content padding
+			 * @type {boolean}
+			 */
+			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			/**
 			 * The preferred width (unit-less) for the dialog. Maximum 1170.
 			 */
@@ -54,6 +58,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				max-width: calc(100% - 3rem);
 			}
 
+			:host([no-padding]) .d2l-dialog-content {
+				padding: 0;
+			}
+
 			@media (min-width: 616px) {
 
 				.d2l-dialog-header {
@@ -72,6 +80,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border-bottom: 1px solid transparent;
 					box-sizing: border-box;
 					height: calc(100% - 1rem);
+				}
+
+				:host([no-padding]) .d2l-dialog-content > div {
+					height: 100%;
 				}
 
 				.d2l-dialog-header > div > d2l-button-icon {
@@ -178,6 +190,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	constructor() {
 		super();
 		this.async = false;
+		this.noPadding = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';

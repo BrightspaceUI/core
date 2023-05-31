@@ -55,8 +55,7 @@
 
 				<d2l-list item-count="50" extend-separators>
 					<d2l-list-controls slot="controls" select-all-pages-allowed>
-					<d2l-button-icon icon="tier1:gear" id="openMainDialog" text="Open"></d2l-button-icon>
-						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
+						<d2l-selection-action id="openMainDialog" icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
 								<d2l-menu label="Move To Options">
@@ -342,19 +341,33 @@
 					</d2l-list-item>
 				</d2l-list>
 
-				<d2l-dialog-fullscreen id="dialogMain" title-text="Dialog Title">
-					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
-					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
-					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
-					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
-					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
-					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+				<d2l-dialog-fullscreen id="dialogMain" title-text="Dialog Title" no-padding>
+					<d2l-template-primary-secondary resizable storage-key="demo-dialog">
+						<div slot="header" style="background-color: #dddddd; padding: 1rem;">Primary/Secondary Controls</div>
+						<div slot="primary" style="padding: 1rem;">
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						</div>
+						<div slot="secondary" style="padding: 1rem;">
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						</div>
+						<div slot="footer">Primary/Secondary Footer</div>
+					</d2l-template-primary-secondary>
 					<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
 					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 				</d2l-dialog-fullscreen>
 
 				<script>
-					document.querySelector('#openMainDialog').addEventListener('click', () => {
+					document.querySelector('#openMainDialog').addEventListener('d2l-selection-action-click', () => {
 						document.querySelector('#dialogMain').opened = true;
 					});
 					document.querySelector('#dialogMain').addEventListener('d2l-dialog-close', (e) => {
