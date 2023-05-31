@@ -117,7 +117,7 @@ describe('d2l-filter', () => {
 	});
 
 	describe('selected-first', () => {
-		it('should not set selectedOnRender after dimension is opened', async() => {
+		it('should not update shouldBubble after dimension is opened', async() => {
 			const elem = await fixture(selectedFirstFixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 
@@ -125,18 +125,18 @@ describe('d2l-filter', () => {
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
 			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.false;
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.false;
 
 			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
 			setTimeout(() => listItem2.setSelected(true));
 			await oneEvent(elem, 'd2l-filter-change');
 
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.false;
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.false;
 		});
 
-		it('should set selectedOnRender when dimension is re-opened in multi-dimension', async() => {
+		it('should update shouldBubble when dimension is re-opened in multi-dimension', async() => {
 			const elem = await fixture(html`
 				<d2l-filter id="multi">
 					<d2l-filter-dimension-set key="1" text="Dim 1" selected-first>
@@ -162,20 +162,20 @@ describe('d2l-filter', () => {
 			await oneEvent(elem, 'd2l-filter-change');
 			const value1 = elem._dimensions[0].values.find(value => value.key === '1');
 			const value2 = elem._dimensions[0].values.find(value => value.key === '2');
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.false;
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.false;
 
 			setTimeout(() => dimensions[1].click());
 			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 			setTimeout(() => dimensions[0].click());
 			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 
-			await waitUntil(() => value2.selectedOnRender, 'selectedOnRender recalculated', { timeout: 3000 });
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.true;
+			await waitUntil(() => value2.shouldBubble, 'shouldBubble recalculated', { timeout: 3000 });
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.true;
 		});
 
-		it('should set selectedOnRender when dimension is searched', async() => {
+		it('should update shouldBubble when dimension is searched', async() => {
 			const elem = await fixture(selectedFirstFixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 
@@ -187,14 +187,14 @@ describe('d2l-filter', () => {
 			const listItem2 = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
 			setTimeout(() => listItem2.setSelected(true));
 			await oneEvent(elem, 'd2l-filter-change');
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.false;
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.false;
 
 			elem._handleSearch({ detail: { value: 'V' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
-			expect(value1.selectedOnRender).to.be.true;
-			expect(value2.selectedOnRender).to.be.true;
+			expect(value1.shouldBubble).to.be.true;
+			expect(value2.shouldBubble).to.be.true;
 		});
 	});
 

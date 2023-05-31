@@ -14,6 +14,7 @@
 			import '../../../components/collapsible-panel/collapsible-panel.js';
 			import '../../../components/collapsible-panel/collapsible-panel-summary-item.js';
 			import '../../../components/demo/demo-page.js';
+			import '../../../components/dialog/dialog.js';
 			import '../../../components/dialog/dialog-fullscreen.js';
 			import '../../../components/dropdown/dropdown-button-subtle.js';
 			import '../../../components/dropdown/dropdown-content.js';
@@ -54,6 +55,7 @@
 
 				<d2l-list item-count="50" extend-separators>
 					<d2l-list-controls slot="controls" select-all-pages-allowed>
+					<d2l-button-icon icon="tier1:gear" id="openMainDialog" text="Open"></d2l-button-icon>
 						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
 						<d2l-selection-action-dropdown text="Move To" requires-selection>
 							<d2l-dropdown-menu>
@@ -194,7 +196,6 @@
 						</div>
 					</d2l-list-item>
 				</d2l-list>
-
 
 				<div style="height: 100px;"></div>
 
@@ -341,9 +342,7 @@
 					</d2l-list-item>
 				</d2l-list>
 
-			</div>
-			<div slot="secondary" style="padding: 1rem;">
-				<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title">
+				<d2l-dialog-fullscreen id="dialogMain" title-text="Dialog Title">
 					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
 					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
 					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
@@ -353,14 +352,32 @@
 					<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
 					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 				</d2l-dialog-fullscreen>
+
+				<script>
+					document.querySelector('#openMainDialog').addEventListener('click', () => {
+						document.querySelector('#dialogMain').opened = true;
+					});
+					document.querySelector('#dialogMain').addEventListener('d2l-dialog-close', (e) => {
+						console.log('main dialog action:', e.detail.action);
+					});
+				</script>
+
+			</div>
+			<div slot="secondary" style="padding: 1rem;">
+
 				<d2l-collapsible-panel panel-title="Availability" expanded>
 					<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
 					<d2l-collapsible-panel-summary-item slot="summary" text="Hidden by special access"></d2l-collapsible-panel-summary-item>
-					<d2l-button-icon slot="actions" icon="tier1:gear" id="open" text="Settings"></d2l-button-icon>
+					<d2l-button-icon slot="actions" icon="tier1:gear" id="openSecondaryDialog" text="Settings"></d2l-button-icon>
 					<d2l-dropdown-more slot="actions">
 						<d2l-dropdown-menu>
 							<d2l-menu>
+								<d2l-menu-item text="Add New"></d2l-menu-item>
+								<d2l-menu-item text="Bookmark"></d2l-menu-item>
 								<d2l-menu-item text="Duplicate"></d2l-menu-item>
+								<d2l-menu-item text="Settings"></d2l-menu-item>
+								<d2l-menu-item text="Move"></d2l-menu-item>
+								<d2l-menu-item text="Publish"></d2l-menu-item>
 								<d2l-menu-item text="Delete"></d2l-menu-item>
 							</d2l-menu>
 						</d2l-dropdown-menu>
@@ -397,12 +414,24 @@
 					</div>
 					<d2l-input-textarea label="Extra Text" label-hidden rows="6" value="This is a d2l-input-textarea." style="margin-top: 1rem;"></d2l-input-textarea>
 				</d2l-collapsible-panel>
+
+				<d2l-dialog id="dialogSecondary" title-text="Dialog Title">
+					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+
 				<script>
-					document.querySelector('#open').addEventListener('click', () => {
-						document.querySelector('#dialogFullscreen').opened = true;
+					document.querySelector('#openSecondaryDialog').addEventListener('click', () => {
+						document.querySelector('#dialogSecondary').opened = true;
 					});
-					document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {
-						console.log('confirm action:', e.detail.action);
+					document.querySelector('#dialogSecondary').addEventListener('d2l-dialog-close', (e) => {
+						console.log('secondary dialog action:', e.detail.action);
 					});
 				</script>
 				<p>

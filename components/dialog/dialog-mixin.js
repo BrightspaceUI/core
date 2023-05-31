@@ -142,6 +142,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
+		this.addEventListener('touchstart', this._handleTouchStart);
 		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
@@ -356,6 +357,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._useNative = false;
 	}
 
+	_handleTouchStart(e) {
+		// elements external to the dialog such as primary-secondary template should not be reacting
+		// to touchstart events originating inside the dialog or backdrop
+		e.stopPropagation();
+	}
+
 	_isCloseAborted() {
 		const abortEvent = new CustomEvent('d2l-dialog-before-close', {
 			cancelable: true,
@@ -441,6 +448,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_removeHandlers() {
 		window.removeEventListener('resize', this._updateSize);
+		this.removeEventListener('touchstart', this._handleTouchStart);
 		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
