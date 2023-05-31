@@ -120,6 +120,9 @@ export const dialogStyles = css`
 		flex: 1 0 0;
 		overflow: hidden; /* scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash */
 		padding: 0 30px;
+	}
+
+	.d2l-dialog-content > div {
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
 	}
 
