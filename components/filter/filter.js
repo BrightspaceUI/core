@@ -721,7 +721,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
 		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
-		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
+		this._dispatchDimensionFirstOpenEvent(dimension);
 	}
 
 	_handleDropdownClose(e) {
