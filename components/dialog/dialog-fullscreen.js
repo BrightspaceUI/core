@@ -190,6 +190,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	constructor() {
 		super();
 		this.async = false;
+		this.noPadding = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';
