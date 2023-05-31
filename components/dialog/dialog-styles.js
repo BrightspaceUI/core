@@ -120,6 +120,10 @@ export const dialogStyles = css`
 		padding: 0 30px;
 	}
 
+	.d2l-dialog-content > div {
+		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
+	}
+
 	.d2l-dialog-outer-scroll .d2l-dialog-content {
 		overflow: auto;
 	}
