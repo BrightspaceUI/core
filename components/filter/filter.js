@@ -765,8 +765,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				detail: {
 					key: dimension.key,
 					value: searchValue,
-					searchCompleteCallback: function(keysToDisplay) {
+					searchCompleteCallback: function({ keysToDisplay = [], displayAllKeys = false } = {}) {
 						requestAnimationFrame(() => {
+							dimension.displayAllKeys = displayAllKeys;
 							dimension.searchKeysToDisplay = keysToDisplay;
 							this._performDimensionSearch(dimension);
 							dimension.loading = false;
@@ -861,7 +862,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					if (dimension.searchValue === '') {
+					if (dimension.searchValue === '' || dimension.displayAllKeys) {
 						value.hidden = false;
 						return;
 					}
