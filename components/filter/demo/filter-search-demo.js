@@ -89,7 +89,7 @@ class FilterSearchDemo extends LitElement {
 		});
 
 		setTimeout(() => {
-			e.detail.searchCompleteCallback(keysToDisplay);
+			e.detail.searchCompleteCallback({ keysToDisplay: keysToDisplay });
 			// eslint-disable-next-line no-console
 			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
 		}, 2000);
