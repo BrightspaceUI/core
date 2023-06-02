@@ -311,7 +311,7 @@ describe('d2l-filter', () => {
 
 		it('clear all - clears all dimensions and searches', async() => {
 			const elem = await fixture(`<d2l-filter>
-				<d2l-filter-dimension-set key="1" text="Dim 1" search-type="manual"><d2l-filter-dimension-set-value key="test" text="test" selected></d2l-filter-dimension-set-value></d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="1" text="Dim 1"><d2l-filter-dimension-set-value key="test" text="test" selected></d2l-filter-dimension-set-value></d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="2" text="Dim 2" selection-single><d2l-filter-dimension-set-value key="test" text="test" selected></d2l-filter-dimension-set-value></d2l-filter-dimension-set>
 			</d2l-filter>`);
 			elem._dimensions[0].searchValue = 'searched';
@@ -762,19 +762,6 @@ describe('d2l-filter', () => {
 				expect(elem._dimensions[0].searchValue).to.equal('searching');
 				expect(e.detail.value).to.equal('searching');
 				expect(eventSpy).to.be.calledOnce;
-			});
-
-			it('single set dimension does not fire search event for clearing with manual search-type', async() => {
-				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
-				const eventSpy = spy(elem, 'dispatchEvent');
-				const search = elem.shadowRoot.querySelector('d2l-input-search');
-				search.value = '';
-				search.search();
-				elem.requestUpdate();
-				await elem.updateComplete;
-
-				expect(elem._dimensions[0].searchValue).to.equal('');
-				expect(eventSpy).to.not.have.been.called;
 			});
 
 			it('single set dimension fires search event for clearing search on manual search-type', async() => {
