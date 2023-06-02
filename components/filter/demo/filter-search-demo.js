@@ -40,7 +40,7 @@ class FilterSearchDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="event-two-lists" text="Event on Search - Two Lists" search-type="manual" header-text="Related Roles at D2L" selected-first>
+				<d2l-filter-dimension-set key="event-initial-subset" text="Event on Search - Initial Subset" search-type="manual" header-text="Related Roles at D2L" selected-first>
 					${this._fullDataSingle.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
@@ -87,7 +87,7 @@ class FilterSearchDemo extends LitElement {
 		if (!e.detail.key.includes('event')) return;
 
 		let keysToDisplay = [];
-		if (e.detail.key === 'event-two-lists') keysToDisplay = this._performTwoListsSearch(e.detail.value);
+		if (e.detail.key === 'event-initial-subset') keysToDisplay = this._performInitialSubsetSearch(e.detail.value);
 		else {
 			this._fullData.forEach(value => {
 				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
@@ -104,10 +104,11 @@ class FilterSearchDemo extends LitElement {
 
 	}
 
-	_performTwoListsSearch(searchValue) {
-		const keysToDisplay = [];
+	_performInitialSubsetSearch(searchValue) {
+		const initialSubset = ['admin', 'instructor'];
+		let keysToDisplay = [];
 		if (searchValue === '') {
-			keysToDisplay.push('admin', 'instructor');
+			keysToDisplay = initialSubset;
 			this._fullData.forEach(value => {
 				if (value.selected) {
 					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);

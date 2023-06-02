@@ -592,10 +592,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_dispatchDimensionFirstOpenEvent(dimension) {
 		if (!this._openedDimensions.includes(dimension.key)) {
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
 			if (dimension.searchType === 'manual') {
 				this._search(dimension);
 			}
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
 			this._openedDimensions.push(dimension.key);
 		}
 	}
