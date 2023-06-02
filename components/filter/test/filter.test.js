@@ -777,22 +777,8 @@ describe('d2l-filter', () => {
 				expect(eventSpy).to.not.have.been.called;
 			});
 
-			it('single set dimension fires search event for full-manual search-type', async() => {
-				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="full-manual"></d2l-filter-dimension-set></d2l-filter>');
-				const eventSpy = spy(elem, 'dispatchEvent');
-				const search = elem.shadowRoot.querySelector('d2l-input-search');
-				search.value = 'searching';
-
-				setTimeout(() => search.search());
-				const e = await oneEvent(elem, 'd2l-filter-dimension-search');
-
-				expect(elem._dimensions[0].searchValue).to.equal('searching');
-				expect(e.detail.value).to.equal('searching');
-				expect(eventSpy).to.be.calledOnce;
-			});
-
-			it('single set dimension fires search event for clearing for full-manual search-type', async() => {
-				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="full-manual"></d2l-filter-dimension-set></d2l-filter>');
+			it('single set dimension fires search event for clearing search on manual search-type', async() => {
+				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const search = elem.shadowRoot.querySelector('d2l-input-search');
 				search.value = '';
@@ -802,6 +788,35 @@ describe('d2l-filter', () => {
 
 				expect(elem._dimensions[0].searchValue).to.equal('');
 				expect(eventSpy).to.be.calledOnce;
+			});
+
+			it('single set dimension fires search event on first open for manual search-type', async() => {
+				const elem = await fixture(html`
+					<d2l-filter>
+						<d2l-filter-dimension-set key="dim" text="dim" search-type="manual"></d2l-filter-dimension-set>
+					</d2l-filter>`
+				);
+
+				setTimeout(() => elem.opened = true);
+				await oneEvent(elem, 'd2l-filter-dimension-search');
+			});
+
+			it('multi set dimension fires search event on first dimension open for manual search-type', async() => {
+				const elem = await fixture(html`
+					<d2l-filter>
+						<d2l-filter-dimension-set key="dim" text="dim" search-type="manual">
+							<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
+						</d2l-filter-dimension-set>
+						<d2l-filter-dimension-set key="dim2" text="dim2">
+							<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
+						</d2l-filter-dimension-set>
+					</d2l-filter>`
+				);
+				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
+
+				setTimeout(() => dimensions[0].click());
+				await oneEvent(elem, 'd2l-filter-dimension-search');
 			});
 
 			it('single set dimension does not fire search event for automatic search-type', async() => {
@@ -815,35 +830,6 @@ describe('d2l-filter', () => {
 
 				expect(elem._dimensions[0].searchValue).to.equal('searching');
 				expect(eventSpy).to.not.have.been.called;
-			});
-
-			it('single set dimension fires search event on first open for full-manual search-type', async() => {
-				const elem = await fixture(html`
-					<d2l-filter>
-						<d2l-filter-dimension-set key="dim" text="dim" search-type="full-manual"></d2l-filter-dimension-set>
-					</d2l-filter>`
-				);
-
-				setTimeout(() => elem.opened = true);
-				await oneEvent(elem, 'd2l-filter-dimension-search');
-			});
-
-			it('multi set dimension fires search event on first dimension open for full-manual search-type', async() => {
-				const elem = await fixture(html`
-					<d2l-filter>
-						<d2l-filter-dimension-set key="dim" text="dim" search-type="full-manual">
-							<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
-							<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
-						</d2l-filter-dimension-set>
-						<d2l-filter-dimension-set key="dim2" text="dim2">
-							<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
-						</d2l-filter-dimension-set>
-					</d2l-filter>`
-				);
-				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
-
-				setTimeout(() => dimensions[0].click());
-				await oneEvent(elem, 'd2l-filter-dimension-search');
 			});
 		});
 	});

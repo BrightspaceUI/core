@@ -156,7 +156,7 @@ The filter will announce changes to filter selections, search results, and when 
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
 * `d2l-filter-dimension-empty-state-action`: dispatched when an empty state action button is clicked
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
-* `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" or "full-manual" search-type is searched
+* `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
 
 <!-- docs: end hidden content -->
 
@@ -193,7 +193,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `introductory-text` | String | The introductory text to display at the top of the filter dropdown |
 | `key` | String, required | Unique identifier for the dimension |
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |
-| `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, `manual` fires an event for the consumer to handle the search and pass the keys of the values to be displayed, `full-manual` will also fire an event to handle search but also when the search is cleared and when the dimension is opened |
+| `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and pass the keys of the values to be displayed |
 | `select-all` | Boolean | Whether to show a select all checkbox and selection summary for this dimension  |
 | `selected-first` | Boolean | Whether to render the selected items at the top of the filter  |
 | `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |

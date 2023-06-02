@@ -40,7 +40,7 @@ class FilterSearchDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="full-manual" text="Full Manual" search-type="full-manual" header-text="Related Roles at D2L" selected-first>
+				<d2l-filter-dimension-set key="event-two-lists" text="Event on Search - Two Lists" search-type="manual" header-text="Related Roles at D2L" selected-first>
 					${this._fullDataSingle.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
@@ -63,8 +63,7 @@ class FilterSearchDemo extends LitElement {
 		}
 
 		e.detail.dimensions.forEach(dimension => {
-			const manualSearchKeys = ['event', 'event-single', 'full-manual'];
-			if (!manualSearchKeys.includes(dimension.dimensionKey)) return;
+			if (!dimension.dimensionKey.includes('event')) return;
 
 			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
 			if (dimension.cleared) {
@@ -85,11 +84,10 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleSearch(e) {
-		const searchKeys = ['event', 'event-single', 'full-manual'];
-		if (!searchKeys.includes(e.detail.key)) return;
+		if (!e.detail.key.includes('event')) return;
 
 		let keysToDisplay = [];
-		if (e.detail.key === 'full-manual') keysToDisplay = this._performFullManualSearch(e.detail.value);
+		if (e.detail.key === 'event-two-lists') keysToDisplay = this._performTwoListsSearch(e.detail.value);
 		else {
 			this._fullData.forEach(value => {
 				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
@@ -106,7 +104,7 @@ class FilterSearchDemo extends LitElement {
 
 	}
 
-	_performFullManualSearch(searchValue) {
+	_performTwoListsSearch(searchValue) {
 		const keysToDisplay = [];
 		if (searchValue === '') {
 			keysToDisplay.push('admin', 'instructor');
