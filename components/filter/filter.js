@@ -842,7 +842,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					if (dimension.searchType !== 'full-manual' && dimension.searchValue === '') {
+					if (dimension.searchValue === '' || dimension.displayAllKeys) {
 						value.hidden = false;
 						return;
 					}

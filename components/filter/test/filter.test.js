@@ -406,10 +406,27 @@ describe('d2l-filter', () => {
 			setTimeout(() => elem._handleSearch({ detail: { value: 'whatever' } }));
 			const e = await oneEvent(elem, 'd2l-filter-dimension-search');
 
-			e.detail.searchCompleteCallback(['test']);
+			e.detail.searchCompleteCallback({ keysToDisplay: ['test'] });
 			await new Promise(resolve => { requestAnimationFrame(resolve); });
 			expect(elem._dimensions[0].values[0].hidden).to.be.false;
 			expect(elem._dimensions[0].values[1].hidden).to.be.true;
+		});
+
+		it('set dimension - manual search will display all keys when set in the callback', async() => {
+			const elem = await fixture(`<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="manual">
+				<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
+			</d2l-filter-dimension-set></d2l-filter>`);
+			expect(elem._dimensions[0].values[0].hidden).to.be.undefined;
+			expect(elem._dimensions[0].values[1].hidden).to.be.undefined;
+
+			setTimeout(() => elem._handleSearch({ detail: { value: 'whatever' } }));
+			const e = await oneEvent(elem, 'd2l-filter-dimension-search');
+
+			e.detail.searchCompleteCallback({ displayAllKeys: true });
+			await new Promise(resolve => { requestAnimationFrame(resolve); });
+			expect(elem._dimensions[0].values[0].hidden).to.be.false;
+			expect(elem._dimensions[0].values[1].hidden).to.be.false;
 		});
 
 		[
@@ -1182,7 +1199,7 @@ describe('d2l-filter', () => {
 			setTimeout(() => elem._handleSearch({ detail: { value: '1' } }));
 			const e = await oneEvent(elem, 'd2l-filter-dimension-search');
 
-			e.detail.searchCompleteCallback(['1']);
+			e.detail.searchCompleteCallback({ keysToDisplay: ['1'] });
 			await new Promise(requestAnimationFrame);
 			expect(elem._dimensions[0].values.length).to.equal(1);
 			expect(elem._dimensions[0].values[0].hidden).to.be.false;
