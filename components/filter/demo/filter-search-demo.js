@@ -13,8 +13,9 @@ class FilterSearchDemo extends LitElement {
 
 	constructor() {
 		super();
-		this._fullData = Array.from(initialData);
-		this._fullDataSingle = Array.from(initialData);
+		this._fullData = JSON.parse(JSON.stringify(initialData));
+		this._fullDataSingle = JSON.parse(JSON.stringify(initialData));
+		this._fullDataInitialSubset = JSON.parse(JSON.stringify(initialData));
 	}
 
 	render() {
@@ -40,6 +41,11 @@ class FilterSearchDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="event-initial-subset" text="Event on Search - Initial Subset" search-type="manual" header-text="Related Roles at D2L" selected-first>
+					${this._fullDataInitialSubset.map(value => html`
+						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+					`)}
+				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="auto" text="Automatic Search" search-type="automatic">
 					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
@@ -60,7 +66,12 @@ class FilterSearchDemo extends LitElement {
 		e.detail.dimensions.forEach(dimension => {
 			if (!dimension.dimensionKey.includes('event')) return;
 
-			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
+			const dataToUpdateMap = {
+				'event': this._fullData,
+				'event-single': this._fullDataSingle,
+				'event-initial-subset': this._fullDataInitialSubset,
+			};
+			const dataToUpdate = dataToUpdateMap[dimension.dimensionKey];
 			if (dimension.cleared) {
 				dataToUpdate.forEach(value => value.selected = false);
 			} else {
@@ -71,6 +82,7 @@ class FilterSearchDemo extends LitElement {
 		if (e.detail.allCleared) {
 			console.log('(All dimensions cleared)'); // eslint-disable-line no-console
 		}
+		this.requestUpdate();
 	}
 
 	_handleFirstOpen(e) {
@@ -81,12 +93,15 @@ class FilterSearchDemo extends LitElement {
 	_handleSearch(e) {
 		if (!e.detail.key.includes('event')) return;
 
-		const keysToDisplay = [];
-		this._fullData.forEach(value => {
-			if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
-				keysToDisplay.push(value.key);
-			}
-		});
+		let keysToDisplay = [];
+		if (e.detail.key === 'event-initial-subset') keysToDisplay = this._performInitialSubsetSearch(e.detail.value);
+		else {
+			this._fullData.forEach(value => {
+				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
+					keysToDisplay.push(value.key);
+				}
+			});
+		}
 
 		setTimeout(() => {
 			e.detail.searchCompleteCallback({ keysToDisplay: keysToDisplay });
@@ -94,6 +109,26 @@ class FilterSearchDemo extends LitElement {
 			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
 		}, 2000);
 
+	}
+
+	_performInitialSubsetSearch(searchValue) {
+		const initialSubset = ['admin', 'instructor'];
+		let keysToDisplay = [];
+		if (searchValue === '') {
+			keysToDisplay = initialSubset;
+			this._fullDataInitialSubset.forEach(value => {
+				if (value.selected) {
+					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);
+				}
+			});
+		} else {
+			this._fullDataInitialSubset.forEach(value => {
+				if (value.text.toLowerCase().indexOf(searchValue.toLowerCase()) > -1) {
+					keysToDisplay.push(value.key);
+				}
+			});
+		}
+		return keysToDisplay;
 	}
 
 }

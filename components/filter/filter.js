@@ -590,10 +590,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
-	_dispatchDimensionFirstOpenEvent(key) {
-		if (!this._openedDimensions.includes(key)) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: key } }));
-			this._openedDimensions.push(key);
+	_dispatchDimensionFirstOpenEvent(dimension) {
+		if (!this._openedDimensions.includes(dimension.key)) {
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
+			if (dimension.searchType === 'manual') {
+				this._search(dimension);
+			}
+			this._openedDimensions.push(dimension.key);
 		}
 	}
 
@@ -636,7 +639,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._dimensions.forEach(dimension => {
 			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
 				dimension.searchValue = '';
-				this._performDimensionSearch(dimension);
+				this._search(dimension);
 			}
 			this._performDimensionClear(dimension);
 		});
@@ -675,7 +678,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				}
 				this._activeFiltersSubscribers.updateSubscribers();
 			} else if (prop === 'values') {
-				if (dimension.searchValue) shouldSearch = true;
+				if (dimension.searchValue || dimension.searchType === 'manual') shouldSearch = true;
 				shouldRecount = true;
 				shouldResizeDropdown = true;
 				this._activeFiltersSubscribers.updateSubscribers();
@@ -718,7 +721,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
 		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
-		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
+		this._dispatchDimensionFirstOpenEvent(dimension);
 	}
 
 	_handleDropdownClose(e) {
@@ -730,8 +733,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleDropdownOpen(e) {
 		this.opened = true;
 		if (this._dimensions.length === 1) {
-			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
-			if (this._dimensions[0].introductoryText) announce(this._dimensions[0].introductoryText);
+			const dimension = this._dimensions[0];
+			this._dispatchDimensionFirstOpenEvent(dimension);
+			if (dimension.introductoryText) announce(dimension.introductoryText);
 		}
 		this._stopPropagation(e);
 	}
@@ -752,31 +756,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (dimension.selectedFirst) {
 			this._updateDimensionShouldBubble(dimension);
 		}
-
-		if (dimension.searchType === 'automatic' || searchValue === '') {
-			this._performDimensionSearch(dimension);
-		} else if (dimension.searchType === 'manual') {
-			dimension.loading = true;
-			this.requestUpdate();
-
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					key: dimension.key,
-					value: searchValue,
-					searchCompleteCallback: function({ keysToDisplay = [], displayAllKeys = false } = {}) {
-						requestAnimationFrame(() => {
-							dimension.displayAllKeys = displayAllKeys;
-							dimension.searchKeysToDisplay = keysToDisplay;
-							this._performDimensionSearch(dimension);
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
-				}
-			}));
-		}
+		this._search(dimension);
 	}
 
 	_handleSlotChange(e) {
@@ -862,7 +842,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					if (dimension.searchValue === '' || dimension.displayAllKeys) {
+					if (
+						(dimension.searchType === 'automatic' && dimension.searchValue === '')
+						|| dimension.displayAllKeys
+					) {
 						value.hidden = false;
 						return;
 					}
@@ -883,6 +866,33 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (singleDimension && this.opened) {
 			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 			dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
+		}
+	}
+
+	_search(dimension) {
+		if (dimension.searchType === 'automatic') {
+			this._performDimensionSearch(dimension);
+		} else if (dimension.searchType === 'manual') {
+			dimension.loading = true;
+			this.requestUpdate();
+
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: dimension.searchValue,
+					searchCompleteCallback: function({ keysToDisplay = [], displayAllKeys = false } = {}) {
+						requestAnimationFrame(() => {
+							dimension.displayAllKeys = displayAllKeys;
+							dimension.searchKeysToDisplay = keysToDisplay;
+							this._performDimensionSearch(dimension);
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
 		}
 	}
 
