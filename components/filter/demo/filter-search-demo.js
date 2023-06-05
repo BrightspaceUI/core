@@ -71,7 +71,6 @@ class FilterSearchDemo extends LitElement {
 				'event-single': this._fullDataSingle,
 				'event-initial-subset': this._fullDataInitialSubset,
 			};
-			if (dimension.dimensionKey !== 'event-initial-subset') return;
 			const dataToUpdate = [...dataToUpdateMap[dimension.dimensionKey]];
 			if (dimension.cleared) {
 				dataToUpdate.forEach(value => value.selected = false);
