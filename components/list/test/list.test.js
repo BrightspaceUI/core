@@ -6,6 +6,8 @@ import '../list-item-content.js';
 import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
+console.log('reduced motion: ', window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true);
+
 const keyCodes = Object.freeze({
 	UP: { name: 'up arrow', key: 38 },
 	DOWN: { name: 'down arrow', key: 40 }
