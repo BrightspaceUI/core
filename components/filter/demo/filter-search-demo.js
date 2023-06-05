@@ -13,9 +13,9 @@ class FilterSearchDemo extends LitElement {
 
 	constructor() {
 		super();
-		this._fullData = Array.from(initialData);
-		this._fullDataSingle = Array.from(initialData);
-		this._fullDataInitialSubset = Array.from(initialData);
+		this._fullData = JSON.parse(JSON.stringify(initialData));
+		this._fullDataSingle = JSON.parse(JSON.stringify(initialData));
+		this._fullDataInitialSubset = JSON.parse(JSON.stringify(initialData));
 	}
 
 	render() {
@@ -71,7 +71,7 @@ class FilterSearchDemo extends LitElement {
 				'event-single': this._fullDataSingle,
 				'event-initial-subset': this._fullDataInitialSubset,
 			};
-			const dataToUpdate = [...dataToUpdateMap[dimension.dimensionKey]];
+			const dataToUpdate = dataToUpdateMap[dimension.dimensionKey];
 			if (dimension.cleared) {
 				dataToUpdate.forEach(value => value.selected = false);
 			} else {
@@ -82,6 +82,7 @@ class FilterSearchDemo extends LitElement {
 		if (e.detail.allCleared) {
 			console.log('(All dimensions cleared)'); // eslint-disable-line no-console
 		}
+		this.requestUpdate();
 	}
 
 	_handleFirstOpen(e) {
