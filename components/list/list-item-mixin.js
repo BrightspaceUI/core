@@ -107,6 +107,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host[hidden] {
 				display: none;
 			}
+			:host([_hovering-selection]),
+			:host([_hovering-primary-action]),
+			:host([selectable][_focusing]),
+			:host([_focusing-primary-action]),
+			:host([selected]:not([selection-disabled]):not([skeleton])) {
+				z-index: 1;
+			}
 
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
@@ -129,36 +136,27 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: relative;
 				z-index: -1; /* must allow for interactive content to be accessible with mouse */
 			}
-			:host(:first-of-type) [slot="control-container"]::before,
-			[slot="control-container"]::after {
+			:host(:not([_separators="none"]):not(:first-of-type[_separators="between"])) [slot="control-container"]::before,
+			:host(:not([_separators="none"]):last-of-type:not([_separators="between"])) [slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
 				width: 100%;
 			}
-			:host(:first-of-type) [slot="control-container"]::before {
-				top: 0;
+			[slot="control-container"]::before {
+				top: -1px;
 			}
-			[slot="control-container"]::after {
-				bottom: -2px;
+			:host(:last-of-type) [slot="control-container"]::after {
+				bottom: 0;
 			}
 
-			:host(:first-of-type[_separators="between"]) [slot="control-container"]::before,
-			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
-			:host([_separators="none"]) [slot="control-container"]::before,
-			:host([_separators="none"]) [slot="control-container"]::after,
 			:host([_hovering-selection]) [slot="control-container"]::before,
-			:host([_hovering-selection]) [slot="control-container"]::after,
 			:host([_hovering-primary-action]) [slot="control-container"]::before,
-			:host([_hovering-primary-action]) [slot="control-container"]::after,
 			:host([selectable][_focusing]) [slot="control-container"]::before,
-			:host([selectable][_focusing]) [slot="control-container"]::after,
 			:host([_focusing-primary-action]) [slot="control-container"]::before,
-			:host([_focusing-primary-action]) [slot="control-container"]::after,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
-			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
-				border-top-color: transparent;
+				border-top-width: 0 !important;
 			}
 
 			:host([padding-type="none"]) d2l-list-item-generic-layout {
