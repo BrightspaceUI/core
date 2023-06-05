@@ -15,6 +15,7 @@ class FilterSearchDemo extends LitElement {
 		super();
 		this._fullData = Array.from(initialData);
 		this._fullDataSingle = Array.from(initialData);
+		this._fullDataInitialSubset = Array.from(initialData);
 	}
 
 	render() {
@@ -41,7 +42,7 @@ class FilterSearchDemo extends LitElement {
 					`)}
 				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="event-initial-subset" text="Event on Search - Initial Subset" search-type="manual" header-text="Related Roles at D2L" selected-first>
-					${this._fullDataSingle.map(value => html`
+					${this._fullDataInitialSubset.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
@@ -65,7 +66,13 @@ class FilterSearchDemo extends LitElement {
 		e.detail.dimensions.forEach(dimension => {
 			if (!dimension.dimensionKey.includes('event')) return;
 
-			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
+			const dataToUpdateMap = {
+				'event': this._fullData,
+				'event-single': this._fullDataSingle,
+				'event-initial-subset': this._fullDataInitialSubset,
+			};
+			if (dimension.dimensionKey !== 'event-initial-subset') return;
+			const dataToUpdate = [...dataToUpdateMap[dimension.dimensionKey]];
 			if (dimension.cleared) {
 				dataToUpdate.forEach(value => value.selected = false);
 			} else {
@@ -109,13 +116,13 @@ class FilterSearchDemo extends LitElement {
 		let keysToDisplay = [];
 		if (searchValue === '') {
 			keysToDisplay = initialSubset;
-			this._fullData.forEach(value => {
+			this._fullDataInitialSubset.forEach(value => {
 				if (value.selected) {
 					if (!keysToDisplay.includes(value.key)) keysToDisplay.push(value.key);
 				}
 			});
 		} else {
-			this._fullData.forEach(value => {
+			this._fullDataInitialSubset.forEach(value => {
 				if (value.text.toLowerCase().indexOf(searchValue.toLowerCase()) > -1) {
 					keysToDisplay.push(value.key);
 				}
