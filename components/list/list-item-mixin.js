@@ -93,7 +93,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
-			_hasNestedList: { state: true }
+			_hasNestedList: { type: Boolean, attribute: '_has-nested-list', reflect: true }
 		};
 	}
 
@@ -136,8 +136,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: relative;
 				z-index: -1; /* must allow for interactive content to be accessible with mouse */
 			}
-			:host(:not([_separators="none"]):not(:first-of-type[_separators="between"])) [slot="control-container"]::before,
-			:host(:not([_separators="none"]):last-of-type:not([_separators="between"])) [slot="control-container"]::after {
+			:host(:not(:first-of-type[_separators="between"])) [slot="control-container"]::before,
+			:host(:last-of-type:not([_separators="between"])) [slot="control-container"]::after,
+			:host([_has-nested-list]) [slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
@@ -146,7 +147,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="control-container"]::before {
 				top: -1px;
 			}
-			:host(:last-of-type) [slot="control-container"]::after {
+			[slot="control-container"]::after {
 				bottom: 0;
 			}
 
@@ -155,7 +156,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selectable][_focusing]) [slot="control-container"]::before,
 			:host([_focusing-primary-action]) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
-			:host(:first-of-type[_nested]) [slot="control-container"]::before {
+			:host([_separators="none"]) [slot="control-container"]::before,
+			:host([_separators="none"]) [slot="control-container"]::after,
+			:host(:first-of-type[_nested]) [slot="control-container"]::before,
+			:host(:last-of-type[_nested]) [slot="control-container"]::after {
 				border-top-width: 0 !important;
 			}
 
