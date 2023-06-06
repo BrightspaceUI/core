@@ -138,7 +138,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host(:not(:first-of-type[_separators="between"])) [slot="control-container"]::before,
 			:host(:last-of-type:not([_separators="between"])) [slot="control-container"]::after,
-			:host([_has-nested-list]) [slot="control-container"]::after {
+			:host([_has-nested-list][expanded]) [slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
