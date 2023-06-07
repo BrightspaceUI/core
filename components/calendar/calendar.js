@@ -468,13 +468,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				return html`
 					<td
 						aria-selected="${selected}"
+						aria-label="${description}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
 						tabindex=${focused ? '0' : '-1'}>
 						<button
-							aria-label="${description}"
 							class="${classMap(classes)}"
 							@click="${this._onDateSelected}"
 							?disabled="${disabled}"
