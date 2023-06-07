@@ -104,7 +104,7 @@ npm run lint
 # eslint only
 npm run lint:eslint
 
-# styleleint only
+# stylelint only
 npm run lint:style
 ```
 
