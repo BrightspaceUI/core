@@ -78,7 +78,6 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 		this.hasMore = false;
 
 		/** @ignore */
-		this.pageSize = 50;
 		this._loading = false;
 	}
 
@@ -98,7 +97,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 			${this._loading ? html`
 				<d2l-loading-spinner size="24"></d2l-loading-spinner>
 			` : html`
-				<span class="action">${this.localize('components.pager-load-more.action', { count: formatNumber(this.pageSize) })}</span>
+				<span class="action">${isNaN(this.pageSize) ? this.localize('components.pager-load-more.action') : this.localize('components.pager-load-more-with-page-size.action', { count: formatNumber(this.pageSize) })}</span>
 				${itemCount !== null ? html`
 					<span class="d2l-offscreen">${getSeparator({ nonBreaking: true })}</span>
 					<span class="separator"></span>

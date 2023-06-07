@@ -58,4 +58,36 @@ describe('d2l-pager-load-more', () => {
 
 		expect(pager._pageableInfo).to.eql({ itemCount: 30, itemShowingCount: 10 });
 	});
+
+	it('should render the page-size if given', async() => {
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more></${tagName}`);
+		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
+		expect(pager.shadowRoot.querySelector('.action').innerHTML).contains(`Load ${pager.pageSize} More`);
+	});
+
+	it('should not render the page-size if not given', async() => {
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more></d2l-pager-load-more></${tagName}`);
+		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
+		expect(pager.shadowRoot.querySelector('.action').innerHTML).contains('Load More');
+	});
+
+	it('should render the pager info if item-count is given', async() => {
+		const el = await fixture(`<${tagName} item-count="30"><d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more></${tagName}`);
+		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
+		expect(pager.shadowRoot.querySelector('.info').innerHTML).contains(`${pager._pageableInfo.itemShowingCount} of ${pager._pageableInfo.itemCount} items`);
+	});
+
+	it('should not render the pager info if item-count is not given', async() => {
+		const el = await fixture(`<${tagName}><d2l-pager-load-more slot="pager" has-more></d2l-pager-load-more></${tagName}`);
+		const pager = el.querySelector('d2l-pager-load-more');
+		await pager.updateComplete;
+
+		expect(pager.shadowRoot.querySelector('.info')).to.be.null;
+	});
 });
