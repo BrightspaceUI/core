@@ -117,11 +117,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
-				z-index: 10; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
+				z-index: 10 !important; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
 			}
 			:host([_fullscreen-within]) {
 				position: fixed; /* required for Safari */
-				z-index: 998; /* must be greater than floating workflow buttons */
+				z-index: 998 !important; /* must be greater than floating workflow buttons */
 			}
 
 			:host([dragging]) d2l-list-item-generic-layout {
@@ -137,8 +137,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				z-index: -1; /* must allow for interactive content to be accessible with mouse */
 			}
 			:host(:not(:first-of-type[_separators="between"])) [slot="control-container"]::before,
-			:host(:last-of-type:not([_separators="between"])) [slot="control-container"]::after,
-			:host([_has-nested-list][expanded]) [slot="control-container"]::after {
+			:host(:last-of-type:not([_separators="between"]):not([_nested])) [slot="control-container"]::after,
+			:host([_has-nested-list][expanded]) [slot="control-container"]::after,
+			:host([_has-nested-list]:not([expandable])) [slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
@@ -158,8 +159,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([_separators="none"]) [slot="control-container"]::before,
 			:host([_separators="none"]) [slot="control-container"]::after,
-			:host(:first-of-type[_nested]) [slot="control-container"]::before,
-			:host(:last-of-type[_nested]) [slot="control-container"]::after {
+			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-width: 0 !important;
 			}
 
