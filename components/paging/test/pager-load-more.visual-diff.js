@@ -42,6 +42,8 @@ describe('d2l-pager-load-more', () => {
 			{ name: 'no-item-count', selector: '#no-item-count' },
 			{ name: 'hover', selector: '#item-count', action: selector => page.hover(`${selector} d2l-pager-load-more`) },
 			{ name: 'focus', selector: '#item-count', action: selector => focusWithKeyboard(page, `${selector} d2l-pager-load-more`) },
+			{ name: 'no-page-size', selector: '#no-page-size' },
+			{ name: 'no-item-count-or-page-size', selector: '#no-item-count-or-page-size' }
 		].forEach(runTest);
 
 	});

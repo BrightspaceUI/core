@@ -68,6 +68,26 @@
 		</d2l-test-pageable>
 	</div>
 
+	<div class="visual-diff" id="no-page-size">
+		<d2l-test-pageable item-count="15">
+			<ul>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
+			</ul>
+			<d2l-pager-load-more slot="pager" has-more></d2l-pager-load-more>
+		</d2l-test-pageable>
+	</div>
+
+	<div class="visual-diff" id="no-item-count-or-page-size">
+		<d2l-test-pageable>
+			<ul>
+				<li><a href="https://some-website">item 1</a></li>
+				<li><a href="https://some-website">item 2</a></li>
+			</ul>
+			<d2l-pager-load-more slot="pager" has-more></d2l-pager-load-more>
+		</d2l-test-pageable>
+	</div>
+
 	<script>
 		document.querySelectorAll('d2l-pager-load-more').forEach(pager => {
 			pager.addEventListener('d2l-pager-load-more', e => {

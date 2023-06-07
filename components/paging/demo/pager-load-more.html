@@ -57,16 +57,50 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Load More Pager (no page count)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-pageable item-count=12>
+						<ul>
+							<li><a href="https://some-website">item 1</a></li>
+							<li><a href="https://some-website">item 2</a></li>
+						</ul>
+						<d2l-pager-load-more id="pager3" slot="pager" has-more></d2l-pager-load-more>
+					</d2l-test-pageable>
+					<script>
+						document.querySelector('#pager3').addEventListener('d2l-pager-load-more', window.handleLoadMore);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Load More Pager (no item or page count)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-pageable>
+						<ul>
+							<li><a href="https://some-website">item 1</a></li>
+							<li><a href="https://some-website">item 2</a></li>
+						</ul>
+						<d2l-pager-load-more id="pager4" slot="pager" has-more></d2l-pager-load-more>
+					</d2l-test-pageable>
+					<script>
+						document.querySelector('#pager4').addEventListener('d2l-pager-load-more', window.handleLoadMore);
+					</script>
+				</template>
+			</d2l-demo-snippet>
 		</d2l-demo-page>
 
 		<script>
 			const ITEM_COUNT = 12;
+			const PAGE_SIZE = 3;
 			window.handleLoadMore = e => {
 				// fake delay
 				setTimeout(() => {
 					const list = e.target.parentNode.querySelector('ul');
 					let remainingCount = ITEM_COUNT - list.children.length;
-					const numberToLoad = remainingCount < e.target.pageSize ? remainingCount : e.target.pageSize;
+					const numberToLoad = remainingCount < PAGE_SIZE ? remainingCount : PAGE_SIZE;
 					for (let i = 0; i < numberToLoad; i++) {
 						const newItem = list.lastElementChild.cloneNode(true);
 						newItem.querySelector('a').textContent = `item ${list.children.length + 1}`;
@@ -76,7 +110,7 @@
 						e.target.hasMore = false;
 					} else {
 						remainingCount = ITEM_COUNT - list.children.length;
-						if (remainingCount < e.target.pageSize) e.target.pageSize = remainingCount;
+						if (remainingCount < PAGE_SIZE && e.target.pageSize) e.target.pageSize = remainingCount;
 					}
 					e.detail.complete();
 				}, 1000);
