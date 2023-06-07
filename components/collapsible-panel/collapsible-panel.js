@@ -220,7 +220,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				width: 0.9rem;
 			}
 			:host([dir="rtl"]) .d2l-collapsible-panel-opener > d2l-icon-custom {
-				-webkit-transform: scale(-1, 1);
 				transform: scale(-1, 1);
 				transform-origin: center;
 			}
