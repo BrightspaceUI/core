@@ -98,14 +98,14 @@ D2L employees can also view the latest main-branch demos at https://brightspace-
 ### Linting
 
 ```shell
-# eslint and lit-analyzer
+# eslint and stylelint
 npm run lint
 
 # eslint only
 npm run lint:eslint
 
-# lit-analyzer only
-npm run lint:lit
+# styleleint only
+npm run lint:style
 ```
 
 ### Testing
