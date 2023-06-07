@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Platzhalterelement",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "{count} weitere laden",
+	"components.pager-load-more.action-with-page-size": "{count} weitere laden",
 	"components.pageable.info": "{count, plural, one {{countFormatted} Element} other {{countFormatted} Elemente}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} von {totalCountFormatted} Element} other {{countFormatted} von {totalCountFormatted} Elemente}}",
 	"components.pager-load-more.status-loading": "Weitere Elemente werden geladen",

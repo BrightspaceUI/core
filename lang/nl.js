@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "Laad nog {count} extra",
+	"components.pager-load-more.action-with-page-size": "Laad nog {count} extra",
 	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} van {totalCountFormatted} artikel} other {{countFormatted} van {totalCountFormatted} artikelen}}",
 	"components.pager-load-more.status-loading": "Er worden meer items geladen",

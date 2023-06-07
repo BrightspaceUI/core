@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "More Actions",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "Load {count} More",
+	"components.pager-load-more.action-with-page-size": "Load {count} More",
 	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} of {totalCountFormatted} item} other {{countFormatted} of {totalCountFormatted} items}}",
 	"components.pager-load-more.status-loading": "Loading more items",

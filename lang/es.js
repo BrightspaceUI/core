@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "Cargar {count} más",
+	"components.pager-load-more.action-with-page-size": "Cargar {count} más",
 	"components.pageable.info": "{count, plural, one {{countFormatted} elemento} other {{countFormatted} elementos}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} elemento} other {{countFormatted} de {totalCountFormatted} elementos}}",
 	"components.pager-load-more.status-loading": "Cargando más elementos",

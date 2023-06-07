@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "प्लेसहोल्डर आइटम",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "{count} और लोड करें",
+	"components.pager-load-more.action-with-page-size": "{count} और लोड करें",
 	"components.pageable.info": "{count, plural, one {{countFormatted} आइटम} other {{countFormatted} आइटम}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{totalCountFormatted} में से {countFormatted} आइटम} other {{totalCountFormatted} में से {countFormatted} आइटम}}",
 	"components.pager-load-more.status-loading": "और आइटम लोड करना",

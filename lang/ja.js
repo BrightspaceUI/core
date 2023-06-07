@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "プレースホルダの項目",
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "さらに {count} 件を読み込む",
+	"components.pager-load-more.action-with-page-size": "さらに {count} 件を読み込む",
 	"components.pageable.info": "{count, plural, other {{countFormatted} 個の項目}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 個の項目}}",
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",

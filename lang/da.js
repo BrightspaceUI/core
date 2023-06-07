@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Pladsholder-element",
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "Indlæs {count} mere",
+	"components.pager-load-more.action-with-page-size": "Indlæs {count} mere",
 	"components.pageable.info": "{count, plural, one {{countFormatted} element} other {{countFormatted} elementer}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} af {totalCountFormatted} element} other {{countFormatted} af {totalCountFormatted} elementer}}",
 	"components.pager-load-more.status-loading": "Indlæser flere elementer",

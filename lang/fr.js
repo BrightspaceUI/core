@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
 	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "Charger {count} de plus",
+	"components.pager-load-more.action-with-page-size": "Charger {count} de plus",
 	"components.pageable.info": "{count, plural, one {{countFormatted} élément} other {{countFormatted} éléments}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} élément} other {{countFormatted} de {totalCountFormatted} éléments}}",
 	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",

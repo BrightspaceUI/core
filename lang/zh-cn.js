@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "占位符项目",
 	"components.overflow-group.moreActions": "更多操作",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "再加载 {count} 个",
+	"components.pager-load-more.action-with-page-size": "再加载 {count} 个",
 	"components.pageable.info": "{count, plural, other {{countFormatted} 项}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 项}}",
 	"components.pager-load-more.status-loading": "加载更多项目",

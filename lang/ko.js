@@ -95,7 +95,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "자리표시자 항목",
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more-with-page-size.action": "{count}개 더 로드",
+	"components.pager-load-more.action-with-page-size": "{count}개 더 로드",
 	"components.pageable.info": "{count, plural, other {해당 항목 수 {countFormatted}개}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{totalCountFormatted}개 항목 중 {countFormatted}개}}",
 	"components.pager-load-more.status-loading": "더 많은 항목 로드",
