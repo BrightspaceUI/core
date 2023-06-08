@@ -1,4 +1,4 @@
-import { createConfig, getBrowsers } from './tools/web-test-runner-config.js';
+import { createConfig, getBrowsers } from '@brightspace-ui/testing';
 
 const pattern = type => `+(components|controllers|directives|helpers|mixins|templates)/**/*.${type}.js`;
 
