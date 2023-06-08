@@ -11,8 +11,6 @@ import '../list-item-content.js';
 import { fixture, focusWithKeyboard, hoverWithMouse, html, nextFrame, oneEvent, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-console.log('reduced motion: ', window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true);
-
 const buttonFixture = html`
 	<d2l-list style="width: 400px">
 		<d2l-list-item-button>

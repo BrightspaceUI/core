@@ -5,8 +5,6 @@ import '../list-item-button.js';
 import '../../selection/selection-action.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
-console.log('reduced motion: ', window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true);
-
 const normalFixture = html`
 	<d2l-list>
 		<d2l-list-controls slot="controls">
