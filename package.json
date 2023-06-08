@@ -21,8 +21,8 @@
     "start": "web-dev-server --node-resolve --watch --open",
     "test": "npm run lint && npm run test:translations && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
-    "test:headless": "web-test-runner --group default",
-    "test:headless:watch": "web-test-runner --group default --watch",
+    "test:headless": "web-test-runner --group unit",
+    "test:headless:watch": "web-test-runner --group unit --watch",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
     "test:visual-diff": "web-test-runner --group visual-diff --concurrency 5"
   },
