@@ -467,19 +467,20 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
-						aria-selected="${selected}"
 						aria-label="${description}"
+						aria-selected="${selected ? 'true' : 'false'}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
-						tabindex=${focused ? '0' : '-1'}>
+						tabindex=${focused ? '0' : '-1'}
+						type="button">
 						<button
 							class="${classMap(classes)}"
 							@click="${this._onDateSelected}"
 							?disabled="${disabled}"
 							tabindex="-1"
-							type="button">
+						>
 							${date}
 						</button>
 					</td>`;
