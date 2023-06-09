@@ -474,12 +474,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
 						tabindex=${focused ? '0' : '-1'}
-						type="button">
+					>
 						<button
 							class="${classMap(classes)}"
 							@click="${this._onDateSelected}"
 							?disabled="${disabled}"
 							tabindex="-1"
+							type="button"
 						>
 							${date}
 						</button>
