@@ -42,7 +42,7 @@ jobs:
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests
-        run: test:headless
+        run: npm run test:headless
   publish:
     name: Publish static site
     runs-on: ubuntu-latest
