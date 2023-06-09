@@ -22,8 +22,7 @@
     "test:axe": "web-test-runner --group aXe",
     "test:headless": "web-test-runner --group unit",
     "test:headless:watch": "web-test-runner --group unit --watch",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
-    "test:vdiff": "web-test-runner --group vdiff"
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
   },
   "files": [
     "custom-elements.json",

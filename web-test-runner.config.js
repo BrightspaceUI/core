@@ -4,7 +4,6 @@ const pattern = type => `+(components|controllers|directives|helpers|mixins|temp
 
 export default createConfig({
 	pattern,
-	vdiff: true,
 	groups: [{
 		name: 'aXe',
 		files: pattern('axe'),
