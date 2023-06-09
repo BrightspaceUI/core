@@ -1,38 +1,13 @@
-import { playwrightLauncher } from '@web/test-runner-playwright';
+import { createConfig, getBrowsers } from '@brightspace-ui/testing';
 
-function getPattern(type) {
-	return `+(components|controllers|directives|helpers|mixins|templates)/**/*.${type}.js`;
-}
+const pattern = type => `+(components|controllers|directives|helpers|mixins|templates)/**/*.${type}.js`;
 
-export default {
-	files: getPattern('test'),
-	nodeResolve: true,
-	groups: [
-		{
-			name: 'aXe',
-			files: getPattern('axe'),
-			browsers: [
-				playwrightLauncher({
-					async createPage({ context }) {
-						const page = await context.newPage();
-						await page.emulateMedia({ reducedMotion: 'reduce' });
-						return page;
-					}
-				})
-			]
-		}
-	],
-	testFramework: {
-		config: {
-			ui: 'bdd',
-			timeout: '20000',
-		}
-	},
-	testRunnerHtml: testFramework =>
-		`<html lang="en">
-			<body>
-				<script src="./tools/resize-observer-test-error-handler.js"></script>
-				<script type="module" src="${testFramework}"></script>
-			</body>
-		</html>`
-};
+export default createConfig({
+	pattern,
+	vdiff: true,
+	groups: [{
+		name: 'aXe',
+		files: pattern('axe'),
+		browsers: getBrowsers(['chromium'])
+	}]
+});
