@@ -112,11 +112,17 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				border: none;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
 			}
+			:host(:not([type="inline"])) .d2l-collapsible-panel:not(.group-last) {
+				margin-bottom: 0.5rem;
+			}
 			:host([type="inline"]) .d2l-collapsible-panel {
 				border-left: none;
 				border-radius: 0;
 				border-right: none;
 				outline-offset: -2px;
+			}
+			:host([type="inline"]) .d2l-collapsible-panel:not(.group-last) {
+				border-bottom: none;
 			}
 			:host([heading-style="1"]) {
 				--d2l-collapsible-panel-header-spacing: 1.2rem;
@@ -315,6 +321,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			'has-summary': this._hasSummary,
 			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
+			'group-last': this.parentElement.nodeName === 'D2L-COLLAPSIBLE-PANEL-GROUP' && Array.from(this.parentElement.children).indexOf(this) === this.parentElement.children.length - 1,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 
