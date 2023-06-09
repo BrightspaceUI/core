@@ -315,13 +315,14 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	render() {
+		console.log();
 		const classes = {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
 			'has-summary': this._hasSummary,
 			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
-			'group-last': this.parentElement.nodeName === 'D2L-COLLAPSIBLE-PANEL-GROUP' && Array.from(this.parentElement.children).indexOf(this) === this.parentElement.children.length - 1,
+			'group-last': this.parentElement.nodeName === 'D2L-COLLAPSIBLE-PANEL-GROUP' && this === this.parentElement.lastElementChild,
 		};
 		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 
