@@ -315,7 +315,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	render() {
-		console.log();
 		const classes = {
 			'd2l-collapsible-panel': true,
 			'focused': this._focused,
