@@ -1,11 +1,12 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, noChange } from 'lit';
 import { fixSvg } from './fix-svg.js';
+import { guard } from 'lit/directives/guard.js';
 import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
-import { runAsync } from '../../directives/run-async/run-async.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { until } from 'lit/directives/until.js';
 
 class Icon extends RtlMixin(LitElement) {
 
@@ -36,9 +37,7 @@ class Icon extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		return html`${runAsync(this.icon, () => this._getIcon(), {
-			success: (icon) => icon
-		}, { pendingState: false })}`;
+		return guard([this.icon], () => until(this._getIcon(), noChange));
 	}
 
 	_fixSvg(svgStr) {
