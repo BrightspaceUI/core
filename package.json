@@ -20,9 +20,10 @@
     "start": "web-dev-server --node-resolve --watch --open",
     "test": "npm run lint && npm run test:translations && npm run test:headless && npm run test:axe",
     "test:axe": "web-test-runner --group aXe",
-    "test:headless": "web-test-runner --group default",
-    "test:headless:watch": "web-test-runner --group default --watch",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
+    "test:headless": "web-test-runner --group unit",
+    "test:headless:watch": "web-test-runner --group unit --watch",
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
+    "test:vdiff": "web-test-runner --group vdiff"
   },
   "files": [
     "custom-elements.json",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^0.8",
+    "@brightspace-ui/testing": "^0.1",
     "@open-wc/semantic-dom-diff": "^0.19.9",
     "@open-wc/testing": "^3",
     "@rollup/plugin-dynamic-import-vars": "^2",
