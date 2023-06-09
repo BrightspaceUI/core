@@ -56,6 +56,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			:host {
 				display: block;
 			}
+			:host > div {
+				padding-bottom: 2px;
+			}
 			:host([hidden]) {
 				display: none;
 			}
