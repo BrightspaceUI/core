@@ -58,7 +58,7 @@ class CollapsiblePanelGroup extends SkeletonMixin(LitElement) {
 	_updatePanelAttributes() {
 		if (!this._panels || this._panels.length === 0) return;
 
-		if (this._panels?.[0]?.type !== 'inline') return;
+		if (this._panels[0]?.type !== 'inline') return;
 
 		for (const panel of this._panels) {
 			panel._noBottomBorder = true;
