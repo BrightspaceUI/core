@@ -22,7 +22,7 @@ describe('d2l-collapsible-panel-group', () => {
 	describe('ltr', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
+			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel-group.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
@@ -43,7 +43,7 @@ describe('d2l-collapsible-panel-group', () => {
 	describe('rtl', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
+			await page.goto(`${visualDiff.getBaseUrl()}/components/collapsible-panel/test/collapsible-panel-group.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
