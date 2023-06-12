@@ -3,7 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
- * A component that renders collapsible panels
+ * A component that renders a container and layout for collapsible panels
  * @slot default - Slot for panels. Only accepts `d2l-collapsible-panel`
  */
 class CollapsiblePanelGroup extends SkeletonMixin(LitElement) {
