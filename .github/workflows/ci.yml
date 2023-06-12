@@ -40,7 +40,7 @@ jobs:
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests
-        run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
+        run: npm run test:headless
   publish:
     name: Publish static site
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
