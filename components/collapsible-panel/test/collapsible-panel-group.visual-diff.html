@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script>
+		const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+		if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+	</script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../collapsible-panel.js';
+		import '../collapsible-panel-summary-item.js';
+		import '../collapsible-panel-group.js';
+	</script>
+	<title>d2l-collapsible-panel-group</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			padding: 1rem;
+			width: 600px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff" id="default">
+		<d2l-collapsible-panel-group>
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+				<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+		</d2l-collapsible-panel-group>
+	</div>
+
+	<div class="visual-diff" id="subtle">
+		<d2l-collapsible-panel-group>
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="subtle">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="subtle">
+				<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="subtle">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+		</d2l-collapsible-panel-group>
+	</div>
+
+	<div class="visual-diff" id="inline">
+		<d2l-collapsible-panel-group>
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline">
+				<d2l-collapsible-panel-summary-item slot="summary" text="Availability starts 8/16/2022 and ends 8/12/2022"></d2l-collapsible-panel-summary-item>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+
+			<d2l-collapsible-panel panel-title="Availability Dates and Conditions" type="inline">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas odio ligula, aliquam efficitur sollicitudin non, dignissim quis nisl. Nullam rutrum, lectus sed finibus consectetur, dolor leo blandit lorem, vitae consectetur arcu enim ornare tortor.
+			</d2l-collapsible-panel>
+		</d2l-collapsible-panel-group>
+	</div>
+</body>
+</html>
