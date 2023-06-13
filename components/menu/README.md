@@ -27,7 +27,7 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 **Note:** `d2l-menu` renders without an outer border since it's typically used in a context where a containing element defines a border (ex. `d2l-dropdown-menu` or side nav).
 
-<!-- docs: demo live name:d2l-menu -->
+<!-- docs: demo code properties name:d2l-menu -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -64,7 +64,7 @@ To make your usage of `d2l-menu` accessible, use the following property:
 
 The `d2l-menu-item` component is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event.
 
-<!-- docs: demo live name:d2l-menu-item -->
+<!-- docs: demo code properties name:d2l-menu-item -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -116,7 +116,7 @@ To make your usage of `d2l-menu-item` accessible, use the following property:
 
 This `d2l-menu-item-link` is used for navigating. It gives users the ability to right-click and open in a new tab.
 
-<!-- docs: demo live name:d2l-menu-item-link -->
+<!-- docs: demo code properties name:d2l-menu-item-link -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -152,7 +152,7 @@ To make your usage of `d2l-menu-item-link` accessible, use the following propert
 
 The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up to the `d2l-menu-item-change` event. Multiple checkboxes can be selected at once.
 
-<!-- docs: demo live name:d2l-menu-item-checkbox -->
+<!-- docs: demo code properties name:d2l-menu-item-checkbox -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -198,7 +198,7 @@ To make your usage of `d2l-menu-item-checkbox` accessible, use the following pro
 
 The `d2l-menu-item-radio` component is used for selection. It can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
 
-<!-- docs: demo live name:d2l-menu-item-radio -->
+<!-- docs: demo code properties name:d2l-menu-item-radio -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -244,7 +244,7 @@ To make your usage of `d2l-menu-item-radio` accessible, use the following proper
 
 The `d2l-menu-item-separator` component can be used to semantically separate menu items.
 
-<!-- docs: demo live name:d2l-menu-item-separator -->
+<!-- docs: demo code properties name:d2l-menu-item-separator -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';

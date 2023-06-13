@@ -28,7 +28,7 @@ A loading spinner indicates that something is happening and we don't know how lo
 
 ## Loading Spinner [d2l-loading-spinner]
 
-<!-- docs: demo live name:d2l-loading-spinner -->
+<!-- docs: demo code properties name:d2l-loading-spinner -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';

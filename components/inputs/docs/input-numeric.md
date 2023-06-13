@@ -21,7 +21,7 @@ Numeric inputs allow users to input numbers. These include the more generic `d2l
 
 The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
 
-<!-- docs: demo live name:d2l-input-number -->
+<!-- docs: demo code properties name:d2l-input-number -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-number.js';
@@ -99,7 +99,7 @@ To accept only integer numbers, set `max-fraction-digits` to zero:
 
 The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it provides a "%" symbol beside the number.
 
-<!-- docs: demo live name:d2l-input-percent -->
+<!-- docs: demo code properties name:d2l-input-percent -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-percent.js';

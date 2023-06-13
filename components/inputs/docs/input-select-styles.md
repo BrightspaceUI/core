@@ -52,7 +52,7 @@ Native `<select>` elements can be styled by importing `input-select-styles.js` i
 
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
 
-<!-- docs: demo live name:d2l-test-input-select -->
+<!-- docs: demo code properties name:d2l-test-input-select -->
 ```html
 <script type="module">
   import { css, html, LitElement } from 'lit';

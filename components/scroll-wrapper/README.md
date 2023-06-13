@@ -5,7 +5,7 @@ Scroll containers can be used to control how content acts when overflowing its c
 
 The `d2l-scroll-wrapper` element can be used to wrap content which may overflow its horizontal boundaries, providing left/right scroll buttons.
 
-<!-- docs: demo live name:d2l-scroll-wrapper -->
+<!-- docs: demo code properties name:d2l-scroll-wrapper -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/scroll-wrapper/scroll-wrapper.js';

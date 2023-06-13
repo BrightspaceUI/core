@@ -35,7 +35,7 @@ Search inputs allow users to input text, execute a search, and clear results. A 
 
 For text searches use `<d2l-input-search>`, which wraps the native `<input type="search">` element.
 
-<!-- docs: demo live name:d2l-input-search -->
+<!-- docs: demo code properties name:d2l-input-search -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-search.js';

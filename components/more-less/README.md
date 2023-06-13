@@ -4,7 +4,7 @@ The `d2l-more-less` element can be used to minimize the display of long content,
 
 ## More-Less [d2l-more-less]
 
-<!-- docs: demo live name:d2l-more-less -->
+<!-- docs: demo code properties name:d2l-more-less -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/more-less/more-less.js';

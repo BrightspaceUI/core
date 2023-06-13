@@ -33,7 +33,7 @@ Filter components are often used in conjuction with [tables](../../components/ta
 
 The `d2l-filter` component allows a user to filter on one or more dimensions of data from a single dropdown.
 
-<!-- docs: demo live name:d2l-filter align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -164,7 +164,7 @@ The filter will announce changes to filter selections, search results, and when 
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#d2l-filter-dimension-set-value), this will give you a selectable list of filter values.
 
-<!-- docs: demo live name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -205,7 +205,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
 
-<!-- docs: demo live name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -266,7 +266,7 @@ Note that when using multiple filter dimensions, the counts should be updated wh
 
 The `d2l-filter-dimension-set-empty-state` component allows you to customize the empty state components that are rendered in [d2l-filter-dimension-set](#d2l-filter-dimension-set). When placed in the `d2l-filter-dimension-set` empty state slots, it will replace the component's default empty state. This component can be placed in either the `set-empty-state` or the `search-empty-state` slots.
 
-<!-- docs: demo live name:d2l-filter-dimension-set-empty-state align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-empty-state align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -302,7 +302,7 @@ The `d2l-filter-dimension-set-empty-state` component allows you to customize the
 
 A tag-list allowing the user to see (and remove) the currently applied filters. Works with the `d2l-filter`. It supports hooking up to multiple filters.
 
-<!-- docs: demo live name:d2l-filter-tags align:start display:block autoSize:false size:medium -->
+<!-- docs: demo code properties name:d2l-filter-tags align:start display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -373,7 +373,7 @@ A tag-list allowing the user to see (and remove) the currently applied filters. 
 
 The `d2l-filter-overflow-group` is a container for multiple filters that handles overflow on smaller screens. Overflowing filters are displayed in a single filter.
 
-<!-- docs: demo live name:d2l-filter-overflow-group align:start display:block autoSize:false size:medium -->
+<!-- docs: demo code properties name:d2l-filter-overflow-group align:start display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';

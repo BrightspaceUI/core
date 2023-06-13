@@ -6,7 +6,7 @@ This component assists with managing user focus within your web application.
 
 The `d2l-focus-trap` is a generic container that will trap user focus from leaving. Focus will cycle to the first or last focusable elements when tabbing forwards or backwards respectively.  It will also capture focus from the document when actively trapping.
 
-<!-- docs: demo live name:d2l-focus-trap -->
+<!-- docs: demo code properties name:d2l-focus-trap -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';

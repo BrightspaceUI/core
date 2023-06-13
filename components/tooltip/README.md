@@ -74,7 +74,7 @@ The `d2l-tooltip` component is used to display additional information when users
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo live name:d2l-tooltip autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-tooltip autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
@@ -193,7 +193,7 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo live name:d2l-tooltip-help autoSize:false size:medium -->
+<!-- docs: demo code properties name:d2l-tooltip-help autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js';

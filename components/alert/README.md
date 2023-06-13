@@ -63,7 +63,7 @@ The `d2l-alert` component can be used to communicate important information relat
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo live name:d2l-alert autoSize:false  -->
+<!-- docs: demo code properties name:d2l-alert autoSize:false  -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/alert/alert.js';
@@ -109,7 +109,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 <!-- docs: end best practices -->
 
 
-<!-- docs: demo live name:d2l-alert-toast autoSize:false -->
+<!-- docs: demo code properties name:d2l-alert-toast autoSize:false -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/alert/alert-toast.js';
