@@ -37,7 +37,7 @@ pager.addEventListener('d2l-pager-load-more', e => {
 | Property | Type | Description |
 |---|---|---|
 | `has-more` | Boolean, default: `false` | Whether there are more items that can be loaded. |
-| `page-size` | Number, default: 50 | The number of additional items to load. |
+| `page-size` | Number | The number of additional items to load. If not given, the component will simply show `Load More` without any value. |
 
 ### Events
 

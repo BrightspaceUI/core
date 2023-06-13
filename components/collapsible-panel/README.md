@@ -75,6 +75,7 @@ The collapsible panel is a container that can show or hide additional content. I
 * Use to progressively disclose information or settings to simplify a complex workflow
 * Keep the header consistent across the collapsed and expanded states of the panel
 * Use the subtle collapsible panel for backgrounds that aren't white
+* Use [`d2l-collapsible-panel-group`](#d2l-collapsible-panel-group) to group multiple panels for better visual consistency
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -356,6 +357,36 @@ Collapsible panels have two optional slots, `header` and `actions` that can be u
 	<p>Pastry apple pie biscuit sesame snaps sweet pie apple pie dessert jelly beans. Lemon drops croissant tootsie roll croissant oat cake. Macaroon toffee pie gummi bears cupcake wafer tiramisu.</p>
 	<p style="margin-bottom: 0;">Chocolate cake ice cream cake chocolate bar dessert. Donut tiramisu fruitcake tiramisu liquorice shortbread sugar plum macaroon caramels. Tart candy cookie ice cream dessert tootsie roll.</p>
 </d2l-collapsible-panel>
+```
+
+## Group [d2l-collapsible-panel-group]
+
+In situations with multiple collapsible panels, use the `d2l-collapsible-panel-group` component to automatically handle spacing and layout.
+
+<!-- docs: demo live -->
+```html
+<script type="module">
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
+	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-group.js';
+</script>
+
+<style>
+	d2l-collapsible-panel {
+		width: 800px;
+	}
+</style>
+
+<d2l-collapsible-panel-group>
+	<d2l-collapsible-panel panel-title="Submission 1">
+		<p>Sweet roll candy dessert caramels shortbread gummies toffee oat cake cookie. Wafer gummies shortbread sweet halvah jujubes sweet. Cake chocolate chocolate bar carrot cake marzipan. Icing chupa chups jujubes macaroon toffee chocolate bar wafer croissant.</p>
+	</d2l-collapsible-panel>
+	<d2l-collapsible-panel panel-title="Submission 2">
+		<p>Sweet roll candy dessert caramels shortbread gummies toffee oat cake cookie. Wafer gummies shortbread sweet halvah jujubes sweet. Cake chocolate chocolate bar carrot cake marzipan. Icing chupa chups jujubes macaroon toffee chocolate bar wafer croissant.</p>
+	</d2l-collapsible-panel>
+	<d2l-collapsible-panel panel-title="Submission 3">
+		<p>Sweet roll candy dessert caramels shortbread gummies toffee oat cake cookie. Wafer gummies shortbread sweet halvah jujubes sweet. Cake chocolate chocolate bar carrot cake marzipan. Icing chupa chups jujubes macaroon toffee chocolate bar wafer croissant.</p>
+	</d2l-collapsible-panel>
+</d2l-collapsible-panel-group>
 ```
 
 ## Accessibility

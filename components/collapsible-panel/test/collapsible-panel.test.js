@@ -1,5 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
+import '../collapsible-panel-group.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -8,6 +9,7 @@ describe('d2l-collapsible-panel', () => {
 	it('should construct', () => {
 		runConstructor('d2l-collapsible-panel');
 		runConstructor('d2l-collapsible-panel-summary-item');
+		runConstructor('d2l-collapsible-panel-group');
 	});
 
 	describe('panel label', () => {

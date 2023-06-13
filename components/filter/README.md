@@ -195,6 +195,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |
 | `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and pass the keys of the values to be displayed |
 | `select-all` | Boolean | Whether to show a select all checkbox and selection summary for this dimension  |
+| `selected-first` | Boolean | Whether to render the selected items at the top of the filter  |
 | `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |
 | `text` | String, required | Text for the dimension in the menu |
 | `value-only-active-filter-text` | Boolean | Whether to hide the dimension in the text sent to active filter subscribers |
