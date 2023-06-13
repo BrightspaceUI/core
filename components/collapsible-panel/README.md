@@ -309,7 +309,7 @@ More than one `d2l-collapsible-panel-summary-item` can be added to the `summary`
 </d2l-collapsible-panel>
 ```
 
-## Header and actions slots
+## Header and Actions Slots
 
 Collapsible panels have two optional slots, `header` and `actions` that can be used to add more information to the header area.
 
@@ -359,9 +359,9 @@ Collapsible panels have two optional slots, `header` and `actions` that can be u
 </d2l-collapsible-panel>
 ```
 
-## Group [d2l-collapsible-panel-group]
+## Group of Panels [d2l-collapsible-panel-group]
 
-In situations with multiple collapsible panels, use the `d2l-collapsible-panel-group` component to automatically handle spacing and layout.
+Use the `d2l-collapsible-panel-group` component to automatically handle spacing and layout for multiple panels.
 
 <!-- docs: demo live -->
 ```html
