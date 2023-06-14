@@ -1,5 +1,5 @@
-import { assert, expect } from '@open-wc/testing';
 import { clearDismissible, setDismissible } from '../dismissible.js';
+import { expect } from '@open-wc/testing';
 import { spy } from 'sinon';
 
 function pressEscape() {
@@ -39,7 +39,7 @@ describe('dismissible', () => {
 		const id = setDismissible(() => {
 			throw new Error('callback called');
 		});
-		assert.doesNotThrow(() => clearDismissible(id));
+		expect(() => clearDismissible(id)).to.not.throw();
 	});
 
 	it('should dismiss via ESC in FILO order', async(done) => {
@@ -47,7 +47,7 @@ describe('dismissible', () => {
 			throw new Error('callback called');
 		}));
 		setDismissible(() => done());
-		assert.doesNotThrow(() => pressEscape());
+		expect(() => pressEscape()).to.not.throw();
 	});
 
 	it('should skip manually dismissed entries', async(done) => {
@@ -55,22 +55,22 @@ describe('dismissible', () => {
 		const id = setDismissible(() => {
 			throw new Error('callback called');
 		});
-		assert.doesNotThrow(() => {
+		expect(() => {
 			clearDismissible(id);
 			pressEscape();
-		});
+		}).to.not.throw();
 	});
 
 	it('should handle unrecognized id during clear', () => {
-		assert.doesNotThrow(() => clearDismissible(123));
+		expect(() => clearDismissible(123)).to.not.throw();
 	});
 
 	[undefined, null, 0, 'hello', []].forEach((cb) => {
 		it(`should handle invalid callback: ${cb}`, () => {
-			assert.doesNotThrow(() => {
+			expect(() => {
 				setDismissible(cb);
 				pressEscape();
-			});
+			}).to.not.throw();
 		});
 	});
 
