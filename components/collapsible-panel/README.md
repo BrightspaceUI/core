@@ -371,7 +371,7 @@ Use the `d2l-collapsible-panel-group` component to automatically handle spacing 
 </script>
 
 <style>
-	d2l-collapsible-panel {
+	d2l-collapsible-panel-group {
 		width: 800px;
 	}
 </style>
