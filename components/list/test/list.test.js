@@ -68,9 +68,9 @@ describe('d2l-list', () => {
 		it('should not set aria-label on nested lists', async() => {
 			const elem = await fixture(html`
 					<d2l-list id="L1" grid>
-						<d2l-list-item>
+						<d2l-list-item label="item">
 							<d2l-list id="L2" slot="nested" grid label="Test Label">
-								<d2l-list-item></d2l-list-item>
+								<d2l-list-item label="item"></d2l-list-item>
 								</d2l-list-item>
 							</d2l-list>
 						</d2l-list-item>
@@ -135,13 +135,13 @@ describe('d2l-list', () => {
 			it(`Focus navigates to other nested list items when in grid mode after ${testCase.keyPress.name} is pressed`, async() => {
 				const elem = await fixture(html`
 					<d2l-list id="L1" grid>
-						<d2l-list-item selectable key="L1-1">
+						<d2l-list-item selectable key="L1-1" label="item">
 							<d2l-list id="L2" slot="nested" grid>
-								<d2l-list-item key="L2-1"></d2l-list-item>
-								<d2l-list-item selectable key="L2-2">
+								<d2l-list-item key="L2-1" label="item"></d2l-list-item>
+								<d2l-list-item selectable key="L2-2" label="item">
 									<d2l-list id="L3" slot="nested" grid>
-										<d2l-list-item key="L3-1"></d2l-list-item>
-										<d2l-list-item selectable key="L3-2"></d2l-list-item>
+										<d2l-list-item key="L3-1" label="item"></d2l-list-item>
+										<d2l-list-item selectable key="L3-2" label="item"></d2l-list-item>
 									</d2l-list>
 								</d2l-list-item>
 							</d2l-list>
@@ -350,13 +350,13 @@ describe('d2l-list-item-button', () => {
 	describe('events', () => {
 
 		it('dispatches d2l-list-item-link-click event when clicked', async() => {
-			const el = await fixture(html`<d2l-list-item action-href="javascript:void(0)"></d2l-list-item>`);
+			const el = await fixture(html`<d2l-list-item action-href="javascript:void(0)" label="item"></d2l-list-item>`);
 			setTimeout(() => el.shadowRoot.querySelector('a').click());
 			await oneEvent(el, 'd2l-list-item-link-click');
 		});
 
 		it('dispatches d2l-list-item-button-click event when clicked', async() => {
-			const el = await fixture(html`<d2l-list-item-button></d2l-list-item-button>`);
+			const el = await fixture(html`<d2l-list-item-button label="item"></d2l-list-item-button>`);
 			setTimeout(() => el.shadowRoot.querySelector('button').click());
 			await oneEvent(el, 'd2l-list-item-button-click');
 		});
