@@ -126,9 +126,10 @@ class ExpandCollapseContent extends LitElement {
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
-					const content = this.shadowRoot && this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
-					if (content) this._height = `${content.scrollHeight}px`;
-					if (content?.scrollHeight === 0) this._setExpanded();
+					const content = this.shadowRoot?.querySelector('.d2l-expand-collapse-content-inner');
+					const contentHeight = content?.scrollHeight;
+					if (contentHeight) this._height = `${contentHeight}px`;
+					if (contentHeight === 0) this._setExpanded();
 				}
 			}
 		} else {
