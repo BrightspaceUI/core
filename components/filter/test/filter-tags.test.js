@@ -57,8 +57,6 @@ describe('d2l-filter-tags', () => {
 			const elem = await fixture(basic);
 			filter = elem.querySelector('d2l-filter');
 			filterTags = elem.querySelector('d2l-filter-tags');
-			await filter.updateComplete;
-			await filterTags.updateComplete;
 			await waitUntil(() => filterTags._allActiveFilters.get('filter').length === 3, 'Active filters were not set');
 
 			tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
@@ -164,8 +162,6 @@ describe('d2l-filter-tags', () => {
 			const elem = await fixture(twoFilters);
 			filter1 = elem.querySelector('#filter-1');
 			filterTags = elem.querySelector('d2l-filter-tags');
-			await filter1.updateComplete;
-			await filterTags.updateComplete;
 			const activeMap = filterTags._allActiveFilters;
 			await waitUntil(() => activeMap.get('filter-1').length === 1 && activeMap.get('filter-2').length === 1, 'Active filters were not set');
 

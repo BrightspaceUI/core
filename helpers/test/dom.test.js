@@ -549,26 +549,6 @@ describe('dom', () => {
 			expect(getOffsetParent(child)).to.equal(expected);
 		});
 
-		/*[
-			'direct-parent',
-			'indirect-parent',
-			'td',
-			'th',
-			'table',
-			'wrapper-inside',
-			'wrapper-passthrough',
-			'wrapper-is-parent',
-			'nested-wrapper-is-parent'
-		].forEach(fixtureName => {
-			it(fixtureName, async() => {
-				const fixt = fixture(fixtureName);
-				await fixt.updateComplete;
-				const child = fixt.querySelector('.child');
-				const expected = fixt.querySelector('.expected');
-				expect(getOffsetParent(child)).to.equal(expected);
-			});
-		});*/
-
 		it('wrapper-simple', async() => {
 			const elem = await fixture(`
 				<div>

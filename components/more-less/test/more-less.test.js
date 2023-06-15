@@ -2,7 +2,7 @@ import '../more-less.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
-function waitForHeight(elem) {
+export function waitForHeight(elem) {
 	return new Promise((resolve) => {
 		function check() {
 			const content = elem.shadowRoot.querySelector('.d2l-more-less-content');
