@@ -363,7 +363,7 @@ Collapsible panels have two optional slots, `header` and `actions` that can be u
 
 Use the `d2l-collapsible-panel-group` component to automatically handle spacing and layout for multiple panels.
 
-<!-- docs: demo live -->
+<!-- docs: demo live name:d2l-collapsible-panel-group -->
 ```html
 <script type="module">
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';

@@ -1,12 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component that renders a container and layout for collapsible panels
  * @slot default - Slot for panels. Only accepts `d2l-collapsible-panel`
  */
-class CollapsiblePanelGroup extends SkeletonMixin(LitElement) {
+class CollapsiblePanelGroup extends LitElement {
 
 	static get properties() {
 		return {
@@ -15,7 +14,7 @@ class CollapsiblePanelGroup extends SkeletonMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [super.styles, css`
+		return css`
 			:host ::slotted(*) {
 				display: none;
 			}
@@ -27,7 +26,7 @@ class CollapsiblePanelGroup extends SkeletonMixin(LitElement) {
 				flex-direction: column;
 				row-gap: 0.5rem;
 			}
-		`];
+		`;
 	}
 
 	constructor() {
