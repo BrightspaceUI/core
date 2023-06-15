@@ -1,4 +1,4 @@
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 
 export function runConstructor(nodeName) {
 	const ctor = customElements.get(nodeName);

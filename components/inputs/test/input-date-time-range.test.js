@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getShiftedEndDateTime } from '../input-date-time-range.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

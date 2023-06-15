@@ -1,7 +1,6 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { aTimeout, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
-import { focusElem } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
@@ -62,7 +61,6 @@ describe('d2l-dropdown', () => {
 	beforeEach(async() => {
 		dropdown = await fixture(normalFixture);
 		content = dropdown.querySelector('d2l-dropdown-content');
-		await content.updateComplete;
 	});
 
 	describe('constructor', () => {

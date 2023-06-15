@@ -1,5 +1,5 @@
 import '../dialog.js';
-import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -17,7 +17,8 @@ describe('d2l-dialog', () => {
 	describe('focus management', () => {
 
 		it('should focus on close button if no focusable elements inside', async() => {
-			const el = await fixture(html`<d2l-dialog opened>not focusable</d2l-dialog>`);
+			const el = await fixture(html`<d2l-dialog>not focusable</d2l-dialog>`);
+			el.opened = true;
 			await oneEvent(el, 'd2l-dialog-open');
 			expect(getComposedActiveElement().getAttribute('aria-label')).to.equal('Close this dialog');
 		});
@@ -52,16 +53,18 @@ describe('d2l-dialog', () => {
 		});
 
 		it('should not focus on an autofocus element that had not been made focusable', async() => {
-			const el = await fixture(html`<d2l-dialog opened><p autofocus>focus</p><button>focus</button></d2l-dialog>`);
-			const paragraph = el.querySelector('p');
+			const el = await fixture(html`<d2l-dialog><p autofocus>focus</p><button>focus</button></d2l-dialog>`);
+			el.opened = true;
 			await oneEvent(el, 'd2l-dialog-open');
+			const paragraph = el.querySelector('p');
 			expect(getComposedActiveElement()).to.not.equal(paragraph);
 		});
 
 		it('should not focus on a descendant autofocus element that had not been made focusable', async() => {
-			const el = await fixture(html`<d2l-dialog opened><div><p autofocus>focus</p></div><button>focus</button></d2l-dialog>`);
-			const paragraph = el.querySelector('p');
+			const el = await fixture(html`<d2l-dialog><div><p autofocus>focus</p></div><button>focus</button></d2l-dialog>`);
+			el.opened = true;
 			await oneEvent(el, 'd2l-dialog-open');
+			const paragraph = el.querySelector('p');
 			expect(getComposedActiveElement()).to.not.equal(paragraph);
 		});
 

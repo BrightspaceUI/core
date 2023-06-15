@@ -1,5 +1,5 @@
 import '../input-time-range.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('d2l-input-time-range', () => {
 

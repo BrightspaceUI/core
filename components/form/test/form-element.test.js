@@ -1,6 +1,6 @@
 import '../../validation/validation-custom.js';
 import './form-element.js';
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 
 const formTag = defineCE(

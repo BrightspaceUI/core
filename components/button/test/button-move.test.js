@@ -1,4 +1,4 @@
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { keyDown } from '../../../tools/dom-test-helpers.js';
 import { moveActions } from '../button-move.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

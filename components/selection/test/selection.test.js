@@ -8,7 +8,7 @@ import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
 import '../selection-summary.js';
-import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { SelectionInfo } from '../selection-mixin.js';
 import Sinon from 'sinon';

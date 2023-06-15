@@ -1,5 +1,5 @@
 import '../input-percent.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('d2l-input-percent', () => {
 	it('normal', async() => {

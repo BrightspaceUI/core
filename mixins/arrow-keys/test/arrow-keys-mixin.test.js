@@ -1,5 +1,5 @@
 import '../demo/arrow-keys-test.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { keyDown } from '../../../tools/dom-test-helpers.js';
 

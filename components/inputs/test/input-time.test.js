@@ -1,5 +1,5 @@
 import '../input-time.js';
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';

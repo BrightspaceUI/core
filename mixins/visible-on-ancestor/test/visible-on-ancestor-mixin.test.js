@@ -1,6 +1,6 @@
 
 import '../../../components/button/button-icon.js';
-import { defineCE, expect, fixture, html, nextFrame } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 
 const targetTag = defineCE(

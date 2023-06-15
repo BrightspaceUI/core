@@ -1,7 +1,7 @@
 import '../../validation/validation-custom.js';
 import './form-element.js';
 
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { localizeFormElement } from '../form-element-localize-helper.js';

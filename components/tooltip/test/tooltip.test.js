@@ -1,6 +1,5 @@
 import '../tooltip.js';
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { focusElem } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`

@@ -1,5 +1,5 @@
 import '../demo/description-list-test.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-d2l-wrapper', () => {
 

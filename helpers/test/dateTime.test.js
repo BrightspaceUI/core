@@ -13,7 +13,7 @@ import { formatDateInISO,
 	parseISODate,
 	parseISODateTime,
 	parseISOTime } from '../dateTime.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 

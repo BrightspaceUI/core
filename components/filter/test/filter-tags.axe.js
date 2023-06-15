@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-tags.js';
-import { expect, fixture, html, waitUntil } from '@open-wc/testing';
+import { expect, fixture, html, waitUntil } from '@brightspace-ui/testing';
 
 const basicFixture = html`
 	<div>

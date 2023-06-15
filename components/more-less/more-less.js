@@ -11,7 +11,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
  * @slot - Default content placed inside of the component
- * @fires d2l-more-less-render - Dispatched when the component finishes rendering
  */
 class MoreLess extends LocalizeCoreElement(LitElement) {
 
@@ -147,12 +146,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	render() {
-		requestAnimationFrame(
-			() => this.dispatchEvent(new CustomEvent('d2l-more-less-render', {
-				bubbles: false,
-				composed: false
-			}))
-		);
 		const contentClasses = {
 			'd2l-more-less-content': true,
 			'd2l-more-less-transition': this.__transitionAdded

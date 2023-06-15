@@ -2,7 +2,7 @@ import '../object-property-list.js';
 import '../object-property-list-item.js';
 import '../object-property-list-item-link.js';
 import '../../status-indicator/status-indicator.js';
-import { aTimeout, expect, fixture, html } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const validateSeparators = (elem, count) => {

@@ -1,7 +1,8 @@
 import '../html-block.js';
-import { expect, fixture, html, oneEvent, unsafeStatic } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { provideInstance } from '../../../mixins/provider/provider-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { unsafeStatic } from 'lit/static-html.js';
 
 class TestRenderer {
 	async render(elem) {

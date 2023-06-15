@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, html } from '@open-wc/testing';
+import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { RtlMixin } from '../rtl-mixin.js';
 

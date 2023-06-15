@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { FocusMixin } from '../focus-mixin.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { LitElement } from 'lit';

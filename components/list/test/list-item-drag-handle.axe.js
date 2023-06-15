@@ -1,5 +1,5 @@
 import '../list-item-drag-handle.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('d2l-list-item-drag-handle', () => {
 

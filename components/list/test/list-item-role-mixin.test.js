@@ -1,5 +1,5 @@
 import '../list.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { ListItemRoleMixin } from '../list-item-role-mixin.js';
 import { LitElement } from 'lit';
 

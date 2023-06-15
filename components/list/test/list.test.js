@@ -3,8 +3,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
-import { focusElem, sendKeysElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const awaitListElementUpdates = async(rootElement, queries) => {

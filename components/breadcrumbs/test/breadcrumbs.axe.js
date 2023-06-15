@@ -1,7 +1,7 @@
 import '../breadcrumb.js';
 import '../breadcrumb-current-page.js';
 import '../breadcrumbs.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-breadcrumbs', () => {
 

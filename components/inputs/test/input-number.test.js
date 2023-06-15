@@ -1,5 +1,5 @@
 import '../input-number.js';
-import { aTimeout, defineCE, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, defineCE, expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

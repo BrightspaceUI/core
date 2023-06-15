@@ -1,5 +1,5 @@
 import { _LocalizeMixinBase, generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin } from '../localize-mixin.js';
-import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { LitElement, render } from 'lit';
 import { restore, stub } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
