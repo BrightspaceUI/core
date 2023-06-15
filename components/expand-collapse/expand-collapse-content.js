@@ -119,17 +119,17 @@ class ExpandCollapseContent extends LitElement {
 				));
 			}
 			if (reduceMotion || firstUpdate) {
-				this._state = states.EXPANDED;
-				this._height = 'auto';
-				this._eventPromiseResolve();
+				this._setExpanded();
 			} else {
 				this._state = states.PREEXPANDING;
 				await this.updateComplete;
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
-					const content = this.shadowRoot && this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
-					if (content) this._height = `${content.scrollHeight}px`;
+					const content = this.shadowRoot?.querySelector('.d2l-expand-collapse-content-inner');
+					const contentHeight = content?.scrollHeight;
+					if (contentHeight) this._height = `${contentHeight}px`;
+					if (contentHeight === 0) this._setExpanded();
 				}
 			}
 		} else {
@@ -159,14 +159,17 @@ class ExpandCollapseContent extends LitElement {
 
 	_onTransitionEnd() {
 		if (this._state === states.EXPANDING) {
-			this._state = states.EXPANDED;
-			this._height = 'auto';
-			this._eventPromiseResolve();
+			this._setExpanded();
 		} else if (this._state === states.COLLAPSING) {
 			this._state = states.COLLAPSED;
 			this._eventPromiseResolve();
 		}
 	}
 
+	_setExpanded() {
+		this._state = states.EXPANDED;
+		this._height = 'auto';
+		this._eventPromiseResolve();
+	}
 }
 customElements.define('d2l-expand-collapse-content', ExpandCollapseContent);

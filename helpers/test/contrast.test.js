@@ -1,4 +1,4 @@
-import { assert, expect } from '@open-wc/testing';
+import { expect } from '@open-wc/testing';
 import { isColorAccessible } from '../contrast.js';
 
 describe('colour-contrast', () => {
@@ -38,10 +38,7 @@ describe('colour-contrast', () => {
 				{ color1: 'nope', color2: 'nuh uh', invalid: 'color1' },
 			].forEach(config => {
 				const { color1, color2, invalid } = config;
-				assert.throws(
-					() => isColorAccessible(color1, color2),
-					`Invalid HEX colour: ${config[invalid]}`
-				);
+				expect(() => isColorAccessible(color1, color2)).to.throw(`Invalid HEX colour: ${config[invalid]}`);
 			});
 		});
 
