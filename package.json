@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^0.8",
-    "@brightspace-ui/testing": "^0.3",
+    "@brightspace-ui/testing": "^0.7",
     "@open-wc/semantic-dom-diff": "^0.20",
     "@open-wc/testing": "^3",
     "@rollup/plugin-dynamic-import-vars": "^2",

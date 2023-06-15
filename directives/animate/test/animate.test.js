@@ -1,5 +1,5 @@
 import { expect, fixture, oneEvent } from '@open-wc/testing';
-import { focusWithKeyboard, focusWithMouse } from '../../../tools/web-test-runner-helpers.js';
+import { focusWithKeyboard, focusWithMouse } from '@brightspace-ui/testing';
 import { hide, show } from '../animate.js';
 import { html, LitElement } from 'lit';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
