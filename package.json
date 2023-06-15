@@ -52,6 +52,7 @@
     "@rollup/plugin-node-resolve": "^15",
     "@rollup/plugin-replace": "^5",
     "@web/dev-server": "^0.2",
+    "@web/test-runner": "^0.16",
     "axe-core": "^4",
     "chalk": "^5",
     "eslint": "^8",
