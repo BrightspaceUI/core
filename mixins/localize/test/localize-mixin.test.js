@@ -358,7 +358,10 @@ describe('LocalizeMixin', () => {
 
 	describe('localizeHTML', async() => {
 
-		const elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
+		});
 
 		const renderToElem = data => {
 			render(data, elem);
