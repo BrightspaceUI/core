@@ -14,7 +14,7 @@ class CollapsiblePanelGroup extends LitElement {
 	}
 
 	static get styles() {
-		return [super.styles, css`
+		return css`
 			:host ::slotted(*) {
 				display: none;
 			}
@@ -26,7 +26,7 @@ class CollapsiblePanelGroup extends LitElement {
 				flex-direction: column;
 				row-gap: 0.5rem;
 			}
-		`];
+		`;
 	}
 
 	constructor() {
