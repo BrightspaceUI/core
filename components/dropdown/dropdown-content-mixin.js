@@ -200,9 +200,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			_closing: {
 				type: Boolean
 			},
-			_contentOverflow: {
-				type: Boolean
-			},
 			_dropdownContent: {
 				type: Boolean,
 				attribute: 'dropdown-content',
@@ -262,7 +259,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._bottomOverflow = false;
 		this._topOverflow = false;
 		this._closing = false;
-		this._contentOverflow = false;
 		this._hasHeader = false;
 		this._hasFooter = false;
 		this._showBackdrop = false;
@@ -704,7 +700,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					&& headerFooterHeight < this.maxHeight
 					? this.maxHeight - headerFooterHeight - 2
 					: availableHeight - headerFooterHeight;
-				this.__toggleOverflowY(contentRect.height + headerFooterHeight > availableHeight);
 
 				// ensure the content height has updated when the __toggleScrollStyles event handler runs
 				await this.updateComplete;
@@ -721,16 +716,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await this.updateComplete;
 
 		await adjustPosition();
-	}
-
-	__toggleOverflowY(isOverflowing) {
-		if (!this.__content) {
-			return;
-		}
-		if (!this._contentHeight) {
-			return;
-		}
-		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._contentHeight;
 	}
 
 	__toggleScrollStyles() {
@@ -809,7 +794,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: maxHeightOverride,
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
 		const closeButtonStyles = {
@@ -845,7 +829,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: this._contentHeight ? `${this._contentHeight}px` : '',
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
 		const closeButtonStyle = {
@@ -951,7 +934,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: maxHeightOverride,
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
 		const closeButtonStyles = {
