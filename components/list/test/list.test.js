@@ -4,12 +4,9 @@ import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
 import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { focusWithKeyboard } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-
-const keyCodes = Object.freeze({
-	UP: { name: 'up arrow', key: 38 },
-	DOWN: { name: 'down arrow', key: 40 }
-});
+import { sendKeys } from '@web/test-runner-commands';
 
 const awaitListElementUpdates = async(rootElement, queries) => {
 	await rootElement.updateComplete;
@@ -85,10 +82,10 @@ describe('d2l-list', () => {
 	describe('navigation', () => {
 
 		[
-			{ keyPress: keyCodes.UP },
-			{ keyPress: keyCodes.DOWN }
+			{ keyPress: 'ArrowUp' },
+			{ keyPress: 'ArrowDown' }
 		].forEach(testCase => {
-			it(`Focus stays inside the list when in grid mode after ${testCase.keyPress.name} is pressed`, async() => {
+			it(`Focus stays inside the list when in grid mode after "${testCase.keyPress}" is pressed`, async() => {
 				const elem = await fixture(html`
 					<div>
 						<d2l-list id="L1">
@@ -117,11 +114,11 @@ describe('d2l-list', () => {
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
-				listItem.focus();
+				await focusWithKeyboard(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
-				setTimeout(() => listItemLayout.dispatchEvent(event));
+				await focusWithKeyboard(listItemLayout);
+				setTimeout(() => sendKeys({ down: testCase.keyPress }));
 				await oneEvent(listItemLayout, 'keydown');
 
 				expect(listItem.hasAttribute('_focusing')).to.be.true;
@@ -129,10 +126,10 @@ describe('d2l-list', () => {
 		});
 
 		[
-			{ keyPress: keyCodes.UP, expectedFocus: 'L1-1' },
-			{ keyPress: keyCodes.DOWN, expectedFocus: 'L3-2' }
+			{ keyPress: 'ArrowUp', expectedFocus: 'L1-1' },
+			{ keyPress: 'ArrowDown', expectedFocus: 'L3-2' }
 		].forEach(testCase => {
-			it(`Focus navigates to other nested list items when in grid mode after ${testCase.keyPress.name} is pressed`, async() => {
+			it(`Focus navigates to other nested list items when in grid mode after "${testCase.keyPress}" is pressed`, async() => {
 				const elem = await fixture(html`
 					<d2l-list id="L1" grid>
 						<d2l-list-item selectable key="L1-1" label="item">
@@ -160,11 +157,11 @@ describe('d2l-list', () => {
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
-				listItem.focus();
+				await focusWithKeyboard(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-				const event = new KeyboardEvent('keydown', { keyCode: testCase.keyPress.key });
-				setTimeout(() => listItemLayout.dispatchEvent(event));
+				await focusWithKeyboard(listItemLayout);
+				setTimeout(() => sendKeys({ down: testCase.keyPress }));
 				await oneEvent(listItemLayout, 'keydown');
 
 				const focusedElement = elem.querySelector(`[key=${testCase.expectedFocus}`);
@@ -188,11 +185,11 @@ describe('d2l-list', () => {
 
 			const listItem = elem.querySelector('[key="L1-2"]');
 			const listItemLayout = elem.querySelector('[key="L1-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
-			listItem.focus();
+			await focusWithKeyboard(listItem);
 			await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-			const event = new KeyboardEvent('keydown', { keyCode: keyCodes.UP.key });
-			setTimeout(() => listItemLayout.dispatchEvent(event));
+			await focusWithKeyboard(listItemLayout);
+			setTimeout(() => sendKeys({ down: 'ArrowUp' }));
 			await oneEvent(listItemLayout, 'keydown');
 
 			expect(listItem.hasAttribute('_focusing')).to.be.true;
