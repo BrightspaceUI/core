@@ -18,7 +18,7 @@ const tag = defineCE(
 
 describe('ListItemExpandCollapseMixin', () => {
 	it('Sets expandable to false when no key is given', async() => {
-		const element = await fixture(`<${tag} expandable key="1234"></${tag}>`);
+		const element = await fixture(`<${tag} expandable></${tag}>`);
 		await element.updateComplete;
 		expect(element.expandable).to.be.false;
 	});
