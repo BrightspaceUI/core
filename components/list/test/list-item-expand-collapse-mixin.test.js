@@ -1,5 +1,6 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit';
+import { restore, stub } from 'sinon';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 import { ListItemExpandCollapseMixin } from '../list-item-expand-collapse-mixin.js';
 import { ListItemMixin } from '../list-item-mixin.js';
@@ -17,10 +18,19 @@ const tag = defineCE(
 );
 
 describe('ListItemExpandCollapseMixin', () => {
+
+	let consoleWarnStub;
+	beforeEach(() => {
+		consoleWarnStub = stub(console, 'warn');
+	});
+
+	afterEach(() => restore());
+
 	it('Sets expandable to false when no key is given', async() => {
 		const element = await fixture(`<${tag} expandable></${tag}>`);
 		await element.updateComplete;
 		expect(element.expandable).to.be.false;
+		expect(consoleWarnStub).to.be.calledWith('ListItemExpandCollapseMixin requires a key.');
 	});
 
 	describe('Render expand/collapse action area when appropriate', () => {

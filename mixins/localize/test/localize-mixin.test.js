@@ -1,9 +1,9 @@
 import { _LocalizeMixinBase, generateLink, generateTooltipHelp, localizeMarkup, LocalizeMixin } from '../localize-mixin.js';
 import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { LitElement, render } from 'lit';
+import { restore, stub } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
-import { stub } from 'sinon';
 
 const Test1LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
@@ -358,10 +358,13 @@ describe('LocalizeMixin', () => {
 
 	describe('localizeHTML', async() => {
 
-		let elem;
+		let consoleErrorStub, elem;
 		beforeEach(async() => {
+			consoleErrorStub = stub(console, 'error');
 			elem = await fixture(`<${localizeHTMLTag}></${localizeHTMLTag}>`);
 		});
+
+		afterEach(() => restore());
 
 		const renderToElem = data => {
 			render(data, elem);
@@ -382,6 +385,7 @@ describe('LocalizeMixin', () => {
 			items.push('bread', 'eggs');
 			const pluralMap = elem.localizeHTML('pluralTest', { itemCount: items.length, link: generateLink({ href: 'checkout' }), html: () => items.map(i => localizeMarkup`<p>${i}</p>`) });
 
+			expect(consoleErrorStub).to.have.been.calledTwice;
 			expect(renderToElem(defaultTags)).lightDom.to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(renderToElem(manual)).lightDom.to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
 			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');

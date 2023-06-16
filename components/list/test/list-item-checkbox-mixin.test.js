@@ -1,5 +1,6 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit';
+import { restore, stub } from 'sinon';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 
 const tag = defineCE(
@@ -14,7 +15,14 @@ const tag = defineCE(
 );
 
 describe('ListItemCheckboxMixin', () => {
-	// will log "ListItemCheckboxMixin requires a key."
+
+	let consoleWarnStub;
+	beforeEach(() => {
+		consoleWarnStub = stub(console, 'warn');
+	});
+
+	afterEach(() => restore());
+
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
 			'selection-disabled selected',
@@ -26,6 +34,9 @@ describe('ListItemCheckboxMixin', () => {
 			it(test, async() => {
 				const element = await fixture(`<${tag} ${test} label="some label"></${tag}>`);
 				expect(element.selected).to.be.undefined;
+				if (cases.indexOf('selectable') > -1) {
+					expect(consoleWarnStub).to.be.calledWith('ListItemCheckboxMixin requires a key.');
+				}
 			});
 		}
 	});
