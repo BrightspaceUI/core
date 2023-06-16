@@ -49,7 +49,7 @@ Therefore in text inputs, placeholder text is a light colour (Mica), which fails
 
 The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
 
-<!-- docs: demo live name:d2l-input-text -->
+<!-- docs: demo code properties name:d2l-input-text -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
@@ -168,7 +168,7 @@ As an alternative to using the `<d2l-input-text>` custom element, you can style 
 
 The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element that provides auto-grow and validation behaviours. It's intended for inputting unformatted multi-line text.
 
-<!-- docs: demo live name:d2l-input-textarea -->
+<!-- docs: demo code properties name:d2l-input-textarea -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-textarea.js';

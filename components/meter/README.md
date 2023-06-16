@@ -36,7 +36,7 @@ Meters are a visually engaging way to communicate progress or measurements.
 
 Linear meters show a horizontal progress bar.
 
-<!-- docs: demo live name:d2l-meter-linear -->
+<!-- docs: demo code properties name:d2l-meter-linear -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
@@ -68,7 +68,7 @@ Linear meters show a horizontal progress bar.
 
 Radial meters appear as a half circle. They have more visual weight than a linear meter and should only be used when the data is central to the user's task.
 
-<!-- docs: demo live name:d2l-meter-radial size:medium -->
+<!-- docs: demo code properties name:d2l-meter-radial size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-radial.js';
@@ -92,7 +92,7 @@ Radial meters appear as a half circle. They have more visual weight than a line
 
 Circle meters display data in a compact circle format, so they're useful when horizontal space is at a premium.
 
-<!-- docs: demo live name:d2l-meter-circle -->
+<!-- docs: demo code properties name:d2l-meter-circle -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-circle.js';

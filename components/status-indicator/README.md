@@ -58,7 +58,7 @@ Status Indicators are used to communicate the status of an item. They are non-in
 
 ## Status Indicator [d2l-status-indicator]
 
-<!-- docs: demo live name:d2l-status-indicator -->
+<!-- docs: demo code properties name:d2l-status-indicator -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
@@ -81,7 +81,7 @@ Status Indicators are used to communicate the status of an item. They are non-in
 
 Use the bold style if the state is central to the user's task and should have maximum prominence. Use the default style if the state is important but not critical to the user's workflow. It is acceptable to mix the styles if one particular state should stand out more than the rest.
 
-<!-- docs: demo live -->
+<!-- docs: demo code properties -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';

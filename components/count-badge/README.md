@@ -17,7 +17,7 @@ Badges can be used to provide additional contextual information to users in rega
 
 The `d2l-count-badge` element is a web component to display a number count, depending on your use case different styling options are available.
 
-<!-- docs: demo live name:d2l-count-badge -->
+<!-- docs: demo code properties name:d2l-count-badge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge.js';
@@ -54,7 +54,7 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 
 The `d2l-count-badge-icon` element is a web component to display a number count, either in a `"notification"` or `"count"` style with an icon.
 
-<!-- docs: demo live name:d2l-count-badge-icon -->
+<!-- docs: demo code properties name:d2l-count-badge-icon -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';

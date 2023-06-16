@@ -39,7 +39,7 @@ Tabs are used to present related information in mutually exclusive panels, allow
 
 The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab-panel` component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
 
-<!-- docs: demo live name:d2l-tabs display:block -->
+<!-- docs: demo code properties name:d2l-tabs display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';
@@ -69,7 +69,7 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 ## Tab Panels [d2l-tab-panel]
 Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Tab panels can contain text, form controls, rich media, or just about anything else. There is an optional “slot” available for related controls such as a Settings button.
 
-<!-- docs: demo live name:d2l-tab-panel display:block -->
+<!-- docs: demo code properties name:d2l-tab-panel display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';

@@ -69,7 +69,7 @@ For very long values, or very small container sizes, the description list can us
 
 The `d2l-dl-wrapper` component can be combined with `descriptionListStyles` to apply styling and resize behavior to native `dl` elements.
 
-<!-- docs: demo live name:d2l-test-dl display:block -->
+<!-- docs: demo code properties name:d2l-test-dl display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';

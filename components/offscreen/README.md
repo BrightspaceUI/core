@@ -6,7 +6,7 @@ Positioning content off-screen is a valuable accessibility technique that allows
 
 Import the `<d2l-offscreen>` web component and place your content within the default slot to position it off-screen. The content will be hidden in the UI but still discoverable by screen reader users.
 
-<!-- docs: demo live name:d2l-offscreen -->
+<!-- docs: demo code properties name:d2l-offscreen -->
 ```html
 <!-- docs: start hidden content -->
 <style>

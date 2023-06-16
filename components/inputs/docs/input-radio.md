@@ -75,7 +75,7 @@ For disabled items, add the `d2l-input-radio-label-disabled` class on the label 
 
 If you'd like to manually link the radio input with a label, or use an ARIA label, place the `d2l-radio-input` CSS class on the input itself to style it. For example:
 
-<!-- docs: demo live name:d2l-test-input-radio-solo display:block -->
+<!-- docs: demo code properties name:d2l-test-input-radio-solo display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';

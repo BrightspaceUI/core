@@ -31,7 +31,7 @@ Use the `<d2l-input-date>` component when users need to choose a single date. It
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: demo live name:d2l-input-date align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo code properties name:d2l-input-date align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
@@ -77,7 +77,7 @@ Use the `<d2l-input-date-range>` component when users need to enter two dates i
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: demo live name:d2l-input-date-range align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo code properties name:d2l-input-date-range align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
@@ -129,7 +129,7 @@ Use the `<d2l-input-time>` component when users need to enter a time, without a
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: demo live name:d2l-input-time align:flex-start autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-input-time align:flex-start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time.js';
@@ -175,7 +175,7 @@ Use the `<d2l-input-time-range>` component when users need to enter two times in
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
-<!-- docs: demo live name:d2l-input-time-range align:flex-start autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-input-time-range align:flex-start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time-range.js';
@@ -223,7 +223,7 @@ Use the `<d2l-input-date-time>` component when users need to enter a single dat
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
-<!-- docs: demo live name:d2l-input-date-time align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo code properties name:d2l-input-date-time align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
@@ -270,7 +270,7 @@ Use the `<d2l-input-date-time-range>` component when users need to enter two d
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
-<!-- docs: demo live name:d2l-input-date-time-range align:flex-start autoSize:false size:xlarge -->
+<!-- docs: demo code properties name:d2l-input-date-time-range align:flex-start autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time-range.js';

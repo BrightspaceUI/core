@@ -45,7 +45,7 @@ If the viewport is very narrow — for example, on a mobile device — it may be
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
-<!-- docs: demo live name:d2l-table-wrapper display:block -->
+<!-- docs: demo code properties name:d2l-table-wrapper display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -300,7 +300,7 @@ Load-More paging functionality can be implemented in tables by placing a `d2l-pa
 
 The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `controls` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo live name:d2l-table-controls display:block -->
+<!-- docs: demo code properties name:d2l-table-controls display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';

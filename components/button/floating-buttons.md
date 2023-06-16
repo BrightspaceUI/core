@@ -27,7 +27,7 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 ## Floating Buttons [d2l-floating-buttons]
 
-<!-- docs: demo live name:d2l-floating-buttons autoSize:false display:block size:medium -->
+<!-- docs: demo code properties name:d2l-floating-buttons autoSize:false display:block size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/floating-buttons.js';

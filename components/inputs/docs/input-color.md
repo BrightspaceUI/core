@@ -16,7 +16,7 @@ Color inputs allow users to select a color from a palette and perform color cont
 
 The `<d2l-input-color>` will open a dialog to allow the user to select a color from a palette.
 
-<!-- docs: demo live name:d2l-input-color -->
+<!-- docs: demo code properties name:d2l-input-color -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-color.js';

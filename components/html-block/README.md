@@ -8,7 +8,7 @@ The `d2l-html-block` element is a web component for displaying user-authored HTM
 
 Pass the user-authored HTML into the `html` attribute of the `d2l-html-block` and the component will stamp the content into its local DOM where styles will be applied, and math typeset.
 
-<!-- docs: demo live name:d2l-html-block autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-html-block autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';

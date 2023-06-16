@@ -31,7 +31,7 @@ Checkboxes are used in forms to toggle an option or preference.
 
 The `<d2l-input-checkbox>` element can be used to get a checkbox and optional visible label.
 
-<!-- docs: demo live name:d2l-input-checkbox display:block -->
+<!-- docs: demo code properties name:d2l-input-checkbox display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';

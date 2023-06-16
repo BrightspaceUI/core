@@ -50,7 +50,7 @@ It differs from the native HTML `form` element in 4 ways:
 
 If you're looking to emulate native form element submission, `d2l-form-native` may be more appropriate.
 
-<!-- docs: demo live name:d2l-form autoSize:false display:block size:large -->
+<!-- docs: demo code properties name:d2l-form autoSize:false display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/form/form.js';
@@ -184,7 +184,7 @@ It differs from the native HTML `form` element in 2 ways:
 
 If you're looking to submit form data via your own API calls or nest multiple forms within each other, `d2l-form` may be more appropriate.
 
-<!-- docs: demo live name:d2l-form-native autoSize:false display:block size:medium -->
+<!-- docs: demo code properties name:d2l-form-native autoSize:false display:block size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/form/form-native.js';
