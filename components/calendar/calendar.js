@@ -464,7 +464,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
 				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, { format: 'monthYear' })}`;
-				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
 						aria-label="${description}"
@@ -473,6 +472,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						data-month=${month}
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
+						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}
 					>
 						<button
@@ -520,7 +520,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 								icon="tier1:chevron-right">
 							</d2l-button-icon>
 						</div>
-						<table aria-labelledby="${labelId}" role="presentation">
+						<table aria-labelledby="${labelId}">
 							${summary}
 							<thead aria-hidden="true">
 								<tr>${weekdayHeaders}</tr>
