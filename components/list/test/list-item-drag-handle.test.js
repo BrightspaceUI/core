@@ -1,7 +1,7 @@
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { dragActions } from '../list-item-drag-handle.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { sendKeys } from '@web/test-runner-commands';
+import { sendKeysElem } from '@brightspace-ui/testing';
 
 describe('ListItemDragHandle', () => {
 
@@ -90,9 +90,9 @@ describe('ListItemDragHandle', () => {
 
 	async function dispatchKeyEvent(el, key, shiftKey = false) {
 		if (shiftKey) {
-			await sendKeys({ press: `Shift+${key}` });
+			await sendKeysElem('press', `Shift+${key}`, el);
 		} else {
-			await sendKeys({ press: key });
+			await sendKeysElem('press', key, el);
 		}
 	}
 

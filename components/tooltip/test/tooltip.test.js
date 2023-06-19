@@ -1,6 +1,6 @@
 import '../tooltip.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { focusWithKeyboard } from '@brightspace-ui/testing';
+import { focusElem } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
@@ -113,7 +113,7 @@ describe('d2l-tooltip', () => {
 	describe('show-hide', () => {
 
 		it('should show when target is focused', async() => {
-			await focusWithKeyboard(tooltipFixture.querySelector('#explicit-target'));
+			await focusElem(tooltipFixture.querySelector('#explicit-target'));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
 		});
@@ -126,7 +126,7 @@ describe('d2l-tooltip', () => {
 
 		it('should hide from blur when target is focused', async() => {
 			const target = tooltipFixture.querySelector('#explicit-target');
-			await focusWithKeyboard(target);
+			await focusElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 
 			setTimeout(() => target.blur());
@@ -149,7 +149,7 @@ describe('d2l-tooltip', () => {
 			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
-			await focusWithKeyboard(target);
+			await focusElem(target);
 
 			target.dispatchEvent(new Event('mouseleave'));
 			await aTimeout(100);
@@ -161,7 +161,7 @@ describe('d2l-tooltip', () => {
 			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
-			await focusWithKeyboard(target);
+			await focusElem(target);
 
 			target.blur();
 			await aTimeout(100);
@@ -177,7 +177,7 @@ describe('d2l-tooltip', () => {
 				const target = tooltipFixture.querySelector('#explicit-target');
 				setTimeout(() => {
 					if (testCase.focus) {
-						focusWithKeyboard(target);
+						focusElem(target);
 					}
 					if (testCase.hover) {
 						target.dispatchEvent(new Event('mouseenter'));
@@ -199,7 +199,7 @@ describe('d2l-tooltip', () => {
 		it('should show if added to a target that already has focus', async() => {
 
 			const target = tooltipFixture.querySelector('#explicit-target');
-			await focusWithKeyboard(target);
+			await focusElem(target);
 
 			const dynamicTooltip = document.createElement('d2l-tooltip');
 			dynamicTooltip.for = target.id;
@@ -283,7 +283,7 @@ describe('d2l-tooltip', () => {
 			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
-			await focusWithKeyboard(target);
+			await focusElem(target);
 
 			setTimeout(() => target.dispatchEvent(new Event('mouseleave')));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-hide');

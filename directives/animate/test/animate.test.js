@@ -1,5 +1,5 @@
+import { clickElem, focusElem } from '@brightspace-ui/testing';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
-import { focusWithKeyboard, focusWithMouse } from '@brightspace-ui/testing';
 import { hide, show } from '../animate.js';
 import { html, LitElement } from 'lit';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
@@ -77,7 +77,7 @@ describe('animate directive', () => {
 		it('should move focus when element with visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			await focusWithKeyboard(elem.shadowRoot.querySelector('#first'));
+			await focusElem(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
@@ -88,7 +88,7 @@ describe('animate directive', () => {
 		it('should not move focus when element with non-visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			await focusWithMouse(elem.shadowRoot.querySelector('#first'));
+			await clickElem(elem.shadowRoot.querySelector('#first'));
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
