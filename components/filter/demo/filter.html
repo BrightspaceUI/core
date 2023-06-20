@@ -11,6 +11,7 @@
 		import '../../filter/filter-dimension-set-empty-state.js';
 		import '../../filter/filter-dimension-set-value.js';
 		import './filter-search-demo.js';
+		import './filter-load-more-demo.js';
 	</script>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -138,6 +139,13 @@
 					<d2l-filter-dimension-set key="semester" text="Semester" loading selection-single></d2l-filter-dimension-set>
 				</d2l-filter>
 				<d2l-button id="finish-loading">Finish loading (in 5 seconds)</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Load More</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter-load-more-demo></d2l-filter-load-more-demo>
 			</template>
 		</d2l-demo-snippet>
 

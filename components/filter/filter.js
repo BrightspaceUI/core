@@ -15,6 +15,7 @@ import '../list/list-item.js';
 import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
+import '../paging/pager-load-more.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
 
@@ -541,6 +542,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				${selectedListItems}
 				${listHeader}
 				${listItems}
+				<d2l-pager-load-more slot="pager"
+					@d2l-pager-load-more="${this._handleDimensionLoadMore}"
+					?has-more="${dimension.pagerHasMore}">
+				</d2l-pager-load-more>
 			</d2l-list>
 		`;
 	}
@@ -710,6 +715,17 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = null;
 	}
 
+	_handleDimensionLoadMore(e) {
+		const dimensionKey = e.target.parentNode.id.slice(SET_DIMENSION_ID_PREFIX.length);
+
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
+			detail: { dimensionKey, complete: e.detail.complete },
+			bubbles: true,
+			composed: false
+		}));
+	}
+
 	_handleDimensionShowComplete() {
 		const returnButton = this.shadowRoot
 			&& this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
@@ -775,6 +791,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				case 'd2l-filter-dimension-set': {
 					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
+					info.pagerHasMore = dimension.pagerHasMore;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
 					info.selectedFirst = dimension.selectedFirst;

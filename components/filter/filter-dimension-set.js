@@ -32,6 +32,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * Wether the dimension has more values to load
+			 * @type {boolean}
+			 */
+			pagerHasMore: { type: Boolean, attribute: 'pager-has-more', reflect: true },
+			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -69,6 +74,7 @@ class FilterDimensionSet extends LitElement {
 		this.headerText = '';
 		this.introductoryText = '';
 		this.loading = false;
+		this.pagerHasMore = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;
 		this.selectedFirst = false;
@@ -100,7 +106,7 @@ class FilterDimensionSet extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'text' || prop === 'loading') {
+			if (prop === 'text' || prop === 'loading' || prop === 'pagerHasMore') {
 				changes.set(prop, this[prop]);
 			}
 		});
