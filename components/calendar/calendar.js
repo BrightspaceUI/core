@@ -463,7 +463,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, { format: 'monthYear' })}`;
+				const description = `${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
 						aria-label="${description}"
