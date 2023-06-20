@@ -473,15 +473,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
 						role="gridcell"
-						tabindex=${focused ? '0' : '-1'}
-					>
+						tabindex=${focused ? '0' : '-1'}>
 						<button
 							class="${classMap(classes)}"
 							@click="${this._onDateSelected}"
 							?disabled="${disabled}"
 							tabindex="-1"
-							type="button"
-						>
+							type="button">
 							${date}
 						</button>
 					</td>`;
