@@ -466,7 +466,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const description = `${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
-						aria-label="${description}"
 						aria-selected="${selected ? 'true' : 'false'}"
 						data-date=${date}
 						data-month=${month}
@@ -475,6 +474,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
 						<button
+							aria-label="${description}"
 							class="${classMap(classes)}"
 							@click="${this._onDateSelected}"
 							?disabled="${disabled}"
