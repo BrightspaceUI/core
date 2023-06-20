@@ -495,10 +495,11 @@ describe('d2l-filter', () => {
 				expect(dimensions[0].dimensionKey).to.equal('dim');
 				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(2);
-				expect(dimensions[0].changes[0].valueKey).to.equal('2');
-				expect(dimensions[0].changes[0].selected).to.be.true;
-				expect(dimensions[0].changes[1].valueKey).to.equal('1');
-				expect(dimensions[0].changes[1].selected).to.be.false;
+
+				const change1 = dimensions[0].changes.find(e => e.valueKey === '1');
+				const change2 = dimensions[0].changes.find(e => e.valueKey === '2');
+				expect(change2.selected).to.be.true;
+				expect(change1.selected).to.be.false;
 				expect(elem._dimensions[0].values[0].selected).to.be.false;
 				expect(elem._dimensions[0].values[1].selected).to.be.true;
 

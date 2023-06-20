@@ -2,7 +2,7 @@ import '../switch.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { sendKeys } from '@web/test-runner-commands';
+import { sendKeysElem } from '@brightspace-ui/testing';
 
 const switchFixture = html`<d2l-switch text="some text"></d2l-switch>`;
 
@@ -41,9 +41,7 @@ describe('d2l-switch', () => {
 	['Space', 'Enter'].forEach((key) => {
 		it(`should toggle when ${key} is pressed`, async() => {
 			const elem = await fixture(switchFixture);
-			setTimeout(() => elem.focus());
-			await oneEvent(elem, 'focus');
-			setTimeout(() => sendKeys({ press: key }));
+			setTimeout(() => sendKeysElem('press', key, elem));
 			await oneEvent(elem, 'change');
 			expect(elem.on).to.be.true;
 		});

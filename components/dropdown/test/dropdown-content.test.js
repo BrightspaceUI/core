@@ -1,7 +1,7 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
 import { aTimeout, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
-import { focusWithKeyboard } from '@brightspace-ui/testing';
+import { focusElem } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
@@ -226,7 +226,7 @@ describe('d2l-dropdown', () => {
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 			await nextFrame();
-			setTimeout(() => focusWithKeyboard(dropdown.querySelector('#focusable_outside')));
+			setTimeout(() => focusElem(dropdown.querySelector('#focusable_outside')));
 			await oneEvent(content, 'd2l-dropdown-close');
 			expect(content.opened).to.be.false;
 		});
@@ -263,7 +263,7 @@ describe('d2l-dropdown', () => {
 			await oneEvent(content, 'd2l-dropdown-open');
 			await nextFrame();
 
-			await focusWithKeyboard(dropdown.querySelector('#focusable_outside'));
+			await focusElem(dropdown.querySelector('#focusable_outside'));
 			await aTimeout(100);
 			expect(content.opened).to.be.true;
 		});
@@ -273,7 +273,7 @@ describe('d2l-dropdown', () => {
 			await oneEvent(content, 'd2l-dropdown-open');
 			await nextFrame();
 
-			await focusWithKeyboard(content.querySelector('#focusable_inside'));
+			await focusElem(content.querySelector('#focusable_inside'));
 			await aTimeout(100);
 			expect(content.opened).to.be.true;
 		});
@@ -287,7 +287,7 @@ describe('d2l-dropdown', () => {
 			// which causes focus to be lost and activeElement to become
 			// document.body
 			document.body.setAttribute('tabindex', '-1');
-			await focusWithKeyboard(document.body);
+			await focusElem(document.body);
 			await aTimeout(100);
 			expect(content.opened).to.be.true;
 		});
@@ -303,7 +303,7 @@ describe('d2l-dropdown', () => {
 			// this simulates a click on an element inside the dropdown,
 			// which causes focus to be lost and activeElement to become
 			// the focusable ancestor of the dropdown
-			await focusWithKeyboard(focusableAncestor);
+			await focusElem(focusableAncestor);
 			await aTimeout(100);
 			expect(content.opened).to.be.true;
 		});
@@ -653,7 +653,7 @@ describe('d2l-dropdown', () => {
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 				await nextFrame();
-				setTimeout(() => focusWithKeyboard(dropdown.querySelector('#focusable_outside')));
+				setTimeout(() => focusElem(dropdown.querySelector('#focusable_outside')));
 				await oneEvent(content, 'd2l-dropdown-close');
 				expect(content.opened).to.be.false;
 			});
