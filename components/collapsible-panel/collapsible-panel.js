@@ -459,13 +459,13 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderPanelTitle() {
-		let headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
-		headingStyle = normalizeHeadingStyle(headingStyle);
+		const headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
+		this.headingStyle = normalizeHeadingStyle(headingStyle);
 
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
 			'd2l-skeletize': true,
-			[`d2l-heading-${headingStyle}`]: true,
+			[`d2l-heading-${this.headingStyle}`]: true,
 		};
 
 		const headingLevel = normalizeHeadingLevel(this.headingLevel);
