@@ -21,7 +21,7 @@ jobs:
         run: npm run lint:style
   playwright:
     name: Accessibility and Unit Tests
-    timeout-minutes: 10
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
