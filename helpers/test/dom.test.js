@@ -13,7 +13,7 @@ import {
 	isVisible,
 	querySelectorComposed
 } from '../dom.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 
 const testElemTag = defineCE(
 	class extends LitElement {

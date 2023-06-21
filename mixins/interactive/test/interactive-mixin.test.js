@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, html } from '@open-wc/testing';
+import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
 import { keyDown } from '../../../tools/dom-test-helpers.js';

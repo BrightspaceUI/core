@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit';
 import { ListItemMixin } from '../list-item-mixin.js';

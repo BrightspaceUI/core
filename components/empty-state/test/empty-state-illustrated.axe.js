@@ -1,7 +1,7 @@
 import '../empty-state-action-button.js';
 import '../empty-state-action-link.js';
 import '../empty-state-illustrated.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe ('d2l-empty-state-illustrated', () => {
 

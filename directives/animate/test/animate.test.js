@@ -1,5 +1,4 @@
-import { clickElem, focusElem } from '@brightspace-ui/testing';
-import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { clickElem, expect, fixture, focusElem, oneEvent } from '@brightspace-ui/testing';
 import { hide, show } from '../animate.js';
 import { html, LitElement } from 'lit';
 import { getComposedActiveElement } from '../../../helpers/focus.js';

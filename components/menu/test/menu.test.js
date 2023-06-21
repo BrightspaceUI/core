@@ -2,8 +2,7 @@ import '../menu.js';
 import '../menu-item.js';
 import '../menu-item-radio.js';
 import './custom-slots.js';
-import { clickElem, focusElem, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
-import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { MenuItemMixin } from '../menu-item-mixin.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -230,6 +229,7 @@ describe('d2l-menu', () => {
 
 	it('waits for slow menu items to render', async() => {
 
+		let makeReady;
 		const delayedUpdateMenuItem = defineCE(
 			class extends MenuItemMixin(LitElement) {
 				static get properties() {
@@ -240,10 +240,8 @@ describe('d2l-menu', () => {
 				constructor() {
 					super();
 					this._ready = false;
-					this._resolve = null;
-					this._readyPromise = new Promise((resolve) => {
-						this._resolve = resolve;
-					});
+					this._readyPromise = new Promise((resolve) => makeReady = resolve);
+					this._readyPromise.then(() => this._ready = true);
 				}
 				render() {
 					return 'i am slow';
@@ -256,22 +254,19 @@ describe('d2l-menu', () => {
 					await super.getUpdateComplete();
 					return this._readyPromise;
 				}
-				makeReady() {
-					this._ready = true;
-					this._resolve();
-				}
 			}
 		);
 
-		const elem = await fixture(`
+		const elemPromise = fixture(`
 			<d2l-menu>
 				<d2l-menu-item text="fast"></d2l-menu-item>
 				<${delayedUpdateMenuItem}></${delayedUpdateMenuItem}>
 				<span>not a menu item</span>
 			</d2l-menu>
 		`);
-		const slowItem = elem.querySelector(delayedUpdateMenuItem);
-		setTimeout(() => slowItem.makeReady());
+		await waitUntil(() => makeReady !== undefined);
+		setTimeout(() => makeReady());
+		const elem = await elemPromise;
 
 		const items = await elem._getMenuItems();
 		expect(items.length).to.equal(2);

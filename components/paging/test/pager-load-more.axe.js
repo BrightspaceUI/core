@@ -1,6 +1,6 @@
 import './pageable-component.js';
 import '../pager-load-more.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const generatePager = (hasMore, itemCount, pageSize) => fixture(html`

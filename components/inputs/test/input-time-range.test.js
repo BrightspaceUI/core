@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { formatDateInISOTime, getDateFromISOTime } from '../../../helpers/dateTime.js';
 import { getDefaultTime } from '../input-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';

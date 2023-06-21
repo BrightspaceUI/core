@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { HtmlAttributeObserverController } from '../htmlAttributeObserverController.js';
 import { LitElement } from 'lit';
 

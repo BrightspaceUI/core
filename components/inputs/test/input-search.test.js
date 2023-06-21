@@ -1,4 +1,4 @@
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { INPUT_TIMEOUT_MS, SUPPRESS_ENTER_TIMEOUT_MS } from '../input-search.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { useFakeTimers } from 'sinon';
@@ -103,7 +103,7 @@ describe('d2l-input-search', () => {
 
 			let clock;
 			beforeEach(() => {
-				clock = useFakeTimers();
+				clock = useFakeTimers({ toFake: ['clearTimeout', 'setTimeout'] });
 			});
 
 			afterEach(() => clock.restore());

@@ -1,5 +1,5 @@
 import '../button.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 const normalFixture = html`<d2l-button>Normal Button</d2l-button>`;
 const primaryFixture = html`<d2l-button primary>Primary Button</d2l-button>`;

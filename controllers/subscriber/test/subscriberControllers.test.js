@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, nextFrame } from '@open-wc/testing';
+import { defineCE, expect, fixture, nextFrame } from '@brightspace-ui/testing';
 import { EventSubscriberController, IdSubscriberController, SubscriberRegistryController } from '../subscriberControllers.js';
 import { html, LitElement } from 'lit';
 import sinon from 'sinon';

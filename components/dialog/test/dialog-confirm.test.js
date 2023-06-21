@@ -1,6 +1,6 @@
 import '../../button/button.js';
 import '../dialog-confirm.js';
-import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

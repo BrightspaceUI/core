@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LitElement } from 'lit';
@@ -42,7 +42,6 @@ describe('LabelMixin', () => {
 		elem = await fixture(`
 			<${labelTag} text="the label value"></${labelTag}>
 		`);
-		await elem.updateComplete;
 	});
 
 	it('reflects label value', async() => {
@@ -92,7 +91,7 @@ describe('LabelledMixin', () => {
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			const labelElem = elem.querySelector('#label1');
 			labelElem.textContent = 'new label value';
-			await nextFrame();
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-change');
 			expect(labelledElem.label).to.equal('new label value');
 		});
 
@@ -104,7 +103,7 @@ describe('LabelledMixin', () => {
 			newLabelElem.id = 'label1';
 			newLabelElem.textContent = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
-			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-change');
 			expect(labelledElem.label).to.equal('new label value');
 		});
 
@@ -112,7 +111,7 @@ describe('LabelledMixin', () => {
 			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			labelledElem.labelledBy = 'label3';
-			await nextFrame();
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-change');
 			expect(labelledElem.label).to.equal('other element');
 		});
 
@@ -138,7 +137,7 @@ describe('LabelledMixin', () => {
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
 			const labelElem = elem.querySelector('#label2');
 			labelElem.text = 'new label value';
-			await nextFrame();
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-change');
 			expect(labelledElem.label).to.equal('new label value');
 		});
 
@@ -150,7 +149,7 @@ describe('LabelledMixin', () => {
 			newLabelElem.id = 'label2';
 			newLabelElem.text = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
-			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-change');
 			expect(labelledElem.label).to.equal('new label value');
 		});
 

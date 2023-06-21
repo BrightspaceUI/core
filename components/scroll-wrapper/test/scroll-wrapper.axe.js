@@ -1,6 +1,6 @@
 
 import '../scroll-wrapper.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-scroll-wrapper', () => {
 

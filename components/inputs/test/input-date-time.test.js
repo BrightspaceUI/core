@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

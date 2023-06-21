@@ -1,5 +1,5 @@
 import '../expand-collapse-content.js';
-import { fixture, html } from '@open-wc/testing';
+import { fixture, html } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const collapsedContentFixture = html`<d2l-expand-collapse-content>A message.</d2l-expand-collapse-content>`;

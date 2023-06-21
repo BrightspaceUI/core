@@ -1,7 +1,7 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>

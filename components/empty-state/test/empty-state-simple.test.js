@@ -1,7 +1,7 @@
 import '../empty-state-action-button.js';
 import '../empty-state-action-link.js';
 import '../empty-state-simple.js';
-import { fixture, oneEvent } from '@open-wc/testing';
+import { fixture, oneEvent } from '@brightspace-ui/testing';
 import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 

@@ -1,5 +1,5 @@
 import { _isValidCssSelector } from '../styles.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 
 describe('_isValidCssSelector', () => {
 

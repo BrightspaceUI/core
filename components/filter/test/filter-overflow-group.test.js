@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-overflow-group.js';
-import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-filter-overflow-group', () => {

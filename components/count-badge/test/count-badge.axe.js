@@ -1,5 +1,5 @@
 import '../count-badge.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 const countBadgeTooltip = html`
 <d2l-count-badge size="small" has-tooltip text="1 new notification." type="notification" number="1"></d2l-count-badge>`;

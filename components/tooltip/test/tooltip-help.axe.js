@@ -1,5 +1,5 @@
 import '../tooltip-help.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 const tooltipFixture = html`<d2l-tooltip-help text="Helpful label.">Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>`;
 

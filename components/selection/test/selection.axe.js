@@ -7,7 +7,7 @@ import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
 import '../selection-summary.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-selection-action', () => {
 

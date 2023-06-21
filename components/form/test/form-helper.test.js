@@ -1,7 +1,7 @@
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
 import { html, LitElement } from 'lit';
 

@@ -1,4 +1,4 @@
-import { expect, fixture } from '@open-wc/testing';
+import { expect, fixture } from '@brightspace-ui/testing';
 import { InitialStateError, runAsync } from '../run-async.js';
 import { html } from 'lit';
 
