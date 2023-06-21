@@ -55,14 +55,7 @@ describe('ListItemDragHandle', () => {
 			it(`Dispatch drag handle action event for "${testCase.result}" when "${testCase.keyPress}" is pressed.`, async() => {
 				const actionArea = element.shadowRoot.querySelector('d2l-button-move').shadowRoot.querySelector('button');
 				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress));
-				let e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
-				// Firefox will trigger loss of focus randomly, so retry
-				if (e.detail.action === dragActions.save) {
-					element.activateKeyboardMode();
-					await element.updateComplete;
-					setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress));
-					e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
-				}
+				const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 				expect(e.detail.action).to.equal(testCase.result);
 			});
 		});
@@ -77,14 +70,7 @@ describe('ListItemDragHandle', () => {
 			it(`Dispatch drag handle action event for "${testCase.result}" when "${testCase.keyPress}" is pressed.`, async() => {
 				const actionArea = element.shadowRoot.querySelector('d2l-button-move');
 				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress, !!testCase.shift));
-				let e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
-				// Firefox will trigger loss of focus randomly, so retry
-				if (e.detail.action !== testCase.result && e.detail.action === dragActions.save) {
-					element.activateKeyboardMode();
-					await element.updateComplete;
-					setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress, !!testCase.shift));
-					e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
-				}
+				const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 				expect(e.detail.action).to.equal(testCase.result);
 			});
 		});
