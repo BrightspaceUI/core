@@ -216,7 +216,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_renderTag(tagContent, options = {}) {
-		this._displayText = options.displayText || tagContent?.constructor === String ? tagContent : '';
+		this._displayText = options.displayText || (tagContent?.constructor === String ? tagContent : '');
 
 		const buttonText = this.localize('components.tag-list.clear', { value: this._displayText });
 
