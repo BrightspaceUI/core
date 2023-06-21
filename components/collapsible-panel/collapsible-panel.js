@@ -314,6 +314,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	get headingLevel() { return this._headingLevel; }
 	set headingLevel(val) {
 		const oldVal = this._headingLevel;
+		val = parseInt(val);
+		if (val !== defaultHeading && val !== this.headingStyle) {
+			this.headingStyle = val;
+		}
 		this._headingLevel = normalizeHeadingLevel(val);
 		this.requestUpdate('headingLevel', oldVal);
 	}
@@ -321,8 +325,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	get headingStyle() { return this._headingStyle; }
 	set headingStyle(val) {
 		const oldVal = this._headingStyle;
-		const style = (val === defaultHeading && this.headingLevel !== val) ? this.headingLevel : val;
-		this._headingStyle = normalizeHeadingStyle(style);
+		this._headingStyle = normalizeHeadingStyle(val);
 		this.requestUpdate('headingStyle', oldVal);
 	}
 
