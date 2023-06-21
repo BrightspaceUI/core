@@ -300,33 +300,15 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	constructor() {
 		super();
 		this.expanded = false;
+		this.headingLevel = defaultHeading;
+		this.headingStyle = defaultHeading;
 		this.paddingType = 'default';
 		this.type = 'default';
 		this.noSticky = false;
 		this._focused = false;
 		this._hasSummary = false;
-		this._headingLevel = defaultHeading;
-		this._headingStyle = defaultHeading;
 		this._noBottomBorder = false;
 		this._scrolled = false;
-	}
-
-	get headingLevel() { return this._headingLevel; }
-	set headingLevel(val) {
-		const oldVal = this._headingLevel;
-		val = parseInt(val);
-		if (this.headingStyle === defaultHeading && val !== this.headingStyle) {
-			this.headingStyle = val;
-		}
-		this._headingLevel = normalizeHeadingLevel(val);
-		this.requestUpdate('headingLevel', oldVal);
-	}
-
-	get headingStyle() { return this._headingStyle; }
-	set headingStyle(val) {
-		const oldVal = this._headingStyle;
-		this._headingStyle = normalizeHeadingStyle(val);
-		this.requestUpdate('headingStyle', oldVal);
 	}
 
 	static get focusElementSelector() {
@@ -477,13 +459,17 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderPanelTitle() {
+		let headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
+		headingStyle = normalizeHeadingStyle(headingStyle);
+
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
 			'd2l-skeletize': true,
-			[`d2l-heading-${this.headingStyle}`]: true,
+			[`d2l-heading-${headingStyle}`]: true,
 		};
 
-		switch (this.headingLevel) {
+		const headingLevel = normalizeHeadingLevel(this.headingLevel);
+		switch (headingLevel) {
 			case 1: return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
 			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
 			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
