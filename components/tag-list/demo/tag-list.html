@@ -71,8 +71,8 @@
 					import { getNextFocusable } from '../../../helpers/focus.js';
 
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
+						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.target.text}`);
 						e.target.parentNode.removeChild(e.target);
-						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
 					});
 
 					document.addEventListener('d2l-tag-list-clear', (e) => {

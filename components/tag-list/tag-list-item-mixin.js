@@ -28,6 +28,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			 */
 			clearable: { type: Boolean },
 			/**
+			 * Acts as a unique identifier for the tag in dispatched events
+			 * @type {string}
+			 */
+			key: { type: String },
+			/**
 			 * @ignore
 			 */
 			keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
@@ -130,6 +135,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.keyboardTooltipItem = false;
 		this.keyboardTooltipShown = false;
 		this._id = getUniqueId();
+		this._displayText = '';
 	}
 
 	firstUpdated(changedProperties) {
@@ -166,12 +172,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	_handleClearItem() {
 		if (!this.clearable) return;
 
-		announce(this.localize('components.tag-list.cleared-item', { value: this.text }));
+		announce(this.localize('components.tag-list.cleared-item', { value: this._displayText }));
 
 		/** Dispatched when a user selects to delete an individual tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tag-list-item-clear',
-			{ bubbles: true, composed: true, detail: { value: this.text } }
+			{ bubbles: true, composed: true, detail: { key: this.key } }
 		));
 	}
 
@@ -209,12 +215,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		`;
 	}
 
-	_renderTag(tagContent, options) {
-		if (!options) options = {};
+	_renderTag(tagContent, options = {}) {
+		this._displayText = options.displayText || tagContent?.constructor === String ? tagContent : '';
 
-		const buttonText = typeof tagContent === 'object'
-			? this.localize('components.tag-list.clear', { value: '' })
-			: this.localize('components.tag-list.clear', { value: tagContent });
+		const buttonText = this.localize('components.tag-list.clear', { value: this._displayText });
 
 		const hasDescription = !!options.description;
 

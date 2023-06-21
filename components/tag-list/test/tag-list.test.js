@@ -16,9 +16,9 @@ const basicFixture = html`
 
 const clearableFixture = html`
 	<d2l-tag-list description="Testing Tags" clearable>
-		<d2l-tag-list-item text="Tag"></d2l-tag-list-item>
-		<d2l-tag-list-item text="Another Tag"></d2l-tag-list-item>
-		<d2l-tag-list-item text="Another Very Very Very Very Very Long Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="tag" text="Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="another-tag" text="Another Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="long-tag" text="Another Very Very Very Very Very Long Tag"></d2l-tag-list-item>
 		<d2l-tag-list-item-mixin-consumer name="Tag"></d2l-tag-list-item-mixin-consumer>
 	</d2l-tag-list>
 `;
@@ -100,7 +100,7 @@ describe('d2l-tag-list-item', () => {
 			const childButtonIcon = child.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => childButtonIcon.click());
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.equal('Tag');
+			expect(detail.key).to.equal('tag');
 		});
 
 		it('should dispatch expected event when backspace pressed', async() => {
@@ -111,18 +111,30 @@ describe('d2l-tag-list-item', () => {
 			child.focus();
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.BACKSPACE));
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.equal('Another Tag');
+			expect(detail.key).to.equal('another-tag');
 		});
 
 		it('should dispatch expected event when delete pressed', async() => {
 			const elem = await fixture(clearableFixture);
 			await waitUntil(() => elem._items, 'List items did not become ready');
 
-			const child = elem._items[3];
+			const child = elem._items[2];
 			child.focus();
 			setTimeout(() => dispatchKeydownEvent(child, keyCodes.DELETE));
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.be.undefined;
+			expect(detail.key).to.equal('long-tag');
+		});
+
+		it('should dispatch expected event when removed with no key', async() => {
+			const elem = await fixture(clearableFixture);
+			await waitUntil(() => elem._items, 'List items did not become ready');
+
+			const child = elem._items[3];
+			expect(child.key).to.be.undefined;
+			child.focus();
+			setTimeout(() => dispatchKeydownEvent(child, keyCodes.DELETE));
+			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
+			expect(detail.key).to.be.undefined;
 		});
 	});
 
