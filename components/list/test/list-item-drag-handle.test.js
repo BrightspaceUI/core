@@ -82,7 +82,7 @@ describe('ListItemDragHandle', () => {
 				if (e.detail.action !== testCase.result && e.detail.action === dragActions.save) {
 					element.activateKeyboardMode();
 					await element.updateComplete;
-					setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress));
+					setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress, !!testCase.shift));
 					e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 				}
 				expect(e.detail.action).to.equal(testCase.result);
