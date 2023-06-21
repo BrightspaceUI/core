@@ -315,7 +315,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	set headingLevel(val) {
 		const oldVal = this._headingLevel;
 		val = parseInt(val);
-		if (val !== defaultHeading && val !== this.headingStyle) {
+		if (this.headingStyle === defaultHeading && val !== this.headingStyle) {
 			this.headingStyle = val;
 		}
 		this._headingLevel = normalizeHeadingLevel(val);
