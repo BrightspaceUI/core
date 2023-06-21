@@ -30,6 +30,7 @@ describe('d2l-collapsible-panel-group', () => {
 			{ name: 'default', selector: '#default' },
 			{ name: 'subtle', selector: '#subtle' },
 			{ name: 'inline', selector: '#inline' },
+			{ name: 'heading-levels', selector: '#heading-levels' },
 		].forEach((info) => {
 
 			it(info.name, async function() {
@@ -51,6 +52,7 @@ describe('d2l-collapsible-panel-group', () => {
 			{ name: 'default', selector: '#default' },
 			{ name: 'subtle', selector: '#subtle' },
 			{ name: 'inline', selector: '#inline' },
+			{ name: 'heading-levels', selector: '#heading-levels' },
 		].forEach((info) => {
 
 			it(info.name, async function() {
