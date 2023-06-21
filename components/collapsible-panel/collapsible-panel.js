@@ -300,15 +300,30 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	constructor() {
 		super();
 		this.expanded = false;
-		this.headingLevel = defaultHeading;
-		this.headingStyle = defaultHeading;
 		this.paddingType = 'default';
 		this.type = 'default';
 		this.noSticky = false;
 		this._focused = false;
 		this._hasSummary = false;
+		this._headingLevel = defaultHeading;
+		this._headingStyle = defaultHeading;
 		this._noBottomBorder = false;
 		this._scrolled = false;
+	}
+
+	get headingLevel() { return this._headingLevel; }
+	set headingLevel(val) {
+		const oldVal = this._headingLevel;
+		this._headingLevel = normalizeHeadingLevel(val);
+		this.requestUpdate('headingLevel', oldVal);
+	}
+
+	get headingStyle() { return this._headingStyle; }
+	set headingStyle(val) {
+		const oldVal = this._headingStyle;
+		const style = (val === defaultHeading && this.headingLevel !== val) ? this.headingLevel : val;
+		this._headingStyle = normalizeHeadingStyle(style);
+		this.requestUpdate('headingStyle', oldVal);
 	}
 
 	static get focusElementSelector() {
@@ -372,12 +387,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
-		}
-
-		if (changedProperties.has('headingLevel') || changedProperties.has('headingStyle')) {
-			this.headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
-			this.headingStyle = normalizeHeadingStyle(this.headingStyle);
-			this.headingLevel = normalizeHeadingLevel(this.headingLevel);
 		}
 	}
 
