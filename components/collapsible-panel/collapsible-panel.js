@@ -373,6 +373,12 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
+
+		if (changedProperties.has('headingLevel') || changedProperties.has('headingStyle')) {
+			this.headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
+			this.headingStyle = normalizeHeadingStyle(this.headingStyle);
+			this.headingLevel = normalizeHeadingLevel(this.headingLevel);
+		}
 	}
 
 	_handleActionsClick(e) {
@@ -459,17 +465,13 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderPanelTitle() {
-		const headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
-		this.headingStyle = normalizeHeadingStyle(headingStyle);
-
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
 			'd2l-skeletize': true,
 			[`d2l-heading-${this.headingStyle}`]: true,
 		};
 
-		const headingLevel = normalizeHeadingLevel(this.headingLevel);
-		switch (headingLevel) {
+		switch (this.headingLevel) {
 			case 1: return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
 			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
 			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
