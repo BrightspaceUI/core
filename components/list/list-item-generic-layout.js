@@ -69,7 +69,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[end actions-end];
 				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
 				position: relative;
-				z-index: 0;
 			}
 
 			::slotted([slot="nested"]) {
@@ -80,7 +79,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				z-index: 7; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
+				order: 7; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
 			}
 
 			::slotted([slot="drop-target"]) {
@@ -88,7 +87,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				position: absolute;
 				top: 0;
 				width: 100%;
-				z-index: 6;
+				order: 6;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -105,7 +104,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="expand-collapse"]) {
 				cursor: pointer;
 				grid-column: expand-collapse-start / expand-collapse-end;
-				z-index: 2;
+				order: 2;
 			}
 
 			::slotted([slot="control"]) {
@@ -124,7 +123,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				justify-self: end;
-				z-index: 5;
+				order: 5;
 			}
 
 			::slotted([slot="outside-control-action"]),
@@ -134,7 +133,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
-				z-index: 1;
+				order: 1;
 			}
 			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
 				grid-column: start / outside-control-end;
@@ -143,14 +142,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 				height: 100%;
 				width: 100%;
-				z-index: 3;
+				order: 3;
 			}
 			:host([no-primary-action]) ::slotted([slot="control-action"]) {
 				grid-column: control-start / control-end;
 			}
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
-				z-index: 4;
+				order: 4;
 			}
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
 				display: none;

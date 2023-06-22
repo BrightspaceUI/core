@@ -108,15 +108,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				display: none;
 			}
 
-			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
-				z-index: 10; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
-			}
-			:host([_fullscreen-within]) {
-				position: fixed; /* required for Safari */
-				z-index: 998; /* must be greater than floating workflow buttons */
-			}
-
 			:host([dragging]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
@@ -125,10 +116,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				background: white;
 			}
 
-			[slot="control-container"] {
-				position: relative;
-				z-index: -1; /* must allow for interactive content to be accessible with mouse */
-			}
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
