@@ -96,7 +96,7 @@ describe('d2l-list', () => {
 				await focusElem(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-				setTimeout(() => sendKeysElem('down', testCase.keyPress, listItemLayout));
+				setTimeout(() => sendKeysElem(listItemLayout, 'down', testCase.keyPress));
 				await oneEvent(listItemLayout, 'keydown');
 
 				expect(listItem.hasAttribute('_focusing')).to.be.true;
@@ -129,7 +129,7 @@ describe('d2l-list', () => {
 				await focusElem(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'Initial item should be focused', { timeout: 3000 });
 
-				setTimeout(() => sendKeysElem('down', testCase.keyPress, listItemLayout));
+				setTimeout(() => sendKeysElem(listItemLayout, 'down', testCase.keyPress));
 				await oneEvent(listItemLayout, 'keydown');
 
 				const focusedElement = elem.querySelector(`[key=${testCase.expectedFocus}`);
@@ -151,7 +151,7 @@ describe('d2l-list', () => {
 			await focusElem(listItem);
 			await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-			setTimeout(() => sendKeysElem('down', 'ArrowUp', listItemLayout));
+			setTimeout(() => sendKeysElem(listItemLayout, 'down', 'ArrowUp'));
 			await oneEvent(listItemLayout, 'keydown');
 
 			expect(listItem.hasAttribute('_focusing')).to.be.true;
