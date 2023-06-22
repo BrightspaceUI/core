@@ -84,10 +84,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="drop-target"]) {
 				height: 100%;
+				order: 6;
 				position: absolute;
 				top: 0;
 				width: 100%;
-				order: 6;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -141,8 +141,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
 				height: 100%;
-				width: 100%;
 				order: 3;
+				width: 100%;
 			}
 			:host([no-primary-action]) ::slotted([slot="control-action"]) {
 				grid-column: control-start / control-end;
