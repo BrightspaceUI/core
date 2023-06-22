@@ -114,8 +114,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			[slot="control-container"] {
-				position: relative;
 				pointer-events: none;
+				position: relative;
 			}
 
 			:host(:first-of-type) [slot="control-container"]::before,
