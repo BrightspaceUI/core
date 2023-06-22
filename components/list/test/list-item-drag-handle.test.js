@@ -86,9 +86,9 @@ describe('ListItemDragHandle', () => {
 
 	async function dispatchKeyEvent(el, key, shiftKey = false) {
 		if (shiftKey) {
-			await sendKeysElem('press', `Shift+${key}`, el);
+			await sendKeysElem(el, 'press', `Shift+${key}`);
 		} else {
-			await sendKeysElem('press', key, el);
+			await sendKeysElem(el, 'press', key);
 		}
 	}
 

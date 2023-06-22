@@ -40,7 +40,7 @@ describe('d2l-switch', () => {
 	['Space', 'Enter'].forEach((key) => {
 		it(`should toggle when ${key} is pressed`, async() => {
 			const elem = await fixture(switchFixture);
-			setTimeout(() => sendKeysElem('press', key, elem));
+			setTimeout(() => sendKeysElem(elem, 'press', key));
 			await oneEvent(elem, 'change');
 			expect(elem.on).to.be.true;
 		});
