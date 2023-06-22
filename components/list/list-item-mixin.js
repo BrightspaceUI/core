@@ -597,7 +597,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
-				@d2l-fullscreen-within="${this._onFullscreenWithin}"
 				class="${classMap(classes)}"
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
