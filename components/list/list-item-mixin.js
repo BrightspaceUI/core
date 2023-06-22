@@ -113,6 +113,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				background: white;
 			}
 
+			[slot="control-container"] {
+				position: relative;
+				pointer-events: none;
+			}
+
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
