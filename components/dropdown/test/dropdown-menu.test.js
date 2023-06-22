@@ -62,7 +62,6 @@ describe('d2l-dropdown-menu', () => {
 			it(testCase.name, async() => {
 				const dropdown = await fixture(testCase.fixture);
 				const content = dropdown.querySelector('#dropdown');
-				await content.updateComplete;
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 				setTimeout(() => dropdown.querySelector('#first-item').click());

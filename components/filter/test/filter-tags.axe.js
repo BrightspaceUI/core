@@ -41,7 +41,6 @@ describe('d2l-filter-tags', () => {
 	it('basic', async() => {
 		const elem = await fixture(basicFixture);
 		const filterTags = elem.querySelector('d2l-filter-tags');
-		await filterTags.updateComplete;
 		await waitUntil(() => filterTags._allActiveFilters.get('filter').length === 4, 'Active filters were not set');
 
 		await expect(elem).to.be.accessible();
@@ -49,9 +48,6 @@ describe('d2l-filter-tags', () => {
 
 	it('empty', async() => {
 		const elem = await fixture(emptyFixture);
-		const filterTags = elem.querySelector('d2l-filter-tags');
-		await filterTags.updateComplete;
-
 		await expect(elem).to.be.accessible();
 	});
 

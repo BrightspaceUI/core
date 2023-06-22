@@ -47,7 +47,6 @@ describe('ArrowKeysMixin', () => {
 		describe('up-down', () => {
 
 			beforeEach(async() => {
-				//simpleFixture = fixture('simpleFixture');
 				elem.arrowKeysDirection = 'updown';
 				await elem.updateComplete;
 				focusables = await elem.arrowKeysFocusablesProvider();
@@ -67,7 +66,6 @@ describe('ArrowKeysMixin', () => {
 		describe('nowrap - up-down-left-right', () => {
 
 			beforeEach(async() => {
-				//simpleFixture = fixture('simpleFixture');
 				elem.arrowKeysDirection = 'updownleftright';
 				elem.arrowKeysNoWrap = true;
 				await elem.updateComplete;

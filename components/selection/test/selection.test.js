@@ -123,7 +123,6 @@ describe('d2l-selection-input', () => {
 				<d2l-selection-input key="key3" label="label3" disabled></d2l-selection-input>
 			</d2l-test-selection>
 		`);
-		await el.updateComplete;
 		await nextFrame();
 	});
 
@@ -184,7 +183,7 @@ describe('SelectionMixin', () => {
 	let el;
 
 	beforeEach(async() => {
-		el = await fixture(`
+		el = await fixture(html`
 			<d2l-test-selection>
 				<d2l-selection-select-all></d2l-selection-select-all>
 				<d2l-selection-summary></d2l-selection-summary>
@@ -194,7 +193,6 @@ describe('SelectionMixin', () => {
 				<d2l-selection-input key="key4" label="label4" disabled></d2l-selection-input>
 			</d2l-test-selection>
 		`);
-		await el.updateComplete;
 		await nextFrame();
 	});
 
@@ -302,11 +300,11 @@ describe('SelectionObserverMixin', () => {
 	let el, collection;
 
 	beforeEach(async() => {
-		el = await fixture(`
+		el = await fixture(html`
 			<div>
-				<d2l-selection-action id="obs1" selection-for="d2l-test-selection"></d2l-selection-action>
-				<d2l-selection-select-all id="obs2" selection-for="d2l-test-selection"></d2l-selection-select-all>
-				<d2l-selection-summary id="obs3" selection-for="some-other-selection"></d2l-selection-summary>
+				<d2l-selection-action selection-for="d2l-test-selection"></d2l-selection-action>
+				<d2l-selection-select-all selection-for="d2l-test-selection"></d2l-selection-select-all>
+				<d2l-selection-summary selection-for="some-other-selection"></d2l-selection-summary>
 				<d2l-test-selection id="d2l-test-selection">
 					<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
 					<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
@@ -321,15 +319,7 @@ describe('SelectionObserverMixin', () => {
 				<d2l-test-selection-observer-shadow selection-for="d2l-test-selection-2"></d2l-test-selection-observer-shadow>
 			</div>
 		`);
-		await el.querySelector('#obs1').updateComplete;
-		await el.querySelector('#obs2').updateComplete;
-		await el.querySelector('#obs3').updateComplete;
-		await el.querySelector('[key="key1"]').updateComplete;
-		await el.querySelector('[key="key2"]').updateComplete;
-		await el.querySelector('[key="key3"]').updateComplete;
 		collection = el.querySelector('#d2l-test-selection');
-		await collection.updateComplete;
-
 		await nextFrame();
 		await nextFrame(); // Limit test flake
 	});

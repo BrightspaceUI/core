@@ -42,7 +42,6 @@ describe('form-element', () => {
 	beforeEach(async() => {
 		form = await fixture(formFixture);
 		formElement = form.shadowRoot.querySelector('#my-ele');
-		await formElement.updateComplete;
 	});
 
 	describe('events', () => {

@@ -78,7 +78,6 @@ describe('d2l-filter-overflow-group', () => {
 					</d2l-filter>
 				</d2l-filter-overflow-group>
 			`);
-			await filterOverflowGroup.updateComplete;
 			filterTags = filterOverflowGroup.querySelector('d2l-filter-tags');
 			await waitUntil(() => filterTags.filterIds, 'Filter Ids not set');
 		});

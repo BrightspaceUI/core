@@ -322,7 +322,6 @@ describe('d2l-dropdown', () => {
 						</d2l-dropdown-content>
 					</d2l-dropdown>`);
 				content = dropdown.querySelector('d2l-dropdown-content');
-				await content.updateComplete;
 
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
@@ -464,7 +463,6 @@ describe('d2l-dropdown', () => {
 			content = dropdown.querySelector('d2l-dropdown-content');
 			dropdownOpener = dropdown.querySelector('d2l-dropdown');
 			opener = dropdown.querySelector('.d2l-dropdown-opener');
-			await content.updateComplete;
 		});
 
 		it('gets opener when the opener has multiple classes', () => {

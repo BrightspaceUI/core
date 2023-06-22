@@ -135,9 +135,6 @@ describe('d2l-list-item-generic-layout', () => {
 	describe('grid enabling', () => {
 		it('enables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(normalFixture);
-			await el.updateComplete;
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.true;
 			});
@@ -145,9 +142,6 @@ describe('d2l-list-item-generic-layout', () => {
 
 		it('disables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(nonGridFixture);
-			await el.updateComplete;
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.undefined;
 			});
@@ -160,8 +154,6 @@ describe('d2l-list-item-generic-layout', () => {
 
 		beforeEach(async() => {
 			el = await fixture(longFixture);
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 		});
 
 		const tests = [
