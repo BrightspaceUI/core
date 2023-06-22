@@ -84,15 +84,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			paddingType: { type: String, attribute: 'padding-type' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
-			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
-			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
 			_hasNestedList: { state: true }
 		};
 	}
@@ -376,8 +373,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
-		this._fullscreenWithin = false;
-		this._fullscreenWithinCount = 0;
 		this._hasNestedList = false;
 	}
 
@@ -406,14 +401,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		ro.unobserve(this);
-	}
-
-	firstUpdated(changedProperties) {
-		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
-		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
-		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
-		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
-		super.firstUpdated(changedProperties);
 	}
 
 	updated(changedProperties) {
@@ -564,12 +551,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	_onFocusOutPrimaryAction() {
 		this._focusingPrimaryAction = false;
-	}
-
-	_onFullscreenWithin(e) {
-		if (e.detail.state) this._fullscreenWithinCount += 1;
-		else this._fullscreenWithinCount -= 1;
-		this._fullscreenWithin = (this._fullscreenWithinCount > 0);
 	}
 
 	_onMouseEnter() {
