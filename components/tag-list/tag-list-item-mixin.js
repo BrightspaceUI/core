@@ -94,19 +94,16 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				}
 			}
 			.d2l-tag-list-item-clear-button {
-				margin-left: -0.6rem;
-				padding-left: 3px;
+				margin-left: calc(-0.6rem + 3px);
 			}
 			:host([dir="rtl"]) .d2l-tag-list-item-clear-button {
 				margin-left: 0;
-				margin-right: -0.6rem;
-				padding-left: 0;
-				padding-right: 3px;
+				margin-right: calc(-0.6rem + 3px);
 			}
 			d2l-button-icon {
 				--d2l-button-icon-fill-color: var(--d2l-color-chromite);
-				--d2l-button-icon-min-height: 1.1rem;
-				--d2l-button-icon-min-width: 1.1rem;
+				--d2l-button-icon-min-height: 1.2rem;
+				--d2l-button-icon-min-width: 1.2rem;
 			}
 			d2l-button-icon:hover {
 				--d2l-button-icon-fill-color: var(--d2l-color-tungsten);
