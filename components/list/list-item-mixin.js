@@ -338,6 +338,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
+				margin-bottom: -1px;
 			}
 
 			:host(:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"] {
