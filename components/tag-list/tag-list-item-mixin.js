@@ -64,10 +64,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				white-space: nowrap;
 			}
 			.tag-list-item-container.tag-list-item-container-clearable {
-				padding-right: 0.25rem;
+				padding-right: 0.2rem;
 			}
 			:host([dir="rtl"]) .tag-list-item-container.tag-list-item-container-clearable {
-				padding-left: 0.25rem;
+				padding-left: 0.2rem;
 				padding-right: 0;
 			}
 			.tag-list-item-content {
