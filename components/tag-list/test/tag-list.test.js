@@ -97,7 +97,7 @@ describe('d2l-tag-list-item', () => {
 			await waitUntil(() => elem._items, 'List items did not become ready');
 
 			const child = elem.children[1];
-			expect(child._displayText).to.be.equal('Another Tag');
+			expect(child._labelText).to.be.equal('Another Tag');
 		});
 
 		it('should be set when provided', async() => {
@@ -105,7 +105,7 @@ describe('d2l-tag-list-item', () => {
 			await waitUntil(() => elem._items, 'List items did not become ready');
 
 			const child = elem.children[3];
-			expect(child._displayText).to.be.equal('Tag');
+			expect(child._labelText).to.be.equal('Tag');
 		});
 	});
 
