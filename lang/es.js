@@ -21,7 +21,7 @@ export default {
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "No hay filtros disponibles",
 	"components.filter.searchResults": "{number, plural, =0 {No se encontraron resultados de búsqueda} one {{number} resultado de búsqueda} other {{number} resultados de búsqueda}}",
-	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
+	"components.filter.selectedFirstListLabel": "{headerText}. Los filtros seleccionados aparecen primero.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
 	"components.form-element.defaultError": "{label} no es válida.",
 	"components.form-element.defaultFieldLabel": "Campo",
@@ -94,7 +94,7 @@ export default {
 	"components.more-less.more": "más",
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
-	"components.pager-load-more.action": "Load More",
+	"components.pager-load-more.action": "Cargar más",
 	"components.pager-load-more.action-with-page-size": "Cargar {count} más",
 	"components.pageable.info": "{count, plural, one {{countFormatted} elemento} other {{countFormatted} elementos}}",
 	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} elemento} other {{countFormatted} de {totalCountFormatted} elementos}}",
@@ -105,8 +105,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.table-controls.label": "Acciones de la tabla",
