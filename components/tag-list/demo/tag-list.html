@@ -57,22 +57,22 @@
 			<h2>Clearable Tag List</h2>
 			<d2l-demo-snippet full-width>
 				<d2l-tag-list description="A bunch of example tags" clearable>
-					<d2l-tag-list-item text="Example 1"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 3"></d2l-tag-list-item>
-					<d2l-tag-list-item-mixin-consumer name="Custom Tag List Item"></d2l-tag-list-item-mixin-consumer>
-					<d2l-tag-list-item text="Example 5"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 6" description="this is a description"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 7"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 8"></d2l-tag-list-item>
-					<d2l-tag-list-item text="Example 9"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-1" text="Example 1"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-2" text="Example 2 - much much much much much much much much longer"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-3" text="Example 3"></d2l-tag-list-item>
+					<d2l-tag-list-item-mixin-consumer key="custom" name="Custom Tag List Item"></d2l-tag-list-item-mixin-consumer>
+					<d2l-tag-list-item key="example-5" text="Example 5"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-6" text="Example 6" description="this is a description"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-7" text="Example 7"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-8" text="Example 8"></d2l-tag-list-item>
+					<d2l-tag-list-item key="example-9" text="Example 9"></d2l-tag-list-item>
 				</d2l-tag-list>
 				<script type="module">
 					import { getNextFocusable } from '../../../helpers/focus.js';
 
 					document.addEventListener('d2l-tag-list-item-clear', (e) => {
+						console.log(`d2l-tag-list-item-clear event dispatched. Key: ${e.target.key}; Value: ${e.target.text}`);
 						e.target.parentNode.removeChild(e.target);
-						console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
 					});
 
 					document.addEventListener('d2l-tag-list-clear', (e) => {
