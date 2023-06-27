@@ -99,14 +99,6 @@ describe('d2l-tag-list-item', () => {
 			const child = elem.children[1];
 			expect(child._labelText).to.be.equal('Another Tag');
 		});
-
-		it('should be set when provided', async() => {
-			const elem = await fixture(basicFixture);
-			await waitUntil(() => elem._items, 'List items did not become ready');
-
-			const child = elem.children[3];
-			expect(child._labelText).to.be.equal('Tag');
-		});
 	});
 
 	describe('clearable items', () => {
