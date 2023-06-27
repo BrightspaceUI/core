@@ -1,7 +1,7 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
 import '../collapsible-panel-group.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-collapsible-panel', () => {
@@ -71,6 +71,30 @@ describe('d2l-collapsible-panel', () => {
 			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
 			expect(heading.tagName).to.equal('H2');
 			expect(heading.classList.contains('d2l-heading-2')).to.be.true;
+		});
+
+		it('level of 5 should use style of 4', async() => {
+			const elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title" heading-level="5">
+					Panel Content
+				</d2l-collapsible-panel>
+			`);
+
+			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
+			expect(heading.tagName).to.equal('H5');
+			expect(heading.classList.contains('d2l-heading-4')).to.be.true;
+		});
+
+		it('level of 6 should use style of 4', async() => {
+			const elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title" heading-level="6">
+					Panel Content
+				</d2l-collapsible-panel>
+			`);
+
+			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
+			expect(heading.tagName).to.equal('H6');
+			expect(heading.classList.contains('d2l-heading-4')).to.be.true;
 		});
 
 		it('level and style can be set independently', async() => {

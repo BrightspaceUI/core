@@ -126,6 +126,16 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	}
 
+	_dispatchChangeEvent() {
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labelled-mixin-label-change', {
+				bubbles: false,
+				composed: false
+			}
+		));
+	}
+
 	_throwError(err) {
 		if (!this.labelRequired || this._missingLabelErrorHasBeenThrown) return;
 		this._missingLabelErrorHasBeenThrown = true;
@@ -134,9 +144,14 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	_updateLabelElem(labelElem) {
 
+		const oldLabelVal = this.label;
+
 		// setting textContent doesn't change labelElem but we do need to refetch the label
 		if (labelElem === this._labelElem && this._labelElem) {
 			this.label = getLabel(this._labelElem);
+			if (oldLabelVal !== this.label) {
+				this._dispatchChangeEvent();
+			}
 			return;
 		}
 
@@ -180,13 +195,9 @@ export const LabelledMixin = superclass => class extends superclass {
 		}
 
 		this.label = getLabel(this._labelElem);
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labelled-mixin-label-elem-change', {
-				bubbles: false,
-				composed: false
-			}
-		));
+		if (oldLabelVal !== this.label) {
+			this._dispatchChangeEvent();
+		}
 
 	}
 

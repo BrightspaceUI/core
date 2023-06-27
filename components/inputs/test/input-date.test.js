@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

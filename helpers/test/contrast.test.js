@@ -1,4 +1,4 @@
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 import { isColorAccessible } from '../contrast.js';
 
 describe('colour-contrast', () => {

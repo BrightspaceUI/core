@@ -2,7 +2,7 @@ import '../object-property-list.js';
 import '../object-property-list-item.js';
 import '../object-property-list-item-link.js';
 import '../../status-indicator/status-indicator.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-object-property-list', () => {
 

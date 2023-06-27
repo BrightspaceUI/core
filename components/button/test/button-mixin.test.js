@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { ButtonMixin } from '../button-mixin.js';
 

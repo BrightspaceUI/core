@@ -1,6 +1,5 @@
 import '../tooltip.js';
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { focusElem } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
@@ -186,11 +185,7 @@ describe('d2l-tooltip', () => {
 				await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 				await aTimeout();
 
-				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keydown', true, true);
-				eventObj.keyCode = 27;
-
-				setTimeout(() => document.dispatchEvent(eventObj));
+				setTimeout(() => sendKeys('press', 'Escape'));
 				await oneEvent(tooltipFixture, 'd2l-tooltip-hide');
 				expect(tooltip.showing).to.be.false;
 			});
@@ -261,10 +256,7 @@ describe('d2l-tooltip', () => {
 
 		it('should not hide when ESC key is pressed ', async() => {
 
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keydown', true, true);
-			eventObj.keyCode = 27;
-			document.dispatchEvent(eventObj);
+			await sendKeys('press', 'Escape');
 			await aTimeout(100);
 
 			expect(tooltip.showing).to.be.true;

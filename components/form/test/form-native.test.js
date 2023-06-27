@@ -1,7 +1,7 @@
 import '../../validation/validation-custom.js';
 import '../form-native.js';
 import './form-element.js';
-import { expect, fixture } from '@open-wc/testing';
+import { expect, fixture } from '@brightspace-ui/testing';
 import { html } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 

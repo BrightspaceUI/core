@@ -1,6 +1,6 @@
 import '../../validation/validation-custom.js';
 import './form-element.js';
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 
 const formTag = defineCE(
@@ -42,7 +42,6 @@ describe('form-element', () => {
 	beforeEach(async() => {
 		form = await fixture(formFixture);
 		formElement = form.shadowRoot.querySelector('#my-ele');
-		await formElement.updateComplete;
 	});
 
 	describe('events', () => {

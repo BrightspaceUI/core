@@ -1,5 +1,5 @@
 import { clearDismissible, setDismissible } from '../dismissible.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 import { spy } from 'sinon';
 
 function pressEscape() {

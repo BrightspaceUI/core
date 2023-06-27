@@ -1,5 +1,5 @@
 import '../demo/arrow-keys-test.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { keyDown } from '../../../tools/dom-test-helpers.js';
 
@@ -47,7 +47,6 @@ describe('ArrowKeysMixin', () => {
 		describe('up-down', () => {
 
 			beforeEach(async() => {
-				//simpleFixture = fixture('simpleFixture');
 				elem.arrowKeysDirection = 'updown';
 				await elem.updateComplete;
 				focusables = await elem.arrowKeysFocusablesProvider();
@@ -67,7 +66,6 @@ describe('ArrowKeysMixin', () => {
 		describe('nowrap - up-down-left-right', () => {
 
 			beforeEach(async() => {
-				//simpleFixture = fixture('simpleFixture');
 				elem.arrowKeysDirection = 'updownleftright';
 				elem.arrowKeysNoWrap = true;
 				await elem.updateComplete;

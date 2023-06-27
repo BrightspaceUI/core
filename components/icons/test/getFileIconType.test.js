@@ -1,5 +1,5 @@
 import { getFileIconTypeFromExtension, getFileIconTypeFromFilename } from '../getFileIconType.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 describe('getFileIconType', () => {
 	describe('getFileIconTypeFromExtension', () => {
 		const emptyExts = ['', ' ', '.'];

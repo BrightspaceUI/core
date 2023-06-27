@@ -1,7 +1,7 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { expect, fixture, html, nextFrame, oneEvent, waitUntil } from '@open-wc/testing';
+import { expect, fixture, html, nextFrame, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 

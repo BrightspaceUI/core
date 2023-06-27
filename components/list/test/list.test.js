@@ -3,18 +3,8 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
-import { focusElem, sendKeysElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-
-const awaitListElementUpdates = async(rootElement, queries) => {
-	await rootElement.updateComplete;
-	for (const query of queries) {
-		const element = rootElement.querySelector(query);
-		await element.updateComplete;
-	}
-	await new Promise(resolve => requestAnimationFrame(resolve));  // US143322: Needed by Firefox
-};
 
 const selectionInputRendering = async item => {
 	return new Promise(resolve => {
@@ -100,23 +90,13 @@ describe('d2l-list', () => {
 						</d2l-list>
 					</div>
 				`);
-				await awaitListElementUpdates(elem, [
-					'#L1',
-					'#L2',
-					'#L3',
-					'[key="L1-1"]',
-					'[key="L2-1"]',
-					'[key="L2-2"]',
-					'[key="L2-3"]',
-					'[key="L3-1"]',
-				]);
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				await focusElem(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-				setTimeout(() => sendKeysElem('down', testCase.keyPress, listItemLayout));
+				setTimeout(() => sendKeysElem(listItemLayout, 'down', testCase.keyPress));
 				await oneEvent(listItemLayout, 'keydown');
 
 				expect(listItem.hasAttribute('_focusing')).to.be.true;
@@ -143,22 +123,13 @@ describe('d2l-list', () => {
 						</d2l-list-item>
 					</d2l-list>	
 				`);
-				await awaitListElementUpdates(elem, [
-					'#L2',
-					'#L3',
-					'[key="L1-1"]',
-					'[key="L2-1"]',
-					'[key="L2-2"]',
-					'[key="L3-1"]',
-					'[key="L3-2"]',
-				]);
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 				await focusElem(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'Initial item should be focused', { timeout: 3000 });
 
-				setTimeout(() => sendKeysElem('down', testCase.keyPress, listItemLayout));
+				setTimeout(() => sendKeysElem(listItemLayout, 'down', testCase.keyPress));
 				await oneEvent(listItemLayout, 'keydown');
 
 				const focusedElement = elem.querySelector(`[key=${testCase.expectedFocus}`);
@@ -174,18 +145,13 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			await awaitListElementUpdates(elem, [
-				'[slot="controls"]',
-				'[key="L1-1"]',
-				'[key="L1-2"]',
-			]);
 
 			const listItem = elem.querySelector('[key="L1-2"]');
 			const listItemLayout = elem.querySelector('[key="L1-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
 			await focusElem(listItem);
 			await waitUntil(() => listItem.hasAttribute('_focusing'), 'List item should be focused', { timeout: 3000 });
 
-			setTimeout(() => sendKeysElem('down', 'ArrowUp', listItemLayout));
+			setTimeout(() => sendKeysElem(listItemLayout, 'down', 'ArrowUp'));
 			await oneEvent(listItemLayout, 'keydown');
 
 			expect(listItem.hasAttribute('_focusing')).to.be.true;
@@ -202,10 +168,6 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			await awaitListElementUpdates(elem, [
-				'[key="L1-1"]',
-				'[key="L1-2"]',
-			]);
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable item is clicked', async() => {
@@ -249,12 +211,6 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await awaitListElementUpdates(elem, [
-				'[key="L1-1"]',
-				'[slot="nested"]',
-				'[key="L2-1"]',
-				'[key="L2-2"]',
-			]);
 		});
 
 		it('dispatches d2l-list-selection-changes event when selectable leaf item is clicked', async() => {

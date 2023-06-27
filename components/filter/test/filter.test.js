@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { spy, stub } from 'sinon';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -271,8 +271,6 @@ describe('d2l-filter', () => {
 		it('sets introductory text on a dimension in a multi-dimensional filter', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set><d2l-filter-dimension-set introductory-text="intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-			await dropdownContent.updateComplete;
 			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
 			elem.opened = true;
@@ -672,8 +670,6 @@ describe('d2l-filter', () => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
-				await dropdownContent.updateComplete;
 
 				elem.opened = true;
 				const e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
@@ -693,8 +689,6 @@ describe('d2l-filter', () => {
 				const elem = await fixture(multiDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-				await dropdownContent.updateComplete;
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 				elem.opened = true;
@@ -1243,7 +1237,6 @@ describe('d2l-filter', () => {
 			const hideStub = stub(elem, '_handleDimensionHide');
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
-			await dropdownContent.updateComplete;
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -1271,7 +1264,6 @@ describe('d2l-filter', () => {
 				const elem = await fixture(multiDimensionFixture);
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-				await dropdownContent.updateComplete;
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
 				elem.opened = true;
@@ -1304,7 +1296,6 @@ describe('d2l-filter', () => {
 				const elem = await fixture(multiDimensionFixture);
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-				await dropdownContent.updateComplete;
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
 				elem.opened = true;

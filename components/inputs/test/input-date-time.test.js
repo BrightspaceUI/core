@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -297,7 +297,6 @@ describe('d2l-input-date-time', () => {
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 			const elem = await fixture(basicFixture);
 			const dateInput = getChildElem(elem, 'd2l-input-date');
-			await elem.updateComplete;
 			dateInput.opened = true;
 			await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
 			await elem.updateComplete;

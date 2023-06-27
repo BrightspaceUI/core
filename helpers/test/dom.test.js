@@ -13,7 +13,7 @@ import {
 	isVisible,
 	querySelectorComposed
 } from '../dom.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 
 const testElemTag = defineCE(
 	class extends LitElement {
@@ -548,26 +548,6 @@ describe('dom', () => {
 			const expected = elem.querySelector('.expected');
 			expect(getOffsetParent(child)).to.equal(expected);
 		});
-
-		/*[
-			'direct-parent',
-			'indirect-parent',
-			'td',
-			'th',
-			'table',
-			'wrapper-inside',
-			'wrapper-passthrough',
-			'wrapper-is-parent',
-			'nested-wrapper-is-parent'
-		].forEach(fixtureName => {
-			it(fixtureName, async() => {
-				const fixt = fixture(fixtureName);
-				await fixt.updateComplete;
-				const child = fixt.querySelector('.child');
-				const expected = fixt.querySelector('.expected');
-				expect(getOffsetParent(child)).to.equal(expected);
-			});
-		});*/
 
 		it('wrapper-simple', async() => {
 			const elem = await fixture(`

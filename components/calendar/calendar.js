@@ -463,8 +463,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, { format: 'monthYear' })}`;
-				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
+				const description = `${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
@@ -519,7 +518,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 								icon="tier1:chevron-right">
 							</d2l-button-icon>
 						</div>
-						<table aria-labelledby="${labelId}" role="presentation">
+						<table aria-labelledby="${labelId}">
 							${summary}
 							<thead aria-hidden="true">
 								<tr>${weekdayHeaders}</tr>

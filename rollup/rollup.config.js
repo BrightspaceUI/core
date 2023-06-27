@@ -24,7 +24,7 @@ const nonJsGlob = [
 export default {
 	input: glob.sync(jsGlob),
 	output: { dir: 'build', format: 'es', preserveModules: true },
-	external: ['puppeteer', '@brightspace-ui/visual-diff', '@open-wc/testing', 'sinon'],
+	external: ['puppeteer', '@brightspace-ui/visual-diff', '@brightspace-ui/testing', 'sinon'],
 	plugins: [
 		del({ targets: 'build' }),
 		copy({

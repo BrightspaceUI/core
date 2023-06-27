@@ -1,6 +1,6 @@
 import '../more-less.js';
-import { expect, fixture, html } from '@open-wc/testing';
-import { waitForHeight, waitForRender } from './more-less.test.js';
+import { expect, fixture, html } from '@brightspace-ui/testing';
+import { waitForHeight } from './more-less.test.js';
 
 describe('d2l-more-less', () => {
 
@@ -15,7 +15,6 @@ describe('d2l-more-less', () => {
 					<p>Mauris in libero cursus, iaculis sapien quis, semper felis. Maecenas convallis gravida libero euismod vehicula. Morbi quis lectus dui. Praesent non congue purus, at vehicula metus. Quisque vitae tempus elit. Aenean a aliquet nunc, nec blandit metus. Duis mattis odio vel erat eleifend volutpat. Cras eget augue et ligula vehicula ultrices. Ut vitae hendrerit nibh, id interdum nisl. Ut vestibulum tellus sed nulla bibendum aliquam. Maecenas quis sapien enim.</p>
 				</d2l-more-less>
 			`);
-			await waitForRender(elem);
 			await waitForHeight(elem);
 			await expect(elem).to.be.accessible();
 		});

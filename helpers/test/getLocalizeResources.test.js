@@ -1,5 +1,5 @@
 import { __clearWindowCache, getLocalizeOverrideResources } from '../getLocalizeResources.js';
-import { expect } from '@open-wc/testing';
+import { expect } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 

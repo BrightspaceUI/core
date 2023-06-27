@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { restore, stub } from 'sinon';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';

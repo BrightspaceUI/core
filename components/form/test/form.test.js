@@ -2,7 +2,7 @@ import '../../validation/validation-custom.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { expect, fixture } from '@open-wc/testing';
+import { expect, fixture } from '@brightspace-ui/testing';
 import { html } from 'lit';
 
 describe('d2l-form', () => {

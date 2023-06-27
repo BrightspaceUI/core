@@ -9,10 +9,17 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-const normalizeHeadingNumber = (number) => {
+const normalizeHeadingStyle = (number) => {
 	number = parseInt(number);
 	if (number < 1) { return 1; }
 	if (number > 4) { return 4; }
+	return number;
+};
+
+const normalizeHeadingLevel = (number) => {
+	number = parseInt(number);
+	if (number < 1) { return 1; }
+	if (number > 6) { return 6; }
 	return number;
 };
 
@@ -38,8 +45,8 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			panelTitle: { attribute: 'panel-title', type: String, reflect: true },
 			/**
-			 * The semantic heading level (h1-h4)
-			 * @type {'1'|'2'|'3'|'4'}
+			 * The semantic heading level (h1-h6)
+			 * @type {'1'|'2'|'3'|'4'|'5'|'6'}
 			 * @default "3"
 			 */
 			headingLevel: { attribute: 'heading-level', type: String, reflect: true },
@@ -453,7 +460,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_renderPanelTitle() {
 		let headingStyle = (this.headingStyle === defaultHeading && this.headingLevel !== this.headingStyle) ? this.headingLevel : this.headingStyle;
-		headingStyle = normalizeHeadingNumber(headingStyle);
+		headingStyle = normalizeHeadingStyle(headingStyle);
 
 		const titleClasses = {
 			'd2l-collapsible-panel-title': true,
@@ -461,12 +468,14 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			[`d2l-heading-${headingStyle}`]: true,
 		};
 
-		const headingLevel = normalizeHeadingNumber(this.headingLevel);
+		const headingLevel = normalizeHeadingLevel(this.headingLevel);
 		switch (headingLevel) {
 			case 1: return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
 			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
 			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
 			case 4: return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
+			case 5: return html`<h5 class="${classMap(titleClasses)}">${this.panelTitle}</h5>`;
+			case 6: return html`<h6 class="${classMap(titleClasses)}">${this.panelTitle}</h6>`;
 		}
 	}
 

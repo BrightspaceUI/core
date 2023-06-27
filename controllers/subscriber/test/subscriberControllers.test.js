@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, nextFrame } from '@open-wc/testing';
+import { defineCE, expect, fixture, nextFrame } from '@brightspace-ui/testing';
 import { EventSubscriberController, IdSubscriberController, SubscriberRegistryController } from '../subscriberControllers.js';
 import { html, LitElement } from 'lit';
 import sinon from 'sinon';
@@ -103,7 +103,6 @@ describe('SubscriberRegistryController', () => {
 				</${registries}>
 				<${idSubscriberSeparate} id="id" for="registry"></${idSubscriberSeparate}>
 			</div>`);
-			await elem.updateComplete;
 			registry = elem.querySelector('#registry');
 		});
 
@@ -183,7 +182,6 @@ describe('SubscriberRegistryController', () => {
 				</${registries}>
 				<${idSubscriberCombined} id="id" for="registry"></${idSubscriberCombined}>
 			</div>`);
-			await elem.updateComplete;
 			registry = elem.querySelector('#registry');
 		});
 
@@ -260,7 +258,6 @@ describe('EventSubscriberController', () => {
 			</${indirectSlotRegistries}>
 			<${eventSubscriberSeparate} id="error"></${eventSubscriberSeparate}>
 		</div>`);
-		await elem.updateComplete;
 	});
 
 	afterEach(() => {
@@ -310,7 +307,6 @@ describe('IdSubscriberController', () => {
 		beforeEach(async() => {
 			clock = sinon.useFakeTimers({ toFake: ['setTimeout'] });
 			elem = await fixture(fixtureHtml);
-			await elem.updateComplete;
 		});
 
 		afterEach(() => {
@@ -409,7 +405,6 @@ describe('IdSubscriberController', () => {
 		beforeEach(async() => {
 			clock = sinon.useFakeTimers({ toFake: ['setTimeout'] });
 			elem = await fixture(fixtureHtml);
-			await elem.updateComplete;
 		});
 
 		afterEach(() => {

@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { MenuItemMixin } from '../menu-item-mixin.js';
 

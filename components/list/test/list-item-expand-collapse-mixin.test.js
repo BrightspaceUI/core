@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { restore, stub } from 'sinon';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
@@ -28,7 +28,6 @@ describe('ListItemExpandCollapseMixin', () => {
 
 	it('Sets expandable to false when no key is given', async() => {
 		const element = await fixture(`<${tag} expandable></${tag}>`);
-		await element.updateComplete;
 		expect(element.expandable).to.be.false;
 		expect(consoleWarnStub).to.be.calledWith('ListItemExpandCollapseMixin requires a key.');
 	});
@@ -72,7 +71,6 @@ describe('ListItemExpandCollapseMixin', () => {
 
 		it('Fires event on button click', async() => {
 			const element = await fixture(`<${tag} key="1234" expandable expanded></${tag}>`);
-			await element.updateComplete;
 			const button = element.shadowRoot.querySelector('d2l-button-icon');
 			expect(button).to.exist;
 			// simulate a button click
@@ -88,7 +86,6 @@ describe('ListItemExpandCollapseMixin', () => {
 
 		it('Fires event on action area click', async() => {
 			const element = await fixture(`<${tag} key="1234" expandable></${tag}>`);
-			await element.updateComplete;
 			const actionControl = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
 			expect(actionControl).to.exist;
 			// simulate action control click

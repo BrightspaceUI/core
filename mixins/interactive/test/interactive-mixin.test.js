@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, html } from '@open-wc/testing';
+import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
 import { keyDown } from '../../../tools/dom-test-helpers.js';
@@ -34,7 +34,6 @@ describe('InteractiveMixin', () => {
 		beforeEach(async() => {
 			fixtureElem = await fixture(`<div role="grid"><span id="before" tabindex="0"></span><${mixinTag}></${mixinTag}><span id="after" tabindex="0"></div>`);
 			elem = fixtureElem.querySelector(mixinTag);
-			await elem.updateComplete;
 			toggle = elem.shadowRoot.querySelector('.interactive-toggle');
 		});
 

@@ -1,5 +1,5 @@
 import '../card-content-title.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-card-content-title', () => {
 

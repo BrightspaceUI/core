@@ -57,7 +57,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				display: block;
 			}
 			:host(:not([slot="nested"])) > .d2l-list-content {
-				padding-bottom: 2px;
+				padding-bottom: 1px;
 			}
 			:host([hidden]) {
 				display: none;

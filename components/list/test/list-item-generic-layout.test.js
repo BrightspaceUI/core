@@ -2,7 +2,7 @@ import '../list.js';
 import '../list-item.js';
 import '../../button/button-icon.js';
 
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
@@ -135,9 +135,6 @@ describe('d2l-list-item-generic-layout', () => {
 	describe('grid enabling', () => {
 		it('enables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(normalFixture);
-			await el.updateComplete;
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.true;
 			});
@@ -145,9 +142,6 @@ describe('d2l-list-item-generic-layout', () => {
 
 		it('disables grid on list-item-generic-layout elements', async() => {
 			const el = await fixture(nonGridFixture);
-			await el.updateComplete;
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 			el.getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.undefined;
 			});
@@ -160,8 +154,6 @@ describe('d2l-list-item-generic-layout', () => {
 
 		beforeEach(async() => {
 			el = await fixture(longFixture);
-			const items = el.getItems();
-			await Promise.all(items.map(item => item.updateComplete));
 		});
 
 		const tests = [

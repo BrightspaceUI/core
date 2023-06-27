@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getNextMonth,

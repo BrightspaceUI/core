@@ -1,7 +1,6 @@
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { dragActions } from '../list-item-drag-handle.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { sendKeysElem } from '@brightspace-ui/testing';
 
 describe('ListItemDragHandle', () => {
 
@@ -13,12 +12,12 @@ describe('ListItemDragHandle', () => {
 		let element;
 		beforeEach(async() => {
 			element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
-			element.focus();
+			await focusElem(element);
 		});
 
 		it(`Dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
 			const actionArea = element.shadowRoot.querySelector('button');
-			setTimeout(() => actionArea.dispatchEvent(new Event('click')));
+			setTimeout(() => clickElem(actionArea));
 			const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 			expect(e.detail.action).to.equal(dragActions.active);
 		});
@@ -37,15 +36,12 @@ describe('ListItemDragHandle', () => {
 	});
 
 	describe('Events in keyboard mode', () => {
+
 		let element;
 		beforeEach(async() => {
 			element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
-			element.focus();
-			const actionArea = element.shadowRoot.querySelector('button');
-			setTimeout(() => {
-				actionArea.dispatchEvent(new Event('click'));
-			});
-			await oneEvent(actionArea, 'click');
+			element.activateKeyboardMode();
+			await element.updateComplete;
 		});
 
 		[
@@ -58,7 +54,7 @@ describe('ListItemDragHandle', () => {
 		].forEach(testCase => {
 			it(`Dispatch drag handle action event for "${testCase.result}" when "${testCase.keyPress}" is pressed.`, async() => {
 				const actionArea = element.shadowRoot.querySelector('d2l-button-move').shadowRoot.querySelector('button');
-				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress, !!testCase.shift));
+				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress));
 				const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 				expect(e.detail.action).to.equal(testCase.result);
 			});
@@ -90,9 +86,9 @@ describe('ListItemDragHandle', () => {
 
 	async function dispatchKeyEvent(el, key, shiftKey = false) {
 		if (shiftKey) {
-			await sendKeysElem('press', `Shift+${key}`, el);
+			await sendKeysElem(el, 'press', `Shift+${key}`);
 		} else {
-			await sendKeysElem('press', key, el);
+			await sendKeysElem(el, 'press', key);
 		}
 	}
 
