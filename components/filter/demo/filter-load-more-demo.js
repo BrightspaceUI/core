@@ -13,58 +13,114 @@ class FilterLoadMoreDemo extends LitElement {
 				key: 'course',
 				text: 'Course',
 				items: [
-					{ key: 'art', text: 'Art' },
-					{ key: 'astronomy', text: 'Astronomy' },
-					{ key: 'biology', text: 'Biology' },
-					{ key: 'chemistry', text: 'Chemistry' },
-					{ key: 'drama', text: 'Drama' },
-					{ key: 'english', text: 'English' },
-					{ key: 'how-to', text: 'How To Write a How To Article With a Flashy Title' },
-					{ key: 'math', text: 'Math' },
-					{ key: 'physics', text: 'Physics' },
-					{ key: 'stats', text: 'Statistics' },
-					{ key: 'writerscraft', text: 'Writer\'s Craft' },
+					{ key: 'art', selected:false, text: 'Art' },
+					{ key: 'astronomy', selected:false, text: 'Astronomy' },
+					{ key: 'biology', selected:false, text: 'Biology' },
+					{ key: 'chemistry', selected:false, text: 'Chemistry' },
+					{ key: 'drama', selected:false, text: 'Drama' },
+					{ key: 'english', selected:false, text: 'English' },
+					{ key: 'how-t selected:false,o', text: 'How To Write a How To Article With a Flashy Title' },
+					{ key: 'math', selected:false, text: 'Math' },
+					{ key: 'physics', selected:false, text: 'Physics' },
+					{ key: 'stats', selected:false, text: 'Statistics' },
+					{ key: 'writerscraft', selected:false, text: 'Writer\'s Craft' },
 				],
-				lastLoadedIndex: 5,
+				searchValue: '',
+				initialCount: 6,
+				currentCount: 6,
+				hasMore: true
 			},
 			{
 				key: 'role',
 				text: 'Role',
 				items: [
-					{ key: 'admin', text: 'Admin' },
-					{ key: 'instructor', text: 'Instructor' },
-					{ key: 'student', text: 'Student' }
+					{ key: 'admin', selected:false, text: 'Admin' },
+					{ key: 'instructor', selected:false, text: 'Instructor' },
+					{ key: 'student', selected:false, text: 'Student' }
 				],
-				lastLoadedIndex: 1,
+				searchValue:'',
+				initialCount: 2,
+				currentCount: 2,
+				hasMore: true
 			}
 		];
 	}
 
 	render() {
 		return html`
-			<d2l-filter @d2l-filter-dimension-load-more=${this._handleLoadMore}>
+			<d2l-filter 
+				@d2l-filter-change="${this._handleFilterChange}"
+				@d2l-filter-dimension-load-more=${this._handleLoadMore}
+				@d2l-filter-dimension-search=${this._handleSearch}>
 				${repeat(this._fullData, dimension => dimension.key, dimension => this._renderDimensionSet(dimension))}
 			</d2l-filter>
 		`;
 	}
 
+	_getKeysToDisplay(dimension) {
+		const keysToDisplay = [];
+		let loadCount = dimension.currentCount;
+
+		dimension.hasMore = false;
+		for (const value of dimension.items) {
+			if (value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1) {
+				if (loadCount > 0) {
+					keysToDisplay.push(value.key);
+					loadCount--;
+				} else {
+					dimension.hasMore = true;
+					break;
+				}
+			}
+		}
+
+		return keysToDisplay;
+	}
+
+	_handleFilterChange(e) {
+		e.detail.dimensions.forEach(dimension => {
+			const dataToUpdate = this._fullData.find(dim => dim.key === dimension.dimensionKey).items;
+			if (dimension.cleared) {
+				dataToUpdate.forEach(value => value.selected = false);
+			} else {
+				dimension.changes.forEach(change => { dataToUpdate.find(value => value.key === change.valueKey).selected = change.selected; });
+			}
+		});
+		this.requestUpdate();
+	}
+
 	_handleLoadMore(e) {
 		const dimensionKey = e.detail.dimensionKey;
 		const dimension = this._fullData.find(dim => dim.key === dimensionKey);
-		if (dimension.lastLoadedIndex < dimension.items.length - 1) {
-			dimension.lastLoadedIndex += 2;
-			this.requestUpdate();
-		}
-		e.detail.complete();
+		dimension.currentCount += 2;
+
+		const keysToDisplay = this._getKeysToDisplay(dimension);
+		e.detail.complete(keysToDisplay);
+		this.requestUpdate();
+	}
+
+	_handleSearch(e) {
+		const dimensionKey = e.detail.key;
+		const dimension = this._fullData.find(dim => dim.key === dimensionKey);
+
+		dimension.searchValue = e.detail.value;
+		dimension.currentCount = dimension.initialCount;
+		const keysToDisplay = this._getKeysToDisplay(dimension);
+		e.detail.searchCompleteCallback({ keysToDisplay });
+		this.requestUpdate();
 	}
 
 	_renderDimensionSet(dimension) {
-		const items = dimension.items;
-		const loadedItems = dimension.lastLoadedIndex >=  items - 1 ? items : items.slice(0, dimension.lastLoadedIndex);
+		const { items, key, text, hasMore } = dimension;
 
-		return html`<d2l-filter-dimension-set key="${dimension.key}" text="${dimension.text}" ?pager-has-more="${loadedItems.length < items.length}">
-			${repeat(loadedItems, item => item.key, item => html`
-				<d2l-filter-dimension-set-value key="${item.key}" text="${item.text}"></d2l-filter-dimension-set-value>
+		return html`
+		<d2l-filter-dimension-set key="${key}" text="${text}" ?pager-has-more="${hasMore}" search-type="manual">
+			${repeat(items, item => item.key, item => html`
+				<d2l-filter-dimension-set-value
+					key="${item.key}"
+					text="${item.text}"
+					?selected=${item.selected}>
+				</d2l-filter-dimension-set-value>
 			`)}
 		</d2l-filter-dimension-set>`;
 	}
