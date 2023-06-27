@@ -91,8 +91,8 @@ describe('d2l-tag-list-item', () => {
 		});
 	});
 
-	describe('display text', () => {
-		it('should default to tagContent', async() => {
+	describe('label text', () => {
+		it('should be set to item text', async() => {
 			const elem = await fixture(basicFixture);
 			await waitUntil(() => elem._items, 'List items did not become ready');
 
@@ -156,4 +156,34 @@ describe('d2l-tag-list-item', () => {
 		});
 	});
 
+});
+
+describe('d2l-tag-list-item-mixin-consumer', () => {
+
+	describe('constructor', () => {
+		it('should construct tag-list-item-mixin-consumer', () => {
+			runConstructor('d2l-tag-list-item-mixin-consumer');
+		});
+	});
+
+	describe('label text', () => {
+		it('should be set when provided', async() => {
+			const elem = await fixture(basicFixture);
+			await waitUntil(() => elem._items, 'List items did not become ready');
+
+			const child = elem.children[3];
+			expect(child._labelText).to.be.equal('Tag');
+		});
+
+		it('should error if not provided', async() => {
+			let error;
+			try {
+				await fixture(html`<d2l-tag-list-item-mixin-consumer></d2l-tag-list-item-mixin-consumer>`);
+			} catch (e) {
+				error = e;
+			}
+			expect(error?.name).to.equal('TypeError');
+		});
+
+	});
 });
