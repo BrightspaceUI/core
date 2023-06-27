@@ -84,15 +84,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			paddingType: { type: String, attribute: 'padding-type' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
-			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
-			_fullscreenWithin: { type: Boolean, attribute: '_fullscreen-within', reflect: true },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true },
 			_hasNestedList: { state: true }
 		};
 	}
@@ -108,15 +105,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				display: none;
 			}
 
-			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
-				z-index: 10; /* must be greater than adjacent selected items (if this is increased, d2l-collapsible-panel must be updated too) */
-			}
-			:host([_fullscreen-within]) {
-				position: fixed; /* required for Safari */
-				z-index: 998; /* must be greater than floating workflow buttons */
-			}
-
 			:host([dragging]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
@@ -126,9 +114,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			[slot="control-container"] {
+				pointer-events: none;
 				position: relative;
-				z-index: -1; /* must allow for interactive content to be accessible with mouse */
 			}
+
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
@@ -389,8 +378,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
-		this._fullscreenWithin = false;
-		this._fullscreenWithinCount = 0;
 		this._hasNestedList = false;
 	}
 
@@ -419,14 +406,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		ro.unobserve(this);
-	}
-
-	firstUpdated(changedProperties) {
-		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
-		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
-		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
-		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
-		super.firstUpdated(changedProperties);
 	}
 
 	updated(changedProperties) {
@@ -579,12 +558,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._focusingPrimaryAction = false;
 	}
 
-	_onFullscreenWithin(e) {
-		if (e.detail.state) this._fullscreenWithinCount += 1;
-		else this._fullscreenWithinCount -= 1;
-		this._fullscreenWithin = (this._fullscreenWithinCount > 0);
-	}
-
 	_onMouseEnter() {
 		this._hovering = true;
 	}
@@ -629,7 +602,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
-				@d2l-fullscreen-within="${this._onFullscreenWithin}"
 				class="${classMap(classes)}"
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
