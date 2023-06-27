@@ -135,7 +135,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.keyboardTooltipItem = false;
 		this.keyboardTooltipShown = false;
 		this._id = getUniqueId();
-		this._labelText = '';
+		this._plainText = '';
 	}
 
 	firstUpdated(changedProperties) {
@@ -172,7 +172,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	_handleClearItem() {
 		if (!this.clearable) return;
 
-		announce(this.localize('components.tag-list.cleared-item', { value: this._labelText }));
+		announce(this.localize('components.tag-list.cleared-item', { value: this._plainText }));
 
 		/** Dispatched when a user selects to delete an individual tag list item. The consumer must handle the actual element deletion and focus behaviour if there are no remaining list items. */
 		this.dispatchEvent(new CustomEvent(
@@ -216,10 +216,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_renderTag(tagContent, options = {}) {
-		if (options.labelText?.constructor !== String) throw new TypeError('options.labelText must be a string');
-		this._labelText = options.labelText || '';
+		if (options.plainText?.constructor !== String) throw new TypeError('options.plainText must be a string');
+		this._plainText = options.plainText || '';
 
-		const buttonText = this.localize('components.tag-list.clear', { value: this._labelText });
+		const buttonText = this.localize('components.tag-list.clear', { value: this._plainText });
 
 		const hasDescription = !!options.description;
 

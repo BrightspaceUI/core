@@ -23,7 +23,7 @@ class TagListItem extends TagListItemMixin(LitElement) {
 		return this._renderTag(this.text, {
 			description: this.description,
 			hasTruncationTooltip: true,
-			labelText: this.text
+			plainText: this.text
 		});
 	}
 }
