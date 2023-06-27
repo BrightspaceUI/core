@@ -28,7 +28,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			 */
 			clearable: { type: Boolean },
 			/**
-			 * Acts as a unique identifier for the tag in dispatched events
+			 * REQUIRED if clearable. Acts as a unique identifier for the tag
 			 * @type {string}
 			 */
 			key: { type: String },
