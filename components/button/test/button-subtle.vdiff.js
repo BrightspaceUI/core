@@ -1,5 +1,5 @@
 import '../button-subtle.js';
-import { fixture, focusWithKeyboard, focusWithMouse, hoverWithMouse, html, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-subtle', () => {
 
@@ -16,22 +16,22 @@ describe('d2l-button-subtle', () => {
 
 			[
 				{ name: 'normal' },
-				{ name: 'hover', action: async(elem) => await hoverWithMouse(elem) },
-				{ name: 'focus', action: async(elem) => await focusWithKeyboard(elem) },
-				{ name: 'click', action: async(elem) => await focusWithMouse(elem) },
+				{ name: 'hover', action: async(elem) => await hoverElem(elem) },
+				{ name: 'focus', action: async(elem) => await focusElem(elem) },
+				{ name: 'click', action: async(elem) => await clickElem(elem) },
 				{ name: 'disabled', action: async(elem) => elem.disabled = true }
 			].forEach(({ action, name }) => {
-				it(name, async function() {
+				it(name, async() => {
 					const elem = await fixture(f);
 					if (action) await action(elem);
-					await screenshotAndCompare(elem, this.test.fullTitle());
+					await expect(elem).to.be.golden();
 				});
 			});
 
 			if (hasRtl) {
-				it('rtl', async function() {
+				it('rtl', async() => {
 					const elem = await fixture(f, { rtl: true });
-					await screenshotAndCompare(elem, this.test.fullTitle());
+					await expect(elem).to.be.golden();
 				});
 			}
 
@@ -39,7 +39,7 @@ describe('d2l-button-subtle', () => {
 
 	});
 
-	it('h-align', async function() {
+	it('h-align', async() => {
 		const elem = await fixture(html`
 			<div id="h-align">
 				<d2l-button-subtle icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
@@ -53,7 +53,7 @@ describe('d2l-button-subtle', () => {
 				<d2l-button-subtle slim icon="tier1:chevron-down" text="Slim Subtle Button" icon-right h-align="text"></d2l-button-subtle>
 			</div>
 		`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
 });

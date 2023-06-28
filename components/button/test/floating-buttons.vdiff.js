@@ -1,6 +1,6 @@
 import '../button.js';
 import '../floating-buttons.js';
-import { fixture, html, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 const lotsaCoffee = Array.from(Array(22).keys()).map(() => html`<p>I love Coffee!</p>`);
 
@@ -35,43 +35,43 @@ const floatingButtonsAlwaysFloatFixture = html`
 
 describe('d2l-floating-buttons', () => {
 
-	it('floats', async function() {
+	it('floats', async() => {
 		const elem = await fixture(floatingButtonsFixture);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('does not float at bottom of container', async function() {
+	it('does not float at bottom of container', async() => {
 		const elem = await fixture(floatingButtonsFixture);
 		window.scrollTo(0, document.body.scrollHeight);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('does not float when small amount of content', async function() {
+	it('does not float when small amount of content', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('floats when content added to dom', async function() {
+	it('floats when content added to dom', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
 		const contentElem = document.querySelector('#floating-buttons-short-content').querySelector('p');
 		contentElem.innerHTML += '<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>';
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('floats at bottom of page when always-float', async function() {
+	it('floats at bottom of page when always-float', async() => {
 		const elem = await fixture(floatingButtonsAlwaysFloatFixture);
 		window.scrollTo(0, document.body.scrollHeight);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('is correct with rtl', async function() {
+	it('is correct with rtl', async() => {
 		const elem = await fixture(floatingButtonsFixture, { rtl: true });
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('floats when bounded', async function() {
+	it('floats when bounded', async() => {
 		const elem = await fixture(html`<div style="border: 1px dashed #999999; height: 200px; overflow: scroll;">${floatingButtonsFixture}</div>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
 });

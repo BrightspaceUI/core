@@ -1,5 +1,5 @@
 import '../button.js';
-import { fixture, focusWithKeyboard, focusWithMouse, hoverWithMouse, html, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-button', () => {
 
@@ -12,15 +12,15 @@ describe('d2l-button', () => {
 
 			[
 				{ name: 'normal' },
-				{ name: 'hover', action: async(elem) => await hoverWithMouse(elem) },
-				{ name: 'focus', action: async(elem) => await focusWithKeyboard(elem) },
-				{ name: 'click', action: async(elem) => await focusWithMouse(elem) },
+				{ name: 'hover', action: async(elem) => await hoverElem(elem) },
+				{ name: 'focus', action: async(elem) => await focusElem(elem) },
+				{ name: 'click', action: async(elem) => await clickElem(elem) },
 				{ name: 'disabled', action: async(elem) => elem.disabled = true }
 			].forEach(({ action, name }) => {
-				it(name, async function() {
+				it(name, async() => {
 					const elem = await fixture(f);
 					if (action) await action(elem);
-					await screenshotAndCompare(elem, this.test.fullTitle());
+					await expect(elem).to.be.golden();
 				});
 			});
 

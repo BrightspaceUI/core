@@ -1,5 +1,5 @@
 import '../button-move.js';
-import { fixture, focusWithKeyboard, focusWithMouse, hoverWithMouse, html, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-move', () => {
 
@@ -17,9 +17,9 @@ describe('d2l-button-move', () => {
 
 			[
 				{ name: 'normal' },
-				{ name: 'hover', action: async(elem) => await hoverWithMouse(elem) },
-				{ name: 'keyboard-focus', action: async(elem) => await focusWithKeyboard(elem) },
-				{ name: 'mouse-focus', action: async(elem) => await focusWithMouse(elem) },
+				{ name: 'hover', action: async(elem) => await hoverElem(elem) },
+				{ name: 'keyboard-focus', action: async(elem) => await focusElem(elem) },
+				{ name: 'mouse-focus', action: async(elem) => await clickElem(elem) },
 				{ name: 'disabled', action: async(elem) => {
 					elem.disabledUp = true;
 					elem.disabledDown = true;
@@ -31,22 +31,22 @@ describe('d2l-button-move', () => {
 				{ name: 'disabled-up', action: async(elem) => elem.disabledUp = true },
 				{ name: 'disabled-up-hover', action: async(elem) => {
 					elem.disabledUp = true;
-					await hoverWithMouse(elem);
+					await hoverElem(elem);
 				} },
 				{ name: 'disabled-up-keyboard-focus', action: async(elem) => {
 					elem.disabledUp = true;
-					await focusWithKeyboard(elem);
+					await focusElem(elem);
 				} },
 				{ name: 'disabled-up-mouse-focus', action: async(elem) => {
 					elem.disabledUp = true;
-					await focusWithMouse(elem);
+					await clickElem(elem);
 				} },
 				{ name: 'disabled-down', action: async(elem) => elem.disabledDown = true },
 			].forEach(({ action, name }) => {
-				it(name, async function() {
+				it(name, async() => {
 					if (category === 'dark') elem.theme = 'dark';
 					if (action) await action(elem);
-					await screenshotAndCompare(elem, this.test.fullTitle());
+					await expect(elem).to.be.golden();
 				});
 			});
 

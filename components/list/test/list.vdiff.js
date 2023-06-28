@@ -8,7 +8,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { fixture, focusWithKeyboard, hoverWithMouse, html, nextFrame, oneEvent, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const buttonFixture = html`
@@ -110,25 +110,25 @@ describe('d2l-list', () => {
 
 	describe('general', () => {
 
-		it('simple', async function() {
+		it('simple', async() => {
 			const elem = await fixture(createSimpleFixture());
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('no-padding', async function() {
+		it('no-padding', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
-					<d2l-list-item padding-type="no-padding">Item 1</d2l-list-item>
+					<d2l-list-item padding-type="none">Item 1</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('illustration', () => {
 
-		it('default', async function() {
+		it('default', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -137,43 +137,43 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('separators', () => {
 
-		it('default', async function() {
+		it('default', async() => {
 			const elem = await fixture(createSimpleFixture());
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('none', async function() {
+		it('none', async() => {
 			const elem = await fixture(createSimpleFixture('none'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('all', async function() {
+		it('all', async() => {
 			const elem = await fixture(createSimpleFixture('all'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('between', async function() {
+		it('between', async() => {
 			const elem = await fixture(createSimpleFixture('between'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('extended', async function() {
+		it('extended', async() => {
 			const elem = await fixture(createSimpleFixture(undefined, true));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('actions', () => {
 
-		it('default', async function() {
+		it('default', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -185,10 +185,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('extended separators', async function() {
+		it('extended separators', async() => {
 			const elem = await fixture(html`
 				<d2l-list extend-separators style="width: 400px">
 					<d2l-list-item>
@@ -200,10 +200,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('rtl', async function() {
+		it('rtl', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -216,7 +216,7 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`, { rtl: true });
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -225,7 +225,7 @@ describe('d2l-list', () => {
 
 		const clampSingleStyle = 'overflow: hidden; overflow-wrap: anywhere; text-overflow: ellipsis; white-space: nowrap;';
 
-		it('all', async function() {
+		it('all', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -237,10 +237,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('no padding', async function() {
+		it('no padding', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item padding-type="none">
@@ -252,10 +252,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('long wrapping', async function() {
+		it('long wrapping', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -267,10 +267,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('long single line ellipsis', async function() {
+		it('long single line ellipsis', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -282,10 +282,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('long unbreakable single line ellipsis', async function() {
+		it('long unbreakable single line ellipsis', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -297,10 +297,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('long single line ellipsis nested', async function() {
+		it('long single line ellipsis nested', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -312,10 +312,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('short single line ellipsis', async function() {
+		it('short single line ellipsis', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item>
@@ -327,10 +327,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('long multi line ellipsis', async function() {
+		it('long multi line ellipsis', async() => {
 			const clampMultiStyle = '-webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere;';
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
@@ -343,7 +343,7 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -355,18 +355,18 @@ describe('d2l-list', () => {
 			elem = await fixture(hrefFixture);
 		});
 
-		it('default', async function() {
-			await screenshotAndCompare(elem, this.test.fullTitle());
+		it('default', async() => {
+			await expect(elem).to.be.golden();
 		});
 
-		it('focus', async function() {
-			await focusWithKeyboard(elem.querySelector('d2l-list-item').shadowRoot.querySelector('a'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('focus', async() => {
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('a'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('hover', async function() {
-			await hoverWithMouse(elem.querySelector('d2l-list-item'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('hover', async() => {
+			await hoverElem(elem.querySelector('d2l-list-item'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 	});
@@ -378,18 +378,18 @@ describe('d2l-list', () => {
 			elem = await fixture(buttonFixture);
 		});
 
-		it('default', async function() {
-			await screenshotAndCompare(elem, this.test.fullTitle());
+		it('default', async() => {
+			await expect(elem).to.be.golden();
 		});
 
-		it('focus', async function() {
-			await focusWithKeyboard(elem.querySelector('d2l-list-item-button').shadowRoot.querySelector('button'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('focus', async() => {
+			await focusElem(elem.querySelector('d2l-list-item-button').shadowRoot.querySelector('button'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('hover', async function() {
-			await hoverWithMouse(elem.querySelector('d2l-list-item-button'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('hover', async() => {
+			await hoverElem(elem.querySelector('d2l-list-item-button'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 	});
@@ -410,18 +410,18 @@ describe('d2l-list', () => {
 			`);
 		});
 
-		it('default', async function() {
-			await screenshotAndCompare(elem, this.test.fullTitle());
+		it('default', async() => {
+			await expect(elem).to.be.golden();
 		});
 
-		it('focus', async function() {
-			await focusWithKeyboard(elem.querySelector('d2l-list-item-button').shadowRoot.querySelector('button'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('focus', async() => {
+			await focusElem(elem.querySelector('d2l-list-item-button').shadowRoot.querySelector('button'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('hover', async function() {
-			await hoverWithMouse(elem.querySelector('d2l-list-item-button'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+		it('hover', async() => {
+			await hoverElem(elem.querySelector('d2l-list-item-button'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 	});
@@ -442,59 +442,59 @@ describe('d2l-list', () => {
 			</d2l-list>
 		`;
 
-		it('not selected', async function() {
+		it('not selected', async() => {
 			const elem = await fixture(selectableFixture);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('not selected focus', async function() {
+		it('not selected focus', async() => {
 			const elem = await fixture(selectableFixture);
-			await focusWithKeyboard(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('not selected hover', async function() {
+		it('not selected hover', async() => {
 			const elem = await fixture(selectableFixture);
-			await hoverWithMouse(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await hoverElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('selection-disabled hover', async function() {
+		it('selection-disabled hover', async() => {
 			const elem = await fixture(selectableFixture);
-			await hoverWithMouse(elem.querySelector('[key="2"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await hoverElem(elem.querySelector('[key="2"]'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('button selection-disabled hover', async function() {
+		it('button selection-disabled hover', async() => {
 			const elem = await fixture(selectableButtonFixture);
-			await hoverWithMouse(elem.querySelector('[key="3"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await hoverElem(elem.querySelector('[key="3"]'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('button selection-disabled button-disabled hover', async function() {
+		it('button selection-disabled button-disabled hover', async() => {
 			const elem = await fixture(selectableButtonFixture);
-			await hoverWithMouse(elem.querySelector('[key="4"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await hoverElem(elem.querySelector('[key="4"]'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('selected', async function() {
+		it('selected', async() => {
 			const elem = await fixture(selectableSelectedFixture);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('selected focus', async function() {
+		it('selected focus', async() => {
 			const elem = await fixture(selectableSelectedFixture);
-			await focusWithKeyboard(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('selected focus', async function() {
+		it('selected focus', async() => {
 			const elem = await fixture(selectableSelectedFixture);
-			await hoverWithMouse(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await hoverElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('item-content', async function() {
+		it('item-content', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item label="Item 1" selectable key="1">
@@ -505,10 +505,10 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('skeleton', async function() {
+		it('skeleton', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-item label="Item 1" selectable key="1" skeleton>
@@ -519,16 +519,16 @@ describe('d2l-list', () => {
 					</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('extended separators', async function() {
+		it('extended separators', async() => {
 			const elem = await fixture(html`
 				<d2l-list extend-separators style="width: 400px">
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -546,22 +546,22 @@ describe('d2l-list', () => {
 			</d2l-list>
 		`;
 
-		it('hover href', async function() {
+		it('hover href', async() => {
 			const elem = await fixture(selectableHrefFixture);
-			await hoverWithMouse(elem.querySelector('d2l-list-item'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await hoverElem(elem.querySelector('d2l-list-item'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('hover selection', async function() {
+		it('hover selection', async() => {
 			const elem = await fixture(selectableHrefFixture);
-			await hoverWithMouse(elem.querySelector('d2l-list-item').shadowRoot.querySelector('[slot="control"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('[slot="control"]'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('hover secondary action', async function() {
+		it('hover secondary action', async() => {
 			const elem = await fixture(selectableHrefFixture);
-			await hoverWithMouse(elem.querySelector('d2l-button-icon'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await hoverElem(elem.querySelector('d2l-button-icon'));
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -594,7 +594,7 @@ describe('d2l-list', () => {
 			</div>
 		`;
 
-		it('not selectable', async function() {
+		it('not selectable', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-controls slot="controls" no-selection no-sticky>
@@ -604,10 +604,10 @@ describe('d2l-list', () => {
 					<d2l-list-item label="Item 2">Item 2</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('none selected', async function() {
+		it('none selected', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
@@ -615,10 +615,10 @@ describe('d2l-list', () => {
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('some selected', async function() {
+		it('some selected', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
@@ -626,10 +626,10 @@ describe('d2l-list', () => {
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('all selected', async function() {
+		it('all selected', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
@@ -637,10 +637,10 @@ describe('d2l-list', () => {
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('all selected pages', async function() {
+		it('all selected pages', async() => {
 			const elem = await fixture(html`
 				<d2l-list item-count="50" style="width: 400px">
 					<d2l-list-controls slot="controls" select-all-pages-allowed no-sticky></d2l-list-controls>
@@ -648,21 +648,21 @@ describe('d2l-list', () => {
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('sticky top', async function() {
+		it('sticky top', async() => {
 			const elem = await fixture(stickyFixture);
 			elem.scrollTo(0, 45);
 			await nextFrame();
 			elem.scrollTo(0, 0);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('sticky scrolled', async function() {
+		it('sticky scrolled', async() => {
 			const elem = await fixture(stickyFixture);
 			elem.scrollTo(0, 45);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -678,82 +678,82 @@ describe('d2l-list', () => {
 			`;
 		}
 
-		it('default', async function() {
+		it('default', async() => {
 			const elem = await fixture(createDraggableFixture());
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('focus', async function() {
+		it('focus', async() => {
 			const elem = await fixture(createDraggableFixture());
-			await focusWithKeyboard(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await focusElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('hover', async function() {
+		it('hover', async() => {
 			const elem = await fixture(createDraggableFixture());
-			await hoverWithMouse(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await hoverElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('selectable', async function() {
+		it('selectable', async() => {
 			const elem = await fixture(createDraggableFixture(true));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('selectable focus', async function() {
+		it('selectable focus', async() => {
 			const elem = await fixture(createDraggableFixture(true));
-			await focusWithKeyboard(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('selectable hover', async function() {
+		it('selectable hover', async() => {
 			const elem = await fixture(createDraggableFixture(true));
-			await hoverWithMouse(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await hoverElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden();
 		});
 
-		it('extended separators', async function() {
+		it('extended separators', async() => {
 			const elem = await fixture(html`
 				<d2l-list extend-separators style="width: 400px">
 					<d2l-list-item label="Item 1" draggable selectable key="1">Item 1</d2l-list-item>
 				</d2l-list>
 			`);
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('focus method', () => {
 
-		it('href', async function() {
+		it('href', async() => {
 			const elem = await fixture(hrefFixture);
-			await focusWithKeyboard(elem.querySelector('d2l-list-item'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await focusElem(elem.querySelector('d2l-list-item'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('button', async function() {
+		it('button', async() => {
 			const elem = await fixture(buttonFixture);
-			await focusWithKeyboard(elem.querySelector('d2l-list-item-button'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await focusElem(elem.querySelector('d2l-list-item-button'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('selectable', async function() {
+		it('selectable', async() => {
 			const elem = await fixture(selectableFixture);
-			await focusWithKeyboard(elem.querySelector('[key="1"]'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await focusElem(elem.querySelector('[key="1"]'));
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('expandable', async function() {
+		it('expandable', async() => {
 			const elem = await fixture(createExpandCollapseFixture(false, false, false));
-			await focusWithKeyboard(elem.querySelector('d2l-list-item'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await focusElem(elem.querySelector('d2l-list-item'));
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('breakpoitns', () => {
 		[900, 700, 600, 490].forEach((breakpoint) => {
-			it(breakpoint.toString(), async function() {
+			it(breakpoint.toString(), async() => {
 				const elem = await fixture(html`
 					<d2l-list style="width: ${breakpoint}px">
 						<d2l-list-item>
@@ -772,31 +772,31 @@ describe('d2l-list', () => {
 						</d2l-list-item>
 					</d2l-list>
 				`);
-				await screenshotAndCompare(elem, this.test.fullTitle());
+				await expect(elem).to.be.golden();
 			});
 		});
 	});
 
 	describe('dropdown', () => {
 
-		it('open down', async function() {
+		it('open down', async() => {
 			const elem = await fixture(dropdownTooltipFixture);
 			const dropdown = elem.querySelector('d2l-dropdown');
 			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
 
 	describe('tooltip', () => {
 
-		it('open down', async function() {
+		it('open down', async() => {
 			const elem = await fixture(dropdownTooltipFixture);
 			const tooltip = elem.querySelector('d2l-tooltip');
 			setTimeout(() => tooltip.show());
 			await oneEvent(tooltip, 'd2l-tooltip-show');
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
 	});
@@ -849,54 +849,54 @@ describe('d2l-list', () => {
 			`;
 		}
 
-		it('none-selected', async function() {
+		it('none-selected', async() => {
 			const elem = await fixture(createNestedFixture('none'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('some-selected', async function() {
+		it('some-selected', async() => {
 			const elem = await fixture(createNestedFixture('some'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('all-selected', async function() {
+		it('all-selected', async() => {
 			const elem = await fixture(createNestedFixture('all'));
-			await screenshotAndCompare(elem, this.test.fullTitle(), { margin: 24 });
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 	});
 
 	describe('expand-collapse', () => {
 
-		it('default', async function() {
+		it('default', async() => {
 			const elem = await fixture(createExpandCollapseFixture(false, false, false));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('default expanded', async function() {
+		it('default expanded', async() => {
 			const elem = await fixture(createExpandCollapseFixture(true, false, false));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('selectable', async function() {
+		it('selectable', async() => {
 			const elem = await fixture(createExpandCollapseFixture(true, true, false));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('draggable', async function() {
+		it('draggable', async() => {
 			const elem = await fixture(createExpandCollapseFixture(true, false, true));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('selectable draggable', async function() {
+		it('selectable draggable', async() => {
 			const elem = await fixture(createExpandCollapseFixture(true, true, true));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await expect(elem).to.be.golden();
 		});
 
-		it('button focus', async function() {
+		it('button focus', async() => {
 			const elem = await fixture(createExpandCollapseFixture(false, false, false));
-			await focusWithKeyboard(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-icon'));
-			await screenshotAndCompare(elem, this.test.fullTitle());
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-icon'));
+			await expect(elem).to.be.golden();
 		});
 
 	});

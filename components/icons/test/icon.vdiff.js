@@ -1,80 +1,80 @@
 import '../icon.js';
 import '../demo/icon-color-override.js';
 import '../demo/icon-size-override.js';
-import { fixture, html, screenshotAndCompare } from '../../../tools/web-test-runner-helpers.js';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-icon', () => {
 
-	it('tier1', async function() {
+	it('tier1', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier1:assignments"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('tier2', async function() {
+	it('tier2', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier2:assignments"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('tier3', async function() {
+	it('tier3', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier3:assignments"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('prefixed', async function() {
+	it('prefixed', async() => {
 		const elem = await fixture(html`<d2l-icon icon="d2l-tier3:assignments"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('fill-none', async function() {
+	it('fill-none', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('fill-circle', async function() {
+	it('fill-circle', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('fill-mixed', async function() {
+	it('fill-mixed', async() => {
 		const elem = await fixture(html`
 			<d2l-icon-demo-color-override>
 				<d2l-icon icon="tier2:check-box"></d2l-icon>
 			</d2l-icon-demo-color-override>
 		`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('color-override', async function() {
+	it('color-override', async() => {
 		const elem = await fixture(html`
 			<d2l-icon-demo-color-override>
 				<d2l-icon icon="tier3:assignments"></d2l-icon>
 			</d2l-icon-demo-color-override>
 		`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('size-override', async function() {
+	it('size-override', async() => {
 		const elem = await fixture(html`
 			<d2l-icon-demo-size-override>
 				<d2l-icon icon="tier3:assignments"></d2l-icon>
 			</d2l-icon-demo-size-override>
 		`);
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('rtl-tier1', async function() {
+	it('rtl-tier1', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier1:assignments"></d2l-icon>`, { rtl: true });
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('rtl-tier2', async function() {
+	it('rtl-tier2', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier2:assignments"></d2l-icon>`, { rtl: true });
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
-	it('rtl-tier3', async function() {
+	it('rtl-tier3', async() => {
 		const elem = await fixture(html`<d2l-icon icon="tier3:assignments"></d2l-icon>`, { rtl: true });
-		await screenshotAndCompare(elem, this.test.fullTitle());
+		await expect(elem).to.be.golden();
 	});
 
 });
