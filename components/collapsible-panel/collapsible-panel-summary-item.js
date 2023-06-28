@@ -40,8 +40,8 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 			p.truncate {
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
-				overflow-wrap: anywhere;
 				overflow: hidden;
+				overflow-wrap: anywhere;
 			}
 		`];
 	}
