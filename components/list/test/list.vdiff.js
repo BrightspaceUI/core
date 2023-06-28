@@ -482,13 +482,13 @@ describe('d2l-list', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it('selected focus', async() => {
+		it('selected focus shadow', async() => {
 			const elem = await fixture(selectableSelectedFixture);
 			await focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('d2l-selection-input'));
 			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('selected focus', async() => {
+		it('selected focus light', async() => {
 			const elem = await fixture(selectableSelectedFixture);
 			await hoverElem(elem.querySelector('[key="1"]'));
 			await expect(elem).to.be.golden({ margin: 24 });
