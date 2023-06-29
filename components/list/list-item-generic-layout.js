@@ -407,12 +407,17 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (previousElement.role === 'rowgroup') {
 
 				// this check needs to account for standard list-items as well as custom
-				const nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
+				let nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
 				if (nestedList) {
-					const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
-					if (nestedListItems && nestedListItems.length > 0) {
-						return nestedListItems[nestedListItems.length - 1];
+					let nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
+
+					let lastItem;
+					while (nestedListItems?.length) {
+						lastItem = nestedListItems[nestedListItems.length - 1];
+						nestedList = lastItem.querySelector('[slot="nested"]') || lastItem.shadowRoot.querySelector('d2l-list');
+						nestedListItems = nestedList && [...nestedList.children].filter(node => node.role === 'rowgroup');
 					}
+					return lastItem;
 				}
 				return previousElement;
 
