@@ -104,10 +104,10 @@ describe('d2l-list', () => {
 		});
 
 		[
-			{ keyPress: 'ArrowUp', expectedFocus: 'L1-1' },
-			{ keyPress: 'ArrowDown', expectedFocus: 'L3-2' }
-		].forEach(testCase => {
-			it(`Focus navigates to other nested list items when in grid mode after "${testCase.keyPress}" is pressed`, async() => {
+			{ name: 'Previous', keyPress: 'ArrowUp', initialFocus: 'L1-2' },
+			{ name: 'Next', keyPress: 'ArrowDown', initialFocus: 'L2-2' }
+		].forEach(({ name, keyPress, initialFocus }) => {
+			it(`Focus navigates to ${name.toLowerCase()} list items when in grid mode after "${keyPress}" is pressed`, async() => {
 				const elem = await fixture(html`
 					<d2l-list id="L1" grid>
 						<d2l-list-item selectable key="L1-1" label="item">
@@ -121,19 +121,18 @@ describe('d2l-list', () => {
 								</d2l-list-item>
 							</d2l-list>
 						</d2l-list-item>
+						<d2l-list-item selectable key="L1-2" label="item"></d2l-list-item>
 					</d2l-list>	
 				`);
 
-				const listItem = elem.querySelector('[key="L2-2"]');
-				const listItemLayout = elem.querySelector('[key="L2-2"]').shadowRoot.querySelector('d2l-list-item-generic-layout');
+				const listItem = elem.querySelector(`[key="${initialFocus}"]`);
+				const listItemLayout = listItem.shadowRoot.querySelector('d2l-list-item-generic-layout');
 				await focusElem(listItem);
 				await waitUntil(() => listItem.hasAttribute('_focusing'), 'Initial item should be focused', { timeout: 3000 });
-
-				setTimeout(() => sendKeysElem(listItemLayout, 'down', testCase.keyPress));
+				setTimeout(() => sendKeysElem(listItemLayout, 'down', keyPress));
 				await oneEvent(listItemLayout, 'keydown');
-
-				const focusedElement = elem.querySelector(`[key=${testCase.expectedFocus}`);
-				await waitUntil(() => focusedElement.hasAttribute('_focusing'), 'Next item should be focused', { timeout: 3000 });
+				const focusedElement = elem.querySelector('[key="L3-2"');
+				await waitUntil(() => focusedElement.hasAttribute('_focusing'), `${name} item should be focused`, { timeout: 3000 });
 			});
 		});
 
