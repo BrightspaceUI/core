@@ -1,7 +1,6 @@
-import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, html, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
-import { keyDown } from '../../../tools/dom-test-helpers.js';
 import { LitElement } from 'lit';
 
 const mixinTag = defineCE(
@@ -57,8 +56,8 @@ describe('InteractiveMixin', () => {
 			toggle.click();
 			await new Promise(resolve => setTimeout(resolve, 0));
 			expect(getComposedActiveElement()).to.equal(elem.shadowRoot.querySelector('.content-button'));
-			keyDown(toggle, 27);
-			await new Promise(resolve => setTimeout(resolve, 0));
+			sendKeysElem(toggle, 'press', 'Escape');
+			await waitUntil(() => getComposedActiveElement().classList.contains('interactive-toggle'));
 			expect(getComposedActiveElement()).to.equal(toggle);
 		});
 

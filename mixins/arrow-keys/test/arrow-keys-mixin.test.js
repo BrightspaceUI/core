@@ -1,7 +1,6 @@
 import '../demo/arrow-keys-test.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, html, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { keyDown } from '../../../tools/dom-test-helpers.js';
 
 describe('ArrowKeysMixin', () => {
 
@@ -21,7 +20,7 @@ describe('ArrowKeysMixin', () => {
 					expect(getComposedActiveElement()).to.equal(focusables[keyInteraction.endIndex]);
 					done();
 				});
-				keyDown(focusables[keyInteraction.startIndex], keyInteraction.keyCode);
+				sendKeysElem(focusables[keyInteraction.startIndex], 'press', keyInteraction.key);
 			});
 		});
 	};
@@ -35,12 +34,12 @@ describe('ArrowKeysMixin', () => {
 
 		describe('left-right', () => {
 			testKeyInteractions([
-				{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 39 },
-				{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 37 },
-				{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 39 },
-				{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 37 },
-				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+				{ name: 'focuses on next focusable when Right arrow key is pressed', startIndex: 2, endIndex: 3, key: 'ArrowRight' },
+				{ name: 'focuses on previous focusable when Left arrow key is pressed', startIndex: 2, endIndex: 1, key: 'ArrowLeft' },
+				{ name: 'focuses on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, key: 'ArrowRight' },
+				{ name: 'focuses on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, key: 'ArrowLeft' },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, key: 'Home' },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, key: 'End' }
 			]);
 		});
 
@@ -53,12 +52,12 @@ describe('ArrowKeysMixin', () => {
 			});
 
 			testKeyInteractions([
-				{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 40 },
-				{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 38 },
-				{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 40 },
-				{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 38 },
-				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+				{ name: 'focuses on next focusable when Down arrow key is pressed', startIndex: 2, endIndex: 3, key: 'ArrowDown' },
+				{ name: 'focuses on previous focusable when Up arrow key is pressed', startIndex: 2, endIndex: 1, key: 'ArrowUp' },
+				{ name: 'focuses on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, key: 'ArrowDown' },
+				{ name: 'focuses on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, key: 'ArrowUp' },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, key: 'Home' },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, key: 'End' }
 			]);
 
 		});
@@ -77,7 +76,7 @@ describe('ArrowKeysMixin', () => {
 					(function(i) {
 						it(keyInteractions[i].name, async() => {
 							focusables[keyInteractions[i].startIndex].focus();
-							keyDown(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
+							sendKeysElem(focusables[[keyInteractions[i].startIndex]], 'press', keyInteractions[i].key);
 							await elem.updateComplete;
 							expect(getComposedActiveElement()).to.equal(focusables[keyInteractions[i].startIndex]);
 						});
@@ -86,10 +85,10 @@ describe('ArrowKeysMixin', () => {
 			};
 
 			testNoWrap([
-				{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, keyCode: 37 },
-				{ name: 'does not focus on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, keyCode: 38 },
-				{ name: 'does not focus on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, keyCode: 39 },
-				{ name: 'does not focus on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, keyCode: 40 }
+				{ name: 'does not focus on last focusable when Left arrow key is pressed on first focusable', startIndex: 0, key: 'ArrowLeft' },
+				{ name: 'does not focus on last focusable when Up arrow key is pressed on first focusable', startIndex: 0, key: 'ArrowUp' },
+				{ name: 'does not focus on first focusable when Right arrow key is pressed on last focusable', startIndex: 4, key: 'ArrowRight' },
+				{ name: 'does not focus on first focusable when Down arrow key is pressed on last focusable', startIndex: 4, key: 'ArrowDown' }
 			]);
 		});
 
@@ -104,12 +103,12 @@ describe('ArrowKeysMixin', () => {
 
 		describe('right-left', () => {
 			testKeyInteractions([
-				{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, keyCode: 39 },
-				{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, keyCode: 37 },
-				{ name: 'focuses on first focusable when Left arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, keyCode: 37 },
-				{ name: 'focuses on last focusable when Right arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, keyCode: 39 },
-				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, keyCode: 36 },
-				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, keyCode: 35 }
+				{ name: 'focuses on previous focusable when Right arrow key is pressed', startIndex: 2, endIndex: 1, key: 'ArrowRight' },
+				{ name: 'focuses on next focusable when Left arrow key is pressed', startIndex: 2, endIndex: 3, key: 'ArrowLeft' },
+				{ name: 'focuses on first focusable when Left arrow key is pressed on last focusable', startIndex: 4, endIndex: 0, key: 'ArrowLeft' },
+				{ name: 'focuses on last focusable when Right arrow key is pressed on first focusable', startIndex: 0, endIndex: 4, key: 'ArrowRight' },
+				{ name: 'focuses on first focusable when Home key is pressed', startIndex: 2, endIndex: 0, key: 'Home' },
+				{ name: 'focuses on last focusable when End key is pressed', startIndex: 2, endIndex: 4, key: 'End' }
 			]);
 		});
 
