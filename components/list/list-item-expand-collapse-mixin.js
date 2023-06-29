@@ -33,10 +33,11 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 				--d2l-expand-collapse-slot-transition-duration: 0.3s;
 			}
 			.d2l-list-expand-collapse {
+				line-height: 0;
 				width: 0;
 			}
 			:host([dir="rtl"][_render-expand-collapse-slot]) .d2l-list-expand-collapse {
-				padding: 0.4rem 0 0 0.3rem;
+				padding: 0.55rem 0 0 0.3rem;
 			}
 			.d2l-list-expand-collapse d2l-button-icon {
 				--d2l-button-icon-min-height: 1.2rem;
@@ -47,7 +48,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 				border-radius: var(--d2l-button-icon-border-radius);
 			}
 			:host([_render-expand-collapse-slot]) .d2l-list-expand-collapse {
-				padding: 0.4rem 0.3rem 0 0;
+				padding: 0.55rem 0.3rem 0 0;
 				width: 1.2rem;
 			}
 			.d2l-list-expand-collapse-action {
