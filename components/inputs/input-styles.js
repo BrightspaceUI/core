@@ -43,14 +43,18 @@ export const inputStyles = css`
 		font-size: 0.8rem;
 		font-weight: 400;
 	}
-	.d2l-input:hover,
+	:host(:hover) .d2l-input,
 	.d2l-input:focus,
 	.d2l-input-focus {
-		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-style: none;
 		outline-width: 0;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+	}
+	:host(:hover) .d2l-input:not([aria-invalid="true"]),
+	.d2l-input:focus,
+	.d2l-input-focus {
+		border-color: var(--d2l-color-celestine);
 	}
 	[aria-invalid="true"].d2l-input {
 		border-color: var(--d2l-color-cinnabar);
