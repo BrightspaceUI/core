@@ -56,8 +56,7 @@ describe('InteractiveMixin', () => {
 			toggle.click();
 			await new Promise(resolve => setTimeout(resolve, 0));
 			expect(getComposedActiveElement()).to.equal(elem.shadowRoot.querySelector('.content-button'));
-			sendKeysElem(toggle, 'press', 'Escape');
-			await waitUntil(() => getComposedActiveElement().classList.contains('interactive-toggle'));
+			await sendKeysElem(toggle, 'press', 'Escape');
 			expect(getComposedActiveElement()).to.equal(toggle);
 		});
 
