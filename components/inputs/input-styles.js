@@ -4,10 +4,8 @@ import { css } from 'lit';
 export const inputStyles = css`
 	.d2l-input {
 		background-color: var(--d2l-input-background-color, #ffffff);
-		border-color: var(--d2l-input-border-color, var(--d2l-color-galena));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
 		border-style: solid;
-		border-width: 1px;
 		box-shadow: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
 		box-sizing: border-box;
 		color: var(--d2l-color-ferrite);
@@ -21,11 +19,18 @@ export const inputStyles = css`
 		margin: 0;
 		min-height: calc(2rem + 2px);
 		min-width: calc(2rem + 1em);
-		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 		position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
 		text-align: var(--d2l-input-text-align, start);
 		vertical-align: middle;
 		width: 100%;
+	}
+	.d2l-input,
+	:host(:hover) .d2l-input:disabled,
+	.d2l-input:focus:disabled,
+	[aria-invalid="true"].d2l-input:disabled {
+		border-color: var(--d2l-input-border-color, var(--d2l-color-galena));
+		border-width: 1px;
+		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 	}
 	.d2l-input::placeholder {
 		color: var(--d2l-color-mica);
@@ -38,20 +43,20 @@ export const inputStyles = css`
 		font-size: 0.8rem;
 		font-weight: 400;
 	}
-	:host(:hover) .d2l-input:not(:disabled),
-	.d2l-input:focus:not(:disabled),
-	.d2l-input-focus:not(:disabled) {
+	:host(:hover) .d2l-input,
+	.d2l-input:focus,
+	.d2l-input-focus {
 		border-width: 2px;
 		outline-style: none;
 		outline-width: 0;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
 	}
-	:host(:hover) .d2l-input:not([aria-invalid="true"]):not(:disabled),
-	.d2l-input:focus:not(:disabled),
-	.d2l-input-focus:not(:disabled) {
+	:host(:hover) .d2l-input:not([aria-invalid="true"]),
+	.d2l-input:focus,
+	.d2l-input-focus {
 		border-color: var(--d2l-color-celestine);
 	}
-	.d2l-input[aria-invalid="true"]:not(:disabled) {
+	[aria-invalid="true"].d2l-input {
 		border-color: var(--d2l-color-cinnabar);
 	}
 	.d2l-input:disabled {
