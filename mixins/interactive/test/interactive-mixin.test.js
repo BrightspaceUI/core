@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, html, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, html, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { InteractiveMixin } from '../interactive-mixin.js';
 import { LitElement } from 'lit';
