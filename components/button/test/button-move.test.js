@@ -15,8 +15,8 @@ describe('d2l-button-move', () => {
 	describe('events', () => {
 
 		[
-			{ name: 'up icon clicked', action: el => el.shadowRoot.querySelector('.up-layer').click(), expectedAction: moveActions.up },
-			{ name: 'down icon clicked', action: el => el.shadowRoot.querySelector('.down-layer').click(), expectedAction: moveActions.down },
+			{ name: 'up icon clicked', action: el => setTimeout(() => el.shadowRoot.querySelector('.up-layer').click()), expectedAction: moveActions.up },
+			{ name: 'down icon clicked', action: el => setTimeout(() => el.shadowRoot.querySelector('.down-layer').click()), expectedAction: moveActions.down },
 			{ name: 'up key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowUp'), expectedAction: moveActions.up },
 			{ name: 'down key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowDown'), expectedAction: moveActions.down },
 			{ name: 'left key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowLeft'), expectedAction: moveActions.left },
@@ -28,7 +28,7 @@ describe('d2l-button-move', () => {
 		].forEach(info => {
 			it(`dispatches d2l-button-move-action event when ${info.name}`, async() => {
 				const el = await fixture(html`<d2l-button-move text="Reorder"></d2l-button-move>`);
-				setTimeout(() => info.action(el));
+				info.action(el);
 				const e = await oneEvent(el, 'd2l-button-move-action');
 				expect(e.detail.action).to.equal(info.expectedAction);
 			});
