@@ -1,4 +1,4 @@
-import { expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { moveActions } from '../button-move.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -15,8 +15,8 @@ describe('d2l-button-move', () => {
 	describe('events', () => {
 
 		[
-			{ name: 'up icon clicked', action: el => setTimeout(() => el.shadowRoot.querySelector('.up-layer').click()), expectedAction: moveActions.up },
-			{ name: 'down icon clicked', action: el => setTimeout(() => el.shadowRoot.querySelector('.down-layer').click()), expectedAction: moveActions.down },
+			{ name: 'up icon clicked', action: el => clickElem(el.shadowRoot.querySelector('.up-layer')), expectedAction: moveActions.up },
+			{ name: 'down icon clicked', action: el => clickElem(el.shadowRoot.querySelector('.down-layer')), expectedAction: moveActions.down },
 			{ name: 'up key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowUp'), expectedAction: moveActions.up },
 			{ name: 'down key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowDown'), expectedAction: moveActions.down },
 			{ name: 'left key pressed', action: el => sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'ArrowLeft'), expectedAction: moveActions.left },
