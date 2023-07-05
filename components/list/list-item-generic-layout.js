@@ -68,7 +68,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
 				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
-				position: relative;
+				//position: relative;
+			}
+
+			::slotted(*) {
+				//order: 0;
+				//position: relative;
 			}
 
 			::slotted([slot="nested"]) {
@@ -79,15 +84,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: control-start / end;
 			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				order: 7; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
+				//order: 11; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
+				z-index: 2; /* fix for webkit order limitation */
 			}
 
 			::slotted([slot="drop-target"]) {
-				height: 100%;
-				order: 6;
-				position: absolute;
-				top: 0;
-				width: 100%;
+				//height: 100%;
+				//order: 10;
+				//position: absolute;
+				//top: 0;
+				//width: 100%;
+				grid-column: 1 / -1;
+				grid-row: 1 / 2;
+			}
+
+			:host(.d2l-dragging-over) ::slotted([slot="drop-target"]) {
+				z-index: 1; /* fix for webkit order limitation */
 			}
 
 			::slotted([slot="outside-control"]),
@@ -99,21 +111,28 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
+				//order: 2;
 			}
 
 			::slotted([slot="expand-collapse"]) {
 				cursor: pointer;
 				grid-column: expand-collapse-start / expand-collapse-end;
-				order: 2;
+				//order: 5;
 			}
 
 			::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
+				//order: 6;
 				width: 2.2rem;
 			}
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
+				//order: 4;
+			}
+
+			:host([no-primary-action]) ::slotted([slot="content"]) {
+				pointer-events: none;
 			}
 
 			slot[name="actions"] {
@@ -123,7 +142,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				justify-self: end;
-				order: 5;
+				//order: 9;
+				//order: 4;
+				//position: relative; /* fix for webkit order limitation */
 			}
 
 			::slotted([slot="outside-control-action"]),
@@ -133,7 +154,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
-				order: 1;
+				//order: 3;
+				//position: relative; /* fix for webkit order limitation */
+				//order: 1
 			}
 			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
 				grid-column: start / outside-control-end;
@@ -141,16 +164,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
 				height: 100%;
-				order: 3;
+				//order: 7;
+				//position: relative; /* fix for webkit order limitation */
 				width: 100%;
+				//order: 2
 			}
 			:host([no-primary-action]) ::slotted([slot="control-action"]) {
 				grid-column: control-start / control-end;
 			}
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
-				order: 4;
+				//order: 8;
+				//position: relative; /* fix for webkit order limitation */
+				//order: 3;
 			}
+
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
 				display: none;
 			}
@@ -158,10 +186,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="outside-control-container"]) {
 				grid-column: start / end;
 				grid-row: 1 / 2;
+				//order: 0;
 			}
 			::slotted([slot="control-container"]) {
 				grid-column: expand-collapse-start / end;
 				grid-row: 1 / 2;
+				//order: 1;
 			}
 		`;
 	}
@@ -181,6 +211,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			},
 			capture: true
 		};
+
 	}
 
 	connectedCallback() {
@@ -197,20 +228,24 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return html`
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
+
 			<slot name="drop-target"></slot>
-			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
-			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
-			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
-			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
-			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
-			<slot name="control" class="d2l-cell" data-cell-num="5"></slot>
-			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
-			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
+
+			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>			
+			<slot name="control" class="d2l-cell" data-cell-num="-1"></slot>
+
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="-5"></slot>
+			<slot name="expand-collapse" class="d2l-cell" data-cell-num="-2"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="-3"></slot>
+			<slot name="content-action" class="d2l-cell" data-cell-num="0"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="1"></slot>
+
 			<slot name="nested"></slot>
 		`;
 	}
 
-	_focusCellItem(previous, num, itemNum) {
+	_focusCellItem(num, itemNum) {
 		const cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 		if (!cell) return;
 
@@ -225,20 +260,33 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
+	_focusFirstCell() {
+		let cell = null;
+		let focusable = null;
+		let num = 0;
+		do {
+			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num--}"]`);
+			if (cell) {
+				focusable = getFirstFocusableDescendant(cell) || focusable;
+			}
+		} while (cell);
+		focusable.focus();
+	}
+
 	_focusFirstRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
 		if (this.dir === 'rtl') {
-			row._focusLastItem();
+			row._focusLastCell();
 		} else {
-			row._focusNextCell(1);
+			row._focusFirstCell();
 		}
 	}
 
-	_focusLastItem() {
+	_focusLastCell() {
 		let cell = null;
 		let focusable = null;
-		let num = 1;
+		let num = 0;
 		do {
 			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
 			if (cell) {
@@ -252,9 +300,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
 		if (this.dir === 'rtl') {
-			row._focusNextCell(1);
+			row._focusFirstCell();
 		} else {
-			row._focusLastItem();
+			row._focusLastCell();
 		}
 	}
 
@@ -273,8 +321,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		if (!cell) {
 			// wrap to first/last item
-			if (forward) this._focusNextCell(1);
-			else this._focusLastItem();
+			if (forward) this._focusFirstCell();
+			else this._focusLastCell();
 		}
 
 		return focusable;
@@ -294,7 +342,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		if (!listItem) return;
 		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		const focusedCellItem = listItemRow._focusCellItem(previous, this._cellNum, this._cellFocusedItem);
+		const focusedCellItem = listItemRow._focusCellItem(this._cellNum, this._cellFocusedItem);
 
 		if (!focusedCellItem) {
 			// could not focus on same cell in adjacent list-item so try general focus on item
@@ -492,16 +540,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					if (event.ctrlKey) {
 						this._focusFirstRow();
 					} else {
-						// focus last item
-						this._focusLastItem();
+						// focus last cell
+						this._focusLastCell();
 					}
 				} else {
 					if (event.ctrlKey) {
 						// focus first item of first row
 						this._focusFirstRow();
 					} else {
-						// focus first item
-						this._focusNextCell(1);
+						// focus first cell
+						this._focusFirstCell();
 					}
 				}
 				break;
@@ -511,16 +559,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 						// focus first item of last row
 						this._focusLastRow();
 					} else {
-						// focus first item
-						this._focusNextCell(1);
+						// focus first cell
+						this._focusFirstCell();
 					}
 				} else {
 					if (event.ctrlKey) {
 						// focus last item of last row
 						this._focusLastRow();
 					} else {
-						// focus last item
-						this._focusLastItem();
+						// focus last cell
+						this._focusLastCell();
 					}
 				}
 				break;
@@ -543,10 +591,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_setFocusInfo(e) {
 		e.stopPropagation();
+		const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+
+		const previousFocusable = getPreviousFocusable(listItem);
+		const previousFocus = findComposedAncestor(previousFocusable, node => node === e.relatedTarget);
+
+		if (previousFocus === e.relatedTarget) {
+			this._focusCellItem(0, 1);
+			return;
+		}
+
 		if (!this.gridActive) return;
 		const slot = (e.path || e.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		if (!slot) return;
+
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
 		this._cellFocusedItem = this._getFocusedItemPosition(e.target);
 	}
