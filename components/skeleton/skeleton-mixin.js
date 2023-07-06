@@ -158,9 +158,6 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 */
 			skeleton: { reflect: true, type: Boolean  },
 			skeletonDisplay: { reflect: true, type: Boolean, attribute: 'skeleton-display' },
-			_parentSkeleton: { state: true },
-			_readyToDisplay: { reflect: true, type: Boolean },
-			_waitToDisplay: { reflect: true, type: Boolean },
 		};
 	}
 
