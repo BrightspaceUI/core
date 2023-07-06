@@ -193,7 +193,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
-			:host([skeleton-display]) .d2l-tabs-scroll-button {
+			:host([skeleton-active]) .d2l-tabs-scroll-button {
 				visibility: hidden;
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
