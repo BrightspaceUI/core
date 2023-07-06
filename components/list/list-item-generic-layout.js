@@ -68,71 +68,58 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
 				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
-				//position: relative;
 			}
 
-			::slotted(*) {
-				//order: 0;
-				//position: relative;
-			}
-
-			::slotted([slot="nested"]) {
-				grid-column: content-start / end;
-				grid-row: nested-start / nested-end;
-			}
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
 				grid-column: control-start / end;
 			}
 			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				//order: 11; /* must be greater than item's drop-target to allow dropping onto items within nested list  */
-				z-index: 2; /* fix for webkit order limitation */
+				z-index: 2; /* webkit dom order fix */
 			}
 
 			::slotted([slot="drop-target"]) {
-				//height: 100%;
-				//order: 10;
-				//position: absolute;
-				//top: 0;
-				//width: 100%;
 				grid-column: 1 / -1;
-				grid-row: 1 / 2;
 			}
 
 			:host(.d2l-dragging-over) ::slotted([slot="drop-target"]) {
-				z-index: 1; /* fix for webkit order limitation */
+				z-index: 1; /* webkit dom order fix */
 			}
 
 			::slotted([slot="outside-control"]),
 			::slotted([slot="expand-collapse"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
-			::slotted([slot="actions"]) {
+			::slotted([slot="actions"]),
+			::slotted([slot="outside-control-action"]),
+			::slotted([slot="control-action"]),
+			::slotted([slot="content-action"]),
+			::slotted([slot="outside-control-container"]),
+			::slotted([slot="control-container"]),
+			::slotted([slot="drop-target"]) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				//order: 2;
 			}
 
 			::slotted([slot="expand-collapse"]) {
 				cursor: pointer;
 				grid-column: expand-collapse-start / expand-collapse-end;
-				//order: 5;
 			}
 
 			::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
-				//order: 6;
 				width: 2.2rem;
 			}
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
-				//order: 4;
 			}
 
-			:host([no-primary-action]) ::slotted([slot="content"]) {
-				pointer-events: none;
+			:host(:not([no-primary-action])) ::slotted([slot="content"]),
+			::slotted([slot="control"]),
+			::slotted([slot="outside-control"]) {
+				pointer-events: none; /* webkit dom order fix */
 			}
 
 			slot[name="actions"] {
@@ -142,41 +129,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				justify-self: end;
-				//order: 9;
-				//order: 4;
-				//position: relative; /* fix for webkit order limitation */
 			}
 
-			::slotted([slot="outside-control-action"]),
-			::slotted([slot="control-action"]),
-			::slotted([slot="content-action"]) {
-				grid-row: 1 / 2;
-			}
 			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
-				//order: 3;
-				//position: relative; /* fix for webkit order limitation */
-				//order: 1
 			}
 			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
 				grid-column: start / outside-control-end;
 			}
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
-				height: 100%;
-				//order: 7;
-				//position: relative; /* fix for webkit order limitation */
-				width: 100%;
-				//order: 2
 			}
 			:host([no-primary-action]) ::slotted([slot="control-action"]) {
 				grid-column: control-start / control-end;
 			}
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
-				//order: 8;
-				//position: relative; /* fix for webkit order limitation */
-				//order: 3;
 			}
 
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
@@ -185,13 +153,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="outside-control-container"]) {
 				grid-column: start / end;
-				grid-row: 1 / 2;
-				//order: 0;
 			}
 			::slotted([slot="control-container"]) {
 				grid-column: expand-collapse-start / end;
-				grid-row: 1 / 2;
-				//order: 1;
+			}
+
+			::slotted([slot="nested"]) {
+				grid-column: content-start / end;
+				grid-row: nested-start / nested-end;
 			}
 		`;
 	}
@@ -231,9 +200,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			<slot name="drop-target"></slot>
 
-			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
-			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>			
+			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>
 			<slot name="control" class="d2l-cell" data-cell-num="-1"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="-5"></slot>
 			<slot name="expand-collapse" class="d2l-cell" data-cell-num="-2"></slot>
@@ -593,12 +562,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		e.stopPropagation();
 		const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
 
-		const previousFocusable = getPreviousFocusable(listItem);
-		const previousFocus = findComposedAncestor(previousFocusable, node => node === e.relatedTarget);
+		if (listItem.matches(':first-of-type') && listItem.parentNode.slot !== 'nested') {
+			const previousFocusable = getPreviousFocusable(listItem);
+			const previousFocus = findComposedAncestor(previousFocusable, node => node === e.relatedTarget);
 
-		if (previousFocus === e.relatedTarget) {
-			this._focusCellItem(0, 1);
-			return;
+			if (previousFocus && previousFocus === e.relatedTarget) {
+				this._focusCellItem(0, 1);
+				return;
+			}
 		}
 
 		if (!this.gridActive) return;
