@@ -73,16 +73,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
 				grid-column: control-start / end;
 			}
-			:host(.d2l-dragging-over) ::slotted([slot="nested"]) {
-				z-index: 2; /* webkit dom order fix */
-			}
 
 			::slotted([slot="drop-target"]) {
 				grid-column: 1 / -1;
-			}
-
-			:host(.d2l-dragging-over) ::slotted([slot="drop-target"]) {
-				z-index: 1; /* webkit dom order fix */
 			}
 
 			::slotted([slot="outside-control"]),
