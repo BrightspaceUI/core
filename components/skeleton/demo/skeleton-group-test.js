@@ -30,7 +30,7 @@ class SkeletonTestGroup extends LitElement {
 	render() {
 		return html`
 			<div class="controls">
-				<d2l-button-subtle @click="${this._loadItems}" primary text="Load items" icon="tier1:download"></d2l-button-subtle>
+				<d2l-button-subtle @click="${this._loadItems}" text="Load items" icon="tier1:download"></d2l-button-subtle>
 				<d2l-switch @click="${this._toggleLoadType}" text="Wait for all elements to load" ?on="${this._loadAsGroup}"></d2l-switch>
 			</div>
 
@@ -39,11 +39,9 @@ class SkeletonTestGroup extends LitElement {
 	}
 
 	_loadItems() {
-		this._reset();
-
-		setTimeout(() => { this.shadowRoot.getElementById('1').skeleton = false; }, 100);
-		setTimeout(() => { this.shadowRoot.getElementById('2').skeleton = false; }, 1000);
-		setTimeout(() => { this.shadowRoot.getElementById('3').skeleton = false; }, 500);
+		const ids = ['1', '2', '3'];
+		ids.forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
+		ids.forEach(id =>  setTimeout(() => { this.shadowRoot.getElementById(id).skeleton = false; }, Math.random() * 1000));
 	}
 
 	_renderContents() {
@@ -65,7 +63,6 @@ class SkeletonTestGroup extends LitElement {
 	}
 
 	_reset() {
-		['1', '2', '3'].forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
 	}
 
 	_toggleLoadType() {
