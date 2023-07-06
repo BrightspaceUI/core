@@ -116,10 +116,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / content-end;
 			}
 
-			:host(:not([no-primary-action])) ::slotted([slot="content"]),
 			::slotted([slot="control"]),
 			::slotted([slot="outside-control"]) {
 				pointer-events: none; /* webkit dom order fix */
+			}
+
+			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
+			::slotted([slot="outside-control-action"]) ~ ::slotted([slot="content"]) {
+				pointer-events: unset;
 			}
 
 			slot[name="actions"] {
@@ -137,18 +141,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
 				grid-column: start / outside-control-end;
 			}
-			::slotted([slot="control-action"]) {
-				grid-column: control-start / end;
-			}
-			:host([no-primary-action]) ::slotted([slot="control-action"]) {
-				grid-column: control-start / control-end;
-			}
+
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
 			}
 
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
 				display: none;
+			}
+
+			::slotted([slot="control-action"]) {
+				grid-column-start: control-start;
+			}
+
+			:host(:not([no-primary-action])) ::slotted([slot="control-action"]),
+			:host(:not([no-primary-action])) ::slotted([slot="outside-control-action"]) {
+				grid-column-end: end;
 			}
 
 			::slotted([slot="outside-control-container"]) {
@@ -200,14 +208,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			<slot name="drop-target"></slot>
 
-			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>
-			<slot name="control" class="d2l-cell" data-cell-num="-1"></slot>
-			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
-
-			<slot name="outside-control-action" class="d2l-cell" data-cell-num="-5"></slot>
-			<slot name="expand-collapse" class="d2l-cell" data-cell-num="-2"></slot>
-			<slot name="control-action" class="d2l-cell" data-cell-num="-3"></slot>
 			<slot name="content-action" class="d2l-cell" data-cell-num="0"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="-5"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>
+			<slot name="expand-collapse" class="d2l-cell" data-cell-num="-2"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="-3"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="-1"></slot>
+
 			<slot name="actions" class="d2l-cell" data-cell-num="1"></slot>
 
 			<slot name="nested"></slot>
@@ -232,7 +240,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusFirstCell() {
 		let cell = null;
 		let focusable = null;
-		let num = 0;
+		let num = 1; // keep updated with highest cell-num
 		do {
 			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num--}"]`);
 			if (cell) {
@@ -255,7 +263,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusLastCell() {
 		let cell = null;
 		let focusable = null;
-		let num = 0;
+		let num = -5; // keep updated with lowest cell-num
 		do {
 			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
 			if (cell) {
@@ -560,17 +568,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_setFocusInfo(e) {
 		e.stopPropagation();
-		const listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
-
-		if (listItem.matches(':first-of-type') && listItem.parentNode.slot !== 'nested') {
-			const previousFocusable = getPreviousFocusable(listItem);
-			const previousFocus = findComposedAncestor(previousFocusable, node => node === e.relatedTarget);
-
-			if (previousFocus && previousFocus === e.relatedTarget) {
-				this._focusCellItem(0, 1);
-				return;
-			}
-		}
 
 		if (!this.gridActive) return;
 		const slot = (e.path || e.composedPath()).find(node =>
