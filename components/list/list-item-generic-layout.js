@@ -118,7 +118,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="control"]),
 			::slotted([slot="outside-control"]) {
-				pointer-events: none; /* webkit dom order fix */
+				pointer-events: none;
 			}
 
 			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
@@ -206,18 +206,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
 
+			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
+
 			<slot name="drop-target"></slot>
-
-			<slot name="content-action" class="d2l-cell" data-cell-num="0"></slot>
-			<slot name="outside-control-action" class="d2l-cell" data-cell-num="-5"></slot>
-			<slot name="outside-control" class="d2l-cell" data-cell-num="-4"></slot>
-			<slot name="expand-collapse" class="d2l-cell" data-cell-num="-2"></slot>
-			<slot name="content" class="d2l-cell" data-cell-num="2" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
-			<slot name="control-action" class="d2l-cell" data-cell-num="-3"></slot>
-			<slot name="control" class="d2l-cell" data-cell-num="-1"></slot>
-
-			<slot name="actions" class="d2l-cell" data-cell-num="1"></slot>
-
 			<slot name="nested"></slot>
 		`;
 	}
@@ -238,16 +236,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusFirstCell() {
-		let cell = null;
-		let focusable = null;
-		let num = 1; // keep updated with highest cell-num
-		do {
-			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num--}"]`);
-			if (cell) {
-				focusable = getFirstFocusableDescendant(cell) || focusable;
-			}
-		} while (cell);
-		focusable.focus();
+		this._focusNextCell(1);
 	}
 
 	_focusFirstRow() {
@@ -263,7 +252,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusLastCell() {
 		let cell = null;
 		let focusable = null;
-		let num = -5; // keep updated with lowest cell-num
+		let num = 1;
 		do {
 			cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
 			if (cell) {
