@@ -1,53 +1,86 @@
-import '../../colors/colors.js';
 import '../../switch/switch.js';
+import '../../button/button-subtle.js';
 import '../../collapsible-panel/collapsible-panel.js';
 import '../../collapsible-panel/collapsible-panel-group.js';
 import { css, html, LitElement } from 'lit';
 import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
-class SkeletonTestGroup extends SkeletonGroupMixin(LitElement) {
-
+class SkeletonTestGroup extends LitElement {
+	static get properties() {
+		return {
+			_loadAsGroup: { state: true },
+		};
+	}
 	static get styles() {
-		return [
-			css`
-				:host {
-					display: block;
-				}
+		return [css`
+			:host {
+				display: block;
+			}
 
-				d2l-switch {
-					margin-bottom: 1rem;
-				}
-			`
-		];
+			.controls {
+				align-items: center;
+				display: flex;
+				gap: 0.6rem;
+				justify-content: space-between;
+				margin-bottom: 0.6rem;
+			}
+		`];
 	}
 
 	render() {
 		return html`
-			<d2l-switch @click="${this._loadItem}" text="1" data-item="1"></d2l-switch>
-			<d2l-switch @click="${this._loadItem}" text="2" data-item="2"></d2l-switch>
-			<d2l-switch @click="${this._loadItem}" text="3" data-item="3"></d2l-switch>
+			<div class="controls">
+				<d2l-button-subtle @click="${this._loadItems}" primary text="Load items" icon="tier1:download"></d2l-button-subtle>
+				<d2l-switch @click="${this._toggleLoadType}" text="Wait for all elements to load" ?on="${this._loadAsGroup}"></d2l-switch>
+			</div>
 
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel id="1" skeleton panel-title="Item 1">
-						panel content
-					</d2l-collapsible-panel>
-
-					<d2l-collapsible-panel id="2" skeleton panel-title="Item 2">
-						panel content
-					</d2l-collapsible-panel>
-					<d2l-collapsible-panel id="3" skeleton panel-title="Item 3">
-						panel content
-					</d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
-
+			${this._loadAsGroup ? this._renderGroup() : this._renderIndividual() }
 		`;
 	}
 
-	_loadItem(e) {
-		const id = e.target.getAttribute('data-item');
-		const el = this.shadowRoot.getElementById(id);
-		el.skeleton = !el.skeleton;
+	_loadItems() {
+		this._reset();
+
+		setTimeout(() => { this.shadowRoot.getElementById('1').skeleton = false; }, 100);
+		setTimeout(() => { this.shadowRoot.getElementById('2').skeleton = false; }, 1000);
+		setTimeout(() => { this.shadowRoot.getElementById('3').skeleton = false; }, 500);
+	}
+
+	_renderContents() {
+		return html`
+			<d2l-collapsible-panel-group>
+				<d2l-collapsible-panel skeleton id="1" panel-title="Item 1">Contents</d2l-collapsible-panel>
+				<d2l-collapsible-panel skeleton id="2" panel-title="Item 2">Contents</d2l-collapsible-panel>
+				<d2l-collapsible-panel skeleton id="3" panel-title="Item 3">Contents</d2l-collapsible-panel>
+			</d2l-collapsible-panel-group>
+		`;
+	}
+
+	_renderGroup() {
+		return html`<d2l-test-skeleton-group-on>${this._renderContents()}</d2l-test-skeleton-group-on>`;
+	}
+
+	_renderIndividual() {
+		return html`<d2l-test-skeleton-group-off>${this._renderContents()}</d2l-test-skeleton-group-off>`;
+	}
+
+	_reset() {
+		['1', '2', '3'].forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
+	}
+
+	_toggleLoadType() {
+		this._loadAsGroup = !this._loadAsGroup;
 	}
 }
-
 customElements.define('d2l-test-skeleton-group', SkeletonTestGroup);
+
+class SkeletonTestGroupOff extends LitElement {
+	render() { return html`<slot></slot>`; }
+}
+customElements.define('d2l-test-skeleton-group-off', SkeletonTestGroupOff);
+
+class SkeletonTestGroupOn extends SkeletonGroupMixin(LitElement) {
+	render() { return html`<slot></slot>`; }
+}
+customElements.define('d2l-test-skeleton-group-on', SkeletonTestGroupOn);
+
