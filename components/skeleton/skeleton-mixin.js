@@ -153,11 +153,15 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	static get properties() {
 		return {
 			/**
-			 * Renders the input as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton)
+			 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
 			 * @type {boolean}
 			 */
 			skeleton: { reflect: true, type: Boolean  },
-			skeletonDisplay: { reflect: true, type: Boolean, attribute: 'skeleton-active' },
+			/**
+			 * Internally set property to indicate whether the component is currently in a "skeleton" state.
+			 * @type {boolean}
+			 */
+			skeletonActive: { reflect: true, type: Boolean, attribute: 'skeleton-active' },
 		};
 	}
 
@@ -170,7 +174,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	constructor() {
 		super();
 		this.skeleton = false;
-		this.skeletonDisplay = false;
+		this.skeletonActive = false;
 		this._readyToDisplay = true;
 		this._waitToDisplay = false;
 
@@ -183,29 +187,29 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('skeleton')) {
-			this._updateSkeletonDisplay();
+			this._updateSkeletonActive();
 			this._parentSkeleton._registryController?.updateSubscribers();
 		}
 	}
 
 	changeDisplay(renderContent) {
 		this._readyToDisplay = renderContent;
-		this._updateSkeletonDisplay();
+		this._updateSkeletonActive();
 	}
 
 	_onSubscribe() {
 		this._waitToDisplay = true;
 		this._readyToDisplay = false;
-		this._updateSkeletonDisplay();
+		this._updateSkeletonActive();
 	}
 
 	_onUnsubscribe() {
 		this._waitToDisplay = false;
 		this._readyToDisplay = true;
-		this._updateSkeletonDisplay();
+		this._updateSkeletonActive();
 	}
 
-	_updateSkeletonDisplay() {
-		this.skeletonDisplay = this._waitToDisplay ? !this._readyToDisplay : this.skeleton;
+	_updateSkeletonActive() {
+		this.skeletonActive = this._waitToDisplay ? !this._readyToDisplay : this.skeleton;
 	}
 });
