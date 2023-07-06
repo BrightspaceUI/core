@@ -38,7 +38,7 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
+			:host([skeleton-display]) .d2l-tab-text.d2l-skeletize::before {
 				bottom: 0.15rem;
 				top: 0.15rem;
 			}
@@ -61,7 +61,7 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 				transition: box-shadow 0.2s;
 				width: calc(100% - 1.2rem);
 			}
-			:host([skeleton]) .d2l-tab-selected-indicator {
+			:host([skeleton-display]) .d2l-tab-selected-indicator {
 				position: absolute; /* make sure skeleton styles do not override this */
 			}
 			.d2l-tab-text-skeletize-override {

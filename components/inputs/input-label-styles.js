@@ -26,11 +26,11 @@ export const inputLabelStyles = css`
 		left: auto;
 		right: 0.15rem;
 	}
-	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
+	:host([skeleton-display]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
 	}
-	:host([skeleton][required]) .d2l-input-label.d2l-skeletize::after {
+	:host([skeleton-display][required]) .d2l-input-label.d2l-skeletize::after {
 		display: none;
 	}
 	.d2l-input-label-fieldset {
