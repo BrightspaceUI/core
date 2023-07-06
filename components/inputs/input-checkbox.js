@@ -147,14 +147,14 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					margin-left: 0;
 					margin-right: 0;
 				}
-				:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
+				:host([skeleton-display]) .d2l-input-checkbox-text.d2l-skeletize::before {
 					bottom: 0.3rem;
 					top: 0.3rem;
 				}
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
 				}
-				:host([skeleton]) .d2l-input-checkbox-text-disabled {
+				:host([skeleton-display]) .d2l-input-checkbox-text-disabled {
 					opacity: 1;
 				}
 				input[type="checkbox"].d2l-input-checkbox {

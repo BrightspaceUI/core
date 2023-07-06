@@ -51,10 +51,10 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
 				margin-top: -0.1rem;
 			}
-			:host([skeleton]) d2l-icon {
+			:host([skeleton-display]) d2l-icon {
 				color: var(--d2l-color-sylvite);
 			}
-			:host([skeleton]) .d2l-skeletize {
+			:host([skeleton-display]) .d2l-skeletize {
 				display: inline-block;
 				max-width: 80%;
 				overflow: hidden;
