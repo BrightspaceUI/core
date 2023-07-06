@@ -196,11 +196,13 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	_onSubscribe() {
 		this._waitToDisplay = true;
 		this._readyToDisplay = false;
+		this._updateSkeletonDisplay();
 	}
 
 	_onUnsubscribe() {
 		this._waitToDisplay = false;
 		this._readyToDisplay = true;
+		this._updateSkeletonDisplay();
 	}
 
 	_updateSkeletonDisplay() {
