@@ -75,7 +75,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 
 			::slotted([slot="drop-target"]) {
-				grid-column: 1 / -1;
+				grid-column: start / end;
 			}
 
 			::slotted([slot="outside-control"]),
