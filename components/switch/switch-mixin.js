@@ -86,7 +86,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms ease-out;
-				z-index: 1;
 			}
 			.d2l-switch-toggle > div {
 				background-color: #ffffff;
@@ -97,7 +96,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				height: 1.1rem;
 				left: -0.1rem;
 				position: absolute;
-				top: -0.15rem;
+				top: -0.95rem;
 				width: 1.1rem;
 			}
 			:host([on]) .d2l-switch-toggle > div {
@@ -211,9 +210,9 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				role="switch"
 				tabindex="${ifDefined(tabindex)}">
 				<div class="${classMap(innerSwitchClasses)}">
-					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
+					<div class="d2l-switch-toggle"><div></div></div>
 				</div>
 			</div>
 			${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
