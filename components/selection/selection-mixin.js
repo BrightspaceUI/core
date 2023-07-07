@@ -57,7 +57,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		super();
 		this.selectionSingle = false;
 		this._selectAllPages = false;
-		this._selectionObservers = new Map();
+		this._selectionObservers = new Set();
 		this._selectionSelectables = new Map();
 	}
 
@@ -91,7 +91,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (this._selectAllPages) {
 			state = SelectionInfo.states.allPages;
 		} else {
-			this._selectionSelectables.forEach(selectable => {
+			this._selectionSelectables.forEach((path, selectable) => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
 			});
@@ -110,7 +110,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 		this._selectAllPages = (selected && selectAllPages);
 
-		this._selectionSelectables.forEach(selectable => {
+		this._selectionSelectables.forEach((path, selectable) => {
 			if (!selectable.disabled && !!selectable.selected !== selected) {
 				selectable.selected = selected;
 			}
@@ -120,7 +120,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	subscribeObserver(target) {
 		if (this._selectionObservers.has(target)) return;
-		this._selectionObservers.set(target, target);
+		this._selectionObservers.add(target);
 		this._updateSelectionObservers();
 	}
 
@@ -134,7 +134,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	}
 
 	_focusSelectAll() {
-		for (const observer of this._selectionObservers.values()) {
+		for (const observer of this._selectionObservers) {
 			if (observer.tagName === 'D2L-SELECTION-SELECT-ALL') {
 				observer.focus();
 				break;
@@ -157,7 +157,12 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
 		const selectables = Array.from(this._selectionSelectables.values())
-			.filter(item => !item.disabled);
+			.filter(item => !item.disabled)
+			.sort((a, b) => {
+				const idx = a.findIndex((el, idx) => el !== b[idx]);
+				return a[idx].compareDocumentPosition(b[idx]) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+			})
+			.map(p => p.slice(-1)[0]);
 		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
 		let newIndex;
@@ -181,7 +186,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (!e.detail.selected) this._selectAllPages = false;
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
-			this._selectionSelectables.forEach(selectable => {
+			this._selectionSelectables.forEach((path, selectable) => {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
 			});
 		}
@@ -191,13 +196,14 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	_handleSelectionInputSubscribe(e) {
 		e.stopPropagation();
 		e.detail.provider = this;
-		const target = e.composedPath()[0];
+		const path = e.composedPath();
+		const target = path[0];
 		if (this._selectionSelectables.has(target)) return;
-		this._selectionSelectables.set(target, target);
+		this._selectionSelectables.set(target, path.reverse());
 
 		if (this.selectionSingle && target.selected) {
 			// check invalid usage/state - make sure no others are selected
-			this._selectionSelectables.forEach(selectable => {
+			this._selectionSelectables.forEach((path, selectable) => {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
 			});
 		}
@@ -208,12 +214,11 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	_handleSelectionObserverSubscribe(e) {
 		e.stopPropagation();
 		e.detail.provider = this;
-		const target = e.composedPath()[0];
-		this.subscribeObserver(target);
+		this.subscribeObserver(e.composedPath()[0]);
 	}
 
 	_updateSelectionObservers() {
-		if (!this._selectionObservers || this._selectionObservers.size === 0) return;
+		if (!this._selectionObservers?.size) return;
 
 		// debounce the updates for select-all case
 		if (this._updateObserversRequested) return;
