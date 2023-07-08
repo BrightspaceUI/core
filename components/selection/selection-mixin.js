@@ -59,6 +59,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		this._selectAllPages = false;
 		this._selectionObservers = new Set();
 		this._selectionSelectables = new Map();
+		this._sortedSelectables = [];
 	}
 
 	connectedCallback() {
@@ -130,6 +131,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	unsubscribeSelectable(target) {
 		this._selectionSelectables.delete(target);
+		this._updateSortedSelectables();
 		this._updateSelectionObservers();
 	}
 
@@ -156,30 +158,23 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
-		const selectables = Array.from(this._selectionSelectables.values())
-			.filter(item => !item.disabled)
-			.sort((a, b) => {
-				const idx = a.findIndex((el, idx) => el !== b[idx]);
-				return a[idx].compareDocumentPosition(b[idx]) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
-			})
-			.map(p => p.slice(-1)[0]);
-		let currentIndex = selectables.findIndex(selectable => selectable.selected);
+		let currentIndex = this._sortedSelectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
 		let newIndex;
 
 		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| e.keyCode === keyCodes.DOWN) {
-			if (currentIndex === selectables.length - 1) newIndex = 0;
+			if (currentIndex === this._sortedSelectables.length - 1) newIndex = 0;
 			else newIndex = currentIndex + 1;
 		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| e.keyCode === keyCodes.UP) {
-			if (currentIndex === 0) newIndex = selectables.length - 1;
+			if (currentIndex === 0) newIndex = this._sortedSelectables.length - 1;
 			else newIndex = currentIndex - 1;
 		}
-		selectables[newIndex].selected = true;
-		selectables[newIndex].focus();
+		this._sortedSelectables[newIndex].selected = true;
+		this._sortedSelectables[newIndex].focus();
 	}
 
 	_handleSelectionChange(e) {
@@ -208,6 +203,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			});
 		}
 
+		this._updateSortedSelectables();
 		this._updateSelectionObservers();
 	}
 
@@ -228,7 +224,25 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			const info = this.getSelectionInfo(true);
 			this._selectionObservers.forEach(observer => observer.selectionInfo = info);
 			this._updateObserversRequested = false;
-		}, 0);
+		});
+	}
+
+	_updateSortedSelectables() {
+
+		if (this._updateSortedSelectablesRequested) return;
+
+		this._updateSortedSelectablesRequested = true;
+		setTimeout(() => {
+			this._sortedSelectables = Array.from(this._selectionSelectables.values())
+				.filter(item => !item.disabled)
+				.sort((a, b) => {
+					const idx = a.findIndex((el, idx) => el !== b[idx]);
+					return a[idx].compareDocumentPosition(b[idx]) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+				})
+				.map(p => p.slice(-1)[0]);
+
+			this._updateSortedSelectablesRequested = false;
+		});
 	}
 
 };
