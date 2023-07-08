@@ -158,23 +158,25 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
-		let currentIndex = this._sortedSelectables.findIndex(selectable => selectable.selected);
+		const selectables = this._sortedSelectables.filter(item => !item.disabled);
+
+		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
 		let newIndex;
 
 		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| e.keyCode === keyCodes.DOWN) {
-			if (currentIndex === this._sortedSelectables.length - 1) newIndex = 0;
+			if (currentIndex === selectables.length - 1) newIndex = 0;
 			else newIndex = currentIndex + 1;
 		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
 			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
 			|| e.keyCode === keyCodes.UP) {
-			if (currentIndex === 0) newIndex = this._sortedSelectables.length - 1;
+			if (currentIndex === 0) newIndex = selectables.length - 1;
 			else newIndex = currentIndex - 1;
 		}
-		this._sortedSelectables[newIndex].selected = true;
-		this._sortedSelectables[newIndex].focus();
+		selectables[newIndex].selected = true;
+		selectables[newIndex].focus();
 	}
 
 	_handleSelectionChange(e) {
@@ -234,7 +236,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		this._updateSortedSelectablesRequested = true;
 		setTimeout(() => {
 			this._sortedSelectables = Array.from(this._selectionSelectables.values())
-				.filter(item => !item.disabled)
 				.sort((a, b) => {
 					const idx = a.findIndex((el, idx) => el !== b[idx]);
 					return a[idx].compareDocumentPosition(b[idx]) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
