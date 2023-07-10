@@ -77,7 +77,7 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 			d2l-tooltip {
 				cursor: text;
 			}
-			:host([skeleton-active]) #d2l-tooltip-help-text.d2l-skeletize {
+			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
 				text-decoration: none;
 			}
 		`];

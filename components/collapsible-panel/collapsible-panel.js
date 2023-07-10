@@ -112,7 +112,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.4rem;
 			}
-			:host(:not([expanded]):not([skeleton-active])) .d2l-collapsible-panel {
+			:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
 				cursor: pointer;
 			}
 			:host([type="subtle"]) .d2l-collapsible-panel {
@@ -150,7 +150,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				grid-template-rows: auto auto;
 				padding: var(--d2l-collapsible-panel-header-spacing) 0;
 			}
-			:host(:not([skeleton-active])) .d2l-collapsible-panel-header {
+			:host(:not([skeleton])) .d2l-collapsible-panel-header {
 				cursor: pointer;
 			}
 			:host([type="inline"]) .d2l-collapsible-panel-header {
