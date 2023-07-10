@@ -66,6 +66,12 @@ class FormNestedDemo extends LitElement {
 								</select>
 							</label>
 						</div>
+						<div class="d2l-form-demo-container">
+							<label for="native">Magic Word</label>
+							<d2l-validation-custom for="native" @d2l-validation-custom-validate=${this._validateMagicWord} failure-text="Expected please" ></d2l-validation-custom>
+							<input id="native" name="native" required type="text"></d2l-input-text>
+							
+						</div>
 					</d2l-form>
 					<d2l-form-panel-demo></d2l-form-panel-demo>
 				</div>
@@ -91,6 +97,10 @@ class FormNestedDemo extends LitElement {
 
 	_validatePassword(e) {
 		e.detail.resolve(e.detail.forElement.value === 'hunter2');
+	}
+
+	_validateMagicWord(e) {
+		e.detail.resolve(e.detail.forElement.value === 'please');
 	}
 }
 customElements.define('d2l-form-demo', FormNestedDemo);

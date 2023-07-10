@@ -6,6 +6,7 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
@@ -32,11 +33,11 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 			this._firstUpdateResolve = resolve;
 		});
 		this._tooltips = new Map();
-		this._validationCustoms = new Set();
 
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
-		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+
+		this._validationCustomsController = new SubscriberRegistryController(this, 'validation-custom', {});
 	}
 
 	connectedCallback() {
@@ -162,7 +163,7 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		if (isCustomFormElement(ele)) {
 			return ele.validate(showNewErrors);
 		} else if (isNativeFormElement(ele)) {
-			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
+			const customs = Array.from(this._validationCustomsController.subscribers.values()).filter(custom => custom.forElement === ele);
 			const results = await Promise.all(customs.map(custom => custom.validate()));
 			const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 			if (!ele.checkValidity()) {
@@ -177,18 +178,6 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 			return errors;
 		}
 		return [];
-	}
-
-	_validationCustomConnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this._validationCustoms.add(custom);
-
-		const onDisconnect = () => {
-			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
-			this._validationCustoms.delete(custom);
-		};
-		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };
