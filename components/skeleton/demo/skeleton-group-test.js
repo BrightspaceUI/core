@@ -9,6 +9,7 @@ class SkeletonTestGroup extends LitElement {
 	static get properties() {
 		return {
 			_loadAsGroup: { state: true },
+			_items: { state: true },
 		};
 	}
 	static get styles() {
@@ -27,10 +28,18 @@ class SkeletonTestGroup extends LitElement {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._items = ['1', '2', '3'];
+	}
+
 	render() {
 		return html`
 			<div class="controls">
 				<d2l-button-subtle @click="${this._loadItems}" text="Load items" icon="tier1:download"></d2l-button-subtle>
+				<d2l-button-subtle @click="${this._addItem}" text="Add item" icon="tier1:add"></d2l-button-subtle>
+				<d2l-button-subtle @click="${this._removeItem}" text="Remove item" icon="tier1:delete"></d2l-button-subtle>
+
 				<d2l-switch @click="${this._toggleLoadType}" text="Wait for all elements to load" ?on="${this._loadAsGroup}"></d2l-switch>
 			</div>
 
@@ -38,18 +47,26 @@ class SkeletonTestGroup extends LitElement {
 		`;
 	}
 
+	_addItem() {
+		this._items.push((this._items.length + 1).toString());
+		this.requestUpdate();
+	}
+
 	_loadItems() {
-		const ids = ['1', '2', '3'];
+		const ids = this._items;
 		ids.forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
 		ids.forEach(id =>  setTimeout(() => { this.shadowRoot.getElementById(id).skeleton = false; }, Math.random() * 2000));
+	}
+
+	_removeItem() {
+		this._items.pop();
+		this.requestUpdate();
 	}
 
 	_renderContents() {
 		return html`
 			<d2l-collapsible-panel-group>
-				<d2l-collapsible-panel skeleton id="1" panel-title="Item 1">Contents</d2l-collapsible-panel>
-				<d2l-collapsible-panel skeleton id="2" panel-title="Item 2">Contents</d2l-collapsible-panel>
-				<d2l-collapsible-panel skeleton id="3" panel-title="Item 3">Contents</d2l-collapsible-panel>
+				${this._items.map(item => (html`<d2l-collapsible-panel skeleton id="${item}" panel-title="Item ${item}">Contents</d2l-collapsible-panel>`))}
 			</d2l-collapsible-panel-group>
 		`;
 	}
