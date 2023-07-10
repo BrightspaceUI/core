@@ -156,8 +156,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
 			 * @type {boolean}
 			 */
-			skeleton: { reflect: true, type: Boolean  },
-			_skeletonActive: { state: true },
+			skeleton: { reflect: true, type: Boolean  }
 		};
 	}
 
@@ -169,11 +168,9 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	constructor() {
 		super();
+		this._skeleton = false;
 		this._skeletonActive = false;
-		this._readyToDisplay = true;
-		this._waitToDisplay = false;
-
-		this.skeleton = false;
+		this._skeletonWait = false;
 
 		this._parentSkeleton = new EventSubscriberController(this, 'skeleton', {
 			onSubscribe: this._onSubscribe.bind(this),
@@ -187,42 +184,38 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	set skeleton(val) {
 		const oldVal = this._skeleton;
-		if (oldVal !== val) {
-			this._skeleton = val;
+		if (oldVal === val) return;
+		this._skeleton = val;
+		if (!this._skeletonWait) {
 			this._skeletonActive = val;
 			this.requestUpdate('skeleton', oldVal);
-		}
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('skeleton')) {
+		} else {
 			this._parentSkeleton._registryController?.updateSubscribers();
 		}
 	}
 
-	changeDisplay(renderContent) {
-		this._readyToDisplay = renderContent;
-		this._updateDisplayState();
+	setSkeletonActive(skeletonActive) {
+		const oldVal = this._skeletonActive;
+		if (skeletonActive !== oldVal) {
+			this._skeletonActive = skeletonActive;
+			this.requestUpdate('skeleton', oldVal);
+		}
 	}
 
 	_onSubscribe() {
-		this._waitToDisplay = true;
-		this._readyToDisplay = false;
-		this._updateDisplayState();
+		this._skeletonWait = true;
+		if (this._skeleton !== this._skeletonActive) {
+			this._skeletonActive = true;
+			this.requestUpdate('skeleton', this._skeleton);
+		}
 	}
 
 	_onUnsubscribe() {
-		this._waitToDisplay = false;
-		this._readyToDisplay = true;
-		this._updateDisplayState();
-	}
-
-	_updateDisplayState() {
-		if (this._waitToDisplay) {
-			this._skeletonActive = !this._readyToDisplay;
-		} else {
+		this._skeletonWait = false;
+		if (this._skeleton !== this._skeletonActive) {
 			this._skeletonActive = this._skeleton;
+			this.requestUpdate('skeleton', this._skeleton);
 		}
 	}
+
 });
