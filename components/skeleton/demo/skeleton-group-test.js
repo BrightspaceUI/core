@@ -41,7 +41,7 @@ class SkeletonTestGroup extends LitElement {
 	_loadItems() {
 		const ids = ['1', '2', '3'];
 		ids.forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
-		ids.forEach(id =>  setTimeout(() => { this.shadowRoot.getElementById(id).skeleton = false; }, Math.random() * 1000));
+		ids.forEach(id =>  setTimeout(() => { this.shadowRoot.getElementById(id).skeleton = false; }, Math.random() * 2000));
 	}
 
 	_renderContents() {

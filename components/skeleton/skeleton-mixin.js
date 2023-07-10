@@ -16,10 +16,10 @@ export const skeletonStyles = css`
 		75% { background-color: var(--d2l-color-sylvite); }
 		100% { background-color: var(--d2l-color-sylvite); }
 	}
-	:host([skeleton-active]) {
+	:host([skeleton]) {
 		opacity: 0.999;
 	}
-	:host([skeleton-active]) .d2l-skeletize::before {
+	:host([skeleton]) .d2l-skeletize::before {
 		animation: ${animation};
 		background-color: var(--d2l-color-sylvite);
 		border-radius: 0.2rem;
@@ -32,118 +32,118 @@ export const skeletonStyles = css`
 		z-index: 997;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:host([skeleton-active]) .d2l-skeletize::before {
+		:host([skeleton]) .d2l-skeletize::before {
 			animation: none;
 		}
 	}
-	:host([skeleton-active]) .d2l-skeletize,
-	:host([skeleton-active]) .d2l-skeletize-container {
+	:host([skeleton]) .d2l-skeletize,
+	:host([skeleton]) .d2l-skeletize-container {
 		background-color: transparent;
 		border-color: var(--d2l-color-sylvite);
 		box-shadow: none;
 		color: transparent;
 		position: relative;
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-2 {
+	:host([skeleton]) .d2l-skeletize-paragraph-2 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%2211%25%22%20width%3D%22100%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2261%25%22%20width%3D%2290%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
 		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:host([skeleton-active]) .d2l-skeletize-paragraph-2 {
+		:host([skeleton]) .d2l-skeletize-paragraph-2 {
 			background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Crect%20y%3D%2211%25%22%20width%3D%22100%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2261%25%22%20width%3D%2290%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%3C%2Fsvg%3E');
 		}
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-2::before {
+	:host([skeleton]) .d2l-skeletize-paragraph-2::before {
 		content: '\\A';
 		white-space: pre;
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-3 {
+	:host([skeleton]) .d2l-skeletize-paragraph-3 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%227%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2240%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2274%25%22%20width%3D%2290%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
 		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:host([skeleton-active]) .d2l-skeletize-paragraph-3 {
+		:host([skeleton]) .d2l-skeletize-paragraph-3 {
 			background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Crect%20y%3D%227%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2240%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2274%25%22%20width%3D%2290%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%3C%2Fsvg%3E');
 		}
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-3::before {
+	:host([skeleton]) .d2l-skeletize-paragraph-3::before {
 		content: '\\A \\A';
 		white-space: pre;
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-5 {
+	:host([skeleton]) .d2l-skeletize-paragraph-5 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2244%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2264%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2284%25%22%20width%3D%2290%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
 		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:host([skeleton-active]) .d2l-skeletize-paragraph-5 {
+		:host([skeleton]) .d2l-skeletize-paragraph-5 {
 			background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Crect%20y%3D%224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2244%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2264%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%20%20%3Crect%20y%3D%2284%25%22%20width%3D%2290%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20fill%3D%22%23f1f5fb%22%2F%3E%0A%3C%2Fsvg%3E');
 		}
 	}
-	:host([skeleton-active]) .d2l-skeletize-paragraph-5::before {
+	:host([skeleton]) .d2l-skeletize-paragraph-5::before {
 		content: '\\A \\A \\A \\A';
 		white-space: pre;
 	}
-	:host([skeleton-active][dir="rtl"]) .d2l-skeletize-paragraph-2,
-	:host([skeleton-active][dir="rtl"]) .d2l-skeletize-paragraph-3,
-	:host([skeleton-active][dir="rtl"]) .d2l-skeletize-paragraph-5 {
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-2,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-3,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-5 {
 		transform: scale(-1, 1);
 		transform-origin: center;
 	}
-	:host([skeleton-active]) .d2l-skeletize-95::before {
+	:host([skeleton]) .d2l-skeletize-95::before {
 		width: 95%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-90::before {
+	:host([skeleton]) .d2l-skeletize-90::before {
 		width: 90%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-85::before {
+	:host([skeleton]) .d2l-skeletize-85::before {
 		width: 85%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-80::before {
+	:host([skeleton]) .d2l-skeletize-80::before {
 		width: 80%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-75::before {
+	:host([skeleton]) .d2l-skeletize-75::before {
 		width: 75%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-70::before {
+	:host([skeleton]) .d2l-skeletize-70::before {
 		width: 70%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-65::before {
+	:host([skeleton]) .d2l-skeletize-65::before {
 		width: 65%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-60::before {
+	:host([skeleton]) .d2l-skeletize-60::before {
 		width: 60%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-55::before {
+	:host([skeleton]) .d2l-skeletize-55::before {
 		width: 55%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-50::before {
+	:host([skeleton]) .d2l-skeletize-50::before {
 		width: 50%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-45::before {
+	:host([skeleton]) .d2l-skeletize-45::before {
 		width: 45%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-40::before {
+	:host([skeleton]) .d2l-skeletize-40::before {
 		width: 40%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-35::before {
+	:host([skeleton]) .d2l-skeletize-35::before {
 		width: 35%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-30::before {
+	:host([skeleton]) .d2l-skeletize-30::before {
 		width: 30%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-25::before {
+	:host([skeleton]) .d2l-skeletize-25::before {
 		width: 25%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-20::before {
+	:host([skeleton]) .d2l-skeletize-20::before {
 		width: 20%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-15::before {
+	:host([skeleton]) .d2l-skeletize-15::before {
 		width: 15%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-10::before {
+	:host([skeleton]) .d2l-skeletize-10::before {
 		width: 10%;
 	}
-	:host([skeleton-active]) .d2l-skeletize-5::before {
+	:host([skeleton]) .d2l-skeletize-5::before {
 		width: 5%;
 	}
 `;
@@ -157,11 +157,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * @type {boolean}
 			 */
 			skeleton: { reflect: true, type: Boolean  },
-			/**
-			 * Internally set property to indicate whether the component is currently in a "skeleton" state.
-			 * @type {boolean}
-			 */
-			skeletonActive: { reflect: true, type: Boolean, attribute: 'skeleton-active' },
+			_skeletonActive: { state: true },
 		};
 	}
 
@@ -174,7 +170,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	constructor() {
 		super();
 		this.skeleton = false;
-		this.skeletonActive = false;
+		this._skeletonActive = false;
 		this._readyToDisplay = true;
 		this._waitToDisplay = false;
 
@@ -184,32 +180,45 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		});
 	}
 
+	get skeleton() {
+		return this._skeletonActive;
+	}
+
+	set skeleton(val) {
+		const oldVal = this._skeleton;
+		if (oldVal !== val) {
+			this._skeleton = val;
+			this.requestUpdate('skeleton', oldVal);
+			this.requestUpdate('_skeletonActive', oldVal);
+		}
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('skeleton')) {
-			this._updateSkeletonActive();
+			this._updateDisplayState();
 			this._parentSkeleton._registryController?.updateSubscribers();
 		}
 	}
 
 	changeDisplay(renderContent) {
 		this._readyToDisplay = renderContent;
-		this._updateSkeletonActive();
+		this._updateDisplayState();
 	}
 
 	_onSubscribe() {
 		this._waitToDisplay = true;
 		this._readyToDisplay = false;
-		this._updateSkeletonActive();
+		this._updateDisplayState();
 	}
 
 	_onUnsubscribe() {
 		this._waitToDisplay = false;
 		this._readyToDisplay = true;
-		this._updateSkeletonActive();
+		this._updateDisplayState();
 	}
 
-	_updateSkeletonActive() {
-		this.skeletonActive = this._waitToDisplay ? !this._readyToDisplay : this.skeleton;
+	_updateDisplayState() {
+		if (this._waitToDisplay) { this.skeleton = !this._readyToDisplay; }
 	}
 });
