@@ -79,7 +79,7 @@ describe('d2l-list', () => {
 
 				const listItem = elem.querySelector('[key="L2-2"]');
 
-				await sendKeysElem(listItem, 'press', testCase.keyPress);
+				await sendKeysElem(listItem, 'down', testCase.keyPress);
 
 				expect(elem.querySelector('[_focusing]')).to.equal(listItem);
 			});
@@ -109,7 +109,7 @@ describe('d2l-list', () => {
 				`);
 				const listItem = elem.querySelector(`[key="${initialFocus}"]`);
 
-				await sendKeysElem(listItem, 'press', keyPress);
+				await sendKeysElem(listItem, 'down', keyPress);
 
 				const focusedElement = elem.querySelector('[_focusing]');
 				const focusTarget = elem.querySelector('[key="L3-2');
@@ -129,7 +129,7 @@ describe('d2l-list', () => {
 
 			const listItem = elem.querySelector('[key="L1-2"]');
 
-			await sendKeysElem(listItem, 'press', 'ArrowUp');
+			await sendKeysElem(listItem, 'down', 'ArrowUp');
 			const focusedElement = elem.querySelector('[_focusing]');
 
 			expect(focusedElement).to.equal(listItem);
