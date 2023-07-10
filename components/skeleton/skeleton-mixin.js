@@ -170,7 +170,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		super();
 		this._skeleton = false;
 		this._skeletonActive = false;
-		this._waitToDisplay = false;
+		this._skeletonWait = false;
 
 		this._parentSkeleton = new EventSubscriberController(this, 'skeleton', {
 			onSubscribe: this._onSubscribe.bind(this),
@@ -186,7 +186,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		const oldVal = this._skeleton;
 		if (oldVal === val) return;
 		this._skeleton = val;
-		if (!this._waitToDisplay) {
+		if (!this._skeletonWait) {
 			this._skeletonActive = val;
 			this.requestUpdate('skeleton', oldVal);
 		} else {
@@ -203,7 +203,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	}
 
 	_onSubscribe() {
-		this._waitToDisplay = true;
+		this._skeletonWait = true;
 		if (this._skeleton !== this._skeletonActive) {
 			this._skeletonActive = true;
 			this.requestUpdate('skeleton', this._skelton);
@@ -211,7 +211,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	}
 
 	_onUnsubscribe() {
-		this._waitToDisplay = false;
+		this._skeletonWait = false;
 		if (this._skeleton !== this._skeletonActive) {
 			this._skeletonActive = this._skeleton;
 			this.requestUpdate('skeleton', this._skeleton);
