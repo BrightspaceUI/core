@@ -6,17 +6,17 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 	constructor() {
 		super();
 
-		this._readyToDisplayCached = false;
+		this._skeletonActiveCached = true;
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			updateSubscribers: this._checkSubscribersReadyToDisplay.bind(this)
 		});
 	}
 
 	_checkSubscribersReadyToDisplay(subscribers) {
-		const readyToDisplay = ![...subscribers.values()].some(subscriber => subscriber.skeleton);
-		if (readyToDisplay !== this._readyToDisplayCached) {
-			this._readyToDisplayCached = readyToDisplay;
-			subscribers.forEach(subscriber => subscriber.changeDisplay(readyToDisplay));
+		const skeletonActive = [...subscribers.values()].some(subscriber => subscriber._skeleton);
+		if (skeletonActive !== this._skeletonActiveCached) {
+			this._skeletonActiveCached = skeletonActive;
+			subscribers.forEach(subscriber => subscriber.setSkeletonActive(skeletonActive));
 		}
 	}
 });
