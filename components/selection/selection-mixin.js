@@ -1,5 +1,6 @@
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -57,8 +58,16 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		super();
 		this.selectionSingle = false;
 		this._selectAllPages = false;
-		this._selectionObservers = new Map();
-		this._selectionSelectables = new Map();
+
+		this._observerController = new SubscriberRegistryController(this, 'selection-observer', {
+			onSubscribe: this._subscribeObserver.bind(this),
+			updateSubscribers: this._updateObservers.bind(this)
+		});
+
+		this._selectablesController = new SubscriberRegistryController(this, 'selection-input', {
+			onSubscribe: this._subscribeSelectable.bind(this),
+			onUnsubscribe: this._unsubscribeSelectable.bind(this)
+		});
 	}
 
 	connectedCallback() {
@@ -66,8 +75,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (this.selectionSingle) this.addEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.addEventListener('keyup', this._handleRadioKeyUp);
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 		requestAnimationFrame(() => {
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-selection-provider-connected', { bubbles: true, composed: true }));
@@ -80,8 +87,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (this.selectionSingle) this.removeEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.removeEventListener('keyup', this._handleRadioKeyUp);
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
 
 	getSelectionInfo() {
@@ -91,13 +96,13 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (this._selectAllPages) {
 			state = SelectionInfo.states.allPages;
 		} else {
-			this._selectionSelectables.forEach(selectable => {
+			this._selectablesController.subscribers.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
 			});
 
 			if (keys.length > 0) {
-				if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
+				if (keys.length === this._selectablesController.subscribers.size) state = SelectionInfo.states.all;
 				else state = SelectionInfo.states.some;
 			}
 		}
@@ -110,31 +115,16 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 		this._selectAllPages = (selected && selectAllPages);
 
-		this._selectionSelectables.forEach(selectable => {
+		this._selectablesController.subscribers.forEach(selectable => {
 			if (!selectable.disabled && !!selectable.selected !== selected) {
 				selectable.selected = selected;
 			}
 		});
-		this._updateSelectionObservers();
-	}
-
-	subscribeObserver(target) {
-		if (this._selectionObservers.has(target)) return;
-		this._selectionObservers.set(target, target);
-		this._updateSelectionObservers();
-	}
-
-	unsubscribeObserver(target) {
-		this._selectionObservers.delete(target);
-	}
-
-	unsubscribeSelectable(target) {
-		this._selectionSelectables.delete(target);
-		this._updateSelectionObservers();
+		this._observerController.updateSubscribers();
 	}
 
 	_focusSelectAll() {
-		for (const observer of this._selectionObservers.values()) {
+		for (const observer of this._observerController.subscribers) {
 			if (observer.tagName === 'D2L-SELECTION-SELECT-ALL') {
 				observer.focus();
 				break;
@@ -156,7 +146,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
-		const selectables = Array.from(this._selectionSelectables.values())
+		const selectables = Array.from(this._selectablesController.subscribers.values())
 			.filter(item => !item.disabled);
 		let currentIndex = selectables.findIndex(selectable => selectable.selected);
 		if (currentIndex === -1) currentIndex = 0;
@@ -181,49 +171,36 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		if (!e.detail.selected) this._selectAllPages = false;
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
-			this._selectionSelectables.forEach(selectable => {
+			this._selectablesController.subscribers.forEach(selectable => {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
 			});
 		}
-		this._updateSelectionObservers();
+		this._observerController.updateSubscribers();
 	}
 
-	_handleSelectionInputSubscribe(e) {
-		e.stopPropagation();
-		e.detail.provider = this;
-		const target = e.composedPath()[0];
-		if (this._selectionSelectables.has(target)) return;
-		this._selectionSelectables.set(target, target);
+	_subscribeObserver(observer) {
+		const info = this.getSelectionInfo(true);
+		observer.selectionInfo = info;
+	}
 
-		if (this.selectionSingle && target.selected) {
+	_subscribeSelectable(addedSelectable) {
+		if (this.selectionSingle && addedSelectable.selected) {
 			// check invalid usage/state - make sure no others are selected
-			this._selectionSelectables.forEach(selectable => {
-				if (selectable.selected && selectable !== target) selectable.selected = false;
+			this._selectablesController.subscribers.forEach(selectable => {
+				if (selectable.selected && selectable !== addedSelectable) selectable.selected = false;
 			});
 		}
 
-		this._updateSelectionObservers();
+		this._observerController.updateSubscribers();
 	}
 
-	_handleSelectionObserverSubscribe(e) {
-		e.stopPropagation();
-		e.detail.provider = this;
-		const target = e.composedPath()[0];
-		this.subscribeObserver(target);
+	_unsubscribeSelectable() {
+		this._observerController.updateSubscribers();
 	}
 
-	_updateSelectionObservers() {
-		if (!this._selectionObservers || this._selectionObservers.size === 0) return;
-
-		// debounce the updates for select-all case
-		if (this._updateObserversRequested) return;
-
-		this._updateObserversRequested = true;
-		setTimeout(() => {
-			const info = this.getSelectionInfo(true);
-			this._selectionObservers.forEach(observer => observer.selectionInfo = info);
-			this._updateObserversRequested = false;
-		}, 0);
+	_updateObservers(observers) {
+		const info = this.getSelectionInfo(true);
+		observers.forEach(observer => observer.selectionInfo = info);
 	}
 
 };

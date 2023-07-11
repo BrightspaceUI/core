@@ -206,21 +206,21 @@ describe('SelectionMixin', () => {
 	});
 
 	it('registers observers', async() => {
-		expect(el._selectionObservers.size).to.equal(2);
+		expect(el._observerController.subscribers.size).to.equal(2);
 	});
 
 	it('unregisters observers', async() => {
 		el.removeChild(el.querySelector('d2l-selection-summary'));
-		expect(el._selectionObservers.size).to.equal(1);
+		expect(el._observerController.subscribers.size).to.equal(1);
 	});
 
 	it('registers selectables', async() => {
-		expect(el._selectionSelectables.size).to.equal(4);
+		expect(el._selectablesController.subscribers.size).to.equal(4);
 	});
 
 	it('unregisters selectables', async() => {
 		el.removeChild(el.querySelector('[key="key1"]'));
-		expect(el._selectionSelectables.size).to.equal(3);
+		expect(el._selectablesController.subscribers.size).to.equal(3);
 	});
 
 	it('returns none for getSelectionInfo when none selected', async() => {
@@ -325,103 +325,99 @@ describe('SelectionObserverMixin', () => {
 	});
 
 	it('registers observers', async() => {
-		expect(collection._selectionObservers.size).to.equal(2);
+		expect(collection._observerController.subscribers.size).to.equal(2);
 
 		el.querySelector('d2l-selection-summary').selectionFor = 'd2l-test-selection';
 		await collection.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(3);
+		expect(collection._observerController.subscribers.size).to.equal(3);
 
 		const newObserver = document.createElement('d2l-selection-action');
 		newObserver.selectionFor = 'd2l-test-selection';
 		el.appendChild(newObserver);
 		await newObserver.updateComplete;
 
-		expect(collection._selectionObservers.size).to.equal(4);
+		expect(collection._observerController.subscribers.size).to.equal(4);
 	});
 
 	it('unregisters observers', async() => {
-		expect(collection._selectionObservers.size).to.equal(2);
+		expect(collection._observerController.subscribers.size).to.equal(2);
 		el.removeChild(el.querySelector('d2l-selection-action'));
 		await collection.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(1);
+		expect(collection._observerController.subscribers.size).to.equal(1);
 
 		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection';
 		await collection.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(0);
+		expect(collection._observerController.subscribers.size).to.equal(0);
 	});
 
 	it('unregisters and registers the SelectionMixin component', async() => {
 		const observer = el.querySelector('d2l-selection-action');
 		const provider = el.querySelector('#d2l-test-selection');
 
-		expect(observer._provider).to.equal(provider);
+		expect(observer._registry).to.equal(provider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.some);
 
 		el.removeChild(el.querySelector('#d2l-test-selection'));
 		await observer.updateComplete;
-		expect(observer._provider).to.be.null;
+		expect(observer._registry).to.be.null;
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
 
 		const newProvider = document.createElement('d2l-test-selection');
 		newProvider.id = 'd2l-test-selection';
 		el.appendChild(newProvider);
 		await observer.updateComplete;
-		expect(observer._provider).to.equal(newProvider);
+		expect(observer._registry).to.equal(newProvider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
 	});
 
-	it('should unsubscribe and remove provider/observer when selectionFor is cleared', async() => {
+	it('should unsubscribe and remove registry when selectionFor is cleared', async() => {
 		const observer = el.querySelector('d2l-selection-action');
-		expect(collection._selectionObservers.size).to.equal(2);
-		expect(observer._provider).to.equal(collection);
-		expect(observer._selectionForObserver).not.to.be.undefined;
+		expect(collection._observerController.subscribers.size).to.equal(2);
+		expect(observer._registry).to.equal(collection);
 
 		observer.selectionFor = '';
 		await observer.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(1);
-		expect(observer._provider).to.be.undefined;
-		expect(observer._selectionForObserver).to.be.undefined;
+		expect(collection._observerController.subscribers.size).to.equal(1);
+		expect(observer._registry).to.be.null;
 	});
 
-	it('should resubscribe/observe when disconnected and reconnected', async() => {
+	it('should resubscribe when disconnected and reconnected', async() => {
 		const observer = el.querySelector('d2l-selection-action');
 
 		el.removeChild(observer);
 		await collection.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(1);
-		expect(observer._selectionForObserver).to.be.undefined;
-		expect(observer._provider).to.be.undefined;
+		expect(collection._observerController.subscribers.size).to.equal(1);
+		//expect(observer._registry).to.be.null; Do we care to clear this on disconnect?
 
 		el.appendChild(observer);
 		await nextFrame();
 		await nextFrame();
 		await collection.updateComplete;
-		expect(collection._selectionObservers.size).to.equal(2);
-		expect(observer._selectionForObserver).not.to.be.undefined;
-		expect(observer._provider).not.to.be.undefined;
+		expect(collection._observerController.subscribers.size).to.equal(2);
+		expect(observer._registry).to.exist;
 	});
 
 	it('should automatically subscribe any child selection-observers', async() => {
 		const collection2 = el.querySelector('#d2l-test-selection-2');
 		const observer = el.querySelector('d2l-test-selection-observer-shadow').shadowRoot.querySelector('d2l-test-selection-observer');
-		expect(observer._provider).to.equal(collection2);
-		expect(collection2._selectionObservers.size).to.equal(2);
+		expect(observer._registry).to.equal(collection2);
+		expect(collection2._observerController.subscribers.size).to.equal(2);
 	});
 
 	it('should attach to a new provider when connected in a different context', async() => {
 		const collection3 = el.querySelector('#d2l-test-selection-3');
 		const collection4 = el.querySelector('#d2l-test-selection-4');
 		const observer = collection3.querySelector('d2l-selection-action');
-		expect(collection3._selectionObservers.size).to.equal(1);
-		expect(collection4._selectionObservers.size).to.equal(0);
+		expect(collection3._observerController.subscribers.size).to.equal(1);
+		expect(collection4._observerController.subscribers.size).to.equal(0);
 
 		collection4.appendChild(observer);
 		await nextFrame();
 		await nextFrame();
 		await collection4.updateComplete;
 		await collection3.updateComplete;
-		expect(collection3._selectionObservers.size).to.equal(0);
-		expect(collection4._selectionObservers.size).to.equal(1);
-		expect(observer._provider).to.equal(collection4);
+		expect(collection3._observerController.subscribers.size).to.equal(0);
+		expect(collection4._observerController.subscribers.size).to.equal(1);
+		expect(observer._registry).to.equal(collection4);
 	});
 });

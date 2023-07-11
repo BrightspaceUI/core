@@ -153,21 +153,30 @@ export class IdSubscriberController extends BaseSubscriber {
 		super(host, name, options);
 
 		this._idPropertyName = options && options.idPropertyName;
-		this._idPropertyValue = this._idPropertyName ? this._host[this._idPropertyName] : undefined;
 		this._registries = new Map();
 		this._registryControllers = new Map();
+
+		this._handlePassthrough = this._handlePassthrough.bind(this);
 	}
 
 	get registries() {
 		return Array.from(this._registries.values());
 	}
 
+	hostConnected() {
+		// Id controllers will catch events the same name of nested children and hook them up to the same registry(ies?)
+		if (this._eventName) this._host.addEventListener(this._eventName, this._handlePassthrough);
+	}
+
 	hostDisconnected() {
 		super.hostDisconnected();
+		if (this._eventName) this._host.removeEventListener(this._eventName, this._handlePassthrough);
+
 		if (this._registryObserver) this._registryObserver.disconnect();
 		this._registryControllers.forEach(controller => {
 			controller.unsubscribe(this._host);
 		});
+		this._idPropertyValue = undefined;
 	}
 
 	hostUpdated() {
@@ -194,6 +203,14 @@ export class IdSubscriberController extends BaseSubscriber {
 			childList: true,
 			subtree: true
 		});
+	}
+
+	_handlePassthrough(e) {
+		if (this._registryControllers.size > 0) {
+			const target = e.composedPath()[0];
+			if (target === this._host) return;
+			Array.from(this._registryControllers.values())[0]._handleSubscribe(e); // Just give it the first one for now - need to discuss
+		}
 	}
 
 	_updateRegistries() {

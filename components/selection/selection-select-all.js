@@ -44,7 +44,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 	}
 
 	render() {
-		if (!this._provider || this._provider.selectionSingle) return;
+		if (!this._registry || this._registry.selectionSingle) return;
 
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
@@ -62,7 +62,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 	}
 
 	_handleCheckboxChange(e) {
-		if (this._provider) this._provider.setSelectionForAll(e.target.checked, false);
+		if (this._registry) this._registry.setSelectionForAll(e.target.checked, false);
 	}
 
 }
