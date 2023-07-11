@@ -10,11 +10,11 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			onSubscribe: this._handleSubscriberChange.bind(this),
 			onUnsubscribe: this._handleSubscriberChange.bind(this),
-			updateSubscribers: this._checkSubscribersReadyToDisplay.bind(this)
+			updateSubscribers: this._checkSubscribersSkeletonState.bind(this)
 		});
 	}
 
-	_checkSubscribersReadyToDisplay(subscribers) {
+	_checkSubscribersSkeletonState(subscribers) {
 		const skeletonActive = [...subscribers.values()].some(subscriber => subscriber._skeleton);
 		if (skeletonActive !== this._skeletonActiveCached) {
 			this._skeletonActiveCached = skeletonActive;
