@@ -30,7 +30,8 @@ class SkeletonTestGroup extends LitElement {
 
 	constructor() {
 		super();
-		this._items = ['1', '2', '3'];
+		this._items = [1, 2, 3];
+		this._loadAsGroup = true;
 	}
 
 	render() {
@@ -48,7 +49,7 @@ class SkeletonTestGroup extends LitElement {
 	}
 
 	_addItem() {
-		this._items.push((this._items.length + 1).toString());
+		this._items.push((this._items.length + 1));
 		this.requestUpdate();
 	}
 
