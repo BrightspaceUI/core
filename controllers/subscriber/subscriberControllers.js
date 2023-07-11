@@ -98,6 +98,7 @@ export class SubscriberRegistryController extends BaseController {
 	unsubscribe(target) {
 		this._subscribers.delete(target);
 		if (this._options.onUnsubscribe) this._options.onUnsubscribe(target);
+		this.updateSubscribers();
 	}
 
 	updateSubscribers() {
@@ -120,6 +121,7 @@ export class SubscriberRegistryController extends BaseController {
 		e.detail.registryController = this;
 		const target = e.detail.subscriber;
 		this.subscribe(target);
+		this.updateSubscribers();
 	}
 }
 
