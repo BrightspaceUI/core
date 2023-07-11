@@ -95,12 +95,13 @@ class FormNestedDemo extends LitElement {
 		if (this.shadowRoot) this.shadowRoot.querySelector('#root').submit();
 	}
 
+	_validateMagicWord(e) {
+		e.detail.resolve(e.detail.forElement.value === 'please');
+	}
+
 	_validatePassword(e) {
 		e.detail.resolve(e.detail.forElement.value === 'hunter2');
 	}
 
-	_validateMagicWord(e) {
-		e.detail.resolve(e.detail.forElement.value === 'please');
-	}
 }
 customElements.define('d2l-form-demo', FormNestedDemo);
