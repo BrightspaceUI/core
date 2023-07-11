@@ -11,7 +11,6 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 			onSubscribe: this.handleSubscriberChange.bind(this),
 			onUnsubscribe: this.handleSubscriberChange.bind(this),
 			updateSubscribers: this._checkSubscribersSkeletonState.bind(this),
-			handleSubscriberChange: this.handleSubscriberChange.bind(this)
 		});
 	}
 

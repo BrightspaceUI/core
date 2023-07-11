@@ -81,13 +81,6 @@ export class SubscriberRegistryController extends BaseController {
 		return this._subscribers;
 	}
 
-	handleSubscriberChange() {
-		if (!this._subscribers || this._subscribers.size === 0) return;
-		if (!this._options.handleSubscriberChange) return;
-
-		this._options.handleSubscriberChange(this._subscribers);
-	}
-
 	hostConnected() {
 		if (this._eventName) this._host.addEventListener(this._eventName, this._handleSubscribe);
 	}
