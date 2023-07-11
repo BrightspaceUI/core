@@ -204,18 +204,14 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	_onSubscribe() {
 		this._skeletonWait = true;
-		if (this._skeleton !== this._skeletonActive) {
-			this._skeletonActive = true;
-			this.requestUpdate('skeleton', this._skeleton);
-		}
+		this._skeletonActive = true;
+		this.requestUpdate('skeleton', this._skeleton);
 	}
 
 	_onUnsubscribe() {
 		this._skeletonWait = false;
-		if (this._skeleton !== this._skeletonActive) {
-			this._skeletonActive = this._skeleton;
-			this.requestUpdate('skeleton', this._skeleton);
-		}
+		this._skeletonActive = this._skeleton;
+		this.requestUpdate('skeleton', this._skeleton);
 	}
 
 });
