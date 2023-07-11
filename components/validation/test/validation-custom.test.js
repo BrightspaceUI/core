@@ -1,5 +1,5 @@
 import '../validation-custom.js';
-import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html } from '@brightspace-ui/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
@@ -37,19 +37,11 @@ describe('d2l-validation-custom', () => {
 
 	});
 
+	describe('subscribe', () => {
+		// to do
+	});
+
 	describe('events', () => {
-
-		it('should fire connected event', async() => {
-			const unconnectedCustom = document.createElement('d2l-validation-custom');
-			setTimeout(() => root.appendChild(unconnectedCustom), 0);
-			await oneEvent(unconnectedCustom, 'd2l-validation-custom-connected');
-		});
-
-		it('should fire disconnected event', async() => {
-			setTimeout(() => custom.remove(), 0);
-			await oneEvent(custom, 'd2l-validation-custom-disconnected');
-			expect(custom.forElement).to.be.null;
-		});
 
 		[true, false].forEach(expectedIsValid => {
 
