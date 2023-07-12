@@ -42,37 +42,30 @@ describe('d2l-skeleton-group', () => {
 				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
 				const panel = panelGroup.querySelector('d2l-collapsible-panel');
 				panel.skeleton = skeleton;
+				await panel.updateComplete;
 			}, info.skeleton);
 			const rect = await visualDiff.getRect(page, `#${info.name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
-	[
-		'add-element',
-	].forEach((name) => {
-		it(name, async function() {
-			await page.$eval(`#${name}`, async(element) => {
-				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
-				panelGroup.innerHTML += '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>';
-			});
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	it('add-element', async function() {
+		await page.$eval('#add-element', async(element) => {
+			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
+			panelGroup.innerHTML += '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>';
 		});
+		const rect = await visualDiff.getRect(page, '#add-element');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	[
-		'remove-element',
-	].forEach((name) => {
-		it(name, async function() {
-			await page.$eval(`#${name}`, async(element) => {
-				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
-				const panel = panelGroup.querySelector('#to-remove');
-				panel?.remove();
-			});
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	it('remove-element', async function() {
+		await page.$eval('#remove-element', async(element) => {
+			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
+			const panel = panelGroup.querySelector('#to-remove');
+			panel?.remove();
 		});
+		const rect = await visualDiff.getRect(page, '#remove-element');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
