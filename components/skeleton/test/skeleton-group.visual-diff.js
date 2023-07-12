@@ -67,8 +67,8 @@ describe('d2l-skeleton-group', () => {
 		it(name, async function() {
 			await page.$eval(`#${name}`, async(element) => {
 				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
-				const panel = panelGroup.querySelector('d2l-collapsible-panel');
-				panel.remove();
+				const panel = panelGroup.querySelector('#to-remove');
+				panel?.remove();
 			});
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
