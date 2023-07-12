@@ -52,7 +52,7 @@ describe('d2l-skeleton-group', () => {
 	it('add-element', async function() {
 		await page.$eval('#add-element', async(element) => {
 			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
-			panelGroup.innerHTML += '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>';
+			panelGroup.insertAdjacentHTML('beforeend', '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>');
 		});
 		const rect = await visualDiff.getRect(page, '#add-element');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
