@@ -479,7 +479,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 					tooltip.updatePosition();
 				}
 			} else if (prop === 'type') {
-				const input = this.shadowRoot?.querySelector('.d2l-input');
+				const input = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
 				setTimeout(() => {
 					if (input && this.value !== input.value) {
 						this._setValue(input.value, false);
