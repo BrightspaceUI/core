@@ -111,7 +111,7 @@ class FilterLoadMoreDemo extends LitElement {
 	}
 
 	_handleLoadMore(e) {
-		const dimensionKey = e.detail.dimensionKey;
+		const dimensionKey = e.detail.key;
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 
 		const keysToDisplay = this._addKeys(dimension, 2, e.detail.value);

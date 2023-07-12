@@ -756,7 +756,7 @@ describe('d2l-filter', () => {
 				setTimeout(() => loadMore.shadowRoot.querySelector('button').click());
 
 				const e = await oneEvent(elem, 'd2l-filter-dimension-load-more');
-				expect(e.detail.dimensionKey).to.equal('dim');
+				expect(e.detail.key).to.equal('dim');
 				expect(eventSpy).to.be.calledOnce;
 			});
 		});

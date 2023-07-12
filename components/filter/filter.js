@@ -742,7 +742,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
 			detail: {
-				dimensionKey,
+				key: dimensionKey,
 				value: dimension.searchValue,
 				loadMoreCompleteCallback: (options) => {
 					applySearch(options);
