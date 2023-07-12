@@ -64,7 +64,7 @@ class SkeletonTestGroup extends LitElement {
 	_renderContents() {
 		return html`
 			<d2l-collapsible-panel-group>
-				${this._items.map(item => (html`<d2l-collapsible-panel skeleton id="${item}" panel-title="Item ${item}">Contents</d2l-collapsible-panel>`))}
+				${this._items.map(item => html`<d2l-collapsible-panel skeleton id="${item}" panel-title="Item ${item}">Contents</d2l-collapsible-panel>`)}
 			</d2l-collapsible-panel-group>
 		`;
 	}
