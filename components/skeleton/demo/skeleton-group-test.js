@@ -8,16 +8,12 @@ import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 class SkeletonTestGroup extends LitElement {
 	static get properties() {
 		return {
-			_loadAsGroup: { state: true },
 			_items: { state: true },
+			_loadAsGroup: { state: true },
 		};
 	}
 	static get styles() {
-		return [css`
-			:host {
-				display: block;
-			}
-
+		return css`
 			.controls {
 				align-items: center;
 				display: flex;
@@ -25,7 +21,7 @@ class SkeletonTestGroup extends LitElement {
 				justify-content: space-between;
 				margin-bottom: 0.6rem;
 			}
-		`];
+		`;
 	}
 
 	constructor() {
@@ -37,10 +33,11 @@ class SkeletonTestGroup extends LitElement {
 	render() {
 		return html`
 			<div class="controls">
-				<d2l-button-subtle @click="${this._loadItems}" text="Load items" icon="tier1:download"></d2l-button-subtle>
-				<d2l-button-subtle @click="${this._addItem}" text="Add item" icon="tier1:add"></d2l-button-subtle>
-				<d2l-button-subtle @click="${this._removeItem}" text="Remove item" icon="tier1:delete"></d2l-button-subtle>
-
+				<div>
+					<d2l-button-subtle @click="${this._loadItems}" text="Load items" icon="tier1:download"></d2l-button-subtle>
+					<d2l-button-subtle @click="${this._addItem}" text="Add item" icon="tier1:add"></d2l-button-subtle>
+					<d2l-button-subtle @click="${this._removeItem}" text="Remove item" icon="tier1:delete"></d2l-button-subtle>
+				</div>
 				<d2l-switch @click="${this._toggleLoadType}" text="Wait for all elements to load" ?on="${this._loadAsGroup}"></d2l-switch>
 			</div>
 
@@ -78,9 +75,6 @@ class SkeletonTestGroup extends LitElement {
 
 	_renderIndividual() {
 		return html`<d2l-test-skeleton-group-off>${this._renderContents()}</d2l-test-skeleton-group-off>`;
-	}
-
-	_reset() {
 	}
 
 	_toggleLoadType() {
