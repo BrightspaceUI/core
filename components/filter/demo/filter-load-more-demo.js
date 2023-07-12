@@ -15,7 +15,7 @@ const FullData = [
 			{ key: 'chemistry', selected:false, text: 'Chemistry' },
 			{ key: 'drama', selected:false, text: 'Drama' },
 			{ key: 'english', selected:false, text: 'English' },
-			{ key: 'how-t selected:false,o', text: 'How To Write a How To Article With a Flashy Title' },
+			{ key: 'how-to', selected:false, text: 'How To Write a How To Article With a Flashy Title' },
 			{ key: 'math', selected:false, text: 'Math' },
 			{ key: 'physics', selected:false, text: 'Physics' },
 			{ key: 'stats', selected:false, text: 'Statistics' },
@@ -51,7 +51,6 @@ class FilterLoadMoreDemo extends LitElement {
 			const data = {
 				key: dim.key,
 				text: dim.text,
-				searchValue: '',
 				values
 			};
 			this._addKeys(data, dim.initialCount - selectedCount);
@@ -71,30 +70,41 @@ class FilterLoadMoreDemo extends LitElement {
 		`;
 	}
 
-	_addKeys(dimension, addCount) {
+	_addKeys(dimension, addCount, searchValue = '') {
 		const dimData = FullData.find(dim => dim.key === dimension.key);
 
-		const addedKeys = [];
+		const keys = [];
+		for (const valKey in dimension.values) {
+			if (this._textIsInSearch(searchValue, dimension.values[valKey].text)) {
+				keys.push(valKey);
+			}
+		}
+		const total = keys.length + addCount;
 		dimension.hasMore = false;
 		for (const v of dimData.values) {
-			if (v.key in dimension.values || !this._textIsInSearch(dimension, v.text)) continue;
-			if (addCount <= addedKeys.length) {
+			if (v.key in dimension.values || !this._textIsInSearch(searchValue, v.text)) continue;
+			if (total <= keys.length) {
 				dimension.hasMore = true;
 				break;
 			}
 			dimension.values[v.key] = { ...v };
-			addedKeys.push(v.key);
+			keys.push(v.key);
 		}
-		return addedKeys;
+		return keys;
 	}
 
 	_handleFilterChange(e) {
 		e.detail.dimensions.forEach(dimension => {
-			const dataToUpdate = Object.values(this._dimensions.find(dim => dim.key === dimension.dimensionKey).values);
+			const localData = Object.values(this._dimensions.find(dim => dim.key === dimension.dimensionKey).values);
+			const FullDataValues = FullData.find(dim => dim.key === dimension.dimensionKey).values;
 			if (dimension.cleared) {
-				dataToUpdate.forEach(value => value.selected = false);
+				localData.forEach(value => value.selected = false);
+				FullDataValues.forEach(value => value.selected = false);
 			} else {
-				dimension.changes.forEach(change => { dataToUpdate.find(value => value.key === change.valueKey).selected = change.selected; });
+				dimension.changes.forEach(change => {
+					localData.find(value => value.key === change.valueKey).selected = change.selected;
+					FullDataValues.find(value => value.key === change.valueKey).selected = change.selected;
+				});
 			}
 		});
 		this.requestUpdate();
@@ -104,16 +114,8 @@ class FilterLoadMoreDemo extends LitElement {
 		const dimensionKey = e.detail.dimensionKey;
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 
-		const selectedKeys = [];
-		for (const valKey in dimension.values) {
-			if (this._textIsInSearch(dimension, dimension.values[valKey].text)) {
-				selectedKeys.push(valKey);
-			}
-		}
-		const addedKeys = this._addKeys(dimension, 2);
-		const keysToDisplay = [ ...selectedKeys, ...addedKeys];
-
-		e.detail.complete(keysToDisplay);
+		const keysToDisplay = this._addKeys(dimension, 2, e.detail.value);
+		e.detail.loadMoreCompleteCallback({ keysToDisplay });
 		this.requestUpdate();
 	}
 
@@ -122,16 +124,12 @@ class FilterLoadMoreDemo extends LitElement {
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 		const dimData = FullData.find(dim => dim.key === dimensionKey);
 
-		dimension.searchValue = e.detail.value;
-		const selectedKeys = [];
+		let selectedCount = 0;
 		for (const valKey in dimension.values) {
 			if (!dimension.values[valKey].selected) delete dimension.values[valKey];
-			else if (this._textIsInSearch(dimension, dimension.values[valKey].text)) {
-				selectedKeys.push(valKey);
-			}
+			else if (this._textIsInSearch(e.detail.value, dimension.values[valKey].text)) selectedCount++;
 		}
-		const addedKeys = this._addKeys(dimension, dimData.initialCount - selectedKeys.length);
-		const keysToDisplay = [ ...selectedKeys, ...addedKeys];
+		const keysToDisplay = this._addKeys(dimension, dimData.initialCount - selectedCount, e.detail.value);
 
 		e.detail.searchCompleteCallback({ keysToDisplay });
 		this.requestUpdate();
@@ -141,8 +139,8 @@ class FilterLoadMoreDemo extends LitElement {
 		const { values, key, text, hasMore } = dimension;
 
 		return html`
-		<d2l-filter-dimension-set key="${key}" text="${text}" ?pager-has-more="${hasMore}" search-type="manual">
-			${repeat(Object.values(values), value => value.key, value => html`
+		<d2l-filter-dimension-set key="${key}" text="${text}" ?has-more="${hasMore}" search-type="manual">
+			${repeat(Object.values(values).sort((a, b) => (a.text < b.text ? -1 : 0)), value => value.key, value => html`
 				<d2l-filter-dimension-set-value
 					key="${value.key}"
 					text="${value.text}"
@@ -152,8 +150,8 @@ class FilterLoadMoreDemo extends LitElement {
 		</d2l-filter-dimension-set>`;
 	}
 
-	_textIsInSearch(dimension, text) {
-		return dimension.searchValue === '' || text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1;
+	_textIsInSearch(searchValue, text) {
+		return searchValue === '' || text.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
 	}
 
 }

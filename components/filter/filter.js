@@ -545,7 +545,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				${listItems}
 				<d2l-pager-load-more slot="pager"
 					@d2l-pager-load-more="${this._handleDimensionLoadMore}"
-					?has-more="${dimension.pagerHasMore}">
+					?has-more="${dimension.hasMore}">
 				</d2l-pager-load-more>
 			</d2l-list>
 		`;
@@ -627,6 +627,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				dimension.searchKeysToDisplay = keysToDisplay;
 				this._performDimensionSearch(dimension);
 				dimension.loading = false;
+				if (dimension.selectedFirst) {
+					this._updateDimensionShouldBubble(dimension);
+				}
 				this.requestUpdate();
 			});
 		}.bind(this);
@@ -735,13 +738,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleDimensionLoadMore(e) {
 		const dimensionKey = e.target.parentNode.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._getDimensionByKey(dimensionKey);
-		const searchCompleteCallback = this._getSearchCallback(dimension);
+		const applySearch = this._getSearchCallback(dimension);
 
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
 			detail: {
 				dimensionKey,
-				complete: (keysToDisplay) => {
-					searchCompleteCallback({ keysToDisplay });
+				value: dimension.searchValue,
+				loadMoreCompleteCallback: (options) => {
+					applySearch(options);
 					e.detail.complete();
 				}
 			},
@@ -815,7 +819,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				case 'd2l-filter-dimension-set': {
 					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
-					info.pagerHasMore = dimension.pagerHasMore;
+					info.hasMore = dimension.hasMore;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
 					info.selectedFirst = dimension.selectedFirst;

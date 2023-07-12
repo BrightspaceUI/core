@@ -746,7 +746,7 @@ describe('d2l-filter', () => {
 		describe('d2l-filter-dimension-load-more', () => {
 			it('dimension set fires load more event', async() => {
 				const elem = await fixture(html`<d2l-filter>
-					<d2l-filter-dimension-set key="dim" pager-has-more>
+					<d2l-filter-dimension-set key="dim" has-more search-type="manual">
 						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>`);

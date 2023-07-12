@@ -83,15 +83,17 @@ describe('d2l-filter-dimension-set', () => {
 			const eventSpy = spy(elem, 'dispatchEvent');
 			elem.text = 'Test';
 			elem.loading = true;
-			elem.pagerHasMore = true;
+			elem.searchType = 'manual'; // hasMore won't be set without manual search
+			elem.hasMore = true;
 
 			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(e.detail.dimensionKey).to.equal('dim');
 			expect(e.detail.valueKey).to.be.undefined;
-			expect(e.detail.changes.size).to.equal(3);
+			expect(e.detail.changes.size).to.equal(4);
 			expect(e.detail.changes.get('text')).to.equal('Test');
 			expect(e.detail.changes.get('loading')).to.equal(true);
-			expect(e.detail.changes.get('pagerHasMore')).to.equal(true);
+			expect(e.detail.changes.get('hasMore')).to.equal(true);
+			expect(e.detail.changes.get('selectedFirst')).to.equal(true); // updating hasMore updates selectedFirst
 			expect(eventSpy).to.be.calledOnce;
 		});
 
