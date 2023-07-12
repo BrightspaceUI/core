@@ -133,6 +133,23 @@ For example:
 
 When skeletized, this heading will take up `45%` of the available width.
 
+## Skeleton groups
+Skeleton groups can be used to ensure a collection of components all appear at the same time. This can be used to prevent individual components from popping in before everything has loaded.
+
+```js
+import { SkeletonGroupMixin } from '@brightspace-ui/core/skeleton/skeleton-group-mixin.js';
+
+class MyElement extends SkeletonGroupMixin(LitElement) {
+
+  render() {
+    return html`
+      // Anything that can be skeletonized.
+      // All components will remain in skeleton state until they have all loaded
+    `;
+  }
+}
+```
+
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Is there a core component that should support skeletons but doesn't yet? Create a GitHub issue!
