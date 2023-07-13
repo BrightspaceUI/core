@@ -35,6 +35,15 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				outline: none;
 				width: 100%;
 			}
+			:host(:not([button-disabled]):not([no-primary-action])) [slot="content"],
+			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
+			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
+				pointer-events: none;
+			}
+			:host(:not([button-disabled])) [slot="control-action"],
+			:host(:not([button-disabled])) [slot="outside-control-action"] {
+				grid-column-end: control-end;
+			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);

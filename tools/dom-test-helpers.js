@@ -1,6 +1,6 @@
 import { getComposedChildren } from '../helpers/dom.js';
 
-export function keyDown(element, keyCode, ctrlKey) {
+export function keyDown(element, keyCode) {
 	const event = new CustomEvent('keydown', {
 		detail: 0,
 		bubbles: true,
@@ -9,7 +9,6 @@ export function keyDown(element, keyCode, ctrlKey) {
 	});
 	event.keyCode = keyCode;
 	event.code = keyCode;
-	if (ctrlKey !== undefined) event.ctrlKey = ctrlKey;
 	element.dispatchEvent(event);
 }
 

@@ -51,7 +51,7 @@ class FilterTags extends LocalizeCoreElement(LitElement) {
 				<d2l-tag-list-item
 					@d2l-tag-list-item-clear="${this._tagListItemDeleted}"
 					data-filter-id="${filter[0]}"
-					data-index="${index}"
+					key="${index}"
 					text="${value.text}">
 				</d2l-tag-list-item>
 			`;
@@ -88,8 +88,8 @@ class FilterTags extends LocalizeCoreElement(LitElement) {
 	}
 
 	_tagListItemDeleted(e) {
-		const filterId = e.target.getAttribute('data-filter-id');
-		const filterValueIndex = e.target.getAttribute('data-index');
+		const filterId = e.target.dataset.filterId;
+		const filterValueIndex = e.detail.key;
 		const filterValue = this._allActiveFilters.get(filterId)[filterValueIndex];
 		const filter = this._filters.registries.find(filter => filter.id === filterId);
 		filter.requestFilterValueClear(filterValue.keyObject);

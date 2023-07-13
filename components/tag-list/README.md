@@ -37,8 +37,8 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
 
   document.addEventListener('d2l-tag-list-item-clear', (e) => {
+    console.log(`d2l-tag-list-item-clear event dispatched. Key: ${e.detail.key}`);
     e.target.parentNode.removeChild(e.target);
-    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
   });
 
   document.addEventListener('d2l-tag-list-clear', (e) => {
@@ -50,10 +50,10 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
   });
 </script>
 <d2l-tag-list description="Example Tags" clearable>
-  <d2l-tag-list-item text="Lorem ipsum dolor"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Reprehenderit in voluptate velit esse lorem ipsum dolor"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Sit amet"></d2l-tag-list-item>
-  <d2l-tag-list-item text="Duis aute irure"></d2l-tag-list-item>
+  <d2l-tag-list-item key="lorem-ipsum" text="Lorem ipsum dolor"></d2l-tag-list-item>
+  <d2l-tag-list-item key="reprehenderit" text="Reprehenderit in voluptate velit esse lorem ipsum dolor"></d2l-tag-list-item>
+  <d2l-tag-list-item key="sit-amet" text="Sit amet"></d2l-tag-list-item>
+  <d2l-tag-list-item key="duis-aute-irure" text="Duis aute irure"></d2l-tag-list-item>
 </d2l-tag-list>
 ```
 
@@ -67,8 +67,8 @@ The `d2l-tag-list-item` provides the appropriate semantics and styling for child
   import '@brightspace-ui/core/components/tag-list/tag-list-item.js';
 
   document.addEventListener('d2l-tag-list-item-clear', (e) => {
+    console.log(`d2l-tag-list-item-clear event dispatched. Key: ${e.detail.key}`);
     e.target.parentNode.removeChild(e.target);
-    console.log(`d2l-tag-list-item-clear event dispatched. Value: ${e.detail.value}`);
   });
 
   document.addEventListener('d2l-tag-list-clear', (e) => {
@@ -81,7 +81,7 @@ The `d2l-tag-list-item` provides the appropriate semantics and styling for child
 </script>
 
 <d2l-tag-list description="Example Tags" clearable>
-  <d2l-tag-list-item text="Tag"></d2l-tag-list-item>
+  <d2l-tag-list-item key="tag" text="Tag"></d2l-tag-list-item>
 </d2l-tag-list>
 ```
 

@@ -1,7 +1,7 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { expect, fixture, html, nextFrame, oneEvent, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -16,31 +16,12 @@ const basicFixture = html`
 
 const clearableFixture = html`
 	<d2l-tag-list description="Testing Tags" clearable>
-		<d2l-tag-list-item text="Tag"></d2l-tag-list-item>
-		<d2l-tag-list-item text="Another Tag"></d2l-tag-list-item>
-		<d2l-tag-list-item text="Another Very Very Very Very Very Long Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="tag" text="Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="another-tag" text="Another Tag"></d2l-tag-list-item>
+		<d2l-tag-list-item key="long-tag" text="Another Very Very Very Very Very Long Tag"></d2l-tag-list-item>
 		<d2l-tag-list-item-mixin-consumer name="Tag"></d2l-tag-list-item-mixin-consumer>
 	</d2l-tag-list>
 `;
-
-const keyCodes = {
-	BACKSPACE: 8,
-	DELETE: 46,
-	RIGHT: 39,
-	UP: 38
-};
-
-const dispatchKeydownEvent = (element, keycode) => {
-	const event = new CustomEvent('keydown', {
-		detail: 0,
-		bubbles: true,
-		cancelable: true,
-		composed: true
-	});
-	event.keyCode = keycode;
-	event.code = keycode;
-	element.dispatchEvent(event);
-};
 
 describe('d2l-tag-list', () => {
 
@@ -53,18 +34,15 @@ describe('d2l-tag-list', () => {
 	describe('keyboard navigation', () => {
 		// All iterations tested in the ArrowKeysMixin tests
 		[
-			{ name: 'Move focus with the arrow keys', key: keyCodes.RIGHT, start: 0, result: 1 },
-			{ name: 'Focus wraps', key: keyCodes.UP, start: 0, result: 3 }
+			{ name: 'Move focus with the arrow keys', key: 'ArrowRight', start: 0, result: 1 },
+			{ name: 'Focus wraps', key: 'ArrowUp', start: 0, result: 3 }
 		].forEach(testcase => {
 			it(testcase.name, async() => {
 				const list = await fixture(basicFixture);
-				await waitUntil(() => list._items, 'List items did not become ready');
 
 				const startItem = list._items[testcase.start];
-				startItem.focus();
-				dispatchKeydownEvent(startItem, testcase.key);
+				await sendKeysElem(startItem, 'press', testcase.key);
 
-				await nextFrame();
 				expect(getComposedActiveElement()).to.equal(list._items[testcase.result].shadowRoot.querySelector('.tag-list-item-content'));
 			});
 		});
@@ -73,10 +51,9 @@ describe('d2l-tag-list', () => {
 	describe('clearable', () => {
 		it('should dispatch expected events when Clear All clicked', async() => {
 			const elem = await fixture(clearableFixture);
-			await waitUntil(() => elem._items, 'List items did not become ready');
 			const button = elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
 
-			setTimeout(() => button.click());
+			clickElem(button);
 
 			await oneEvent(elem, 'd2l-tag-list-clear');
 		});
@@ -91,39 +68,82 @@ describe('d2l-tag-list-item', () => {
 		});
 	});
 
+	describe('plain text', () => {
+		it('should be set to item text', async() => {
+			const elem = await fixture(basicFixture);
+
+			const child = elem.children[1];
+			expect(child._plainText).to.be.equal('Another Tag');
+		});
+	});
+
 	describe('clearable items', () => {
 		it('should dispatch expected event when clicked', async() => {
 			const elem = await fixture(clearableFixture);
-			await waitUntil(() => elem._items, 'List items did not become ready');
 
 			const child = elem.children[0];
 			const childButtonIcon = child.shadowRoot.querySelector('d2l-button-icon');
-			setTimeout(() => childButtonIcon.click());
+			clickElem(childButtonIcon);
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.equal('Tag');
+			expect(detail.key).to.equal('tag');
 		});
 
 		it('should dispatch expected event when backspace pressed', async() => {
 			const elem = await fixture(clearableFixture);
-			await waitUntil(() => elem._items, 'List items did not become ready');
 
 			const child = elem._items[1];
-			child.focus();
-			setTimeout(() => dispatchKeydownEvent(child, keyCodes.BACKSPACE));
+			sendKeysElem(child, 'press', 'Backspace');
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.equal('Another Tag');
+			expect(detail.key).to.equal('another-tag');
 		});
 
 		it('should dispatch expected event when delete pressed', async() => {
 			const elem = await fixture(clearableFixture);
-			await waitUntil(() => elem._items, 'List items did not become ready');
+
+			const child = elem._items[2];
+			sendKeysElem(child, 'press', 'Delete');
+			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
+			expect(detail.key).to.equal('long-tag');
+		});
+
+		it('should dispatch expected event when removed with no key', async() => {
+			const elem = await fixture(clearableFixture);
 
 			const child = elem._items[3];
-			child.focus();
-			setTimeout(() => dispatchKeydownEvent(child, keyCodes.DELETE));
+			expect(child.key).to.be.undefined;
+			sendKeysElem(child, 'press', 'Delete');
 			const { detail } = await oneEvent(child, 'd2l-tag-list-item-clear');
-			expect(detail.value).to.be.undefined;
+			expect(detail.key).to.be.undefined;
 		});
 	});
 
+});
+
+describe('d2l-tag-list-item-mixin-consumer', () => {
+
+	describe('constructor', () => {
+		it('should construct tag-list-item-mixin-consumer', () => {
+			runConstructor('d2l-tag-list-item-mixin-consumer');
+		});
+	});
+
+	describe('plain text', () => {
+		it('should be set when provided', async() => {
+			const elem = await fixture(basicFixture);
+
+			const child = elem.children[3];
+			expect(child._plainText).to.be.equal('Tag');
+		});
+
+		it('should error if not provided', async() => {
+			let error;
+			try {
+				await fixture(html`<d2l-tag-list-item-mixin-consumer></d2l-tag-list-item-mixin-consumer>`);
+			} catch (e) {
+				error = e;
+			}
+			expect(error?.name).to.equal('TypeError');
+		});
+
+	});
 });
