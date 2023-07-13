@@ -39,8 +39,8 @@ describe('d2l-skeleton-group', () => {
 	].forEach((info) => {
 		it(info.name, async function() {
 			await page.$eval(`#${info.name}`, async(element, skeleton) => {
-				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
-				const panel = panelGroup.querySelector('d2l-collapsible-panel');
+				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group d2l-collapsible-panel');
+				const panel = panelGroup.querySelector('');
 				panel.skeleton = skeleton;
 				await panel.updateComplete;
 			}, info.skeleton);
@@ -51,7 +51,7 @@ describe('d2l-skeleton-group', () => {
 
 	it('add-element', async function() {
 		await page.$eval('#add-element', async(element) => {
-			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
+			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
 			panelGroup.insertAdjacentHTML('beforeend', '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>');
 		});
 		const rect = await visualDiff.getRect(page, '#add-element');
@@ -60,11 +60,16 @@ describe('d2l-skeleton-group', () => {
 
 	it('remove-element', async function() {
 		await page.$eval('#remove-element', async(element) => {
-			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper').querySelector('d2l-collapsible-panel-group');
+			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
 			const panel = panelGroup.querySelector('#to-remove');
 			panel?.remove();
 		});
 		const rect = await visualDiff.getRect(page, '#remove-element');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('nested', async function() {
+		const rect = await visualDiff.getRect(page, '#nested');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 

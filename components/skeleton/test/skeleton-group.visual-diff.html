@@ -6,6 +6,8 @@
 			import '../../typography/typography.js';
 			import '../../collapsible-panel/collapsible-panel.js';
 			import '../../collapsible-panel/collapsible-panel-group.js';
+			import '../../list/list.js';
+			import '../../list/list-item.js';
 			import '../demo/skeleton-group-wrapper.js';
 		</script>
 		<style>
@@ -81,6 +83,22 @@
 					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
+		</div>
+
+		<div class="visual-diff" id="nested">
+			<d2l-list>
+				<d2l-list-item >
+					<d2l-input-checkbox skeleton>Item 1.1</d2l-input-checkbox>
+					<d2l-input-checkbox>Item 1.2</d2l-input-checkbox>
+					<d2l-input-checkbox>Item 1.3</d2l-input-checkbox>
+				</d2l-list-item>
+				<d2l-list-item>
+					<d2l-input-checkbox>Item 2</d2l-input-checkbox>
+				</d2l-list-item>
+				<d2l-list-item>
+					<d2l-input-checkbox>Item 3</d2l-input-checkbox>
+				</d2l-list-item>
+			</d2l-list>
 		</div>
 	</body>
 </html>

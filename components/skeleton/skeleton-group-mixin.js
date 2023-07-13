@@ -20,10 +20,9 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 
 	_checkSubscribersSkeletonState(subscribers) {
 		const skeletonActive = [...subscribers.values()].some(subscriber => subscriber._skeleton);
-		if (skeletonActive !== this._skeletonActiveCached) {
-			this._skeletonActiveCached = skeletonActive;
-			subscribers.forEach(subscriber => subscriber.setSkeletonActive(skeletonActive));
-		}
+		console.log('group:',this, 'subscribers', subscribers, skeletonActive);
+		this._skeletonActiveCached = skeletonActive;
+		subscribers.forEach(subscriber => subscriber.setSkeletonActive(skeletonActive));
 	}
 
 });
