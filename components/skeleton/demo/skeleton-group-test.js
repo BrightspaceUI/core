@@ -51,9 +51,11 @@ class SkeletonTestGroup extends LitElement {
 	}
 
 	_loadItems() {
-		const ids = this._items;
-		ids.forEach(id => this.shadowRoot.getElementById(id).skeleton = true);
-		ids.forEach(id =>  setTimeout(() => { this.shadowRoot.getElementById(id).skeleton = false; }, Math.random() * 2000));
+		this._items.forEach(id => {
+			const item = this.shadowRoot.getElementById(id);
+			item.skeleton = true;
+			setTimeout(() => item.skeleton = false, Math.random() * 2000);
+		});
 	}
 
 	_removeItem() {
