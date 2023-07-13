@@ -50,7 +50,7 @@ class FilterDimensionSet extends LitElement {
 			 * Whether to render the selected items at the top of the filter
 			 * @type {boolean}
 			 */
-			selectedFirst: { type: Boolean, attribute: 'selected-first', reflect : true },
+			selectedFirst: { type: Boolean, attribute: 'selected-first' },
 			/**
 			 * Whether only one value can be selected at a time for this dimension
 			 * @type {boolean}

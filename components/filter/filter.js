@@ -627,9 +627,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				dimension.searchKeysToDisplay = keysToDisplay;
 				this._performDimensionSearch(dimension);
 				dimension.loading = false;
-				if (dimension.selectedFirst) {
-					this._updateDimensionShouldBubble(dimension);
-				}
 				this.requestUpdate();
 			});
 		}.bind(this);
@@ -797,9 +794,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.selectedFirst) {
-			this._updateDimensionShouldBubble(dimension);
-		}
 		this._search(dimension);
 	}
 
@@ -884,6 +878,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_performDimensionSearch(dimension) {
+		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
