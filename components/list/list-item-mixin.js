@@ -18,6 +18,7 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonGroupMixin } from '../skeleton/skeleton-group-mixin.js';
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -58,7 +59,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	ListItemDragDropMixin,
 	ListItemCheckboxMixin,
 	ListItemRoleMixin,
-	RtlMixin) {
+	RtlMixin,
+	SkeletonGroupMixin) {
 
 	static get properties() {
 		return {
