@@ -13,6 +13,7 @@
 			import '../../dropdown/dropdown.js';
 			import '../../dropdown/dropdown-content.js';
 			import '../../link/link.js';
+			import '../../paging/pager-load-more.js';
 			import '../../tooltip/tooltip.js';
 			import '../../typography/typography.js';
 			import '../list.js';
@@ -178,6 +179,46 @@
 							<d2l-button-icon text="Action 2" icon="tier1:more"></d2l-button-icon>
 						</div>
 					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="pager">
+				<d2l-list>
+					<d2l-list-item label="Item 1" selectable key="1">
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="supporting-info">Supporting info</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item label="Item 2" selectable key="2">
+						<d2l-list-item-content>
+							<div>Item 2</div>
+							<div slot="supporting-info">Supporting info</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="pagerSeparatorsExtended">
+				<d2l-list extend-separators>
+					<d2l-list-item label="Item 1" selectable key="1">
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="supporting-info">Supporting info</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item label="Item 2" selectable key="2">
+						<d2l-list-item-content>
+							<div>Item 2</div>
+							<div slot="supporting-info">Supporting info</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-pager-load-more slot="pager" has-more page-size="5"></d2l-pager-load-more>
 				</d2l-list>
 			</div>
 		</div>
@@ -354,7 +395,7 @@
 				</d2l-list>
 			</div>
 		</div>
-		
+
 		<div style="width: 400px;">
 			<div class="visual-diff" id="selectableButton">
 				<d2l-list>

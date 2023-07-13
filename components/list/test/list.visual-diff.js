@@ -87,6 +87,10 @@ describe('d2l-list', () => {
 			{ name: 'extended separators', selector: '#actionsSeparatorsExtended' },
 			{ name: 'rtl', selector: '#actionsRtl' }
 		] },
+		{ category: 'pager', tests: [
+			{ name: 'default', selector: '#pager' },
+			{ name: 'extended separators', selector: '#pagerSeparatorsExtended' }
+		] },
 		{ category: 'item-content', tests: [
 			{ name: 'all', selector: '#itemContent' },
 			{ name: 'no padding', selector: '#itemContentNoPadding' },
