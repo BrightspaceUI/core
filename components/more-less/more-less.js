@@ -206,7 +206,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		// Include 1 px of give room to account for issues with Firefox rounding the content's scroll height
+		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
 		this.__maxHeight = `${contentHeight + 1}px`;
 	}
 
