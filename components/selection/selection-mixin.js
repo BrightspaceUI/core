@@ -155,8 +155,10 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	_handleRadioKeyUp(e) {
 
+		const target = e.composedPath()[0];
+
 		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
-		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
+		if (!target.classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
 		const getSelectionInput = (focusable, forward) => {
@@ -175,7 +177,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		const forward = (this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT) || (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT) || (e.keyCode === keyCodes.DOWN);
 
 		// first try to find next/previous selection-input relative to the event target within the selection component sub-tree that also belongs to the selection component
-		let focusable = forward ? getNextFocusable(e.composedPath()[0], false, true, true) : getPreviousFocusable(e.composedPath()[0], false, true, true);
+		let focusable = forward ? getNextFocusable(target, false, true, true) : getPreviousFocusable(target, false, true, true);
 		let selectionInput = getSelectionInput(focusable, forward);
 
 		if (!selectionInput) {
