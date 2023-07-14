@@ -32,7 +32,7 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
-			 * Wether the dimension has more values to load
+			 * Whether the dimension has more values to load
 			 * @type {boolean}
 			 */
 			hasMore: { type: Boolean, attribute: 'has-more' },

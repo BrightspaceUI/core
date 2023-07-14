@@ -110,16 +110,17 @@ class FilterLoadMoreDemo extends LitElement {
 		this.requestUpdate();
 	}
 
-	_handleLoadMore(e) {
+	async _handleLoadMore(e) {
 		const dimensionKey = e.detail.key;
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 
 		const keysToDisplay = this._addKeys(dimension, 2, e.detail.value);
-		e.detail.loadMoreCompleteCallback({ keysToDisplay });
 		this.requestUpdate();
+		await this.updateComplete;
+		e.detail.loadMoreCompleteCallback({ keysToDisplay });
 	}
 
-	_handleSearch(e) {
+	async _handleSearch(e) {
 		const dimensionKey = e.detail.key;
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 		const dimData = FullData.find(dim => dim.key === dimensionKey);
@@ -131,8 +132,9 @@ class FilterLoadMoreDemo extends LitElement {
 		}
 		const keysToDisplay = this._addKeys(dimension, dimData.initialCount - selectedCount, e.detail.value);
 
-		e.detail.searchCompleteCallback({ keysToDisplay });
 		this.requestUpdate();
+		await this.updateComplete;
+		e.detail.searchCompleteCallback({ keysToDisplay });
 	}
 
 	_renderDimensionSet(dimension) {
