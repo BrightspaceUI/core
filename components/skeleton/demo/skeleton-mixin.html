@@ -5,79 +5,47 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
+			import '../../collapsible-panel/collapsible-panel.js';
+			import '../../collapsible-panel/collapsible-panel-group.js';
 			import '../../demo/demo-page.js';
+			import '../../list/list.js';
+			import '../../list/list-item.js';
+			import '../../list/list-item-content.js';
+			import '../../inputs/input-text.js';
+			import '../../inputs/input-number.js';
+			import '../../inputs/input-checkbox.js';
 			import './skeleton-test-box.js';
 			import './skeleton-test-container.js';
 			import './skeleton-test-heading.js';
 			import './skeleton-test-link.js';
 			import './skeleton-test-paragraph.js';
 			import './skeleton-group-test.js';
+			import './skeleton-group-wrapper.js';
 		</script>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="skeleton-mixin">
 
-			<h2>Typography</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-paragraph type="standard"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="compact"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="small"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="label"></d2l-test-skeleton-paragraph>
-			</d2l-demo-snippet>
 
-			<h2>Links</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-link></d2l-test-skeleton-link>
-				<d2l-test-skeleton-link type="main"></d2l-test-skeleton-link>
-				<d2l-test-skeleton-link type="small"></d2l-test-skeleton-link>
-			</d2l-demo-snippet>
-
-			<h2>Headings</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-heading level="1" width="25">Heading 1</d2l-test-skeleton-heading>
-				<d2l-test-skeleton-heading level="2" width="20">Heading 2</d2l-test-skeleton-heading>
-				<d2l-test-skeleton-heading level="3" width="15">Heading 3</d2l-test-skeleton-heading>
-				<d2l-test-skeleton-heading level="4" width="10">Heading 4</d2l-test-skeleton-heading>
-			</d2l-demo-snippet>
-
-			<h2>Paragraphs</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-paragraph type="standard" lines="2"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="standard" lines="3"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="standard" lines="5"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="compact" lines="2"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="compact" lines="3"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="compact" lines="5"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="small" lines="2"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="small" lines="3"></d2l-test-skeleton-paragraph>
-				<d2l-test-skeleton-paragraph type="small" lines="5"></d2l-test-skeleton-paragraph>
-			</d2l-demo-snippet>
-
-			<h2>Boxes</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-box></d2l-test-skeleton-box>
-			</d2l-demo-snippet>
-
-			<h2>Containers</h2>
-			<d2l-demo-snippet code-view-hidden>
-				<d2l-test-skeleton-container></d2l-test-skeleton-container>
-			</d2l-demo-snippet>
-
-			<h2>Skeleton group</h2>
+			<h2>List skeleton group</h2>
 			<d2l-demo-snippet>
 				<d2l-list>
 					<d2l-list-item>
-					  <d2l-list-item-content>
-						<d2l-input-checkbox skeleton>Item</d2l-input-checkbox>
-						<d2l-input-text label="Label"></d2l-input-text>
-						<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
-					  </d2l-list-item-content>
+						<d2l-list-item-contents>
+							<d2l-collapsible-panel skeleton panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
+							<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
+							<d2l-input-text label="Label"></d2l-input-text>
+							<d2l-input-checkbox>Item</d2l-input-checkbox>
+							<d2l-input-checkbox>Item</d2l-input-checkbox>
+						</d2l-list-item-contents>
 					</d2l-list-item>
 					<d2l-list-item>
-					  <d2l-list-item-content>
-						<d2l-input-checkbox skeleton>Item</d2l-input-checkbox>
-						<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
-					  </d2l-list-item-content>
+						<d2l-list-item-content>
+							<d2l-input-checkbox>Item</d2l-input-checkbox>
+							<d2l-input-text label="Label"></d2l-input-text>
+							<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
+							<d2l-input-text label="Label"></d2l-input-text>
+						</d2l-list-item-content>
 					</d2l-list-item>
 				  </d2l-list>
 			</d2l-demo-snippet>
