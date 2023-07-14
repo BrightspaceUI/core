@@ -1,5 +1,6 @@
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -86,7 +87,8 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
+			value: { type: String },
+			_hovered: { type: Boolean }
 		};
 	}
 
@@ -157,6 +159,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		this.value = '';
 
 		this._descriptionId = getUniqueId();
+		this._hovered = false;
 		this._textareaId = getUniqueId();
 	}
 
@@ -194,6 +197,20 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		}
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('mouseover', this._handleMouseEnter);
+		this.removeEventListener('mouseout', this._handleMouseLeave);
+		this.removeEventListener('click', this._handleClick);
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this.addEventListener('mouseover', this._handleMouseEnter);
+		this.addEventListener('mouseout', this._handleMouseLeave);
+		this.addEventListener('click', this._handleClick);
+	}
+
 	render() {
 
 		// convert \n to <br> for html mirror
@@ -211,6 +228,11 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		if (this.rows > 0) mirrorStyles.minHeight = `calc(${this.rows + 1}rem + 2px)`;
 		if (this.maxRows > 0) mirrorStyles.maxHeight = `calc(${this.maxRows + 1}rem + 2px)`;
 
+		const inputClasses = {
+			'd2l-input': true,
+			'd2l-input-focus': !this.disabled && this._hovered
+		};
+
 		const textarea = html`
 			<div class="d2l-input-textarea-container d2l-skeletize">
 				<div class="d2l-input d2l-input-textarea-mirror" style="${styleMap(mirrorStyles)}" aria-invalid="${ifDefined(ariaInvalid)}">
@@ -222,7 +244,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 					aria-required="${ifDefined(ariaRequired)}"
 					@blur="${this._handleBlur}"
 					@change="${this._handleChange}"
-					class="d2l-input"
+					class=${classMap(inputClasses)}
 					?disabled="${disabled}"
 					id="${this._textareaId}"
 					@input="${this._handleInput}"
@@ -307,6 +329,12 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		));
 	}
 
+	_handleClick(e) {
+		const input = this.shadowRoot && this.shadowRoot.querySelector('textarea');
+		if (!input || e.composedPath()[0] !== this) return;
+		input.focus();
+	}
+
 	_handleInput(e) {
 		this.value = e.target.value;
 		return true;
@@ -314,6 +342,14 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 
 	_handleInvalid(e) {
 		e.preventDefault();
+	}
+
+	_handleMouseEnter() {
+		this._hovered = true;
+	}
+
+	_handleMouseLeave() {
+		this._hovered = false;
 	}
 
 }
