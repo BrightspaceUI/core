@@ -201,11 +201,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__maxHeight = `${this.__content.scrollHeight}px`;
+		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
+		this.__maxHeight = `${this.__content.scrollHeight + 1}px`;
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		this.__maxHeight = `${contentHeight}px`;
+		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
+		this.__maxHeight = `${contentHeight + 1}px`;
 	}
 
 	__computeAriaExpanded() {
