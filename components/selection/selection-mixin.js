@@ -1,4 +1,4 @@
-import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable} from '../../helpers/focus.js';
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -180,7 +180,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 		if (!selectionInput) {
 			// no selection-input since next/previous focusable is before/after list... cycle to first/last
-			focusable = forward ? getNextFocusable(this, false, true, false) : getPreviousFocusable(this, false, true, false);
+			focusable = forward ?  getFirstFocusableDescendant(this, false) : getLastFocusableDescendant(this, false);
 			selectionInput = getSelectionInput(focusable, forward);
 		}
 

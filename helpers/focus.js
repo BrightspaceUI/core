@@ -57,12 +57,10 @@ export function getLastFocusableDescendant(node, includeHidden) {
 	return null;
 }
 
-export function getPreviousFocusable(node, includeHidden, ignore, ignoreChildren) {
+export function getPreviousFocusable(node, includeHidden) {
 	if (!node) return null;
 
 	if (includeHidden === undefined) includeHidden = false;
-	if (ignore === undefined) ignore = true;
-	if (ignoreChildren === undefined) ignoreChildren = true;
 
 	const _getPreviousFocusable = (node, ignore, ignoreChildren) => {
 		if (!ignore && isFocusable(node, includeHidden)) return node;
@@ -88,7 +86,7 @@ export function getPreviousFocusable(node, includeHidden, ignore, ignoreChildren
 		return null;
 	};
 
-	const focusable = _getPreviousFocusable(node, ignore, ignoreChildren);
+	const focusable = _getPreviousFocusable(node, true, true);
 	return focusable;
 }
 
