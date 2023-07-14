@@ -743,6 +743,24 @@ describe('d2l-filter', () => {
 			});
 		});
 
+		describe('d2l-filter-dimension-load-more', () => {
+			it('dimension set fires load more event', async() => {
+				const elem = await fixture(html`<d2l-filter>
+					<d2l-filter-dimension-set key="dim" has-more search-type="manual">
+						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>`);
+				const eventSpy = spy(elem, 'dispatchEvent');
+				const loadMore = elem.shadowRoot.querySelector('d2l-pager-load-more');
+				await loadMore.updateComplete;
+				setTimeout(() => loadMore.shadowRoot.querySelector('button').click());
+
+				const e = await oneEvent(elem, 'd2l-filter-dimension-load-more');
+				expect(e.detail.key).to.equal('dim');
+				expect(eventSpy).to.be.calledOnce;
+			});
+		});
+
 		describe('d2l-filter-dimension-search', () => {
 			it('single set dimension fires search event for manual search-type', async() => {
 				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');

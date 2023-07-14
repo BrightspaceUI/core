@@ -32,6 +32,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * Whether the dimension has more values to load
+			 * @type {boolean}
+			 */
+			hasMore: { type: Boolean, attribute: 'has-more' },
+			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -69,6 +74,7 @@ class FilterDimensionSet extends LitElement {
 		this.headerText = '';
 		this.introductoryText = '';
 		this.loading = false;
+		this.hasMore = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;
 		this.selectedFirst = false;
@@ -100,7 +106,7 @@ class FilterDimensionSet extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'text' || prop === 'loading') {
+			if (prop === 'text' || prop === 'loading' || prop === 'hasMore' || prop === 'selectedFirst') {
 				changes.set(prop, this[prop]);
 			}
 		});
@@ -130,6 +136,16 @@ class FilterDimensionSet extends LitElement {
 			};
 		});
 		return values;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('hasMore') && this.hasMore) {
+			if (this.searchType !== 'manual') {
+				console.warn('Paging requires search type set to manual.');
+				this.hasMore = false;
+			}
+			else this.selectedFirst = true;
+		}
 	}
 
 	_dispatchDataChangeEvent(eventDetail) {

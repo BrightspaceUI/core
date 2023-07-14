@@ -15,6 +15,7 @@ import '../list/list-item.js';
 import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
+import '../paging/pager-load-more.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
 
@@ -42,6 +43,7 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * @fires d2l-filter-dimension-empty-state-action - Dispatched when an empty state action button is clicked
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
+ * @fires d2l-filter-dimension-load-more - Dispatched when a dimension load more pager clicked
  */
 class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
@@ -292,7 +294,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	requestFilterValueClear(keyObject) {
-		const dimension = this._dimensions.find(dimension => dimension.key === keyObject.dimension);
+		const dimension = this._getDimensionByKey(keyObject.dimension);
 
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
@@ -541,6 +543,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				${selectedListItems}
 				${listHeader}
 				${listItems}
+				<d2l-pager-load-more slot="pager"
+					@d2l-pager-load-more="${this._handleDimensionLoadMore}"
+					?has-more="${dimension.hasMore}">
+				</d2l-pager-load-more>
 			</d2l-list>
 		`;
 	}
@@ -607,7 +613,23 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_getActiveDimension() {
-		return !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		return !this._activeDimensionKey ? this._dimensions[0] : this._getDimensionByKey(this._activeDimensionKey);
+	}
+
+	_getDimensionByKey(key) {
+		return this._dimensions.find(dimension => dimension.key === key);
+	}
+
+	_getSearchCallback(dimension) {
+		return function({ keysToDisplay = [], displayAllKeys = false } = {}) {
+			requestAnimationFrame(() => {
+				dimension.displayAllKeys = displayAllKeys;
+				dimension.searchKeysToDisplay = keysToDisplay;
+				this._performDimensionSearch(dimension);
+				dimension.loading = false;
+				this.requestUpdate();
+			});
+		}.bind(this);
 	}
 
 	_getSlottedNodes(slot) {
@@ -618,7 +640,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleChangeSetDimension(e) {
 		const dimensionKey = e.target.id.slice(SET_DIMENSION_ID_PREFIX.length);
-		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
+		const dimension = this._getDimensionByKey(dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
@@ -652,7 +674,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleDimensionDataChange(e) {
 		const changes = e.detail.changes;
-		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
+		const dimension = this._getDimensionByKey(e.detail.dimensionKey);
 		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
 		const toUpdate = e.detail.valueKey ? value : dimension;
 
@@ -710,6 +732,25 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeDimensionKey = null;
 	}
 
+	_handleDimensionLoadMore(e) {
+		const dimensionKey = e.target.parentNode.id.slice(SET_DIMENSION_ID_PREFIX.length);
+		const dimension = this._getDimensionByKey(dimensionKey);
+		const applySearch = this._getSearchCallback(dimension);
+
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
+			detail: {
+				key: dimensionKey,
+				value: dimension.searchValue,
+				loadMoreCompleteCallback: (options) => {
+					applySearch(options);
+					e.detail.complete();
+				}
+			},
+			bubbles: true,
+			composed: false
+		}));
+	}
+
 	_handleDimensionShowComplete() {
 		const returnButton = this.shadowRoot
 			&& this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
@@ -718,7 +759,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleDimensionShowStart(e) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
-		const dimension = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		const dimension = this._getDimensionByKey(this._activeDimensionKey);
 		if (dimension.introductoryText) announce(dimension.introductoryText);
 		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
 		this._dispatchDimensionFirstOpenEvent(dimension);
@@ -753,9 +794,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.selectedFirst) {
-			this._updateDimensionShouldBubble(dimension);
-		}
 		this._search(dimension);
 	}
 
@@ -775,6 +813,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				case 'd2l-filter-dimension-set': {
 					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
+					info.hasMore = dimension.hasMore;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
 					info.selectedFirst = dimension.selectedFirst;
@@ -839,6 +878,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_performDimensionSearch(dimension) {
+		if (dimension.selectedFirst) this._updateDimensionShouldBubble(dimension);
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
@@ -882,15 +922,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				detail: {
 					key: dimension.key,
 					value: dimension.searchValue,
-					searchCompleteCallback: function({ keysToDisplay = [], displayAllKeys = false } = {}) {
-						requestAnimationFrame(() => {
-							dimension.displayAllKeys = displayAllKeys;
-							dimension.searchKeysToDisplay = keysToDisplay;
-							this._performDimensionSearch(dimension);
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
+					searchCompleteCallback: this._getSearchCallback(dimension)
 				}
 			}));
 		}
