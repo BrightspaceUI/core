@@ -1,4 +1,6 @@
+import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
@@ -152,29 +154,41 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	}
 
 	_handleRadioKeyUp(e) {
+
 		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
-		const selectables = Array.from(this._selectionSelectables.values())
-			.filter(item => !item.disabled);
-		let currentIndex = selectables.findIndex(selectable => selectable.selected);
-		if (currentIndex === -1) currentIndex = 0;
-		let newIndex;
+		const getSelectionInput = (focusable, forward) => {
+			while (focusable) {
+				if (focusable.classList.contains('d2l-selection-input-radio')) {
+					const selectionInput = focusable.getRootNode().host;
+					if (!selectionInput.disabled && this._selectionSelectables.has(selectionInput)) return selectionInput;
+				}
 
-		if ((this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
-			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)
-			|| e.keyCode === keyCodes.DOWN) {
-			if (currentIndex === selectables.length - 1) newIndex = 0;
-			else newIndex = currentIndex + 1;
-		} else if ((this.dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
-			|| (this.dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
-			|| e.keyCode === keyCodes.UP) {
-			if (currentIndex === 0) newIndex = selectables.length - 1;
-			else newIndex = currentIndex - 1;
+				if (!isComposedAncestor(this, focusable)) return null;
+
+				focusable = forward ? getNextFocusable(focusable, false, true, true) : getPreviousFocusable(focusable, false, true, true);
+			}
+		};
+
+		const forward = (this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT) || (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT) || (e.keyCode === keyCodes.DOWN);
+
+		// first try to find next/previous selection-input relative to the event target within the selection component sub-tree that also belongs to the selection component
+		let focusable = forward ? getNextFocusable(e.composedPath()[0], false, true, true) : getPreviousFocusable(e.composedPath()[0], false, true, true);
+		let selectionInput = getSelectionInput(focusable, forward);
+
+		if (!selectionInput) {
+			// no selection-input since next/previous focusable is before/after list... cycle to first/last
+			focusable = forward ? getNextFocusable(this, false, true, false) : getPreviousFocusable(this, false, true, false);
+			selectionInput = getSelectionInput(focusable, forward);
 		}
-		selectables[newIndex].selected = true;
-		selectables[newIndex].focus();
+
+		if (selectionInput) {
+			selectionInput.selected = true;
+			selectionInput.focus();
+		}
+
 	}
 
 	_handleSelectionChange(e) {
