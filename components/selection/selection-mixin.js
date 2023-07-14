@@ -1,4 +1,4 @@
-import { getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable} from '../../helpers/focus.js';
+import { getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
