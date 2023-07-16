@@ -70,30 +70,30 @@ function createSimpleFixture(separatorType, extendSeparators = false) {
 function createExpandCollapseFixture(expanded, selectable, draggable) {
 	return html`
 		<d2l-list style="width: 600px;">
-			<d2l-list-item expandable ?expanded="${expanded}" ?selectable="${selectable}" ?draggable="${draggable}" key="L1-1">
+			<d2l-list-item expandable ?expanded="${expanded}" ?selectable="${selectable}" ?draggable="${draggable}" key="L1-1" label="L1-1">
 				<d2l-list-item-content>
 					<div>Level 1, Item 1</div>
 					<div slot="supporting-info">Supporting text for top level list item</div>
 				</d2l-list-item-content>
 				<d2l-list slot="nested">
-					<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L2-1">
+					<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L2-1" label="L2-1">
 						<d2l-list-item-content>
 							<div>Level 2, Item 1</div>
 							<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
-					<d2l-list-item expandable ?expanded="${expanded}" ?selectable="${selectable}" ?draggable="${draggable}" key="L2-2">
+					<d2l-list-item expandable ?expanded="${expanded}" ?selectable="${selectable}" ?draggable="${draggable}" key="L2-2" label="L2-2">
 						<d2l-list-item-content>
 							<div>Level 2, Item 2</div>
 							<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L3-1">
+							<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L3-1" label="L3-1">
 								<d2l-list-item-content>
 									<div>Level 3, Item 1</div>
 								</d2l-list-item-content>
 							</d2l-list-item>
-							<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L3-2">
+							<d2l-list-item ?selectable="${selectable}" ?draggable="${draggable}" key="L3-2" label="L3-2">
 								<d2l-list-item-content>
 									<div>Level 3, Item 2</div>
 								</d2l-list-item-content>
@@ -807,7 +807,7 @@ describe('d2l-list', () => {
 			return html`
 				<d2l-list style="width: 600px;">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
-					<d2l-list-item selectable key="L1-1">
+					<d2l-list-item selectable key="L1-1" label="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
 							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
@@ -817,25 +817,25 @@ describe('d2l-list', () => {
 							<button>action 2</button>
 						</div>
 						<d2l-list slot="nested" separators="between">
-							<d2l-list-item selectable ?selected="${selectedType === 'all'}" key="L2-1">
+							<d2l-list-item selectable ?selected="${selectedType === 'all'}" key="L2-1" label="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 								</d2l-list-item-content>
 							</d2l-list-item>
-							<d2l-list-item selectable key="L2-2">
+							<d2l-list-item selectable key="L2-2" label="L2-2">
 								<d2l-list-item-content>
 									<div>Level 2, Item 2</div>
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" separators="between">
-									<d2l-list-item selectable ?selected="${selectedType === 'all'}" key="L3-1">
+									<d2l-list-item selectable ?selected="${selectedType === 'all'}" key="L3-1" label="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item selectable ?selected="${selectedType === 'all' || selectedType === 'some'}" key="L3-2">
+									<d2l-list-item selectable ?selected="${selectedType === 'all' || selectedType === 'some'}" key="L3-2" label="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>

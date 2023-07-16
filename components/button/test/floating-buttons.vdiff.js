@@ -43,19 +43,19 @@ describe('d2l-floating-buttons', () => {
 	it('does not float at bottom of container', async() => {
 		const elem = await fixture(floatingButtonsFixture);
 		window.scrollTo(0, document.body.scrollHeight);
-		await expect(elem).to.be.golden();
+		await expect(elem).to.be.golden({ wait: true });
 	});
 
 	it('does not float when small amount of content', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
-		await expect(elem).to.be.golden();
+		await expect(elem).to.be.golden({ wait: true });
 	});
 
 	it('floats when content added to dom', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
 		const contentElem = document.querySelector('#floating-buttons-short-content').querySelector('p');
 		contentElem.innerHTML += '<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>';
-		await expect(elem).to.be.golden();
+		await expect(elem).to.be.golden({ wait: true });
 	});
 
 	it('floats at bottom of page when always-float', async() => {
