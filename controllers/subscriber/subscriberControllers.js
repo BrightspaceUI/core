@@ -137,7 +137,12 @@ export class EventSubscriberController extends BaseSubscriber {
 	}
 
 	hostConnected() {
-		this._subscriptionComplete = this._keepTrying(() => this._subscribe(), 40, 400);
+		this._subscriptionComplete = new Promise(resolve => {
+			requestAnimationFrame(() => {
+				this._keepTrying(() => this._subscribe(), 40, 400);
+				resolve();
+			});
+		});
 	}
 
 	hostDisconnected() {
