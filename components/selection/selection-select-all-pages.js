@@ -27,23 +27,23 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 	}
 
 	render() {
-		if (!this._provider) return;
-		if (!this._provider.itemCount) return;
-		if (this._provider.selectionSingle) return;
+		if (!this._registry) return;
+		if (!this._registry.itemCount) return;
+		if (this._registry.selectionSingle) return;
 		if (this.selectionInfo.state !== SelectionInfo.states.all) return;
 
 		return html`
 			<d2l-button-subtle
 				@click="${this._handleClick}"
-				text="${this.localize('components.selection.select-all-items', 'count', this._provider.itemCount)}">
+				text="${this.localize('components.selection.select-all-items', 'count', this._registry.itemCount)}">
 			</d2l-button-subtle>`;
 	}
 
 	_handleClick() {
-		if (!this._provider) return;
+		if (!this._registry) return;
 
-		this._provider.setSelectionForAll(true, true);
-		this._provider._focusSelectAll();
+		this._registry.setSelectionForAll(true, true);
+		this._registry._focusSelectAll();
 	}
 
 }

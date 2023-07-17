@@ -1,4 +1,4 @@
-import { cssEscape } from '../../helpers/dom.js';
+import { EventSubscriberController, IdSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { SelectionInfo } from './selection-mixin.js';
 
 export const SelectionObserverMixin = superclass => class extends superclass {
@@ -15,98 +15,38 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 			 * @ignore
 			 * @type {object}
 			 */
-			selectionInfo: { type: Object },
-			_provider: { type: Object, attribute: false }
+			selectionInfo: { type: Object }
 		};
 	}
 
 	constructor() {
 		super();
 		this.selectionInfo = new SelectionInfo();
-		this._provider = null;
-	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
+		this._eventSubscriberController = new EventSubscriberController(this, 'selection-observer', {});
 
-		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => {
-			if (this.selectionFor) {
-				this._handleSelectionFor();
-				return this._provider?.subscribeObserver(this);
-			}
-
-			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
-				bubbles: true,
-				composed: true,
-				detail: {}
-			});
-			this.dispatchEvent(evt);
-			this._provider = evt.detail.provider;
+		this._idSubscriberController = new IdSubscriberController(this, 'selection-observer', {
+			idPropertyName: 'selectionFor',
+			onUnsubscribe: this._clearSelectionInfo.bind(this)
 		});
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this._disconnectSelectionForObserver();
-		this._disconnectProvider();
-		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		await (this.selectionFor ? this._idSubscriberController._subscriptionComplete : this._eventSubscriberController._subscriptionComplete);
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		if (changedProperties.has('selectionFor')) this._handleSelectionFor();
-	}
-
-	_disconnectProvider() {
-		if (!this._provider) return;
-		this._provider.unsubscribeObserver(this);
-		this._provider = undefined;
-	}
-
-	_disconnectSelectionForObserver() {
-		if (!this._selectionForObserver) return;
-		this._selectionForObserver.disconnect();
-		this._selectionForObserver = undefined;
-	}
-
-	_handleSelectionFor() {
-		this._disconnectSelectionForObserver();
-		this._updateProvider();
-
+	get _registry() {
 		if (this.selectionFor) {
-			this._selectionForObserver = new MutationObserver(() => this._updateProvider());
-
-			this._selectionForObserver.observe(this.getRootNode(), {
-				childList: true,
-				subtree: true
-			});
-		}
-	}
-
-	_handleSelectionObserverSubscribe(e) {
-		if (this._provider) {
-			const target = e.composedPath()[0];
-			if (target === this) return;
-
-			e.stopPropagation();
-			e.detail.provider = this._provider;
-			this._provider.subscribeObserver(target);
-		}
-	}
-
-	_updateProvider() {
-		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`) : undefined;
-		if (this._provider === selectionComponent) return;
-
-		this._disconnectProvider();
-		this._provider = selectionComponent;
-		if (this._provider) {
-			this._provider.subscribeObserver(this);
+			// Selection components currently only support one provider id in selectionFor
+			return this._idSubscriberController.registries[0] || null;
 		} else {
-			this.selectionInfo = new SelectionInfo();
+			return this._eventSubscriberController.registry;
 		}
 	}
+
+	_clearSelectionInfo() {
+		this.selectionInfo = new SelectionInfo();
+	}
+
 };

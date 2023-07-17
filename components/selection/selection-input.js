@@ -1,6 +1,7 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
@@ -40,8 +41,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {string}
 			 */
 			key: { type: String },
-			_indeterminate: { type: Boolean },
-			_provider: { type: Object }
+			_indeterminate: { type: Boolean }
 		};
 	}
 
@@ -61,27 +61,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		super();
 		this.selected = false;
 		this._indeterminate = false;
-	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
-		requestAnimationFrame(() => {
-			const evt = new CustomEvent('d2l-selection-input-subscribe', {
-				bubbles: true,
-				composed: true,
-				detail: {}
-			});
-			this.dispatchEvent(evt);
-			this._provider = evt.detail.provider;
-			if (this._provider && this._provider._selectAllPages) this.selected = true;
+		this._subscriberController = new EventSubscriberController(this, 'selection-input', {
+			onSubscribe: this._onSubscribe.bind(this)
 		});
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (!this._provider) return;
-		this._provider.unsubscribeSelectable(this);
 	}
 
 	firstUpdated(changedProperties) {
@@ -90,8 +73,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	render() {
-		if (!this._provider) return;
-		if (this._provider.selectionSingle) {
+		if (!this._subscriberController.registry) return;
+		if (this._subscriberController.registry.selectionSingle) {
 			const radioClasses = {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
@@ -164,6 +147,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	_handleRadioKeyUp(e) {
 		if (e.keyCode === keyCodes.SPACE) this.selected = true;
+	}
+
+	_onSubscribe(registry) {
+		if (registry._selectAllPages) this.selected = true;
 	}
 
 }
