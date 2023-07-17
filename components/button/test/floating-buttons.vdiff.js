@@ -1,6 +1,6 @@
 import '../button.js';
 import '../floating-buttons.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 
 const lotsaCoffee = Array.from(Array(22).keys()).map(() => html`<p>I love Coffee!</p>`);
 
@@ -43,19 +43,22 @@ describe('d2l-floating-buttons', () => {
 	it('does not float at bottom of container', async() => {
 		const elem = await fixture(floatingButtonsFixture);
 		window.scrollTo(0, document.body.scrollHeight);
-		await expect(elem).to.be.golden({ wait: true });
+		await oneEvent(window, 'scroll');
+		await expect(elem).to.be.golden();
 	});
 
 	it('does not float when small amount of content', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
-		await expect(elem).to.be.golden({ wait: true });
+		await nextFrame();
+		await expect(elem).to.be.golden();
 	});
 
 	it('floats when content added to dom', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
 		const contentElem = document.querySelector('#floating-buttons-short-content').querySelector('p');
 		contentElem.innerHTML += '<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>';
-		await expect(elem).to.be.golden({ wait: true });
+		await nextFrame();
+		await expect(elem).to.be.golden();
 	});
 
 	it('floats at bottom of page when always-float', async() => {
