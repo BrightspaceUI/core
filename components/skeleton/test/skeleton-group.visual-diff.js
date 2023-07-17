@@ -69,7 +69,7 @@ describe('d2l-skeleton-group', () => {
 	});
 
 	it('mixed-elements', async function() {
-		const rect = await visualDiff.getRect(page, '#nested');
+		const rect = await visualDiff.getRect(page, '#mixed-elements');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
