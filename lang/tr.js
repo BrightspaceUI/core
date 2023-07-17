@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "{name} için öğe eylemini yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeyi yeniden sırala, mevcut konum {currentPosition} / {size}. Bu öğeyi taşımak için yukarı veya aşağı oklara basın.",
 	"components.list-item-tooltip.title": "Listeler için Klavye ile Gezinme:",
-	"components.list-item-tooltip.enter-key": "Gir",
-	"components.list-item-tooltip.enter-desc": "Odaklanmış seçeneğini etkinleştirin.",
 	"components.list-item-tooltip.up-down-key": "Yukarı/Aşağı",
 	"components.list-item-tooltip.up-down-desc": "Odağı liste öğeleri arasında taşıyın.",
 	"components.list-item-tooltip.left-right-key": "Sol/Sağ",

@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "{name}에 대한 항목 작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "전체 {size}에서 현재 위치 {currentPosition} 항목 재정렬 이 항목을 이동하라면 위쪽 또는 아래쪽 화살표를 누르십시오.",
 	"components.list-item-tooltip.title": "목록에 대한 키보드 탐색:",
-	"components.list-item-tooltip.enter-key": "입력",
-	"components.list-item-tooltip.enter-desc": "포커스 옵션을 활성화합니다.",
 	"components.list-item-tooltip.up-down-key": "위로/아래로",
 	"components.list-item-tooltip.up-down-desc": "목록 항목 간에 포커스를 이동합니다.",
 	"components.list-item-tooltip.left-right-key": "왼쪽/오른쪽",

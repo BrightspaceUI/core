@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
 	"components.list-item-tooltip.title": "التنقل عبر لوحة المفاتيح للقوائم:",
-	"components.list-item-tooltip.enter-key": "إدخال",
-	"components.list-item-tooltip.enter-desc": "تنشيط خيار التركيز.",
 	"components.list-item-tooltip.up-down-key": "أعلى/أسفل",
 	"components.list-item-tooltip.up-down-desc": "نقل التركيز بين مواد القائمة.",
 	"components.list-item-tooltip.left-right-key": "يسار/يمين",

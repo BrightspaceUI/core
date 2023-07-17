@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Flytta objekt. Aktuell position: {currentPosition} av {size}. Om du vill flytta det här objektet trycker du på uppåt- eller nedåtpilen.",
 	"components.list-item-tooltip.title": "Tangentbordsnavigering för listor:",
-	"components.list-item-tooltip.enter-key": "Ange",
-	"components.list-item-tooltip.enter-desc": "Aktivera alternativet Fokuserat.",
 	"components.list-item-tooltip.up-down-key": "Upp/ned",
 	"components.list-item-tooltip.up-down-desc": "Flytta fokus mellan listobjekt.",
 	"components.list-item-tooltip.left-right-key": "Vänster/höger",

@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Acción de reordenar elemento de {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elemento, posición actual {currentPosition} de {size}. Para mover este elemento, presione las flechas hacia arriba o hacia abajo.",
 	"components.list-item-tooltip.title": "Navegación con el teclado para listas:",
-	"components.list-item-tooltip.enter-key": "Ingresar",
-	"components.list-item-tooltip.enter-desc": "Activar la opción enfocada.",
 	"components.list-item-tooltip.up-down-key": "Arriba/abajo",
 	"components.list-item-tooltip.up-down-desc": "Mover el enfoque entre los elementos de la lista.",
 	"components.list-item-tooltip.left-right-key": "Izquierda/derecha",
