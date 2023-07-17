@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
 	"components.list-item-tooltip.title": "Navigation au clavier pour les listes :",
-	"components.list-item-tooltip.enter-key": "Entrée",
-	"components.list-item-tooltip.enter-desc": "Activer l'option de mise au point.",
 	"components.list-item-tooltip.up-down-key": "Haut/bas",
 	"components.list-item-tooltip.up-down-desc": "Déplacer la priorité entre les éléments d'une liste.",
 	"components.list-item-tooltip.left-right-key": "Gauche/droite",

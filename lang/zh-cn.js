@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",
 	"components.list-item-tooltip.title": "列表的键盘导航：",
-	"components.list-item-tooltip.enter-key": "输入",
-	"components.list-item-tooltip.enter-desc": "激活聚焦选项。",
 	"components.list-item-tooltip.up-down-key": "向上/向下",
 	"components.list-item-tooltip.up-down-desc": "在列表项之间移动焦点。",
 	"components.list-item-tooltip.left-right-key": "向左/向右",

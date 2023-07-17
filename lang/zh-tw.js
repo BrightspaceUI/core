@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "重新排序 {name} 的項目動作",
 	"components.list-item-drag-handle.keyboard": "重新排序項目，目前位置 {currentPosition}，總共為 {size}。若要移除這個項目，請按向上或向下箭頭。",
 	"components.list-item-tooltip.title": "清單的鍵盤導覽：",
-	"components.list-item-tooltip.enter-key": "輸入",
-	"components.list-item-tooltip.enter-desc": "啟動聚焦選項。",
 	"components.list-item-tooltip.up-down-key": "上 / 下",
 	"components.list-item-tooltip.up-down-desc": "在清單項目之間移動焦點。",
 	"components.list-item-tooltip.left-right-key": "左 / 右",

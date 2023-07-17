@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Reorder item action for {name}",
 	"components.list-item-drag-handle.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press up or down arrows.",
 	"components.list-item-tooltip.title": "Keyboard Navigation for Lists:",
-	"components.list-item-tooltip.enter-key": "Enter",
-	"components.list-item-tooltip.enter-desc": "Activate the focused option.",
 	"components.list-item-tooltip.up-down-key": "Up/Down",
 	"components.list-item-tooltip.up-down-desc": "Move focus between list items.",
 	"components.list-item-tooltip.left-right-key": "Left/Right",

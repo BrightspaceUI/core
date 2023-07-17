@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",
 	"components.list-item-tooltip.title": "Toetsenbordnavigatie voor lijsten:",
-	"components.list-item-tooltip.enter-key": "Invoeren",
-	"components.list-item-tooltip.enter-desc": "Activeer de optie met focus.",
 	"components.list-item-tooltip.up-down-key": "Omhoog/omlaag",
 	"components.list-item-tooltip.up-down-desc": "Verplaats focus tussen lijstitems.",
 	"components.list-item-tooltip.left-right-key": "Links/rechts",

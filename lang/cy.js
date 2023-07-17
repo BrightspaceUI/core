@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
 	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu'r saeth i lawr.",
 	"components.list-item-tooltip.title": "Llywio Bysellfwrdd ar gyfer Rhestrau:",
-	"components.list-item-tooltip.enter-key": "Nodi",
-	"components.list-item-tooltip.enter-desc": "Gweithredu'r opsiwn ffocysu.",
 	"components.list-item-tooltip.up-down-key": "I Fyny/I Lawr",
 	"components.list-item-tooltip.up-down-desc": "Symud y ffocws rhwng eitemau rhestr.",
 	"components.list-item-tooltip.left-right-key": "Chwith/De",

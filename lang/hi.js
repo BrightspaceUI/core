@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "{name} के लिए आइटम कार्रवाई का क्रम बदलें",
 	"components.list-item-drag-handle.keyboard": "आइटम का क्रम बदलें, {size} में से वर्तमान स्थिति {currentPosition} इस आइटम को ले जाने के लिए, ऊपर या नीचे तीर दबाएँ।",
 	"components.list-item-tooltip.title": "सूचियों के लिए कीबोर्ड नेविगेशन:",
-	"components.list-item-tooltip.enter-key": "डालें",
-	"components.list-item-tooltip.enter-desc": "फ़ोकस किए गए विकल्प को सक्रिय करें।",
 	"components.list-item-tooltip.up-down-key": "ऊपर/नीचे",
 	"components.list-item-tooltip.up-down-desc": "सूची के आइटम के बीच फोकस ले जाएँ।",
 	"components.list-item-tooltip.left-right-key": "बायाँ/दायाँ",

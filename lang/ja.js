@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "{name} の項目並べ替えアクション",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え、現在の位置 {currentPosition}、サイズ {size}。この項目を移動するには、上矢印または下矢印を押します。",
 	"components.list-item-tooltip.title": "リストのキーボードナビゲーション:",
-	"components.list-item-tooltip.enter-key": "入力",
-	"components.list-item-tooltip.enter-desc": "フォーカスされたオプションを有効化します。",
 	"components.list-item-tooltip.up-down-key": "上/下",
 	"components.list-item-tooltip.up-down-desc": "リストの項目間でフォーカスを移動します。",
 	"components.list-item-tooltip.left-right-key": "左/右",

@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Elementaktion für {name} neu anordnen",
 	"components.list-item-drag-handle.keyboard": "Elemente neu anordnen; aktuelle Position: {currentPosition} von {size}. Drücken Sie zum Bewegen dieses Elements auf den Pfeil nach oben oder den Pfeil nach unten.",
 	"components.list-item-tooltip.title": "Tastaturnavigation für Listen:",
-	"components.list-item-tooltip.enter-key": "Eingabe",
-	"components.list-item-tooltip.enter-desc": "Die fokussierte Option aktivieren.",
 	"components.list-item-tooltip.up-down-key": "Nach oben/unten",
 	"components.list-item-tooltip.up-down-desc": "Fokus zwischen Listeneinträgen verschieben.",
 	"components.list-item-tooltip.left-right-key": "Links/Rechts",

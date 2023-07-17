@@ -70,8 +70,6 @@ export default {
 	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger element, aktuel position {currentPosition} ud af {size}. For at flytte dette element skal du trykke på pil op eller pil ned.",
 	"components.list-item-tooltip.title": "Tastaturnavigering for lister:",
-	"components.list-item-tooltip.enter-key": "Indtast",
-	"components.list-item-tooltip.enter-desc": "Aktivér den fokuserede indstilling.",
 	"components.list-item-tooltip.up-down-key": "Op/ned",
 	"components.list-item-tooltip.up-down-desc": "Flyt fokus mellem listeelementer.",
 	"components.list-item-tooltip.left-right-key": "Venstre/højre",
