@@ -6,7 +6,6 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 	constructor() {
 		super();
 
-		this._skeletonActiveCached = true;
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			onSubscribe: this.onSubscriberChange.bind(this),
 			onUnsubscribe: this.onSubscriberChange.bind(this),
@@ -20,7 +19,6 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 
 	_checkSubscribersSkeletonState(subscribers) {
 		const skeletonActive = [...subscribers.values()].some(subscriber => subscriber._skeleton);
-		this._skeletonActiveCached = skeletonActive;
 		subscribers.forEach(subscriber => subscriber.setSkeletonActive(skeletonActive));
 	}
 
