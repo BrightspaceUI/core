@@ -39,8 +39,8 @@ describe('d2l-skeleton-group', () => {
 	].forEach((info) => {
 		it(info.name, async function() {
 			await page.$eval(`#${info.name}`, async(element, skeleton) => {
-				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group d2l-collapsible-panel');
-				const panel = panelGroup.querySelector('');
+				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
+				const panel = panelGroup.querySelector('d2l-collapsible-panel');
 				panel.skeleton = skeleton;
 				await panel.updateComplete;
 			}, info.skeleton);
@@ -68,7 +68,7 @@ describe('d2l-skeleton-group', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('nested', async function() {
+	it('mixed-elements', async function() {
 		const rect = await visualDiff.getRect(page, '#nested');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
