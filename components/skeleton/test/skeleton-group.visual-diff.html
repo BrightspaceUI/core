@@ -16,11 +16,6 @@
 			.visual-diff {
 				width: 300px;
 			}
-			d2l-list-item-content {
-				display: flex;
-				flex-direction: column;
-				gap: 0.6rem;
-			}
 		</style>
 		<title>d2l-skeleton-group</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,32 +88,29 @@
 		</div>
 
 		<div class="visual-diff" id="mixed-elements">
-			<d2l-list>
-				<d2l-list-item>
-					<d2l-list-item-content>
-						<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-						<d2l-input-text label="Label"></d2l-input-text>
-						<d2l-input-checkbox skeleton>Item</d2l-input-checkbox>
-						<d2l-input-checkbox>Item</d2l-input-checkbox>
-					</d2l-list-item-content>
-				</d2l-list-item>
-				<d2l-list-item>
-					<d2l-list-item-content>
-						<d2l-input-checkbox>Item</d2l-input-checkbox>
-						<d2l-input-text skeleton label="Label"></d2l-input-text>
-						<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
-						<d2l-input-text label="Label"></d2l-input-text>
-					</d2l-list-item-content>
-				</d2l-list-item>
-				<d2l-list-item>
-					<d2l-list-item-content>
-						<d2l-input-checkbox>Item</d2l-input-checkbox>
-						<d2l-input-text label="Label"></d2l-input-text>
-						<d2l-collapsible-panel panel-title="Title 1" heading-level="3" heading-style="3" padding-type="default" type="default"></d2l-collapsible-panel>
-						<d2l-input-text label="Label"></d2l-input-text>
-					</d2l-list-item-content>
-				</d2l-list-item>
-			  </d2l-list>
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-input-text label="Label"></d2l-input-text>
+				<d2l-input-checkbox id="to-skeleton">Item</d2l-input-checkbox>
+				<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+
+		<div class="visual-diff" id="nested-groups">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<d2l-input-text label="Label"></d2l-input-text>
+							<d2l-input-checkbox id="to-skeleton">Item</d2l-input-checkbox>
+							<d2l-input-checkbox>Item</d2l-input-checkbox>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+				<d2l-collapsible-panel-group>
+					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
+					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
+				</d2l-collapsible-panel-group>
+			</d2l-skeleton-group-test-wrapper>
 		</div>
 	</body>
 </html>

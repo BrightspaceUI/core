@@ -68,9 +68,20 @@ describe('d2l-skeleton-group', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('mixed-elements', async function() {
-		const rect = await visualDiff.getRect(page, '#mixed-elements');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		'mixed-elements',
+		'nested-groups'
+	].forEach((name) => {
+		[true, false].forEach((skeleton) => {
+			it(`${name}${skeleton ? '-skeleton' : ''}`, async function() {
+				await page.$eval(`#${name}`, async(element, skeleton) => {
+					const el = element.querySelector('#to-skeleton');
+					el.skeleton = skeleton;
+				}, skeleton);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
 	});
 
 });
