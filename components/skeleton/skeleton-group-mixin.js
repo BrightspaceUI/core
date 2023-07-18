@@ -13,12 +13,19 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superc
 		});
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.has('skeleton')) {
+			this._skeletonSubscribers._subscribers.forEach(subscriber => subscriber.setSkeletonActive(this.skeleton));
+		}
+	}
+
 	onSubscriberChange() {
 		this._skeletonSubscribers.updateSubscribers();
 	}
 
 	_checkSubscribersSkeletonState(subscribers) {
 		const skeletonActive = [...subscribers.values()].some(subscriber => subscriber._skeleton);
+		this.skeleton = skeletonActive;
 		subscribers.forEach(subscriber => subscriber.setSkeletonActive(skeletonActive));
 	}
 
