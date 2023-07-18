@@ -1,7 +1,8 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { SkeletonMixin } from './skeleton-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
-export const SkeletonGroupMixin = dedupeMixin(superclass => class extends superclass {
+export const SkeletonGroupMixin = dedupeMixin(superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
