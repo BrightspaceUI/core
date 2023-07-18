@@ -115,6 +115,8 @@ export class SubscriberRegistryController extends BaseController {
 	}
 
 	_handleSubscribe(e) {
+		if (e.detail.subscriber === this._host) { return; }
+
 		e.stopPropagation();
 		e.detail.registry = this._host;
 		e.detail.registryController = this;
