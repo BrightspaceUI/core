@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -74,10 +75,10 @@ class Link extends FocusMixin(LitElement) {
 			 */
 			main: { type: Boolean, reflect: true },
 			/**
-			 * Whether to truncate the link with ellipsis
-			 * @type {boolean}
+			 * The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified.
+			 * @type {number}
 			 */
-			overflowEllipsis: { type: Boolean, attribute: 'overflow-ellipsis', reflect: true },
+			lines: { type: Number },
 			/**
 			 * Whether to apply the "small" link style
 			 * @type {boolean}
@@ -105,16 +106,14 @@ class Link extends FocusMixin(LitElement) {
 					font-size: 0.7rem;
 					line-height: 1.05rem;
 				}
-				:host([overflow-ellipsis]) {
-					display: inline-block;
-					max-width: 100%;
+				a {
+					display: inherit;
 				}
-				:host([overflow-ellipsis]) .d2l-link {
-					display: inline-block;
-					max-width: 100%;
+				a.truncate {
+					-webkit-box-orient: vertical;
+					display: -webkit-box;
 					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
+					overflow-wrap: anywhere;
 				}
 			`
 		];
@@ -135,11 +134,14 @@ class Link extends FocusMixin(LitElement) {
 		const linkClasses = {
 			'd2l-link': true,
 			'd2l-link-main': this.main,
-			'd2l-link-small': this.small
+			'd2l-link-small': this.small,
+			'truncate': this.lines > 0
 		};
+		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
 		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
+				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(this.target)}"><slot></slot></a>`;

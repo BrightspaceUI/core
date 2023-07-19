@@ -15,6 +15,9 @@
 				max-width: 400px;
 				padding: 0.6rem;
 			}
+			.block {
+				display: block;
+			}
 		</style>
 	</head>
 	<body unresolved>
@@ -48,11 +51,29 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Overflow-Ellipsis</h2>
+			<h2>Block Wrap</h2>
 			<d2l-demo-snippet>
 				<template>
 					<div class="truncate-container">
-						<d2l-link href="https://www.d2l.com" overflow-ellipsis>A really long link that will overflow its container.</d2l-link>
+						<d2l-link class="block" href="https://www.d2l.com">A really long link that will wrap in its container to the next line.</d2l-link>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Clamp - One Line</h2>
+			<d2l-demo-snippet>
+				<template>
+					<div class="truncate-container">
+						<d2l-link href="https://www.d2l.com" lines="1">A really long link that will overflow its container and display an ellipsis.</d2l-link>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Clamp - Two Lines</h2>
+			<d2l-demo-snippet>
+				<template>
+					<div class="truncate-container">
+						<d2l-link href="https://www.d2l.com" lines="2">A really really long link that wraps in its container and then truncates after two lines of text like this.</d2l-link>
 					</div>
 				</template>
 			</d2l-demo-snippet>
