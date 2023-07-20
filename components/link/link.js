@@ -124,6 +124,7 @@ class Link extends FocusMixin(LitElement) {
 		this.download = false;
 		this.main = false;
 		this.small = false;
+		this.lines = 0;
 	}
 
 	static get focusElementSelector() {
