@@ -88,7 +88,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 			 * @type {string}
 			 */
 			value: { type: String },
-			_hovered: { type: Boolean }
+			_hovered: { state: true }
 		};
 	}
 
@@ -195,6 +195,9 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		if (this.hasAttribute('aria-label')) {
 			this.labelRequired = false;
 		}
+		this.addEventListener('mouseover', this._handleMouseEnter);
+		this.addEventListener('mouseout', this._handleMouseLeave);
+		this.addEventListener('click', this._handleClick);
 	}
 
 	disconnectedCallback() {
@@ -202,13 +205,6 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		this.removeEventListener('mouseover', this._handleMouseEnter);
 		this.removeEventListener('mouseout', this._handleMouseLeave);
 		this.removeEventListener('click', this._handleClick);
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this.addEventListener('mouseover', this._handleMouseEnter);
-		this.addEventListener('mouseout', this._handleMouseLeave);
-		this.addEventListener('click', this._handleClick);
 	}
 
 	render() {

@@ -329,18 +329,21 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (this.hasAttribute('aria-label')) {
 			this.labelRequired = false;
 		}
+		this.addEventListener('mouseover', this._handleMouseEnter);
+		this.addEventListener('mouseout', this._handleMouseLeave);
+		this.addEventListener('click', this._handleClick);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
-		if (!container) return;
-		container.removeEventListener('blur', this._handleBlur, true);
-		container.removeEventListener('focus', this._handleFocus, true);
 		this.removeEventListener('mouseover', this._handleMouseEnter);
 		this.removeEventListener('mouseout', this._handleMouseLeave);
 		this.removeEventListener('click', this._handleClick);
+		if (!container) return;
+		container.removeEventListener('blur', this._handleBlur, true);
+		container.removeEventListener('focus', this._handleFocus, true);
 	}
 
 	firstUpdated(changedProperties) {
@@ -353,9 +356,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		if (!container) return;
 		container.addEventListener('blur', this._handleBlur, true);
 		container.addEventListener('focus', this._handleFocus, true);
-		this.addEventListener('mouseover', this._handleMouseEnter);
-		this.addEventListener('mouseout', this._handleMouseLeave);
-		this.addEventListener('click', this._handleClick);
 
 		// if initially hidden then update layout when it becomes visible
 		if (typeof(IntersectionObserver) === 'function') {
@@ -545,7 +545,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_handleClick(e) {
-		const input = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input');
+		const input = this.shadowRoot?.querySelector('.d2l-input');
 		if (!input || e.composedPath()[0] !== this) return;
 		input.focus();
 	}
