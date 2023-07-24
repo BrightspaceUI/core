@@ -37,4 +37,24 @@ describe('d2l-tooltip truncating', () => {
 
 	});
 
+	[
+		{ name: 'status-indicator-not-truncating', hover: ' d2l-status-indicator' },
+		{ name: 'status-indicator-truncating', hover: ' d2l-status-indicator', shouldShow: true }
+	].forEach((testCase) => {
+
+		it(testCase.name, async function() {
+			const selector = `#${testCase.name}`;
+			await page.hover(`${selector}${testCase.hover}`);
+			if (testCase.shouldShow) {
+				await page.waitForFunction((selector) => {
+					const tooltip = document.querySelector(`${selector} d2l-tooltip`);
+					return tooltip.showing;
+				}, {}, selector);
+			}
+			const rect = await getRect(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
+		});
+
+	});
+
 });

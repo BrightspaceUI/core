@@ -11,6 +11,7 @@
 		import '../../demo/demo-page.js';
 		import '../../inputs/input-text.js';
 		import '../../link/link.js';
+		import '../../status-indicator/status-indicator.js';
 		import '../tooltip.js';
 		import '../tooltip-help.js';
 	</script>
@@ -39,7 +40,7 @@
 		.truncated {
 			border: 1px solid #cdd5dc;
 			border-radius: 6px;
-			height: 200px;
+			height: 250px;
 			padding: 20px;
 			width: 200px;
 		}
@@ -54,6 +55,11 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+		}
+
+		.truncated .indicator-container {
+			display: flex;
+			margin-top: 0.8rem;
 		}
 
 		.dark-background {
@@ -166,6 +172,18 @@
 					<d2l-link id="link-long" href="https://www.d2l.com" lines="1">Very Very Very Very Long Text</d2l-link>
 					<d2l-tooltip for="link-long" show-truncated-only>
 						Very Very Very Very Long Text - this tooltip will show because the text is truncating.
+					</d2l-tooltip>
+					<div id="status-indicator-short" class="indicator-container">
+						<d2l-status-indicator text="Short Text"></d2l-status-indicator>
+					</div>
+					<d2l-tooltip for="status-indicator-short" show-truncated-only>
+						This tooltip will not show.
+					</d2l-tooltip>
+					<div id="status-indicator-long" class="indicator-container">
+						<d2l-status-indicator text="Very Very Very Very Very Very Very Very Long Text"></d2l-status-indicator>
+					</div>
+					<d2l-tooltip for="status-indicator-long" show-truncated-only>
+						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
 				</div>
 			</template>
