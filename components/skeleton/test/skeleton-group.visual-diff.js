@@ -75,8 +75,8 @@ describe('d2l-skeleton-group', () => {
 		[true, false].forEach((skeleton) => {
 			it(`${name}${skeleton ? '-skeleton' : ''}`, async function() {
 				await page.$eval(`#${name}`, async(element, skeleton) => {
-					const el = element.querySelector('#to-skeleton');
-					el.skeleton = skeleton;
+					const elements = element.querySelectorAll('.to-skeleton');
+					elements.forEach(el => el.skeleton = skeleton);
 				}, skeleton);
 				const rect = await visualDiff.getRect(page, `#${name}`);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

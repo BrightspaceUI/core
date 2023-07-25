@@ -156,7 +156,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
 			 * @type {boolean}
 			 */
-			skeleton: { reflect: true, type: Boolean  }
+			skeleton: { reflect: true, type: Boolean  },
+			_skeleton: { reflect: true }
 		};
 	}
 
