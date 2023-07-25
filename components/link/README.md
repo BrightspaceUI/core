@@ -51,6 +51,7 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 | `aria-label` | String | Sets an accessible label |
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `main` | Boolean | Whether to apply the "main" link style |
+| `lines` | Number | The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified. |
 | `small` | Boolean | Whether to apply the "small" link style |
 | `target` | String | Where to display the linked URL |
 <!-- docs: end hidden content -->
