@@ -56,6 +56,10 @@
 			white-space: nowrap;
 		}
 
+		.truncated d2l-link {
+			display: flex;
+		}
+
 		.dark-background {
 			background-color: black;
 			padding: 20px;
@@ -159,11 +163,11 @@
 					<d2l-tooltip for="tooltip-long" show-truncated-only>
 						Very Very Very Very Long Tooltip - this tooltip will show because the text is truncating.
 					</d2l-tooltip>
-					<d2l-link id="link-short" href="https://www.d2l.com" overflow-ellipsis>Short Text</d2l-link>
+					<d2l-link id="link-short" href="https://www.d2l.com" lines="1">Short Text</d2l-link>
 					<d2l-tooltip for="link-short" show-truncated-only>
 						This tooltip will not show.
 					</d2l-tooltip>
-					<d2l-link id="link-long" href="https://www.d2l.com" overflow-ellipsis>Very Very Very Very Long Text</d2l-link>
+					<d2l-link id="link-long" href="https://www.d2l.com" lines="1">Very Very Very Very Long Text</d2l-link>
 					<d2l-tooltip for="link-long" show-truncated-only>
 						Very Very Very Very Long Text - this tooltip will show because the text is truncating.
 					</d2l-tooltip>

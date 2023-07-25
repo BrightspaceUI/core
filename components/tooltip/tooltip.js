@@ -976,6 +976,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		const clone = target.cloneNode(true);
 		clone.removeAttribute('id');
 		clone.style.maxWidth = 'none';
+		clone.style.display = 'inline-block';
 
 		cloneContainer.appendChild(clone);
 		target.appendChild(cloneContainer);

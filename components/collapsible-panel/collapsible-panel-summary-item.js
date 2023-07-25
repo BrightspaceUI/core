@@ -49,6 +49,7 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 	constructor() {
 		super();
 		this.text = '';
+		this.lines = 0;
 	}
 
 	render() {
