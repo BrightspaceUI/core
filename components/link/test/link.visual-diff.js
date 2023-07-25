@@ -29,6 +29,7 @@ describe('d2l-link', () => {
 		{ name: 'wc-block' },
 		{ name: 'wc-clamp-one-line' },
 		{ name: 'wc-clamp-two-lines' },
+		{ name: 'wc-clamp-unbreakable' },
 		{ name: 'sass-standard' },
 		{ name: 'sass-main' },
 		{ name: 'sass-small' }
