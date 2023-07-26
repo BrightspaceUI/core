@@ -12,8 +12,8 @@ import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	static get properties() {
 		return {
-			_items: { state: true },
-			_loadAsGroup: { state: true },
+			_skeletonList: { state: true },
+			_skeletonInput: { state: true },
 		};
 	}
 	static get styles() {
@@ -22,7 +22,6 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 				align-items: center;
 				display: flex;
 				gap: 0.6rem;
-				justify-content: space-between;
 				margin-bottom: 0.6rem;
 			}
 		`;
@@ -30,20 +29,20 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 
 	constructor() {
 		super();
-		this._items = [1, 2, 3];
-		this._loadAsGroup = true;
+		this._skeletonList = false;
+		this._skeletonInput = false;
 	}
 
 	render() {
 		return html`
 			<div class="controls">
-				<d2l-switch @click="${this._loadList}" text="Load list"></d2l-switch>
-				<d2l-switch @click="${this._loadInput}" text="Load input" ></d2l-switch>
+				<d2l-switch @click="${this._loadList}" ?on="${this._skeletonList}" text="d2l-list skeleton"></d2l-switch>
+				<d2l-switch @click="${this._loadInput}" ?on="${this._skeletonInput}" text="d2l-input skeleton"></d2l-switch>
 			</div>
-			<d2l-list skeleton>
+			<d2l-list ?skeleton="${this._skeletonList}">
 				<d2l-list-item>
 					<d2l-list-item-content>
-						<d2l-input-text label="Label" skeleton></d2l-input-text>
+						<d2l-input-text label="Label" ?skeleton="${this._skeletonInput}"></d2l-input-text>
 						<d2l-input-checkbox>Item</d2l-input-checkbox>
 						<d2l-input-checkbox>Item</d2l-input-checkbox>
 					</d2l-list-item-content>
@@ -57,15 +56,11 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	}
 
 	_loadInput() {
-		const el = this.shadowRoot.querySelector('d2l-input-text');
-		console.log(el.tagName, el.skeleton, '->', !el.skeleton );
-		el.skeleton = !el.skeleton;
+		this._skeletonInput = !this._skeletonInput;
 	}
 
 	_loadList() {
-		const el = this.shadowRoot.querySelector('d2l-list');
-		console.log(el.tagName, el.skeleton, '->', !el.skeleton );
-		el.skeleton = !el.skeleton;
+		this._skeletonList = !this._skeletonList;
 	}
 }
 customElements.define('d2l-test-nested-skeleton-group', SkeletonTestNestedGroup);

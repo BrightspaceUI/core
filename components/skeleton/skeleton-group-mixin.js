@@ -45,7 +45,6 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 		});
 
 		this._parentSkeleton?.registry?.onSubscriberChange();
-
 	}
 
 });
