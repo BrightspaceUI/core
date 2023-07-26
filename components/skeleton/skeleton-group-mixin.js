@@ -5,10 +5,9 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
 export const SkeletonGroupMixin = dedupeMixin(superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
-		// TODO: remove reflect
 		return {
-			_anySubscribersInSkeleton: { reflect: true },
-			_setByParent: { reflect: true }
+			_anySubscribersInSkeleton: { state: true },
+			_setByParent: { state: true }
 		};
 	}
 
