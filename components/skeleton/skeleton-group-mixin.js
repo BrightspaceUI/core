@@ -32,6 +32,12 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 		this._skeletonSubscribers.updateSubscribers();
 	}
 
+	setSetByParent(element, setByParent) {
+		if (element.setSetByParent) {
+			element._setByParent = setByParent;
+		}
+	}
+
 	_checkSubscribersSkeletonState(subscribers) {
 		this._anySubscribersInSkeleton = [...subscribers.values()].some(subscriber => (
 			subscriber._skeleton || subscriber._anySubscribersInSkeleton
@@ -41,7 +47,7 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 
 		subscribers.forEach(subscriber => {
 			subscriber.setSkeletonActive(this._skeletonActive);
-			subscriber._setByParent = this._skeletonActive && !subscriber._skeleton;
+			this.setSetByParent(subscriber, this._skeletonActive && !subscriber._skeleton);
 		});
 
 		this._parentSkeleton?.registry?.onSubscriberChange();
