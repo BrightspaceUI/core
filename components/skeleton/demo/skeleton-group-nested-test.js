@@ -24,6 +24,10 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 				gap: 0.6rem;
 				margin-bottom: 0.6rem;
 			}
+			d2l-input-text,
+			d2l-list {
+				margin-bottom: 0.6rem;
+			}
 		`;
 	}
 
