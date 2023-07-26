@@ -187,12 +187,10 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		const oldVal = this._skeleton;
 		if (oldVal === val) return;
 		this._skeleton = val;
-		if (!this._skeletonWait) {
-			this._skeletonActive = val;
-			this.requestUpdate('skeleton', oldVal);
-		} else {
-			this._parentSkeleton.registry.onSubscriberChange();
-		}
+		this._skeletonActive = val;
+
+		this.requestUpdate('skeleton', oldVal);
+		this._parentSkeleton?.registry?.onSubscriberChange();
 	}
 
 	setSkeletonActive(skeletonActive) {
