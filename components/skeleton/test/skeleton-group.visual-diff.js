@@ -68,20 +68,61 @@ describe('d2l-skeleton-group', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	[true, false].forEach((skeleton) => {
+		it(`mixed-elements${skeleton ? '-skeleton' : ''}`, async function() {
+			await page.$eval('#mixed-elements', async(element, skeleton) => {
+				const elements = element.querySelectorAll('.to-skeleton');
+				elements.forEach(el => el.skeleton = skeleton);
+			}, skeleton);
+			const rect = await visualDiff.getRect(page, '#mixed-elements');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	[
-		'mixed-elements',
-		'nested-groups'
+		'nested-groups-inner',
+		'nested-groups-middle',
+		'nested-groups-outer',
 	].forEach((name) => {
 		[true, false].forEach((skeleton) => {
 			it(`${name}${skeleton ? '-skeleton' : ''}`, async function() {
 				await page.$eval(`#${name}`, async(element, skeleton) => {
-					const elements = element.querySelectorAll('.to-skeleton');
+					const elements = element.querySelectorAll('.skeleton-element');
 					elements.forEach(el => el.skeleton = skeleton);
 				}, skeleton);
 				const rect = await visualDiff.getRect(page, `#${name}`);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
+	});
+
+	[
+		'nested-groups-remove-inner',
+		'nested-groups-remove-middle',
+		'nested-groups-remove-outer',
+	].forEach((name) => {
+		it(`${name}`, async function() {
+			await page.$eval(`#${name}`, async(element) => {
+				const el = element.querySelector('#to-remove');
+				el.skeleton = false;
+			});
+			const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	it('nested-groups-remove-all-before', async function() {
+		const rect = await visualDiff.getRect(page, '#nested-groups-remove-all');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('nested-groups-remove-all-after', async function() {
+		await page.$eval('#nested-groups-remove-all', async(element) => {
+			const elements = element.querySelectorAll('.to-remove');
+			elements.forEach(el => el.skeleton = false);
+		});
+		const rect = await visualDiff.getRect(page, '#nested-groups-remove-all');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
