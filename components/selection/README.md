@@ -246,6 +246,7 @@ Note: `d2l-list-item` already provides a selection input for selectable list ite
 | `key` | String, required | Key to identify the selectable. |
 | `label` | String | Accessible hidden label for the input. |
 | `labelled-by` | String | Id reference to the accessible label for the input. **Note:** if specified, it must reference an element in the same DOM context. |
+| `description` | String | A description to be added to the `input` for accessibility |
 | `disabled` | Boolean | Disables the input element(checkbox/radio btn). |
 | `selected` | Boolean | State of the input. |
 

@@ -1,6 +1,7 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
@@ -24,6 +25,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
+			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
+			 */
+			description: { type: String },
 			/**
 			 * Disables the input
 			 * @type {boolean}
@@ -60,6 +66,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	constructor() {
 		super();
 		this.selected = false;
+		this._descriptionId = getUniqueId();
 		this._indeterminate = false;
 	}
 
@@ -92,6 +99,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	render() {
 		if (!this._provider) return;
 		if (this._provider.selectionSingle) {
+
 			const radioClasses = {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
@@ -99,8 +107,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-hovering': this.hovering,
 				'd2l-disabled': this.disabled
 			};
+
+			const description = this.description ? html`<div id="${this._descriptionId}" hidden>${this.description}</div>` : null;
+
 			return html`
 				<div
+					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
@@ -109,20 +121,24 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					@keydown="${this._handleRadioKeyDown}"
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
-					tabindex="${ifDefined(this.disabled ? undefined : 0)}"></div>
+					tabindex="${ifDefined(this.disabled ? undefined : 0)}">${description}</div>
 			`;
+
 		} else {
+
 			return html`
 				<d2l-input-checkbox
 					aria-label="${this.label}"
 					@change="${this._handleCheckboxChange}"
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
+					description="${ifDefined(this.description)}"
 					?disabled="${this.disabled}"
 					?indeterminate="${this._indeterminate}"
 					?skeleton="${this.skeleton}">
 				</d2l-input-checkbox>
 			`;
+
 		}
 	}
 
