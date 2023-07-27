@@ -102,16 +102,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
+				pointer-events: none;
 				width: 2.2rem;
 			}
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
-			}
-
-			::slotted([slot="control"]),
-			::slotted([slot="outside-control"]) {
-				pointer-events: none;
 			}
 
 			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
@@ -200,8 +196,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="outside-control-container"></slot>
 
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
-			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
