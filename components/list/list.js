@@ -63,8 +63,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				display: none;
 			}
 			slot[name="pager"]::slotted(*) {
-				margin-top: 12px;
 				margin-bottom: 3px;
+				margin-top: 12px;
 			}
 			:host([extend-separators]) slot[name="pager"]::slotted(*) {
 				margin-left: 0.9rem;
