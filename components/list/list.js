@@ -63,7 +63,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				display: none;
 			}
 			slot[name="pager"]::slotted(*) {
-				margin-top: 10px;
+				margin-top: 12px;
+				margin-bottom: 3px;
 			}
 			:host([extend-separators]) slot[name="pager"]::slotted(*) {
 				margin-left: 0.9rem;
@@ -136,8 +137,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			<slot name="header"></slot>
 			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				${this._renderPagerContainer()}
 			</div>
-			${this._renderPagerContainer()}
 		`;
 	}
 
