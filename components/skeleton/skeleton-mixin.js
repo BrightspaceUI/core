@@ -157,7 +157,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * @type {boolean}
 			 */
 			skeleton: { reflect: true, type: Boolean  },
-			_skeleton: { reflect: true }
+			_setByParent: { state: true },
+			_skeleton: { reflect: true },
 		};
 	}
 
@@ -169,6 +170,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	constructor() {
 		super();
+		this._setByParent = false;
 		this._skeleton = false;
 		this._skeletonActive = false;
 		this._skeletonWait = false;
@@ -191,6 +193,10 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 		this.requestUpdate('skeleton', oldVal);
 		this._parentSkeleton?.registry?.onSubscriberChange();
+	}
+
+	setSetByParent(setByParent) {
+		this._setByParent = setByParent;
 	}
 
 	setSkeletonActive(skeletonActive) {
