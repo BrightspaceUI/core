@@ -49,6 +49,11 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			autofocus: { type: Boolean },
 			/**
+			 * ADVANCED: Additional information relating to how to use the control
+			 * @type {string}
+			 */
+			controlInstructions: { type: String, attribute: 'control-instructions' },
+			/**
 			 * Additional information communicated in the aria-describedby on the input
 			 * @type {string}
 			 */
@@ -461,8 +466,13 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		}
 
 		let tooltip = nothing;
-		if (this.validationError && !this.skeleton && !this.noValidate) {
-			tooltip = html`<d2l-tooltip state="error" announced align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
+		if (!this.skeleton) {
+			if (this.validationError && !this.noValidate) {
+				// this tooltip is using "announced" since we don't want aria-describedby wire-up which would bury the message in VoiceOver's More Content Available menu
+				tooltip = html`<d2l-tooltip state="error" announced align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
+			} else if (this.controlInstructions) {
+				tooltip = html`<d2l-tooltip align="start" for="${this._inputId}" delay="1000">${this.controlInstructions}</d2l-tooltip>`;
+			}
 		}
 
 		return html`${tooltip}${label}${input}`;
