@@ -282,7 +282,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
-					control-instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
+					control-instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
 					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
