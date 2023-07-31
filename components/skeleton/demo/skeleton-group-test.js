@@ -3,7 +3,6 @@ import '../../button/button-subtle.js';
 import '../../collapsible-panel/collapsible-panel.js';
 import '../../collapsible-panel/collapsible-panel-group.js';
 import { css, html, LitElement } from 'lit';
-import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
 class SkeletonTestGroup extends LitElement {
 	static get properties() {
@@ -20,6 +19,11 @@ class SkeletonTestGroup extends LitElement {
 				gap: 0.6rem;
 				justify-content: space-between;
 				margin-bottom: 0.6rem;
+			}
+			.panels {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
 			}
 		`;
 	}
@@ -65,18 +69,16 @@ class SkeletonTestGroup extends LitElement {
 
 	_renderContents() {
 		return html`
-			<d2l-collapsible-panel-group>
-				${this._items.map(item => html`<d2l-collapsible-panel skeleton id="${item}" panel-title="Item ${item}">Contents</d2l-collapsible-panel>`)}
-			</d2l-collapsible-panel-group>
+			${this._items.map(item => html`<d2l-collapsible-panel skeleton id="${item}" panel-title="Item ${item}">Contents</d2l-collapsible-panel>`)}
 		`;
 	}
 
 	_renderGroup() {
-		return html`<d2l-test-skeleton-group-on>${this._renderContents()}</d2l-test-skeleton-group-on>`;
+		return html`<d2l-collapsible-panel-group>${this._renderContents()}</d2l-collapsible-panel-group>`;
 	}
 
 	_renderIndividual() {
-		return html`<d2l-test-skeleton-group-off>${this._renderContents()}</d2l-test-skeleton-group-off>`;
+		return html`<div class="panels">${this._renderContents()}</div>`;
 	}
 
 	_toggleLoadType() {
@@ -84,14 +86,3 @@ class SkeletonTestGroup extends LitElement {
 	}
 }
 customElements.define('d2l-test-skeleton-group', SkeletonTestGroup);
-
-class SkeletonTestGroupOff extends LitElement {
-	render() { return html`<slot></slot>`; }
-}
-customElements.define('d2l-test-skeleton-group-off', SkeletonTestGroupOff);
-
-class SkeletonTestGroupOn extends SkeletonGroupMixin(LitElement) {
-	render() { return html`<slot></slot>`; }
-}
-customElements.define('d2l-test-skeleton-group-on', SkeletonTestGroupOn);
-
