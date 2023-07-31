@@ -12,7 +12,7 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Whether the dimension has more values to load. Must be used with selected-first and manual search-type
+			 * Whether the dimension has more values to load. Manual search and selected first should be set if has more is being used
 			 * @type {boolean}
 			 */
 			hasMore: { type: Boolean, attribute: 'has-more' },
@@ -47,7 +47,7 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectAll: { type: Boolean, attribute: 'select-all' },
 			/**
-			 * Whether to render the selected items at the top of the filter
+			 * Whether to render the selected items at the top of the filter. Forced on if load more paging is being used
 			 * @type {boolean}
 			 */
 			selectedFirst: { type: Boolean, attribute: 'selected-first' },

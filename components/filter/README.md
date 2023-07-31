@@ -235,9 +235,9 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 
 ## Search and Paging
 
-Searching inside a filter dimension has two types: `automatic` and `manual`.
+Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
 
-`automatic` search runs a basic case-insensitive text comparison on the dimension values. 
+`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded. 
 
 `manual` search dispatches a `d2l-filter-dimension-search` event delegating the search to the component's consumer. The event's detail will contain the key of the dimension from where the event was dispatched (`key`), the text value used for the search (`value`) and a callback (`searchCompleteCallback`). This callback gives the consumer control of which keys to display, either by setting `displayAllKeys` to `true` or passing a list of the keys to display as `keysToDisplay` (all other keys will be hidden). The dimension will be in a loading state until the callback is called.
 ```js
@@ -245,7 +245,7 @@ e.detail.searchCompleteCallback({ keysToDisplay: keysToDisplay });
 e.detail.searchCompleteCallback({ displayAllKeys: true });
 ```
 
-Paging works by setting the property `has-more` on a dimension set, which will display a `d2l-pager-load-more` button at the end of the values. Note however that paging requires the search type to be set to `manual`. Clicking the button replaces its text with a loading spinner and dispatches a `d2l-filter-dimension-load-more` event whose detail, like the search event, contains the dimension key (`key`), active search value (`value`) and a callback (`loadMoreCompleteCallback`) that works just like `searchCompleteCallback` described above. The pager will also be in a loading state until the callback is called.
+As with Search, paging is often unnecessary since filter lists are generally short. For long lists of filter values, load-more paging can be enabled by setting `has-more` on a dimension set, which will display a `d2l-pager-load-more` button at the end of the values. Note however that paging requires the search type to be set to `manual`. Clicking the button replaces its text with a loading spinner and dispatches a `d2l-filter-dimension-load-more` event whose detail, like the search event, contains the dimension key (`key`), active search value (`value`) and a callback (`loadMoreCompleteCallback`) that works just like `searchCompleteCallback` described above. The pager will also be in a loading state until the callback is called.
 ```js
 e.detail.loadMoreCompleteCallback({ keysToDisplay: keysToDisplay });
 e.detail.loadMoreCompleteCallback({ displayAllKeys: true });
