@@ -11,6 +11,16 @@
 			import '../../list/list.js';
 			import '../../list/list-item.js';
 			import '../demo/skeleton-group-wrapper.js';
+
+			import { html, LitElement } from 'lit';
+			import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
+
+			class SkeletonGroupTestWrapper extends SkeletonGroupMixin(LitElement) {
+				render() {
+					return html`<slot></slot>`;
+				}
+			}
+			customElements.define('d2l-skeleton-group-test-wrapper', SkeletonGroupTestWrapper);
 		</script>
 		<style>
 			.visual-diff {
@@ -80,7 +90,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="remove-element">
 			<d2l-skeleton-group-test-wrapper>
 				<d2l-collapsible-panel-group>
@@ -90,7 +99,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="mixed-elements">
 			<d2l-skeleton-group-test-wrapper>
 				<d2l-input-text label="Label"></d2l-input-text>
@@ -98,7 +106,6 @@
 				<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-inner">
 			<d2l-skeleton-group-test-wrapper>
 				<d2l-list>
@@ -116,7 +123,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-middle">
 			<d2l-skeleton-group-test-wrapper>
 				<d2l-list class="skeleton-element">
@@ -134,7 +140,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-outer">
 			<d2l-skeleton-group-test-wrapper class="skeleton-element">
 				<d2l-list>
@@ -152,7 +157,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-remove-inner">
 			<d2l-skeleton-group-test-wrapper skeleton>
 				<d2l-list skeleton>
@@ -170,7 +174,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-remove-middle">
 			<d2l-skeleton-group-test-wrapper skeleton>
 				<d2l-list id="to-remove" skeleton>
@@ -188,7 +191,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-remove-outer">
 			<d2l-skeleton-group-test-wrapper skeleton>
 				<d2l-list skeleton>
@@ -206,7 +208,6 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 		<div class="visual-diff" id="nested-groups-remove-all">
 			<d2l-skeleton-group-test-wrapper class="to-remove" skeleton>
 				<d2l-list class="to-remove" skeleton>
@@ -224,6 +225,5 @@
 				</d2l-collapsible-panel-group>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
-
 	</body>
 </html>
