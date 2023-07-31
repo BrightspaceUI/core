@@ -12,6 +12,7 @@ import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	static get properties() {
 		return {
+			_skeletonGroup: { state: true },
 			_skeletonList: { state: true },
 			_skeletonInput: { state: true },
 		};
@@ -33,6 +34,7 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 
 	constructor() {
 		super();
+		this._skeletonGroup = false;
 		this._skeletonList = false;
 		this._skeletonInput = false;
 	}
@@ -61,7 +63,8 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	}
 
 	_loadGroup() {
-		this.skeleton = !this.skeleton;
+		this._skeletonGroup = !this._skeletonGroup;
+		this.skeleton = this._skeletonGroup;
 	}
 
 	_loadInput() {
