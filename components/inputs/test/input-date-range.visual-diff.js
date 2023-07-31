@@ -63,11 +63,14 @@ describe('d2l-input-date-range', () => {
 
 	async function getRectInnerTooltip(page, selector, inputDateSelector) {
 		return page.$eval(selector, (elem, inputDateSelector) => {
+			let content = window.querySelectorComposed(elem.shadowRoot, 'd2l-tooltip[showing]');
+			/*
 			let content = elem.shadowRoot.querySelector('d2l-tooltip');
 			if (!content || !content.showing) {
 				const inputDate = elem.shadowRoot.querySelector(inputDateSelector);
 				content = inputDate.shadowRoot.querySelector('d2l-tooltip');
 			}
+			*/
 			const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
 			const openerRect = elem.getBoundingClientRect();
 			const contentRect = contentWidth.getBoundingClientRect();

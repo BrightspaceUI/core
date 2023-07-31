@@ -4,9 +4,12 @@
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
 		<script type="module">
+			import { querySelectorComposed } from '../../../helpers/dom.js';
 			import '../../typography/typography.js';
 			import '../input-date-range.js';
 			import sinon from 'sinon';
+
+			window.querySelectorComposed = querySelectorComposed;
 
 			const newToday = new Date('2018-02-12T12:00Z');
 			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
