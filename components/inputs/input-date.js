@@ -242,7 +242,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
@@ -276,7 +275,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<div>${this.emptyText}</div>
 			</div>
 			${errorTooltip}
-			${infoTooltip}
 			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open>
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
@@ -284,6 +282,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
+					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
 					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"

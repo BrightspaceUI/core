@@ -6,7 +6,10 @@
 		<script type="module">
 			import '../../typography/typography.js';
 			import '../input-date-time-range.js';
+			import { querySelectorComposed } from '../../../helpers/dom.js';
 			import sinon from 'sinon';
+
+			window.querySelectorComposed = querySelectorComposed;
 
 			const newToday = new Date('2018-02-12T12:00Z');
 			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });

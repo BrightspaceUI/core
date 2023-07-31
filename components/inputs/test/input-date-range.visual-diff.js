@@ -61,29 +61,6 @@ describe('d2l-input-date-range', () => {
 		}, inputSelector, date);
 	}
 
-	async function getRectInnerTooltip(page, selector, inputDateSelector) {
-		return page.$eval(selector, (elem, inputDateSelector) => {
-			let content = elem.shadowRoot.querySelector('d2l-tooltip');
-			if (!content || !content.showing) {
-				const inputDate = elem.shadowRoot.querySelector(inputDateSelector);
-				content = inputDate.shadowRoot.querySelector('d2l-tooltip');
-			}
-			const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
-			const openerRect = elem.getBoundingClientRect();
-			const contentRect = contentWidth.getBoundingClientRect();
-			const x = Math.min(openerRect.x, contentRect.x);
-			const y = Math.min(openerRect.y, contentRect.y);
-			const width = Math.max(openerRect.right, contentRect.right) - x;
-			const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
-			return {
-				x: x - 10,
-				y: y - 10,
-				width: width + 20,
-				height: height + 20
-			};
-		}, inputDateSelector);
-	}
-
 	[
 		'basic',
 		'basic-wrapped',
@@ -111,7 +88,7 @@ describe('d2l-input-date-range', () => {
 				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
 			});
 		});
-		const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
+		const rect = await getRectTooltip(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -247,7 +224,7 @@ describe('d2l-input-date-range', () => {
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
-						const rect = await getRectTooltip(page, '#min-max', 1);
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
@@ -279,13 +256,13 @@ describe('d2l-input-date-range', () => {
 
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
-						const rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
-						const rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
@@ -328,13 +305,13 @@ describe('d2l-input-date-range', () => {
 
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
-						const rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
-						const rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});

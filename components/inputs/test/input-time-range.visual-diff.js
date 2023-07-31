@@ -197,7 +197,7 @@ describe('d2l-input-time-range', () => {
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#basic', endTimeSelector);
-						const rect = await getRectTooltip(page, '#basic', 1);
+						const rect = await getRectTooltip(page, '#basic');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
