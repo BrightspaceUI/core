@@ -6,13 +6,13 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 
 	static get properties() {
 		return {
-			_anySubscribersInSkeleton: { state: true },
+			_anySubscribersWithSkeletonActive : { state: true },
 		};
 	}
 
 	constructor() {
 		super();
-		this._anySubscribersInSkeleton = false;
+		this._anySubscribersWithSkeletonActive  = false;
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			onSubscribe: this.onSubscriberChange.bind(this),
 			onUnsubscribe: this.onSubscriberChange.bind(this),
@@ -31,15 +31,15 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 	}
 
 	_checkSubscribersSkeletonState(subscribers) {
-		this._anySubscribersInSkeleton = [...subscribers.values()].some(subscriber => (
-			subscriber._skeleton || subscriber._anySubscribersInSkeleton
+		this._anySubscribersWithSkeletonActive  = [...subscribers.values()].some(subscriber => (
+			subscriber._skeletonSetExplicitly  || subscriber._anySubscribersWithSkeletonActive
 		));
 
-		this.setSkeletonActive(this._skeleton || this._anySubscribersInSkeleton || this._setByParent);
+		this.setSkeletonActive(this._skeletonSetExplicitly  || this._anySubscribersWithSkeletonActive  || this._skeletonSetByParent);
 
 		subscribers.forEach(subscriber => {
 			subscriber.setSkeletonActive(this._skeletonActive);
-			subscriber.setSetByParent(this._skeletonActive && !subscriber._skeleton);
+			subscriber.setSetByParent(this._skeletonActive && !subscriber._skeletonSetExplicitly);
 		});
 
 		this._parentSkeleton?.registry?.onSubscriberChange();

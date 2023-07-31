@@ -42,7 +42,7 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	render() {
 		return html`
 			<div class="controls">
-				<d2l-switch @click="${this._loadGroup}" ?on="${this._skeleton}" text="group skeleton"></d2l-switch>
+				<d2l-switch @click="${this._loadGroup}" ?on="${this._skeletonSetExplicitly}" text="group skeleton"></d2l-switch>
 				<d2l-switch @click="${this._loadList}" ?on="${this._skeletonList}" text="d2l-list skeleton"></d2l-switch>
 				<d2l-switch @click="${this._loadInput}" ?on="${this._skeletonInput}" text="d2l-input skeleton"></d2l-switch>
 			</div>

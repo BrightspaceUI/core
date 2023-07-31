@@ -157,8 +157,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * @type {boolean}
 			 */
 			skeleton: { reflect: true, type: Boolean  },
-			_setByParent: { state: true },
-			_skeleton: { reflect: true },
+			_skeletonSetByParent: { state: true },
+			_skeletonSetExplicitly: { reflect: true },
 		};
 	}
 
@@ -170,8 +170,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	constructor() {
 		super();
-		this._setByParent = false;
-		this._skeleton = false;
+		this._skeletonSetByParent = false;
+		this._skeletonSetExplicitly = false;
 		this._skeletonActive = false;
 		this._skeletonWait = false;
 
@@ -186,17 +186,13 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	}
 
 	set skeleton(val) {
-		const oldVal = this._skeleton;
+		const oldVal = this._skeletonSetExplicitly;
 		if (oldVal === val) return;
-		this._skeleton = val;
+		this._skeletonSetExplicitly = val;
 		this._skeletonActive = val;
 
 		this.requestUpdate('skeleton', oldVal);
 		this._parentSkeleton?.registry?.onSubscriberChange();
-	}
-
-	setSetByParent(setByParent) {
-		this._setByParent = setByParent;
 	}
 
 	setSkeletonActive(skeletonActive) {
@@ -207,14 +203,18 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		}
 	}
 
+	setSkeletonSetByParent(skeletonSetByParent) {
+		this._skeletonSetByParent = skeletonSetByParent;
+	}
+
 	_onSubscribe() {
 		this._skeletonWait = true;
 	}
 
 	_onUnsubscribe() {
 		this._skeletonWait = false;
-		this._skeletonActive = this._skeleton;
-		this.requestUpdate('skeleton', this._skeleton);
+		this._skeletonActive = this._skeletonSetExplicitly;
+		this.requestUpdate('skeleton', this._skeletonSetExplicitly);
 	}
 
 });
