@@ -189,6 +189,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		const oldVal = this._skeletonSetExplicitly;
 		if (oldVal === val) return;
 		this._skeletonSetExplicitly = val;
+
+		// keep _skeletonActive aligned with _skeletonSetExplicitly. _skeletonActive may be modified separately by a parent SkeletonGroup
 		this._skeletonActive = val;
 
 		this.requestUpdate('skeleton', oldVal);
