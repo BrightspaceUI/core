@@ -65,9 +65,9 @@ export function getRect(page, selector) {
 	});
 }
 
-export function getRectTooltip(page, selector, tooltipIndex) {
-	return page.$eval(selector, (elem, tooltipIndex) => {
-		const content = elem.shadowRoot.querySelectorAll('d2l-tooltip')[tooltipIndex ? tooltipIndex : 0];
+export function getRectTooltip(page, selector) {
+	return page.$eval(selector, elem => {
+		const content = window.querySelectorComposed(elem.shadowRoot, 'd2l-tooltip[showing]');
 		const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
 		const openerRect = elem.getBoundingClientRect();
 		const contentRect = contentWidth.getBoundingClientRect();
@@ -81,7 +81,7 @@ export function getRectTooltip(page, selector, tooltipIndex) {
 			width: width + 20,
 			height: height + 20
 		};
-	}, tooltipIndex);
+	});
 }
 
 export async function focusOnInput(page, selector, inputSelector) {
