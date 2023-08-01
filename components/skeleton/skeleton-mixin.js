@@ -7,7 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
 // (and possibly elsewhere) to render a blank page
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const animation = isSafari ? css`none` : css`loadingPulse 1.8s linear infinite`;
+const animation = isSafari ? css`` : css``;
 
 export const skeletonStyles = css`
 	@keyframes loadingPulse {
@@ -18,6 +18,7 @@ export const skeletonStyles = css`
 	}
 	:host([skeleton]) {
 		opacity: 0.999;
+		border: 1px solid blueviolet;
 	}
 	:host([skeleton]) .d2l-skeletize::before {
 		animation: ${animation};
@@ -157,8 +158,6 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 			 * @type {boolean}
 			 */
 			skeleton: { reflect: true, type: Boolean  },
-			_skeletonSetByParent: { state: true },
-			_skeletonSetExplicitly: { reflect: true },
 		};
 	}
 
