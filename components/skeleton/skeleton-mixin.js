@@ -18,7 +18,6 @@ export const skeletonStyles = css`
 	}
 	:host([skeleton]) {
 		opacity: 0.999;
-		border: 1px solid blueviolet;
 	}
 	:host([skeleton]) .d2l-skeletize::before {
 		animation: ${animation};
