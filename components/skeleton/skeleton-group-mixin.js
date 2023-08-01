@@ -21,6 +21,7 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (changedProperties.has('skeleton')) {
 			this._skeletonSubscribers.updateSubscribers();
 		}
