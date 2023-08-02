@@ -71,7 +71,7 @@ jobs:
           aws-region: ca-central-1
 
       - name: Publish
-        uses: ./.github/actions/publish-to-s3/
+        uses: BrightspaceUI/actions/publish-to-s3@main
         with:
           BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}
           PUBLISH_DIRECTORY: ./build/
