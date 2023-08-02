@@ -189,6 +189,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 | Property | Type | Description |
 |---|---|---|
+| `has-more` | Boolean | Whether the dimension has more values to load. Must be used with selected-first and manual search-type. |
 | `header-text` | String | A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users. |
 | `introductory-text` | String | The introductory text to display at the top of the filter dropdown |
 | `key` | String, required | Unique identifier for the dimension |
@@ -231,6 +232,36 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
+
+## Search and Paging
+
+Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
+
+`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded. 
+
+`manual` search dispatches a `d2l-filter-dimension-search` event delegating the search to the component's consumer. The event's detail will contain the key of the dimension from where the event was dispatched (`key`), the text value used for the search (`value`) and a callback (`searchCompleteCallback`). This callback gives the consumer control of which keys to display, either by setting `displayAllKeys` to `true` or passing a list of the keys to display as `keysToDisplay` (all other keys will be hidden). The dimension will be in a loading state until the callback is called.
+```js
+e.detail.searchCompleteCallback({ keysToDisplay: keysToDisplay });
+e.detail.searchCompleteCallback({ displayAllKeys: true });
+```
+
+As with Search, paging is often unnecessary since filter lists are generally short. For long lists of filter values, load-more paging can be enabled by setting `has-more` on a dimension set, which will display a `d2l-pager-load-more` button at the end of the values. Note however that paging requires the search type to be set to `manual`. Clicking the button replaces its text with a loading spinner and dispatches a `d2l-filter-dimension-load-more` event whose detail, like the search event, contains the dimension key (`key`), active search value (`value`) and a callback (`loadMoreCompleteCallback`) that works just like `searchCompleteCallback` described above. The pager will also be in a loading state until the callback is called.
+```js
+e.detail.loadMoreCompleteCallback({ keysToDisplay: keysToDisplay });
+e.detail.loadMoreCompleteCallback({ displayAllKeys: true });
+```
+
+### Selection and manual search/paging
+
+The filter component depends entirely on the consumer to include the selected filter values in order for the selected counts and `d2l-filter-tags` to display the correct values. Ideally, all values should be loaded into the dimensions and the event callbacks should be leveraged to set the visibility on those values. However, in the cases where this is not possible and new values are being added/removed manually from the dimension, then selection should be persisted. This means that selected items should always be loaded and included in the dimension and they should not be removed in order to maintain the functionality of counts and filter tags.
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/demo/filter-load-more-demo.js'
+</script>
+<d2l-filter-load-more-demo>
+</d2l-filter-load-more-demo>
+```
 
 ## Counts
 
