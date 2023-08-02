@@ -39,10 +39,9 @@ describe('d2l-skeleton-group', () => {
 	].forEach((info) => {
 		it(info.name, async function() {
 			await page.$eval(`#${info.name}`, async(element, skeleton) => {
-				const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
-				const panel = panelGroup.querySelector('d2l-collapsible-panel');
-				panel.skeleton = skeleton;
-				await panel.updateComplete;
+				const container = element.querySelector('d2l-skeleton-group-test-wrapper d2l-test-skeleton-container');
+				container.skeleton = skeleton;
+				await container.updateComplete;
 			}, info.skeleton);
 			const rect = await visualDiff.getRect(page, `#${info.name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -51,8 +50,8 @@ describe('d2l-skeleton-group', () => {
 
 	it('add-element', async function() {
 		await page.$eval('#add-element', async(element) => {
-			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
-			panelGroup.insertAdjacentHTML('beforeend', '<d2l-collapsible-panel skeleton panel-title="blah"></d2l-collapsible-panel>');
+			const wrapper = element.querySelector('d2l-skeleton-group-test-wrapper');
+			wrapper.insertAdjacentHTML('beforeend', '<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>');
 		});
 		const rect = await visualDiff.getRect(page, '#add-element');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -60,9 +59,8 @@ describe('d2l-skeleton-group', () => {
 
 	it('remove-element', async function() {
 		await page.$eval('#remove-element', async(element) => {
-			const panelGroup = element.querySelector('d2l-skeleton-group-test-wrapper d2l-collapsible-panel-group');
-			const panel = panelGroup.querySelector('#to-remove');
-			panel?.remove();
+			const group = element.querySelector('d2l-skeleton-group-test-wrapper');
+			group.querySelector('#to-remove')?.remove();
 		});
 		const rect = await visualDiff.getRect(page, '#remove-element');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -84,7 +82,7 @@ describe('d2l-skeleton-group', () => {
 		'nested-groups-middle',
 		'nested-groups-outer',
 	].forEach((name) => {
-		[true, false].forEach((skeleton) => {
+		[false, true].forEach((skeleton) => {
 			it(`${name}${skeleton ? '-skeleton' : ''}`, async function() {
 				await page.$eval(`#${name}`, async(element, skeleton) => {
 					const elements = element.querySelectorAll('.skeleton-element');
@@ -118,7 +116,7 @@ describe('d2l-skeleton-group', () => {
 
 	it('nested-groups-remove-all-after', async function() {
 		await page.$eval('#nested-groups-remove-all', async(element) => {
-			const elements = element.querySelectorAll('.to-remove');
+			const elements = element.querySelectorAll('#to-remove');
 			elements.forEach(el => el.skeleton = false);
 		});
 		const rect = await visualDiff.getRect(page, '#nested-groups-remove-all');

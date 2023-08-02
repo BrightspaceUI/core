@@ -4,12 +4,9 @@
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 		<script type="module">
 			import '../../typography/typography.js';
-			import '../../collapsible-panel/collapsible-panel.js';
-			import '../../collapsible-panel/collapsible-panel-group.js';
-			import '../../inputs/input-checkbox.js';
-			import '../../inputs/input-text.js';
-			import '../../list/list.js';
-			import '../../list/list-item.js';
+			import '../demo/skeleton-test-container.js';
+			import '../demo/skeleton-test-box.js';
+			import '../demo/skeleton-test-heading.js';
 
 			import { html, LitElement } from 'lit';
 			import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
@@ -23,7 +20,12 @@
 		</script>
 		<style>
 			.visual-diff {
-				width: 300px;
+				width: 330px;
+			}
+			d2l-skeleton-group-test-wrapper {
+				display: flex;
+				flex-direction: column;
+				gap: 0.3rem;
 			}
 			d2l-input-text,
 			d2l-list {
@@ -37,191 +39,142 @@
 	<body class="d2l-typography">
 		<div class="visual-diff" id="all-skeleton">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel skeleton panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel skeleton panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel skeleton panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="one-skeleton">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel skeleton panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="no-skeleton">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="make-one-skeleton">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="make-one-not-skeleton">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel skeleton panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="add-element">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title 1"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="remove-element">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel skeleton panel-title="Title 1" id="to-remove"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 2"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title 3"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="mixed-elements">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-input-text label="Label"></d2l-input-text>
-				<d2l-input-checkbox class="to-skeleton">Item</d2l-input-checkbox>
-				<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
+				<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+				<d2l-test-skeleton-container class="to-skeleton"></d2l-test-skeleton-container>
+				<d2l-test-skeleton-box></d2l-test-skeleton-box>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-inner">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-list>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox class="skeleton-element">Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container class="skeleton-element"></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-middle">
 			<d2l-skeleton-group-test-wrapper>
-				<d2l-list class="skeleton-element">
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-skeleton-group-test-wrapper class="skeleton-element">
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-outer">
 			<d2l-skeleton-group-test-wrapper class="skeleton-element">
-				<d2l-list>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-remove-inner">
 			<d2l-skeleton-group-test-wrapper skeleton>
-				<d2l-list skeleton>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox id="to-remove" skeleton>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-skeleton-group-test-wrapper skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box id="to-remove" skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-remove-middle">
 			<d2l-skeleton-group-test-wrapper skeleton>
-				<d2l-list id="to-remove" skeleton>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox skeleton>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+				<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-remove-outer">
-			<d2l-skeleton-group-test-wrapper skeleton>
-				<d2l-list skeleton>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox id="to-remove" skeleton>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+			<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+				<d2l-skeleton-group-test-wrapper skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 		<div class="visual-diff" id="nested-groups-remove-all">
-			<d2l-skeleton-group-test-wrapper class="to-remove" skeleton>
-				<d2l-list class="to-remove" skeleton>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<d2l-input-text label="Label"></d2l-input-text>
-							<d2l-input-checkbox class="to-remove" skeleton>Item</d2l-input-checkbox>
-							<d2l-input-checkbox>Item</d2l-input-checkbox>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-				<d2l-collapsible-panel-group>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-					<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				</d2l-collapsible-panel-group>
+			<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+				<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box id="to-remove" skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
 			</d2l-skeleton-group-test-wrapper>
 		</div>
 	</body>
