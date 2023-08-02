@@ -36,7 +36,7 @@ export class SkeletonTestContainer extends SkeletonMixin(LitElement) {
 			<div class="d2l-demo-box d2l-skeletize-container">
 				<div class="d2l-skeletize">Container with Skeletons Inside</div>
 				<span class="d2l-body-compact">No skeleton</span>
-				<d2l-input-checkbox checked ?skeleton="${this.skeleton}">Skeleton</d2l-input-checkbox>
+				<d2l-input-checkbox checked>Skeleton</d2l-input-checkbox>
 			</div>
 		`;
 	}
