@@ -32,11 +32,11 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 	}
 
 	_checkSubscribersSkeletonState(subscribers) {
-		this._anySubscribersWithSkeletonActive  = [...subscribers.values()].some(subscriber => (
-			subscriber._skeletonSetExplicitly  || subscriber._anySubscribersWithSkeletonActive
+		this._anySubscribersWithSkeletonActive = [...subscribers.values()].some(subscriber => (
+			subscriber._skeletonSetExplicitly || subscriber._anySubscribersWithSkeletonActive
 		));
 
-		this.setSkeletonActive(this._skeletonSetExplicitly  || this._anySubscribersWithSkeletonActive  || this._skeletonSetByParent);
+		this.setSkeletonActive(this._skeletonSetExplicitly || this._anySubscribersWithSkeletonActive || this._skeletonSetByParent);
 
 		subscribers.forEach(subscriber => {
 			subscriber.setSkeletonActive(this._skeletonActive);

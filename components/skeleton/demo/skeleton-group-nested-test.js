@@ -1,5 +1,4 @@
 import '../../switch/switch.js';
-import '../../button/button-subtle.js';
 import './skeleton-group-test-wrapper.js';
 import './skeleton-test-box.js';
 import './skeleton-test-container.js';
@@ -44,7 +43,7 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 			<d2l-skeleton-group-test-wrapper>
 				<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
 				<d2l-skeleton-group-test-wrapper ?skeleton="${this._skeletonContainer}">
-					<d2l-test-skeleton-heading level="3"  ?skeleton="${this._skeletonHeading}">Inner heading</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-heading level="3" ?skeleton="${this._skeletonHeading}">Inner heading</d2l-test-skeleton-heading>
 					<d2l-test-skeleton-box></d2l-test-skeleton-box>
 				</d2l-skeleton-group-test-wrapper>
 				<d2l-skeleton-group-test-wrapper>
