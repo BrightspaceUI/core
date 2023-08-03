@@ -67,5 +67,5 @@ jobs:
       - name: Publish
         uses: BrightspaceUI/actions/publish-to-s3@main
         with:
-          BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/main
-          PUBLISH_DIRECTORY: ./build/
+          bucket-path: s3://brightspace-ui-core.d2l.dev/branches/main
+          publish-directory: ./build/
