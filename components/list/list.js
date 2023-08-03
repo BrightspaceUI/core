@@ -3,7 +3,6 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
-import { SkeletonGroupMixin } from '../skeleton/skeleton-group-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
@@ -19,7 +18,7 @@ export const listSelectionStates = SelectionInfo.states;
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
-class List extends SkeletonGroupMixin(PageableMixin(SelectionMixin(LitElement))) {
+class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
