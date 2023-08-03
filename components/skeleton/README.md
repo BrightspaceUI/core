@@ -12,13 +12,7 @@ For example, this causes a text input to be skeletized:
 <d2l-input-text label="Name" skeleton></d2l-input-text>
 ```
 
-In a typical scenario, many skeleton-aware components would have their `skeleton` attributes bound to a single property on the host component, making it easy to toggle them all together:
-
-```html
-<d2l-input-text label="Name" ?skeleton="${this.skeleton}"></d2l-text-input>
-<d2l-input-date label="Due Date" ?skeleton="${this.skeleton}"></d2l-input-date>
-<my-element ?skeleton="${this.skeleton}"></my-element>
-```
+A parent component could contain several skeleton-aware components. In this case, the parent would extend [`SkeletonGroupMixin`](#skeleton-groups), which would automatically handle the skeleton state of its contents.
 
 ## Skeletizing Custom Elements with SkeletonMixin
 
