@@ -4,19 +4,10 @@
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 		<script type="module">
 			import '../../typography/typography.js';
-			import '../demo/skeleton-test-container.js';
+			import '../demo/skeleton-group-test-wrapper.js';
 			import '../demo/skeleton-test-box.js';
+			import '../demo/skeleton-test-container.js';
 			import '../demo/skeleton-test-heading.js';
-
-			import { html, LitElement } from 'lit';
-			import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
-
-			class SkeletonGroupTestWrapper extends SkeletonGroupMixin(LitElement) {
-				render() {
-					return html`<slot></slot>`;
-				}
-			}
-			customElements.define('d2l-skeleton-group-test-wrapper', SkeletonGroupTestWrapper);
 		</script>
 		<style>
 			.visual-diff {

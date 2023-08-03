@@ -1,20 +1,19 @@
 import '../../switch/switch.js';
 import '../../button/button-subtle.js';
-import '../../collapsible-panel/collapsible-panel.js';
-import '../../collapsible-panel/collapsible-panel-group.js';
-import '../../inputs/input-checkbox.js';
-import '../../inputs/input-text.js';
-import '../../list/list.js';
-import '../../list/list-item.js';
+import './skeleton-group-test-wrapper.js';
+import './skeleton-test-box.js';
+import './skeleton-test-container.js';
+import './skeleton-test-heading.js';
+
 import { css, html, LitElement } from 'lit';
 import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
 class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 	static get properties() {
 		return {
-			_skeletonGroup: { state: true },
-			_skeletonList: { state: true },
-			_skeletonInput: { state: true },
+			_skeletonParent: { state: true },
+			_skeletonContainer: { state: true },
+			_skeletonHeading: { state: true },
 		};
 	}
 	static get styles() {
@@ -25,54 +24,48 @@ class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
 				gap: 0.6rem;
 				margin-bottom: 0.6rem;
 			}
-			d2l-input-text,
-			d2l-list {
-				margin-bottom: 0.6rem;
-			}
 		`;
 	}
 
 	constructor() {
 		super();
-		this._skeletonGroup = false;
-		this._skeletonList = false;
-		this._skeletonInput = false;
+		this._skeletonParent = false;
+		this._skeletonContainer = false;
+		this._skeletonHeading = false;
 	}
 
 	render() {
 		return html`
 			<div class="controls">
-				<d2l-switch @click="${this._loadGroup}" ?on="${this._skeletonSetExplicitly}" text="group skeleton"></d2l-switch>
-				<d2l-switch @click="${this._loadList}" ?on="${this._skeletonList}" text="d2l-list skeleton"></d2l-switch>
-				<d2l-switch @click="${this._loadInput}" ?on="${this._skeletonInput}" text="d2l-input skeleton"></d2l-switch>
+				<d2l-switch @click="${this._loadGroup}" ?on="${this._skeletonSetExplicitly}" text="parent skeleton"></d2l-switch>
+				<d2l-switch @click="${this._loadList}" ?on="${this._skeletonContainer}" text="container skeleton"></d2l-switch>
+				<d2l-switch @click="${this._loadInput}" ?on="${this._skeletonHeading}" text="heading skeleton"></d2l-switch>
 			</div>
-			<d2l-list ?skeleton="${this._skeletonList}">
-				<d2l-list-item>
-					<d2l-list-item-content>
-						<d2l-input-text label="Label" ?skeleton="${this._skeletonInput}"></d2l-input-text>
-						<d2l-input-checkbox>Item</d2l-input-checkbox>
-						<d2l-input-checkbox>Item</d2l-input-checkbox>
-					</d2l-list-item-content>
-				</d2l-list-item>
-			</d2l-list>
-			<d2l-collapsible-panel-group>
-				<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-				<d2l-collapsible-panel panel-title="Title"></d2l-collapsible-panel>
-			</d2l-collapsible-panel-group>
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+				<d2l-skeleton-group-test-wrapper ?skeleton="${this._skeletonContainer}">
+					<d2l-test-skeleton-heading level="3"  ?skeleton="${this._skeletonHeading}">Inner heading</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-heading level="3">Heading 3</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
 		`;
 	}
 
 	_loadGroup() {
-		this._skeletonGroup = !this._skeletonGroup;
-		this.skeleton = this._skeletonGroup;
+		this._skeletonParent = !this._skeletonParent;
+		this.skeleton = this._skeletonParent;
 	}
 
 	_loadInput() {
-		this._skeletonInput = !this._skeletonInput;
+		this._skeletonHeading = !this._skeletonHeading;
 	}
 
 	_loadList() {
-		this._skeletonList = !this._skeletonList;
+		this._skeletonContainer = !this._skeletonContainer;
 	}
 }
 customElements.define('d2l-test-nested-skeleton-group', SkeletonTestNestedGroup);
