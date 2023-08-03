@@ -2,9 +2,9 @@ import '../../colors/colors.js';
 import '../../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../../typography/styles.js';
-import { SkeletonMixin } from '../skeleton-mixin.js';
+import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
-export class SkeletonTestContainer extends SkeletonMixin(LitElement) {
+export class SkeletonTestContainer extends SkeletonGroupMixin(LitElement) {
 
 	static get styles() {
 		return [
