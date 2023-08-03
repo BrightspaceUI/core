@@ -7,7 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
 // (and possibly elsewhere) to render a blank page
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const animation = isSafari ? css`` : css``;
+const animation = isSafari ? css`none` : css`loadingPulse 1.8s linear infinite`;
 
 export const skeletonStyles = css`
 	@keyframes loadingPulse {
