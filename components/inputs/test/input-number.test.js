@@ -455,6 +455,7 @@ describe('d2l-input-number', () => {
 			const elem = await fixture(minMaxFixture);
 			setTimeout(() => setInnerInputValue(elem, '0'));
 			await oneEvent(elem, 'change');
+			await elem.updateComplete;
 			expect(elem.invalid).to.be.true;
 		});
 	});
