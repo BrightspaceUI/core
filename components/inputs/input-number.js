@@ -373,7 +373,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		`;
 	}
 
-	updated(changedProperties) {
+	async updated(changedProperties) {
 		super.updated(changedProperties);
 
 		let checkValidity = false;
@@ -390,6 +390,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		});
 
 		if (checkValidity) {
+			const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+			await inputTextElem.updateComplete;
+
 			let rangeUnderflowCondition = false;
 			if (typeof(this.min) === 'number') {
 				rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
