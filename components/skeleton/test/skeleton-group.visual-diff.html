@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../demo/skeleton-group-test-wrapper.js';
+			import '../demo/skeleton-test-box.js';
+			import '../demo/skeleton-test-container.js';
+			import '../demo/skeleton-test-heading.js';
+		</script>
+		<style>
+			.visual-diff {
+				width: 330px;
+			}
+			d2l-skeleton-group-test-wrapper {
+				display: flex;
+				flex-direction: column;
+				gap: 0.3rem;
+			}
+		</style>
+		<title>d2l-skeleton-group</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div class="visual-diff" id="all-skeleton">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="one-skeleton">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="no-skeleton">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="make-one-skeleton">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="make-one-not-skeleton">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="add-element">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="remove-element">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				<d2l-test-skeleton-container></d2l-test-skeleton-container>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="mixed-elements">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+				<d2l-test-skeleton-container class="to-skeleton"></d2l-test-skeleton-container>
+				<d2l-test-skeleton-box></d2l-test-skeleton-box>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-inner">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container class="skeleton-element"></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-middle">
+			<d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper class="skeleton-element">
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-outer">
+			<d2l-skeleton-group-test-wrapper class="skeleton-element">
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-remove-inner">
+			<d2l-skeleton-group-test-wrapper skeleton>
+				<d2l-skeleton-group-test-wrapper skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box id="to-remove" skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-remove-middle">
+			<d2l-skeleton-group-test-wrapper skeleton>
+				<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-remove-outer">
+			<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+				<d2l-skeleton-group-test-wrapper skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+		<div class="visual-diff" id="nested-groups-remove-all">
+			<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+				<d2l-skeleton-group-test-wrapper id="to-remove" skeleton>
+					<d2l-test-skeleton-heading level="1">Heading 1</d2l-test-skeleton-heading>
+					<d2l-test-skeleton-box id="to-remove" skeleton></d2l-test-skeleton-box>
+					<d2l-test-skeleton-container></d2l-test-skeleton-container>
+				</d2l-skeleton-group-test-wrapper>
+				<d2l-skeleton-group-test-wrapper>
+					<d2l-test-skeleton-box></d2l-test-skeleton-box>
+				</d2l-skeleton-group-test-wrapper>
+			</d2l-skeleton-group-test-wrapper>
+		</div>
+	</body>
+</html>

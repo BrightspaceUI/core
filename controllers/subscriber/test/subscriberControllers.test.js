@@ -91,6 +91,24 @@ const indirectSlotRegistries = defineCE(class extends LitElement {
 	}
 });
 
+const delayedRegistries = defineCE(class extends LitElement {
+	static get properties() { return { _ready: { state: true } }; }
+	constructor() {
+		super();
+		this._ready = false;
+		setTimeout(() => this._ready = true, 5);
+	}
+
+	render() {
+		if (!this._ready) return;
+		return html`${unsafeHTML(`
+			<${registries} id="registry-shadow">
+				<slot></slot>
+			</${registries}>
+		`)}`;
+	}
+});
+
 describe('SubscriberRegistryController', () => {
 
 	describe('With multiple different subscriber registries', () => {
@@ -111,7 +129,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._eventSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._idSubscribers.subscribers.size).to.equal(1);
 			expect(registry._idSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#event'), elem.querySelector('#id') ]);
+			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -189,7 +207,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(2);
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#event'), elem.querySelector('#id') ]);
+			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -254,8 +272,11 @@ describe('EventSubscriberController', () => {
 				<${eventSubscriberSeparate} id="success"></${eventSubscriberSeparate}>
 			</${registries}>
 			<${indirectSlotRegistries} id="registry-wrapper">
-				<${eventSubscriberSeparate} id="delayed"></${eventSubscriberSeparate}>
+				<${eventSubscriberSeparate} id="slotted"></${eventSubscriberSeparate}>
 			</${indirectSlotRegistries}>
+			<${delayedRegistries} id="registry-wrapper-delayed">
+				<${eventSubscriberSeparate} id="delayed"></${eventSubscriberSeparate}>
+			</${delayedRegistries}>
 			<${eventSubscriberSeparate} id="error"></${eventSubscriberSeparate}>
 		</div>`);
 	});
@@ -278,12 +299,23 @@ describe('EventSubscriberController', () => {
 		expect(subscriber._onErrorRegistryIds).to.eql([ undefined ]);
 	});
 
-	it('should keep checking if the registry is not immediately found', () => {
+	it('Subscribe to slotted registries properly', () => {
+		const subscriber = elem.querySelector('#slotted');
+		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow') ]);
+		expect(subscriber._onErrorRegistryIds).to.eql([]);
+	});
+
+	it('should keep checking if the registry is not immediately found', async() => {
 		const subscriber = elem.querySelector('#delayed');
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
 
+		clock.tick(5);
+		await new Promise(resolve => requestAnimationFrame(resolve));
+		expect(elem.querySelector('#registry-wrapper-delayed').shadowRoot.querySelector('#registry-shadow')).to.exist;
+		expect(subscriber._onSubscribeRegistries).to.eql([]);
+
 		clock.tick(40);
-		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow') ]);
+		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper-delayed').shadowRoot.querySelector('#registry-shadow') ]);
 		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
 });

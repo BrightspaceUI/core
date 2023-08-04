@@ -115,6 +115,8 @@ export class SubscriberRegistryController extends BaseController {
 	}
 
 	_handleSubscribe(e) {
+		if (e.detail.subscriber === this._host) { return; }
+
 		e.stopPropagation();
 		e.detail.registry = this._host;
 		e.detail.registryController = this;
@@ -137,7 +139,9 @@ export class EventSubscriberController extends BaseSubscriber {
 	}
 
 	hostConnected() {
-		this._subscriptionComplete = this._keepTrying(() => this._subscribe(), 40, 400);
+		requestAnimationFrame(() => {
+			this._subscriptionComplete = this._keepTrying(() => this._subscribe(), 40, 400);
+		});
 	}
 
 	hostDisconnected() {
