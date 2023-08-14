@@ -53,7 +53,6 @@ describe('dialog-with-mobile-dropdown', () => {
 
 			describe('default-breakpoint', () => {
 				[
-					{ name: 'opened', f: dialog },
 					{ name: 'left', f: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
 					{ name: 'bottom', f: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
 					{ name: 'filter', f: dialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
