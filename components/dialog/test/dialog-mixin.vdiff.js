@@ -49,7 +49,7 @@ describe('dialog-mixin', () => {
 				].forEach(({ name, action }) => {
 					it(name, async() => {
 						if (action) await action();
-						await expect(document.body).to.be.golden();
+						await expect(document).to.be.golden();
 					});
 				});
 			});

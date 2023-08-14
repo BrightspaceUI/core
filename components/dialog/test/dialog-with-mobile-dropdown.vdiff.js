@@ -67,7 +67,7 @@ describe('dialog-with-mobile-dropdown', () => {
 					it(name, async() => {
 						const elem = await fixture(f, { viewport: { width: 600, height: 500 } });
 						if (action) await action(elem);
-						await expect(document.body).to.be.golden();
+						await expect(document).to.be.golden();
 					});
 				});
 			});
@@ -81,7 +81,7 @@ describe('dialog-with-mobile-dropdown', () => {
 					it(name, async() => {
 						const elem = await fixture(f, { viewport: { width: 750, height: 500 } });
 						if (action) await action(elem);
-						await expect(document.body).to.be.golden();
+						await expect(document).to.be.golden();
 					});
 				});
 			});

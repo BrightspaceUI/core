@@ -44,7 +44,7 @@ describe('dialog-fullscreen', () => {
 					].forEach(({ name, f, rtl }) => {
 						it(name, async() => {
 							await fixture(f, { viewport, rtl });
-							await expect(document.body).to.be.golden();
+							await expect(document).to.be.golden();
 						});
 					});
 				});
@@ -70,7 +70,7 @@ describe('dialog-fullscreen', () => {
 					it(name, async() => {
 						const elem = await fixture(f, { viewport: { width: 800, height: 500 } });
 						if (action) await action(elem);
-						await expect(document.body).to.be.golden();
+						await expect(document).to.be.golden();
 					});
 				});
 			});
