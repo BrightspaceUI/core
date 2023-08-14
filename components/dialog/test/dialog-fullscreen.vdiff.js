@@ -37,9 +37,9 @@ describe('dialog-fullscreen', () => {
 				describe(screen, () => {
 					[
 						{ name: 'opened', f: dialog() },
-						{ name: 'openedSetWidth', f: dialog({ content: html`${tabs}${general}`, width: 1200 }) },
-						{ name: 'openedSetWidthBelowMin', f: dialog({ content: html`${tabs}${general}`, width: 200 }) },
-						{ name: 'openedSetWidthAboveMax', f: dialog({ content: html`${tabs}${general}`, width: 4000 }) },
+						{ name: 'opened-set-width', f: dialog({ content: html`${tabs}${general}`, width: 1200 }) },
+						{ name: 'opened-set-width-below-min', f: dialog({ content: html`${tabs}${general}`, width: 200 }) },
+						{ name: 'opened-set-width-above-max', f: dialog({ content: html`${tabs}${general}`, width: 4000 }) },
 						{ name: 'rtl', rtl: true, f: dialog() },
 					].forEach(({ name, f, rtl }) => {
 						it(name, async() => {
