@@ -77,9 +77,9 @@ jobs:
           publish-directory: ./build/
 
       - name: Notify
-        uses: ./.github/actions/comment-on-pr/
+        uses: BrightspaceUI/actions/comment-on-pr@main
         with:
-          MESSAGE: |
+          message: |
             Thanks for the PR! 🎉
 
             We've deployed an automatic preview for this PR - you can see your changes here:
@@ -90,4 +90,4 @@ jobs:
             > **Note**
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
-          ONLY_POST_ONCE: true
+          only-post-once: true
