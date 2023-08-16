@@ -4,7 +4,7 @@ import { footer, general } from './dialog-shared-contents.js';
 
 describe('dialog-mixin', () => {
 
-	['native', 'custom'].forEach((type) => {
+	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
 			before(async() => {

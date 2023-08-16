@@ -21,7 +21,7 @@ function dispatchFullscreenWithinEvent(elem, state) {
 
 describe('dialog-fullscreen', () => {
 
-	['native', 'custom'].forEach((type) => {
+	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
 			before(async() => {

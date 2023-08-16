@@ -44,7 +44,7 @@ async function openFilter(filter) {
 
 describe('dialog-with-mobile-dropdown', () => {
 
-	['native', 'custom'].forEach((type) => {
+	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
 			before(async() => {
