@@ -53,18 +53,18 @@ describe('dialog-with-mobile-dropdown', () => {
 
 			describe('default-breakpoint', () => {
 				[
-					{ name: 'left', f: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
-					{ name: 'bottom', f: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
-					{ name: 'filter', f: dialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
-					{ name: 'left-fullscreen', f: fullscreenDialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
-					{ name: 'bottom-fullscreen', f: fullscreenDialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
-					{ name: 'filter-fullscreen', f: fullscreenDialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
-					{ name: 'left-nested', f: nestedDialogs, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
-					{ name: 'bottom-nested', f: nestedDialogs, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
-					{ name: 'filter-nested', f: nestedDialogs, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) }
-				].forEach(({ name, f, action }) => {
+					{ name: 'left', template: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
+					{ name: 'bottom', template: dialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
+					{ name: 'filter', template: dialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
+					{ name: 'left-fullscreen', template: fullscreenDialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
+					{ name: 'bottom-fullscreen', template: fullscreenDialog, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
+					{ name: 'filter-fullscreen', template: fullscreenDialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
+					{ name: 'left-nested', template: nestedDialogs, action: async(elem) => openDropdown(elem.querySelector('#mobile-left')) },
+					{ name: 'bottom-nested', template: nestedDialogs, action: async(elem) => openDropdown(elem.querySelector('#mobile-bottom')) },
+					{ name: 'filter-nested', template: nestedDialogs, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) }
+				].forEach(({ name, template, action }) => {
 					it(name, async() => {
-						const elem = await fixture(f, { viewport: { width: 600, height: 500 } });
+						const elem = await fixture(template, { viewport: { width: 600, height: 500 } });
 						if (action) await action(elem);
 						await expect(document).to.be.golden();
 					});
@@ -73,12 +73,12 @@ describe('dialog-with-mobile-dropdown', () => {
 
 			describe('filter-breakpoint', () => {
 				[
-					{ name: 'filter', f: dialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
-					{ name: 'filter-fullscreen', f: fullscreenDialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
-					{ name: 'filter-nested', f: nestedDialogs, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) }
-				].forEach(({ name, f, action }) => {
+					{ name: 'filter', template: dialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
+					{ name: 'filter-fullscreen', template: fullscreenDialog, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) },
+					{ name: 'filter-nested', template: nestedDialogs, action: async(elem) => openFilter(elem.querySelector('d2l-filter')) }
+				].forEach(({ name, template, action }) => {
 					it(name, async() => {
-						const elem = await fixture(f, { viewport: { width: 750, height: 500 } });
+						const elem = await fixture(template, { viewport: { width: 750, height: 500 } });
 						if (action) await action(elem);
 						await expect(document).to.be.golden();
 					});
