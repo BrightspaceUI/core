@@ -66,14 +66,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          role-to-assume: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
+          role-to-assume: arn:aws:iam::022062736489:role/r+BrightspaceUI+core+repo
           role-duration-seconds: 3600
           aws-region: ca-central-1
 
       - name: Publish
         uses: BrightspaceUI/actions/publish-to-s3@main
         with:
-          bucket-path: s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}
+          bucket-path: s3://d2l.dev/pr-previews/brightspace-ui-core/pr-${{ github.event.number }}
           publish-directory: ./build/
 
       - name: Notify
@@ -84,7 +84,7 @@ jobs:
 
             We've deployed an automatic preview for this PR - you can see your changes here:
 
-            | URL | https://pr-${{ github.event.number }}-brightspace-ui-core.d2l.dev/ |
+            | URL | https://pr-previews.d2l.dev/brightspace-ui-core/pr-${{ github.event.number }}/ |
             |---|---|
 
             > **Note**
