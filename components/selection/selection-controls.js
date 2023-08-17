@@ -68,7 +68,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 				display: var(--d2l-selection-controls-shadow-display, block);
 				height: 40px;
 				margin: 0 calc(-1*var(--d2l-selection-controls-padding, 0px));
-				padding: 0 var(--d2l-selection-controls-padding, 0px);
+				padding: 0 var(--d2l-selection-controls-padding, 0);
 				position: absolute;
 				width: 100%;
 				z-index: -1;
@@ -82,7 +82,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 				display: flex;
 				margin: 6px calc(-1*var(--d2l-selection-controls-padding, 0px));
 				min-height: 54px;
-				padding: 0 var(--d2l-selection-controls-padding, 0px);
+				padding: 0 var(--d2l-selection-controls-padding, 0);
 			}
 			:host([no-sticky]) .d2l-selection-controls-container {
 				background-color: transparent;
