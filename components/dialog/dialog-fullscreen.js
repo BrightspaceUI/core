@@ -59,7 +59,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			}
 
 			:host([no-padding]) .d2l-dialog-content {
-				--d2l-list-controls-padding: 0px;
+				--d2l-list-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
 				padding: 0;
 			}
 
