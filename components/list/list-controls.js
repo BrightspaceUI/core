@@ -28,7 +28,7 @@ export class ListControls extends SelectionControls {
 			}
 			.d2l-list-controls-extend-separator-shadow {
 				--d2l-selection-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
-			} 
+			}
 		`];
 	}
 
