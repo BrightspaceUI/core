@@ -23,8 +23,12 @@ export class ListControls extends SelectionControls {
 				z-index: auto;
 			}
 			.d2l-list-controls-extend-separator {
+				--d2l-selection-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
 				padding: 0 0.9rem;
 			}
+			.d2l-list-controls-extend-separator-shadow {
+				--d2l-selection-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
+			} 
 		`];
 	}
 
@@ -38,7 +42,6 @@ export class ListControls extends SelectionControls {
 
 		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
 		if (parent) this._extendSeparator = parent.hasAttribute('extend-separators');
-		if (this._extendSeparator) this.style.setProperty('--d2l-selection-controls-padding', '0px');
 	}
 
 	_getSelectionControlsContainerClasses() {
@@ -50,6 +53,13 @@ export class ListControls extends SelectionControls {
 
 	_getSelectionControlsLabel() {
 		return this.localize('components.list-controls.label');
+	}
+
+	_getSelectionControlsShadowClasses() {
+		return {
+			...super._getSelectionControlsShadowClasses(),
+			'd2l-list-controls-extend-separator-shadow': this._extendSeparator
+		};
 	}
 }
 

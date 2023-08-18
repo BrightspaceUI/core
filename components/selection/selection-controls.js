@@ -139,17 +139,18 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 	}
 
 	render() {
-		const classes = this._getSelectionControlsContainerClasses();
+		const containerClasses = this._getSelectionControlsContainerClasses();
+		const shadowClasses = this._getSelectionControlsShadowClasses();
 		const label = (this._hasActions || !this.noSelection) ? this._getSelectionControlsLabel() : null;
 		return html`
 			<div class="d2l-sticky-edge"></div>
-			<section class="${classMap(classes)}" aria-label="${ifDefined(label)}">
+			<section class="${classMap(containerClasses)}" aria-label="${ifDefined(label)}">
 				${this.noSelection ? nothing : this._renderSelection()}
 				<div class="d2l-selection-controls-actions">
 					<d2l-overflow-group opener-type="icon"><slot @slotchange="${this._handleSlotChange}"></slot></d2l-overflow-group>
 				</div>
 			</section>
-			${!this.noSticky ? html`<div class="d2l-selection-controls-shadow"></div>` : nothing}
+			${!this.noSticky ? html`<div class="${classMap(shadowClasses)}"></div>` : nothing}
 		`;
 	}
 
@@ -185,6 +186,12 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 
 	_getSelectionControlsLabel() {
 		return this.localize('components.selection-controls.label');
+	}
+
+	_getSelectionControlsShadowClasses() {
+		return {
+			'd2l-selection-controls-shadow': true
+		};
 	}
 
 	_handleSlotChange(e) {
