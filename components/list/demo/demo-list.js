@@ -117,6 +117,7 @@ class DemoList extends LitElement {
 	static get properties() {
 		return {
 			grid: { type: Boolean },
+			extendSeparators: { type: Boolean, attribute: 'extend-separators' },
 			_lastItemLoadedIndex: { state: true }
 		};
 	}
@@ -138,6 +139,7 @@ class DemoList extends LitElement {
 
 	constructor() {
 		super();
+		this.extendSeparators = false;
 		this.items = JSON.parse(JSON.stringify(items));
 		this._lastItemLoadedIndex = 2;
 		this._pageSize = 2;
@@ -147,7 +149,7 @@ class DemoList extends LitElement {
 		const loadedItems = this.items.slice(0, this._lastItemLoadedIndex + 1);
 		const remainingItemCount = this.items.length - loadedItems.length;
 		return html`
-			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}">
+			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}" ?extend-separators="${this.extendSeparators}">
 				<d2l-list-controls slot="controls" select-all-pages-allowed>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>

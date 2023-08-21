@@ -116,6 +116,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-content {
+		--d2l-list-controls-padding: 30px;
 		box-sizing: border-box;
 		flex: 1 0 0;
 		overflow: hidden; /* scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash */
@@ -175,6 +176,7 @@ export const dialogStyles = css`
 			margin-right: 15px;
 		}
 		.d2l-dialog-content {
+			--d2l-list-controls-padding: 20px;
 			padding: 0 20px;
 		}
 		.d2l-dialog-footer {

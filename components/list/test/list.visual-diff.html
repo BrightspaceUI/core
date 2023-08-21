@@ -46,7 +46,33 @@
 		<div style="width: 400px;">
 			<div class="visual-diff" id="stickyControls">
 				<div style="height: 200px; overflow: scroll;">
-					<d2l-list>
+					<d2l-list style="padding: 0 20px;">
+						<d2l-list-controls slot="controls"></d2l-list-controls>
+						<d2l-list-item label="Item 1" selectable key="1">
+							<d2l-list-item-content>
+								<div>Item 1</div>
+								<div slot="supporting-info">Supporting info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="Item 2" selectable key="2">
+							<d2l-list-item-content>
+								<div>Item 2</div>
+								<div slot="supporting-info">Supporting info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="Item 3" selectable key="3">
+							<d2l-list-item-content>
+								<div>Item 3</div>
+								<div slot="supporting-info">Supporting info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</div>
+			</div>
+
+			<div class="visual-diff" id="stickyControlsSeparatorsExtended">
+				<div style="height: 200px; overflow: scroll;">
+					<d2l-list style="padding: 0 20px;" extend-separators>
 						<d2l-list-controls slot="controls"></d2l-list-controls>
 						<d2l-list-item label="Item 1" selectable key="1">
 							<d2l-list-item-content>

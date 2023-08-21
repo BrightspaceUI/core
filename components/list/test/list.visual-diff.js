@@ -152,6 +152,24 @@ describe('d2l-list', () => {
 			{ name: 'sticky scrolled', selector: '#stickyControls', action: async() => {
 				await scrollTo('#stickyControls > div', 0);
 				await scrollTo('#stickyControls > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled hover', selector: '#stickyControls', action: async() => {
+				await scrollTo('#stickyControls > div', 0);
+				await scrollTo('#stickyControls > div', 45);
+				await hover('#stickyControls [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky top extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled hover extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
+				await hover('#stickyControlsSeparatorsExtended [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
