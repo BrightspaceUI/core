@@ -16,6 +16,7 @@ export class ListControls extends SelectionControls {
 		return [super.styles, css`
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color);
+				--d2l-selection-controls-padding: var(--d2l-list-controls-padding, 18px);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
 			:host([no-sticky]) {
@@ -37,6 +38,7 @@ export class ListControls extends SelectionControls {
 
 		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
 		if (parent) this._extendSeparator = parent.hasAttribute('extend-separators');
+		if (this._extendSeparator) this.style.setProperty('--d2l-selection-controls-padding', '0px');
 	}
 
 	_getSelectionControlsContainerClasses() {
