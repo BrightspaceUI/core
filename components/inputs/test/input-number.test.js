@@ -399,7 +399,7 @@ describe('d2l-input-number', () => {
 		].forEach((test) => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture);
-				if (test.value !== null && test.value !== undefined) elem.value = test.value;
+				if (test.value) elem.value = test.value;
 				await elem.updateComplete;
 				if (test.change) {
 					elem[test.change.prop] = test.change.value;
@@ -414,7 +414,6 @@ describe('d2l-input-number', () => {
 
 		it('should be invalid when required and value is less than min', async() => {
 			const elem = await fixture(html`<d2l-input-number label="label" min="5" required value="0"></d2l-input-number>`);
-			await elem.updateComplete;
 			expect(elem.validationError).to.equal('Number must be greater than or equal to 5.');
 			expect(elem.invalid).to.equal(true);
 		});
