@@ -62,7 +62,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				display: grid;
 				grid-template-columns:
 					[start outside-control-start] minmax(0, min-content)
-					[expand-collapse-start outside-control-end] minmax(0, min-content)
+					[color-start outside-control-end] minmax(0, min-content)
+					[expand-collapse-start color-end] minmax(0, min-content)
 					[control-start expand-collapse-end] minmax(0, min-content)
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
@@ -79,6 +80,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 
 			::slotted([slot="outside-control"]),
+			::slotted([slot="color"]),
 			::slotted([slot="expand-collapse"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
@@ -143,6 +145,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column-start: control-start;
 			}
 
+			::slotted([slot="color"]) {
+				grid-column: color-start / color-end;
+			}
+
 			:host(:not([no-primary-action])) ::slotted([slot="control-action"]),
 			:host(:not([no-primary-action])) ::slotted([slot="outside-control-action"]) {
 				grid-column-end: end;
@@ -152,7 +158,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: start / end;
 			}
 			::slotted([slot="control-container"]) {
-				grid-column: expand-collapse-start / end;
+				grid-column: color-start / end;
 			}
 
 			::slotted([slot="nested"]) {
@@ -198,6 +204,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="color"></slot>
 			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>

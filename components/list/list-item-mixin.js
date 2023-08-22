@@ -68,6 +68,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			breakpoints: { type: Array },
 			/**
+			 * A color indicator to appear at the beginning of a list item. Expected value is a valid color hex code (e.g., '#006fbf').
+			 * @type {string}
+			 */
+			color: { type: String },
+			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
 			 */
@@ -366,6 +371,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([skeleton]) {
 				pointer-events: none;
 			}
+
+			.d2l-list-item-color-inner {
+				border-radius: 2px;
+				height: 100%;
+				width: 3px;
+			}
+			.d2l-list-item-color-outer {
+				padding: 2px 0.6rem 1px 0;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -414,6 +428,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
+		}
+		if (changedProperties.has('color')) {
+			this.shadowRoot.querySelector('.d2l-list-item-color-inner').style.backgroundColor = this.color;
 		}
 	}
 
@@ -613,6 +630,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				${this.color ? html`
+				<div slot="color" class="d2l-list-item-color-outer">
+					<div class="d2l-list-item-color-inner"></div>
+				</div>` : nothing}
 				<div slot="control-container"></div>
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 					${this._renderExpandCollapse()}
