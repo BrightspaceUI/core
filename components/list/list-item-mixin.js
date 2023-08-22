@@ -380,6 +380,17 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.d2l-list-item-color-outer {
 				padding: 2px 0.6rem 1px 0;
 			}
+			:host([dir="rtl"]) .d2l-list-item-color-outer {
+				padding-left: 0.6rem;
+				padding-right: 0;
+			}
+			:host([expandable]) .d2l-list-item-color-outer {
+				padding-right: 0.3rem;
+			}
+			:host([dir="rtl"][expandable]) .d2l-list-item-color-outer {
+				padding-left: 0.3rem;
+				padding-right: 0;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -630,11 +641,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				<div slot="control-container"></div>
 				${this.color ? html`
 				<div slot="color" class="d2l-list-item-color-outer">
 					<div class="d2l-list-item-color-inner"></div>
 				</div>` : nothing}
-				<div slot="control-container"></div>
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 					${this._renderExpandCollapse()}
 				</div>

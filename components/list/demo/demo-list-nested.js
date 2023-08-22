@@ -197,6 +197,7 @@ class ListDemoNested extends LitElement {
 		return html`
 			<d2l-list-item
 				action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
+				color="#ffaa47"
 				?draggable="${this.draggable}"
 				drag-handle-text="${item.primaryText}"
 				?drop-nested="${item.dropNested}"
