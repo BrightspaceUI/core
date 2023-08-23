@@ -24,9 +24,7 @@ describe('dialog-fullscreen', () => {
 	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(async() => {
-				window.D2L.DialogMixin.preferNative = type === 'native';
-			});
+			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			[
 				{ screen: 'wider', viewport: { width: 1400, height: 700 } },

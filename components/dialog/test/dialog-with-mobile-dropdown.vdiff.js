@@ -47,9 +47,7 @@ describe('dialog-with-mobile-dropdown', () => {
 	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(async() => {
-				window.D2L.DialogMixin.preferNative = type === 'native';
-			});
+			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			describe('default-breakpoint', () => {
 				[

@@ -23,9 +23,7 @@ describe('dialog', () => {
 	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(async() => {
-				window.D2L.DialogMixin.preferNative = type === 'native';
-			});
+			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			[
 				{ screen: 'tall-wide', viewport: { width: 800, height: 500 } },

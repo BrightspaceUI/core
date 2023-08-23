@@ -7,9 +7,7 @@ describe('dialog-mixin', () => {
 	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(async() => {
-				window.D2L.DialogMixin.preferNative = type === 'native';
-			});
+			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			describe('generic', () => {
 				let dialog;
