@@ -239,6 +239,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	_checkIfFloatObsuringFocus() {
 		const { y: focusedY, height: focusedHeight } = this._currentFocusedItem.getBoundingClientRect();
 		const { y: floatingY } = this.getBoundingClientRect();
+		if (focusedY === 0 || floatingY === 0) {
+			return false;
+		}
 
 		return floatingY - focusedY < focusedHeight;
 	}
