@@ -25,7 +25,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
 			_innerContainerLeft: { attribute: false, type: String },
-			_innerContainerRight: { attribute: false, type: String }
+			_innerContainerRight: { attribute: false, type: String },
+			_currentFocusedItem: { attribute: false, type: Object }
 		};
 	}
 
@@ -113,6 +114,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._isIntersecting = false;
 		this._recalculateFloating = this._recalculateFloating.bind(this);
 		this._testElem = null;
+		this._currentFocusedItem = document.activeElement;
+		this._boundFocusIn = this._focusIn.bind(this);
 	}
 
 	connectedCallback() {
@@ -144,6 +147,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 		}, { timeout: 5000 });
 
+		document.addEventListener('focusin', this._boundFocusIn);
+
 	}
 
 	disconnectedCallback() {
@@ -154,6 +159,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._testElem.parentNode.removeChild(this._testElem);
 			this._testElem = null;
 		}
+		document.removeEventListener('focusin', this._boundFocusIn);
 	}
 
 	render() {
@@ -179,6 +185,14 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	updated(changedProperties) {
 		if (changedProperties.has('alwaysFloat')) {
 			this._recalculateFloating();
+		}
+		if (changedProperties.has('_currentFocusedItem')) {
+			if (this._checkIfFloatObsuringFocus()) {
+				const prev = this._currentFocusedItem.style.scrollMarginBottom;
+				this._currentFocusedItem.style.scrollMarginBottom = `${this.clientHeight}px`;
+				this._currentFocusedItem.scrollIntoView(false);
+				this._currentFocusedItem.style.scrollMarginBottom = prev;
+			}
 		}
 	}
 
@@ -220,6 +234,17 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._innerContainerRight = `${containerRight}px`;
 		}
 
+	}
+
+	_checkIfFloatObsuringFocus() {
+		const { y: focusedY, height: focusedHeight } = this._currentFocusedItem.getBoundingClientRect();
+		const { y: floatingY } = this.getBoundingClientRect();
+
+		return floatingY - focusedY < focusedHeight;
+	}
+
+	_focusIn() {
+		this._currentFocusedItem = document.activeElement;
 	}
 
 	_getBoundingAncestor() {
