@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
-import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
+import { getBoundingAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -237,6 +237,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_checkIfFloatObsuringFocus() {
+		if (isComposedAncestor(this, this._currentFocusedItem)) {
+			return false;
+		}
 		const { y: focusedY, height: focusedHeight } = this._currentFocusedItem.getBoundingClientRect();
 		const { y: floatingY } = this.getBoundingClientRect();
 		if (focusedY === 0 || floatingY === 0) {
