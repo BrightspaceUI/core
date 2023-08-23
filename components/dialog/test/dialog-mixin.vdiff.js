@@ -23,7 +23,7 @@ describe('dialog-mixin', () => {
 						</div>
 					`, { viewport: { width: 800, height: 500 } });
 					dialog = elem.querySelector('d2l-dialog');
-					focusElem(elem.querySelector('d2l-button'));
+					await focusElem(elem.querySelector('d2l-button'));
 				});
 
 				[
