@@ -21,6 +21,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
+			fixObscuredFocus: { type: Boolean, attribute: 'fix-obscured-focus' },
 			_containerMarginLeft: { attribute: false, type: String },
 			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
@@ -105,6 +106,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alwaysFloat = false;
+		this.fixObscuredFocus = false;
 		this._containerMarginLeft = '';
 		this._containerMarginRight = '';
 		this._floating = false;
@@ -186,7 +188,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		if (changedProperties.has('alwaysFloat')) {
 			this._recalculateFloating();
 		}
-		if (changedProperties.has('_currentFocusedItem')) {
+		if (this.fixObscuredFocus && changedProperties.has('_currentFocusedItem')) {
 			if (this._checkIfFloatObsuringFocus()) {
 				const prev = this._currentFocusedItem.style.scrollMarginBottom;
 				this._currentFocusedItem.style.scrollMarginBottom = `${this.clientHeight}px`;
@@ -250,7 +252,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_focusIn() {
-		this._currentFocusedItem = document.activeElement;
+		if (this.fixObscuredFocus) {
+			this._currentFocusedItem = document.activeElement;
+		}
 	}
 
 	_getBoundingAncestor() {
