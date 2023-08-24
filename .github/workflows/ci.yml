@@ -73,7 +73,7 @@ jobs:
       - name: Publish
         uses: BrightspaceUI/actions/publish-to-s3@main
         with:
-          bucket-path: s3://d2l.dev/pr-previews/brightspace-ui-core/pr-${{ github.event.number }}
+          bucket-path: s3://d2l.dev/live/prs/BrightspaceUI/core/pr-${{ github.event.number }}
           publish-directory: ./build/
 
       - name: Notify
@@ -84,7 +84,7 @@ jobs:
 
             We've deployed an automatic preview for this PR - you can see your changes here:
 
-            | URL | https://pr-previews.d2l.dev/brightspace-ui-core/pr-${{ github.event.number }}/ |
+            | URL | https://live.d2l.dev/prs/BrightspaceUI/core/pr-${{ github.event.number }}/ |
             |---|---|
 
             > **Note**
