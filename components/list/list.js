@@ -78,6 +78,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.extendSeparators = false;
 		this.grid = false;
 		this._listItemChanges = [];
+		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
@@ -224,13 +225,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			e.stopPropagation();
 		}
 		const items = this.getItems();
+		let aChildHasColor = false;
 		let aChildHasToggleEnabled = false;
 		for (const item of items) {
-			if (item.expandable) {
-				aChildHasToggleEnabled = true;
-				break;
-			}
+			if (item.color) aChildHasColor = true;
+			if (item.expandable) aChildHasToggleEnabled = true;
+			if (aChildHasToggleEnabled && aChildHasColor) break;
 		}
+		this._childHasColor = aChildHasColor;
 		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
@@ -260,10 +262,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_updateActiveSubscriber(subscriber) {
 		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+		subscriber.updateSiblingHasColor(this._childHasColor);
 	}
 
 	_updateActiveSubscribers(subscribers) {
-		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle));
+		subscribers.forEach(subscriber => {
+			subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+			subscriber.updateSiblingHasColor(this._childHasColor);
+		});
 	}
 
 }

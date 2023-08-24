@@ -96,7 +96,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_hasNestedList: { state: true }
+			_hasNestedList: { state: true },
+			_renderColorSlot: { type: Boolean, reflect: true, attribute: '_render-color-slot' },
+			_siblingHasColor: { state: true }
 		};
 	}
 
@@ -317,10 +319,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host([color]) [slot="outside-control-container"] {
+			:host([_render-color-slot]) [slot="outside-control-container"] {
 				margin-left: -6px;
 			}
-			:host([dir="rtl"][color]) [slot="outside-control-container"] {
+			:host([dir="rtl"][_render-color-slot]) [slot="outside-control-container"] {
 				margin-left: 0;
 				margin-right: -6px;
 			}
@@ -415,6 +417,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasNestedList = false;
+		this._renderColorSlot = false;
+		this._siblingHasColor = false;
 	}
 
 	get breakpoints() {
@@ -448,6 +452,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
+		}
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._renderColorSlot = this.color || this._siblingHasColor;
 		}
 	}
 
@@ -501,6 +508,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduceMotion) this.scrollIntoView(alignToTop);
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
+	}
+
+	updateSiblingHasColor(siblingHasColor) {
+		this._siblingHasColor = siblingHasColor;
 	}
 
 	_getFlattenedListItems(listItem) {
@@ -631,7 +642,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-dragging-over': this._draggingOver
 		};
 		const colorStyles = {
-			backgroundColor: this.color || undefined
+			backgroundColor: this._renderColorSlot ? this.color : undefined
 		};
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
@@ -651,7 +662,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
-				${this.color ? html`
+				${this._renderColorSlot ? html`
 				<div slot="color" class="d2l-list-item-color-outer">
 					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
