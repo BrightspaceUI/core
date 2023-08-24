@@ -7,6 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
+const MINIMUM_TARGET_SIZE = 24;
 
 /**
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
@@ -248,7 +249,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			return false;
 		}
 
-		return floatingY - focusedY < focusedHeight;
+		return floatingY - focusedY < Math.min(MINIMUM_TARGET_SIZE, focusedHeight);
 	}
 
 	_focusIn() {
