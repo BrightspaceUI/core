@@ -258,6 +258,30 @@ describe('d2l-list-item', () => {
 
 	});
 
+	describe('property validation', () => {
+
+		it('should set color as expected when valid 6 character hex color', async() => {
+			const elem = await fixture(html`<d2l-list-item color="#fF0a9b"></d2l-list-item>`);
+			expect(elem.color).to.equal('#FF0A9B');
+		});
+
+		it('should set 6 character color as when 7 character hex color', async() => {
+			const elem = await fixture(html`<d2l-list-item color="#fF0a9ba"></d2l-list-item>`);
+			expect(elem.color).to.equal('#FF0A9B');
+		});
+
+		it('should set color as expected when valid 8 character hex color', async() => {
+			const elem = await fixture(html`<d2l-list-item color="#fF0a9bab"></d2l-list-item>`);
+			expect(elem.color).to.equal('#FF0A9BAB');
+		});
+
+		it('should throw if invalid HEX value is set', async() => {
+			const elem = await fixture(html`<d2l-list-item></d2l-list-item>`);
+			expect(() => elem.color = 'notHEX').to.throw('<d2l-list-item>: invalid HEX value "notHEX"');
+		});
+
+	});
+
 });
 
 describe('d2l-list-item-button', () => {
