@@ -137,8 +137,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			<slot name="header"></slot>
 			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-				${this._renderPagerContainer()}
+				${this.grid ? this._renderPagerContainer() : null}
 			</div>
+			${!this.grid ? this._renderPagerContainer() : null}
 		`;
 	}
 
