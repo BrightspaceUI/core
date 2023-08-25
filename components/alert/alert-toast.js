@@ -144,7 +144,7 @@ class AlertToast extends LitElement {
 	render() {
 		return html`
 			<div
-				class="d2l-alert-toast-container"
+				class="d2l-alert-toast-container vdiff-target"
 				data-state="${this._state}"
 				@transitionend=${this._onTransitionEnd}>
 				<d2l-alert
