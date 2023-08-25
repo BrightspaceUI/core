@@ -93,7 +93,7 @@ Start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that
 npm start
 ```
 
-D2L employees can also view the latest main-branch demos at https://brightspace-ui-core.d2l.dev/.
+D2L employees can also view the latest main-branch demos at https://live.d2l.dev/BrightspaceUI/core/.
 
 ### Linting
 
