@@ -49,6 +49,7 @@ const ro = new ResizeObserver(entries => {
 });
 
 const defaultBreakpoints = [842, 636, 580, 0];
+const SLIM_COLOR_BREAKPOINT = 500;
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -98,7 +99,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_hasNestedList: { state: true }
+			_hasNestedList: { state: true },
+			_slimColor: { type: Boolean, attribute: '_slim-color', reflect: true }
 		};
 	}
 
@@ -388,6 +390,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				height: 100%;
 				width: 6px;
 			}
+			:host([_slim-color]) .d2l-list-item-color-inner {
+				border-radius: 3px;
+				width: 3px;
+			}
 			.d2l-list-item-color-outer {
 				padding: 2px 12px 1px 0;
 			}
@@ -417,6 +423,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasNestedList = false;
+		this._slimColor = false;
 	}
 
 	get breakpoints() {
@@ -497,6 +504,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	resizedCallback(width) {
+		if (width < SLIM_COLOR_BREAKPOINT) this._slimColor = true;
+		else this._slimColor = false;
+
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
