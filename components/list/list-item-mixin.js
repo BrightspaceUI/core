@@ -20,6 +20,8 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const HEX_REGEX = /#([0-9a-fA-F]){6}(?:[0-9a-fA-f]{2})?/; // 6 or 8 character hex code
+
 let tabPressed = false;
 let tabListenerAdded = false;
 function addTabListener() {
@@ -430,6 +432,20 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
 		else this._breakpoints = defaultBreakpoints;
 		this.requestUpdate('breakpoints', oldValue);
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	set color(value) {
+		const newValue = value.match(HEX_REGEX);
+		if (!newValue || newValue.length === 0) {
+			throw new TypeError(`<d2l-list-item>: invalid HEX value "${value}"`);
+		}
+		const oldValue = this._color;
+		this._color = (typeof newValue[0] === 'string') ? newValue[0].toUpperCase() : undefined;
+		this.requestUpdate('value', oldValue);
 	}
 
 	connectedCallback() {
