@@ -1,4 +1,5 @@
 import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
+import { getRectTooltip } from './input-helper.js';
 import puppeteer from 'puppeteer';
 
 describe('d2l-input-number', () => {
@@ -65,6 +66,12 @@ describe('d2l-input-number', () => {
 		await changeValue(page, '#required', 10);
 		await page.$eval('#required', (elem) => elem.blur());
 		const rect = await visualDiff.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('invalid focus when required with initial invalid value', async function() {
+		await focusWithKeyboard(page, '#required-invalid');
+		const rect = await getRectTooltip(page, '#required-invalid');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 

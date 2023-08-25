@@ -66,28 +66,28 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          role-to-assume: arn:aws:iam::037018655140:role/brightspace-ui-core.d2l.dev-githubactions-access
+          role-to-assume: arn:aws:iam::022062736489:role/r+BrightspaceUI+core+repo
           role-duration-seconds: 3600
           aws-region: ca-central-1
 
       - name: Publish
-        uses: ./.github/actions/publish-to-s3/
+        uses: BrightspaceUI/actions/publish-to-s3@main
         with:
-          BUCKET_PATH: s3://brightspace-ui-core.d2l.dev/branches/pr-${{ github.event.number }}
-          PUBLISH_DIRECTORY: ./build/
+          bucket-path: s3://d2l.dev/live/prs/${{ github.repository }}/pr-${{ github.event.number }}
+          publish-directory: ./build/
 
       - name: Notify
-        uses: ./.github/actions/comment-on-pr/
+        uses: BrightspaceUI/actions/comment-on-pr@main
         with:
-          MESSAGE: |
+          message: |
             Thanks for the PR! 🎉
 
             We've deployed an automatic preview for this PR - you can see your changes here:
 
-            | URL | https://pr-${{ github.event.number }}-brightspace-ui-core.d2l.dev/ |
+            | URL | https://live.d2l.dev/prs/${{ github.repository }}/pr-${{ github.event.number }}/ |
             |---|---|
 
             > **Note**
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
-          ONLY_POST_ONCE: true
+          only-post-once: true

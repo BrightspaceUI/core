@@ -285,6 +285,10 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 
 		if (changedProperties.has('label') || changedProperties.has('type')) this._validateLabel();
 
+		if (changedProperties.has('value') || changedProperties.has('type') || changedProperties.has('disallowNone')) {
+			this.setFormValue(this.value);
+		}
+
 	}
 
 	_getLabel() {

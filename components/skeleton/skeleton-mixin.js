@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css } from 'lit';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
@@ -152,10 +153,10 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 	static get properties() {
 		return {
 			/**
-			 * Renders the input as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton)
+			 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
 			 * @type {boolean}
 			 */
-			skeleton: { reflect: true, type: Boolean  }
+			skeleton: { reflect: true, type: Boolean },
 		};
 	}
 
@@ -167,7 +168,53 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 
 	constructor() {
 		super();
-		this.skeleton = false;
+		this._skeletonSetByParent = false;
+		this._skeletonSetExplicitly = false;
+		this._skeletonActive = false;
+		this._skeletonWait = false;
+
+		this._parentSkeleton = new EventSubscriberController(this, 'skeleton', {
+			onSubscribe: this._onSubscribe.bind(this),
+			onUnsubscribe: this._onUnsubscribe.bind(this)
+		});
+	}
+
+	get skeleton() {
+		return this._skeletonActive;
+	}
+
+	set skeleton(val) {
+		const oldVal = this._skeletonSetExplicitly;
+		if (oldVal === val) return;
+		this._skeletonSetExplicitly = val;
+
+		// keep _skeletonActive aligned with _skeletonSetExplicitly. _skeletonActive may be modified separately by a parent SkeletonGroup
+		this._skeletonActive = val;
+
+		this.requestUpdate('skeleton', oldVal);
+		this._parentSkeleton?.registry?.onSubscriberChange();
+	}
+
+	setSkeletonActive(skeletonActive) {
+		const oldVal = this._skeletonActive;
+		if (skeletonActive !== oldVal) {
+			this._skeletonActive = skeletonActive;
+			this.requestUpdate('skeleton', oldVal);
+		}
+	}
+
+	setSkeletonSetByParent(skeletonSetByParent) {
+		this._skeletonSetByParent = skeletonSetByParent;
+	}
+
+	_onSubscribe() {
+		this._skeletonWait = true;
+	}
+
+	_onUnsubscribe() {
+		this._skeletonWait = false;
+		this._skeletonActive = this._skeletonSetExplicitly;
+		this.requestUpdate('skeleton', this._skeletonSetExplicitly);
 	}
 
 });

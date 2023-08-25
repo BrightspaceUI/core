@@ -292,7 +292,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('blur', this.__onAutoCloseFocus, true);
 		this.addEventListener('touchstart', this.__onTouchStart);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
-		document.body.addEventListener('click', this.__onAutoCloseClick, true);
+		document.addEventListener('click', this.__onAutoCloseClick, true);
 		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this._useMobileStyling = this.mediaQueryList.matches;
 		if (this.mediaQueryList.addEventListener) this.mediaQueryList.addEventListener('change', this._handleMobileResize);
@@ -304,11 +304,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.removeEventListener('blur', this.__onAutoCloseFocus);
 		this.removeEventListener('touchstart', this.__onTouchStart);
 		window.removeEventListener('resize', this.__onResize);
-		if (document.body) {
-			// DE41322: document.body can be null in some scenarios
-			document.body.removeEventListener('focus', this.__onAutoCloseFocus, true);
-			document.body.removeEventListener('click', this.__onAutoCloseClick, true);
-		}
+		document.body?.removeEventListener('focus', this.__onAutoCloseFocus, true); // DE41322: document.body can be null in some scenarios
+		document.removeEventListener('click', this.__onAutoCloseClick, true);
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
 

@@ -59,6 +59,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			}
 
 			:host([no-padding]) .d2l-dialog-content {
+				--d2l-list-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
 				padding: 0;
 			}
 
@@ -70,20 +71,18 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					padding-top: 1rem;
 				}
 
-				.d2l-dialog-content {
-					padding-top: 1rem;
-				}
-
 				.d2l-dialog-content > div {
 					/* required to properly calculate preferred height when there are bottom
 					margins at the end of the slotted content */
 					border-bottom: 1px solid transparent;
 					box-sizing: border-box;
 					height: calc(100% - 1rem);
+					padding-top: 1rem;
 				}
 
 				:host([no-padding]) .d2l-dialog-content > div {
 					height: 100%;
+					padding-top: 0;
 				}
 
 				.d2l-dialog-header > div > d2l-button-icon {

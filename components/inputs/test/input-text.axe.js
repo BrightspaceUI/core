@@ -53,4 +53,9 @@ describe('d2l-input-text', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('instructions', async() => {
+		const elem = await fixture(html`<d2l-input-text label="label" instructions="some instructions"></d2l-input-text>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });
