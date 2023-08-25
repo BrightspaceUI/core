@@ -3,6 +3,7 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
@@ -10,6 +11,15 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
+
+const ro = new ResizeObserver(entries => {
+	entries.forEach(entry => {
+		if (!entry || !entry.target || !entry.target.resizedCallback) {
+			return;
+		}
+		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width);
+	});
+});
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
@@ -90,11 +100,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
+		ro.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
+		ro.unobserve(this);
 	}
 
 	firstUpdated(changedProperties) {
@@ -194,6 +206,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
+	}
+
+	resizedCallback(width) {
+		const items = this.getItems();
+		items.forEach((item) => {
+			if (item.resizedCallback) item.resizedCallback(width);
+		});
 	}
 
 	_getItemByIndex(index) {

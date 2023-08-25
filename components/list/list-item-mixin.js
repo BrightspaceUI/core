@@ -16,7 +16,6 @@ import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 let tabPressed = false;
@@ -35,15 +34,6 @@ function addTabListener() {
 }
 
 let hasDisplayedKeyboardTooltip = false;
-
-const ro = new ResizeObserver(entries => {
-	entries.forEach(entry => {
-		if (!entry || !entry.target || !entry.target.resizedCallback) {
-			return;
-		}
-		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width);
-	});
-});
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
@@ -396,18 +386,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	connectedCallback() {
 		super.connectedCallback();
-		ro.observe(this);
 		if (this.role === 'rowgroup') {
 			addTabListener();
 		}
 		if (!this.selectable && !this.expandable) {
 			this.labelRequired = false;
 		}
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		ro.unobserve(this);
 	}
 
 	updated(changedProperties) {
