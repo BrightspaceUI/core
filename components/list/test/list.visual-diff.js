@@ -128,7 +128,8 @@ describe('d2l-list', () => {
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
 			{ name: 'item-content', selector: '#selectableItemContent' },
 			{ name: 'skeleton', selector: '#selectableSkeleton' },
-			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
+			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' },
+			{ name: 'extended separators hover', selector: '#selectableSeparatorsExtended', action: () => hover('#selectableSeparatorsExtended [selectable]') }
 		] },
 		{ category: 'selectableHref', tests: [
 			{ name: 'hover href', selector: '#selectableHref', action: () => hover('#selectableHref [selectable]') },
