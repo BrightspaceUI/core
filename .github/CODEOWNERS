@@ -1,4 +1,5 @@
 *       @BrightspaceUI/gaudi-dev
 helpers/getLocalizeResources.js @BrightspaceUI/team-usa-devs @BrightspaceUI/team-usa-senior-devs
 golden/
+.vdiff.json
 package-lock.json

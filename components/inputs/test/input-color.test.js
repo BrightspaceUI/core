@@ -46,6 +46,32 @@ describe('d2l-input-color', () => {
 
 	});
 
+	describe('formValue reflection', () => {
+
+		it('should reflect default "value" to "formValue"', async() => {
+			const elem = await fixture(html`<d2l-input-color></d2l-input-color>`);
+			expect(elem.formValue).to.be.undefined;
+		});
+
+		it('should reflect default "value" to "formValue" when "disallow-none"', async() => {
+			const elem = await fixture(html`<d2l-input-color disallow-none></d2l-input-color>`);
+			expect(elem.formValue).to.equal('#000000');
+		});
+
+		it('should reflect initial "value" to "formValue"', async() => {
+			const elem = await fixture(html`<d2l-input-color value="#ff0000"></d2l-input-color>`);
+			expect(elem.formValue).to.equal('#FF0000');
+		});
+
+		it('should reflect updated "value" to "formValue"', async() => {
+			const elem = await fixture(html`<d2l-input-color value="#ff0000"></d2l-input-color>`);
+			elem.value = '#00ff00';
+			await elem.updateComplete;
+			expect(elem.formValue).to.equal('#00FF00');
+		});
+
+	});
+
 	describe('events', () => {
 
 		it('should fire "change" event when value is changed', async() => {

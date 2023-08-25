@@ -12,6 +12,11 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * Whether the dimension has more values to load. Manual search and selected first should be set if has more is being used
+			 * @type {boolean}
+			 */
+			hasMore: { type: Boolean, attribute: 'has-more' },
+			/**
 			 * A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users.
 			 * @type {string}
 			 */
@@ -32,11 +37,6 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
-			 * Whether the dimension has more values to load
-			 * @type {boolean}
-			 */
-			hasMore: { type: Boolean, attribute: 'has-more' },
-			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -47,7 +47,7 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectAll: { type: Boolean, attribute: 'select-all' },
 			/**
-			 * Whether to render the selected items at the top of the filter
+			 * Whether to render the selected items at the top of the filter. Forced on if load more paging is being used
 			 * @type {boolean}
 			 */
 			selectedFirst: { type: Boolean, attribute: 'selected-first' },

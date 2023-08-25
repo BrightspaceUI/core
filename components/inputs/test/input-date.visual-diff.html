@@ -5,7 +5,10 @@
 		<script type="module">
 			import '../../../test/typography-preload.js';
 			import '../input-date.js';
+			import { querySelectorComposed } from '../../../helpers/dom.js';
 			import sinon from 'sinon';
+
+			window.querySelectorComposed = querySelectorComposed;
 
 			const newToday = new Date('2018-02-12T12:00Z');
 			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });

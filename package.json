@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "2.137.0",
+  "version": "2.141.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -22,7 +22,8 @@
     "test:axe": "d2l-test-runner aXe",
     "test:headless": "d2l-test-runner",
     "test:headless:watch": "d2l-test-runner --watch",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated"
+    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
+    "test:vdiff": "d2l-test-runner vdiff"
   },
   "files": [
     "custom-elements.json",
@@ -45,7 +46,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^0.8",
-    "@brightspace-ui/testing": "^0.18",
+    "@brightspace-ui/testing": "^0.29",
     "@open-wc/semantic-dom-diff": "^0.20",
     "@rollup/plugin-dynamic-import-vars": "^2",
     "@rollup/plugin-node-resolve": "^15",
