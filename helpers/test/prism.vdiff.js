@@ -1,4 +1,3 @@
-import '../../components/typography/typography.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatCodeElement } from '../prism.js';
@@ -19,15 +18,6 @@ function createCodeWrapper({ content, dark, lineNumbers, language, inline }) {
 		'line-numbers': lineNumbers
 	};
 	if (inline) classes[`language-${language}`] = true;
-	/*return !inline ? html`
-		<div class="d2l-typography" style="max-width: 500px;">
-			<pre class="${classMap(classes)}"><code class="language-${language}">${content}</code></pre>
-		</div>
-	` : html`
-		<div class="d2l-typography" style="width: 400px;">
-			<p>Some inline code... <code class="${classMap(classes)}">${content}</code> Mmmm, yummy code.</p>.
-		</div>
-	`;*/
 	return !inline ? html`
 		<div style="max-width: 500px; letter-spacing: normal;">
 			<pre class="${classMap(classes)}"><code class="language-${language}">${content}</code></pre>
