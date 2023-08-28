@@ -8,6 +8,7 @@ class AsyncItem extends LitElement {
 		return {
 			delay: { type: Number },
 			key: { type: String },
+			manual: { type: Boolean },
 			throwError: { type: Boolean, attribute: 'throw-error' }
 		};
 	}
@@ -34,6 +35,7 @@ class AsyncItem extends LitElement {
 		super();
 		this.delay = 4000;
 		this.key = null;
+		this.manual = false;
 	}
 
 	render() {
@@ -45,18 +47,30 @@ class AsyncItem extends LitElement {
 		})}`;
 	}
 
+	reject() {
+		setTimeout(() => this._reject('error'), 0);
+	}
+
+	resolve() {
+		setTimeout(() => this._resolve(html`<div>${this.key}</div>`), 0);
+	}
+
 	_getContent(key) {
 		return new Promise((resolve, reject) => {
 			if (!key) {
 				throw new InitialStateError();
 			} else {
-				setTimeout(() => {
-					if (this.throwError) {
-						reject('an error occurred');
-					} else {
-						resolve(html`<div>${this.key}</div>`);
-					}
-				}, this.delay);
+				this._resolve = resolve;
+				this._reject = reject;
+				if (!this.manual) {
+					setTimeout(() => {
+						if (this.throwError) {
+							this.reject();
+						} else {
+							this.resolve();
+						}
+					}, this.delay);
+				}
 			}
 		});
 	}
