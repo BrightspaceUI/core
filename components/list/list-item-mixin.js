@@ -9,6 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
@@ -19,8 +20,6 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-
-const HEX_REGEX = /#([0-9a-fA-F]){6}(?:[0-9a-fA-f]{2})?/; // 6 or 8 character hex code
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -71,7 +70,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * A color indicator to appear at the beginning of a list item. Expected value is a valid CSS color.
+			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 6 or 8 character CSS color hex code (e.g., #006fbf).
 			 * @type {string}
 			 */
 			color: { type: String },
@@ -319,10 +318,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host([color]) [slot="outside-control-container"] {
+			:host(:not([draggable])[color]) [slot="outside-control-container"] {
 				margin-left: -6px;
 			}
-			:host([dir="rtl"][color]) [slot="outside-control-container"] {
+			:host(:not([draggable])[dir="rtl"][color]) [slot="outside-control-container"] {
 				margin-left: 0;
 				margin-right: -6px;
 			}
@@ -435,12 +434,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	set color(value) {
-		const newValue = value.match(HEX_REGEX);
-		if (!newValue || newValue.length === 0) {
-			throw new TypeError(`<d2l-list-item>: invalid HEX value "${value}"`);
-		}
 		const oldValue = this._color;
-		this._color = (typeof newValue[0] === 'string') ? newValue[0].toUpperCase() : undefined;
+		this._color = getValidHexColor(value, true);
 		this.requestUpdate('value', oldValue);
 	}
 
@@ -668,7 +663,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
 				${this.color ? html`
-				<div slot="color" class="d2l-list-item-color-outer">
+				<div slot="color-indicator" class="d2l-list-item-color-outer">
 					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">

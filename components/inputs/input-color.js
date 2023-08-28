@@ -7,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -14,7 +15,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const DEFAULT_VALUE = '#000000';
 const DEFAULT_VALUE_BG = '#FFFFFF';
-const HEX_REGEX = /#([0-9a-fA-F]){6}/;
 const ICON_BACKGROUND = html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none" viewBox="0 0 16 13">
 <g fill="#202122" clip-path="url(#a)">
   <path fill-rule="evenodd" d="M1.609 5.356c-2.706 2.706 4.329 9.741 7.035 7.035l4.87-4.87C15.897 5.137 8.862-1.898 6.48.486l-4.87 4.87Zm5.945 5.297L12 6.207a1.774 1.774 0 0 0-.116-.42c-.231-.613-.766-1.41-1.514-2.157-.748-.748-1.545-1.283-2.158-1.515A1.774 1.774 0 0 0 7.793 2L3.347 6.446c.988.286 1.898.863 2.62 1.586.724.723 1.301 1.633 1.587 2.62Zm.154-8.65c-.001-.002.011-.006.04-.006-.024.008-.038.008-.04.006Zm4.289 4.289c-.002-.002-.002-.016.005-.04 0 .029-.003.041-.005.04Z" clip-rule="evenodd"/>
@@ -237,11 +237,8 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 
 	get associatedValue() { return this._associatedValue; }
 	set associatedValue(val) {
-		if (val !== undefined && !HEX_REGEX.test(val)) {
-			throw new TypeError(`<d2l-input-color>: invalid HEX associated-value "${val}"`);
-		}
 		const oldVal = this._associatedValue;
-		this._associatedValue = (typeof val === 'string') ? val.toUpperCase() : undefined;
+		this._associatedValue = getValidHexColor(val);
 		this.requestUpdate('associatedValue', oldVal);
 	}
 
@@ -252,11 +249,8 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 		return this._value;
 	}
 	set value(val) {
-		if (val !== undefined && !HEX_REGEX.test(val)) {
-			throw new TypeError(`<d2l-input-color>: invalid HEX value "${val}"`);
-		}
 		const oldVal = this._value;
-		this._value = (typeof val === 'string') ? val.toUpperCase() : undefined;
+		this._value = getValidHexColor(val);
 		this.requestUpdate('value', oldVal);
 	}
 
