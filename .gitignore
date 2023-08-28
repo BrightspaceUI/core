@@ -4,8 +4,6 @@ node_modules/
 .vdiff/
 components/*/test/screenshots/current/
 components/*/test/screenshots/golden/
-helpers/test/screenshots/current/
-helpers/test/screenshots/golden/
 lang/fr-on.js
 mixins/*/test/screenshots/current/
 mixins/*/test/screenshots/golden/
