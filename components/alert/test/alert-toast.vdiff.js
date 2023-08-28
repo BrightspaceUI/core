@@ -11,14 +11,14 @@ const alertWithSubtextAndCloseButton = html`
 describe('alert-toast', () => {
 
 	[
-		{ name: 'default', template: html`<d2l-alert-toast no-auto-close type="default" open>A default message.</d2l-alert-toast>` },
-		{ name: 'no-close', template: html`<d2l-alert-toast no-auto-close type="success" hide-close-button open>A message.</d2l-alert-toast>` },
-		{ name: 'button-close', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Do it!" open>A message.</d2l-alert-toast>` },
-		{ name: 'subtext-button-close', template: alertWithSubtextAndCloseButton }
-	].forEach(({ name, template }) => {
+		{ name: 'default', height: 108, template: html`<d2l-alert-toast no-auto-close type="default" open>A default message.</d2l-alert-toast>` },
+		{ name: 'no-close', height: 106, template: html`<d2l-alert-toast no-auto-close type="success" hide-close-button open>A message.</d2l-alert-toast>` },
+		{ name: 'button-close', height: 108, template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Do it!" open>A message.</d2l-alert-toast>` },
+		{ name: 'subtext-button-close', height: 188, template: alertWithSubtextAndCloseButton }
+	].forEach(({ name, template, height }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { viewport: { width: 700 } });
-			await expect(elem).to.be.golden({ margin: 50 });
+			await fixture(template, { viewport: { width: 700, height } });
+			await expect(document).to.be.golden();
 		});
 	});
 
