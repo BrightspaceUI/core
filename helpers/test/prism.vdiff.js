@@ -28,15 +28,6 @@ function createCodeWrapper({ content, dark, lineNumbers, language, inline }) {
 			<p>Some inline code... <code class="${classMap(classes)}">${content}</code> Mmmm, yummy code.</p>.
 		</div>
 	`;
-	/*return !inline ? html`
-		<div style="max-width: 500px; letter-spacing: normal;">
-			<pre class="${classMap(classes)}"><code class="language-${language}">${content}</code></pre>
-		</div>
-	` : html`
-		<div style="width: 400px; color: black; font-family: auto; font-size: 20px; letter-spacing: normal;">
-			<p>Some inline code... <code class="${classMap(classes)}">${content}</code> Mmmm, yummy code.</p>.
-		</div>
-	`;*/
 }
 
 describe('prism-helper', () => {
