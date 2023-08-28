@@ -18,7 +18,7 @@
 <body class="d2l-typography">
 	<d2l-button id="open">Open Dialog</d2l-button>
 
-	<d2l-dialog id="ifrau-dialog" title-text="Title" width="400">
+	<d2l-dialog id="ifrau-dialog" title-text="Title" width="400" opened>
 		<div>Line 1</div>
 		<div>Line 2</div>
 		<div>Line 3</div>
@@ -26,16 +26,5 @@
 		<d2l-button slot="footer" primary>Yes</d2l-button>
 		<d2l-button slot="footer" id="cancel">No</d2l-button>
 	</d2l-dialog>
-
-	<script>
-		const dialog = document.getElementById('ifrau-dialog');
-		dialog.addEventListener('d2l-dialog-open', () => {
-			window.parent.postMessage('ifrau-dialog-open', '*');
-		});
-		dialog.addEventListener('d2l-dialog-close', () => {
-			window.parent.postMessage('ifrau-dialog-close', '*');
-		});
-	</script>
-
 </body>
 </html>
