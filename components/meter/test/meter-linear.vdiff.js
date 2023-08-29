@@ -6,8 +6,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 function createTemplateWrapper(content, dark) {
 	const styles = {
 		backgroundColor: dark && 'var(--d2l-color-celestine);',
-		fontFamily: 'auto', // remove
-		letterSpacing: 'normal', // remove
 		padding: dark && '1rem',
 		width: '250px'
 	};
