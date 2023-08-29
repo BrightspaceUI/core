@@ -7,8 +7,6 @@ components/*/test/screenshots/golden/
 helpers/test/screenshots/current/
 helpers/test/screenshots/golden/
 lang/fr-on.js
-mixins/*/test/screenshots/current/
-mixins/*/test/screenshots/golden/
 templates/*/test/screenshots/current/
 templates/*/test/screenshots/golden/
 test/sass.output.css
