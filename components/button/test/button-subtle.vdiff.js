@@ -41,7 +41,7 @@ describe('d2l-button-subtle', () => {
 
 	it('h-align', async() => {
 		const elem = await fixture(html`
-			<div id="h-align">
+			<div>
 				<d2l-button-subtle icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
 				<d2l-button-subtle icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-subtle>
