@@ -4,15 +4,15 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brights
 describe('d2l-button-move', () => {
 
 	[
-		{ category: 'normal', f: html`<d2l-button-move text="Reorder Item"></d2l-button-move>` },
-		{ category: 'dark', f: html`<div style="display: inline-block; padding: 10px; line-height: 0; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>` }
-	].forEach(({ category, f }) => {
+		{ category: 'normal', template: html`<d2l-button-move text="Reorder Item"></d2l-button-move>` },
+		{ category: 'dark', template: html`<div style="display: inline-block; padding: 10px; line-height: 0; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>` }
+	].forEach(({ category, template }) => {
 
 		describe(category, () => {
 
 			let elem;
 			beforeEach(async() => {
-				elem = await fixture(f);
+				elem = await fixture(template);
 			});
 
 			[

@@ -4,13 +4,13 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brights
 describe('d2l-button-subtle', () => {
 
 	[
-		{ category: 'default-normal', f: html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>` },
-		{ category: 'default-icon', f: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
-		{ category: 'default-icon-right', f: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true },
-		{ category: 'slim-normal', f: html`<d2l-button-subtle slim text="Subtle Button"></d2l-button-subtle>` },
-		{ category: 'slim-icon', f: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
-		{ category: 'slim-icon-right', f: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true }
-	].forEach(({ category, f, hasRtl }) => {
+		{ category: 'default-normal', template: html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'default-icon', template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
+		{ category: 'default-icon-right', template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true },
+		{ category: 'slim-normal', template: html`<d2l-button-subtle slim text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'slim-icon', template: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
+		{ category: 'slim-icon-right', template: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true }
+	].forEach(({ category, template, hasRtl }) => {
 
 		describe(category, () => {
 
@@ -22,7 +22,7 @@ describe('d2l-button-subtle', () => {
 				{ name: 'disabled', action: elem => elem.disabled = true }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					const elem = await fixture(f);
+					const elem = await fixture(template);
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
@@ -30,7 +30,7 @@ describe('d2l-button-subtle', () => {
 
 			if (hasRtl) {
 				it('rtl', async() => {
-					const elem = await fixture(f, { rtl: true });
+					const elem = await fixture(template, { rtl: true });
 					await expect(elem).to.be.golden();
 				});
 			}
