@@ -17,10 +17,14 @@ describe('d2l-button-icon', () => {
 				{ name: 'hover', action: hoverElem },
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
-				{ name: 'disabled', action: elem => elem.disabled = true }
+				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'disabled hover', action: elem => {
+					elem.disabled = true;
+					hoverElem(elem);
+				} }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					const elem = await fixture(f, { theme: theme });
+					const elem = await fixture(f, { theme });
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
