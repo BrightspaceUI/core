@@ -25,7 +25,6 @@ describe('d2l-button-icon', () => {
 			].forEach(({ action, name }) => {
 				it(name, async() => {
 					let elem = await fixture(f, { theme });
-					debugger;
 					elem = elem.tagName === 'DIV' ? elem.querySelector('d2l-button-icon') : elem;
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
