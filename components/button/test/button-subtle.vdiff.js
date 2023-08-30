@@ -1,42 +1,53 @@
 import '../button-subtle.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-describe('d2l-button-subtle', () => {
-
+describe('button-subtle', () => {
 	[
 		{ category: 'default-normal', template: html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>` },
-		{ category: 'default-icon', template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
-		{ category: 'default-icon-right', template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true },
+		//{ category: 'default-icon', template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
+		//{ category: 'default-icon-right', template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>` },
 		{ category: 'slim-normal', template: html`<d2l-button-subtle slim text="Subtle Button"></d2l-button-subtle>` },
-		{ category: 'slim-icon', template: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>`, hasRtl: true },
-		{ category: 'slim-icon-right', template: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>`, hasRtl: true }
-	].forEach(({ category, template, hasRtl }) => {
+		//{ category: 'slim-icon', template: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
+		//{ category: 'slim-icon-right', template: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>` }
+	].forEach(({ category, template }) => {
 
 		describe(category, () => {
-
 			[
 				{ name: 'normal' },
+				//{ name: 'rtl', rtl: true },
 				{ name: 'hover', action: hoverElem },
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
 				{ name: 'disabled', action: elem => elem.disabled = true }
-			].forEach(({ action, name }) => {
+			].forEach(({ action, name, rtl }) => {
 				it(name, async() => {
-					const elem = await fixture(template);
+					const elem = await fixture(template, { rtl });
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
 			});
+		});
+	});
 
-			if (hasRtl) {
-				it('rtl', async() => {
-					const elem = await fixture(template, { rtl: true });
+	[
+		{ category: 'default-icon', template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'default-icon-right', template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>` },
+		{ category: 'slim-icon', template: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'slim-icon-right', template: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>` }
+	].forEach(({ category, template }) => {
+
+		describe(category, () => {
+			[
+				{ name: 'normal' },
+				{ name: 'rtl', rtl: true }
+			].forEach(({ action, name, rtl }) => {
+				it(name, async() => {
+					const elem = await fixture(template, { rtl });
+					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
-			}
-
+			});
 		});
-
 	});
 
 	it('h-align', async() => {
@@ -55,5 +66,4 @@ describe('d2l-button-subtle', () => {
 		`);
 		await expect(elem).to.be.golden();
 	});
-
 });

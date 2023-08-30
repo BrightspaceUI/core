@@ -1,20 +1,13 @@
 import '../button-move.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-describe('d2l-button-move', () => {
-
+describe('button-move', () => {
 	[
-		{ category: 'normal', template: html`<d2l-button-move text="Reorder Item"></d2l-button-move>` },
-		{ category: 'dark', template: html`<div style="display: inline-block; padding: 10px; line-height: 0; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>` }
+		{ category: 'normal', template: theme => html`<d2l-button-move text="Reorder Item" theme="${theme}"></d2l-button-move>` },
+		{ category: 'dark', template: theme => html`<div style="padding: 20px; background: black;"><d2l-button-move text="Reorder Item" theme="${theme}"></d2l-button-move></div>` }
 	].forEach(({ category, template }) => {
 
 		describe(category, () => {
-
-			let elem;
-			beforeEach(async() => {
-				elem = await fixture(template);
-			});
-
 			[
 				{ name: 'normal' },
 				{ name: 'hover', action: hoverElem },
@@ -44,20 +37,12 @@ describe('d2l-button-move', () => {
 				{ name: 'disabled-down', action: elem => elem.disabledDown = true },
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					let actionElem = elem;
-					const opts = {};
-					if (elem.tagName !== 'D2L-BUTTON-MOVE') {
-						actionElem = elem.querySelector('d2l-button-move');
-						actionElem.theme = category;
-						opts.margin = 0;
-					}
-					if (action) await action(actionElem);
-					await expect(elem).to.be.golden(opts);
+					let elem = await fixture(template(category));
+					if (elem.tagName !== 'D2L-BUTTON-MOVE') elem = elem.querySelector('d2l-button-move');
+					if (action) await action(elem);
+					await expect(elem).to.be.golden();
 				});
 			});
-
 		});
-
 	});
-
 });

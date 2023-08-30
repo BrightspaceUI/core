@@ -1,15 +1,13 @@
 import '../button.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-describe('d2l-button', () => {
-
+describe('button', () => {
 	[
-		{ category: 'normal', f: html`<d2l-button>Normal Button</d2l-button>` },
-		{ category: 'primary', f: html`<d2l-button primary>Primary Button</d2l-button>` }
-	].forEach(({ category, f }) => {
+		{ category: 'normal', template: html`<d2l-button>Normal Button</d2l-button>` },
+		{ category: 'primary', template: html`<d2l-button primary>Primary Button</d2l-button>` }
+	].forEach(({ category, template }) => {
 
 		describe(category, () => {
-
 			[
 				{ name: 'normal' },
 				{ name: 'hover', action: hoverElem },
@@ -18,14 +16,11 @@ describe('d2l-button', () => {
 				{ name: 'disabled', action: elem => elem.disabled = true }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					const elem = await fixture(f);
+					const elem = await fixture(template);
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
 			});
-
 		});
-
 	});
-
 });

@@ -33,7 +33,7 @@ const floatingButtonsAlwaysFloatFixture = html`
 	</div>
 `;
 
-describe('d2l-floating-buttons', () => {
+describe('floating-buttons', () => {
 
 	it('floats', async() => {
 		const elem = await fixture(floatingButtonsFixture);
@@ -77,4 +77,16 @@ describe('d2l-floating-buttons', () => {
 		await expect(elem).to.be.golden();
 	});
 
+	describe('window less than min-height (500px)', () => {
+		it('does not float', async() => {
+			const elem = await fixture(floatingButtonsFixture, { viewport: { height: 499 } });
+			await expect(elem).to.be.golden();
+		});
+
+		it('floats at bottom of page when always-float is true', async() => {
+			const elem = await fixture(floatingButtonsAlwaysFloatFixture, { viewport: { height: 499 } });
+			window.scrollTo(0, document.body.scrollHeight);
+			await expect(elem).to.be.golden();
+		});
+	});
 });
