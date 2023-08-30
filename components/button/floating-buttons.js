@@ -287,7 +287,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const { y: floatingY, height: floatingHeight } = this.shadowRoot.querySelector('.d2l-floating-buttons-container').getBoundingClientRect();
 		if (focusedY === 0 || floatingY === 0) return;
 
-		const isObscuring = (floatingY - focusedY) < Math.max(MINIMUM_TARGET_SIZE, focusedHeight);
+		const isObscuring = (floatingY - focusedY) < Math.min(MINIMUM_TARGET_SIZE, focusedHeight);
 		if (!isObscuring) return;
 
 		const prev = currentFocusedItem.style.scrollMarginBottom;
