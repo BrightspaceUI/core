@@ -743,7 +743,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				value: dimension.searchValue,
 				loadMoreCompleteCallback: (options) => {
 					applySearch(options);
-					this.shadowRoot.querySelector('d2l-dropdown-menu').addEventListener('d2l-dropdown-position', e.detail.complete, { once: true });
+					const menu = this.shadowRoot.querySelector('d2l-dropdown-menu');
+					menu ? menu.addEventListener('d2l-dropdown-position', e.detail.complete, { once: true }) : e.detail.complete();
 				}
 			},
 			bubbles: true,

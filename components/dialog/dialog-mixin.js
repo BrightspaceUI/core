@@ -468,6 +468,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 
 		const dialogOuterClasses = {
+			'vdiff-target': true,
 			'd2l-dialog-outer': true,
 			'd2l-dialog-outer-full-height': this._autoSize && this._isFullHeight,
 			'd2l-dialog-outer-overflow-bottom': this._overflowBottom,

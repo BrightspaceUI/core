@@ -46,7 +46,7 @@ describe('d2l-list', () => {
 								</d2l-list-item>
 							</d2l-list>
 						</d2l-list-item>
-					</d2l-list>	
+					</d2l-list>
 				`);
 			const nestedList = elem.querySelector('#L2').shadowRoot.querySelector('[role="application"]');
 			expect(nestedList.hasAttribute('aria-label')).to.be.false;
@@ -105,7 +105,7 @@ describe('d2l-list', () => {
 							</d2l-list>
 						</d2l-list-item>
 						<d2l-list-item selectable key="L1-2" label="item"></d2l-list-item>
-					</d2l-list>	
+					</d2l-list>
 				`);
 				const listItem = elem.querySelector(`[key="${initialFocus}"]`);
 
