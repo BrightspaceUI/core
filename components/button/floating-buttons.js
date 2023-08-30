@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -22,13 +23,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
-			fixObscuredFocus: { type: Boolean, attribute: 'fix-obscured-focus' },
 			_containerMarginLeft: { attribute: false, type: String },
 			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
 			_innerContainerLeft: { attribute: false, type: String },
-			_innerContainerRight: { attribute: false, type: String },
-			_currentFocusedItem: { attribute: false, type: Object }
+			_innerContainerRight: { attribute: false, type: String }
 		};
 	}
 
@@ -107,7 +106,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alwaysFloat = false;
-		this.fixObscuredFocus = false;
 		this._containerMarginLeft = '';
 		this._containerMarginRight = '';
 		this._floating = false;
@@ -117,8 +115,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._isIntersecting = false;
 		this._recalculateFloating = this._recalculateFloating.bind(this);
 		this._testElem = null;
-		this._currentFocusedItem = document.activeElement;
-		this._boundFocusIn = this._focusIn.bind(this);
+		this._scrollIfFloatObsuringFocus = this._scrollIfFloatObsuringFocus.bind(this);
 	}
 
 	connectedCallback() {
@@ -150,7 +147,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 		}, { timeout: 5000 });
 
-		document.addEventListener('focusin', this._boundFocusIn);
+		document.addEventListener('focusin', this._scrollIfFloatObsuringFocus);
 
 	}
 
@@ -162,7 +159,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._testElem.parentNode.removeChild(this._testElem);
 			this._testElem = null;
 		}
-		document.removeEventListener('focusin', this._boundFocusIn);
+		document.removeEventListener('focusin', this._scrollIfFloatObsuringFocus);
 	}
 
 	render() {
@@ -188,14 +185,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	updated(changedProperties) {
 		if (changedProperties.has('alwaysFloat')) {
 			this._recalculateFloating();
-		}
-		if (this.fixObscuredFocus && changedProperties.has('_currentFocusedItem')) {
-			if (this._checkIfFloatObsuringFocus()) {
-				const prev = this._currentFocusedItem.style.scrollMarginBottom;
-				this._currentFocusedItem.style.scrollMarginBottom = `${this.clientHeight}px`;
-				this._currentFocusedItem.scrollIntoView(false);
-				this._currentFocusedItem.style.scrollMarginBottom = prev;
-			}
 		}
 	}
 
@@ -237,25 +226,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._innerContainerRight = `${containerRight}px`;
 		}
 
-	}
-
-	_checkIfFloatObsuringFocus() {
-		if (isComposedAncestor(this, this._currentFocusedItem)) {
-			return false;
-		}
-		const { y: focusedY, height: focusedHeight } = this._currentFocusedItem.getBoundingClientRect();
-		const { y: floatingY } = this.getBoundingClientRect();
-		if (focusedY === 0 || floatingY === 0) {
-			return false;
-		}
-
-		return floatingY - focusedY < Math.min(MINIMUM_TARGET_SIZE, focusedHeight);
-	}
-
-	_focusIn() {
-		if (this.fixObscuredFocus) {
-			this._currentFocusedItem = document.activeElement;
-		}
 	}
 
 	_getBoundingAncestor() {
@@ -304,6 +274,27 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 
 		});
+	}
+
+	_scrollIfFloatObsuringFocus() {
+
+		if (!this._floating) return;
+
+		const currentFocusedItem = getComposedActiveElement();
+		if (isComposedAncestor(this, currentFocusedItem)) return;
+
+		const { y: focusedY, height: focusedHeight } = currentFocusedItem.getBoundingClientRect();
+		const { y: floatingY, height: floatingHeight } = this.shadowRoot.querySelector('.d2l-floating-buttons-container').getBoundingClientRect();
+		if (focusedY === 0 || floatingY === 0) return;
+
+		const isObscuring = (floatingY - focusedY) < Math.max(MINIMUM_TARGET_SIZE, focusedHeight);
+		if (!isObscuring) return;
+
+		const prev = currentFocusedItem.style.scrollMarginBottom;
+		currentFocusedItem.style.scrollMarginBottom = `${floatingHeight}px`;
+		currentFocusedItem.scrollIntoView(false);
+		currentFocusedItem.style.scrollMarginBottom = prev;
+
 	}
 
 }
