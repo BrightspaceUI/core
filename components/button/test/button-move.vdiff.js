@@ -3,15 +3,16 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brights
 
 describe('d2l-button-move', () => {
 
-	[ 'normal', 'dark' ].forEach(category => {
+	[
+		{ category: 'normal', f: html`<d2l-button-move text="Reorder Item"></d2l-button-move>` },
+		{ category: 'dark', f: html`<div style="display: inline-block; padding: 10px; line-height: 0; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>` }
+	].forEach(({ category, f }) => {
 
 		describe(category, () => {
 
 			let elem;
 			beforeEach(async() => {
-				elem = category === 'dark' ?
-					await fixture(html`<div style="box-shadow: 0 0 0 100px black; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>`) :
-					await fixture(html`<d2l-button-move text="Reorder Item"></d2l-button-move>`);
+				elem = await fixture(f);
 			});
 
 			[
@@ -43,12 +44,15 @@ describe('d2l-button-move', () => {
 				{ name: 'disabled-down', action: elem => elem.disabledDown = true },
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					if (category === 'dark') {
-						elem = elem.querySelector('d2l-button-move');
-						elem.theme = 'dark';
+					let actionElem = elem;
+					const opts = {};
+					if (elem.tagName !== 'D2L-BUTTON-MOVE') {
+						actionElem = elem.querySelector('d2l-button-move');
+						actionElem.theme = category;
+						opts.margin = 0;
 					}
-					if (action) await action(elem);
-					await expect(elem).to.be.golden();
+					if (action) await action(actionElem);
+					await expect(elem).to.be.golden(opts);
 				});
 			});
 
