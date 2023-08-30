@@ -9,6 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
@@ -18,6 +19,7 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -67,6 +69,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {array}
 			 */
 			breakpoints: { type: Array },
+			/**
+			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 6 or 8 character CSS color hex code (e.g., #006fbf).
+			 * @type {string}
+			 */
+			color: { type: String },
 			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
@@ -311,6 +318,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
+			:host(:not([draggable])[color]) [slot="outside-control-container"] {
+				margin-left: -6px;
+			}
+			:host(:not([draggable])[dir="rtl"][color]) [slot="outside-control-container"] {
+				margin-left: 0;
+				margin-right: -6px;
+			}
+
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
@@ -366,6 +381,26 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([skeleton]) {
 				pointer-events: none;
 			}
+
+			.d2l-list-item-color-inner {
+				border-radius: 6px;
+				height: 100%;
+				width: 6px;
+			}
+			.d2l-list-item-color-outer {
+				padding: 2px 12px 1px 0;
+			}
+			:host([dir="rtl"]) .d2l-list-item-color-outer {
+				padding-left: 12px;
+				padding-right: 0;
+			}
+			:host([expandable]) .d2l-list-item-color-outer {
+				padding-right: 6px;
+			}
+			:host([dir="rtl"][expandable]) .d2l-list-item-color-outer {
+				padding-left: 6px;
+				padding-right: 0;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -392,6 +427,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
 		else this._breakpoints = defaultBreakpoints;
 		this.requestUpdate('breakpoints', oldValue);
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	set color(value) {
+		const oldValue = this._color;
+		this._color = getValidHexColor(value, true);
+		this.requestUpdate('value', oldValue);
 	}
 
 	connectedCallback() {
@@ -596,6 +641,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-dragging-over': this._draggingOver
 		};
+		const colorStyles = {
+			backgroundColor: this.color || undefined
+		};
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
@@ -614,6 +662,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
+				${this.color ? html`
+				<div slot="color-indicator" class="d2l-list-item-color-outer">
+					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
+				</div>` : nothing}
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 					${this._renderExpandCollapse()}
 				</div>

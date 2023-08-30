@@ -48,7 +48,7 @@
 				<div style="height: 200px; overflow: scroll;">
 					<d2l-list style="padding: 0 20px;">
 						<d2l-list-controls slot="controls"></d2l-list-controls>
-						<d2l-list-item label="Item 1" selectable key="1">
+						<d2l-list-item label="Item 1" selectable key="1" color="#ff0000">
 							<d2l-list-item-content>
 								<div>Item 1</div>
 								<div slot="supporting-info">Supporting info</div>
@@ -80,7 +80,7 @@
 								<div slot="supporting-info">Supporting info</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
-						<d2l-list-item label="Item 2" selectable key="2">
+						<d2l-list-item label="Item 2" selectable key="2" color="#00ff00">
 							<d2l-list-item-content>
 								<div>Item 2</div>
 								<div slot="supporting-info">Supporting info</div>
@@ -100,7 +100,7 @@
 		<div style="width: 400px;">
 			<div class="visual-diff" id="simple">
 				<d2l-list>
-					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item color="#0000ff">Item 1</d2l-list-item>
 					<d2l-list-item>Item 2</d2l-list-item>
 					<d2l-list-item>Item 3</d2l-list-item>
 				</d2l-list>
@@ -129,8 +129,8 @@
 		<div style="width: 400px;">
 			<div class="visual-diff" id="separatorsNone">
 				<d2l-list separators="none">
-					<d2l-list-item>Item 1</d2l-list-item>
-					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item color="#00ff00">Item 1</d2l-list-item>
+					<d2l-list-item color="#00ff00">Item 2</d2l-list-item>
 					<d2l-list-item>Item 3</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -159,7 +159,7 @@
 		<div style="width: 400px;">
 			<div class="visual-diff" id="separatorsExtended">
 				<d2l-list extend-separators>
-					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item color="#00ff00">Item 1</d2l-list-item>
 					<d2l-list-item>Item 2</d2l-list-item>
 					<d2l-list-item>Item 3</d2l-list-item>
 				</d2l-list>
@@ -403,7 +403,7 @@
 		<div style="width: 400px;">
 			<div class="visual-diff" id="selectable">
 				<d2l-list>
-					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 1" selectable key="1" color="#00ff00">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
@@ -450,6 +450,24 @@
 		</div>
 
 		<div style="width: 400px;">
+			<div class="visual-diff" id="draggableColorIndicator">
+				<d2l-list>
+					<d2l-list-item label="Item 1" draggable key="1" color="#ff0000">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" draggable key="2">Item 2</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
+			<div class="visual-diff" id="draggableSelectableColorIndicator">
+				<d2l-list>
+					<d2l-list-item label="Item 1" draggable selectable key="1" href="http://www.d2l.com" color="#ff0000aa">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 1" draggable selectable key="2" href="http://www.d2l.com">Item 2</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px;">
 			<div class="visual-diff" id="draggableSeparatorsExtended">
 				<d2l-list extend-separators>
 					<d2l-list-item label="Item 1" draggable selectable key="1">Item 1</d2l-list-item>
@@ -483,7 +501,7 @@
 			<div class="visual-diff" id="selectableSelected">
 				<d2l-list>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected>Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" selected color="#00ff00">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -493,7 +511,7 @@
 				<d2l-list>
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item label="Item 1" selectable key="1" selected>Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" selection-disabled selectable key="2">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" selection-disabled selectable key="2" color="#00ff00">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -555,7 +573,7 @@
 		<div style="width: 900px;">
 			<div class="visual-diff" id="breakpoint-842">
 				<d2l-list>
-					<d2l-list-item>
+					<d2l-list-item color="#00ff00">
 						<div style="background: blue; height: 400px; width: 400px;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
@@ -673,7 +691,7 @@
 							<button>action 2</button>
 						</div>
 						<d2l-list slot="nested" separators="between">
-							<d2l-list-item selectable key="L2-1">
+							<d2l-list-item selectable key="L2-1" color="#00ff00">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
@@ -737,7 +755,7 @@
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 										</d2l-list-item-content>
 									</d2l-list-item>
-									<d2l-list-item selectable selected key="L3-2">
+									<d2l-list-item selectable selected key="L3-2" color="#00ff00">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
 											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
@@ -862,6 +880,61 @@
 		</div>
 
 		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-default-expanded-multiple-nested-lists">
+				<d2l-list>
+					<d2l-list-item expandable expanded key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded key="L2-2" color="#ff0000">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded key="L2-3">
+								<d2l-list-item-content>
+									<div>Level 2, Item 3</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item key="L3-1b">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1b</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item key="L3-2b">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2b</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
 			<div class="visual-diff" id="expand-collapse-selectable">
 				<d2l-list>
 					<d2l-list-item expandable expanded selectable key="L1-1">
@@ -908,7 +981,7 @@
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested">
-							<d2l-list-item draggable key="L2-1">
+							<d2l-list-item draggable key="L2-1" color="#0000ff">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
@@ -952,7 +1025,7 @@
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 								</d2l-list-item-content>
 							</d2l-list-item>
-							<d2l-list-item expandable expanded selectable draggable key="L2-2">
+							<d2l-list-item expandable expanded selectable draggable key="L2-2" color="#129044">
 								<d2l-list-item-content>
 									<div>Level 2, Item 2</div>
 									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
