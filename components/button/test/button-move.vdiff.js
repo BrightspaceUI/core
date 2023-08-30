@@ -9,10 +9,9 @@ describe('d2l-button-move', () => {
 
 			let elem;
 			beforeEach(async() => {
-				elem = await fixture(
-					html`<d2l-button-move text="Reorder Item"></d2l-button-move>`,
-					{ theme: category === 'dark' ? 'dark' : undefined }
-				);
+				elem = category === 'dark' ?
+					await fixture(html`<div style="box-shadow: 0 0 0 100px black; background: black;"><d2l-button-move text="Reorder Item"></d2l-button-move></div>`) :
+					await fixture(html`<d2l-button-move text="Reorder Item"></d2l-button-move>`);
 			});
 
 			[
@@ -44,7 +43,10 @@ describe('d2l-button-move', () => {
 				{ name: 'disabled-down', action: elem => elem.disabledDown = true },
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					if (category === 'dark') elem.theme = 'dark';
+					if (category === 'dark') {
+						elem = elem.querySelector('d2l-button-move');
+						elem.theme = 'dark';
+					}
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});

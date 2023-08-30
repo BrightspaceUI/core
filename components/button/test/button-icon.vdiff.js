@@ -6,7 +6,7 @@ describe('d2l-button-icon', () => {
 	[
 		{ category: 'normal', f: html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>` },
 		{ category: 'translucent', f: html`<d2l-button-icon icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon>`, theme: 'translucent' },
-		{ category: 'dark', f: html`<d2l-button-icon icon="tier1:gear" text="Icon Button" theme="dark"></d2l-button-icon>`, theme: 'dark' },
+		{ category: 'dark', f: html`<div style="box-shadow: 0 0 0 100px black; background: black;"><d2l-button-icon icon="tier1:gear" text="Icon Button" theme="dark"></d2l-button-icon></div>`, theme: 'dark' },
 		{ category: 'custom', f: html`<d2l-button-icon icon="tier1:gear" text="Icon Button" style="--d2l-button-icon-min-height: 1.5rem; --d2l-button-icon-min-width: 1.5rem; --d2l-button-icon-border-radius: 4px; --d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #006fbf; --d2l-button-icon-fill-color: var(--d2l-color-celestine); --d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);"></d2l-button-icon>` }
 	].forEach(({ category, f, theme }) => {
 
@@ -24,7 +24,9 @@ describe('d2l-button-icon', () => {
 				} }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
-					const elem = await fixture(f, { theme });
+					let elem = await fixture(f, { theme });
+					debugger;
+					elem = elem.tagName === 'DIV' ? elem.querySelector('d2l-button-icon') : elem;
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});
