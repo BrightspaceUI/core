@@ -106,14 +106,10 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				button::-moz-focus-inner {
 					border: 0;
 				}
-				button[disabled]:hover,
-				button[disabled]:focus,
-				:host([active]) button[disabled] {
-					background-color: var(--d2l-button-icon-background-color);
-				}
-				button:hover,
-				button:focus,
-				:host([active]) button {
+
+				button:hover:not([disabled]),
+				button:focus:not([disabled]),
+				:host([active]) button:not([disabled]) {
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
