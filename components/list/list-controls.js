@@ -27,8 +27,8 @@ export class ListControls extends SelectionControls {
 				z-index: auto;
 			}
 			.d2l-list-controls-color,
-			.d2l-list-controls-extend-separator  {
-				padding: 6px 1.8rem;
+			.d2l-list-controls-extend-separator {
+				padding: 0 1.8rem;
 			}
 		`];
 	}
