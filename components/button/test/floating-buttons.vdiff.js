@@ -1,6 +1,6 @@
 import '../button.js';
 import '../floating-buttons.js';
-import { expect, fixture, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 
 const lotsaCoffee = Array(22).fill(html`<p>I love Coffee!</p>`);
 
@@ -74,6 +74,23 @@ describe('floating-buttons', () => {
 
 	it('floats when bounded', async() => {
 		const elem = await fixture(html`<div style="border: 1px dashed #999999; height: 200px; overflow: scroll;">${floatingButtonsFixture}</div>`);
+		await expect(elem).to.be.golden();
+	});
+
+	it('scrolls when obscuring element with focus', async() => {
+		const elem = await fixture(html`
+			<div>
+				${lotsaCoffee}
+				<button id="focus-me">focus-me</button>
+				${lotsaCoffee}
+				<d2l-floating-buttons>
+					<d2l-button primary>Primary Button</d2l-button>
+				</d2l-floating-buttons>
+			</div>
+		`);
+		const focus = elem.querySelector('#focus-me');
+		focus.scrollIntoView(false);
+		await focusElem(focus);
 		await expect(elem).to.be.golden();
 	});
 
