@@ -176,9 +176,12 @@ describe('d2l-list', () => {
 			{ name: 'default', selector: '#draggable' },
 			{ name: 'focus', selector: '#draggable', action: () => focusWithKeyboard(page, '#draggable [key="1"]') },
 			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
+			{ name: 'color hover', selector: '#draggableColorIndicator', action: () => hover('#draggableColorIndicator [key="1"]') },
 			{ name: 'selectable', selector: '#draggableSelectable' },
 			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
 			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
+			{ name: 'color selectable focus', selector: '#draggableSelectableColorIndicator', action: () => focusInput('#draggableSelectableColorIndicator [key="1"]') },
+			{ name: 'color selectable hover', selector: '#draggableSelectableColorIndicator', action: () => hover('#draggableSelectableColorIndicator [key="1"]') },
 			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
 		] },
 		{ category: 'focus method', tests: [
@@ -215,7 +218,8 @@ describe('d2l-list', () => {
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
-			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') }
+			{ name: 'default expanded multiple nested lists', selector: '#expand-collapse-default-expanded-multiple-nested-lists' },
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') },
 		] }
 	].forEach((info) => {
 
