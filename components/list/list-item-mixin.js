@@ -21,7 +21,6 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-
 let tabPressed = false;
 let tabListenerAdded = false;
 function addTabListener() {
@@ -397,12 +396,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-left: 12px;
 				padding-right: 0;
 			}
-			:host([expandable]) .d2l-list-item-color-outer {
-				padding-right: 6px;
+			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: -6px;
 			}
-			:host([dir="rtl"][expandable]) .d2l-list-item-color-outer {
-				padding-left: 6px;
-				padding-right: 0;
+			:host([dir="rtl"]) .d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: 0;
+				margin-right: -6px;
 			}
 		`];
 
