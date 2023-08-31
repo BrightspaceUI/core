@@ -53,6 +53,14 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
+	const updateColor = (selector, childSelector, color) => {
+		return page.$eval(selector, async(element, childSelector, color) => {
+			const childElem = element.querySelector(`d2l-list-item[${childSelector}]`);
+			childElem.color = color;
+			await new Promise(resolve => requestAnimationFrame(resolve));
+		}, childSelector, color);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
@@ -220,6 +228,8 @@ describe('d2l-list', () => {
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
 			{ name: 'default expanded multiple nested lists', selector: '#expand-collapse-default-expanded-multiple-nested-lists' },
 			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') },
+			{ name: 'remove color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'color', undefined) },
+			{ name: 'add color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'key="L3-1"', '#ff0000') },
 		] }
 	].forEach((info) => {
 

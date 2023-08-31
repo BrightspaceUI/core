@@ -91,6 +91,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			paddingType: { type: String, attribute: 'padding-type' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
+			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
@@ -98,7 +99,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_hasNestedList: { state: true },
-			_renderColorSlot: { type: Boolean, reflect: true, attribute: '_render-color-slot' },
 			_siblingHasColor: { state: true }
 		};
 	}
@@ -320,10 +320,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host(:not([draggable])[_render-color-slot]) [slot="outside-control-container"] {
+			:host(:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
 				margin-left: -6px;
 			}
-			:host(:not([draggable])[dir="rtl"][_render-color-slot]) [slot="outside-control-container"] {
+			:host(:not([draggable])[dir="rtl"][_has-color-slot]) [slot="outside-control-container"] {
 				margin-left: 0;
 				margin-right: -6px;
 			}
@@ -417,8 +417,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._hasColorSlot = false;
 		this._hasNestedList = false;
-		this._renderColorSlot = false;
 		this._siblingHasColor = false;
 	}
 
@@ -441,6 +441,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const oldValue = this._color;
 		this._color = getValidHexColor(value, true);
 		this.requestUpdate('value', oldValue);
+		this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'color', value: this.color } }));
 	}
 
 	connectedCallback() {
@@ -463,9 +464,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
-		}
-		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
-			this._renderColorSlot = this.color || this._siblingHasColor;
 		}
 	}
 
@@ -523,6 +521,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	updateSiblingHasColor(siblingHasColor) {
 		this._siblingHasColor = siblingHasColor;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
 	}
 
 	_getFlattenedListItems(listItem) {
@@ -653,7 +657,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-dragging-over': this._draggingOver
 		};
 		const colorStyles = {
-			backgroundColor: this._renderColorSlot ? this.color : undefined
+			backgroundColor: this._hasColorSlot ? this.color : undefined
 		};
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
@@ -673,7 +677,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
-				${this._renderColorSlot ? html`
+				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
 					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}

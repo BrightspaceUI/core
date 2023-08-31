@@ -91,6 +91,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
+		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
 	}
 
 	disconnectedCallback() {
@@ -211,6 +212,20 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
 
+	_handleColorChange(value, updateSubscribers) {
+		this._childHasColor = value;
+		if (this._controls) this._controls.childHasColor = this._childHasColor;
+		if (updateSubscribers) this._listChildrenUpdatedSubscribers.updateSubscribers();
+	}
+
+	_handleControlsSlotChange(e) {
+		const slotContent = e.target.assignedNodes()[0];
+		if (slotContent.tagName !== 'D2L-LIST-CONTROLS') return;
+
+		this._controls = slotContent;
+		this._controls.childHasColor = this._childHasColor;
+	}
+
 	_handleKeyDown(e) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
@@ -232,11 +247,21 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (item.expandable) aChildHasToggleEnabled = true;
 			if (aChildHasToggleEnabled && aChildHasColor) break;
 		}
-		this._childHasColor = aChildHasColor;
+		this._handleColorChange(aChildHasColor, false);
 		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
+	}
 
-		if (this._controls) this._controls.childHasColor = this._childHasColor;
+	_handleListItemPropertyChange(e) {
+		e.stopPropagation();
+		if (e.detail.name === 'color') {
+			if (e.detail.value) {
+				this._handleColorChange(true, true);
+			} else {
+				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
+				this._handleListIemNestedChange(e);
+			}
+		}
 	}
 
 	_handleListItemShowingCountChange() {
@@ -250,14 +275,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			this._updateItemShowingCount();
 			this._updateItemShowingCountRequested = false;
 		}, 0);
-	}
-
-	_handleControlsSlotChange(e) {
-		const slotContent = e.target.assignedNodes()[0];
-		if (slotContent.tagName !== 'D2L-LIST-CONTROLS') return;
-
-		this._controls = slotContent;
-		this._controls.childHasColor = this._childHasColor;
 	}
 
 	_handleSlotChange() {
