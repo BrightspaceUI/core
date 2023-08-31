@@ -9,7 +9,7 @@ export class ListControls extends SelectionControls {
 	static get properties() {
 		return {
 			childHasColor: { type: Boolean, reflect: true, attribute: 'child-has-color' },
-			_extendSeparator: { state: true }
+			_extendSeparator: { type: Boolean, reflect: true, attribute: '_extend-separator' }
 		};
 	}
 
@@ -20,7 +20,8 @@ export class ListControls extends SelectionControls {
 				--d2l-selection-controls-padding: var(--d2l-list-controls-padding, 18px);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
-			:host([child-has-color]) {
+			:host([child-has-color]),
+			:host([_extend-separator]) {
 				margin: 0 -0.9rem;
 			}
 			:host([no-sticky]) {
