@@ -30,7 +30,7 @@ describe('ButtonMixin', () => {
 	describe('default property values', () => {
 
 		it('should default "type" property to "button"', async() => {
-			const el = await fixture(`<${tagName}></${tagName}`);
+			const el = await fixture(`<${tagName}></${tagName}>`);
 			expect(el.type).to.equal('button');
 		});
 
@@ -39,12 +39,12 @@ describe('ButtonMixin', () => {
 	describe('events', () => {
 
 		it('should stop propagation of click events if button is disabled', async() => {
-			const el = await fixture(`<${tagName} disabled></${tagName}`);
+			const el = await fixture(`<${tagName} disabled></${tagName}>`);
 			expect(() => el.click()).to.not.throw();
 		});
 
 		it('should stop propagation of click events if button is disabled with disabled-tooltip', async() => {
-			const el = await fixture(`<${tagName} disabled disabled-tooltip="tooltip text"></${tagName}`);
+			const el = await fixture(`<${tagName} disabled disabled-tooltip="tooltip text"></${tagName}>`);
 			expect(() => el.click()).to.not.throw();
 		});
 
