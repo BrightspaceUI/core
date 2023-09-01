@@ -523,6 +523,7 @@
 			<div class="visual-diff" id="draggableSeparatorsExtended">
 				<d2l-list extend-separators>
 					<d2l-list-item label="Item 1" draggable selectable key="1">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" draggable selectable key="2" color="#00ff00">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -1066,6 +1067,44 @@
 			<div class="visual-diff" id="expand-collapse-selectable-draggable">
 				<d2l-list>
 					<d2l-list-item expandable expanded selectable draggable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Supporting text for top level list item</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable draggable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item expandable expanded selectable draggable key="L2-2" color="#129044">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested">
+									<d2l-list-item selectable draggable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable draggable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="expand-collapse-selectable-draggable-extend-separators">
+				<d2l-list extend-separators>
+					<d2l-list-item expandable expanded selectable draggable key="L1-1" color="#00ff00ab">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
 							<div slot="supporting-info">Supporting text for top level list item</div>

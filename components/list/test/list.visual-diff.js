@@ -216,7 +216,8 @@ describe('d2l-list', () => {
 			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
 			{ name: 'color selectable focus', selector: '#draggableSelectableColorIndicator', action: () => focusInput('#draggableSelectableColorIndicator [key="1"]') },
 			{ name: 'color selectable hover', selector: '#draggableSelectableColorIndicator', action: () => hover('#draggableSelectableColorIndicator [key="1"]') },
-			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
+			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' },
+			{ name: 'extended separators hover', selector: '#draggableSeparatorsExtended', action: () => hover('#draggableSeparatorsExtended [key="2"]') }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },
@@ -256,6 +257,7 @@ describe('d2l-list', () => {
 			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') },
 			{ name: 'remove color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'color', undefined) },
 			{ name: 'add color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'key="L3-1"', '#ff0000') },
+			{ name: 'selectable draggable extend separators', selector: '#expand-collapse-selectable-draggable-extend-separators' }
 		] }
 	].forEach((info) => {
 
