@@ -78,6 +78,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.extendSeparators = false;
 		this.grid = false;
 		this._listItemChanges = [];
+		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
@@ -90,6 +91,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
+		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
 	}
 
 	disconnectedCallback() {
@@ -224,15 +226,29 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			e.stopPropagation();
 		}
 		const items = this.getItems();
+		let aChildHasColor = false;
 		let aChildHasToggleEnabled = false;
 		for (const item of items) {
-			if (item.expandable) {
-				aChildHasToggleEnabled = true;
-				break;
-			}
+			if (item.color) aChildHasColor = true;
+			if (item.expandable) aChildHasToggleEnabled = true;
+			if (aChildHasToggleEnabled && aChildHasColor) break;
 		}
+		this._childHasColor = aChildHasColor;
 		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
+	}
+
+	_handleListItemPropertyChange(e) {
+		e.stopPropagation();
+		if (e.detail.name === 'color') {
+			if (e.detail.value) {
+				this._childHasColor = true;
+				this._listChildrenUpdatedSubscribers.updateSubscribers();
+			} else {
+				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
+				this._handleListIemNestedChange(e);
+			}
+		}
 	}
 
 	_handleListItemShowingCountChange() {
@@ -260,10 +276,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_updateActiveSubscriber(subscriber) {
 		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+		subscriber.updateSiblingHasColor(this._childHasColor);
 	}
 
 	_updateActiveSubscribers(subscribers) {
-		subscribers.forEach(subscriber => subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle));
+		subscribers.forEach(subscriber => {
+			subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
+			subscriber.updateSiblingHasColor(this._childHasColor);
+		});
 	}
 
 }

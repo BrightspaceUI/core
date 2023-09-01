@@ -53,6 +53,14 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
+	const updateColor = (selector, childSelector, color) => {
+		return page.$eval(selector, async(element, childSelector, color) => {
+			const childElem = element.querySelector(`d2l-list-item[${childSelector}]`);
+			childElem.color = color;
+			await new Promise(resolve => requestAnimationFrame(resolve));
+		}, childSelector, color);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
@@ -158,6 +166,19 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControls > div', 45);
 				await hover('#stickyControls [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color top', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 45);
+				await scrollTo('#stickyControlsColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled hover', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+				await hover('#stickyControlsColor [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
 			{ name: 'sticky top extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
@@ -170,6 +191,19 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await hover('#stickyControlsSeparatorsExtended [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky top extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled hover extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await hover('#stickyControlsSeparatorsExtendedColor [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
@@ -220,6 +254,8 @@ describe('d2l-list', () => {
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
 			{ name: 'default expanded multiple nested lists', selector: '#expand-collapse-default-expanded-multiple-nested-lists' },
 			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') },
+			{ name: 'remove color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'color', undefined) },
+			{ name: 'add color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'key="L3-1"', '#ff0000') },
 		] }
 	].forEach((info) => {
 

@@ -70,7 +70,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 6 or 8 character CSS color hex code (e.g., #006fbf).
+			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
 			 * @type {string}
 			 */
 			color: { type: String },
@@ -91,13 +91,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			paddingType: { type: String, attribute: 'padding-type' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
+			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_hasNestedList: { state: true }
+			_hasNestedList: { state: true },
+			_siblingHasColor: { state: true }
 		};
 	}
 
@@ -318,10 +320,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host(:not([draggable])[color]) [slot="outside-control-container"] {
+			:host(:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
 				margin-left: -6px;
 			}
-			:host(:not([draggable])[dir="rtl"][color]) [slot="outside-control-container"] {
+			:host(:not([draggable])[dir="rtl"][_has-color-slot]) [slot="outside-control-container"] {
 				margin-left: 0;
 				margin-right: -6px;
 			}
@@ -394,12 +396,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-left: 12px;
 				padding-right: 0;
 			}
-			:host([expandable]) .d2l-list-item-color-outer {
-				padding-right: 6px;
+			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: -6px;
 			}
-			:host([dir="rtl"][expandable]) .d2l-list-item-color-outer {
-				padding-left: 6px;
-				padding-right: 0;
+			:host([dir="rtl"]) .d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: 0;
+				margin-right: -6px;
 			}
 		`];
 
@@ -415,7 +417,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._hasColorSlot = false;
 		this._hasNestedList = false;
+		this._siblingHasColor = false;
 	}
 
 	get breakpoints() {
@@ -437,6 +441,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const oldValue = this._color;
 		this._color = getValidHexColor(value, true);
 		this.requestUpdate('value', oldValue);
+		this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'color', value: this._color } }));
 	}
 
 	connectedCallback() {
@@ -512,6 +517,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduceMotion) this.scrollIntoView(alignToTop);
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
+	}
+
+	updateSiblingHasColor(siblingHasColor) {
+		this._siblingHasColor = siblingHasColor;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
 	}
 
 	_getFlattenedListItems(listItem) {
@@ -642,7 +657,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-dragging-over': this._draggingOver
 		};
 		const colorStyles = {
-			backgroundColor: this.color || undefined
+			backgroundColor: this._hasColorSlot ? this.color : undefined
 		};
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
@@ -662,7 +677,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
-				${this.color ? html`
+				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
 					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
