@@ -117,7 +117,7 @@ class DemoPage extends LitElement {
 	_handleLanguageChange(e) {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
-		getDocumentLocaleSettings().language = newLanguageCode;
+		document.documentElement.lang = newLanguageCode;
 	}
 
 }
