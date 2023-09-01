@@ -212,12 +212,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
 
-	_handleColorChange(value, updateSubscribers) {
-		this._childHasColor = value;
-		if (this._controls) this._controls.childHasColor = this._childHasColor;
-		if (updateSubscribers) this._listChildrenUpdatedSubscribers.updateSubscribers();
-	}
-
 	_handleKeyDown(e) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
@@ -239,7 +233,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (item.expandable) aChildHasToggleEnabled = true;
 			if (aChildHasToggleEnabled && aChildHasColor) break;
 		}
-		this._handleColorChange(aChildHasColor, false);
+		this._childHasColor = aChildHasColor;
 		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
 	}
@@ -248,7 +242,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		e.stopPropagation();
 		if (e.detail.name === 'color') {
 			if (e.detail.value) {
-				this._handleColorChange(true, true);
+				this._childHasColor = true;
+				this._listChildrenUpdatedSubscribers.updateSubscribers();
 			} else {
 				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
 				this._handleListIemNestedChange(e);

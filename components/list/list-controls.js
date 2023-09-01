@@ -24,9 +24,11 @@ export class ListControls extends SelectionControls {
 			:host([no-sticky]) {
 				z-index: auto;
 			}
-			.d2l-list-controls-color,
-			.d2l-list-controls-extend-separator {
+			.d2l-list-controls-color {
 				padding: 0 1.8rem;
+			}
+			.d2l-list-controls-extend-separator {
+				padding: 0 0.9rem;
 			}
 		`];
 	}

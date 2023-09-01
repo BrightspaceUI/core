@@ -166,6 +166,19 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControls > div', 45);
 				await hover('#stickyControls [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color top', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 45);
+				await scrollTo('#stickyControlsColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled hover', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+				await hover('#stickyControlsColor [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
 			{ name: 'sticky top extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
@@ -178,6 +191,19 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await hover('#stickyControlsSeparatorsExtended [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky top extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled hover extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await hover('#stickyControlsSeparatorsExtendedColor [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
