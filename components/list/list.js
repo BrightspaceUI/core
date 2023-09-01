@@ -134,7 +134,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const role = !this.grid ? 'list' : 'application';
 		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
 		return html`
-			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
+			<slot name="controls"></slot>
 			<slot name="header"></slot>
 			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
@@ -216,14 +216,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._childHasColor = value;
 		if (this._controls) this._controls.childHasColor = this._childHasColor;
 		if (updateSubscribers) this._listChildrenUpdatedSubscribers.updateSubscribers();
-	}
-
-	_handleControlsSlotChange(e) {
-		const slotContent = e.target.assignedNodes()[0];
-		if (slotContent.tagName !== 'D2L-LIST-CONTROLS') return;
-
-		this._controls = slotContent;
-		this._controls.childHasColor = this._childHasColor;
 	}
 
 	_handleKeyDown(e) {

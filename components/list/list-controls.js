@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { SelectionControls } from '../selection/selection-controls.js';
 
@@ -8,8 +9,8 @@ import { SelectionControls } from '../selection/selection-controls.js';
 export class ListControls extends SelectionControls {
 	static get properties() {
 		return {
-			childHasColor: { type: Boolean, reflect: true, attribute: 'child-has-color' },
-			_extendSeparator: { type: Boolean, reflect: true, attribute: '_extend-separator' }
+			_extendSeparator: { state: true },
+			_siblingHasColor: { state: true }
 		};
 	}
 
@@ -19,10 +20,6 @@ export class ListControls extends SelectionControls {
 				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color);
 				--d2l-selection-controls-padding: var(--d2l-list-controls-padding, 18px);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
-			}
-			:host([child-has-color]),
-			:host([_extend-separator]) {
-				margin: 0 -0.9rem;
 			}
 			:host([no-sticky]) {
 				z-index: auto;
@@ -36,32 +33,32 @@ export class ListControls extends SelectionControls {
 
 	constructor() {
 		super();
-		this.childHasColor = false;
 		this._extendSeparator = false;
+		this._siblingHasColor = false;
+
+		this._parentChildUpdateSubscription = new EventSubscriberController(this, 'list-child-status');
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-
-		this._selectionControlsInitialPadding = window.getComputedStyle(this).getPropertyValue('--d2l-selection-controls-padding');
 
 		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
 		if (parent) this._extendSeparator = parent.hasAttribute('extend-separators');
 		if (this._extendSeparator) this.style.setProperty('--d2l-selection-controls-padding', '0px');
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('childHasColor') && !this._extendSeparator) {
-			if (this.childHasColor) this.style.setProperty('--d2l-selection-controls-padding', '0px');
-			else this.style.setProperty('--d2l-selection-controls-padding', this._selectionControlsInitialPadding);
-		}
+	updateSiblingHasChildren() {
+		// TODO: implement this in order to have consistent spacing when nested items
+	}
+
+	updateSiblingHasColor(value) {
+		this._siblingHasColor = value;
 	}
 
 	_getSelectionControlsContainerClasses() {
 		return {
 			...super._getSelectionControlsContainerClasses(),
-			'd2l-list-controls-color': this.childHasColor,
+			'd2l-list-controls-color': this._siblingHasColor,
 			'd2l-list-controls-extend-separator': this._extendSeparator
 		};
 	}
