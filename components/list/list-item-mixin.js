@@ -167,8 +167,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			.d2l-list-item-content-extend-separators > [slot="content"],
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
+			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators > [slot="content"],
+			:host(:not([_has-color-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
@@ -403,9 +403,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			.d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 3px;
-				padding-right: 0;
 			}
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-right: 3px;
+			}
+			:host([selectable]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-right: 0;
+			}
+			:host([selectable][dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 0;
 				padding-right: 3px;
 			}
