@@ -30,7 +30,7 @@ describe('count-badge-icon', () => {
 		});
 		it('tooltip appears on focus-visible', async() => {
 			const elem = await fixture(template);
-			await focusElem(elem);
+			focusElem(elem);
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
