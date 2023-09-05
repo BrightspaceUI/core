@@ -402,10 +402,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-right: 0;
 			}
 			.d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-left: 3px;
 				padding-right: 0;
 			}
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 0;
+				padding-right: 3px;
+			}
+			:host([expandable]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				padding-left: 12px;
+			}
+			:host([expandable][dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				padding-left: 0;
+				padding-right: 12px;
 			}
 			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
 				margin-left: -6px;
