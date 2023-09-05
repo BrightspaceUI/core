@@ -216,7 +216,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
 			${innerHtml}
 		</div>
-		${this.hasTooltip && !this.skeleton ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
+		${this.hasTooltip && !this.skeleton ? html`<d2l-tooltip class="vdiff-target" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
 		`;
 	}
 };

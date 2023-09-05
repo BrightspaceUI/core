@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -501,11 +502,17 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 
+		const contentClasses = {
+			'd2l-tooltip-content': true,
+			'd2l-body-small': true,
+			'vdiff-target': this.showing
+		};
+
 		// Note: role="text" is a workaround for Safari. Otherwise, list-item content is not announced with VoiceOver
 		return html`
 			<div class="d2l-tooltip-container">
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-					<div class="d2l-body-small d2l-tooltip-content">
+					<div class="${classMap(contentClasses)}">
 						<div role="text">
 							<slot></slot>
 						</div>
