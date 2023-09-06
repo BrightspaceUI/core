@@ -408,10 +408,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-left: 12px;
 				padding-right: 3px;
 			}
-			:host([selectable]:not([expandable])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host([selectable]:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-right: 0;
 			}
-			:host([selectable]:not([expandable])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host([selectable]:not([_render-expand-collapse-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 0;
 			}
 			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
