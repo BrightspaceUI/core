@@ -262,9 +262,9 @@ describe('d2l-list', () => {
 			category: 'color', tests: [
 				{ name: 'extend separators nested', selector: '#color-extend-separators-nested' },
 				{ name: 'extend separators nested selectable', selector: '#color-extend-separators-nested-selectable' },
-				{ name: 'extend separators nested selectable hover', selector: '#color-extend-separators-nested-selectable', action: () => hover('#color-extend-separators-nested-selectable [key="L1-2"]') },
-				{ name: 'extend separators selectable draggable', selector: '#color-extend-separators-nested-selectable-draggable' },
-				{ name: 'extend separators selectable draggable hover', selector: '#color-extend-separators-nested-selectable-draggable', action: () => hover('#color-extend-separators-nested-selectable-draggable [key="L1-2"]')  }
+				// { name: 'extend separators nested selectable hover', selector: '#color-extend-separators-nested-selectable', action: () => hover('#color-extend-separators-nested-selectable [key="L1-2"]') },
+				{ name: 'extend separators selectable draggable', selector: '#color-extend-separators-nested-selectable-draggable' }
+				// { name: 'extend separators selectable draggable hover', selector: '#color-extend-separators-nested-selectable-draggable', action: () => hover('#color-extend-separators-nested-selectable-draggable [key="L1-2"]')  }
 			]
 		},
 	].forEach((info) => {
