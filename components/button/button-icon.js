@@ -119,7 +119,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				}
 
 				d2l-icon,
-				slot[name="icon"]::slotted(d2l-icon),
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					height: 0.9rem;
 					width: 0.9rem;
