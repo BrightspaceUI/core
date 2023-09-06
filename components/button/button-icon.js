@@ -156,7 +156,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	}
 
 	render() {
-		const icon = this.icon ? html`<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>` : html`<slot></slot>`;
+		const icon = this.icon ? html`<d2l-icon icon="${this.icon}" class="d2l-button-icon"></d2l-icon>` : html`<slot></slot>`;
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
