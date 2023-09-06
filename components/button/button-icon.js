@@ -118,7 +118,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
-				.d2l-button-icon {
+				d2l-icon,
+				slot[name="icon"]::slotted(d2l-icon-custom) {
 					height: 0.9rem;
 					width: 0.9rem;
 				}
@@ -156,7 +157,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	}
 
 	render() {
-		const icon = this.icon ? html`<d2l-icon icon="${this.icon}" class="d2l-button-icon"></d2l-icon>` : html`<slot></slot>`;
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
@@ -176,7 +176,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
-				${icon}
+				<slot name="icon"><d2l-icon icon="${ifDefined(this.icon)}"></d2l-icon></slot>
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
