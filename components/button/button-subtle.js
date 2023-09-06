@@ -50,7 +50,9 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true }
+			text: { type: String, reflect: true },
+			_hasCustomIcon: { state: true },
+			_hasIcon: { type: Boolean, reflect: true, attribute: '_has-icon' }
 		};
 	}
 
@@ -84,12 +86,12 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					min-height: 1.5rem;
 				}
 
-				:host([slim][icon]) button {
+				:host([slim][_has-icon]) button {
 					--d2l-button-subtle-padding-inline-start: 0.4rem;
 					--d2l-button-subtle-padding-inline-end: 0.5rem;
 				}
 
-				:host([slim][icon][icon-right]) button {
+				:host([slim][_has-icon][icon-right]) button {
 					--d2l-button-subtle-padding-inline-start: 0.5rem;
 					--d2l-button-subtle-padding-inline-end: 0.4rem;
 				}
@@ -125,18 +127,19 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
 					color: var(--d2l-color-celestine-minus-1);
 				}
-				:host([icon]) .d2l-button-subtle-content,
-				:host([dir="rtl"][icon][icon-right]) .d2l-button-subtle-content {
+				:host([_has-icon]) .d2l-button-subtle-content,
+				:host([dir="rtl"][_has-icon][icon-right]) .d2l-button-subtle-content {
 					padding-left: 1.2rem;
 					padding-right: 0;
 				}
-				:host([dir="rtl"][icon]) .d2l-button-subtle-content,
-				:host([icon][icon-right]) .d2l-button-subtle-content {
+				:host([dir="rtl"][_has-icon]) .d2l-button-subtle-content,
+				:host([_has-icon][icon-right]) .d2l-button-subtle-content {
 					padding-left: 0;
 					padding-right: 1.2rem;
 				}
 
-				d2l-icon.d2l-button-subtle-icon {
+				d2l-icon.d2l-button-subtle-icon,
+				slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine);
 					display: none;
 					height: 0.9rem;
@@ -148,17 +151,23 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 				button:hover:not([disabled]) d2l-icon.d2l-button-subtle-icon,
 				button:focus:not([disabled]) d2l-icon.d2l-button-subtle-icon,
-				:host([active]:not([disabled])) button d2l-icon.d2l-button-subtle-icon {
+				:host([active]:not([disabled])) button d2l-icon.d2l-button-subtle-icon,
+				button:hover:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
+				button:focus:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
+				:host([active]:not([disabled])) slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine-minus-1);
 				}
 
-				:host([icon]) d2l-icon.d2l-button-subtle-icon {
+				:host([_has-icon]) d2l-icon.d2l-button-subtle-icon,
+				slot[name="icon"]::slotted(d2l-icon-custom) {
 					display: inline-block;
 				}
-				:host([icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
+				:host([_has-icon][icon-right]) d2l-icon.d2l-button-subtle-icon,
+				:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
 					right: var(--d2l-button-subtle-padding-inline-end);
 				}
-				:host([dir="rtl"][icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
+				:host([dir="rtl"][_has-icon][icon-right]) d2l-icon.d2l-button-subtle-icon,
+				:host([dir="rtl"][icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
 					left: var(--d2l-button-subtle-padding-inline-end);
 					right: auto;
 				}
@@ -176,15 +185,13 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 		this.iconRight = false;
 		this.slim = false;
 
-		/** @internal */
 		this._buttonId = getUniqueId();
-		/** @internal */
 		this._describedById = getUniqueId();
+		this._hasCustomIcon = false;
+		this._hasIcon = false;
 	}
 
 	render() {
-		const icon = this.icon ?
-			html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : '';
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
@@ -204,13 +211,26 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
-				${icon}
+				<slot name="icon" @slotchange="${this._handleIconSlotChange}"><d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-subtle-icon"></d2l-icon></slot>
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_hasCustomIcon') || changedProperties.has('icon')) {
+			this._hasIcon = this._hasCustomIcon || this.icon;
+		}
+	}
+
+	_handleIconSlotChange(e) {
+		const icon = e && e.target && e.target.assignedNodes({ flatten: true }).filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-ICON-CUSTOM';
+		});
+		this._hasCustomIcon = icon.length === 1;
 	}
 
 }
