@@ -216,8 +216,8 @@ describe('d2l-list', () => {
 			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
 			{ name: 'color selectable focus', selector: '#draggableSelectableColorIndicator', action: () => focusInput('#draggableSelectableColorIndicator [key="1"]') },
 			{ name: 'color selectable hover', selector: '#draggableSelectableColorIndicator', action: () => hover('#draggableSelectableColorIndicator [key="1"]') },
-			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' },
-			{ name: 'extended separators hover', selector: '#draggableSeparatorsExtended', action: () => hover('#draggableSeparatorsExtended [key="2"]') }
+			{ name: 'extended separators', selector: '#draggableSelectableColorIndicatorSeparatorsExtended' },
+			{ name: 'extended separators hover', selector: '#draggableSelectableColorIndicatorSeparatorsExtended', action: () => hover('#draggableSelectableColorIndicatorSeparatorsExtended [key="2"]') }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },

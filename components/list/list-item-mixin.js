@@ -401,25 +401,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-left: 12px;
 				padding-right: 0;
 			}
-			.d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host(:not([_nested])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 3px;
 			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host(:not([_nested])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-left: 12px;
 				padding-right: 3px;
 			}
-			:host([selectable]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host([selectable]:not([expandable])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-right: 0;
 			}
-			:host([selectable][dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+			:host([selectable]:not([expandable])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
 				padding-left: 0;
-				padding-right: 3px;
-			}
-			:host([expandable]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer + .d2l-list-expand-collapse {
-				padding-left: 12px;
-			}
-			:host([expandable][dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer + .d2l-list-expand-collapse {
-				padding-left: 0;
-				padding-right: 12px;
 			}
 			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
 				margin-left: -6px;
