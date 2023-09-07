@@ -349,10 +349,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
-			td:focus .d2l-calendar-date:not(:disabled) {
+			td:focus .d2l-calendar-date {
 				border-radius: 0.16rem;
-				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
+			}
+
+			td:focus .d2l-calendar-date:not(:disabled) {
+				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
 
