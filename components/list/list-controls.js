@@ -30,6 +30,9 @@ export class ListControls extends SelectionControls {
 			.d2l-list-controls-extend-separator {
 				padding: 0 0.9rem;
 			}
+			.d2l-list-controls-color.d2l-list-controls-extend-separator {
+				padding: 0 calc(0.9rem + 9px);
+			}
 		`];
 	}
 

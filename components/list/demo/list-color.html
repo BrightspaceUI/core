@@ -72,6 +72,10 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list extend-separators>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
 						<d2l-list-item key="L4-1" label="Label for L4-1" color="#ffba59" selectable>
 							<d2l-list-item-content>
 								<div>Ice Sheets (L4)</div>
@@ -264,34 +268,122 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Nested - Draggable and Expandable and Selectable</h2>
+
+			<h2>Nested - Extend Separators</h2>
 
 			<d2l-demo-snippet code-view-hidden>
 				<template>
-					<d2l-list>
-						<d2l-list-controls slot="controls">
-							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
-							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-						</d2l-list-controls>
-						<d2l-list-item selectable key="L1-1" label="Label for L1-1" color="#ffba59" expandable expanded draggable>
+					<d2l-list extend-separators>
+						<d2l-list-item key="L1-2" label="Label for L1-2">
+							<d2l-list-item-content>
+								<div>Biology (L1)</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item key="L1-1" label="Label for L1-1" color="#00ff00ab">
 							<d2l-list-item-content>
 								<div>Earth Sciences (L1)</div>
 								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
 							</d2l-list-item-content>
-							<d2l-list slot="nested" grid separators="all">
-								<d2l-list-item selectable key="L2-1" label="Label for L2-1" color="#ffba59" expandable draggable>
+							<d2l-list slot="nested" grid separators="all" extend-separators>
+								<d2l-list-item key="L2-1" label="Label for L2-1" color="#ffba59" >
+									<d2l-list-item-content>
+										<div>Introductory Earth Sciences (L2)</div>
+										<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - Extend Separators, Selectable</h2>
+
+			<d2l-demo-snippet code-view-hidden>
+				<template>
+					<d2l-list extend-separators>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="L1-2" label="Label for L1-2">
+							<d2l-list-item-content>
+								<div>Biology (L1)</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="L1-1" label="Label for L1-1" color="#00ff00ab">
+							<d2l-list-item-content>
+								<div>Earth Sciences (L1)</div>
+								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all" extend-separators>
+								<d2l-list-item selectable key="L2-1" label="Label for L2-1" color="#ffba59" >
+									<d2l-list-item-content>
+										<div>Introductory Earth Sciences (L2)</div>
+										<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - Extend Separators, Expandable, Selectable</h2>
+
+			<d2l-demo-snippet code-view-hidden>
+				<template>
+					<d2l-list extend-separators>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="L1-1" label="Label for L1-1">
+							<d2l-list-item-content>
+								<div>Biology (L1)</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="L1-2" label="Label for L1-2" expandable expanded color="#00ff00ab">
+							<d2l-list-item-content>
+								<div>Earth Sciences (L1)</div>
+								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all" extend-separators>
+								<d2l-list-item selectable key="L2-1" label="Label for L2-1" color="#ffba59" expandable>
 									<d2l-list-item-content>
 										<div>Introductory Earth Sciences (L2)</div>
 										<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
 									</d2l-list-item-content>
 									<d2l-list slot="nested" grid separators="all">
-										<d2l-list-item selectable key="L3-1" label="Label for L3-1" color="#ffba59" expandable draggable>
+										<d2l-list-item selectable key="L3-1" label="Label for L3-1" color="#ffba59" expandable>
 											<d2l-list-item-content>
 												<div>Glaciation (L3)</div>
 												<div slot="supporting-info">Supporting Info</div>
 											</d2l-list-item-content>
-											<d2l-list slot="nested" grid separators="all">
-												<d2l-list-item selectable key="L4-1" label="Label for L4-1" color="#ffba59" draggable>
+											<d2l-list slot="nested" grid separators="all" extend-separators>
+												<d2l-list-item selectable key="L4-1" label="Label for L4-1" color="#ffba59">
 													<d2l-list-item-content>
 														<div>Ice Sheets (L4)</div>
 														<div slot="supporting-info">Supporting Info</div>
@@ -319,9 +411,6 @@
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>
 							</div>
-						</d2l-list-item>
-						<d2l-list-item selectable key="L1-2" label="Label for L1-2">
-							<div>Biology (L1)</div>
 						</d2l-list-item>
 					</d2l-list>
 				</template>
