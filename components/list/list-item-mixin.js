@@ -164,7 +164,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-top: 0;
 			}
 
-			.d2l-list-item-content-extend-separators > [slot="control"] {
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators > [slot="content"],
@@ -290,8 +290,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			d2l-selection-input {
 				margin: 0.55rem 0.55rem 0.55rem 0;
 			}
-			.d2l-list-item-content-extend-separators d2l-selection-input {
-				margin-left: 0.9rem;
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
+				margin-inline-start: 0.9rem;
 			}
 
 			d2l-list-item-drag-handle {
@@ -300,9 +300,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
 				margin-right: 0;
-			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-input {
-				margin-right: 0.9rem;
 			}
 
 			[slot="outside-control-container"] {
@@ -678,11 +675,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			backgroundColor: this._hasColorSlot ? this.color : undefined
 		};
 
+		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 		const innerView = html`
 			<d2l-list-item-generic-layout
-				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
+				align-nested="${ifDefined(alignNested)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
