@@ -520,9 +520,10 @@
 		</div>
 
 		<div style="width: 400px;">
-			<div class="visual-diff" id="draggableSeparatorsExtended">
+			<div class="visual-diff" id="draggableSelectableColorIndicatorSeparatorsExtended">
 				<d2l-list extend-separators>
 					<d2l-list-item label="Item 1" draggable selectable key="1">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" draggable selectable key="2" color="#00ff00">Item 2</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
@@ -1091,8 +1092,109 @@
 									<d2l-list-item selectable draggable key="L3-2">
 										<d2l-list-item-content>
 											<div>Level 3, Item 2</div>
+										</d2l-list-item-content>
 									</d2l-list-item>
 								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="color-extend-separators-nested">
+				<d2l-list extend-separators>
+					<d2l-list-item key="L1-1" label="Label for L1-1">
+						<d2l-list-item-content>
+							<div>Biology (L1)</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item key="L1-2" label="Label for L1-2" color="#00ff00ab" expandable expanded>
+						<d2l-list-item-content>
+							<div>Earth Sciences (L1)</div>
+							<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested" grid separators="all" extend-separators>
+							<d2l-list-item key="L2-1" label="Label for L2-1" color="#ffba59" >
+								<d2l-list-item-content>
+									<div>Introductory Earth Sciences (L2)</div>
+									<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="color-extend-separators-nested-selectable">
+				<d2l-list extend-separators>
+					<d2l-list-controls slot="controls">
+						<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+					</d2l-list-controls>
+					<d2l-list-item key="L1-1" label="Label for L1-1" selectable>
+						<d2l-list-item-content>
+							<div>Biology (L1)</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item key="L1-2" label="Label for L1-2" color="#00ff00ab" expandable expanded selectable>
+						<d2l-list-item-content>
+							<div>Earth Sciences (L1)</div>
+							<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested" grid separators="all" extend-separators>
+							<d2l-list-item key="L2-1" label="Label for L2-1" color="#ffba59" selectable>
+								<d2l-list-item-content>
+									<div>Introductory Earth Sciences (L2)</div>
+									<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px;">
+			<div class="visual-diff" id="color-extend-separators-nested-selectable-draggable">
+				<d2l-list extend-separators>
+					<d2l-list-controls slot="controls">
+						<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+					</d2l-list-controls>
+					<d2l-list-item selectable key="L1-1" label="Label for L1-1" draggable>
+						<d2l-list-item-content>
+							<div>Biology (L1)</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="Label for L1-2" expandable expanded color="#00ff00ab" draggable>
+						<d2l-list-item-content>
+							<div>Earth Sciences (L1)</div>
+							<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested" grid separators="all" extend-separators>
+							<d2l-list-item selectable key="L2-1" label="Label for L2-1" color="#ffba59" expandable draggable>
+								<d2l-list-item-content>
+									<div>Introductory Earth Sciences (L2)</div>
+									<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested" grid separators="all">
+									<d2l-list-item selectable key="L3-1" label="Label for L3-1" color="#ffba59" draggable>
+										<d2l-list-item-content>
+											<div>Glaciation (L3)</div>
+											<div slot="supporting-info">Supporting Info</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+							<d2l-list-item selectable key="L2-2" label="Label for L2-2" color="#ffba59" draggable>
+								<d2l-list-item-content>
+									<div>GlaciationB (L2)</div>
+									<div slot="supporting-info">Supporting Info</div>
+								</d2l-list-item-content>
 							</d2l-list-item>
 						</d2l-list>
 					</d2l-list-item>
