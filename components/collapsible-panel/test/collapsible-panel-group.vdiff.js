@@ -24,37 +24,33 @@ describe('collapsible-panel-group', () => {
 		].forEach(({ name, type }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
 				const elem = await fixture(html`
-					<div style="padding: 1rem; width: 600px;">
-						<d2l-collapsible-panel-group>
-							${createCollapsiblePanel({ type })}
-							${createCollapsiblePanel({ type, summary: true })}
-							${createCollapsiblePanel({ type })}
-						</d2l-collapsible-panel-group>
-					</div>
-				`, { rtl });
-				await expect(elem).to.be.golden();
+					<d2l-collapsible-panel-group>
+						${createCollapsiblePanel({ type })}
+						${createCollapsiblePanel({ type, summary: true })}
+						${createCollapsiblePanel({ type })}
+					</d2l-collapsible-panel-group>
+				`, { rtl, viewport: { width: 676 } });
+				await expect(elem).to.be.golden({ margin: 30 });
 			});
 		});
 
 		it(`heading-levels${rtl ? '-rtl' : ''}`, async() => {
 			const elem = await fixture(html`
-				<div style="padding: 1rem; width: 600px;">
-					<d2l-collapsible-panel-group>
-						${['1', '2', '3', '4', '5', '6'].map(level => html`
-							<d2l-collapsible-panel heading-level="${level}" panel-title="Heading Level ${level}">
-								Panel content
-							</d2l-collapsible-panel>	
-						`)}
-						<d2l-collapsible-panel heading-style="2" panel-title="Heading Style 2">
+				<d2l-collapsible-panel-group>
+					${['1', '2', '3', '4', '5', '6'].map(level => html`
+						<d2l-collapsible-panel heading-level="${level}" panel-title="Heading Level ${level}">
 							Panel content
-						</d2l-collapsible-panel>
-						<d2l-collapsible-panel heading-style="4" heading-level="2" panel-title="Heading Style 4">
-							Panel content
-						</d2l-collapsible-panel>
-					</d2l-collapsible-panel-group>
-				</div>
-			`, { rtl });
-			await expect(elem).to.be.golden();
+						</d2l-collapsible-panel>	
+					`)}
+					<d2l-collapsible-panel heading-style="2" panel-title="Heading Style 2">
+						Panel content
+					</d2l-collapsible-panel>
+					<d2l-collapsible-panel heading-style="4" heading-level="2" panel-title="Heading Style 4">
+						Panel content
+					</d2l-collapsible-panel>
+				</d2l-collapsible-panel-group>
+			`, { rtl, viewport: { width: 676 } });
+			await expect(elem).to.be.golden({ margin: 30 });
 		});
 	});
 });
