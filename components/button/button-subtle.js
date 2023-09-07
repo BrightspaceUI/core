@@ -74,8 +74,8 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 					font-family: inherit;
 					padding-block-end: 0;
 					padding-block-start: 0;
-					padding-inline-start: var(--d2l-button-subtle-padding-inline-start);
 					padding-inline-end: var(--d2l-button-subtle-padding-inline-end);
+					padding-inline-start: var(--d2l-button-subtle-padding-inline-start);
 					position: relative;
 				}
 
