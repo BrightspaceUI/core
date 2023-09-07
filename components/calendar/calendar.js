@@ -339,8 +339,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			td:focus button:not(.d2l-calendar-date-selected):hover,
-			td:focus button:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			td:focus button:not(.d2l-calendar-date-selected):not(:disabled):hover,
+			td:focus button:not(.d2l-calendar-date-selected):not(:disabled).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
@@ -349,7 +349,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
-			td:focus .d2l-calendar-date {
+			td:focus .d2l-calendar-date:not(:disabled) {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
