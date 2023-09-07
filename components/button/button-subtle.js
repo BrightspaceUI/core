@@ -1,18 +1,19 @@
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A button component that can be used just like the native button, but for advanced or de-emphasized actions.
  * @slot - Default content placed inside of the button
+ * @slot icon - Optional slot for a custom icon
  */
-class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
+class ButtonSubtle extends ButtonMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -51,8 +52,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
-			_hasCustomIcon: { state: true },
-			_hasIcon: { type: Boolean, reflect: true, attribute: '_has-icon' }
+			_hasCustomIcon: { state: true }
 		};
 	}
 
@@ -72,12 +72,11 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					background-color: transparent;
 					border-color: transparent;
 					font-family: inherit;
-					padding: 0 var(--d2l-button-subtle-padding-inline-end) 0 var(--d2l-button-subtle-padding-inline-start);
+					padding-bottom: 0;
+					padding-inline-start: var(--d2l-button-subtle-padding-inline-start);
+					padding-inline-end: var(--d2l-button-subtle-padding-inline-end);
+					padding-top: 0;
 					position: relative;
-				}
-
-				:host([dir="rtl"]) button {
-					padding: 0 var(--d2l-button-subtle-padding-inline-start) 0 var(--d2l-button-subtle-padding-inline-end);
 				}
 
 				:host([slim]) button {
@@ -86,22 +85,18 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					min-height: 1.5rem;
 				}
 
-				:host([slim][_has-icon]) button {
+				:host([slim]) button.d2l-button-subtle-has-icon {
 					--d2l-button-subtle-padding-inline-start: 0.4rem;
 					--d2l-button-subtle-padding-inline-end: 0.5rem;
 				}
 
-				:host([slim][_has-icon][icon-right]) button {
+				:host([slim][icon-right]) button.d2l-button-subtle-has-icon {
 					--d2l-button-subtle-padding-inline-start: 0.5rem;
 					--d2l-button-subtle-padding-inline-end: 0.4rem;
 				}
 
 				:host([h-align="text"]) button {
-					left: calc(var(--d2l-button-subtle-padding-inline-start) * -1);
-				}
-				:host([dir="rtl"][h-align="text"]) button {
-					left: 0;
-					right: calc(var(--d2l-button-subtle-padding-inline-start) * -1);
+					inset-inline: calc(var(--d2l-button-subtle-padding-inline-start) * -1) 0;
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -127,21 +122,21 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
 					color: var(--d2l-color-celestine-minus-1);
 				}
-				:host([_has-icon]) .d2l-button-subtle-content,
-				:host([dir="rtl"][_has-icon][icon-right]) .d2l-button-subtle-content {
-					padding-left: 1.2rem;
-					padding-right: 0;
+				.d2l-button-subtle-has-icon .d2l-button-subtle-content {
+					padding-inline: 1.2rem 0;
 				}
-				:host([dir="rtl"][_has-icon]) .d2l-button-subtle-content,
-				:host([_has-icon][icon-right]) .d2l-button-subtle-content {
-					padding-left: 0;
-					padding-right: 1.2rem;
+				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content {
+					padding-inline: 0 1.2rem;
+				}
+
+				d2l-icon.d2l-button-subtle-icon,
+				slot[name="icon"]::slotted(*) {
+					display: none;
 				}
 
 				d2l-icon.d2l-button-subtle-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine);
-					display: none;
 					height: 0.9rem;
 					position: absolute;
 					top: 50%;
@@ -158,18 +153,13 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					color: var(--d2l-color-celestine-minus-1);
 				}
 
-				:host([_has-icon]) d2l-icon.d2l-button-subtle-icon,
+				.d2l-button-subtle-has-icon d2l-icon.d2l-button-subtle-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					display: inline-block;
 				}
-				:host([_has-icon][icon-right]) d2l-icon.d2l-button-subtle-icon,
+				:host([icon-right]) .d2l-button-subtle-has-icon d2l-icon.d2l-button-subtle-icon,
 				:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
-					right: var(--d2l-button-subtle-padding-inline-end);
-				}
-				:host([dir="rtl"][_has-icon][icon-right]) d2l-icon.d2l-button-subtle-icon,
-				:host([dir="rtl"][icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
-					left: var(--d2l-button-subtle-padding-inline-end);
-					right: auto;
+					inset-inline: auto var(--d2l-button-subtle-padding-inline-end);
 				}
 
 				:host([disabled]) button {
@@ -188,10 +178,14 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 		this._buttonId = getUniqueId();
 		this._describedById = getUniqueId();
 		this._hasCustomIcon = false;
-		this._hasIcon = false;
 	}
 
 	render() {
+		const icon = this.icon ? html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : nothing;
+		const buttonClasses = {
+			'd2l-button-subtle-has-icon': this._hasCustomIcon || this.icon,
+			'd2l-label-text': true
+		};
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
@@ -200,7 +194,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
-				class="d2l-label-text"
+				class="${classMap(buttonClasses)}"
 				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
@@ -211,19 +205,13 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
-				<slot name="icon" @slotchange="${this._handleIconSlotChange}"><d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-subtle-icon"></d2l-icon></slot>
+				<slot name="icon" @slotchange="${this._handleIconSlotChange}">${icon}</slot>
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('_hasCustomIcon') || changedProperties.has('icon')) {
-			this._hasIcon = this._hasCustomIcon || this.icon;
-		}
 	}
 
 	_handleIconSlotChange(e) {
