@@ -122,10 +122,10 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
 					color: var(--d2l-color-celestine-minus-1);
 				}
-				.d2l-button-subtle-has-icon .d2l-button-subtle-content {
+				.d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
 					padding-inline: 1.2rem 0;
 				}
-				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content {
+				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
 					padding-inline: 0 1.2rem;
 				}
 
@@ -202,8 +202,10 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
 				<slot name="icon" @slotchange="${this._handleIconSlotChange}">${icon}</slot>
-				<span class="d2l-button-subtle-content">${this.text}</span>
-				<slot></slot>
+				<span class="d2l-button-subtle-content-wrapper">
+					<span class="d2l-button-subtle-content">${this.text}</span>
+					<slot></slot>
+				</span>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
