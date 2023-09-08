@@ -120,8 +120,10 @@ class EmptyStateIllustrated extends LitElement {
 	_onResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
-		this._contentHeight = Math.min(entry.contentRect.right / illustrationAspectRatio, 330);
-		this._titleSmall = entry.contentRect.right <= 615;
+		requestAnimationFrame(() => {
+			this._contentHeight = Math.min(entry.contentRect.right / illustrationAspectRatio, 330);
+			this._titleSmall = entry.contentRect.right <= 615;
+		});
 	}
 
 	_validateAttributes() {
