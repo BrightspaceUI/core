@@ -2,10 +2,10 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
-import { formatDateInISO, getClosestValidDate, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
+import { formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateInISO, getClosestValidDate, getDateFromDateObj, getDateFromISODate, getToday, isDateInRange } from '../../helpers/dateTime.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -29,15 +29,13 @@ const keyCodes = {
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let calendarData;
-function getCalendarData(refresh) {
-	if (!calendarData) {
-		calendarData = {};
-		calendarData.descriptor = getDateTimeDescriptorShared(refresh);
-		calendarData.firstDayOfWeek = calendarData.descriptor.calendar.firstDayOfWeek;
-		calendarData.daysOfWeekIndex = [];
-		for (let i = calendarData.firstDayOfWeek; i < calendarData.firstDayOfWeek + daysInWeek; i++) {
-			calendarData.daysOfWeekIndex.push(i % daysInWeek);
-		}
+function getCalendarData() {
+	calendarData = {};
+	calendarData.descriptor = getDateTimeDescriptor();
+	calendarData.firstDayOfWeek = calendarData.descriptor.calendar.firstDayOfWeek;
+	calendarData.daysOfWeekIndex = [];
+	for (let i = calendarData.firstDayOfWeek; i < calendarData.firstDayOfWeek + daysInWeek; i++) {
+		calendarData.daysOfWeekIndex.push(i % daysInWeek);
 	}
 	return calendarData;
 }
@@ -426,8 +424,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.addEventListener('blur', () => this._isInitialFocusDate = true);
 
 		this.addEventListener('d2l-localize-resources-change', () => {
-			calendarData = null;
-			getCalendarData(true);
+			getCalendarData();
 			this.requestUpdate();
 		});
 
