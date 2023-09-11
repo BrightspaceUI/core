@@ -9,14 +9,21 @@ Used to surface pertinent information, cards make it easy for users to browse in
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<d2l-card align-center text="Biology" align-center style="height: 320px; width: 245px;">
+<d2l-card align-center text="Biology" align-center style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+    <d2l-card-content-meta>
+      <d2l-object-property-list>
+        <d2l-object-property-list-item text="Science"></d2l-object-property-list-item>
+        <d2l-object-property-list-item text="Grade 11"></d2l-object-property-list-item>
+      </d2l-object-property-list>
+    </d2l-card-content-meta>
   </div>
   <div slot="footer">
     <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
@@ -56,6 +63,8 @@ Cards are composed of 3 sections. Each card will have a content section but is n
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
@@ -78,18 +87,23 @@ Cards are composed of 3 sections. Each card will have a content section but is n
     <div id="header" class="active" style="height: 155px;">
       Header (optional)
     </div>
-    <div id="content" style="height: 115px;">
+    <div id="content" style="height: 105px;">
       Content (required)
     </div>
     <div id="footer">
       Footer (optional)
     </div>
   </div>
-  <d2l-card align-center text="Biology" align-center style="height: 320px; width: 245px;">
+  <d2l-card align-center text="Biology" align-center style="width: 245px;">
     <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
     <div slot="content">
       <div>Biology</div>
-      <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+      <d2l-card-content-meta>
+        <d2l-object-property-list>
+          <d2l-object-property-list-item text="Science"></d2l-object-property-list-item>
+          <d2l-object-property-list-item text="Grade 11"></d2l-object-property-list-item>
+        </d2l-object-property-list>
+      </d2l-card-content-meta>
     </div>
     <div slot="footer">
       <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
@@ -112,14 +126,21 @@ The `d2l-card` element is a container that provides specific layout using severa
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
+<d2l-card align-center text="Biology" align-center href="#" style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+    <d2l-card-content-meta>
+      <d2l-object-property-list>
+        <d2l-object-property-list-item text="Science"></d2l-object-property-list-item>
+        <d2l-object-property-list-item text="Grade 11"></d2l-object-property-list-item>
+      </d2l-object-property-list>
+    </d2l-card-content-meta>
   </div>
   <div slot="footer">
     <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
@@ -171,7 +192,7 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
   import '@brightspace-ui/core/components/card/card-content-title.js';
 </script>
 
-<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
+<d2l-card align-center text="Biology" align-center href="#" style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <d2l-card-content-title>Biology</d2l-card-content-title>
@@ -197,13 +218,20 @@ The `d2l-card-content-meta` element is a helper for providing layout/style for a
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-content-meta.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
-<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
+<d2l-card align-center text="Biology" align-center href="#" style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+    <d2l-card-content-meta>
+      <d2l-object-property-list>
+        <d2l-object-property-list-item text="Science"></d2l-object-property-list-item>
+        <d2l-object-property-list-item text="Grade 11"></d2l-object-property-list-item>
+      </d2l-object-property-list>
+    </d2l-card-content-meta>
   </div>
   <div slot="footer">
     <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
@@ -225,14 +253,21 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
+<d2l-card align-center text="Biology" align-center href="#" style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+    <d2l-card-content-meta>
+      <d2l-object-property-list>
+        <d2l-object-property-list-item text="Science"></d2l-object-property-list-item>
+        <d2l-object-property-list-item text="Grade 11"></d2l-object-property-list-item>
+      </d2l-object-property-list>
+    </d2l-card-content-meta>
   </div>
   <div slot="footer">
     <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
