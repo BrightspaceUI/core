@@ -47,6 +47,7 @@
     "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^0.8",
     "@brightspace-ui/testing": "^0.32",
+    "@d2l/test-reporting": "^0.5.0",
     "@open-wc/semantic-dom-diff": "^0.20",
     "@rollup/plugin-dynamic-import-vars": "^2",
     "@rollup/plugin-node-resolve": "^15",
