@@ -94,7 +94,7 @@ describe('d2l-link', () => {
 	describe('new-window', () => {
 		it('should add new window icon', async() => {
 			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
-			expect(elem.shadowRoot.querySelector('d2l-icon')).to.exist();
+			expect(elem.shadowRoot.querySelector('d2l-icon')).to.exist;
 		});
 
 		it('should bind _blank to anchor target', async() => {
