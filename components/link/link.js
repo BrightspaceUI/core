@@ -44,6 +44,16 @@ export const linkStyles = css`
 			color: var(--d2l-color-ferrite);
 		}
 	}
+	d2l-icon {
+		margin-top: -7px;
+		color: var(--d2l-color-celestine)
+	}
+
+	d2l-icon.d2l-icon-small {
+		margin-top: -6px;
+		width: 14px;
+		height: 14px;
+	}
 `;
 
 /**
@@ -88,7 +98,12 @@ class Link extends FocusMixin(LitElement) {
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
-			target: { type: String }
+			target: { type: String },
+			/**
+			 * Whether to display the open in new window icon
+			 * @type {boolean}
+			 */
+			newWindow: { type: Boolean, attribute: 'new-window' }
 		};
 	}
 
@@ -125,6 +140,7 @@ class Link extends FocusMixin(LitElement) {
 		this.main = false;
 		this.small = false;
 		this.lines = 0;
+		this.showOpenInNewWindow = false;
 	}
 
 	static get focusElementSelector() {
@@ -139,13 +155,28 @@ class Link extends FocusMixin(LitElement) {
 			'truncate': this.lines > 0
 		};
 		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
+		if (this.newWindow) {
+			this.ariaLabel = `Opens in a new window ${this.ariaLabel ?? ''}`;
+			if (this.target === undefined) {
+				this.target = '_blank';
+			}
+		}
 		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
 				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}"><slot></slot></a>`;
+				target="${ifDefined(this.target)}"><slot></slot>${this.renderNewWindowIcon()}</a>`;
+	}
+
+	renderNewWindowIcon() {
+		const newWindowClasses = {
+			'd2l-icon-small': this.small,
+		};
+		return this.newWindow ? html`
+			<d2l-icon class="${classMap(newWindowClasses)}" aria-hidden="true" icon="tier1:new-window"></d2l-icon>
+		` : html``;
 	}
 
 }
