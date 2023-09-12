@@ -45,12 +45,12 @@ export const linkStyles = css`
 			color: var(--d2l-color-ferrite);
 		}
 	}
-	d2l-icon {
+	d2l-icon.d2l-new-window {
 		color: var(--d2l-color-celestine);
 		margin-top: -7px;
 	}
 
-	d2l-icon.d2l-icon-small {
+	d2l-icon.d2l-new-window.d2l-icon-small {
 		height: 14px;
 		margin-top: -6px;
 		width: 14px;
@@ -173,6 +173,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	renderNewWindowIcon() {
 		const newWindowClasses = {
+			'd2l-new-window': true,
 			'd2l-icon-small': this.small,
 		};
 		return this.newWindow ? html`
