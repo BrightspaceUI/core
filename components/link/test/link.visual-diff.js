@@ -24,6 +24,8 @@ describe('d2l-link', () => {
 		{ name: 'wc-standard' },
 		{ name: 'wc-main' },
 		{ name: 'wc-small' },
+		{ name: 'wc-standard-new-window' },
+		{ name: 'wc-small-new-window' },
 		{ name: 'wc-inline', selector: '#wc-inline d2l-link' },
 		{ name: 'wc-inline-paragraph', selector: '#wc-inline-paragraph d2l-link' },
 		{ name: 'wc-block' },

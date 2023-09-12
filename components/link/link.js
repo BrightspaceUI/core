@@ -5,6 +5,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -60,7 +61,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends FocusMixin(LitElement) {
+class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -156,7 +157,7 @@ class Link extends FocusMixin(LitElement) {
 		};
 		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
 		if (this.newWindow) {
-			this.ariaLabel = `Opens in a new window ${this.ariaLabel ?? ''}`;
+			this.ariaLabel = `${this._newWindowLangTerm} ${this.ariaLabel ?? ''}`;
 			if (this.target === undefined) {
 				this.target = '_blank';
 			}
@@ -177,6 +178,10 @@ class Link extends FocusMixin(LitElement) {
 		return this.newWindow ? html`
 			<d2l-icon class="${classMap(newWindowClasses)}" aria-hidden="true" icon="tier1:new-window"></d2l-icon>
 		` : html``;
+	}
+
+	get _newWindowLangTerm() {
+		return this.localize('components.link.open-in-new-window');
 	}
 
 }
