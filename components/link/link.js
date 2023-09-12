@@ -4,8 +4,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -46,14 +46,14 @@ export const linkStyles = css`
 		}
 	}
 	d2l-icon {
+		color: var(--d2l-color-celestine);
 		margin-top: -7px;
-		color: var(--d2l-color-celestine)
 	}
 
 	d2l-icon.d2l-icon-small {
+		height: 14px;
 		margin-top: -6px;
 		width: 14px;
-		height: 14px;
 	}
 `;
 

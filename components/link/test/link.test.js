@@ -45,7 +45,6 @@ describe('d2l-link', () => {
 			const elem = await fixture(html`<d2l-link small>Link</d2l-link>`);
 			expect(getAnchor(elem).classList.contains('d2l-link-small')).to.be.true;
 		});
-
 	});
 
 	describe('attribute reflection', () => {
@@ -90,6 +89,23 @@ describe('d2l-link', () => {
 			expect(target).to.equal(elem);
 		});
 
+	});
+
+	describe('new-window', () => {
+		it('should add new window icon', async() => {
+			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
+			expect(elem.shadowRoot.querySelector('d2l-icon')).to.exist();
+		});
+
+		it('should bind _blank to anchor target', async() => {
+			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
+			expect(getAnchor(elem).getAttribute('target')).to.equal('_blank');
+		});
+
+		it('should add aria-label new window term to aria-label', async() => {
+			const elem = await fixture(html`<d2l-link new-window aria-label="hello world"></d2l-link>`);
+			expect(getAnchor(elem).getAttribute('aria-label')).to.equal('Opens in a new window. hello world');
+		});
 	});
 
 });
