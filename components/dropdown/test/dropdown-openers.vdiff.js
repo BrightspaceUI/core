@@ -5,8 +5,8 @@ import '../dropdown-button.js';
 import '../dropdown-content.js';
 import '../dropdown-context-menu.js';
 import '../dropdown-more.js';
+import { clickElem, defineCE, expect, fixture, html, nextFrame, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { css, LitElement } from 'lit';
-import { defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
 
 const wrappedDropdown = defineCE(
 	class extends LitElement {
@@ -35,9 +35,6 @@ const wrappedDropdown = defineCE(
 				<d2l-button>See!</d2l-button>
 			`;
 		}
-		toggleOpen() {
-			if (this.shadowRoot) this.shadowRoot.querySelector('d2l-dropdown-content').toggleOpen();
-		}
 	}
 );
 
@@ -45,9 +42,9 @@ describe('dropdown-openers', () => {
 	// test for https://github.com/BrightspaceUI/core/issues/1398
 	it('autoclose', async() => {
 		const elem = await fixture(`<${wrappedDropdown}></${wrappedDropdown}>`);
-		await focusElem(elem);
-		elem.toggleOpen();
+		clickElem(elem);
 		await oneEvent(elem, 'd2l-dropdown-open');
+		await nextFrame();
 		await sendKeys('press', 'Tab');
 		await sendKeys('press', 'Tab');
 		await expect(elem).to.be.golden();
