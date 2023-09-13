@@ -66,6 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} måste vara före {endLabel}",
 	"components.input-time-range.startTime": "Starttid",
 	"components.interactive.instructions": "Tryck på Enter för att interagera och Escape för att avsluta",
+	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list-controls.label": "Åtgärder för lista",
 	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Flytta objekt. Aktuell position: {currentPosition} av {size}. Om du vill flytta det här objektet trycker du på uppåt- eller nedåtpilen.",

@@ -66,6 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} {endLabel} से पहले का होना चाहिए",
 	"components.input-time-range.startTime": "प्रारंभ समय",
 	"components.interactive.instructions": "बातचीत करने के लिए Enter दबाएँ, बाहर निकलने के लिए Escape दबाएँ",
+	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list-controls.label": "सूची के लिए क्रियाएँ",
 	"components.list-item-drag-handle.default": "{name} के लिए आइटम कार्रवाई का क्रम बदलें",
 	"components.list-item-drag-handle.keyboard": "आइटम का क्रम बदलें, {size} में से वर्तमान स्थिति {currentPosition} इस आइटम को ले जाने के लिए, ऊपर या नीचे तीर दबाएँ।",
