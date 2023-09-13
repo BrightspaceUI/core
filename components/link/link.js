@@ -1,5 +1,6 @@
 import '../colors/colors.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import '../icons/icon.js';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
@@ -127,7 +128,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					vertical-align: inherit;
 				}
 
-				d2l-icon.d2l-new-window.d2l-icon-small {
+				:host([small]) d2l-icon.d2l-new-window {
 					height: 14px;
 					width: 14px;
 				}
@@ -156,31 +157,27 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'truncate': this.lines > 0
 		};
 		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
-		if (this.newWindow && this.target === undefined) {
-			this.target = '_blank';
-		}
-		return html`<a
+		const target = this.newWindow && this.target === undefined
+			? '_blank'
+			: this.target;
+
+		return html`
+			<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
 				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}"><slot></slot>${this.renderNewWindowIcon()}</a>`;
-	}
-
-	renderNewWindowIcon() {
-		const newWindowClasses = {
-			'd2l-new-window': true,
-			'd2l-icon-small': this.small,
-		};
-		return this.newWindow ? html`
-			<d2l-icon class="${classMap(newWindowClasses)}" aria-hidden="true" icon="tier1:new-window"></d2l-icon>
-			<span class="d2l-offscreen">${this._newWindowLangTerm}</span>
-		` : html``;
-	}
-
-	get _newWindowLangTerm() {
-		return this.localize('components.link.open-in-new-window');
+				target="${ifDefined(target)}"
+			>
+				<slot></slot>
+				${target === '_blank' ? html`
+					<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>
+				` : nothing}
+				${this.newWindow ? html`
+					<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
+				` : nothing}
+			</a>`;
 	}
 
 }
