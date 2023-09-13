@@ -129,9 +129,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 				d2l-icon.d2l-new-window.d2l-icon-small {
 					height: 14px;
-					margin-top: -6px;
 					width: 14px;
-					height: 14px;
 				}
 			`
 		];
