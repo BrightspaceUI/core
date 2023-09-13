@@ -56,7 +56,7 @@ To change an icon's color from Tungsten to something else, simply set it from CS
 
 ## Overriding the Size
 
-Overriding the size is not recommended. However, if you must, set the `width` and `height` from CSS. For this to work in IE11, it **must** be done from inside another web component.
+Overriding the size is not recommended. However, if you must, set the `width` and `height` from CSS.
 
 ## Updating or contributing new icons
 
