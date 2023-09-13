@@ -5,6 +5,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = css`
@@ -44,16 +45,6 @@ export const linkStyles = css`
 		.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
 			color: var(--d2l-color-ferrite);
 		}
-	}
-	d2l-icon.d2l-new-window {
-		color: var(--d2l-color-celestine);
-		margin-top: -7px;
-	}
-
-	d2l-icon.d2l-new-window.d2l-icon-small {
-		height: 14px;
-		margin-top: -6px;
-		width: 14px;
 	}
 `;
 
@@ -109,7 +100,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ linkStyles,
+		return [ linkStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline;
@@ -131,6 +122,17 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					overflow: hidden;
 					overflow-wrap: anywhere;
 				}
+				d2l-icon.d2l-new-window {
+					color: var(--d2l-color-celestine);
+					vertical-align: inherit;
+				}
+
+				d2l-icon.d2l-new-window.d2l-icon-small {
+					height: 14px;
+					margin-top: -6px;
+					width: 14px;
+					height: 14px;
+				}
 			`
 		];
 	}
@@ -141,7 +143,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		this.main = false;
 		this.small = false;
 		this.lines = 0;
-		this.showOpenInNewWindow = false;
+		this.newWindow = false;
 	}
 
 	static get focusElementSelector() {
@@ -156,11 +158,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'truncate': this.lines > 0
 		};
 		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
-		if (this.newWindow) {
-			this.ariaLabel = `${this._newWindowLangTerm} ${this.ariaLabel ?? ''}`;
-			if (this.target === undefined) {
-				this.target = '_blank';
-			}
+		if (this.newWindow && this.target === undefined) {
+			this.target = '_blank';
 		}
 		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
@@ -178,6 +177,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		};
 		return this.newWindow ? html`
 			<d2l-icon class="${classMap(newWindowClasses)}" aria-hidden="true" icon="tier1:new-window"></d2l-icon>
+			<span class="d2l-offscreen">${this._newWindowLangTerm}</span>
 		` : html``;
 	}
 

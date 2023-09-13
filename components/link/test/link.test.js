@@ -102,9 +102,9 @@ describe('d2l-link', () => {
 			expect(getAnchor(elem).getAttribute('target')).to.equal('_blank');
 		});
 
-		it('should add aria-label new window term to aria-label', async() => {
-			const elem = await fixture(html`<d2l-link new-window aria-label="hello world"></d2l-link>`);
-			expect(getAnchor(elem).getAttribute('aria-label')).to.equal('Opens in a new window. hello world');
+		it('should add hidden span new window term for screen readers', async() => {
+			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
+			expect(getAnchor(elem).querySelector('span').innerText).to.equal('Opens in a new window.');
 		});
 	});
 
