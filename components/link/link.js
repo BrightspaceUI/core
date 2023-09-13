@@ -170,13 +170,16 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
 			>
-				<slot></slot>
-				${target === '_blank' ? html`
-					<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>
-				` : nothing}
-				${this.newWindow ? html`
-					<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
-				` : nothing}
+				<span style="white-space: nowrap;">
+					<span style="white-space: normal;">
+						<slot></slot>
+					</span>
+					${this.newWindow ? html`&nbsp; <d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
+					` : nothing}
+					${target === '_blank' ? html`
+						<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>
+					` : nothing}
+				</span>
 			</a>`;
 	}
 
