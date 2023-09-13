@@ -1092,7 +1092,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		let dropdownContentSlots = html`
 			<div
 			id="d2l-dropdown-wrapper"
-			class="d2l-dropdown-content-width"
+			class="d2l-dropdown-content-width vdiff-target"
 			style=${styleMap(widthStyle)}
 			?data-closing="${this._closing}">
 				<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
