@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-value.js';
-import { clickElem, expect, fixture, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -183,9 +183,12 @@ describe('filter', () => {
 						<d2l-filter-dimension-set-value key="biology" text="Biology" ?selected="${allSelected}"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				`, { openUp }));
-				elem.opened = true;
+				clickElem(elem);
 				await oneEvent(elem, 'd2l-filter-dimension-first-open');
+				await nextFrame();
+
 				await clickElem(elem.shadowRoot.querySelector(selector));
+				await hoverAt(0, 0);
 				await expect(elem).to.be.golden();
 			});
 		});
@@ -260,9 +263,12 @@ describe('filter', () => {
 					<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
 			`, { openUp: true }));
-			elem.opened = true;
+			clickElem(elem);
 			await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown-menu'), 'd2l-dropdown-open');
+			await nextFrame();
+
 			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
+			await hoverAt(0, 0);
 			await expect(elem).to.be.golden();
 		});
 	});
