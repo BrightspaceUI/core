@@ -10,6 +10,8 @@ jobs:
     name: Release
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    outputs:
+      git-head: ${{steps.git.outputs.head}}
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
         with:
@@ -34,6 +36,9 @@ jobs:
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}
+      - name: Get new git HEAD
+        id: git
+        run: echo "head=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
   publish:
     name: Publish static site
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -42,6 +47,8 @@ jobs:
     needs: release
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
+        with:
+          ref: ${{needs.release.outputs.git-head}}
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version-file: .nvmrc
@@ -50,10 +57,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-
       - name: Build static
         run: npm run build-static
-
       - name: Assume role
         uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
         with:
@@ -63,7 +68,6 @@ jobs:
           role-to-assume: arn:aws:iam::022062736489:role/r+BrightspaceUI+core+repo
           role-duration-seconds: 3600
           aws-region: ca-central-1
-
       - name: Publish
         uses: BrightspaceUI/actions/publish-to-s3@main
         with:
