@@ -7,9 +7,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
 function createFilterWrapper(content, opts = {}) {
-	const { openUp, text } =  { openUp: false, ...opts };
+	const { openUp, opened, text } =  { openUp: false, opened: false, ...opts };
 	return html`
-		<d2l-filter text="${ifDefined(text)}" style="${ifDefined(openUp ? 'position: absolute; bottom: 30px;' : undefined)}">
+		<d2l-filter ?opened="${opened}" text="${ifDefined(text)}" style="${ifDefined(openUp ? 'position: absolute; bottom: 30px;' : undefined)}">
 			${content}
 		</d2l-filter>
 	`;
@@ -182,10 +182,7 @@ describe('filter', () => {
 						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" ?selected="${allSelected}"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="biology" text="Biology" ?selected="${allSelected}"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
-				`, { openUp }));
-				clickElem(elem);
-				await oneEvent(elem, 'd2l-filter-dimension-first-open');
-				await nextFrame();
+				`, { openUp, opened: true }));
 
 				await clickElem(elem.shadowRoot.querySelector(selector));
 				await hoverAt(0, 0);
@@ -262,10 +259,7 @@ describe('filter', () => {
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
-			`, { openUp: true }));
-			clickElem(elem);
-			await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown-menu'), 'd2l-dropdown-open');
-			await nextFrame();
+			`, { openUp: true, opened: true }));
 
 			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
 			await hoverAt(0, 0);
