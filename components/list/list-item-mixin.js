@@ -48,6 +48,7 @@ const ro = new ResizeObserver(entries => {
 });
 
 const defaultBreakpoints = [842, 636, 580, 0];
+const SLIM_COLOR_BREAKPOINT = 400;
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -99,7 +100,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_hasNestedList: { state: true },
-			_siblingHasColor: { state: true }
+			_siblingHasColor: { state: true },
+			_slimColor: { state: true }
 		};
 	}
 
@@ -293,6 +295,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-inline-start: 0.9rem;
 			}
+			:host(:not([_render-expand-collapse-slot])[_has-color-slot]) .d2l-list-item-content-extend-separators d2l-selection-input {
+				margin-inline-start: 0.6rem;
+			}
 
 			d2l-list-item-drag-handle {
 				margin: 0.25rem 0.3rem;
@@ -391,6 +396,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				height: 100%;
 				width: 6px;
 			}
+			.d2l-list-item-color-inner.d2l-list-item-color-slim {
+				border-radius: 3px;
+				width: 3px;
+			}
 			.d2l-list-item-color-outer {
 				padding: 2px 12px 1px 0;
 			}
@@ -435,6 +444,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
 		this._siblingHasColor = false;
+		this._slimColor = false;
 	}
 
 	get breakpoints() {
@@ -512,6 +522,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	resizedCallback(width) {
+		if (width < SLIM_COLOR_BREAKPOINT) this._slimColor = true;
+		else this._slimColor = false;
+
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
@@ -674,6 +687,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const colorStyles = {
 			backgroundColor: this._hasColorSlot ? this.color : undefined
 		};
+		const colorClasses = {
+			'd2l-list-item-color-inner': true,
+			'd2l-list-item-color-slim': this._slimColor
+		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
@@ -695,7 +712,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-container"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
-					<div class="d2l-list-item-color-inner" style="${styleMap(colorStyles)}"></div>
+					<div class="${classMap(colorClasses)}" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 					${this._renderExpandCollapse()}
