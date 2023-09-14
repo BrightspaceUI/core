@@ -522,8 +522,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	resizedCallback(width) {
-		if (width < SLIM_COLOR_BREAKPOINT) this._slimColor = true;
-		else this._slimColor = false;
+		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
 
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
