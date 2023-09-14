@@ -132,6 +132,12 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					height: 14px;
 					width: 14px;
 				}
+
+				@media print {
+					d2l-icon.d2l-new-window {
+						display: none;
+					}
+				}
 			`
 		];
 	}
@@ -171,10 +177,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				target="${ifDefined(target)}"
 			>
 				<span style="white-space: nowrap;">
-					<span style="white-space: normal;">
-						<slot></slot>
-					</span>
-					${this.newWindow ? html`&nbsp; <d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
+					<span style="white-space: normal;"><slot></slot></span>${this.newWindow ? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
 					` : nothing}
 					${target === '_blank' ? html`
 						<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>
