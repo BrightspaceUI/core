@@ -127,6 +127,7 @@ describe('filter', () => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
 
@@ -134,6 +135,7 @@ describe('filter', () => {
 					const elem = await fixture(template, { rtl, viewport: { width: 600, height: 500 } });
 					sendKeysElem(elem, 'press', 'Enter');
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					await nextFrame();
 					await expect(document).to.be.golden();
 				});
 			});
@@ -143,6 +145,7 @@ describe('filter', () => {
 			const elem = await fixture(createEmptySingleDim({ customEmptyState: true }));
 			elem.opened = true;
 			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 
@@ -161,6 +164,7 @@ describe('filter', () => {
 					await elem.updateComplete;
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
 			});
