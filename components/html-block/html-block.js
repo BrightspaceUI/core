@@ -199,6 +199,9 @@ class HtmlBlock extends LitElement {
 			this._contextObserverControllerResolve = resolve;
 		});
 
+		this._renderersProcessedResolve = undefined;
+		this._renderersProcessedPromise = new Promise(resolve => this._renderersProcessedResolve = resolve);
+
 		getRenderers().then(renderers => renderers.reduce((attrs, currentRenderer) => {
 			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
 			return attrs;
@@ -242,6 +245,10 @@ class HtmlBlock extends LitElement {
 		}
 	}
 
+	async getLoadingComplete() {
+		return this._renderersProcessedPromise;
+	}
+
 	async _contextChanged() {
 		await this._contextObserverControllerInitialized;
 		if (!this._contextKeys) {
@@ -265,6 +272,7 @@ class HtmlBlock extends LitElement {
 	async _processRenderers(elem) {
 		await this._contextObserverControllerInitialized;
 		const renderers = await getRenderers();
+		const loadingCompletePromises = [];
 		for (const renderer of renderers) {
 			if (renderer.contextAttributes) {
 				const contextValues = new Map();
@@ -278,7 +286,11 @@ class HtmlBlock extends LitElement {
 					noDeferredRendering: this.noDeferredRendering
 				});
 			}
+			if (typeof renderer.getLoadingComplete === 'function') {
+				loadingCompletePromises.push(renderer.getLoadingComplete());
+			}
 		}
+		Promise.all(loadingCompletePromises).then(() => this._renderersProcessedResolve());
 	}
 
 	async _renderInline(slot) {
