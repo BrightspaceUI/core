@@ -19,11 +19,11 @@ function createCodeWrapper({ content, dark, lineNumbers, language, inline }) {
 	};
 	if (inline) classes[`language-${language}`] = true;
 	return !inline ? html`
-		<div style="max-width: 500px; letter-spacing: normal;">
+		<div style="max-width: 500px;">
 			<pre class="${classMap(classes)}"><code class="language-${language}">${content}</code></pre>
 		</div>
 	` : html`
-		<div style="width: 400px; color: black; font-family: auto; font-size: 20px; letter-spacing: normal;">
+		<div style="width: 400px;">
 			<p>Some inline code... <code class="${classMap(classes)}">${content}</code> Mmmm, yummy code.</p>.
 		</div>
 	`;
