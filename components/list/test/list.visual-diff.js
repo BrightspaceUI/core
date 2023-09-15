@@ -53,6 +53,14 @@ describe('d2l-list', () => {
 		}, y);
 	};
 
+	const updateColor = (selector, childSelector, color) => {
+		return page.$eval(selector, async(element, childSelector, color) => {
+			const childElem = element.querySelector(`d2l-list-item[${childSelector}]`);
+			childElem.color = color;
+			await new Promise(resolve => requestAnimationFrame(resolve));
+		}, childSelector, color);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 8500 } });
@@ -158,6 +166,19 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControls > div', 45);
 				await hover('#stickyControls [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color top', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 45);
+				await scrollTo('#stickyControlsColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky color scrolled hover', selector: '#stickyControlsColor', action: async() => {
+				await scrollTo('#stickyControlsColor > div', 0);
+				await scrollTo('#stickyControlsColor > div', 45);
+				await hover('#stickyControlsColor [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
 			{ name: 'sticky top extended separators', selector: '#stickyControlsSeparatorsExtended', action: async() => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
@@ -170,16 +191,33 @@ describe('d2l-list', () => {
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 0);
 				await scrollTo('#stickyControlsSeparatorsExtended > div', 45);
 				await hover('#stickyControlsSeparatorsExtended [key="1"] [slot="supporting-info"]');
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky top extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+			}, screenshotOptions: { captureBeyondViewport: false } },
+			{ name: 'sticky scrolled hover extended separators color', selector: '#stickyControlsSeparatorsExtendedColor', action: async() => {
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 0);
+				await scrollTo('#stickyControlsSeparatorsExtendedColor > div', 45);
+				await hover('#stickyControlsSeparatorsExtendedColor [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
 		{ category: 'draggable', tests: [
 			{ name: 'default', selector: '#draggable' },
 			{ name: 'focus', selector: '#draggable', action: () => focusWithKeyboard(page, '#draggable [key="1"]') },
 			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
+			{ name: 'color hover', selector: '#draggableColorIndicator', action: () => hover('#draggableColorIndicator [key="1"]') },
 			{ name: 'selectable', selector: '#draggableSelectable' },
 			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
 			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
-			{ name: 'extended separators', selector: '#draggableSeparatorsExtended' }
+			{ name: 'color selectable focus', selector: '#draggableSelectableColorIndicator', action: () => focusInput('#draggableSelectableColorIndicator [key="1"]') },
+			{ name: 'color selectable hover', selector: '#draggableSelectableColorIndicator', action: () => hover('#draggableSelectableColorIndicator [key="1"]') },
+			{ name: 'extended separators', selector: '#draggableSelectableColorIndicatorSeparatorsExtended' },
+			{ name: 'extended separators hover', selector: '#draggableSelectableColorIndicatorSeparatorsExtended', action: () => hover('#draggableSelectableColorIndicatorSeparatorsExtended [key="2"]') }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },
@@ -215,8 +253,20 @@ describe('d2l-list', () => {
 			{ name: 'selectable', selector: '#expand-collapse-selectable' },
 			{ name: 'draggable', selector: '#expand-collapse-draggable' },
 			{ name: 'selectable draggable', selector: '#expand-collapse-selectable-draggable' },
-			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') }
-		] }
+			{ name: 'default expanded multiple nested lists', selector: '#expand-collapse-default-expanded-multiple-nested-lists' },
+			{ name: 'button focus', selector: '#expand-collapse-default', action: () => focusExpandCollapseButton('#expand-collapse-default d2l-list-item') },
+			{ name: 'remove color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'color', undefined) },
+			{ name: 'add color', selector: '#expand-collapse-selectable-draggable', action: () => updateColor('#expand-collapse-selectable-draggable', 'key="L3-1"', '#ff0000') }
+		] },
+		{
+			category: 'color', tests: [
+				{ name: 'extend separators nested', selector: '#color-extend-separators-nested' },
+				{ name: 'extend separators nested selectable', selector: '#color-extend-separators-nested-selectable' },
+				// { name: 'extend separators nested selectable hover', selector: '#color-extend-separators-nested-selectable', action: () => hover('#color-extend-separators-nested-selectable [key="L1-2"]') },
+				{ name: 'extend separators selectable draggable', selector: '#color-extend-separators-nested-selectable-draggable' }
+				// { name: 'extend separators selectable draggable hover', selector: '#color-extend-separators-nested-selectable-draggable', action: () => hover('#color-extend-separators-nested-selectable-draggable [key="L1-2"]')  }
+			]
+		},
 	].forEach((info) => {
 
 		describe(info.category, () => {

@@ -318,7 +318,7 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 	_onBadgeResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
-		this._badgeMarginTop = `${-0.5 * entry.contentRect.height}px`;
+		requestAnimationFrame(() => this._badgeMarginTop = `${-0.5 * entry.contentRect.height}px`);
 	}
 
 	_onDropdownClose() {
@@ -334,7 +334,7 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 		const entry = entries[0];
 		// firefox has a rounding error when calculating the height of the contentRect
 		// with `box-sizing: border-box;` so check for numbers which are close to 0 as well
-		this._footerHidden = (entry.contentRect.height < 1);
+		requestAnimationFrame(() => this._footerHidden = (entry.contentRect.height < 1));
 	}
 
 	_onLinkBlur() {

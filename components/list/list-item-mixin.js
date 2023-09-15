@@ -9,6 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
@@ -18,6 +19,7 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -46,6 +48,7 @@ const ro = new ResizeObserver(entries => {
 });
 
 const defaultBreakpoints = [842, 636, 580, 0];
+const SLIM_COLOR_BREAKPOINT = 400;
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -68,6 +71,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			breakpoints: { type: Array },
 			/**
+			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
+			 * @type {string}
+			 */
+			color: { type: String },
+			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
 			 */
@@ -84,13 +92,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			paddingType: { type: String, attribute: 'padding-type' },
 			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
+			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_hasNestedList: { state: true }
+			_hasNestedList: { state: true },
+			_siblingHasColor: { state: true },
+			_slimColor: { state: true }
 		};
 	}
 
@@ -155,11 +166,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-top: 0;
 			}
 
-			.d2l-list-item-content-extend-separators > [slot="control"] {
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			.d2l-list-item-content-extend-separators > [slot="content"],
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
+			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators > [slot="content"],
+			:host(:not([_has-color-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
@@ -281,8 +292,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			d2l-selection-input {
 				margin: 0.55rem 0.55rem 0.55rem 0;
 			}
-			.d2l-list-item-content-extend-separators d2l-selection-input {
-				margin-left: 0.9rem;
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
+				margin-inline-start: 0.9rem;
+			}
+			:host(:not([_render-expand-collapse-slot])[_has-color-slot]) .d2l-list-item-content-extend-separators d2l-selection-input {
+				margin-inline-start: 0.6rem;
 			}
 
 			d2l-list-item-drag-handle {
@@ -291,9 +305,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
 				margin-right: 0;
-			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-input {
-				margin-right: 0.9rem;
 			}
 
 			[slot="outside-control-container"] {
@@ -309,6 +320,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([draggable]) [slot="outside-control-container"],
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				margin: 0;
+			}
+
+			:host([_has-color-slot]) .d2l-list-item-content-extend-separators [slot="outside-control-container"],
+			:host([dir="rtl"][_has-color-slot]) .d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+				margin: 0 !important;
+			}
+
+			:host(:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
+				margin-left: -6px;
+			}
+			:host(:not([draggable])[dir="rtl"][_has-color-slot]) [slot="outside-control-container"] {
+				margin-left: 0;
+				margin-right: -6px;
 			}
 
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
@@ -366,6 +390,43 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([skeleton]) {
 				pointer-events: none;
 			}
+
+			.d2l-list-item-color-inner {
+				border-radius: 6px;
+				height: 100%;
+				width: 6px;
+			}
+			.d2l-list-item-color-inner.d2l-list-item-color-slim {
+				border-radius: 3px;
+				width: 3px;
+			}
+			.d2l-list-item-color-outer {
+				padding: 2px 12px 1px 0;
+			}
+			:host([dir="rtl"]) .d2l-list-item-color-outer {
+				padding-left: 12px;
+				padding-right: 0;
+			}
+			:host(:not([_nested])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-left: 3px;
+			}
+			:host(:not([_nested])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-left: 12px;
+				padding-right: 3px;
+			}
+			:host([selectable]:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-right: 0;
+			}
+			:host([selectable]:not([_render-expand-collapse-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
+				padding-left: 0;
+			}
+			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: -6px;
+			}
+			:host([dir="rtl"]) .d2l-list-item-color-outer + .d2l-list-expand-collapse {
+				margin-left: 0;
+				margin-right: -6px;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -380,7 +441,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._hasColorSlot = false;
 		this._hasNestedList = false;
+		this._siblingHasColor = false;
+		this._slimColor = false;
 	}
 
 	get breakpoints() {
@@ -392,6 +456,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
 		else this._breakpoints = defaultBreakpoints;
 		this.requestUpdate('breakpoints', oldValue);
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	set color(value) {
+		const oldValue = this._color;
+		this._color = getValidHexColor(value, true);
+		this.requestUpdate('value', oldValue);
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'color', value: this._color } }));
 	}
 
 	connectedCallback() {
@@ -447,6 +523,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	resizedCallback(width) {
+		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
+
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
@@ -467,6 +545,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		if (reduceMotion) this.scrollIntoView(alignToTop);
 		else this.scrollIntoView({ behavior: 'smooth', block: alignToTop ? 'start' : 'end' });
+	}
+
+	updateSiblingHasColor(siblingHasColor) {
+		this._siblingHasColor = siblingHasColor;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
 	}
 
 	_getFlattenedListItems(listItem) {
@@ -596,12 +684,20 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-dragging-over': this._draggingOver
 		};
+		const colorStyles = {
+			backgroundColor: this._hasColorSlot ? this.color : undefined
+		};
+		const colorClasses = {
+			'd2l-list-item-color-inner': true,
+			'd2l-list-item-color-slim': this._slimColor
+		};
 
+		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
 		const innerView = html`
 			<d2l-list-item-generic-layout
-				align-nested="${ifDefined(this.draggable && this.selectable ? 'control' : undefined)}"
+				align-nested="${ifDefined(alignNested)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
@@ -614,6 +710,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
 				<div slot="control-container"></div>
+				${this._hasColorSlot ? html`
+				<div slot="color-indicator" class="d2l-list-item-color-outer">
+					<div class="${classMap(colorClasses)}" style="${styleMap(colorStyles)}"></div>
+				</div>` : nothing}
 				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
 					${this._renderExpandCollapse()}
 				</div>

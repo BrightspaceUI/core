@@ -6,8 +6,8 @@ import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit';
-import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getToday } from '../../helpers/dateTime.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -165,7 +165,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._showInfoTooltip = true;
 		this._shownValue = '';
 
-		this._dateTimeDescriptor = getDateTimeDescriptorShared();
+		this._dateTimeDescriptor = getDateTimeDescriptor();
 	}
 
 	static get focusElementSelector() {
@@ -208,7 +208,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-resources-change', () => {
-			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
+			this._dateTimeDescriptor = getDateTimeDescriptor();
 			this.requestUpdate();
 			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});

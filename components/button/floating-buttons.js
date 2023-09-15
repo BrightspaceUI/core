@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit';
-import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
+import { getBoundingAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
+const MINIMUM_TARGET_SIZE = 24;
 
 /**
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
@@ -113,6 +115,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._isIntersecting = false;
 		this._recalculateFloating = this._recalculateFloating.bind(this);
 		this._testElem = null;
+		this._scrollIfFloatObsuringFocus = this._scrollIfFloatObsuringFocus.bind(this);
 	}
 
 	connectedCallback() {
@@ -144,6 +147,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 		}, { timeout: 5000 });
 
+		document.addEventListener('focusin', this._scrollIfFloatObsuringFocus);
+
 	}
 
 	disconnectedCallback() {
@@ -154,6 +159,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._testElem.parentNode.removeChild(this._testElem);
 			this._testElem = null;
 		}
+		document.removeEventListener('focusin', this._scrollIfFloatObsuringFocus);
 	}
 
 	render() {
@@ -268,6 +274,27 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 
 		});
+	}
+
+	_scrollIfFloatObsuringFocus() {
+
+		if (!this._floating) return;
+
+		const currentFocusedItem = getComposedActiveElement();
+		if (isComposedAncestor(this, currentFocusedItem)) return;
+
+		const { y: focusedY, height: focusedHeight } = currentFocusedItem.getBoundingClientRect();
+		const { y: floatingY, height: floatingHeight } = this.shadowRoot.querySelector('.d2l-floating-buttons-container').getBoundingClientRect();
+		if (focusedY === 0 || floatingY === 0) return;
+
+		const isObscuring = (floatingY - focusedY) < Math.min(MINIMUM_TARGET_SIZE, focusedHeight);
+		if (!isObscuring) return;
+
+		const prev = currentFocusedItem.style.scrollMarginBottom;
+		currentFocusedItem.style.scrollMarginBottom = `${floatingHeight}px`;
+		currentFocusedItem.scrollIntoView(false);
+		currentFocusedItem.style.scrollMarginBottom = prev;
+
 	}
 
 }

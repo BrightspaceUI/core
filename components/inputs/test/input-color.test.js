@@ -129,28 +129,4 @@ describe('d2l-input-color', () => {
 
 	});
 
-	describe('property validation', () => {
-
-		it('should treat HEX value as uppercase', async() => {
-			const elem = await fixture(html`<d2l-input-color value="#fF0a9b"></d2l-input-color>`);
-			expect(elem.value).to.equal('#FF0A9B');
-		});
-
-		it('should treat HEX associated-value as uppercase', async() => {
-			const elem = await fixture(html`<d2l-input-color associated-value="#fF0a9b"></d2l-input-color>`);
-			expect(elem.associatedValue).to.equal('#FF0A9B');
-		});
-
-		it('should throw if invalid HEX value is set', async() => {
-			const elem = await fixture(html`<d2l-input-color></d2l-input-color>`);
-			expect(() => elem.value = 'notHEX').to.throw('<d2l-input-color>: invalid HEX value "notHEX"');
-		});
-
-		it('should throw if invalid HEX associated-value is set', async() => {
-			const elem = await fixture(html`<d2l-input-color></d2l-input-color>`);
-			expect(() => elem.associatedValue = 'notHEX').to.throw('<d2l-input-color>: invalid HEX associated-value "notHEX"');
-		});
-
-	});
-
 });

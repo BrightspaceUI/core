@@ -101,6 +101,24 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
+### Subtle Button with Custom Icon
+
+<!-- docs: demo code  -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-subtle.js';
+  import '@brightspace-ui/core/components/icons/icon-custom.js';
+</script>
+<d2l-button-subtle text="Subtle Button">
+  <d2l-icon-custom slot="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" mirror-in-rtl="true">
+      <path fill="#494c4e" d="M18 12v5a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-5a1 1 0 0 1 2 0v4h14v-4a1 1 0 0 1 2 0z"/>
+      <path fill="#494c4e" d="M13.85 3.15l-2.99-3A.507.507 0 0 0 10.5 0H5.4A1.417 1.417 0 0 0 4 1.43v11.14A1.417 1.417 0 0 0 5.4 14h7.2a1.417 1.417 0 0 0 1.4-1.43V3.5a.47.47 0 0 0-.15-.35zM7 2h1a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2zm4 10H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm0-4H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2z"/>
+    </svg>
+  </d2l-icon-custom>
+</d2l-button-subtle>
+```
+
 ## Icon Button [d2l-button-icon]
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
@@ -138,6 +156,24 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
 | `description` | Use when text on button does not provide enough context. |
+
+### Icon Button with Custom Icon
+
+<!-- docs: demo code  -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-icon.js';
+  import '@brightspace-ui/core/components/icons/icon-custom.js';
+</script>
+<d2l-button-icon text="Custom Icon Button">
+  <d2l-icon-custom slot="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" mirror-in-rtl="true">
+      <path fill="#494c4e" d="M18 12v5a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-5a1 1 0 0 1 2 0v4h14v-4a1 1 0 0 1 2 0z"/>
+      <path fill="#494c4e" d="M13.85 3.15l-2.99-3A.507.507 0 0 0 10.5 0H5.4A1.417 1.417 0 0 0 4 1.43v11.14A1.417 1.417 0 0 0 5.4 14h7.2a1.417 1.417 0 0 0 1.4-1.43V3.5a.47.47 0 0 0-.15-.35zM7 2h1a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2zm4 10H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm0-4H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2z"/>
+    </svg>
+  </d2l-icon-custom>
+</d2l-button-icon>
+```
 
 ## Floating Buttons [d2l-floating-buttons]
 

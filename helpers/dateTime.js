@@ -1,4 +1,4 @@
-import { convertLocalToUTCDateTime, convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 
 // val is an object containing year, month, date
 export function formatDateInISO(val) {
@@ -137,12 +137,6 @@ export function getDateFromISOTime(val) {
 export function getDateNoConversion(value) {
 	const parsed = parseISODateTime(value);
 	return new Date(parsed.year, parsed.month - 1, parsed.date, parsed.hours, parsed.minutes, parsed.seconds);
-}
-
-let dateTimeDescriptor = null;
-export function getDateTimeDescriptorShared(refresh) {
-	if (!dateTimeDescriptor || refresh) dateTimeDescriptor = getDateTimeDescriptor();
-	return dateTimeDescriptor;
 }
 
 export function getLocalDateTimeFromUTCDateTime(dateTime) {

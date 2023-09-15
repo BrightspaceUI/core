@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
@@ -13,6 +13,7 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
+ * @slot icon - Optional slot for a custom icon
  */
 class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)))) {
 
@@ -106,14 +107,10 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				button::-moz-focus-inner {
 					border: 0;
 				}
-				button[disabled]:hover,
-				button[disabled]:focus,
-				:host([active]) button[disabled] {
-					background-color: var(--d2l-button-icon-background-color);
-				}
-				button:hover,
-				button:focus,
-				:host([active]) button {
+
+				button:hover:not([disabled]),
+				button:focus:not([disabled]),
+				:host([active]) button:not([disabled]) {
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
@@ -121,7 +118,15 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
-				.d2l-button-icon {
+				slot[name="icon"]::slotted(*) {
+					display: none;
+				}
+				slot[name="icon"]::slotted(d2l-icon-custom) {
+					display: inline-flex;
+				}
+
+				d2l-icon,
+				slot[name="icon"]::slotted(d2l-icon-custom) {
 					height: 0.9rem;
 					width: 0.9rem;
 				}
@@ -159,6 +164,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	}
 
 	render() {
+		const icon = this.icon ? html`<d2l-icon icon="${this.icon}"></d2l-icon>` : nothing;
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
@@ -178,7 +184,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
-				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
+				<slot name="icon">${icon}</slot>
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
