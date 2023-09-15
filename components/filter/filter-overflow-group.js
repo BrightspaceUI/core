@@ -89,7 +89,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 	getOverflowContainer(overflowItems) {
 		return html`
-			<d2l-filter class="${OVERFLOW_CLASS}" @d2l-filter-change="${this._handleFilterChange}">
+			<d2l-filter class="${OVERFLOW_CLASS} vdiff-target" @d2l-filter-change="${this._handleFilterChange}">
 				${overflowItems}
 			</d2l-filter>
 		`;
