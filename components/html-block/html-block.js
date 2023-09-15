@@ -300,7 +300,10 @@ class HtmlBlock extends LitElement {
 		const noDeferredRenderingContainer = slot.assignedNodes({ flatten: true })
 			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV'));
 
-		if (!noDeferredRenderingContainer) return;
+		if (!noDeferredRenderingContainer) {
+			this._renderersProcessedResolve();
+			return;
+		}
 		await this._processRenderers(noDeferredRenderingContainer);
 	}
 
