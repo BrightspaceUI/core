@@ -32,6 +32,8 @@ const mathjaxFontMappings = new Map([
 
 class HtmlBlockMathRenderer {
 
+	#loadingCompletePromise = undefined;
+
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
 	}
@@ -73,6 +75,12 @@ class HtmlBlockMathRenderer {
 		if (!window.D2L.renderingPromise) window.D2L.renderingPromise = Promise.resolve();
 		window.D2L.renderingPromise = window.D2L.renderingPromise.then(() => window.MathJax.typesetShadow(elem.getRootNode(), elem));
 		await window.D2L.renderingPromise;
+	}
+
+	async getLoadingComplete() {
+		if (this.#loadingCompletePromise !== undefined) return this.#loadingCompletePromise;
+		this.#loadingCompletePromise = new Promise(resolve => setTimeout(resolve, 100));
+		return this.#loadingCompletePromise;
 	}
 
 }
