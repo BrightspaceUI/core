@@ -236,6 +236,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
+					class="vdiff-target"
 					min-width="285"
 					max-width="420"
 					mobile-tray="right"
@@ -249,6 +250,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-dropdown-content>`
 			: html`
 				<d2l-dropdown-menu
+					class="vdiff-target"
 					min-width="285"
 					max-width="420"
 					mobile-tray="right"
@@ -265,6 +267,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		return html`
 			<d2l-dropdown-button-subtle
+				class="vdiff-target"
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
