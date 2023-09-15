@@ -4,8 +4,6 @@ node_modules/
 .vdiff/
 components/*/test/screenshots/current/
 components/*/test/screenshots/golden/
-helpers/test/screenshots/current/
-helpers/test/screenshots/golden/
 lang/fr-on.js
 templates/*/test/screenshots/current/
 templates/*/test/screenshots/golden/
