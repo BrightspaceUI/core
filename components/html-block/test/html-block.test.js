@@ -145,7 +145,7 @@ describe('d2l-html-block', () => {
 
 	it('should do async replacements', async() => {
 		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
-		const htmlBlock = await fixture(asyncReplacementFixture);
+		const htmlBlock = await fixture(asyncReplacementFixture, { awaitLoadingComplete: false });
 		await replacementComplete;
 		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1: async value');
