@@ -466,6 +466,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const oldValue = this._color;
 		this._color = getValidHexColor(value, true);
 		this.requestUpdate('value', oldValue);
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'color', value: this._color } }));
 	}
 
