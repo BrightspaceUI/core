@@ -166,24 +166,21 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const target = this.newWindow && this.target === undefined
 			? '_blank'
 			: this.target;
+		const newWindowIndicator = this.newWindow
+			? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>`
+			: nothing;
+		const newWindowMessage = (target === '_blank')
+			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			: nothing;
 
-		return html`
-			<a
+		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
 				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			>
-				<span style="white-space: nowrap;">
-					<span style="white-space: normal;"><slot></slot></span>${this.newWindow ? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>
-					` : nothing}
-					${target === '_blank' ? html`
-						<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>
-					` : nothing}
-				</span>
-			</a>`;
+			><span style="white-space: nowrap;"><span style="white-space: normal;"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
 	}
 
 }

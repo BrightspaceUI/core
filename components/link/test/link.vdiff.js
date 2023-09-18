@@ -23,7 +23,7 @@ describe('d2l-link', () => {
 		{ name: 'wc-small', template: html`<d2l-link href="https://www.d2l.com" small>Small Link</d2l-link>` },
 		{ name: 'wc-standard-new-window', template: html`<d2l-link new-window href="https://www.d2l.com">Standard New Window Link</d2l-link>` },
 		{ name: 'wc-small-new-window', template: html`<d2l-link new-window small href="https://www.d2l.com">Small New Window Link</d2l-link>` },
-		{ name: 'wc-standard-new-window-overflow', template: html`<d2l-link new-window href="https://www.d2l.com" style="width: 257px">Standard New Window Link</d2l-link>` },
+		{ name: 'wc-standard-new-window-overflow', template: html`<div style="width: 240px"><d2l-link new-window href="https://www.d2l.com">Standard New Window Link</d2l-link></div>` },
 		{ name: 'wc-inline', template: html`<span><d2l-link href="#">Hello</d2l-link>, <d2l-link href="#">World</d2l-link>! w<d2l-link href="#">x</d2l-link>y<d2l-link href="#">z</d2l-link>!</span>` },
 		{ name: 'wc-inline-paragraph', template: html`<p style="width: 400px;">Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. <d2l-link href="https://www.d2l.com">Standard Link</d2l-link> Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>` },
 		{ name: 'wc-block', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" style="display: block;">A really long link that will wrap in its container to the next line.</d2l-link></div>` },
