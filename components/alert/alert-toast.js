@@ -1,6 +1,7 @@
 import './alert.js';
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -58,6 +59,8 @@ class AlertToast extends LitElement {
 			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
+			_bottomSpacing: { type: Number },
+			_closeClicked: { state: true },
 			_state: { type: String }
 		};
 	}
@@ -70,7 +73,6 @@ class AlertToast extends LitElement {
 
 			.d2l-alert-toast-container {
 				border-radius: 0.3rem;
-				bottom: 1.5rem;
 				box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
 				display: none;
 				left: 0;
@@ -104,6 +106,14 @@ class AlertToast extends LitElement {
 				transform: translateY(0);
 			}
 
+			.d2l-alert-toast-container[data-state="moving"] {
+				transition: bottom 600ms ease;
+			}
+
+			.d2l-alert-toast-container[data-state="moving-click"] {
+				transition: bottom 200ms ease;
+			}
+
 			d2l-alert {
 				animation: none;
 			}
@@ -123,6 +133,8 @@ class AlertToast extends LitElement {
 		this.noAutoClose = false;
 		this.open = false;
 
+		this._bottomSpacing = 0;
+		this._closeClicked = false;
 		this._hasFocus = false;
 		this._hasMouse = false;
 		this._state = states.CLOSED;
@@ -163,10 +175,14 @@ class AlertToast extends LitElement {
 	}
 
 	render() {
+		const containerStyles = {
+			bottom: `calc(1.5rem + ${this._bottomSpacing}px)`
+		};
 		return html`
 			<div
 				class="d2l-alert-toast-container vdiff-target"
 				data-state="${this._state}"
+				style="${styleMap(containerStyles)}"
 				@transitionend=${this._onTransitionEnd}>
 				<d2l-alert
 					@blur=${this._onBlur}
@@ -233,6 +249,7 @@ class AlertToast extends LitElement {
 
 	_onCloseClicked(e) {
 		e.preventDefault();
+		this._closeClicked = true;
 		this.open = false;
 	}
 
@@ -260,6 +277,8 @@ class AlertToast extends LitElement {
 	}
 
 	async _openChanged(newOpen) {
+		let computedStyles;
+		if (this._innerContainer) computedStyles = getComputedStyle(this._innerContainer);
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -283,7 +302,7 @@ class AlertToast extends LitElement {
 				'd2l-alert-toast-open', {
 					bubbles: true,
 					composed: false,
-					detail: { height: height }
+					detail: { height }
 				}
 			));
 		} else {
@@ -291,23 +310,23 @@ class AlertToast extends LitElement {
 			let bottom = 0;
 			if (this._innerContainer) {
 				height = this._innerContainer.offsetHeight;
-				bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
+				bottom = parseFloat(computedStyles.getPropertyValue('bottom'))
 			}
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
 				this._state = states.CLOSED;
-			} else if (this._state === states.OPENING || this._state === states.OPEN) {
+			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === 'moving' || this._state === 'moving-click') {
 				this._state = states.CLOSING;
 			}
 			this.dispatchEvent(new CustomEvent(
 				'd2l-alert-toast-close', {
 					bubbles: true,
 					composed: false,
-					detail: { action: this._action, height, bottom }
+					detail: { height, bottom, click: this._closeClicked }
 				}
 			));
-			if (this._innerContainer) this._innerContainer.style.bottom = '1.5rem';
+			this._bottomSpacing = 0;
 		}
 	}
 
@@ -320,21 +339,19 @@ class AlertToast extends LitElement {
 	}
 
 	_handleAlertOpen(e) {
-		if (!e) return;
-		if (e.target === this || !this.open) return;
-		const oldBottomVal = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
-		this._innerContainer.style.bottom = `calc(${oldBottomVal + e.detail.height}px + 0.6rem)`;
+		if (!e || e.target === this || !this.open) return;
+		this._state = 'moving';
+		this._bottomSpacing += e.detail.height;
 	}
 
 	_handleAlertClose(e) {
-		if (!e) return;
-		if (e.target === this || !this.open) return;
-		/** this only matters if the one closing is below the one listening!! check the bottoms */
+		if (!e || e.target === this || !this.open) return;
 
-		const containerBottomVal = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
+		const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
 		const closingContainerBottom = e.detail.bottom;
-		if (closingContainerBottom > containerBottomVal) return;
-		this._innerContainer.style.bottom = `calc(${containerBottomVal - e.detail.height}px - 0.6rem)`;
+		if (closingContainerBottom > containerBottom) return; // closing alert is above this alert, no need to adjust bottom spacing
+		this._bottomSpacing -= e.detail.height;
+		this._state = e.detail.click ? 'moving-click' : 'moving';
 	}
 }
 
