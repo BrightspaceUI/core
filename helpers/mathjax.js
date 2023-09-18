@@ -32,8 +32,6 @@ const mathjaxFontMappings = new Map([
 
 class HtmlBlockMathRenderer {
 
-	#loadingCompletePromise = undefined;
-
 	get contextAttributes() {
 		return [mathjaxContextAttribute];
 	}
@@ -78,9 +76,7 @@ class HtmlBlockMathRenderer {
 	}
 
 	async getLoadingComplete() {
-		if (this.#loadingCompletePromise !== undefined) return this.#loadingCompletePromise;
-		this.#loadingCompletePromise = new Promise(resolve => setTimeout(resolve, 100));
-		return this.#loadingCompletePromise;
+		return new Promise(resolve => setTimeout(resolve, 100));
 	}
 
 }
