@@ -9,6 +9,7 @@ const states = {
 	CLOSED: 'closed', // the toast is closed
 	CLOSING: 'closing', // the close animation is running
 	PREOPENING: 'preopening', // a pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
+	SLIDING: 'sliding', // the transform animation when multiple alerts are on the page is running
 	OPENING: 'opening', // the opening animation is running
 	OPEN: 'open' // the toast is open
 };
@@ -106,12 +107,8 @@ class AlertToast extends LitElement {
 				transform: translateY(0);
 			}
 
-			.d2l-alert-toast-container[data-state="moving"] {
+			.d2l-alert-toast-container[data-state="sliding"] {
 				transition: bottom 600ms ease;
-			}
-
-			.d2l-alert-toast-container[data-state="moving-click"] {
-				transition: bottom 200ms ease;
 			}
 
 			d2l-alert {
@@ -138,6 +135,9 @@ class AlertToast extends LitElement {
 		this._hasFocus = false;
 		this._hasMouse = false;
 		this._state = states.CLOSED;
+
+		this._bottomHeight = 0;
+		this._bottomMargin = 0;
 
 		this._handleAlertOpen = this._handleAlertOpen.bind(this);
 		this._handleAlertClose = this._handleAlertClose.bind(this);
@@ -176,7 +176,7 @@ class AlertToast extends LitElement {
 
 	render() {
 		const containerStyles = {
-			bottom: `calc(1.5rem + ${this._bottomSpacing}px)`
+			bottom: this._bottomSpacing ? `calc(1.5rem + ${this._bottomSpacing})` : '1.5rem'
 		};
 		return html`
 			<div
@@ -269,7 +269,7 @@ class AlertToast extends LitElement {
 	}
 
 	_onTransitionEnd() {
-		if (this._state === states.OPENING) {
+		if (this._state === states.OPENING || this._state === states.SLIDING) {
 			this._state = states.OPEN;
 		} else if (this._state === states.CLOSING) {
 			this._state = states.CLOSED;
@@ -316,7 +316,7 @@ class AlertToast extends LitElement {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
 				this._state = states.CLOSED;
-			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === 'moving' || this._state === 'moving-click') {
+			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
 			this.dispatchEvent(new CustomEvent(
@@ -327,6 +327,7 @@ class AlertToast extends LitElement {
 				}
 			));
 			this._bottomSpacing = 0;
+			this._closeClicked = false;
 		}
 	}
 
@@ -340,8 +341,10 @@ class AlertToast extends LitElement {
 
 	_handleAlertOpen(e) {
 		if (!e || e.target === this || !this.open) return;
-		this._state = 'moving';
-		this._bottomSpacing += e.detail.height;
+		this._state = states.SLIDING;
+		this._bottomHeight += e.detail.height;
+		this._bottomMargin += 0.6;
+		this._bottomSpacing = `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)`;
 	}
 
 	_handleAlertClose(e) {
@@ -350,8 +353,10 @@ class AlertToast extends LitElement {
 		const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
 		const closingContainerBottom = e.detail.bottom;
 		if (closingContainerBottom > containerBottom) return; // closing alert is above this alert, no need to adjust bottom spacing
-		this._bottomSpacing -= e.detail.height;
-		this._state = e.detail.click ? 'moving-click' : 'moving';
+		this._bottomHeight -= e.detail.height;
+		this._bottomMargin -= 0.6;
+		this._bottomSpacing = `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)`;
+		this._state = states.SLIDING;
 	}
 }
 
