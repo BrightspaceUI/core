@@ -2,7 +2,7 @@ import '../demo/skeleton-group-test-wrapper.js';
 import '../demo/skeleton-test-box.js';
 import '../demo/skeleton-test-container.js';
 import '../demo/skeleton-test-heading.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, html, waitUntil } from '@brightspace-ui/testing';
 
 const oneSkeletonFixture = html`
 	<d2l-skeleton-group-test-wrapper style="width: 330px">
@@ -77,6 +77,7 @@ describe('d2l-skeleton-group', () => {
 	it('add-element', async() => {
 		const elem = await fixture(noSkeletonFixture);
 		elem.insertAdjacentHTML('beforeend', '<d2l-test-skeleton-container skeleton></d2l-test-skeleton-container>');
+		await waitUntil(() => elem.skeleton);
 		await elem.updateComplete;
 		await expect(elem).to.be.golden();
 	});
@@ -84,6 +85,7 @@ describe('d2l-skeleton-group', () => {
 	it('remove-element', async() => {
 		const elem = await fixture(oneSkeletonFixture);
 		elem.querySelector('d2l-test-skeleton-container[skeleton]').remove();
+		await waitUntil(() => !elem.skeleton);
 		await elem.updateComplete;
 		await expect(elem).to.be.golden();
 	});
