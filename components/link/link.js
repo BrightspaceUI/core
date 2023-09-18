@@ -1,5 +1,4 @@
 import '../colors/colors.js';
-import '../icons/icon.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
