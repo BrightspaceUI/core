@@ -126,6 +126,27 @@ class AlertToast extends LitElement {
 		this._hasFocus = false;
 		this._hasMouse = false;
 		this._state = states.CLOSED;
+
+		this._handleAlertOpen = this._handleAlertOpen.bind(this);
+		this._handleAlertClose = this._handleAlertClose.bind(this);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		document.body.addEventListener('d2l-alert-toast-open', this._handleAlertOpen)
+		document.body.addEventListener('d2l-alert-toast-close', this._handleAlertClose)
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		document.body.removeEventListener('d2l-alert-toast-open', this._handleAlertOpen);
+		document.body.removeEventListener('d2l-alert-toast-close', this._handleAlertClose);
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this._innerContainer = this.shadowRoot.querySelector('.d2l-alert-toast-container');
 	}
 
 	get open() {
@@ -238,7 +259,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	_openChanged(newOpen) {
+	async _openChanged(newOpen) {
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -256,7 +277,22 @@ class AlertToast extends LitElement {
 				}
 			}
 			this.setAttribute('role', 'alert');
+			await this.updateComplete;
+			const height = this._innerContainer.offsetHeight;
+			this.dispatchEvent(new CustomEvent(
+				'd2l-alert-toast-open', {
+					bubbles: true,
+					composed: false,
+					detail: { height: height }
+				}
+			));
 		} else {
+			let height = 0;
+			let bottom = 0;
+			if (this._innerContainer) {
+				height = this._innerContainer.offsetHeight;
+				bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
+			}
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
@@ -268,9 +304,10 @@ class AlertToast extends LitElement {
 				'd2l-alert-toast-close', {
 					bubbles: true,
 					composed: false,
-					detail: { action: this._action }
+					detail: { action: this._action, height, bottom }
 				}
 			));
+			if (this._innerContainer) this._innerContainer.style.bottom = '1.5rem';
 		}
 	}
 
@@ -280,6 +317,24 @@ class AlertToast extends LitElement {
 		} else {
 			this._closeTimerStop();
 		}
+	}
+
+	_handleAlertOpen(e) {
+		if (!e) return;
+		if (e.target === this || !this.open) return;
+		const oldBottomVal = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
+		this._innerContainer.style.bottom = `calc(${oldBottomVal + e.detail.height}px + 0.6rem)`;
+	}
+
+	_handleAlertClose(e) {
+		if (!e) return;
+		if (e.target === this || !this.open) return;
+		/** this only matters if the one closing is below the one listening!! check the bottoms */
+
+		const containerBottomVal = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'))
+		const closingContainerBottom = e.detail.bottom;
+		if (closingContainerBottom > containerBottomVal) return;
+		this._innerContainer.style.bottom = `calc(${containerBottomVal - e.detail.height}px - 0.6rem)`;
 	}
 }
 
