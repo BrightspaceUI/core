@@ -45,6 +45,7 @@ describe('d2l-link', () => {
 			const elem = await fixture(html`<d2l-link small>Link</d2l-link>`);
 			expect(getAnchor(elem).classList.contains('d2l-link-small')).to.be.true;
 		});
+
 	});
 
 	describe('attribute reflection', () => {
@@ -92,19 +93,9 @@ describe('d2l-link', () => {
 	});
 
 	describe('new-window', () => {
-		it('should add new window icon', async() => {
-			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
-			expect(elem.shadowRoot.querySelector('d2l-icon')).to.exist;
-		});
-
-		it('should bind _blank to anchor target', async() => {
-			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
-			expect(getAnchor(elem).getAttribute('target')).to.equal('_blank');
-		});
-
-		it('should add hidden span new window term for screen readers', async() => {
-			const elem = await fixture(html`<d2l-link new-window></d2l-link>`);
-			expect(getAnchor(elem).querySelector('span').innerText).to.equal('Opens in a new window.');
+		it('should add offscreen text', async() => {
+			const elem = await fixture(html`<d2l-link new-window>link text</d2l-link>`);
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('Opens in a new window.');
 		});
 	});
 
