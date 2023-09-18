@@ -96,7 +96,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * Whether to display the open in new window icon
 			 * @type {boolean}
 			 */
-			newWindow: { type: Boolean, attribute: 'new-window' }
+			newWindow: { type: Boolean, attribute: 'new-window', reflect: true }
 		};
 	}
 
@@ -123,19 +123,14 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					overflow: hidden;
 					overflow-wrap: anywhere;
 				}
-				d2l-icon.d2l-new-window {
-					color: var(--d2l-color-celestine);
-					vertical-align: inherit;
-				}
-
-				:host([small]) d2l-icon.d2l-new-window {
-					height: 14px;
-					width: 14px;
-				}
-
-				@media print {
-					d2l-icon.d2l-new-window {
-						display: none;
+				@media screen {
+					:host([new-window]) a::after {
+						content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%20mirror-in-rtl%3D%22true%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23006fbf%22%20d%3D%22M12.1.6a.944.944%200%200%200%20.2%201.04l1.352%201.353L10.28%206.37a.956.956%200%200%200%201.35%201.35l3.382-3.38%201.352%201.352a.944.944%200%200%200%201.04.2.958.958%200%200%200%20.596-.875V.96a.964.964%200%200%200-.96-.96h-4.057a.958.958%200%200%200-.883.6z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23006fbf%22%20d%3D%22M14%2011v5a2.006%202.006%200%200%201-2%202H2a2.006%202.006%200%200%201-2-2V6a2.006%202.006%200%200%201%202-2h5a1%201%200%200%201%200%202H2v10h10v-5a1%201%200%200%201%202%200z%22%2F%3E%0A%3C%2Fsvg%3E%0A");
+						margin-inline-start: 6px;
+						vertical-align: inherit;
+					}
+					:host([new-window][small]) a::after {
+						content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2018%2018%22%20mirror-in-rtl%3D%22true%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23006fbf%22%20d%3D%22M12.1.6a.944.944%200%200%200%20.2%201.04l1.352%201.353L10.28%206.37a.956.956%200%200%200%201.35%201.35l3.382-3.38%201.352%201.352a.944.944%200%200%200%201.04.2.958.958%200%200%200%20.596-.875V.96a.964.964%200%200%200-.96-.96h-4.057a.958.958%200%200%200-.883.6z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23006fbf%22%20d%3D%22M14%2011v5a2.006%202.006%200%200%201-2%202H2a2.006%202.006%200%200%201-2-2V6a2.006%202.006%200%200%201%202-2h5a1%201%200%200%201%200%202H2v10h10v-5a1%201%200%200%201%202%200z%22%2F%3E%0A%3C%2Fsvg%3E%0A");
 					}
 				}
 			`
@@ -166,9 +161,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const target = this.newWindow && this.target === undefined
 			? '_blank'
 			: this.target;
-		const newWindowIndicator = this.newWindow
-			? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>`
-			: nothing;
 		const newWindowMessage = (target === '_blank')
 			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
@@ -180,7 +172,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			><span style="white-space: nowrap;"><span style="white-space: normal;"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
+			><slot></slot>${newWindowMessage}</a>`;
 	}
 
 }
