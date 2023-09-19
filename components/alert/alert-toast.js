@@ -4,10 +4,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-/**
- * TODO: what if alert resizes? would need to adjust heights on all other alerts
- */
-
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const states = {
@@ -114,7 +110,7 @@ class AlertToast extends LitElement {
 			.d2l-alert-toast-container[data-state="preopening"],
 			.d2l-alert-toast-container[data-state="closing"] {
 				opacity: 0;
-				transform: translateY(5rem);
+				transform: translateY(calc(100% + 1.5rem));
 			}
 
 			.d2l-alert-toast-container[data-state="opening"] {
@@ -188,9 +184,8 @@ class AlertToast extends LitElement {
 	}
 
 	render() {
-		const bottomSpacing = (this._bottomHeight || this._bottomMargin) ? `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)` : undefined;
 		const containerStyles = {
-			bottom: bottomSpacing || 0
+			bottom: (this._bottomHeight || this._bottomMargin) ? `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)` : 0
 		};
 		const containerClasses = {
 			'd2l-alert-toast-container': true,

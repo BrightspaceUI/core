@@ -10,6 +10,11 @@
 		import '../../demo/demo-page.js';
 		import '../alert-toast.js';
 	</script>
+	<style>
+		d2l-button {
+			padding-bottom: 1rem;
+		}
+	</style>
 </head>
 
 <body unresolved>
@@ -48,6 +53,26 @@
 					A message.
 				</d2l-alert-toast>
 				<d2l-button primary data-toast="toast4">Open alert</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Multiple Alerts</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert-toast id="toast5" no-auto-close>A default toast alert.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast5">Open alert</d2l-button>
+
+				<d2l-alert-toast id="toast6" no-auto-close>A default toast alert.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast6">Open alert</d2l-button>
+
+				<d2l-alert-toast id="toast7" no-auto-close>A default toast alert.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast7">Open alert</d2l-button>
+
+				<d2l-alert-toast id="toast8" type="success" button-text="Do it!" has-close-button no-auto-close
+					subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">
+					A message.
+				</d2l-alert-toast>
+				<d2l-button primary data-toast="toast8">Open alert</d2l-button>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>
