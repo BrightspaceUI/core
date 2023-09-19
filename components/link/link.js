@@ -125,6 +125,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				d2l-icon.d2l-new-window {
 					color: var(--d2l-color-celestine);
+					margin-inline-start: 0.5ch;
 					vertical-align: inherit;
 				}
 
@@ -167,7 +168,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			? '_blank'
 			: this.target;
 		const newWindowIndicator = this.newWindow
-			? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>`
+			? html`<span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>`
 			: nothing;
 		const newWindowMessage = (target === '_blank')
 			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
@@ -180,7 +181,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			><span style="white-space: nowrap;"><span style="white-space: normal;"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
+			><span style="white-space: nowrap;"><span style="white-space: ${getComputedStyle(this).whiteSpace || 'normal'};"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
 	}
 
 }
