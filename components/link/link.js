@@ -169,7 +169,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			? '_blank'
 			: this.target;
 		const newWindowIndicator = this.newWindow
-			? html`<span style="white-space: nowrap;"><span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon></span>`
+			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon></span>`
 			: nothing;
 		const newWindowMessage = (target === '_blank')
 			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
