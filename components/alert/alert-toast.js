@@ -3,6 +3,12 @@ import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+
+	/**
+	 * TODO: what if alert resizes? would need to adjust heights on all other alerts
+	 * close animation on middle and top
+	 */
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const states = {
@@ -60,7 +66,8 @@ class AlertToast extends LitElement {
 			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
-			_bottomSpacing: { type: Number },
+			_bottomHeight: { type: Number },
+			_bottomMargin: { type: Number },
 			_closeClicked: { state: true },
 			_state: { type: String }
 		};
@@ -91,15 +98,15 @@ class AlertToast extends LitElement {
 
 			.d2l-alert-toast-container[data-state="opening"],
 			.d2l-alert-toast-container[data-state="closing"] {
-				transition-duration: 250ms;
+				transition-duration: 600ms;
 				transition-property: transform, opacity;
-				transition-timing-function: ease-in;
+				transition-timing-function: ease;
 			}
 
 			.d2l-alert-toast-container[data-state="preopening"],
 			.d2l-alert-toast-container[data-state="closing"] {
 				opacity: 0;
-				transform: translateY(0.5rem);
+				transform: translateY(5rem);
 			}
 
 			.d2l-alert-toast-container[data-state="opening"] {
@@ -130,14 +137,12 @@ class AlertToast extends LitElement {
 		this.noAutoClose = false;
 		this.open = false;
 
-		this._bottomSpacing = 0;
+		this._bottomHeight = 0;
+		this._bottomMargin = 0;
 		this._closeClicked = false;
 		this._hasFocus = false;
 		this._hasMouse = false;
 		this._state = states.CLOSED;
-
-		this._bottomHeight = 0;
-		this._bottomMargin = 0;
 
 		this._handleAlertOpen = this._handleAlertOpen.bind(this);
 		this._handleAlertClose = this._handleAlertClose.bind(this);
@@ -175,8 +180,9 @@ class AlertToast extends LitElement {
 	}
 
 	render() {
+		const bottomSpacing = (this._bottomHeight || this._bottomMargin) ? `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)` : undefined;
 		const containerStyles = {
-			bottom: this._bottomSpacing ? `calc(1.5rem + ${this._bottomSpacing})` : '1.5rem'
+			bottom: bottomSpacing ? `calc(1.5rem + ${bottomSpacing})` : '1.5rem'
 		};
 		return html`
 			<div
@@ -326,7 +332,8 @@ class AlertToast extends LitElement {
 					detail: { height, bottom, click: this._closeClicked }
 				}
 			));
-			this._bottomSpacing = 0;
+			this._bottomHeight = 0;
+			this._bottomMargin = 0;
 			this._closeClicked = false;
 		}
 	}
@@ -341,10 +348,9 @@ class AlertToast extends LitElement {
 
 	_handleAlertOpen(e) {
 		if (!e || e.target === this || !this.open) return;
-		this._state = states.SLIDING;
 		this._bottomHeight += e.detail.height;
 		this._bottomMargin += 0.6;
-		this._bottomSpacing = `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)`;
+		if (!reduceMotion) this._state = states.SLIDING;
 	}
 
 	_handleAlertClose(e) {
@@ -355,8 +361,7 @@ class AlertToast extends LitElement {
 		if (closingContainerBottom > containerBottom) return; // closing alert is above this alert, no need to adjust bottom spacing
 		this._bottomHeight -= e.detail.height;
 		this._bottomMargin -= 0.6;
-		this._bottomSpacing = `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)`;
-		this._state = states.SLIDING;
+		if (!reduceMotion) this._state = states.SLIDING;
 	}
 }
 
