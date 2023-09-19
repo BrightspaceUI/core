@@ -196,11 +196,7 @@ describe('d2l-html-block', () => {
 			html`<d2l-html-block style="width: 650px;" html="${mathBlock}"></d2l-html-block>`,
 			{ mathjax: { renderLatex: true } }
 		);
-		await waitUntil(() => {
-			// eslint-disable-next-line no-console
-			console.log('math (block) height', elem.clientHeight);
-			return elem.clientHeight === 145;
-		});
+		await waitUntil(() => elem.clientHeight === 144);
 		await expect(elem).to.be.golden();
 	});
 
@@ -284,11 +280,7 @@ describe('d2l-html-block', () => {
 			html`<d2l-html-block style="width: 650px;" html="An equation...${mathInline} embedded inline with text, and showing placement of indicies for summations."></d2l-html-block>`,
 			{ mathjax: { renderLatex: true } }
 		);
-		await waitUntil(() => {
-			// eslint-disable-next-line no-console
-			console.log('math (inline) height', elem.clientHeight);
-			return elem.clientHeight === 61;
-		});
+		await waitUntil(() => elem.clientHeight === 61);
 		await expect(elem).to.be.golden();
 	});
 
@@ -312,11 +304,7 @@ describe('d2l-html-block', () => {
 			${mathBlock}"></d2l-html-block>`,
 			{ mathjax: { renderLatex: true } }
 		);
-		await waitUntil(() => {
-			// eslint-disable-next-line no-console
-			console.log('math (block) and code (block) height', elem.clientHeight);
-			return elem.clientHeight === 263;
-		});
+		await waitUntil(() => elem.clientHeight === 263);
 		await expect(elem).to.be.golden();
 	});
 
