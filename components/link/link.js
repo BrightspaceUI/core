@@ -182,9 +182,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			>
-				<slot></slot>${newWindowIndicator}${newWindowMessage}
-			</a>`;
+			><slot></slot>${newWindowIndicator}${newWindowMessage}</a>`;
 	}
 
 }
