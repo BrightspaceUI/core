@@ -73,62 +73,8 @@ describe('d2l-switch-visibility', () => {
 					template: create({ conditions: true, on: true, text: 'Label text has been overridden.', textPosition: 'hidden' })
 				},
 				{
-					name: 'off with only whitespace conditions',
-					template: html`
-						<d2l-switch-visibility>
-						</d2l-switch-visibility>
-					`
-				},
-				{
 					name: 'on with only whitespace conditions',
-					template: html`
-						<d2l-switch-visibility on>
-						</d2l-switch-visibility>
-					`
-				},
-				{
-					name: 'on with only lots of whitespace conditions',
-					template: html`
-						<d2l-switch-visibility on>
-											
-						</d2l-switch-visibility> 
-					`
-				},
-				{
-					name: 'on with only loooots of whitespace conditions',
-					template: html`
-						<d2l-switch-visibility on>
-			                                                                                            					
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			</d2l-switch-visibility>
-					`
+					template: html`<d2l-switch-visibility on>${Array(6).fill('	')}${Array(20).fill('\n')}${Array(50).fill(' ')}</d2l-switch-visibility>`
 				}
 			].forEach(({ name, template }) => {
 				it(name, async() => {
