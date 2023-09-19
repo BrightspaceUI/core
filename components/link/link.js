@@ -116,6 +116,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				a {
 					display: inherit;
+					white-space: nowrap;
 				}
 				a.truncate {
 					-webkit-box-orient: vertical;
@@ -164,7 +165,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-small': this.small,
 			'truncate': this.lines > 0
 		};
-		const styles = { whiteSpace: 'nowrap', webkitLineClamp: this.lines || null };
+		const styles = { webkitLineClamp: this.lines || null };
 		const target = this.newWindow && this.target === undefined
 			? '_blank'
 			: this.target;
