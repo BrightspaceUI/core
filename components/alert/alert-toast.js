@@ -83,7 +83,7 @@ class AlertToast extends LitElement {
 				box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
 				display: none;
 				left: 0;
-				margin: 0 auto;
+				margin: 0 auto 1.5rem;
 				max-width: 600px;
 				position: fixed;
 				right: 0;
@@ -132,7 +132,7 @@ class AlertToast extends LitElement {
 
 			@media (max-width: 615px) {
 				.d2l-alert-toast-container {
-					bottom: 12px;
+					margin-bottom: 12px;
 					width: calc(100% - 16px);
 				}
 			}
@@ -190,7 +190,7 @@ class AlertToast extends LitElement {
 	render() {
 		const bottomSpacing = (this._bottomHeight || this._bottomMargin) ? `calc(${this._bottomHeight}px + ${this._bottomMargin}rem)` : undefined;
 		const containerStyles = {
-			bottom: bottomSpacing ? `calc(1.5rem + ${bottomSpacing})` : '1.5rem'
+			bottom: bottomSpacing || 0
 		};
 		const containerClasses = {
 			'd2l-alert-toast-container': true,
