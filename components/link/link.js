@@ -125,13 +125,19 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				d2l-icon.d2l-new-window {
 					color: var(--d2l-color-celestine);
-					margin-inline-start: 0.5ch;
+					height: 0.78em;
+					margin-inline-start: 0.3em;
 					vertical-align: inherit;
+					width: 0.78em;
 				}
 
 				:host([small]) d2l-icon.d2l-new-window {
-					height: 14px;
-					width: 14px;
+					height: 1em;
+					width: 1em;
+				}
+
+				:host(:hover) d2l-icon.d2l-new-window {
+					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
 				}
 
 				@media print {
