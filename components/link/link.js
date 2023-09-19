@@ -164,7 +164,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-small': this.small,
 			'truncate': this.lines > 0
 		};
-		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
+		const styles = { whiteSpace: 'nowrap', webkitLineClamp: this.lines || null };
 		const target = this.newWindow && this.target === undefined
 			? '_blank'
 			: this.target;
@@ -182,7 +182,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			><span style="white-space: nowrap;"><span style="white-space: ${getComputedStyle(this).whiteSpace || 'normal'};"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
+			><span style="white-space: ${getComputedStyle(this).whiteSpace || 'normal'};"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</a>`;
 	}
 
 }
