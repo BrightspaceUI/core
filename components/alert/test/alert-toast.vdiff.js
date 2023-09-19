@@ -9,9 +9,11 @@ const alertWithSubtextAndCloseButton = html`
 `;
 
 const multipleAlerts = html`
-	<div><d2l-alert-toast no-auto-close type="default" id="alert-middle">A default message.</d2l-alert-toast>
-	${alertWithSubtextAndCloseButton}
-	<d2l-alert-toast no-auto-close type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast></div>
+	<div>
+		<d2l-alert-toast no-auto-close type="default" id="alert-middle">A default message.</d2l-alert-toast>
+		${alertWithSubtextAndCloseButton}
+		<d2l-alert-toast no-auto-close type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast>
+	</div>
 `;
 
 describe('alert-toast', () => {

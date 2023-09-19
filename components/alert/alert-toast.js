@@ -10,9 +10,9 @@ const states = {
 	CLOSED: 'closed', // the toast is closed
 	CLOSING: 'closing', // the close animation is running
 	PREOPENING: 'preopening', // a pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
-	SLIDING: 'sliding', // the transform animation when multiple alerts are on the page is running
 	OPENING: 'opening', // the opening animation is running
-	OPEN: 'open' // the toast is open
+	OPEN: 'open', // the toast is open
+	SLIDING: 'sliding' // the transform animation when multiple alerts are on the page is running
 };
 
 /**
@@ -99,8 +99,8 @@ class AlertToast extends LitElement {
 			}
 
 			.d2l-alert-toast-container.d2l-alert-toast-container-not-bottom[data-state="closing"] {
-				transition-property: opacity;
 				transform: unset;
+				transition-property: opacity;
 			}
 
 			.d2l-alert-toast-container.d2l-alert-toast-container-close-clicked[data-state="closing"] {
@@ -315,8 +315,6 @@ class AlertToast extends LitElement {
 	}
 
 	async _openChanged(newOpen) {
-		let computedStyles;
-		if (this._innerContainer) computedStyles = getComputedStyle(this._innerContainer);
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -348,7 +346,7 @@ class AlertToast extends LitElement {
 			let bottom = 0;
 			if (this._innerContainer) {
 				height = this._innerContainer.offsetHeight;
-				bottom = parseFloat(computedStyles.getPropertyValue('bottom'));
+				bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
 			}
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
