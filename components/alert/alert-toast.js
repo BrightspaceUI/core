@@ -352,6 +352,9 @@ class AlertToast extends LitElement {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
 				this._state = states.CLOSED;
+				this._bottomHeight = 0;
+				this._bottomMargin = 0;
+				this._closeClicked = false;
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
