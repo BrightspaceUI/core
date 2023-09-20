@@ -160,7 +160,7 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 	getOverflowContainer(overflowItems, mini) {
 		const moreActionsText = this.localize('components.overflow-group.moreActions');
-		const menu = html`<d2l-dropdown-menu>
+		const menu = html`<d2l-dropdown-menu class="vdiff-target">
 			<d2l-menu label="${moreActionsText}">
 				${overflowItems}
 			</d2l-menu>
