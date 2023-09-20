@@ -195,13 +195,14 @@ describe('filter', () => {
 	});
 
 	describe('multiple', () => {
-		async function enterDimension(filter, dimNum) {
+		async function enterDimension(filter, dimNum, expectedHeight) {
 			const menu = filter.shadowRoot.querySelector('d2l-menu');
 			const initialMenuHeight = menu.clientHeight;
 			const dims = filter.shadowRoot.querySelectorAll('d2l-menu-item');
 			sendKeysElem(dims[dimNum - 1], 'press', 'Enter');
 			await oneEvent(filter, 'd2l-filter-dimension-first-open');
 			await waitUntil(() => menu.clientHeight !== initialMenuHeight);
+			if (expectedHeight) await waitUntil(() => menu.clientHeight === expectedHeight);
 		}
 
 		const multipleDims = html`
@@ -230,14 +231,16 @@ describe('filter', () => {
 			[
 				{ name: 'empty', template: createEmptyMultipleDims({ long: true }) },
 				{ name: 'selected', template: multipleDims },
-				...[1, 2, 3].map(dimNum => ({ name: `nested-dim-${dimNum}`, dimNum, template: multipleDims })),
-			].forEach(({ name, template, dimNum }) => {
+				...[{ dim: 1, height: 439 }, { dim: 2, height: 151 }, { dim: 3, height: 79 }].map(({ dim, height }) =>
+					({ name: `nested-dim-${dim}`, dim, height, template: multipleDims })
+				),
+			].forEach(({ name, template, dim, height }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl });
 					sendKeysElem(elem, 'press', 'Enter');
 					await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown-menu'), 'd2l-dropdown-open');
 					await nextFrame();
-					if (dimNum) await enterDimension(elem, dimNum);
+					if (dim) await enterDimension(elem, dim, height);
 					await expect(elem).to.be.golden();
 				});
 
@@ -246,7 +249,7 @@ describe('filter', () => {
 					sendKeysElem(elem, 'press', 'Enter');
 					await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown-menu'), 'd2l-dropdown-open');
 					await nextFrame();
-					if (dimNum) await enterDimension(elem, dimNum);
+					if (dim) await enterDimension(elem, dim);
 					await expect(document).to.be.golden();
 				});
 			});
