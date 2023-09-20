@@ -22,6 +22,7 @@ const TOAST_SPACING = 0.6;
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-toast-button-press - Dispatched when the toast's action button is clicked
  * @fires d2l-alert-toast-close - Dispatched when the toast is closed
+ * @fires d2l-alert-toast-open - Dispatched when the toast is opened
  */
 class AlertToast extends LitElement {
 
@@ -96,13 +97,12 @@ class AlertToast extends LitElement {
 			.d2l-alert-toast-container[data-state="opening"],
 			.d2l-alert-toast-container[data-state="closing"] {
 				transition-duration: 600ms;
-				transition-property: transform, opacity;
+				transition-property: opacity;
 				transition-timing-function: ease;
 			}
-
-			.d2l-alert-toast-container.d2l-alert-toast-container-not-bottom[data-state="closing"] {
-				transform: unset;
-				transition-property: opacity;
+			.d2l-alert-toast-container[data-state="opening"],
+			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
+				transition-property: opacity, transform;
 			}
 
 			.d2l-alert-toast-container.d2l-alert-toast-container-close-clicked[data-state="closing"] {
@@ -112,6 +112,9 @@ class AlertToast extends LitElement {
 			.d2l-alert-toast-container[data-state="preopening"],
 			.d2l-alert-toast-container[data-state="closing"] {
 				opacity: 0;
+			}
+			.d2l-alert-toast-container[data-state="preopening"],
+			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
 				transform: translateY(calc(100% + 1.5rem));
 			}
 
@@ -192,7 +195,7 @@ class AlertToast extends LitElement {
 		const containerClasses = {
 			'd2l-alert-toast-container': true,
 			'd2l-alert-toast-container-close-clicked': this._closeClicked,
-			'd2l-alert-toast-container-not-bottom': this._bottomHeight > 0,
+			'd2l-alert-toast-container-lowest': !this._bottomHeight,
 			'vdiff-target': true
 		};
 		return html`
