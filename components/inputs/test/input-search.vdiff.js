@@ -3,6 +3,7 @@ import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/tes
 
 const noValueFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const hasValueFixture = html`<d2l-input-search label="search" value="Apples"></d2l-input-search>`;
+
 const viewport = { width: 376 };
 
 describe('d2l-input-search', () => {

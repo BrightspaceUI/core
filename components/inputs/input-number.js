@@ -345,6 +345,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?autofocus="${this.autofocus}"
 				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
+				class="vdiff-target"
 				@input="${this._handleInput}"
 				@keypress="${this._handleKeyPress}"
 				?disabled="${this.disabled}"
@@ -422,7 +423,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	_getTooltip() {
 		if (this.disabled) return null;
 		if (this.validationError && this.childErrors.size === 0 && !this.noValidate) {
-			return html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>`;
+			return html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start" class="vdiff-target">${this.validationError}</d2l-tooltip>`;
 		}
 		let lang = '';
 		if (this._hintType === HINT_TYPES.INTEGER) {
@@ -435,7 +436,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			lang = 'components.input-number.hintDecimalIncorrectPeriod';
 		}
 		if (lang !== '') {
-			return html`<d2l-tooltip announced for="${this._inputId}" state="info" align="start">${this.localize(lang)}</d2l-tooltip>`;
+			return html`<d2l-tooltip announced for="${this._inputId}" state="info" align="start" class="vdiff-target">${this.localize(lang)}</d2l-tooltip>`;
 		}
 	}
 
