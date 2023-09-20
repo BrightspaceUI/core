@@ -79,7 +79,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
 
 		return html`
-			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}" .customScrollers="${this._customScrollers}">
+			<d2l-scroll-wrapper class="vdiff-target" ?hide-actions="${this.hideActions}" .customScrollers="${this._customScrollers}">
 				${contents}
 			</d2l-scroll-wrapper>
 		`;
