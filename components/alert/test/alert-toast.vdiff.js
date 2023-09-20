@@ -1,5 +1,5 @@
 import '../alert-toast.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 
 const alertWithSubtextAndCloseButton = html`
 	<d2l-alert-toast id="alert-top" no-auto-close type="critical" button-text="Do it!" open
@@ -47,9 +47,9 @@ describe('alert-toast', () => {
 			const alert1 = elem.querySelector('#alert-middle');
 			const alert3 = elem.querySelector('#alert-bottom');
 			alert1.open = true;
-			await alert1.updateComplete;
+			await nextFrame();
 			alert3.open = true;
-			await alert3.updateComplete;
+			await nextFrame();
 		}
 
 		it('open all', async() => {
@@ -58,41 +58,21 @@ describe('alert-toast', () => {
 			await expect(document).to.be.golden();
 		});
 
-		it('open all then close top', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 200 } });
-			await openAlerts(elem);
-			const alert = elem.querySelector('#alert-top');
-			alert.open = false;
-			await alert.updateComplete;
-			await expect(document).to.be.golden();
-		});
-
-		it('open all then close middle', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 300 } });
-			await openAlerts(elem);
-			const alert = elem.querySelector('#alert-middle');
-			alert.open = false;
-			await alert.updateComplete;
-			await expect(document).to.be.golden();
-		});
-
-		it('open all then close bottom', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 300 } });
-			await openAlerts(elem);
-			const alert = elem.querySelector('#alert-bottom');
-			alert.open = false;
-			await alert.updateComplete;
-			await expect(document).to.be.golden();
+		['top', 'middle', 'bottom'].forEach(position => {
+			it(`open all then close ${position}`, async() => {
+				const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 300 } });
+				await openAlerts(elem);
+				const alert = elem.querySelector(`#alert-${position}`);
+				alert.open = false;
+				await nextFrame();
+				await expect(document).to.be.golden();
+			});
 		});
 
 		it('narrow', async() => {
 			const elem = await fixture(multipleAlerts, { viewport: { width: 400, height: 400 } });
 			await openAlerts(elem);
 			await expect(document).to.be.golden();
-		});
-
-		it.skip('resize', async() => {
-
 		});
 	});
 });

@@ -15,6 +15,8 @@ const states = {
 	SLIDING: 'sliding' // the transform animation when multiple alerts are on the page is running
 };
 
+const TOAST_SPACING = 0.6;
+
 /**
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
  * @slot - Default content placed inside of the component
@@ -61,8 +63,8 @@ class AlertToast extends LitElement {
 			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
-			_bottomHeight: { type: Number },
-			_bottomMargin: { type: Number },
+			_bottomHeight: { state: true },
+			_bottomMargin: { state: true },
 			_closeClicked: { state: true },
 			_state: { type: String }
 		};
@@ -253,22 +255,22 @@ class AlertToast extends LitElement {
 	}
 
 	_handleAlertClose(e) {
-		if (!e || e.target === this || !this.open) return;
+		if (e?.target === this || !this.open) return;
 
 		const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
 		const closingContainerBottom = e.detail.bottom;
 		if (closingContainerBottom > containerBottom) return; // closing alert is above this alert, no need to adjust bottom spacing
 
 		this._bottomHeight -= e.detail.height;
-		this._bottomMargin -= 0.6;
+		this._bottomMargin -= TOAST_SPACING;
 		if (!reduceMotion) this._state = states.SLIDING;
 	}
 
 	_handleAlertOpen(e) {
-		if (!e || e.target === this || !this.open) return;
+		if (e?.target === this || !this.open) return;
 
 		this._bottomHeight += e.detail.height;
-		this._bottomMargin += 0.6;
+		this._bottomMargin += TOAST_SPACING;
 		if (!reduceMotion) this._state = states.SLIDING;
 	}
 
@@ -314,7 +316,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	async _openChanged(newOpen) {
+	_openChanged(newOpen) {
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -332,15 +334,16 @@ class AlertToast extends LitElement {
 				}
 			}
 			this.setAttribute('role', 'alert');
-			await this.updateComplete;
-			const height = this._innerContainer.offsetHeight;
-			this.dispatchEvent(new CustomEvent(
-				'd2l-alert-toast-open', {
-					bubbles: true,
-					composed: false,
-					detail: { height }
-				}
-			));
+			requestAnimationFrame(() => {
+				const height = this._innerContainer.offsetHeight;
+				this.dispatchEvent(new CustomEvent(
+					'd2l-alert-toast-open', {
+						bubbles: true,
+						composed: false,
+						detail: { height }
+					}
+				));
+			});
 		} else {
 			let height = 0;
 			let bottom = 0;
@@ -362,7 +365,7 @@ class AlertToast extends LitElement {
 				'd2l-alert-toast-close', {
 					bubbles: true,
 					composed: false,
-					detail: { bottom, height, click: this._closeClicked }
+					detail: { bottom, height }
 				}
 			));
 		}
