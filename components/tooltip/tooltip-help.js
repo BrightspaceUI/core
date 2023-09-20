@@ -112,7 +112,7 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 				${this.text}
 			</button>
 			${!this.skeleton ? html`
-				<d2l-tooltip for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
+				<d2l-tooltip class="vdiff-target" for="d2l-tooltip-help-text" delay="0" offset="13" position="${ifDefined(this.position)}" ?showing="${this.showing}">
 					<slot></slot>
 				</d2l-tooltip>
 			` : nothing }
