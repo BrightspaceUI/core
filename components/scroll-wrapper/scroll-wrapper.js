@@ -194,10 +194,10 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
-				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
+				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 				</div>
-				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}">
+				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right vdiff-target" @click="${this._scrollRight}">
 					<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 				</div>
 			</div>` : null;
