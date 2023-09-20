@@ -125,12 +125,14 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				d2l-icon.d2l-new-window {
 					color: var(--d2l-color-celestine);
+					height: 0.95em;
+					margin-inline-start: 0.315em;
 					vertical-align: inherit;
+					width: 0.95em;
 				}
 
-				:host([small]) d2l-icon.d2l-new-window {
-					height: 14px;
-					width: 14px;
+				a:hover d2l-icon.d2l-new-window {
+					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
 				}
 
 				@media print {
@@ -162,12 +164,12 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-small': this.small,
 			'truncate': this.lines > 0
 		};
-		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
+		const styles = { webkitLineClamp: this.lines || null };
 		const target = this.newWindow && this.target === undefined
 			? '_blank'
 			: this.target;
 		const newWindowIndicator = this.newWindow
-			? html`&nbsp;<d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon>`
+			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon></span>`
 			: nothing;
 		const newWindowMessage = (target === '_blank')
 			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
@@ -180,7 +182,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(target)}"
-			><span style="white-space: nowrap;"><span style="white-space: normal;"><slot></slot></span>${newWindowIndicator}${newWindowMessage}</span></a>`;
+			><slot></slot>${newWindowIndicator}${newWindowMessage}</a>`;
 	}
 
 }
