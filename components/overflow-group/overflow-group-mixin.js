@@ -105,6 +105,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this.maxToShow = -1;
 		this.minToShow = 1;
 		this.openerType = OPENER_TYPE.DEFAULT;
+
+		this._firstChompCompleteResolve = undefined;
+		this._firstChompCompletePromise = new Promise(resolve => this._firstChompCompleteResolve = resolve);
 	}
 
 	disconnectedCallback() {
@@ -173,6 +176,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	convertToOverflowItem() {
 		throw new Error('OverflowGroupMixin.convertToOverflowItem must be overridden');
+	}
+
+	async getLoadingComplete() {
+		return this._firstChompCompletePromise;
 	}
 
 	getOverflowContainer() {
@@ -283,6 +290,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		/** Dispatched when there is an update performed to the overflow group */
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
+		if (this._firstChompCompleteResolve !== undefined) {
+			this._firstChompCompleteResolve();
+			this._firstChompCompleteResolve = undefined;
+		}
 	}
 
 	_getItemLayouts(filteredNodes) {
