@@ -348,29 +348,33 @@ class AlertToast extends LitElement {
 				));
 			});
 		} else {
-			let height = 0;
-			let bottom = 0;
-			if (this._innerContainer) {
-				height = this._innerContainer.offsetHeight;
-				bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
-			}
+			if (!this._innerContainer) return;
+
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
-				this._state = states.CLOSED;
-				this._bottomHeight = 0;
-				this._bottomMargin = 0;
-				this._closeClicked = false;
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
-			this.dispatchEvent(new CustomEvent(
-				'd2l-alert-toast-close', {
-					bubbles: true,
-					composed: false,
-					detail: { bottom, height }
+			requestAnimationFrame(() => {
+				const height = this._innerContainer.offsetHeight;
+				const bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+
+				if (reduceMotion || this._state === states.PREOPENING) {
+					this._state = states.CLOSED;
+					this._bottomHeight = 0;
+					this._bottomMargin = 0;
+					this._closeClicked = false;
 				}
-			));
+
+				this.dispatchEvent(new CustomEvent(
+					'd2l-alert-toast-close', {
+						bubbles: true,
+						composed: false,
+						detail: { bottom, height }
+					}
+				));
+			});
 		}
 	}
 
