@@ -377,10 +377,12 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	_stateChanged(newState) {
-		if (newState === states.OPEN) {
+	_stateChanged(newState, oldState) {
+		const newlyOpened = (newState === states.OPEN && oldState === states.OPENING);
+		const newlyOpenedReduceMotion = (newState === states.OPEN && oldState === states.CLOSED);
+		if (newlyOpened || newlyOpenedReduceMotion) {
 			this._closeTimerStart();
-		} else {
+		} else if (newState !== states.SLIDING && newState !== states.OPEN) {
 			this._closeTimerStop();
 		}
 	}
