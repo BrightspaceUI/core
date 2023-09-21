@@ -1,5 +1,5 @@
 import '../alert-toast.js';
-import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 
 const alertWithSubtextAndCloseButton = html`
 	<d2l-alert-toast id="alert-top" no-auto-close type="critical" button-text="Do it!" open
@@ -47,9 +47,9 @@ describe('alert-toast', () => {
 			const alert1 = elem.querySelector('#alert-middle');
 			const alert3 = elem.querySelector('#alert-bottom');
 			alert1.open = true;
-			await nextFrame();
+			await oneEvent(alert1, 'd2l-alert-toast-open');
 			alert3.open = true;
-			await nextFrame();
+			await oneEvent(alert3, 'd2l-alert-toast-open');
 		}
 
 		it('open all', async() => {
@@ -64,7 +64,7 @@ describe('alert-toast', () => {
 				await openAlerts(elem);
 				const alert = elem.querySelector(`#alert-${position}`);
 				alert.open = false;
-				await nextFrame();
+				await oneEvent(alert, 'd2l-alert-toast-close');
 				await expect(document).to.be.golden();
 			});
 		});
