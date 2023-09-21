@@ -92,11 +92,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			target: { type: String },
-			/**
-			 * Whether to display the open in new window icon
-			 * @type {boolean}
-			 */
-			newWindow: { type: Boolean, attribute: 'new-window' }
 		};
 	}
 
@@ -165,14 +160,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'truncate': this.lines > 0
 		};
 		const styles = { webkitLineClamp: this.lines || null };
-		const target = this.newWindow && this.target === undefined
-			? '_blank'
-			: this.target;
-		const newWindowIndicator = this.newWindow
-			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon></span>`
-			: nothing;
-		const newWindowMessage = (target === '_blank')
-			? html`<span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+		const newWindowElements = (this.target === '_blank')
+			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon class="d2l-new-window" icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
 
 		return html`<a
@@ -181,8 +170,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(target)}"
-			><slot></slot>${newWindowIndicator}${newWindowMessage}</a>`;
+				target="${ifDefined(this.target)}"
+			><slot></slot>${newWindowElements}</a>`;
 	}
 
 }
