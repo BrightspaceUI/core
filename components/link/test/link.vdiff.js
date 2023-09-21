@@ -1,21 +1,11 @@
 import '../link.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
 describe('d2l-link', () => {
 
-	before(async() => {
-		return new Promise(resolve => {
-			const link = document.createElement('link');
-			link.id = 'link-sass';
-			link.type = 'text/css';
-			link.rel = 'stylesheet';
-			link.href = './test/sass.output.css';
-			link.onload = resolve;
-			document.getElementsByTagName('head')[0].appendChild(link);
-		});
-	});
-
-	after(() => document.getElementById('link-sass').remove());
+	before(loadSass);
+	after(unloadSass);
 
 	[
 		{ name: 'wc-standard', template: html`<d2l-link href="https://www.d2l.com">Standard Link</d2l-link>` },
