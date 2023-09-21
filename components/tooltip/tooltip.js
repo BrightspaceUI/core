@@ -1,11 +1,11 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit';
-import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -950,7 +950,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 			if (this.showing) {
 				this.updatePosition();
-			} else if (this.getRootNode().activeElement === this._target) {
+			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
 			}
 		}
