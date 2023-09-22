@@ -71,7 +71,8 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
 		const tooltipHelpClasses = {
 			'switch-visibility-conditions-show': this.on && this._hasConditions,
-			'd2l-switch-text': true
+			'd2l-switch-text': true,
+			'vdiff-target': true
 		};
 
 		const conditions = html`

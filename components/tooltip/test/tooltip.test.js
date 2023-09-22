@@ -1,5 +1,6 @@
 import '../tooltip.js';
-import { aTimeout, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
+import { LitElement } from 'lit';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
@@ -203,6 +204,26 @@ describe('d2l-tooltip', () => {
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(dynamicTooltip.showing).to.be.true;
 		});
+
+		it('should show if added to a target with a nested element that already has focus', async() => {
+
+			const targetTag = defineCE(class extends LitElement {
+				render() {return html`<button>nested target</button>`; }
+			});
+			const elem = await fixture(`<div><${targetTag} id="target"></${targetTag}></div>`);
+			const target = elem.querySelector(targetTag);
+
+			await focusElem(target.shadowRoot.querySelector('button'));
+
+			const tooltip = document.createElement('d2l-tooltip');
+			tooltip.announced = true;
+			elem.appendChild(tooltip);
+
+			await oneEvent(elem, 'd2l-tooltip-show');
+			expect(tooltip.showing).to.be.true;
+
+		});
+
 	});
 
 	describe('delay', () => {
