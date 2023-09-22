@@ -20,11 +20,6 @@ const TOAST_SPACING = 0.6;
 const TOAST_SPACING_SMALL = 0.3;
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
-let IS_MOBILE_WIDTH = mediaQueryList.matches;
-mediaQueryList.onchange = (e) => {
-	if (e.matches) IS_MOBILE_WIDTH = true;
-	else IS_MOBILE_WIDTH = false;
-};
 
 /**
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
@@ -75,6 +70,7 @@ class AlertToast extends LitElement {
 			_bottomHeight: { state: true },
 			_closeClicked: { state: true },
 			_numAlertsBelow: { state: true },
+			_smallWidth: { state: true },
 			_state: { type: String }
 		};
 	}
@@ -160,8 +156,10 @@ class AlertToast extends LitElement {
 		this._hasMouse = false;
 		this._height = 0;
 		this._numAlertsBelow = 0;
+		this._smallWidth = false;
 		this._state = states.CLOSED;
 
+		this._handlePageResize = this._handlePageResize.bind(this);
 		this._handleSiblingResize = this._handleSiblingResize.bind(this);
 		this._resizeObserver = null;
 	}
@@ -183,6 +181,7 @@ class AlertToast extends LitElement {
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
 	}
 
 	disconnectedCallback() {
@@ -190,6 +189,7 @@ class AlertToast extends LitElement {
 		document.body.removeEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.removeEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
 		if (this._resizeObserver) this._resizeObserver.disconnect();
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handlePageResize);
 	}
 
 	firstUpdated(changedProperties) {
@@ -198,10 +198,12 @@ class AlertToast extends LitElement {
 		this._innerContainer = this.shadowRoot.querySelector('.d2l-alert-toast-container');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(this._innerContainer);
+
+		this._smallWidth = mediaQueryList.matches;
 	}
 
 	render() {
-		const spaceBetweenAlerts = this._numAlertsBelow * (IS_MOBILE_WIDTH ? TOAST_SPACING_SMALL : TOAST_SPACING);
+		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
 			bottom: (this._bottomHeight || this._numAlertsBelow) ? `calc(${this._bottomHeight}px + ${spaceBetweenAlerts}rem)` : 0
 		};
@@ -273,6 +275,10 @@ class AlertToast extends LitElement {
 	_handleButtonPress(e) {
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
+	}
+
+	_handlePageResize(e) {
+		this._smallWidth = e.matches;
 	}
 
 	_handleResize() {

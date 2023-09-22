@@ -74,5 +74,26 @@ describe('alert-toast', () => {
 			await openAlerts(elem);
 			await expect(document).to.be.golden();
 		});
+
+		/**
+		 * TODO: switch to more legitimate form of resizing once available
+		 */
+		it('resize smaller', async() => {
+			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 400 } });
+			await openAlerts(elem);
+			await fixture(html``, { viewport: { width: 300 } });
+			await expect(document).to.be.golden();
+		});
+
+		/**
+		 * TODO: switch to more legitimate form of resizing once available
+		 */
+		it('resize larger', async() => {
+			const elem = await fixture(multipleAlerts, { viewport: { width: 300, height: 400 } });
+			await openAlerts(elem);
+			await fixture(html``, { viewport: { width: 700 } });
+			await expect(document).to.be.golden();
+		});
+
 	});
 });
