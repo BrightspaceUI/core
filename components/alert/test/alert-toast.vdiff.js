@@ -47,9 +47,9 @@ describe('alert-toast', () => {
 			const alert1 = elem.querySelector('#alert-middle');
 			const alert3 = elem.querySelector('#alert-bottom');
 			alert1.open = true;
-			await oneEvent(alert1, 'd2l-alert-toast-open');
+			await oneEvent(alert1, 'd2l-alert-toast-resize');
 			alert3.open = true;
-			await oneEvent(alert3, 'd2l-alert-toast-open');
+			await oneEvent(alert3, 'd2l-alert-toast-resize');
 		}
 
 		it('open all', async() => {

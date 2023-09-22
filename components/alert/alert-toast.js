@@ -31,7 +31,6 @@ mediaQueryList.onchange = (e) => {
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-toast-button-press - Dispatched when the toast's action button is clicked
  * @fires d2l-alert-toast-close - Dispatched when the toast is closed
- * @fires d2l-alert-toast-open - Dispatched when the toast is opened
  */
 class AlertToast extends LitElement {
 
@@ -163,8 +162,6 @@ class AlertToast extends LitElement {
 		this._numAlertsBelow = 0;
 		this._state = states.CLOSED;
 
-		this._handleAlertOpen = this._handleAlertOpen.bind(this);
-		this._handleAlertClose = this._handleAlertClose.bind(this);
 		this._handleSiblingResize = this._handleSiblingResize.bind(this);
 		this._resizeObserver = null;
 	}
@@ -184,15 +181,13 @@ class AlertToast extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		document.body.addEventListener('d2l-alert-toast-open', this._handleAlertOpen);
-		document.body.addEventListener('d2l-alert-toast-close', this._handleAlertClose);
+		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		document.body.removeEventListener('d2l-alert-toast-open', this._handleAlertOpen);
-		document.body.removeEventListener('d2l-alert-toast-close', this._handleAlertClose);
+		document.body.removeEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.removeEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
@@ -275,26 +270,6 @@ class AlertToast extends LitElement {
 		clearTimeout(this._setTimeoutId);
 	}
 
-	_handleAlertClose(e) {
-		if (e?.target === this || !this.open) return;
-
-		const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
-		const closingContainerBottom = e.detail.bottom;
-		if (closingContainerBottom > containerBottom) return; // closing alert is above this alert, no need to adjust bottom spacing
-
-		this._bottomHeight -= e.detail.height;
-		this._numAlertsBelow -= 1;
-		if (!reduceMotion) this._state = states.SLIDING;
-	}
-
-	_handleAlertOpen(e) {
-		if (e?.target === this || !this.open) return;
-
-		this._bottomHeight += e.detail.height;
-		this._numAlertsBelow += 1;
-		if (!reduceMotion) this._state = states.SLIDING;
-	}
-
 	_handleButtonPress(e) {
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
@@ -303,16 +278,17 @@ class AlertToast extends LitElement {
 	_handleResize() {
 		const newHeight = this._innerContainer.offsetHeight;
 		const oldHeight = this._height;
-		if (newHeight === this._height || newHeight === 0) return;
-		else this._height = newHeight;
+		this._height = newHeight;
+		if (newHeight === oldHeight || newHeight === 0) return; // do not run if height has not changed or if closed
 
 		const bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+		const opening = oldHeight === 0;
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-toast-resize', {
 				bubbles: true,
 				composed: false,
-				detail: { bottom, heightDifference: (oldHeight - newHeight) }
+				detail: { bottom, heightDifference: (oldHeight - newHeight), opening, closing: false }
 			}
 		));
 	}
@@ -320,11 +296,20 @@ class AlertToast extends LitElement {
 	_handleSiblingResize(e) {
 		if (e?.target === this || !this.open) return;
 
-		const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
-		const siblingContainerBottom = e.detail.bottom;
-		if (siblingContainerBottom > containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
+		if (!e.detail.opening) {
+			const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+			const siblingContainerBottom = e.detail.bottom;
+			if (siblingContainerBottom > containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
+		}
 
 		this._bottomHeight -= e.detail.heightDifference;
+		if (e.detail.opening) {
+			this._numAlertsBelow += 1;
+			if (!reduceMotion) this._state = states.SLIDING;
+		} else if (e.detail.closing) {
+			this._numAlertsBelow -= 1;
+			if (!reduceMotion) this._state = states.SLIDING;
+		}
 	}
 
 	_onBlur() {
@@ -382,16 +367,6 @@ class AlertToast extends LitElement {
 				}
 			}
 			this.setAttribute('role', 'alert');
-			requestAnimationFrame(() => {
-				this._height = this._innerContainer.offsetHeight;
-				this.dispatchEvent(new CustomEvent(
-					'd2l-alert-toast-open', {
-						bubbles: true,
-						composed: false,
-						detail: { height: this._height }
-					}
-				));
-			});
 		} else {
 			if (!this._innerContainer) return;
 
@@ -415,7 +390,7 @@ class AlertToast extends LitElement {
 					'd2l-alert-toast-close', {
 						bubbles: true,
 						composed: false,
-						detail: { bottom, height: this._height }
+						detail: { bottom, heightDifference: this._height, opening: false, closing: true }
 					}
 				));
 			});
