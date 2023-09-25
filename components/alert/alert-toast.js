@@ -95,14 +95,13 @@ class AlertToast extends LitElement {
 			}
 
 			.d2l-alert-toast-container[data-state="opening"],
-			.d2l-alert-toast-container[data-state="closing"] {
+			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
 				transition-duration: 600ms;
-				transition-property: opacity;
+				transition-property: opacity, transform;
 				transition-timing-function: ease;
 			}
-			.d2l-alert-toast-container[data-state="opening"],
-			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
-				transition-property: opacity, transform;
+			.d2l-alert-toast-container[data-state="closing"] {
+				transition: opacity 200ms ease;
 			}
 
 			.d2l-alert-toast-container.d2l-alert-toast-container-close-clicked[data-state="closing"] {
@@ -378,10 +377,12 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	_stateChanged(newState) {
-		if (newState === states.OPEN) {
+	_stateChanged(newState, oldState) {
+		const newlyOpened = (newState === states.OPEN && oldState === states.OPENING);
+		const newlyOpenedReduceMotion = (newState === states.OPEN && oldState === states.CLOSED);
+		if (newlyOpened || newlyOpenedReduceMotion) {
 			this._closeTimerStart();
-		} else {
+		} else if (newState !== states.SLIDING && newState !== states.OPEN) {
 			this._closeTimerStop();
 		}
 	}
