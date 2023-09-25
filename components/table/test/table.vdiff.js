@@ -1,8 +1,10 @@
 import '../../inputs/input-number.js';
+import '../../inputs/input-text.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { tableStyles } from '../table-wrapper.js';
 
@@ -39,6 +41,32 @@ function createFruitHeaderRows(opts) {
 			<th>Bananas</th>
 			<th>Peaches</th>
 			<th>Grapes</th>
+		</tr>
+	`;
+}
+function createGradesHeaderRow(opts) {
+	const { withDropdown } = { withDropdown: false, ...opts };
+	return html`
+		<tr>
+			<th rowspan="2" class="top" sticky>Name</th>
+			${withDropdown ? html`
+				<th colspan="5" style="z-index: 3">
+					Category
+					<span style="position: relative;">
+						&nbsp;&#8964;
+						<div class="vdiff-target" style="background-color: blue; color: white; position: absolute; top: 20px; left: 0px; padding: 10px; width: 145px; height: 175px;">Dropdown simulator</div>
+					</span>
+				</th>
+			` : html`
+				<th colspan="5">Category</th>
+			`}
+		</tr>
+		<tr>
+			<th style="white-space: nowrap">Item 1</th>
+			<th style="white-space: nowrap">Item 2</th>
+			<th style="white-space: nowrap">Item 3</th>
+			<th style="white-space: nowrap">Item 4</th>
+			<th style="white-space: nowrap">Item 5</th>
 		</tr>
 	`;
 }
@@ -85,6 +113,45 @@ function createFruitRows(opts) {
 		</tr>
 	`;
 }
+function createGradesRows(opts) {
+	const { withDropdown } = { withDropdown: false, ...opts };
+	return html`
+		<tr>
+			${withDropdown ? html`
+				<th sticky style="white-space: nowrap; z-index: 2">
+					Albert, Eddie
+					<span style="position: relative;">
+						&nbsp;&#8964;
+						<div class="vdiff-target" style="background-color: blue; color: white; position: absolute; top: 20px; left: 0px; padding: 10px; width: 145px; height: 175px;">Dropdown simulator</div>
+					</span>
+				</th>
+			` : html`
+				<th sticky style="white-space: nowrap">Albert, Eddie</th>
+			`}
+			<td>5/10</td>
+			<td>9/10</td>
+			<td>3/5</td>
+			<td>9/10</td>
+			<td class="over">9/10</td>
+		</tr>
+		<tr>
+			<th sticky style="white-space: nowrap">Bedelia, Bonnie</th>
+			<td>3/10</td>
+			<td>7/10</td>
+			<td>5/5</td>
+			<td>7/10</td>
+			<td>7/10</td>
+		</tr>
+		<tr>
+			<th sticky style="white-space: nowrap">Benson, Robbie</th>
+			<td>8/10</td>
+			<td>6/10</td>
+			<td>1/5</td>
+			<td>6/10</td>
+			<td>6/10</td>
+		</tr>
+	`;
+}
 
 describe('table', () => {
 
@@ -96,6 +163,7 @@ describe('table', () => {
 	].forEach(({ type, rtl }) => {
 		describe(`${rtl ? 'rtl' : 'ltr'}-${type}`, () => {
 			async function createTableFixture(tableContents, opts = {}) {
+				const tableClasses = { 'd2l-table': true, 'vdiff-target': opts.stickyHeaders };
 				const tag = defineCE(
 					class extends LitElement {
 						static get styles() { return [tableStyles]; }
@@ -107,7 +175,7 @@ describe('table', () => {
 									style="--d2l-input-position: static;"
 									type="${type}">
 									${ opts.noTable ? tableContents : html`
-										<table class="d2l-table" ?no-column-border="${opts.legacyNoColumnBorder}">${tableContents}</table>
+										<table class="${classMap(tableClasses)}" ?no-column-border="${opts.legacyNoColumnBorder}">${tableContents}</table>
 									`}
 								</d2l-table-wrapper>`;
 							if (!opts.bottomMargin) return wrapper;
@@ -353,6 +421,186 @@ describe('table', () => {
 					`);
 					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
 					await expect(elem).to.be.golden();
+				});
+			});
+
+			describe('sticky', () => {
+				const inputRow = html`
+					<tr class="down">
+						<td>Cell 2-A</td>
+						<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
+						<td>Cell 2-C</td>
+					</tr>
+				`;
+				[
+					{
+						name: 'one-row-thead',
+						template: html`
+								<thead>${createHeaderRow({ trClass: 'top' })}</thead>
+								<tbody>
+									${createRows([1])}
+									${inputRow}
+									${createRows([3])}
+								</tbody>
+							</table>
+						`
+					},
+					{
+						name: 'one-row-no-thead-class',
+						template: html`
+							<tbody>
+								${createHeaderRow({ trClass: 'd2l-table-header top' })}
+								${createRows([1])}
+								${inputRow}
+								${createRows([3])}
+							</tbody>
+						`
+					},
+					{
+						name: 'one-row-no-thead-attr',
+						template: html`
+							<tbody>
+								${createHeaderRow({ headerAttribute: true, trClass: 'top' })}
+								${createRows([1])}
+								${inputRow}
+								${createRows([3])}
+							</tbody>
+						`
+					},
+					{
+						name: 'multi-row-thead',
+						template: html`
+							<thead>${createFruitHeaderRows()}</thead>
+							<tbody>${createFruitRows()}</tbody>
+						`
+					},
+					{
+						name: 'multi-row-no-thead-class',
+						template: html`
+							<tbody>
+								${createFruitHeaderRows({ trClass: 'd2l-table-header' })}
+								${createFruitRows()}
+							</tbody>
+						`
+					},
+					{
+						name: 'multi-row-no-thead-attr',
+						template: html`
+							<tbody>
+								${createFruitHeaderRows({ headerAttribute: true })}
+								${createFruitRows()}
+							</tbody>
+						`
+					},
+					{
+						name: 'selected-one-row',
+						template: html`
+							<tbody>
+								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+								${createFruitRows({ selectable: true, selected : [false, true, false] })}
+							</tbody>
+						`
+					},
+					{
+						name: 'selected-top-bottom',
+						template: html`
+							<tbody>
+								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+								${createFruitRows({ selectable: true, selected : [true, false, true] })}
+							</tbody>
+						`
+					},
+					{
+						name: 'selected-all',
+						template: html`
+							<tbody>
+								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+								${createFruitRows({ selectable: true, selected : [true, true, true] })}
+							</tbody>
+						`
+					}
+				].forEach(({ name, template }) => {
+					['top', 'down'].forEach((position) => {
+						it(`${name}-${position}`, async() => {
+							const elem = await createTableFixture(
+								template,
+								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
+							);
+							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+							await nextFrame();
+							await expect(elem).to.be.golden();
+						});
+					});
+				});
+
+				[
+					{
+						name: 'fixed-column-class',
+						template: html`
+							<thead>${createFruitHeaderRows({ selectable: true, stickyClass: 'd2l-table-sticky-cell' })}</thead>
+							<tbody>
+								${createFruitRows({ selectable: true, selected : [false, true, false], stickyClass: 'd2l-table-sticky-cell', inputNumber: false })}
+							</tbody>
+						`
+					},
+					{
+						name: 'fixed-column-attr',
+						template: html`
+							<thead>${createFruitHeaderRows({ selectable: true, stickyAttribute: true })}</thead>
+							<tbody>
+								${createFruitRows({ selectable: true, selected : [false, true, false], stickyAttribute: true, inputNumber: false })}
+							</tbody>
+						`
+					}
+				].forEach(({ name, template }) => {
+					['top', 'down', 'over'].forEach((position) => {
+						it(`${name}-${position}`, async() => {
+							const elem = await createTableFixture(
+								template,
+								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
+							);
+							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+							await expect(elem).to.be.golden();
+						});
+					});
+				});
+
+				it('one-column', async() => {
+					const elem = await createTableFixture(html`
+						<thead>
+							<tr><th class="top">Header A</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Cell 1-A</td></tr>
+						</tbody>
+					`, { bottomMargin: true, stickyHeaders: true });
+					elem.shadowRoot.querySelector('.top').scrollIntoView();
+					await expect(elem).to.be.golden();
+				});
+
+				[
+					{
+						name: 'grades-row-header',
+						template: html`
+							<thead>${createGradesHeaderRow({ withDropdown: true })}</thead>
+							<tbody>${createGradesRows()}</tbody>
+						`
+					},
+					{
+						name: 'grades-column-header',
+						template: html`
+							<thead>${createGradesHeaderRow()}</thead>
+							<tbody>${createGradesRows({ withDropdown: true })}</tbody>
+						`
+					}
+				].forEach(({ name, template }) => {
+					['top', 'over'].forEach(position => {
+						it(`${name}-${position}`, async() => {
+							const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true });
+							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
+							await expect(elem).to.be.golden();
+						});
+					});
 				});
 			});
 
