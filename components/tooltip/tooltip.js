@@ -991,6 +991,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		target.appendChild(cloneContainer);
 		await this.updateComplete;
 
+		// if the clone is a web component it needs to update to fill in any slots
+		const customElm = customElements.get(clone.localName);
+		if (customElm !== undefined) {
+			clone.requestUpdate();
+			await clone.updateComplete;
+		}
+
 		this._truncating = clone.scrollWidth > target.offsetWidth;
 		this._resizeRunSinceTruncationCheck = false;
 		target.removeChild(cloneContainer);
