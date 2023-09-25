@@ -67,11 +67,11 @@ class AlertToast extends LitElement {
 			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
-			_bottomHeight: { state: true },
 			_closeClicked: { state: true },
 			_numAlertsBelow: { state: true },
 			_smallWidth: { state: true },
-			_state: { type: String }
+			_state: { type: String },
+			_totalSiblingHeightBelow: { state: true }
 		};
 	}
 
@@ -150,7 +150,6 @@ class AlertToast extends LitElement {
 		this.noAutoClose = false;
 		this.open = false;
 
-		this._bottomHeight = 0;
 		this._closeClicked = false;
 		this._hasFocus = false;
 		this._hasMouse = false;
@@ -158,6 +157,7 @@ class AlertToast extends LitElement {
 		this._numAlertsBelow = 0;
 		this._smallWidth = false;
 		this._state = states.CLOSED;
+		this._totalSiblingHeightBelow = 0;
 
 		this._handlePageResize = this._handlePageResize.bind(this);
 		this._handleSiblingResize = this._handleSiblingResize.bind(this);
@@ -206,12 +206,12 @@ class AlertToast extends LitElement {
 	render() {
 		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
-			bottom: (this._bottomHeight || this._numAlertsBelow) ? `calc(${this._bottomHeight}px + ${spaceBetweenAlerts}rem)` : 0
+			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
 		};
 		const containerClasses = {
 			'd2l-alert-toast-container': true,
 			'd2l-alert-toast-container-close-clicked': this._closeClicked,
-			'd2l-alert-toast-container-lowest': !this._bottomHeight,
+			'd2l-alert-toast-container-lowest': !this._totalSiblingHeightBelow,
 			'vdiff-target': true
 		};
 		return html`
@@ -296,7 +296,7 @@ class AlertToast extends LitElement {
 			'd2l-alert-toast-resize', {
 				bubbles: true,
 				composed: false,
-				detail: { bottom, heightDifference: (oldHeight - newHeight), opening, closing: false }
+				detail: { bottom, heightDifference: (newHeight - oldHeight), opening, closing: false }
 			}
 		));
 	}
@@ -310,7 +310,7 @@ class AlertToast extends LitElement {
 			if (siblingContainerBottom < containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
 		}
 
-		this._bottomHeight -= e.detail.heightDifference;
+		this._totalSiblingHeightBelow += e.detail.heightDifference;
 		if (e.detail.opening) {
 			this._numAlertsBelow += 1;
 			if (!reduceMotion) this._state = states.SLIDING;
@@ -351,7 +351,7 @@ class AlertToast extends LitElement {
 			this._state = states.OPEN;
 		} else if (this._state === states.CLOSING) {
 			this._state = states.CLOSED;
-			this._bottomHeight = 0;
+			this._totalSiblingHeightBelow = 0;
 			this._closeClicked = false;
 			this._numAlertsBelow = 0;
 		}
@@ -389,7 +389,7 @@ class AlertToast extends LitElement {
 
 				if (reduceMotion || this._state === states.PREOPENING) {
 					this._state = states.CLOSED;
-					this._bottomHeight = 0;
+					this._totalSiblingHeightBelow = 0;
 					this._numAlertsBelow = 0;
 					this._closeClicked = false;
 				}
@@ -398,7 +398,7 @@ class AlertToast extends LitElement {
 					'd2l-alert-toast-close', {
 						bubbles: true,
 						composed: false,
-						detail: { bottom, heightDifference: this._height, opening: false, closing: true }
+						detail: { bottom, heightDifference: -this._height, opening: false, closing: true }
 					}
 				));
 			});
