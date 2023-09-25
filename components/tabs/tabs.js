@@ -244,6 +244,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
+		this._loadingCompleteResolve = undefined;
+		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
@@ -380,6 +382,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	focus() {
 		return this._focusSelected();
+	}
+
+	async getLoadingComplete() {
+		return this._loadingCompletePromise;
 	}
 
 	getTabListRect() {
@@ -895,11 +901,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		const newTranslationValue = this._calculateScrollPosition(selectedTabInfo, measures);
 		const scrollToPromise = this._scrollToPosition(newTranslationValue);
 		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
-
-		return Promise.all([
+		const p = Promise.all([
 			scrollVisibilityPromise,
 			scrollToPromise
 		]);
+		p.then(() => {
+			if (this._loadingCompleteResolve) {
+				this._loadingCompleteResolve();
+				this._loadingCompleteResolve = undefined;
+			}
+		});
+		return p;
 	}
 
 	_updateScrollVisibility(measures) {
