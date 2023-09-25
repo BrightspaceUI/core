@@ -177,11 +177,15 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	connectedCallback() {
+	async connectedCallback() {
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
+
+		await this.updateComplete;
+		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
+		this._resizeObserver.observe(this._innerContainer);
 	}
 
 	disconnectedCallback() {
@@ -196,9 +200,6 @@ class AlertToast extends LitElement {
 		super.firstUpdated(changedProperties);
 
 		this._innerContainer = this.shadowRoot.querySelector('.d2l-alert-toast-container');
-		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(this._innerContainer);
-
 		this._smallWidth = mediaQueryList.matches;
 	}
 
@@ -282,12 +283,13 @@ class AlertToast extends LitElement {
 	}
 
 	_handleResize() {
-		const newHeight = this._innerContainer.offsetHeight;
+		const boundingClientRect = this._innerContainer.getBoundingClientRect();
+		const newHeight = boundingClientRect.height;
 		const oldHeight = this._height;
 		this._height = newHeight;
 		if (newHeight === oldHeight || newHeight === 0) return; // do not run if height has not changed or if closed
 
-		const bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+		const bottom = boundingClientRect.bottom;
 		const opening = oldHeight === 0;
 
 		this.dispatchEvent(new CustomEvent(
@@ -303,9 +305,9 @@ class AlertToast extends LitElement {
 		if (e?.target === this || !this.open) return;
 
 		if (!e.detail.opening) {
-			const containerBottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+			const containerBottom = this._innerContainer.getBoundingClientRect().bottom;
 			const siblingContainerBottom = e.detail.bottom;
-			if (siblingContainerBottom > containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
+			if (siblingContainerBottom < containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
 		}
 
 		this._bottomHeight -= e.detail.heightDifference;
@@ -383,7 +385,7 @@ class AlertToast extends LitElement {
 				this._state = states.CLOSING;
 			}
 			requestAnimationFrame(() => {
-				const bottom = parseFloat(getComputedStyle(this._innerContainer).getPropertyValue('bottom'));
+				const bottom = this._innerContainer.getBoundingClientRect().bottom;
 
 				if (reduceMotion || this._state === states.PREOPENING) {
 					this._state = states.CLOSED;
