@@ -470,7 +470,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		window.addEventListener('resize', this._onTargetResize);
 
 		requestAnimationFrame(() => {
-			this._updateTarget();
+			if (this.isConnected) {
+				this._updateTarget();
+			}
 		});
 	}
 

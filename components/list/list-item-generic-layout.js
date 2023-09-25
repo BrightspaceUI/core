@@ -93,8 +93,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="drop-target"]) {
 				grid-row: 1 / 2;
 			}
+
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
+				pointer-events: none;
 			}
 
 			::slotted([slot="expand-collapse"]) {
