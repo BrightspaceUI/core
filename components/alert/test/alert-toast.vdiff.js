@@ -1,5 +1,5 @@
 import '../alert-toast.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 const alertWithSubtextAndCloseButton = html`
 	<d2l-alert-toast id="alert-top" no-auto-close type="critical" button-text="Do it!" open
@@ -14,6 +14,14 @@ const multipleAlerts = html`
 		${alertWithSubtextAndCloseButton}
 		<d2l-alert-toast no-auto-close type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast>
 	</div>
+`;
+
+const multipleAlertsAutoClose = html`
+<div>
+	<d2l-alert-toast type="default" id="alert-middle">A default message.</d2l-alert-toast>
+	<d2l-alert-toast type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast>
+	<div id="other"></div>
+</div>
 `;
 
 describe('alert-toast', () => {
@@ -43,6 +51,21 @@ describe('alert-toast', () => {
 	});
 
 	describe('multiple-alerts', () => {
+		async function focusAlert(elem) {
+			const firstAlertButton = elem.querySelector('d2l-alert-toast').shadowRoot.querySelector('d2l-alert').shadowRoot.querySelector('d2l-button-icon');
+			await focusElem(firstAlertButton);
+		}
+
+		async function hoverAlert(elem) {
+			const firstAlert = elem.querySelector('d2l-alert-toast').shadowRoot.querySelector('d2l-alert');
+			await hoverElem(firstAlert);
+		}
+
+		async function hoverOtherElem(elem) {
+			const otherElem = elem.querySelector('div#other');
+			await hoverElem(otherElem);
+		}
+
 		async function openAlerts(elem) {
 			const alert1 = elem.querySelector('#alert-middle');
 			const alert3 = elem.querySelector('#alert-bottom');
@@ -92,6 +115,41 @@ describe('alert-toast', () => {
 			const elem = await fixture(multipleAlerts, { viewport: { width: 300, height: 400 } });
 			await openAlerts(elem);
 			await fixture(html``, { viewport: { width: 700 } });
+			await expect(document).to.be.golden();
+		});
+
+		it('hover then wait', async() => {
+			const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+			await openAlerts(elem);
+			await hoverAlert(elem);
+			await aTimeout(4100);
+			await expect(document).to.be.golden();
+		});
+
+		it('hover then remove hover', async() => {
+			const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+			await openAlerts(elem);
+			await hoverAlert(elem);
+			await hoverOtherElem(elem);
+			await aTimeout(4100);
+			await expect(document).to.be.golden();
+		});
+
+		it('focus then wait', async() => {
+			const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+			await openAlerts(elem);
+			await focusAlert(elem);
+			await aTimeout(4100);
+			await expect(document).to.be.golden();
+		});
+
+		it('hover then focus then remove hover then wait', async() => {
+			const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+			await openAlerts(elem);
+			await hoverAlert(elem);
+			await focusAlert(elem);
+			await hoverOtherElem(elem);
+			await aTimeout(4100);
 			await expect(document).to.be.golden();
 		});
 
