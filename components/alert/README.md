@@ -155,7 +155,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 
 ### Multiple Toast Alerts
 
-We should avoid displaying more than one toast message at a time unless absolutely necessary since they most often disappear after 4 seconds and can be difficult to read for some users. It is often better to use an inline alert so that users have time to discover and read the message.
+Displaying more than one toast message at a time should be avoided unless absolutely necessary, since they most often disappear after 4 seconds and can be difficult to read for some users. It is often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
 
 For cases where multiple toast alerts are unavoidable, new toast messages will appear at the bottom and push older messages upward.
 
