@@ -266,7 +266,7 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 	render() {
 
 		const label = !this.labelHidden ? html`<div class="d2l-input-label">${this._getLabel()}</div>` : nothing;
-		const tooltip = !this._opened ? html`<d2l-tooltip for="opener" for-type="label">${this._getTooltipLabel()}</d2l-tooltip>` : nothing;
+		const tooltip = !this._opened ? html`<d2l-tooltip for="opener" for-type="label" class="vdiff-target">${this._getTooltipLabel()}</d2l-tooltip>` : nothing;
 		const opener = this._getOpener();
 
 		return html`${label}${opener}${tooltip}`;
