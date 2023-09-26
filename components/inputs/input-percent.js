@@ -112,6 +112,7 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				?autofocus="${this.autofocus}"
 				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
+				class="vdiff-target"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
 				input-width="${ifDefined(this.inputWidth)}"
