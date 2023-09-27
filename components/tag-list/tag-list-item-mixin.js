@@ -227,6 +227,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		if (this.keyboardTooltipItem && !this.keyboardTooltipShown) {
 			tooltip = html`
 				<d2l-tooltip
+					class="vdiff-target"
 					align="start"
 					@d2l-tooltip-hide="${this._handleKeyboardTooltipHide}"
 					@d2l-tooltip-show="${this._handleKeyboardTooltipShow}"
@@ -236,7 +237,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		} else if (options.hasTruncationTooltip || hasDescription) {
 			const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
 			tooltip = html`
-				<d2l-tooltip for="${this._id}" ?show-truncated-only="${!hasDescription}">
+				<d2l-tooltip class="vdiff-target" for="${this._id}" ?show-truncated-only="${!hasDescription}">
 					${tooltipHeader}
 					${hasDescription ? options.description : nothing}
 				</d2l-tooltip>`;
