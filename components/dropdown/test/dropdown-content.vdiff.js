@@ -15,7 +15,7 @@ function createDropdown(content, dropdown, opener) {
 		width: '30px',
 		...opener };
 	return html`
-		<div style="box-sizing: border-box; height: 100%; padding: 30px; position: relative; overflow: hidden;">
+		<div style="box-sizing: border-box; height: 100%; padding: 30px; position: relative;">
 			<d2l-dropdown style="${styleMap(dropdownStyles)}">
 				<div class="d2l-dropdown-opener" style="${styleMap(openerStyles)}"></div>
 				${content}
@@ -73,7 +73,7 @@ describe('dropdown-content', () => {
 		{ name: 'boundary-right-above', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content boundary="{&quot;right&quot;:50, &quot;above&quot;:20}" opened>${basicText}</d2l-dropdown-content>` }
 	].forEach(({ name, content, dropdownStyles = {}, openerStyles = {} }) => {
 		it(name, async() => {
-			await fixture(createDropdown(content, dropdownStyles, openerStyles), { viewport: { height: 400 }, fullscreen: true });
+			await fixture(createDropdown(content, dropdownStyles, openerStyles), { viewport: { height: 400 }, pagePadding: false });
 			await expect(document).to.be.golden();
 		});
 	});
@@ -91,7 +91,7 @@ describe('dropdown-content', () => {
 			{ name: 'align-start-edge', dropdownStyles: { insetInlineEnd: '30px', top: '30px' }, content: html`<d2l-dropdown-content align="start" opened>${withHeaderFooter}</d2l-dropdown-content>` }
 		].forEach(({ name, content, dropdownStyles = {} }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				await fixture(createDropdown(content, dropdownStyles), { rtl, viewport: { height: 400 }, fullscreen: true });
+				await fixture(createDropdown(content, dropdownStyles), { rtl, viewport: { height: 400 }, pagePadding: false });
 				await expect(document).to.be.golden();
 			});
 		});
@@ -110,13 +110,13 @@ describe('dropdown-content', () => {
 		{ name: 'mobile-bottom-tray-max-height', content: html`<d2l-dropdown-content mobile-tray="bottom" max-height="200" opened>${repeatedText}</d2l-dropdown-content>` }
 	].forEach(({ name, content }) => {
 		it(name, async() => {
-			await fixture(createDropdown(content), { viewport: { width: 600, height: 500 }, fullscreen: true });
+			await fixture(createDropdown(content), { viewport: { width: 600, height: 500 }, pagePadding: false });
 			await expect(document).to.be.golden();
 		});
 	});
 
 	it('scroll-top-shadow', async() => {
-		const elem = await fixture(createDropdown(html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>`), { viewport: { height: 400 }, fullscreen: true });
+		const elem = await fixture(createDropdown(html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>`), { viewport: { height: 400 }, pagePadding: false });
 		const content = elem.querySelector('d2l-dropdown-content');
 		content.scrollTo(1000);
 		await expect(document).to.be.golden();
