@@ -21,6 +21,9 @@ const TOAST_SPACING_SMALL = 0.3;
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
+let ALERT_HAS_FOCUS = false; // if this alert or sibling alert is focused on
+let ALERT_HAS_HOVER = false; // if this alert or sibling alert is hovered on
+
 /**
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
  * @slot - Default content placed inside of the component
@@ -199,6 +202,9 @@ class AlertToast extends LitElement {
 		document.body.removeEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handlePageResize);
+
+		if (this._hasMouse) ALERT_HAS_HOVER = false;
+		if (this._hasFocus) ALERT_HAS_FOCUS = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -266,7 +272,7 @@ class AlertToast extends LitElement {
 
 	_closeTimerStart() {
 		clearTimeout(this._setTimeoutId);
-		if (!this.noAutoClose && !this._hasFocus && !this._hasMouse) {
+		if (!this.noAutoClose && !ALERT_HAS_FOCUS && !ALERT_HAS_HOVER) {
 			const duration = this.buttonText ? 10000 : 4000;
 			this._setTimeoutId = setTimeout(() => {
 				this.open = false;
@@ -307,8 +313,8 @@ class AlertToast extends LitElement {
 		));
 	}
 
-	_handleSiblingCloseTimerStart(e) {
-		if (!this.open || e?.detail.hasFocus || e?.detail.hasMouse) return;
+	_handleSiblingCloseTimerStart() {
+		if (!this.open) return;
 		this._closeTimerStart();
 	}
 
@@ -332,15 +338,10 @@ class AlertToast extends LitElement {
 	}
 
 	_onBlur() {
+		ALERT_HAS_FOCUS = false;
 		this._hasFocus = false;
 		this._closeTimerStart();
-		this.dispatchEvent(new CustomEvent(
-			'd2l-alert-toast-timer-start', {
-				bubbles: true,
-				composed: false,
-				detail: { hasFocus: this._hasFocus, hasMouse: this._hasMouse }
-			}
-		));
+		if (!ALERT_HAS_HOVER) this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
 	}
 
 	_onCloseClicked(e) {
@@ -350,27 +351,24 @@ class AlertToast extends LitElement {
 	}
 
 	_onFocus() {
+		ALERT_HAS_FOCUS = true;
 		this._hasFocus = true;
 		this._closeTimerStop();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
 	_onMouseEnter() {
+		ALERT_HAS_HOVER = true;
 		this._hasMouse = true;
 		this._closeTimerStop();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
 	_onMouseLeave() {
+		ALERT_HAS_HOVER = false;
 		this._hasMouse = false;
 		this._closeTimerStart();
-		this.dispatchEvent(new CustomEvent(
-			'd2l-alert-toast-timer-start', {
-				bubbles: true,
-				composed: false,
-				detail: { hasFocus: this._hasFocus, hasMouse: this._hasMouse }
-			}
-		));
+		if (!ALERT_HAS_FOCUS) this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
 	}
 
 	_onTransitionEnd() {
@@ -411,6 +409,10 @@ class AlertToast extends LitElement {
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
+
+			if (this._hasMouse) ALERT_HAS_HOVER = false;
+			if (this._hasFocus) ALERT_HAS_FOCUS = false;
+
 			requestAnimationFrame(() => {
 				const bottom = this._innerContainer.getBoundingClientRect().bottom;
 
