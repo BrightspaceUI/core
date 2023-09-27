@@ -739,7 +739,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-					<slot>${content}</slot>
+					${content ?? html`<slot></slot>`}
 				</div>
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
