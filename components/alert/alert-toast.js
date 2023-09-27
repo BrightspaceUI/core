@@ -304,6 +304,7 @@ class AlertToast extends LitElement {
 		const bottom = boundingClientRect.bottom;
 		const opening = oldHeight === 0;
 
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-toast-resize', {
 				bubbles: true,
@@ -341,7 +342,10 @@ class AlertToast extends LitElement {
 		ALERT_HAS_FOCUS = false;
 		this._hasFocus = false;
 		this._closeTimerStart();
-		if (!ALERT_HAS_HOVER) this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		if (!ALERT_HAS_HOVER) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		}
 	}
 
 	_onCloseClicked(e) {
@@ -354,6 +358,7 @@ class AlertToast extends LitElement {
 		ALERT_HAS_FOCUS = true;
 		this._hasFocus = true;
 		this._closeTimerStop();
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
@@ -361,6 +366,7 @@ class AlertToast extends LitElement {
 		ALERT_HAS_HOVER = true;
 		this._hasMouse = true;
 		this._closeTimerStop();
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
@@ -368,7 +374,10 @@ class AlertToast extends LitElement {
 		ALERT_HAS_HOVER = false;
 		this._hasMouse = false;
 		this._closeTimerStart();
-		if (!ALERT_HAS_FOCUS) this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		if (!ALERT_HAS_FOCUS) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		}
 	}
 
 	_onTransitionEnd() {
