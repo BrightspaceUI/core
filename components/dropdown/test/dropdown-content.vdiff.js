@@ -15,7 +15,7 @@ function createDropdown(content, dropdown, opener) {
 		width: '30px',
 		...opener };
 	return html`
-		<div style="box-sizing: border-box; height: 100%; padding: 30px; position: relative;">
+		<div style="box-sizing: border-box; height: 400px; padding: 30px; position: relative; overflow: hidden;">
 			<d2l-dropdown style="${styleMap(dropdownStyles)}">
 				<div class="d2l-dropdown-opener" style="${styleMap(openerStyles)}"></div>
 				${content}
