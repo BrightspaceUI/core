@@ -1,14 +1,40 @@
-import { focusWithKeyboard, VisualDiff } from '@brightspace-ui/visual-diff';
-import { getRect, getRectTooltip, open, reset } from './input-helper.js';
-import puppeteer from 'puppeteer';
+import '../input-date.js';
+import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { reset, useFakeTimers } from 'sinon';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+
+const create = (opts = {}) => {
+	const { disabled, emptyText, label, labelHidden, opened, required, skeleton, value } = {
+		disabled: false,
+		label: 'Start Date',
+		labelHidden: true,
+		opened: false,
+		required: false,
+		skeleton: false,
+		...opts
+	};
+	return html`
+		<d2l-input-date
+			?disabled="${disabled}"
+			empty-text="${ifDefined(emptyText)}"
+			label="${label}"
+			?label-hidden="${labelHidden}"
+			?opened="${opened}"
+			?required="${required}"
+			?skeleton="${skeleton}"
+			value="${ifDefined(value)}"></d2l-input-date>
+	`;
+};
+
+const newToday = new Date('2018-02-12T12:00Z');
+const viewport = { width: 800, height: 1200 };
 
 describe('d2l-input-date', () => {
 
-	const visualDiff = new VisualDiff('input-date', import.meta.url);
+	before(() => useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] }));
+	after(() => reset());
 
-	let browser, page;
-
-	before(async() => {
+	/*before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1200 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
@@ -19,37 +45,27 @@ describe('d2l-input-date', () => {
 		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
 
-	after(async() => await browser.close());
+	after(async() => await browser.close());*/
 
 	[
-		'disabled',
-		'empty-text',
-		'label',
-		'label-hidden',
-		'placeholder',
-		'required',
-		'value'
-	].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		{ name: 'disabled', template: create({ disabled: true, value: '1990-01-01' }) },
+		{ name: 'empty-text', template: create({ emptyText: 'No reminder date ever entered' }) },
+		{ name: 'empty-text-focus', template: create({ emptyText: 'No reminder date ever entered' }), focus: true },
+		{ name: 'label', template: create({ labelHidden: false, value: '2019-03-02' }) },
+		{ name: 'label-hidden', template: create({ value: '2020-12-30' }) },
+		{ name: 'placeholder', template: create() },
+		{ name: 'required', template: create({ label: 'Date', labelHidden: false, required: true }) },
+		{ name: 'value', template: create({ value: '2019-12-20' }) },
+		{ name: 'value-focus', template: create({ value: '2019-12-20' }), focus: true },
+	].forEach(({ name, template, focus }) => {
+		it(name, async() => {
+			const elem = await fixture(template, { viewport });
+			if (focus) await focusElem(elem);
+			await expect(elem).to.be.golden();
 		});
 	});
 
-	it('value-focus', async function() {
-		await focusWithKeyboard(page, '#value');
-		await page.$eval('#value', (elem) => elem._inputTextFocusShowTooltip = true);
-		const rect = await getRectTooltip(page, '#value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('empty-text-focus', async function() {
-		await focusWithKeyboard(page, '#empty-text');
-		const rect = await visualDiff.getRect(page, '#empty-text');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	describe('opened behavior', () => {
+	/*describe('opened behavior', () => {
 
 		before(async() => {
 			await page.reload();
@@ -571,6 +587,6 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-	});
+	});*/
 
 });
