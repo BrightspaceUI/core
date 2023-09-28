@@ -98,11 +98,11 @@ describe('d2l-input-time', () => {
 			'zh',
 			'tr'
 		].forEach((lang) => {
-			it(`${lang} AM`, async() => {
+			it(`${lang} am`, async() => {
 				const elem = await fixture(create({ value: '10:59:00' }), { lang, viewport });
 				await expect(elem).to.be.golden();
 			});
-			it(`${lang} PM`, async() => {
+			it(`${lang} pm`, async() => {
 				const elem = await fixture(create({ value: '23:33:00' }), { lang, viewport });
 				await expect(elem).to.be.golden();
 			});
