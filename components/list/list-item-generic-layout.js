@@ -96,6 +96,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
+			}
+
+			::slotted([slot="outside-control"]:not(.handle-only)) {
 				pointer-events: none;
 			}
 
