@@ -1,5 +1,6 @@
 import '../alert-toast.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
+import sinon from 'sinon';
 
 const alertWithSubtextAndCloseButton = html`
 	<d2l-alert-toast id="alert-top" no-auto-close type="critical" button-text="Do it!" open
@@ -15,6 +16,16 @@ const multipleAlerts = html`
 		<d2l-alert-toast no-auto-close type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast>
 	</div>
 `;
+
+const multipleAlertsAutoClose = html`
+<div>
+	<d2l-alert-toast type="default" id="alert-middle">A default message.</d2l-alert-toast>
+	<d2l-alert-toast type="success" hide-close-button id="alert-bottom">A message.</d2l-alert-toast>
+	<div id="other"></div>
+</div>
+`;
+
+const viewport = { width: 700, height: 400 };
 
 describe('alert-toast', () => {
 
@@ -32,7 +43,7 @@ describe('alert-toast', () => {
 
 	describe('responsive-position', () => {
 		it('wide', async() => {
-			await fixture(alertWithSubtextAndCloseButton, { viewport: { width: 700, height: 400 } });
+			await fixture(alertWithSubtextAndCloseButton, { viewport });
 			await expect(document).to.be.golden();
 		});
 
@@ -43,6 +54,7 @@ describe('alert-toast', () => {
 	});
 
 	describe('multiple-alerts', () => {
+
 		async function openAlerts(elem) {
 			const alert1 = elem.querySelector('#alert-middle');
 			const alert3 = elem.querySelector('#alert-bottom');
@@ -53,7 +65,7 @@ describe('alert-toast', () => {
 		}
 
 		it('open all', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 400 } });
+			const elem = await fixture(multipleAlerts, { viewport });
 			await openAlerts(elem);
 			await expect(document).to.be.golden();
 		});
@@ -79,7 +91,7 @@ describe('alert-toast', () => {
 		 * TODO: switch to more legitimate form of resizing once available
 		 */
 		it('resize smaller', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 400 } });
+			const elem = await fixture(multipleAlerts, { viewport });
 			await openAlerts(elem);
 			await fixture(html``, { viewport: { width: 300 } });
 			await expect(document).to.be.golden();
@@ -93,6 +105,69 @@ describe('alert-toast', () => {
 			await openAlerts(elem);
 			await fixture(html``, { viewport: { width: 700 } });
 			await expect(document).to.be.golden();
+		});
+
+		describe('hover and focus', () => {
+
+			async function focusAlert(elem) {
+				const firstAlertButton = elem.querySelector('d2l-alert-toast').shadowRoot.querySelector('d2l-alert').shadowRoot.querySelector('d2l-button-icon');
+				await focusElem(firstAlertButton);
+			}
+
+			async function hoverAlert(elem) {
+				const firstAlert = elem.querySelectorAll('d2l-alert-toast')[1].shadowRoot.querySelector('d2l-alert');
+				await hoverElem(firstAlert);
+			}
+
+			async function hoverOtherElem(elem) {
+				const otherElem = elem.querySelector('div#other');
+				await hoverElem(otherElem);
+			}
+
+			let clock;
+
+			beforeEach(() => {
+				clock = sinon.useFakeTimers({ toFake: ['clearTimeout', 'setTimeout'] });
+			});
+			afterEach(() => {
+				clock.restore();
+			});
+
+			it('hover then wait', async() => {
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
+				await openAlerts(elem);
+				await hoverAlert(elem);
+				clock.tick(4100);
+				await expect(document).to.be.golden();
+			});
+
+			it('hover then remove hover', async() => {
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
+				await openAlerts(elem);
+				await hoverAlert(elem);
+				await hoverOtherElem(elem);
+				clock.tick(4100);
+				await expect(document).to.be.golden();
+			});
+
+			it('focus then wait', async() => {
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
+				await openAlerts(elem);
+				await focusAlert(elem);
+				clock.tick(4100);
+				await expect(document).to.be.golden();
+			});
+
+			it('hover then focus then remove hover then wait', async() => {
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
+				await openAlerts(elem);
+				await hoverAlert(elem);
+				await focusAlert(elem);
+				await hoverOtherElem(elem);
+				clock.tick(4100);
+				await expect(document).to.be.golden();
+			});
+
 		});
 
 	});
