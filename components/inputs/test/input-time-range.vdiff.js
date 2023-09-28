@@ -94,7 +94,7 @@ describe('d2l-input-time-range', () => {
 		{ name: 'label-hidden', template: create() },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true }) },
 		{ name: 'required', template: create({ label: 'Time Range', labelHidden: false, required: true }) },
-		{ name: 'required', template: create({ label: 'Time Range', labelHidden: false, required: true, skeleton: true }) },
+		{ name: 'required-skeleton', template: create({ label: 'Time Range', labelHidden: false, required: true, skeleton: true }) },
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start time label explanation' }) },
 		{ name: 'start-end-value', template: create({ endValue: '12:22:00', startValue: '03:30:00' }) },
 		{ name: 'start-value', template: create({ startValue: '13:30:00' }) },
