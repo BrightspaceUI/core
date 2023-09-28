@@ -352,6 +352,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					type="text"
 					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
+					class="vdiff-target"
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
