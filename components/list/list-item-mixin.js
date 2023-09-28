@@ -778,7 +778,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_renderOutsideControlHandleOnly(dragHandle) {
-		return html`<div slot="outside-control" class="handle-only" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
+		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
 	}
 
 	_renderTooltipContent() {
