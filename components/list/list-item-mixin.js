@@ -17,7 +17,6 @@ import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -39,18 +38,6 @@ function addTabListener() {
 
 let hasDisplayedKeyboardTooltip = false;
 
-const ro = new ResizeObserver(entries => {
-	entries.forEach(entry => {
-		if (!entry || !entry.target || !entry.target.resizedCallback) {
-			return;
-		}
-		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width);
-	});
-});
-
-const defaultBreakpoints = [842, 636, 580, 0];
-const SLIM_COLOR_BREAKPOINT = 400;
-
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
  */
@@ -68,8 +55,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	static get properties() {
 		return {
 			/**
-			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
-			 * @type {array}
+			 * @ignore
+			 */
+			breakpoint: { type: Number },
+			/**
+			 * @ignore
 			 */
 			breakpoints: { type: Array },
 			/**
@@ -92,7 +82,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			_breakpoint: { type: Number },
+			/**
+			 * @ignore
+			 */
+			slimColor: { type: Boolean, attribute: 'slim-color', reflect: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
@@ -103,7 +96,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlighting: { type: Boolean, reflect: true },
 			_hasNestedList: { state: true },
 			_siblingHasColor: { state: true },
-			_slimColor: { state: true }
 		};
 	}
 
@@ -398,7 +390,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				height: 100%;
 				width: 6px;
 			}
-			.d2l-list-item-color-inner.d2l-list-item-color-slim {
+			:host([slim-color]) .d2l-list-item-color-inner {
 				border-radius: 3px;
 				width: 3px;
 			}
@@ -437,27 +429,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	constructor() {
 		super();
-		this.breakpoints = defaultBreakpoints;
+		this.breakpoint = 0;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
-		this._breakpoint = 0;
+		this.slimColor = false;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
 		this._siblingHasColor = false;
-		this._slimColor = false;
-	}
-
-	get breakpoints() {
-		return this._breakpoints;
-	}
-
-	set breakpoints(value) {
-		const oldValue = this._breakpoints;
-		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
-		else this._breakpoints = defaultBreakpoints;
-		this.requestUpdate('breakpoints', oldValue);
 	}
 
 	get color() {
@@ -474,7 +454,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	connectedCallback() {
 		super.connectedCallback();
-		ro.observe(this);
 		if (this.role === 'rowgroup') {
 			addTabListener();
 		}
@@ -483,15 +462,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		ro.unobserve(this);
-	}
+	/** TODO: remove this once usage of breakpoints on d2l-list-item has been moved to the list */
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
+		if (changedProperties.has('breakpoints') && this.breakpoints) {
+			const parentList = this.getRootList();
+			if (!parentList.getAttribute('breakpoints')) parentList.breakpoints = this.breakpoints;
 		}
 	}
 
@@ -522,18 +499,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}, 1000);
 		}, { once: true });
 		this._highlighting = true;
-	}
-
-	resizedCallback(width) {
-		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
-
-		const lastBreakpointIndexToCheck = 3;
-		this.breakpoints.some((breakpoint, index) => {
-			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
-				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
-				return true;
-			}
-		});
 	}
 
 	scrollToAndHighlight(alignToTop = true) {
@@ -691,7 +656,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 		const colorClasses = {
 			'd2l-list-item-color-inner': true,
-			'd2l-list-item-color-slim': this._slimColor,
 			'd2l-skeletize': this.color
 		};
 
@@ -704,7 +668,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
-				data-breakpoint="${this._breakpoint}"
+				data-breakpoint="${this.breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
 				?grid-active="${this.role === 'rowgroup'}"
 				?no-primary-action="${this.noPrimaryAction}">

@@ -3,6 +3,7 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
@@ -10,6 +11,15 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
+const defaultBreakpoints = [842, 636, 580, 0];
+const SLIM_COLOR_BREAKPOINT = 400;
+
+const ro = new ResizeObserver(entries => {
+	entries.forEach(entry => {
+		if (!entry?.target?.resizedCallback) return;
+		entry.target.resizedCallback(entry.contentRect?.width);
+	});
+});
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
@@ -22,6 +32,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
+			 * @type {array}
+			 */
+			breakpoints: { type: Array },
 			/**
 			 * Whether the user can drag multiple items
 			 * @type {boolean}
@@ -74,6 +89,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	constructor() {
 		super();
+		this.breakpoints = defaultBreakpoints;
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
@@ -81,10 +97,24 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
 
+		this._breakpoint = 0;
+		this._slimColor = false;
+
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
 			updateSubscribers: this._updateActiveSubscribers.bind(this)
 		});
+	}
+
+	get breakpoints() {
+		return this._breakpoints;
+	}
+
+	set breakpoints(value) {
+		const oldValue = this._breakpoints;
+		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		else this._breakpoints = defaultBreakpoints;
+		this.requestUpdate('breakpoints', oldValue);
 	}
 
 	connectedCallback() {
@@ -92,11 +122,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
+		ro.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
+		ro.unobserve(this);
 	}
 
 	firstUpdated(changedProperties) {
@@ -141,6 +173,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			</div>
 			${this._renderPagerContainer()}
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
 	}
 
 	getItems(slot) {
@@ -196,6 +235,29 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
+	}
+
+	resizedCallback(width) {
+		const oldBreakpoint = this._breakpoint;
+		const oldSlimColor = this._slimColor;
+
+		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
+
+		const lastBreakpointIndexToCheck = 3;
+		this.breakpoints.some((breakpoint, index) => {
+			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
+				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
+				return true;
+			}
+		});
+
+		if (oldSlimColor !== this._slimColor || oldBreakpoint !== this._breakpoint) {
+			const items = this.getItems();
+			items.forEach((item) => {
+				item.breakpoint = this._breakpoint;
+				item.slimColor = this._slimColor;
+			});
+		}
 	}
 
 	_getItemByIndex(index) {
