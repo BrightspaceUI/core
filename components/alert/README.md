@@ -155,7 +155,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 
 ### Multiple Toast Alerts
 
-Displaying more than one toast message at a time should be avoided unless absolutely necessary, since they most often disappear after 4 seconds and can be difficult to read for some users. It is often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
+Displaying more than one toast message at a time should be avoided unless absolutely necessary, since they usually disappear after 4 seconds and can be difficult to read for some users. It's often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
 
 For cases where multiple toast alerts are unavoidable, new toast messages will appear at the bottom and push older messages upward.
 
@@ -180,12 +180,12 @@ For cases where multiple toast alerts are unavoidable, new toast messages will a
   <d2l-button id="open3">Show Alert 3</d2l-button>
 </div>
 <d2l-alert-toast id="alert-toast1" type="success" open no-auto-close>
-	A toast alert message.
+	First toast alert
 </d2l-alert-toast>
 <d2l-alert-toast id="alert-toast2" type="default">
-	An alert with auto-close
+	Second toast, with auto-close
 </d2l-alert-toast>
 <d2l-alert-toast id="alert-toast3" type="critical" no-auto-close>
-	A second toast alert message.
+	Third toast alert
 </d2l-alert-toast>
 ```
