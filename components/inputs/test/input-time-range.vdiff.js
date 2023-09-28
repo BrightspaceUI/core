@@ -130,7 +130,7 @@ describe('d2l-input-time-range', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it('end changes when autoShiftTimes', async() => {
+		it('end changes when auto-shift-times', async() => {
 			const elem = await fixture(create({ autoShiftTimes: true, endValue: '05:22:00', startValue: '03:30:00' }), { viewport });
 			await changeInnerInputTextDate(elem, startTimeSelector, '13:00:00');
 			await expect(elem).to.be.golden();
