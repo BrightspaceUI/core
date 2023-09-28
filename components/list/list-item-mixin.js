@@ -19,6 +19,7 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 let tabPressed = false;
@@ -61,7 +62,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	ListItemDragDropMixin,
 	ListItemCheckboxMixin,
 	ListItemRoleMixin,
-	RtlMixin) {
+	RtlMixin,
+	SkeletonMixin) {
 
 	static get properties() {
 		return {
@@ -689,7 +691,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 		const colorClasses = {
 			'd2l-list-item-color-inner': true,
-			'd2l-list-item-color-slim': this._slimColor
+			'd2l-list-item-color-slim': this._slimColor,
+			'd2l-skeletize': this.color
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
