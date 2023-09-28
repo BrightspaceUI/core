@@ -1,7 +1,7 @@
 import '../tag-list.js';
 import '../tag-list-item.js';
 import './tag-list-item-mixin-consumer.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -123,6 +123,7 @@ describe('tag-list', () => {
 
 		it('click clear all', async() => {
 			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button'));
+			await waitUntil(() => elem.clientHeight === 30);
 			await expect(elem).to.be.golden();
 		});
 	});
