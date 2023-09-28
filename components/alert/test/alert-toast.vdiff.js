@@ -25,6 +25,8 @@ const multipleAlertsAutoClose = html`
 </div>
 `;
 
+const viewport = { width: 700, height: 400 };
+
 describe('alert-toast', () => {
 
 	[
@@ -41,7 +43,7 @@ describe('alert-toast', () => {
 
 	describe('responsive-position', () => {
 		it('wide', async() => {
-			await fixture(alertWithSubtextAndCloseButton, { viewport: { width: 700, height: 400 } });
+			await fixture(alertWithSubtextAndCloseButton, { viewport });
 			await expect(document).to.be.golden();
 		});
 
@@ -63,7 +65,7 @@ describe('alert-toast', () => {
 		}
 
 		it('open all', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 400 } });
+			const elem = await fixture(multipleAlerts, { viewport });
 			await openAlerts(elem);
 			await expect(document).to.be.golden();
 		});
@@ -89,7 +91,7 @@ describe('alert-toast', () => {
 		 * TODO: switch to more legitimate form of resizing once available
 		 */
 		it('resize smaller', async() => {
-			const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 400 } });
+			const elem = await fixture(multipleAlerts, { viewport });
 			await openAlerts(elem);
 			await fixture(html``, { viewport: { width: 300 } });
 			await expect(document).to.be.golden();
@@ -132,7 +134,7 @@ describe('alert-toast', () => {
 			});
 
 			it('hover then wait', async() => {
-				const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
 				await openAlerts(elem);
 				await hoverAlert(elem);
 				clock.tick(4100);
@@ -140,7 +142,7 @@ describe('alert-toast', () => {
 			});
 
 			it('hover then remove hover', async() => {
-				const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
 				await openAlerts(elem);
 				await hoverAlert(elem);
 				await hoverOtherElem(elem);
@@ -149,7 +151,7 @@ describe('alert-toast', () => {
 			});
 
 			it('focus then wait', async() => {
-				const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
 				await openAlerts(elem);
 				await focusAlert(elem);
 				clock.tick(4100);
@@ -157,7 +159,7 @@ describe('alert-toast', () => {
 			});
 
 			it('hover then focus then remove hover then wait', async() => {
-				const elem = await fixture(multipleAlertsAutoClose, { viewport: { width: 700, height: 400 } });
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
 				await openAlerts(elem);
 				await hoverAlert(elem);
 				await focusAlert(elem);
