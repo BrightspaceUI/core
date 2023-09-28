@@ -221,8 +221,8 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
 		const timeInterval = this.timeInterval;
-		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -238,7 +238,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 					<d2l-input-time
 						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"
-						class="d2l-input-time-range-start"
+						class="d2l-input-time-range-start vdiff-target"
 						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						?enforce-time-intervals="${this.enforceTimeIntervals}"
@@ -256,7 +256,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 					<d2l-input-time
 						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"
-						class="d2l-input-time-range-end"
+						class="d2l-input-time-range-end vdiff-target"
 						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						?enforce-time-intervals="${this.enforceTimeIntervals}"
