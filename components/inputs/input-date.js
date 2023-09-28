@@ -245,6 +245,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
+				class="vdiff-target"
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
@@ -281,7 +282,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
-					class="d2l-dropdown-opener"
+					class="d2l-dropdown-opener vdiff-target"
 					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
 					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"
