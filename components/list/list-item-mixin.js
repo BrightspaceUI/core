@@ -689,7 +689,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 		const colorClasses = {
 			'd2l-list-item-color-inner': true,
-			'd2l-list-item-color-slim': this._slimColor
+			'd2l-list-item-color-slim': this._slimColor,
+			'd2l-skeletize': true
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
