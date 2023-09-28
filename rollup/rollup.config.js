@@ -18,7 +18,7 @@ const nonJsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates|test)/**/*.*',
 	'*.*',
 	'!**/*.@(js|md|json)',
-	'!**/screenshots/**/*',
+	'!**/golden/**/*',
 ];
 
 export default {
