@@ -97,7 +97,7 @@ describe('d2l-input-date-range', () => {
 		{ name: 'labelled', template: create({ labelHidden: false }) },
 		{ name: 'labelled-skeleton', template: create({ labelHidden: false, skeleton: true }) },
 		{ name: 'label-hidden', template: create() },
-		{ name: 'label-hidden', template: create({ skeleton: true }) },
+		{ name: 'label-hidden-skeleton', template: create({ skeleton: true }) },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start date label explanation' }) },
 		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) }
