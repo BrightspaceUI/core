@@ -95,13 +95,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const styles = [ css`
 			:host {
-				display: block;
-				position: relative;
 				--d2l-list-item-color-border-radius: var(--d2l-list-color-border-radius, 6px);
 				--d2l-list-item-color-width: var(--d2l-list-color-width, 6px);
 				--d2l-list-item-illustration-margin-inline-end: var(--d2l-list-illustration-margin-inline-end, 0.9rem);
 				--d2l-list-item-illustration-max-height: var(--d2l-list-illustration-max-height, 2.6rem);
 				--d2l-list-item-illustration-max-width: var(--d2l-list-illustration-max-width, 4.5rem);
+				display: block;
+				position: relative;
 			}
 			:host[hidden] {
 				display: none;
