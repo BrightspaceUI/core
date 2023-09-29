@@ -165,8 +165,8 @@ describe('d2l-input-date', () => {
 					beforeEach(async() => await setValueBlur(elem, '10/12/2017'));
 
 					it('focus', async() => {
-						await focusElem(elem);
-						await nextFrame();
+						focusElem(elem);
+						await oneEvent(elem, 'd2l-tooltip-show');
 						await expect(elem).to.be.golden();
 					});
 
