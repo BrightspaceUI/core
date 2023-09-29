@@ -11,7 +11,7 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
-const defaultBreakpoints = [842, 636, 580, 0];
+const DEFAULT_BREAKPOINTS = [842, 636, 580, 0];
 const SLIM_COLOR_BREAKPOINT = 400;
 
 const ro = new ResizeObserver(entries => {
@@ -110,7 +110,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.breakpoints = defaultBreakpoints;
+		this.breakpoints = DEFAULT_BREAKPOINTS;
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
@@ -120,6 +120,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 		this._breakpoint = 0;
 		this._slimColor = false;
+		this._width = 0;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
@@ -133,8 +134,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	set breakpoints(value) {
 		const oldValue = this._breakpoints;
-		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
-		else this._breakpoints = defaultBreakpoints;
+		if (value !== DEFAULT_BREAKPOINTS) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		else this._breakpoints = DEFAULT_BREAKPOINTS;
 		this.requestUpdate('breakpoints', oldValue);
 	}
 
@@ -198,8 +199,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
+		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
+			this.resizedCallback(this.offsetWidth, true);
 		}
 	}
 
@@ -258,7 +259,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
 
-	resizedCallback(width) {
+	resizedCallback(width, breakpointsChanged) {
+		if (this._width === width && !breakpointsChanged) return;
+		this._width = width;
+
 		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
 
 		const lastBreakpointIndexToCheck = 3;
