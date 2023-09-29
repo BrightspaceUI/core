@@ -62,7 +62,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true }
+			separators: { type: String, reflect: true },
+			_breakpoint: { type: Number, reflect: true },
+			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
 	}
 
@@ -83,6 +85,25 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			:host([extend-separators]) slot[name="pager"]::slotted(*) {
 				margin-left: 0.9rem;
 				margin-right: 0.9rem;
+			}
+			:host([_breakpoint="1"]) {
+				--d2l-list-illustration-margin-inline-end: 1rem;
+				--d2l-list-illustration-max-height: 3.55rem;
+				--d2l-list-illustration-max-width: 6rem;
+			}
+			:host([_breakpoint="2"]) {
+				--d2l-list-illustration-margin-inline-end: 1rem;
+				--d2l-list-illustration-max-height: 5.1rem;
+				--d2l-list-illustration-max-width: 9rem;
+			}
+			:host([_breakpoint="3"]) {
+				--d2l-list-illustration-margin-inline-end: 1rem;
+				--d2l-list-illustration-max-height: 6rem;
+				--d2l-list-illustration-max-width: 10.8rem;
+			}
+			:host([_slim-color]) {
+				--d2l-list-color-border-radius: 3px;
+				--d2l-list-color-width: 3px;
 			}
 		`;
 	}
@@ -238,9 +259,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	resizedCallback(width) {
-		const oldBreakpoint = this._breakpoint;
-		const oldSlimColor = this._slimColor;
-
 		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
 
 		const lastBreakpointIndexToCheck = 3;
@@ -250,14 +268,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				return true;
 			}
 		});
-
-		if (oldSlimColor !== this._slimColor || oldBreakpoint !== this._breakpoint) {
-			const items = this.getItems();
-			items.forEach((item) => {
-				item.breakpoint = this._breakpoint;
-				item.slimColor = this._slimColor;
-			});
-		}
 	}
 
 	_getItemByIndex(index) {

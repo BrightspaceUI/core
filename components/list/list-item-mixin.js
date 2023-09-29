@@ -57,10 +57,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			/**
 			 * @ignore
 			 */
-			breakpoint: { type: Number },
-			/**
-			 * @ignore
-			 */
 			breakpoints: { type: Array },
 			/**
 			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
@@ -82,10 +78,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			/**
-			 * @ignore
-			 */
-			slimColor: { type: Boolean, attribute: 'slim-color', reflect: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
@@ -105,6 +97,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host {
 				display: block;
 				position: relative;
+				--d2l-list-item-color-border-radius: var(--d2l-list-color-border-radius, 6px);
+				--d2l-list-item-color-width: var(--d2l-list-color-width, 6px);
+				--d2l-list-item-illustration-margin-inline-end: var(--d2l-list-illustration-margin-inline-end, 0.9rem);
+				--d2l-list-item-illustration-max-height: var(--d2l-list-illustration-max-height, 2.6rem);
+				--d2l-list-item-illustration-max-width: var(--d2l-list-illustration-max-width, 4.5rem);
 			}
 			:host[hidden] {
 				display: none;
@@ -211,15 +208,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin-right: 0.9rem;
-				max-height: 2.6rem;
-				max-width: 4.5rem;
+				margin-inline-end: var(--d2l-list-item-illustration-margin-inline-end);
+				max-height: var(--d2l-list-item-illustration-max-height);
+				max-width: var(--d2l-list-item-illustration-max-width);
 				overflow: hidden;
-			}
-			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration > * {
-				margin-left: 0.9rem;
-				margin-right: 0;
 			}
 			[slot="content"] ::slotted(d2l-icon[slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration d2l-icon {
@@ -246,40 +238,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-left: 0.9rem;
-				margin-right: 0;
-			}
-
-			[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			[data-breakpoint="1"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 3.55rem;
-				max-width: 6rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
-				margin-right: 0;
-			}
-			[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			[data-breakpoint="2"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 5.1rem;
-				max-width: 9rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
-				margin-right: 0;
-			}
-			[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			[data-breakpoint="3"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 6rem;
-				max-width: 10.8rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
 				margin-right: 0;
 			}
 
@@ -386,13 +344,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			.d2l-list-item-color-inner {
-				border-radius: 6px;
+				border-radius: var(--d2l-list-item-color-border-radius);
 				height: 100%;
-				width: 6px;
-			}
-			:host([slim-color]) .d2l-list-item-color-inner {
-				border-radius: 3px;
-				width: 3px;
+				width: var(--d2l-list-item-color-width);
 			}
 			.d2l-list-item-color-outer {
 				padding: 2px 12px 1px 0;
@@ -429,10 +383,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	constructor() {
 		super();
-		this.breakpoint = 0;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
-		this.slimColor = false;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
@@ -668,7 +620,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
-				data-breakpoint="${this.breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
 				?grid-active="${this.role === 'rowgroup'}"
 				?no-primary-action="${this.noPrimaryAction}">
