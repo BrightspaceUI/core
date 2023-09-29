@@ -356,4 +356,24 @@ describe('d2l-input-date', () => {
 
 	});
 
+	describe('mobile', () => {
+
+		const mobileViewport = { height: 500, width: 600 };
+
+		describe('open', () => {
+			[
+				{ name: 'min-max', template: minMaxFixture },
+				{ name: 'placeholder', template: placeholderFixture },
+				{ name: 'value', template: valueFixture }
+			].forEach(({ name, template }) => {
+				it.only(name, async() => {
+					const elem = await fixture(template, { viewport: mobileViewport });
+					await sendKeysElem(elem, 'press', 'ArrowDown');
+					await expect(elem).to.be.golden();
+				});
+			});
+		});
+
+	});
+
 });
