@@ -230,7 +230,6 @@ describe('d2l-list', () => {
 			{ name: '636', selector: '#breakpoint-636' },
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' },
-			{ name: 'list item', selector: '#breakpoint-list-item' },
 			{ name: 'list', selector: '#breakpoint-list' }
 		] },
 		{ category: 'dropdown', tests: [

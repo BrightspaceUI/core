@@ -55,10 +55,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	static get properties() {
 		return {
 			/**
-			 * @ignore
-			 */
-			breakpoints: { type: Array },
-			/**
 			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
 			 * @type {string}
 			 */
@@ -406,16 +402,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 		if (!this.selectable && !this.expandable) {
 			this.labelRequired = false;
-		}
-	}
-
-	/** TODO: remove this once usage of breakpoints on d2l-list-item has been moved to the list */
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		if (changedProperties.has('breakpoints') && this.breakpoints) {
-			const parentList = this.getRootList();
-			if (!parentList.getAttribute('breakpoints')) parentList.breakpoints = this.breakpoints;
 		}
 	}
 
