@@ -100,7 +100,7 @@ When using `d2l-list`, the `grid` attribute will enable the table-like keyboard 
 
 ## List [d2l-list]
 
-The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
+The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, breakpoints for responsiveness, etc.
 
 <!-- docs: demo code properties name:d2l-list display:block autoSize:false size:medium -->
 ```html
@@ -133,6 +133,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 | Property | Type | Description |
 |---|---|---|
+| `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `drag-multiple` | Boolean | Whether the user can drag multiple items |
 | `grid` | Boolean | Enables keyboard grid for supported list items. See [Accessibility](#accessibility). |
 | `label` | String | Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists. |
@@ -145,6 +146,22 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 - `d2l-list-selection-change`: dispatched when the selection state changes; event detail includes the `key` and `selected` state of the item
 - `d2l-list-selection-changes`: dispatched once for a set of selection state changes (ex. select-all); event detail includes an array of objects where each object contains the `key` and `selected` state for each changed item
 <!-- docs: end hidden content -->
+
+### Breakpoints Property
+
+- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
+  - Breakpoint 0
+    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
+    - default break: `x < 580px` where `x` is the width of the component.
+  - Breakpoint 1
+    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
+    - default break: `581px < x < 636px` where `x` is the width of the component.
+  - Breakpoint 2
+    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
+    - default break: `637px < x < 842px`  where `x` is the width of the component.
+  - Breakpoint 3
+    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
+    - default break: `843px < x`  where `x` is the width of the component.
 
 ### Methods
 
@@ -380,7 +397,7 @@ The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` s
 
 ## List Item [d2l-list-item]
 
-The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection.
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, a navigation link for the primary action, and selection.
 
 <!-- docs: demo code properties name:d2l-list-item autoSize:false size:small -->
 ```html
@@ -410,7 +427,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 | Property | Type | Description |
 |---|---|---|
-| `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
@@ -441,22 +457,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 - `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
-### Breakpoints Property
-
-- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
-  - Breakpoint 0
-    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
-    - default break: `x < 580px` where `x` is the width of the component.
-  - Breakpoint 1
-    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
-    - default break: `581px < x < 636px` where `x` is the width of the component.
-  - Breakpoint 2
-    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
-    - default break: `637px < x < 842px`  where `x` is the width of the component.
-  - Breakpoint 3
-    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
-    - default break: `843px < x`  where `x` is the width of the component.
-
 ## Button List Item [d2l-list-item-button]
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
@@ -484,7 +484,6 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 
 | Property | Type | Description |
 |---|---|---|
-| `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `button-disabled` | Boolean | Disables the primary action button |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
