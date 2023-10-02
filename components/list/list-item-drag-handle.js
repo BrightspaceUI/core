@@ -298,7 +298,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 				@keydown="${this._onMoveButtonKeydown}"
 				text="${this._defaultLabel}">
 			</d2l-button-move>
-			${this._displayKeyboardTooltip ? html`<d2l-tooltip align="start" announced for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
+			${this._displayKeyboardTooltip ? html`<d2l-tooltip class="vdiff-target" align="start" announced for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 	}
 
