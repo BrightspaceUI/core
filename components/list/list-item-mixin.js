@@ -95,11 +95,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const styles = [ css`
 			:host {
-				--d2l-list-item-color-border-radius: var(--d2l-list-color-border-radius, 6px);
-				--d2l-list-item-color-width: var(--d2l-list-color-width, 6px);
-				--d2l-list-item-illustration-margin-inline-end: var(--d2l-list-illustration-margin-inline-end, 0.9rem);
-				--d2l-list-item-illustration-max-height: var(--d2l-list-illustration-max-height, 2.6rem);
-				--d2l-list-item-illustration-max-width: var(--d2l-list-illustration-max-width, 4.5rem);
 				display: block;
 				position: relative;
 			}
@@ -208,9 +203,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin-inline-end: var(--d2l-list-item-illustration-margin-inline-end);
-				max-height: var(--d2l-list-item-illustration-max-height);
-				max-width: var(--d2l-list-item-illustration-max-width);
+				margin-inline-end: var(--d2l-list-item-illustration-margin-inline-end, 0.9rem);
+				max-height: var(--d2l-list-item-illustration-max-height, 2.6rem);
+				max-width: var(--d2l-list-item-illustration-max-width, 4.5rem);
 				overflow: hidden;
 			}
 			[slot="content"] ::slotted(d2l-icon[slot="illustration"]),
@@ -344,9 +339,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			.d2l-list-item-color-inner {
-				border-radius: var(--d2l-list-item-color-border-radius);
+				border-radius: var(--d2l-list-item-color-border-radius, 6px);
 				height: 100%;
-				width: var(--d2l-list-item-color-width);
+				width: var(--d2l-list-item-color-width, 6px);
 			}
 			.d2l-list-item-color-outer {
 				padding: 2px 12px 1px 0;

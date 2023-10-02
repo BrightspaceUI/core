@@ -71,6 +71,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	static get styles() {
 		return css`
 			:host {
+				--d2l-list-item-color-border-radius: 6px;
+				--d2l-list-item-color-width: 6px;
+				--d2l-list-item-illustration-margin-inline-end: 0.9rem;
+				--d2l-list-item-illustration-max-height: 2.6rem;
+				--d2l-list-item-illustration-max-width: 4.5rem;
 				display: block;
 			}
 			:host(:not([slot="nested"])) > .d2l-list-content {
@@ -87,23 +92,23 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				margin-right: 0.9rem;
 			}
 			:host([_breakpoint="1"]) {
-				--d2l-list-illustration-margin-inline-end: 1rem;
-				--d2l-list-illustration-max-height: 3.55rem;
-				--d2l-list-illustration-max-width: 6rem;
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 3.55rem;
+				--d2l-list-item-illustration-max-width: 6rem;
 			}
 			:host([_breakpoint="2"]) {
-				--d2l-list-illustration-margin-inline-end: 1rem;
-				--d2l-list-illustration-max-height: 5.1rem;
-				--d2l-list-illustration-max-width: 9rem;
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 5.1rem;
+				--d2l-list-item-illustration-max-width: 9rem;
 			}
 			:host([_breakpoint="3"]) {
-				--d2l-list-illustration-margin-inline-end: 1rem;
-				--d2l-list-illustration-max-height: 6rem;
-				--d2l-list-illustration-max-width: 10.8rem;
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 6rem;
+				--d2l-list-item-illustration-max-width: 10.8rem;
 			}
 			:host([_slim-color]) {
-				--d2l-list-color-border-radius: 3px;
-				--d2l-list-color-width: 3px;
+				--d2l-list-item-color-border-radius: 3px;
+				--d2l-list-item-color-width: 3px;
 			}
 		`;
 	}
