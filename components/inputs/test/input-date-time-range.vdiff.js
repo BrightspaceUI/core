@@ -172,7 +172,7 @@ describe('d2l-input-date-time-range', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		describe('autoShiftDates', () => {
+		describe('auto-shift-dates', () => {
 			[true, false].forEach(localized => {
 				// start-value: 2020-12-02T06:00:00.000Z
 				// end-value: 2021-12-04T10:30:00.000Z
