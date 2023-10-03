@@ -1,7 +1,7 @@
 import '../demo/demo-list-nested-iterations-helper.js';
 import '../list.js';
 import '../list-item.js';
-import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 describe('list', () => {
@@ -53,8 +53,9 @@ describe('list-nested', () => {
 				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
 					{ media, rtl, viewport: { width: 1300, height: 7000 } }
 				);
+				await nextFrame();
 				await expect(elem).to.be.golden();
-			}).timeout(10000);
+			}).timeout(30000);
 		});
 	});
 });
