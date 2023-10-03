@@ -1,5 +1,5 @@
 import '../input-date-time-range.js';
-import { expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit';
