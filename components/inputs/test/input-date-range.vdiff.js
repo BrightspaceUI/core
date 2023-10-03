@@ -9,7 +9,6 @@ const create = (opts = {}) => {
 		autoShiftDates,
 		childLabelsHidden,
 		disabled,
-		emptyText,
 		endLabel,
 		endOpened,
 		endValue,
@@ -46,7 +45,6 @@ const create = (opts = {}) => {
 			?auto-shift-dates="${autoShiftDates}"
 			?child-labels-hidden="${childLabelsHidden}"
 			?disabled="${disabled}"
-			empty-text="${ifDefined(emptyText)}"
 			end-label="${ifDefined(endLabel)}"
 			?end-opened="${endOpened}"
 			end-value="${ifDefined(endValue)}"
