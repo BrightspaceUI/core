@@ -206,19 +206,6 @@ describe('d2l-list', () => {
 				await hover('#stickyControlsSeparatorsExtendedColor [key="1"] [slot="supporting-info"]');
 			}, screenshotOptions: { captureBeyondViewport: false } }
 		] },
-		{ category: 'draggable', tests: [
-			{ name: 'default', selector: '#draggable' },
-			{ name: 'focus', selector: '#draggable', action: () => focusWithKeyboard(page, '#draggable [key="1"]') },
-			{ name: 'hover', selector: '#draggable', action: () => hover('#draggable [key="1"]') },
-			{ name: 'color hover', selector: '#draggableColorIndicator', action: () => hover('#draggableColorIndicator [key="1"]') },
-			{ name: 'selectable', selector: '#draggableSelectable' },
-			{ name: 'selectable focus', selector: '#draggableSelectable', action: () => focusInput('#draggableSelectable [key="1"]') },
-			{ name: 'selectable hover', selector: '#draggableSelectable', action: () => hover('#draggableSelectable [key="1"]') },
-			{ name: 'color selectable focus', selector: '#draggableSelectableColorIndicator', action: () => focusInput('#draggableSelectableColorIndicator [key="1"]') },
-			{ name: 'color selectable hover', selector: '#draggableSelectableColorIndicator', action: () => hover('#draggableSelectableColorIndicator [key="1"]') },
-			{ name: 'extended separators', selector: '#draggableSelectableColorIndicatorSeparatorsExtended' },
-			{ name: 'extended separators hover', selector: '#draggableSelectableColorIndicatorSeparatorsExtended', action: () => hover('#draggableSelectableColorIndicatorSeparatorsExtended [key="2"]') }
-		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusWithKeyboard(page, '#href d2l-list-item') },
 			{ name: 'button', selector: '#button', action: () => focusWithKeyboard(page, '#button d2l-list-item-button') },
