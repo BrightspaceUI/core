@@ -45,12 +45,13 @@ describe('list', () => {
 describe('list-nested', () => {
 	[true, false].forEach(rtl => {
 		[
-			{ name: 'all-iterations-non-draggable', draggable: false },
-			{ name: 'all-iterations-draggable', draggable: true }
-		].forEach(({ name, draggable }) => {
+			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen' },
+			{ name: 'all-iterations-draggable', draggable: true, media: 'screen' },
+			{ name: 'all-iterations-draggable-force-show', draggable: true, media: 'print' }
+		].forEach(({ name, draggable, media }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
 				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
-					{ rtl, viewport: { width: 1300, height: 7000 } }
+					{ media, rtl, viewport: { width: 1300, height: 7000 } }
 				);
 				await expect(elem).to.be.golden();
 			}).timeout(10000);
