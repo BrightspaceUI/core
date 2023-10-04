@@ -23,6 +23,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {No search results} one {{number} search result} other {{number} search results}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
+	"components.footer.poweredBy": "Powered by:",
 	"components.form-element.defaultError": "{label} is invalid.",
 	"components.form-element.defaultFieldLabel": "Field",
 	"components.form-element.input.email.typeMismatch": "Email is not valid",
