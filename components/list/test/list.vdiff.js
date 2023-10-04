@@ -283,7 +283,7 @@ describe('list', () => {
 		});
 	});
 
-	describe('selectableHref', () => {
+	describe('selectable-href', () => {
 		[
 			{ name: 'hover href', action: hoverElem, margin: 24 },
 			{ name: 'hover selection', action: elem => hoverElem(elem.shadowRoot.querySelector('[slot="control"]')), margin: 24 },
