@@ -581,6 +581,7 @@ describe('list', () => {
 										<d2l-list-item ?draggable="${draggable}" ?selectable="${selectable}" label="L3-2" key="L3-2">
 											<d2l-list-item-content>
 												<div>Level 3, Item 2</div>
+											</d2l-list-item-content>
 										</d2l-list-item>
 									</d2l-list>
 								</d2l-list-item>
@@ -599,6 +600,7 @@ describe('list', () => {
 											<d2l-list-item label="L3-2b" key="L3-2b">
 												<d2l-list-item-content>
 													<div>Level 3, Item 2b</div>
+												</d2l-list-item-content>
 											</d2l-list-item>
 										</d2l-list>
 									</d2l-list-item>
