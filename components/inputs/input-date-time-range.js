@@ -217,8 +217,8 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 		const startDateTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
 		const endDateTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
 
-		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -236,7 +236,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
-							class="d2l-input-date-time-range-start"
+							class="d2l-input-date-time-range-start vdiff-target"
 							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 							?disabled="${this.disabled}"
 							.forceInvalid=${this.invalid}
@@ -258,7 +258,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
-							class="d2l-input-date-time-range-end"
+							class="d2l-input-date-time-range-end vdiff-target"
 							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 							?disabled="${this.disabled}"
 							.forceInvalid=${this.invalid}
