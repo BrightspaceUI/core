@@ -1,4 +1,4 @@
-import '../alert-toast.js';
+import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import sinon from 'sinon';
 
@@ -169,12 +169,12 @@ describe('alert-toast', () => {
 			});
 
 			it('open quickly then wait', async() => {
+				disableReducedMotionForTesting();
 				const elem = await fixture(multipleAlertsAutoClose, { viewport });
-				elem.querySelector('d2l-alert-toast')._setReduceMotion(false);
 				await openAlerts(elem);
 				clock.tick(4100);
 				await expect(document).to.be.golden();
-				elem.querySelector('d2l-alert-toast')._setReduceMotion(true);
+				restoreReducedMotionForTesting();
 			});
 
 		});

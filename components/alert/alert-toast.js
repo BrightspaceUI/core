@@ -5,7 +5,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let activeReduceMotion = reduceMotion;
+export function disableReducedMotionForTesting() {
+	activeReduceMotion = false;
+}
+export function restoreReducedMotionForTesting() {
+	activeReduceMotion = reduceMotion;
+}
 
 const states = {
 	CLOSED: 'closed', // the toast is closed
@@ -331,10 +338,10 @@ class AlertToast extends LitElement {
 		this._totalSiblingHeightBelow += e.detail.heightDifference;
 		if (e.detail.opening) {
 			this._numAlertsBelow += 1;
-			if (!reduceMotion) this._state = states.SLIDING;
+			if (!activeReduceMotion) this._state = states.SLIDING;
 		} else if (e.detail.closing) {
 			this._numAlertsBelow -= 1;
-			if (!reduceMotion) this._state = states.SLIDING;
+			if (!activeReduceMotion) this._state = states.SLIDING;
 		}
 	}
 
@@ -396,7 +403,7 @@ class AlertToast extends LitElement {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
 			} else if (this._state === states.CLOSED) {
-				if (!reduceMotion) {
+				if (!activeReduceMotion) {
 					this._state = states.PREOPENING;
 					// pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
 					this._preopenFrame = requestAnimationFrame(() => {
@@ -412,7 +419,7 @@ class AlertToast extends LitElement {
 		} else {
 			if (!this._innerContainer) return;
 
-			if (reduceMotion || this._state === states.PREOPENING) {
+			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
@@ -425,7 +432,7 @@ class AlertToast extends LitElement {
 			requestAnimationFrame(() => {
 				const bottom = this._innerContainer.getBoundingClientRect().bottom;
 
-				if (reduceMotion || this._state === states.PREOPENING) {
+				if (activeReduceMotion || this._state === states.PREOPENING) {
 					this._state = states.CLOSED;
 					this._totalSiblingHeightBelow = 0;
 					this._numAlertsBelow = 0;
@@ -441,11 +448,6 @@ class AlertToast extends LitElement {
 				));
 			});
 		}
-	}
-
-	// This is specifically for vdiff tests. Do not use otherwise.
-	_setReduceMotion(value) {
-		reduceMotion = value;
 	}
 
 	_stateChanged(newState, oldState) {
