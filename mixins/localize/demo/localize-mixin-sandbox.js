@@ -24,10 +24,6 @@ class LocalizeSandbox extends LocalizeMixin(LitElement) {
 
 	static get styles() {
 		return [heading4Styles, bodyCompactStyles, css`
-			[hidden] {
-				display: none !important;
-			}
-
 			#actions {
 				display: flex;
 				justify-content: end;
@@ -50,12 +46,8 @@ class LocalizeSandbox extends LocalizeMixin(LitElement) {
 				--d2l-button-icon-min-width: 1.5rem;
 			}
 
-			d2l-dropdown d2l-icon {
-				vertical-align: text-bottom;
-			}
-
 			#result {
-				align-items: center;
+				align-items: end;
 				display: flex;
 				justify-content: space-between;
 			}
@@ -204,17 +196,15 @@ class LocalizeSandbox extends LocalizeMixin(LitElement) {
 			</d2l-code-view>
 		</div>
 
-		<h2 id="result" class="d2l-heading-4">
-			<span>Result</span>
-			<div>
-				<d2l-dropdown open-on-hover>
-					<d2l-icon id="results-help" icon="tier1:help" class="d2l-dropdown-opener"></d2l-icon>
-				  <d2l-dropdown-content class="d2l-body-compact">
-				    For additional error details review the console or try <d2l-link href="https://format-message.github.io/icu-message-format-for-translators/editor.html" target="_blank">Message Editor</d2l-link>
-				  </d2l-dropdown-content>
-				</d2l-dropdown>
-			</div>
-		</h2>
+		<div id="result">
+			<h2 class="d2l-heading-4">Result</h2>
+			<d2l-dropdown>
+				<d2l-button-icon id="results-help" icon="tier1:help" text="Error Help" class="d2l-dropdown-opener"></d2l-button-icon>
+			  <d2l-dropdown-content class="d2l-body-compact">
+			    For additional error details review the console or try <d2l-link href="https://format-message.github.io/icu-message-format-for-translators/editor.html" target="_blank">Message Editor</d2l-link>
+			  </d2l-dropdown-content>
+			</d2l-dropdown>
+		</div>
 		<div id="result-text">${this._error || this[localizeMethod](this._selectedTemplate.key, { ...this.arguments, ...tags })}</div>
 		`;
 	}
