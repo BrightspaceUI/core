@@ -12,20 +12,19 @@ const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates|test)/**/*.js',
 	'./index.js',
-	'!**/*.@(test|axe|visual-diff|vdiff).js',
+	'!**/*.@(test|axe|vdiff).js',
 ];
 const nonJsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates|test)/**/*.*',
 	'*.*',
 	'!**/*.@(js|md|json)',
-	'!**/screenshots/**/*',
 	'!**/golden/**/*',
 ];
 
 export default {
 	input: glob.sync(jsGlob),
 	output: { dir: 'build', format: 'es', preserveModules: true },
-	external: ['puppeteer', '@brightspace-ui/visual-diff', '@brightspace-ui/testing', 'sinon'],
+	external: ['@brightspace-ui/testing', 'sinon'],
 	plugins: [
 		del({ targets: 'build' }),
 		copy({

@@ -140,11 +140,11 @@ describe('primary-secondary', () => {
 
 	describe('persist', () => {
 		it('divider size on reload', async() => {
-			const elem = await fixture(createTemplate({ storageKey: 'persist.visual-diff' }), { viewport: { width: 1450 } });
+			const elem = await fixture(createTemplate({ storageKey: 'persist.vdiff' }), { viewport: { width: 1450 } });
 			const handle = elem.querySelector('d2l-template-primary-secondary').shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 
 			await moveDivider(handle, 'ArrowRight', 10);
-			const newElem = await fixture(createTemplate({ storageKey: 'persist.visual-diff' }), { viewport: { width: 1450 } });
+			const newElem = await fixture(createTemplate({ storageKey: 'persist.vdiff' }), { viewport: { width: 1450 } });
 			await expect(newElem.querySelector('d2l-template-primary-secondary')).to.be.golden({ margin: 0 });
 		});
 	});
