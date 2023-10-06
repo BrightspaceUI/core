@@ -33,6 +33,10 @@ class LocalizeSandbox extends LocalizeMixin(LitElement) {
 				margin-bottom: 0.5rem;
 			}
 
+			#message {
+				font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+			}
+
 			d2l-input-text:not(:first-child) {
 				margin-top: 1rem;
 			}
