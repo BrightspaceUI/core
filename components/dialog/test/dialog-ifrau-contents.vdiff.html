@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 	<script>
 		const preferNative = (window.location.search.indexOf('preferNative=false') === -1);
 		window.D2L = { DialogMixin: { preferNative: preferNative } };
@@ -14,6 +13,14 @@
 	<title>d2l-dialog-ifrau</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<style>
+		html {
+			font-size: 20px;
+		}
+		body {
+			padding: 30px;
+		}
+	</style>
 </head>
 <body class="d2l-typography">
 	<d2l-button id="open">Open Dialog</d2l-button>
