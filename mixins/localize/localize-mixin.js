@@ -231,7 +231,7 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 
 };
 
-export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em']);
+export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em', 'button']);
 
 const markupError = `localizeHTML() rich-text replacements must use localizeMarkup templates with only the following allowed elements: ${allowedTags}. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`;
 const validTerminators = '([>\\s/]|$)';

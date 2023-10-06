@@ -207,7 +207,7 @@ export const LabelledMixin = superclass => class extends superclass {
 		this._validatingLabelTimeout = setTimeout(() => {
 			this._validatingLabelTimeout = null;
 			const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-			if (!hasLabel) {
+			if (this.isConnected && !hasLabel) {
 				if (this.labelledBy) {
 					if (this._labelElem) {
 						this._throwError(

@@ -47,7 +47,7 @@ A loading spinner indicates that something is happening and we don't know how lo
 
 ## Future Improvements
 
-- Ability to "freeze" the spinner at a specified frame to make visual diff testing easier
+- Ability to "freeze" the spinner at a specified frame to make vdiff testing easier
 
 Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

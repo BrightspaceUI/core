@@ -76,7 +76,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			}
 			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
-			}`;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-more-less-transition {
+					transition: none;
+				}
+			}
+		`;
 	}
 
 	constructor() {

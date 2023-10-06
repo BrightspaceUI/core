@@ -170,8 +170,8 @@ class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 	render() {
 		const startDateInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-range-start');
 		const endDateInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-range-end');
-		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -187,7 +187,7 @@ class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 					<d2l-input-date
 						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"
-						class="d2l-input-date-range-start"
+						class="d2l-input-date-range-start vdiff-target"
 						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}
@@ -205,7 +205,7 @@ class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 					<d2l-input-date
 						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"
-						class="d2l-input-date-range-end"
+						class="d2l-input-date-range-end vdiff-target"
 						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}

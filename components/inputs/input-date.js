@@ -241,10 +241,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
+				class="vdiff-target"
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
@@ -281,7 +282,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
-					class="d2l-dropdown-opener"
+					class="d2l-dropdown-opener vdiff-target"
 					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
 					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"

@@ -2,11 +2,7 @@ build/
 generated/
 node_modules/
 .vdiff/
-components/*/test/screenshots/current/
-components/*/test/screenshots/golden/
 lang/fr-on.js
-templates/*/test/screenshots/current/
-templates/*/test/screenshots/golden/
 test/sass.output.css
 .DS_Store
 custom-elements.json

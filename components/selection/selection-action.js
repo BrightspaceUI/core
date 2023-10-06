@@ -57,6 +57,7 @@ class Action extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(ButtonM
 	render() {
 		return html`
 			<d2l-button-subtle
+				class="vdiff-target"
 				@click="${this._handleActionClick}"
 				?disabled="${this.disabled}"
 				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"

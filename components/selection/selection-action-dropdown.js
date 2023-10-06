@@ -35,6 +35,7 @@ class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin
 	render() {
 		return html`
 			<d2l-button-subtle
+				class="vdiff-target"
 				?disabled=${this.disabled}
 				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"
 				icon="tier1:chevron-down"

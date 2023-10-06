@@ -4,6 +4,7 @@ Alerts communicate critical information relating to the state of the system and 
 <!-- docs: demo autoSize:false align:start -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/alert/alert.js';
   import '@brightspace-ui/core/components/alert/alert-toast.js';
   import '@brightspace-ui/core/components/button/button.js';
 
@@ -101,7 +102,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 * Do use specific language – “Assignment saved” is more informative than “Successfully saved”
 <!-- docs: end dos -->
 <!-- docs: start donts -->
-* Don't display more than one at a time
+* Avoid displaying multiple toast alerts - see [Multiple Toast Alerts](#multiple-toast-alerts)
 * Don't allow the close button to be blocked by other elements, the user doesn’t want to have to wait for it to go way on it’s own
 * Don’t use toasts to provide instructions. Change blindness and transience make them ineffective for these use cases
 * Don’t use the thumbnails or two-line variety of inline alert as a toast. Toasts should be super brief!
@@ -151,3 +152,40 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 ### Events
 * `d2l-alert-toast-close`: dispatched when the toast is closed
 <!-- docs: end hidden content -->
+
+### Multiple Toast Alerts
+
+Displaying more than one toast message at a time should be avoided unless absolutely necessary, since they usually disappear after 4 seconds and can be difficult to read for some users. It's often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
+
+For cases where multiple toast alerts are unavoidable, new toast messages will appear at the bottom and push older messages upward.
+
+<!-- docs: demo autoSize:false align:start size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/alert/alert-toast.js';
+  import '@brightspace-ui/core/components/button/button.js';
+
+  for (let i = 1; i <= 3; i++) {
+    const buttonSelector = `#open${i}`;
+    const toastSelector = `#alert-toast${i}`;
+    document.querySelector(buttonSelector).addEventListener('click', () => {
+      document.querySelector(toastSelector).open = true;
+    });
+  }
+</script>
+
+<div style="width:100%;">
+  <d2l-button id="open1">Show Alert 1</d2l-button>
+  <d2l-button id="open2">Show Alert 2</d2l-button>
+  <d2l-button id="open3">Show Alert 3</d2l-button>
+</div>
+<d2l-alert-toast id="alert-toast1" type="success" open no-auto-close>
+	First toast alert
+</d2l-alert-toast>
+<d2l-alert-toast id="alert-toast2" type="default">
+	Second toast, with auto-close
+</d2l-alert-toast>
+<d2l-alert-toast id="alert-toast3" type="critical" no-auto-close>
+	Third toast alert
+</d2l-alert-toast>
+```

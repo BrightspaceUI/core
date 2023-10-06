@@ -17,8 +17,8 @@ import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 let tabPressed = false;
@@ -38,18 +38,6 @@ function addTabListener() {
 
 let hasDisplayedKeyboardTooltip = false;
 
-const ro = new ResizeObserver(entries => {
-	entries.forEach(entry => {
-		if (!entry || !entry.target || !entry.target.resizedCallback) {
-			return;
-		}
-		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width);
-	});
-});
-
-const defaultBreakpoints = [842, 636, 580, 0];
-const SLIM_COLOR_BREAKPOINT = 400;
-
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
  */
@@ -61,15 +49,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	ListItemDragDropMixin,
 	ListItemCheckboxMixin,
 	ListItemRoleMixin,
-	RtlMixin) {
+	RtlMixin,
+	SkeletonMixin) {
 
 	static get properties() {
 		return {
-			/**
-			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
-			 * @type {array}
-			 */
-			breakpoints: { type: Array },
 			/**
 			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
 			 * @type {string}
@@ -90,7 +74,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			_breakpoint: { type: Number },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },
@@ -101,7 +84,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlighting: { type: Boolean, reflect: true },
 			_hasNestedList: { state: true },
 			_siblingHasColor: { state: true },
-			_slimColor: { state: true }
 		};
 	}
 
@@ -217,15 +199,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin-right: 0.9rem;
-				max-height: 2.6rem;
-				max-width: 4.5rem;
+				margin-inline-end: var(--d2l-list-item-illustration-margin-inline-end, 0.9rem);
+				max-height: var(--d2l-list-item-illustration-max-height, 2.6rem);
+				max-width: var(--d2l-list-item-illustration-max-width, 4.5rem);
 				overflow: hidden;
-			}
-			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration > * {
-				margin-left: 0.9rem;
-				margin-right: 0;
 			}
 			[slot="content"] ::slotted(d2l-icon[slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration d2l-icon {
@@ -252,40 +229,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
 			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
 				margin-left: 0.9rem;
-				margin-right: 0;
-			}
-
-			[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			[data-breakpoint="1"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 3.55rem;
-				max-width: 6rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
-				margin-right: 0;
-			}
-			[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			[data-breakpoint="2"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 5.1rem;
-				max-width: 9rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
-				margin-right: 0;
-			}
-			[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			[data-breakpoint="3"] .d2l-list-item-illustration > * {
-				margin-right: 1rem;
-				max-height: 6rem;
-				max-width: 10.8rem;
-			}
-			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration > * {
-				margin-left: 1rem;
 				margin-right: 0;
 			}
 
@@ -392,13 +335,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			.d2l-list-item-color-inner {
-				border-radius: 6px;
+				border-radius: var(--d2l-list-item-color-border-radius, 6px);
 				height: 100%;
-				width: 6px;
-			}
-			.d2l-list-item-color-inner.d2l-list-item-color-slim {
-				border-radius: 3px;
-				width: 3px;
+				width: var(--d2l-list-item-color-width, 6px);
 			}
 			.d2l-list-item-color-outer {
 				padding: 2px 12px 1px 0;
@@ -435,27 +374,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	constructor() {
 		super();
-		this.breakpoints = defaultBreakpoints;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
-		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
 		this._siblingHasColor = false;
-		this._slimColor = false;
-	}
-
-	get breakpoints() {
-		return this._breakpoints;
-	}
-
-	set breakpoints(value) {
-		const oldValue = this._breakpoints;
-		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
-		else this._breakpoints = defaultBreakpoints;
-		this.requestUpdate('breakpoints', oldValue);
 	}
 
 	get color() {
@@ -472,24 +397,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	connectedCallback() {
 		super.connectedCallback();
-		ro.observe(this);
 		if (this.role === 'rowgroup') {
 			addTabListener();
 		}
 		if (!this.selectable && !this.expandable) {
 			this.labelRequired = false;
-		}
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		ro.unobserve(this);
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
 		}
 	}
 
@@ -520,18 +432,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}, 1000);
 		}, { once: true });
 		this._highlighting = true;
-	}
-
-	resizedCallback(width) {
-		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
-
-		const lastBreakpointIndexToCheck = 3;
-		this.breakpoints.some((breakpoint, index) => {
-			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
-				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
-				return true;
-			}
-		});
 	}
 
 	scrollToAndHighlight(alignToTop = true) {
@@ -689,7 +589,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 		const colorClasses = {
 			'd2l-list-item-color-inner': true,
-			'd2l-list-item-color-slim': this._slimColor
+			'd2l-skeletize': this.color
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
@@ -701,7 +601,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
-				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
 				?grid-active="${this.role === 'rowgroup'}"
 				?no-primary-action="${this.noPrimaryAction}">
@@ -778,7 +677,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_renderOutsideControlHandleOnly(dragHandle) {
-		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
+		return html`<div slot="outside-control" class="handle-only" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
 	}
 
 	_renderTooltipContent() {

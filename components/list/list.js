@@ -3,6 +3,7 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
@@ -10,6 +11,15 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
+const DEFAULT_BREAKPOINTS = [842, 636, 580, 0];
+const SLIM_COLOR_BREAKPOINT = 400;
+
+const ro = new ResizeObserver(entries => {
+	entries.forEach(entry => {
+		if (!entry?.target?.resizedCallback) return;
+		entry.target.resizedCallback(entry.contentRect?.width);
+	});
+});
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
@@ -22,6 +32,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
+			 * @type {array}
+			 */
+			breakpoints: { type: Array },
 			/**
 			 * Whether the user can drag multiple items
 			 * @type {boolean}
@@ -47,13 +62,20 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true }
+			separators: { type: String, reflect: true },
+			_breakpoint: { type: Number, reflect: true },
+			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
 	}
 
 	static get styles() {
 		return css`
 			:host {
+				--d2l-list-item-color-border-radius: 6px;
+				--d2l-list-item-color-width: 6px;
+				--d2l-list-item-illustration-margin-inline-end: 0.9rem;
+				--d2l-list-item-illustration-max-height: 2.6rem;
+				--d2l-list-item-illustration-max-width: 4.5rem;
 				display: block;
 			}
 			:host(:not([slot="nested"])) > .d2l-list-content {
@@ -69,11 +91,31 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				margin-left: 0.9rem;
 				margin-right: 0.9rem;
 			}
+			:host([_breakpoint="1"]) {
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 3.55rem;
+				--d2l-list-item-illustration-max-width: 6rem;
+			}
+			:host([_breakpoint="2"]) {
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 5.1rem;
+				--d2l-list-item-illustration-max-width: 9rem;
+			}
+			:host([_breakpoint="3"]) {
+				--d2l-list-item-illustration-margin-inline-end: 1rem;
+				--d2l-list-item-illustration-max-height: 6rem;
+				--d2l-list-item-illustration-max-width: 10.8rem;
+			}
+			:host([_slim-color]) {
+				--d2l-list-item-color-border-radius: 3px;
+				--d2l-list-item-color-width: 3px;
+			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this.breakpoints = DEFAULT_BREAKPOINTS;
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
@@ -81,10 +123,25 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
 
+		this._breakpoint = 0;
+		this._slimColor = false;
+		this._width = 0;
+
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
 			updateSubscribers: this._updateActiveSubscribers.bind(this)
 		});
+	}
+
+	get breakpoints() {
+		return this._breakpoints;
+	}
+
+	set breakpoints(value) {
+		const oldValue = this._breakpoints;
+		if (value !== DEFAULT_BREAKPOINTS) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		else this._breakpoints = DEFAULT_BREAKPOINTS;
+		this.requestUpdate('breakpoints', oldValue);
 	}
 
 	connectedCallback() {
@@ -92,11 +149,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
+		ro.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
+		ro.unobserve(this);
 	}
 
 	firstUpdated(changedProperties) {
@@ -141,6 +200,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			</div>
 			${this._renderPagerContainer()}
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
+			this.resizedCallback(this.offsetWidth, true);
+		}
 	}
 
 	getItems(slot) {
@@ -196,6 +262,21 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
+	}
+
+	resizedCallback(width, breakpointsChanged) {
+		if (this._width === width && !breakpointsChanged) return;
+		this._width = width;
+
+		this._slimColor = (width < SLIM_COLOR_BREAKPOINT);
+
+		const lastBreakpointIndexToCheck = 3;
+		this.breakpoints.some((breakpoint, index) => {
+			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
+				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
+				return true;
+			}
+		});
 	}
 
 	_getItemByIndex(index) {

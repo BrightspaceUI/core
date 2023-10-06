@@ -6,6 +6,13 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let activeReduceMotion = reduceMotion;
+export function disableReducedMotionForTesting() {
+	activeReduceMotion = false;
+}
+export function restoreReducedMotionForTesting() {
+	activeReduceMotion = reduceMotion;
+}
 
 const states = {
 	CLOSED: 'closed', // the toast is closed
@@ -20,6 +27,9 @@ const TOAST_SPACING = 0.6;
 const TOAST_SPACING_SMALL = 0.3;
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
+
+let ALERT_HAS_FOCUS = false; // if this alert or sibling alert is focused on
+let ALERT_HAS_HOVER = false; // if this alert or sibling alert is hovered on
 
 /**
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
@@ -158,7 +168,9 @@ class AlertToast extends LitElement {
 		this._state = states.CLOSED;
 		this._totalSiblingHeightBelow = 0;
 
+		this._closeTimerStop = this._closeTimerStop.bind(this);
 		this._handlePageResize = this._handlePageResize.bind(this);
+		this._handleSiblingCloseTimerStart = this._handleSiblingCloseTimerStart.bind(this);
 		this._handleSiblingResize = this._handleSiblingResize.bind(this);
 		this._resizeObserver = null;
 	}
@@ -180,6 +192,8 @@ class AlertToast extends LitElement {
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
+		document.body.addEventListener('d2l-alert-toast-timer-start', this._handleSiblingCloseTimerStart);
+		document.body.addEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
 
 		await this.updateComplete;
@@ -191,8 +205,13 @@ class AlertToast extends LitElement {
 		super.disconnectedCallback();
 		document.body.removeEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.removeEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
+		document.body.removeEventListener('d2l-alert-toast-timer-start', this._handleSiblingCloseTimerStart);
+		document.body.removeEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handlePageResize);
+
+		if (this._hasMouse) ALERT_HAS_HOVER = false;
+		if (this._hasFocus) ALERT_HAS_FOCUS = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -260,7 +279,7 @@ class AlertToast extends LitElement {
 
 	_closeTimerStart() {
 		clearTimeout(this._setTimeoutId);
-		if (!this.noAutoClose && !this._hasFocus && !this._hasMouse) {
+		if (!this.noAutoClose && !ALERT_HAS_FOCUS && !ALERT_HAS_HOVER) {
 			const duration = this.buttonText ? 10000 : 4000;
 			this._setTimeoutId = setTimeout(() => {
 				this.open = false;
@@ -269,6 +288,7 @@ class AlertToast extends LitElement {
 	}
 
 	_closeTimerStop() {
+		if (!this.open) return;
 		clearTimeout(this._setTimeoutId);
 	}
 
@@ -291,6 +311,7 @@ class AlertToast extends LitElement {
 		const bottom = boundingClientRect.bottom;
 		const opening = oldHeight === 0;
 
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-toast-resize', {
 				bubbles: true,
@@ -298,6 +319,11 @@ class AlertToast extends LitElement {
 				detail: { bottom, heightDifference: (newHeight - oldHeight), opening, closing: false }
 			}
 		));
+	}
+
+	_handleSiblingCloseTimerStart() {
+		if (!this.open) return;
+		this._closeTimerStart();
 	}
 
 	_handleSiblingResize(e) {
@@ -312,16 +338,21 @@ class AlertToast extends LitElement {
 		this._totalSiblingHeightBelow += e.detail.heightDifference;
 		if (e.detail.opening) {
 			this._numAlertsBelow += 1;
-			if (!reduceMotion) this._state = states.SLIDING;
+			if (!activeReduceMotion) this._state = states.SLIDING;
 		} else if (e.detail.closing) {
 			this._numAlertsBelow -= 1;
-			if (!reduceMotion) this._state = states.SLIDING;
+			if (!activeReduceMotion) this._state = states.SLIDING;
 		}
 	}
 
 	_onBlur() {
+		ALERT_HAS_FOCUS = false;
 		this._hasFocus = false;
 		this._closeTimerStart();
+		if (!ALERT_HAS_HOVER) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		}
 	}
 
 	_onCloseClicked(e) {
@@ -331,18 +362,29 @@ class AlertToast extends LitElement {
 	}
 
 	_onFocus() {
+		ALERT_HAS_FOCUS = true;
 		this._hasFocus = true;
 		this._closeTimerStop();
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
 	_onMouseEnter() {
+		ALERT_HAS_HOVER = true;
 		this._hasMouse = true;
 		this._closeTimerStop();
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
 
 	_onMouseLeave() {
+		ALERT_HAS_HOVER = false;
 		this._hasMouse = false;
 		this._closeTimerStart();
+		if (!ALERT_HAS_FOCUS) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-start', { bubbles: true, composed: false }));
+		}
 	}
 
 	_onTransitionEnd() {
@@ -361,7 +403,7 @@ class AlertToast extends LitElement {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
 			} else if (this._state === states.CLOSED) {
-				if (!reduceMotion) {
+				if (!activeReduceMotion) {
 					this._state = states.PREOPENING;
 					// pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
 					this._preopenFrame = requestAnimationFrame(() => {
@@ -377,16 +419,20 @@ class AlertToast extends LitElement {
 		} else {
 			if (!this._innerContainer) return;
 
-			if (reduceMotion || this._state === states.PREOPENING) {
+			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
 				this.removeAttribute('role');
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
+
+			if (this._hasMouse) ALERT_HAS_HOVER = false;
+			if (this._hasFocus) ALERT_HAS_FOCUS = false;
+
 			requestAnimationFrame(() => {
 				const bottom = this._innerContainer.getBoundingClientRect().bottom;
 
-				if (reduceMotion || this._state === states.PREOPENING) {
+				if (activeReduceMotion || this._state === states.PREOPENING) {
 					this._state = states.CLOSED;
 					this._totalSiblingHeightBelow = 0;
 					this._numAlertsBelow = 0;
@@ -405,8 +451,14 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState, oldState) {
-		const newlyOpened = (newState === states.OPEN && oldState === states.OPENING);
-		const newlyOpenedReduceMotion = (newState === states.OPEN && oldState === states.CLOSED);
+		/**
+		 * Opening state changes:
+		 * - OPENING -> OPEN
+		 * - OPENING -> SLIDING (multiple alerts opened rapidly)
+		 * - CLOSED -> OPEN (prefers-reduced-motion)
+		 */
+		const newlyOpened = oldState === states.OPENING && (newState === states.OPEN || newState === states.SLIDING);
+		const newlyOpenedReduceMotion = oldState === states.CLOSED && newState === states.OPEN;
 		if (newlyOpened || newlyOpenedReduceMotion) {
 			this._closeTimerStart();
 		} else if (newState !== states.SLIDING && newState !== states.OPEN) {

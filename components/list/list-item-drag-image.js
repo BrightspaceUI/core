@@ -115,8 +115,8 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitEl
 					<div class="line-2 d2l-skeletize"></div>
 				</div>
 			</div>
-			<div class="second"></div>
-			<div class="third"></div>
+			<div class="second vdiff-target"></div>
+			<div class="third vdiff-target"></div>
 		`;
 	}
 
