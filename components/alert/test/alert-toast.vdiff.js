@@ -168,6 +168,15 @@ describe('alert-toast', () => {
 				await expect(document).to.be.golden();
 			});
 
+			it('open quickly then wait', async() => {
+				const elem = await fixture(multipleAlertsAutoClose, { viewport });
+				elem.querySelector('d2l-alert-toast')._setReduceMotion(false);
+				await openAlerts(elem);
+				clock.tick(4100);
+				await expect(document).to.be.golden();
+				elem.querySelector('d2l-alert-toast')._setReduceMotion(true);
+			});
+
 		});
 
 	});

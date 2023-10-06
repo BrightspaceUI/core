@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const states = {
 	CLOSED: 'closed', // the toast is closed
@@ -443,9 +443,20 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	// This is specifically for vdiff tests. Do not use otherwise.
+	_setReduceMotion(value) {
+		reduceMotion = value;
+	}
+
 	_stateChanged(newState, oldState) {
-		const newlyOpened = (newState === states.OPEN && oldState === states.OPENING);
-		const newlyOpenedReduceMotion = (newState === states.OPEN && oldState === states.CLOSED);
+		/**
+		 * Opening state changes:
+		 * - OPENING -> OPEN
+		 * - OPENING -> SLIDING (multiple alerts opened rapidly)
+		 * - CLOSED -> OPEN (prefers-reduced-motion)
+		 */
+		const newlyOpened = oldState === states.OPENING && (newState === states.OPEN || newState === states.SLIDING);
+		const newlyOpenedReduceMotion = oldState === states.CLOSED && newState === states.OPEN;
 		if (newlyOpened || newlyOpenedReduceMotion) {
 			this._closeTimerStart();
 		} else if (newState !== states.SLIDING && newState !== states.OPEN) {
