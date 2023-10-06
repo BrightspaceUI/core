@@ -2,8 +2,6 @@ build/
 generated/
 node_modules/
 .vdiff/
-components/*/test/screenshots/current/
-components/*/test/screenshots/golden/
 lang/fr-on.js
 test/sass.output.css
 .DS_Store
