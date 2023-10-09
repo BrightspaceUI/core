@@ -60,7 +60,7 @@
     "glob-all": "^3",
     "messageformat-validator": "^2",
     "node-sass": "^9",
-    "rollup": "^3",
+    "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
     "sinon": "^16",
