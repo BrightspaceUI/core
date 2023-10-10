@@ -92,8 +92,7 @@ class DemoSnippet extends LitElement {
 			}
 			d2l-dropdown.settings-dropdown.peek,
 			d2l-dropdown.settings-dropdown:hover,
-			d2l-dropdown.settings-dropdown:focus-within,
-			d2l-dropdown.settings-dropdown:has(d2l-button-subtle[active]) {
+			d2l-dropdown.settings-dropdown:focus-within {
 				box-shadow: 0 -1px 0 1px white;
 				translate: 0;
 			}
