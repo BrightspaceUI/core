@@ -92,4 +92,11 @@ describe('d2l-link', () => {
 
 	});
 
+	describe('new-window', () => {
+		it('should add offscreen text', async() => {
+			const elem = await fixture(html`<d2l-link target="_blank">link text</d2l-link>`);
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('Opens in a new window.');
+		});
+	});
+
 });

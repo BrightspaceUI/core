@@ -66,6 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} は {endLabel} より前にする必要があります",
 	"components.input-time-range.startTime": "開始時刻",
 	"components.interactive.instructions": "対話を始めるには Enter キー、終了するには Esc キーを押します",
+	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list-controls.label": "リストのアクション",
 	"components.list-item-drag-handle.default": "{name} の項目並べ替えアクション",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え、現在の位置 {currentPosition}、サイズ {size}。この項目を移動するには、上矢印または下矢印を押します。",

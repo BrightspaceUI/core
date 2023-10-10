@@ -1,9 +1,12 @@
 import '../colors/colors.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import '../icons/icon.js';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = css`
@@ -50,7 +53,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends FocusMixin(LitElement) {
+class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -93,7 +96,7 @@ class Link extends FocusMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ linkStyles,
+		return [ linkStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline;
@@ -114,6 +117,23 @@ class Link extends FocusMixin(LitElement) {
 					display: -webkit-box;
 					overflow: hidden;
 					overflow-wrap: anywhere;
+				}
+				d2l-icon {
+					color: var(--d2l-color-celestine);
+					height: 0.95em;
+					margin-inline-start: 0.315em;
+					vertical-align: inherit;
+					width: 0.95em;
+				}
+
+				a:hover d2l-icon {
+					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
+				}
+
+				@media print {
+					d2l-icon {
+						display: none;
+					}
 				}
 			`
 		];
@@ -138,14 +158,19 @@ class Link extends FocusMixin(LitElement) {
 			'd2l-link-small': this.small,
 			'truncate': this.lines > 0
 		};
-		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
+		const styles = { webkitLineClamp: this.lines || null };
+		const newWindowElements = (this.target === '_blank')
+			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			: nothing;
+
 		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
 				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}"><slot></slot></a>`;
+				target="${ifDefined(this.target)}"
+			><slot></slot>${newWindowElements}</a>`;
 	}
 
 }

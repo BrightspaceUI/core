@@ -66,6 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",
 	"components.input-time-range.startTime": "Amser Dechrau",
 	"components.interactive.instructions": "Pwyswch Enter i ryngweithio, Escape i adael",
+	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list-controls.label": "Camau gweithredu ar gyfer rhestr",
 	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
 	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu'r saeth i lawr.",

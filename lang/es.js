@@ -66,6 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} debe estar antes de {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Presione Intro para interactuar y Escape para salir",
+	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list-controls.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Acción de reordenar elemento de {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elemento, posición actual {currentPosition} de {size}. Para mover este elemento, presione las flechas hacia arriba o hacia abajo.",
