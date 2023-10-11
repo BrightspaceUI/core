@@ -70,7 +70,7 @@
     "@brightspace-ui/intl": "^3",
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
-    "ifrau": "^0.40",
+    "ifrau": "^0.41",
     "intl-messageformat": "^10",
     "lit": "^2",
     "prismjs": "^1",
