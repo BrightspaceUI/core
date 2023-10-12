@@ -1,7 +1,6 @@
 import '../overflow-group.js';
 import '../../button/button.js';
-import { fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-overflow-group', () => {
 	describe('constructor', () => {

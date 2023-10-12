@@ -1,9 +1,8 @@
 import '../empty-state-illustrated.js';
 import '../empty-state-action-button.js';
 import '../empty-state-action-link.js';
-import { fixture, oneEvent, waitUntil } from '@brightspace-ui/testing';
+import { fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { html } from 'lit';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-empty-state-illustrated',  () => {
 

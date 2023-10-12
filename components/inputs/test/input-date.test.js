@@ -1,7 +1,6 @@
-import { aTimeout, expect, fixture, oneEvent, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date has-now label="label text"></d2l-input-date>';

@@ -1,6 +1,5 @@
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { INPUT_TIMEOUT_MS, SUPPRESS_ENTER_TIMEOUT_MS } from '../input-search.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { useFakeTimers } from 'sinon';
 
 const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`;

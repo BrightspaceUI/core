@@ -1,7 +1,6 @@
 import '../input-number.js';
-import { aTimeout, defineCE, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
 const defaultValueFixture = html`<d2l-input-number label="label" value="1.1"></d2l-input-number>`;

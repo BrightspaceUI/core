@@ -1,7 +1,6 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const normalFixture = html`
 	<div>

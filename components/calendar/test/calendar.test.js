@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getNextMonth,
@@ -8,7 +8,6 @@ import { checkIfDatesEqual,
 	getPrevMonth
 } from '../calendar.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const normalFixture = html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`;

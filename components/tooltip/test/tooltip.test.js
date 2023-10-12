@@ -1,7 +1,6 @@
 import '../tooltip.js';
-import { aTimeout, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
 	<div>

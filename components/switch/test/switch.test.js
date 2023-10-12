@@ -1,7 +1,6 @@
 import '../switch.js';
-import { expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const switchFixture = html`<d2l-switch text="some text"></d2l-switch>`;
 

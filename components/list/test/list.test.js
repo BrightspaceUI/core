@@ -3,8 +3,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { clickElem, expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 
 const clickItemInput = async item => {
 	const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');

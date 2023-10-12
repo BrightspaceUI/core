@@ -1,6 +1,5 @@
 import '../button-icon.js';
-import { fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-icon', () => {
 
