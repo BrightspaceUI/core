@@ -89,7 +89,7 @@ Examples are provided to display how user-authored math can be embedded within y
 
 ### Add Context Automatically to Demos and Tests
 
-You can automatically set-up the `mathjax` context for demo pages and unit tests when using `@web/dev-server` and `@web/test-runner` by adding the following plugin to your configuration.
+You can automatically set-up the `mathjax` context for demo pages and unit tests when using `@web/dev-server` by adding the following plugin to your configuration.
 
 ```javascript
 export default {
@@ -109,4 +109,13 @@ export default {
   }],
   ...
 }
+```
+
+For tests using `@brightspace-ui/testing`, pass in the following option:
+
+```javascript
+const elem = await fixture(
+  html`<d2l-html-block html="..."></d2l-html-block>`,
+  { mathjax: { renderLatex: true } }
+);
 ```
