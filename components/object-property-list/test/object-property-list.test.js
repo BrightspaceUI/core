@@ -2,8 +2,7 @@ import '../object-property-list.js';
 import '../object-property-list-item.js';
 import '../object-property-list-item-link.js';
 import '../../status-indicator/status-indicator.js';
-import { aTimeout, expect, fixture, html } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { aTimeout, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 const validateSeparators = (elem, count) => {
 	const items = elem.querySelectorAll('d2l-object-property-list-item:not([hidden]), d2l-object-property-list-item-link:not([hidden])');

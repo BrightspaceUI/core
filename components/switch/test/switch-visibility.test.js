@@ -1,5 +1,5 @@
 import '../switch-visibility.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-switch-visibility', () => {
 

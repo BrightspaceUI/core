@@ -1,8 +1,7 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
 import '../collapsible-panel-group.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 

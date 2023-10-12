@@ -1,5 +1,5 @@
 import '../count-badge.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-count-badge', () => {
 	it('should construct', () => {

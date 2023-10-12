@@ -1,6 +1,5 @@
 import '../menu-item-link.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-menu-item-link', () => {
 

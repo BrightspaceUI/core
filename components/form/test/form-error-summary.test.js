@@ -1,7 +1,6 @@
 import '../form-errory-summary.js';
-import { expect, fixture } from '@brightspace-ui/testing';
+import { expect, fixture, runConstructor } from '@brightspace-ui/testing';
 import { html } from 'lit';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const errorSummaryFixture = html`<d2l-form-error-summary></d2l-form-error-summary>`;
 

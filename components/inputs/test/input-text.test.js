@@ -1,6 +1,5 @@
 import '../input-text.js';
-import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const normalFixture = html`<d2l-input-text label="label"></d2l-input-text>`;
 

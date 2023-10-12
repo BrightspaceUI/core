@@ -2,9 +2,8 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { spy, stub } from 'sinon';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>

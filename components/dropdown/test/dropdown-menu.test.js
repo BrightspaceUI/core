@@ -4,8 +4,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../menu/menu-item-link.js';
 import '../../menu/menu-item-radio.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const itemFixture = html`
 	<div>

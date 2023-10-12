@@ -1,6 +1,5 @@
-import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { dragActions } from '../list-item-drag-handle.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('ListItemDragHandle', () => {
 

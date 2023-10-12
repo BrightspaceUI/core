@@ -1,6 +1,6 @@
 import '../breadcrumb.js';
 import '../breadcrumb-current-page.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-breadcrumb', () => {
 
