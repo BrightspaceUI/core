@@ -1,8 +1,5 @@
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
-import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-
-const documentLocaleSettings = getDocumentLocaleSettings();
 
 const offscreenStyleDeclarations = css`
 		direction: var(--d2l-document-direction);
