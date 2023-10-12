@@ -1,6 +1,6 @@
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
-	"components.breadcrumbs.breadcrumb": "Broodkruimel",
+	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.calendar.notSelected": "Niet geselecteerd.",
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} weergeven",
@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Geselecteerde filters verschijnen als eerste.",
