@@ -1,8 +1,8 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const offscreenStyleDeclarations = css`
-		direction: var(--d2l-document-direction);
+		direction: var(--d2l-document-direction, ${document.dir ? unsafeCSS(document.dir) : css`ltr`});
 		height: 1px;
 		inset-inline-start: -10000px;
 		left: -10000px;
