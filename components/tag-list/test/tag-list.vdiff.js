@@ -123,8 +123,11 @@ describe('tag-list', () => {
 
 		it('click clear all', async() => {
 			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button'));
-			console.log(elem.clientHeight, ', expected 30');
-			//await waitUntil(() => elem.clientHeight === 30);
+			console.log('initial height:', elem.clientHeight);
+			await waitUntil(() => {
+				console.log('polling height:', elem.clientHeight);
+				return elem.clientHeight == 99999;
+			});
 			await expect(elem).to.be.golden();
 		});
 	});
