@@ -18,10 +18,9 @@
     "lint:eslint": "eslint . --ext .js,.html --ignore-path .gitignore",
     "lint:style": "stylelint \"**/*.{js,html}\" --ignore-path .gitignore",
     "start": "web-dev-server --node-resolve --watch --open",
-    "test": "npm run lint && npm run test:translations && npm run test:headless && npm run test:axe",
+    "test": "npm run lint && npm run test:translations && npm run test:unit && npm run test:axe",
     "test:axe": "d2l-test-runner aXe",
-    "test:headless": "d2l-test-runner",
-    "test:headless:watch": "d2l-test-runner --watch",
+    "test:unit": "d2l-test-runner",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
     "test:vdiff": "d2l-test-runner vdiff"
   },
