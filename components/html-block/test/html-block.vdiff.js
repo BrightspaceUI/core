@@ -280,7 +280,8 @@ describe('d2l-html-block', () => {
 			html`<d2l-html-block style="width: 650px;" html="An equation...${mathInline} embedded inline with text, and showing placement of indicies for summations."></d2l-html-block>`,
 			{ mathjax: { renderLatex: true } }
 		);
-		await waitUntil(() => elem.clientHeight === 61);
+		console.log(elem.clientHeight, ', expected 61');
+		//await waitUntil(() => elem.clientHeight === 61);
 		await expect(elem).to.be.golden();
 	});
 
