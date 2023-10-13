@@ -11,6 +11,7 @@ describe('offscreen', () => {
 		[
 			{ name: 'wc', template: html`<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>` },
 			{ name: 'style', template: html`<d2l-offscreen-demo></d2l-offscreen-demo>` },
+			{ name: 'ltr-container', template: html`<span dir="ltr"><d2l-offscreen-demo></d2l-offscreen-demo></span>` },
 			{ name: 'sass', template: html`<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>` }
 		].forEach(({ name, template }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
