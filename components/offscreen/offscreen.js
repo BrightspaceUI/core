@@ -5,7 +5,7 @@ const offscreenStyleDeclarations = css`
 		direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`});
 		height: 1px;
 		inset-inline-start: -10000px;
-		left: -10000px;
+		${document.dir === 'rtl' ? css`right` : css`left`}: -10000px;
 		overflow: hidden;
 		position: absolute !important;
 		white-space: nowrap;
@@ -15,10 +15,6 @@ const offscreenStyleDeclarations = css`
 export const offscreenStyles = css`
 	.d2l-offscreen {
 		${offscreenStyleDeclarations}
-	}
-	:host([dir="rtl"]) .d2l-offscreen {
-		left: 0;
-		right: -10000px;
 	}
 `;
 
@@ -31,10 +27,6 @@ class Offscreen extends RtlMixin(LitElement) {
 		return css`
 			:host {
 				${offscreenStyleDeclarations}
-			}
-			:host([dir="rtl"]) {
-				left: 0;
-				right: -10000px;
 			}
 		`;
 	}
