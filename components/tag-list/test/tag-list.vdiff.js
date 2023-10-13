@@ -90,6 +90,9 @@ describe('tag-list', () => {
 						clickElem(button);
 						await oneEvent(elem, 'd2l-tag-list-focus');
 					}
+					await elem.updateComplete;
+
+					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
 			});
