@@ -415,6 +415,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		} else {
 			this.shadowRoot.querySelector('.d2l-tag-list-button')?.focus();
 		}
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-tag-list-focus', { bubbles: false, composed: false }));
 	}
 }
 

@@ -86,10 +86,10 @@ describe('tag-list', () => {
 
 				it(`width ${width} click show more`, async() => {
 					const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
-					if (button) await clickElem(button);
-					await elem.updateComplete;
-
-					await nextFrame();
+					if (button) {
+						clickElem(button);
+						await oneEvent(elem, 'd2l-tag-list-focus');
+					}
 					await expect(elem).to.be.golden();
 				});
 			});
