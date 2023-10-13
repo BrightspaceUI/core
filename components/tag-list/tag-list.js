@@ -407,11 +407,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		if (!this.shadowRoot) return;
 
+		const isMoreButton = e.target.classList.contains('d2l-tag-list-button-show-more');
 		await this.updateComplete;
-		if (e.target.classList.contains('d2l-tag-list-button-show-more')) this._items[this._chompIndex].focus();
-		else {
-			const button = this.shadowRoot.querySelector('.d2l-tag-list-button');
-			if (button) button.focus();
+		await new Promise((r) => setTimeout(r, 100)); // wait for items to appear before focusing
+		if (isMoreButton) {
+			this._items[this._chompIndex].focus();
+		} else {
+			this.shadowRoot.querySelector('.d2l-tag-list-button')?.focus();
 		}
 	}
 }
