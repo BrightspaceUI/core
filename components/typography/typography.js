@@ -10,6 +10,14 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-typography-font-face';
 	style.textContent = `
+		* {
+			--d2l-document-direction: ltr;
+		}
+
+		html[dir="rtl"] * {
+			--d2l-document-direction: rtl;
+		}
+
 		@font-face {
 			font-family: 'Lato';
 			font-style: normal;
