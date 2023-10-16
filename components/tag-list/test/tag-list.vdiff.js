@@ -1,7 +1,7 @@
 import '../tag-list.js';
 import '../tag-list-item.js';
 import './tag-list-item-mixin-consumer.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverAt, hoverElem, html, nextFrame, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -88,6 +88,7 @@ describe('tag-list', () => {
 					const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
 					if (button) {
 						clickElem(button);
+						hoverAt(0, 0);
 						await oneEvent(elem, 'd2l-tag-list-focus');
 					}
 					await elem.updateComplete;
