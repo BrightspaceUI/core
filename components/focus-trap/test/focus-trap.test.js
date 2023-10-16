@@ -1,6 +1,5 @@
 import '../focus-trap.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import sinon from 'sinon';
 
 const normalFixture = html`

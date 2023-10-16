@@ -1,6 +1,5 @@
 import '../alert.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const alertFixture = html`
 		<d2l-alert id="button-close" type="default" button-text="Do it!" has-close-button

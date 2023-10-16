@@ -1,9 +1,8 @@
-import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { formatDateInISOTime, getDateFromISOTime } from '../../../helpers/dateTime.js';
 import { getDefaultTime } from '../input-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getShiftedEndTime } from '../input-time-range.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-time-range label="label text"></d2l-input-time-range>';

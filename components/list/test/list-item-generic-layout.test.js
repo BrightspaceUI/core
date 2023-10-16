@@ -2,9 +2,8 @@ import '../list.js';
 import '../list-item.js';
 import '../../button/button-icon.js';
 
-import { aTimeout, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const normalFixture = html`

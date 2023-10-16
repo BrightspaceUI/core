@@ -1,9 +1,8 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { clickElem, expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
 	<d2l-tag-list description="Testing Tags">

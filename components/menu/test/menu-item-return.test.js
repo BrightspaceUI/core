@@ -1,5 +1,5 @@
 import '../menu-item-return.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-menu-item-return', () => {
 

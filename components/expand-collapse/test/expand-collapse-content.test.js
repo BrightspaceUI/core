@@ -1,6 +1,5 @@
 import '../expand-collapse-content.js';
-import { fixture, html } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 const collapsedContentFixture = html`<d2l-expand-collapse-content>A message.</d2l-expand-collapse-content>`;
 const expandedContentFixture = html`<d2l-expand-collapse-content expanded>A message.</d2l-expand-collapse-content>`;

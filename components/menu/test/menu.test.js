@@ -2,10 +2,9 @@ import '../menu.js';
 import '../menu-item.js';
 import '../menu-item-radio.js';
 import './custom-slots.js';
-import { clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { MenuItemMixin } from '../menu-item-mixin.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-menu', () => {
 

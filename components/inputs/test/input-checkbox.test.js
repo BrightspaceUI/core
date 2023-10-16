@@ -1,6 +1,5 @@
 import '../input-checkbox.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`;
 const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;

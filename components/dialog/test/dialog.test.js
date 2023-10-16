@@ -1,8 +1,7 @@
 import '../dialog.js';
-import { expect, fixture, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-dialog', () => {
 

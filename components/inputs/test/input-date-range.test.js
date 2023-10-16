@@ -1,7 +1,6 @@
-import { aTimeout, expect, fixture, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getShiftedEndDate } from '../input-date-range.js';
-import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-date-range label="label text"></d2l-input-date-range>';
 const minMaxFixture = '<d2l-input-date-range label="label text" min-value="2020-01-01" max-value="2020-06-01"></d2l-input-date-range>';
