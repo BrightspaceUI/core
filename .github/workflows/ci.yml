@@ -38,7 +38,7 @@ jobs:
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests
-        run: npm run test:headless
+        run: npm run test:unit
   publish:
     name: Publish static site
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
