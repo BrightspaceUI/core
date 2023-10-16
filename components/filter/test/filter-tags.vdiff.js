@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-tags.js';
-import { aTimeout, clickElem, expect, fixture, html, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 
 const singleFilter = html`
 	<d2l-filter id="filter">
@@ -97,7 +97,10 @@ describe('filter-tags', () => {
 				const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
 				const showMoreButton = tagList.shadowRoot.querySelector('.d2l-tag-list-button');
 
-				if (showMoreButton) await clickElem(showMoreButton);
+				if (showMoreButton) {
+					clickElem(showMoreButton);
+					await oneEvent(tagList, 'd2l-tag-list-focus');
+				}
 				await expect(elem).to.be.golden();
 			});
 		});

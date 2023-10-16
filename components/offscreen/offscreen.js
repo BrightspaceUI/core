@@ -1,19 +1,20 @@
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-export const offscreenStyles = css`
-	.d2l-offscreen {
+const offscreenStyleDeclarations = css`
+		direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`});
 		height: 1px;
 		inset-inline-start: -10000px;
-		left: -10000px;
+		${document.dir === 'rtl' ? css`right` : css`left`}: -10000px;
 		overflow: hidden;
 		position: absolute !important;
 		white-space: nowrap;
 		width: 1px;
-	}
-	:host([dir="rtl"]) .d2l-offscreen {
-		left: 0;
-		right: -10000px;
+`;
+
+export const offscreenStyles = css`
+	.d2l-offscreen {
+		${offscreenStyleDeclarations}
 	}
 `;
 
@@ -25,17 +26,7 @@ class Offscreen extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				height: 1px;
-				inset-inline-start: -10000px;
-				left: -10000px;
-				overflow: hidden;
-				position: absolute !important;
-				white-space: nowrap;
-				width: 1px;
-			}
-			:host([dir="rtl"]) {
-				left: 0;
-				right: -10000px;
+				${offscreenStyleDeclarations}
 			}
 		`;
 	}
