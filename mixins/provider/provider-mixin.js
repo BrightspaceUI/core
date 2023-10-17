@@ -1,9 +1,20 @@
+export class ProviderDelegate {
+	constructor(delegate) {
+		this.delegate = delegate;
+	}
+}
+
 export function provideInstance(node, key, obj) {
 	if (!node._providerInstances) {
 		node._providerInstances = new Map();
 		node.addEventListener('d2l-request-instance', e => {
 			if (node._providerInstances.has(e.detail.key)) {
-				e.detail.instance = node._providerInstances.get(e.detail.key);
+				const instance = node._providerInstances.get(e.detail.key);
+				if (instance instanceof ProviderDelegate) {
+					e.detail.instance = instance.delegate();
+				} else {
+					e.detail.instance = instance;
+				}
 				e.stopPropagation();
 			}
 		});
