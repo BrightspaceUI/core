@@ -44,9 +44,7 @@ describe('provider-helpers', () => {
 
 	it('should provide async delegate result', async() => {
 		provideInstance(document, 'instance-async-delegate', new ProviderDelegate(() => {
-			return new Promise(resolve => {
-				setTimeout(() => resolve(42), 200);
-			});
+			return new Promise(resolve => resolve(42));
 		}));
 		expect(await requestInstance(document.body, 'instance-async-delegate')).to.equal(42);
 	});
