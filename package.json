@@ -61,7 +61,7 @@
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
-    "sinon": "^16",
+    "sinon": "^17",
     "stylelint": "^15"
   },
   "dependencies": {
