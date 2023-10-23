@@ -31,7 +31,7 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Le nombre doit être supérieur à {min}.} other {Le nombre doit être supérieur ou égal à {min}.}}",
 	"components.form-element.input.text.tooShort": "{label} doit contenir au moins {minlength} caractères.",
 	"components.form-element.input.url.typeMismatch": "URL non valide",
-	"components.form-element.valueMissing": "{label} est requis.",
+	"components.form-element.valueMissing": "{label} est obligatoire.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {{count} erreur trouvée dans les informations soumises} other {{count} erreurs trouvées dans les informations soumises}}",
 	"components.input-color.backgroundColor": "Couleur de l’arrière-plan",
 	"components.input-color.foregroundColor": "Couleur de l’avant-plan",
@@ -43,7 +43,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-date-time-range.startDate": "Date de début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyer sur entrée pour interagir, sur Echap pour quitter",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "S’ouvre dans une nouvelle fenêtre.",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Action de réorganisation de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments, position actuelle {currentPosition} sur {size}. Pour déplacer cet élément, appuyez sur les flèches vers le haut ou vers le bas.",
@@ -104,8 +104,8 @@ export default {
 	"components.selection.selected": "{count} sélectionnés",
 	"components.selection.selected-plus": "{count}+ sélectionné(e)(s)",
 	"components.selection-controls.label": "Actions pour la sélection",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-controls.label": "Actions du tableau",

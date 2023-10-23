@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Pulse Enter para interactuar y Escape para salir",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "Se abre en una ventana nueva.",
 	"components.list-controls.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Reordenar acción de elemento para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos, posición actual {currentPosition} de {size}. Para mover este elemento, pulse las flechas arriba o abajo.",
@@ -104,8 +104,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.table-controls.label": "Acciones para la tabla",

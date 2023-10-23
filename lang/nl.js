@@ -18,7 +18,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Geselecteerde filters verschijnen als eerste.",
@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} moet voor {endLabel} liggen",
 	"components.input-time-range.startTime": "Starttijd",
 	"components.interactive.instructions": "Druk op Enter om te communiceren, druk op Escape om af te sluiten",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "Wordt geopend in een nieuw venster.",
 	"components.list-controls.label": "Acties voor lijst",
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",

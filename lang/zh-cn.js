@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-time-range.startTime": "开始时间",
 	"components.interactive.instructions": "按 Enter 键进行交互，按 Esc 键退出",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "在新窗口中打开。",
 	"components.list-controls.label": "针对列表的操作",
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",

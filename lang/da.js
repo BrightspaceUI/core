@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} skal være før {endLabel}",
 	"components.input-time-range.startTime": "Starttidspunkt",
 	"components.interactive.instructions": "Tryk på Enter for at interagere, Escape for at afslutte",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "Åbnes i et nyt vindue.",
 	"components.list-controls.label": "Handlinger for liste",
 	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger element, aktuel position {currentPosition} ud af {size}. For at flytte dette element skal du trykke på pil op eller pil ned.",
@@ -120,7 +120,7 @@ export default {
 	"components.tag-list.role-description": "Tagliste",
 	"components.tag-list.show-less": "Vis færre",
 	"components.tag-list.show-more-description": "Vælg for at få vist skjulte taglisteelementer",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Piletaster",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Flyt mellem tags",
 	"components.tag-list-item.tooltip-delete-key": "Tilbage/Slet",
