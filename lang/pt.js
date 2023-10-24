@@ -31,7 +31,7 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {O número deve ser maior que {min}.} other {O número deve ser maior que ou igual a {min}.}}",
 	"components.form-element.input.text.tooShort": "{label} precisa ter, pelo menos, {minlength} caracteres",
 	"components.form-element.input.url.typeMismatch": "URL inválido",
-	"components.form-element.valueMissing": "O campo {label} é obrigatório.",
+	"components.form-element.valueMissing": "{label} é obrigatório.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {{count} erro foi encontrado nas informações enviadas} other {{count} erros foram encontrados nas informações enviadas}}",
 	"components.input-color.backgroundColor": "Cor do Plano de fundo",
 	"components.input-color.foregroundColor": "Cor do Primeiro plano",
