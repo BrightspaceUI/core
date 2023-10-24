@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-time-range.startTime": "وقت البدء",
 	"components.interactive.instructions": "اضغط على Enter للتفاعل، وEscape للخروج",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "يفتح في نافذة جديدة.",
 	"components.list-controls.label": "إجراءات القائمة",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
