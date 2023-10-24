@@ -66,7 +66,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyez sur Entrée pour interagir, sur Échapper pour quitter",
-	"components.link.open-in-new-window": "Opens in a new window.",
+	"components.link.open-in-new-window": "Ouvre une nouvelle fenêtre.",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
