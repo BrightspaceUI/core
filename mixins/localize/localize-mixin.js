@@ -1,6 +1,6 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
-import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings, supportedLangpacks } from '@brightspace-ui/intl/lib/common.js';
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getLocalizeOverrideResources } from '../../helpers/getLocalizeResources.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
