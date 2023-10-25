@@ -1,13 +1,10 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
+import { defaultLocale as fallbackLang, getDocumentLocaleSettings, supportedLangpacks } from '@brightspace-ui/intl/lib/common.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
-import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getLocalizeOverrideResources } from '../../helpers/getLocalizeResources.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import IntlMessageFormat from 'intl-messageformat';
-
-const fallbackLang = 'en';
-const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'en-gb', 'es', 'es-es', 'fr', 'fr-fr', 'fr-on', 'hi', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-cn', 'zh-tw'];
 
 export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
 
