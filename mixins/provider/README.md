@@ -4,7 +4,7 @@ The `ProviderMixin` and `RequesterMixin` can be used to create a DI-like system 
 
 ## Usage
 
-Apply the `ProviderMixin` to the component that will be responsible for providing some data to components that request it. Optionally, the `ProviderDelegate` class can be used to specify a function that will provide the value when requested. 
+Apply the `ProviderMixin` to the component that will be responsible for providing some data to components that request it. Optionally, the `ProviderDelegate` class can be used to specify a function that will provide a cached value when requested. If `noCache: true` is passed, the value will not be cached.
 
 ```js
 import { ProviderMixin, ProviderDelegate } from '@brightspace-ui/core/mixins/provider/provider-mixin.js';
@@ -16,6 +16,7 @@ class InterestingFactProvider extends ProviderMixin(LitElement) {
 		this.provideInstance('d2l-interesting-fact-object', { fact: 'Olives are not the same as fish' });
 		this.provideInstance('d2l-interesting-fact-function', x => `${x} are not the same as fish`);
 		this.provideInstance('d2l-interesting-fact-delegate', new ProviderDelegate(() => 'Olives are not the same as fish'));
+		this.provideInstance('d2l-interesting-fact-delegate', new ProviderDelegate(() => 'Olives are not the same as fish', noCache));
 		this.provideInstance('d2l-interesting-fact-async-delegate', new ProviderDelegate(() => new Promise(...)));
 	}
 }
