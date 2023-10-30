@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Create custom-elements.json
-        run: npx wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json
+        run: npx wca analyze "{components,templates}/**/*.js" --format json --outFile custom-elements.json
       - name: Semantic Release
         uses: BrightspaceUI/actions/semantic-release@main
         with:
