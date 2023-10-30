@@ -42,6 +42,26 @@ describe('provider-helpers', () => {
 		expect(requestInstance(document.body, 'instance-delegate')).to.equal(42);
 	});
 
+	it('should provide cached delegate result', () => {
+		let value = 41;
+		provideInstance(document, 'instance-delegate', new ProviderDelegate(() => {
+			value += 1;
+			return value;
+		}));
+		expect(requestInstance(document.body, 'instance-delegate')).to.equal(42);
+		expect(requestInstance(document.body, 'instance-delegate')).to.equal(42);
+	});
+
+	it('should provide new delegate result', () => {
+		let value = 41;
+		provideInstance(document, 'instance-delegate', new ProviderDelegate(() => {
+			value += 1;
+			return value;
+		}, true));
+		expect(requestInstance(document.body, 'instance-delegate')).to.equal(42);
+		expect(requestInstance(document.body, 'instance-delegate')).to.equal(43);
+	});
+
 	it('should provide async delegate result', async() => {
 		provideInstance(document, 'instance-async-delegate', new ProviderDelegate(() => {
 			return new Promise(resolve => resolve(42));

@@ -1,6 +1,13 @@
 export class ProviderDelegate {
-	constructor(delegate) {
-		this.delegate = delegate;
+	constructor(delegate, noCache) {
+		this._noCache = noCache;
+		this._delegate = delegate;
+	}
+	getValue() {
+		if (this._noCache || this._value === undefined) {
+			this._value = this._delegate();
+		}
+		return this._value;
 	}
 }
 
@@ -11,7 +18,7 @@ export function provideInstance(node, key, obj) {
 			if (node._providerInstances.has(e.detail.key)) {
 				const instance = node._providerInstances.get(e.detail.key);
 				if (instance instanceof ProviderDelegate) {
-					e.detail.instance = instance.delegate();
+					e.detail.instance = instance.getValue();
 				} else {
 					e.detail.instance = instance;
 				}
