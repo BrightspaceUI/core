@@ -4,6 +4,8 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
+const traps = [];
+
 /**
  * A generic container component to trap user focus.
  * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
@@ -68,6 +70,17 @@ class FocusTrap extends FocusMixin(LitElement) {
 		`;
 	}
 
+	willUpdate(changedProperties) {
+		if (!changedProperties.has('trap')) return;
+		if (this.trap) {
+			traps.push(this);
+		} else {
+			const trapIndex = traps.findIndex(trap => trap === this);
+			if (trapIndex === -1) return;
+			traps.splice(trapIndex, 1);
+		}
+	}
+
 	_focusFirst() {
 		const focusable = this.shadowRoot &&
 			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
@@ -80,7 +93,8 @@ class FocusTrap extends FocusMixin(LitElement) {
 	}
 
 	_handleBodyFocus(e) {
-		if (!this.trap || this._legacyPromptIds.size > 0) return;
+		const lastTrap = traps[traps.length - 1];
+		if (!this.trap || this._legacyPromptIds.size > 0 || lastTrap !== this) return;
 		const container = this._getContainer();
 		const target = e.composedPath()[0];
 		if (isComposedAncestor(container, target)) return;
