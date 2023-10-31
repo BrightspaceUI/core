@@ -43,6 +43,13 @@ describe('tag-list', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('click focus', async() => {
+			const elem = await fixture(createTagList(), { viewport });
+			const firstChild = elem.querySelector('d2l-tag-list-item');
+			clickElem(firstChild);
+			await expect(elem).to.be.golden();
+		})
+
 		it('hover', async() => {
 			const elem = await fixture(createTagList(), { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
@@ -57,6 +64,21 @@ describe('tag-list', () => {
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
 			await expect(elem).to.be.golden();
 		});
+	});
+
+	it('width 601 enter show more', async() => {
+		const elem = await fixture(createTagList({ style: 'width: 601px;', clearable: true }), { viewport });
+		const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
+		if (button) {
+			sendKeys('press', 'Tab');
+			sendKeys('press', 'Tab');
+			sendKeys('press', 'Enter');
+			await oneEvent(elem, 'd2l-tag-list-focus');
+		}
+		await elem.updateComplete;
+
+		await nextFrame();
+		await expect(elem).to.be.golden();
 	});
 
 	[980, 969, 601, 599, 440, 320].forEach((width) => {
