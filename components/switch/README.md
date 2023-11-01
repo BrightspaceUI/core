@@ -21,7 +21,7 @@ A switch is used to toggle between two states, on and off, just like a light swi
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't toggle the language in the label, it should remain stati
+* Don't toggle the language in the label, it should remain static
 * Don't use a switch in a form, use a checkbox or radio options in stead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
@@ -89,7 +89,7 @@ See also [Visibility Switch with Conditions](https://daylight.d2l.dev/components
 ### Slots
 
 - Optional default slot content - Content that will be displayed within the "conditions" opener tooltip when the switch is on.
-  
+
 <!-- docs: end hidden content -->
 
 ### Visibility Switch with Conditions
