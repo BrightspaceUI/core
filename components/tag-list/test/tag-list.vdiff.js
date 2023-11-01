@@ -48,7 +48,7 @@ describe('tag-list', () => {
 			const firstChild = elem.querySelector('d2l-tag-list-item');
 			clickElem(firstChild);
 			await expect(elem).to.be.golden();
-		})
+		});
 
 		it('hover', async() => {
 			const elem = await fixture(createTagList(), { viewport });
