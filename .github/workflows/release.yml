@@ -31,7 +31,7 @@ jobs:
       - name: Semantic Release
         uses: BrightspaceUI/actions/semantic-release@main
         with:
-          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.D2L_RELEASE_TOKEN }}
           MINOR_RELEASE_WITH_LMS: true
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
