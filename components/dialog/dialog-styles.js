@@ -131,6 +131,10 @@ export const dialogStyles = css`
 		overflow: auto;
 	}
 
+	.d2l-dialog-dropdown-mobile .d2l-dialog-content {
+		overflow: hidden; /* workaround to fix clipping of nested fixed position elements with overlowing content in Safari bug: https://bugs.webkit.org/show_bug.cgi?id=160953 */
+	}
+
 	.d2l-dialog-footer {
 		box-sizing: border-box;
 		flex: none;
