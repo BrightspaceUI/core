@@ -49,6 +49,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_isFullHeight: { state: true },
 			_left: { state: true },
 			_margin: { state: true },
+			_mobileDropdownShowing: { state: true },
 			_nestedShowing: { state: true },
 			_overflowBottom: { state: true },
 			_overflowTop: { state: true },
@@ -67,12 +68,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
+		this._handleDropdownOpenClose = this._handleDropdownOpenClose.bind(this);
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
 		this._isFullHeight = false;
 		this._height = 0;
 		this._left = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
+		this._mobileDropdownShowing = false;
 		this._nestedShowing = false;
 		this._overflowBottom = false;
 		this._overflowTop = false;
@@ -143,6 +146,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
 		this.addEventListener('touchstart', this._handleTouchStart);
+		this.addEventListener('d2l-dropdown-open', this._handleDropdownOpenClose, { capture: true });
+		this.addEventListener('d2l-dropdown-close', this._handleDropdownOpenClose, { capture: true });
 		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
@@ -331,6 +336,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 	}
 
+	_handleDropdownOpenClose(e) {
+		this._mobileDropdownShowing = e.composedPath()[0]._useMobileStyling;
+	}
+
 	_handleFocusTrapEnter(e) {
 		// ignore focus trap events when the target is another element
 		// to prevent infinite focus loops
@@ -449,6 +458,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_removeHandlers() {
 		window.removeEventListener('resize', this._updateSize);
 		this.removeEventListener('touchstart', this._handleTouchStart);
+		this.removeEventListener('d2l-dropdown-open', this._handleDropdownOpenClose, { capture: true });
+		this.removeEventListener('d2l-dropdown-close', this._handleDropdownOpenClose, { capture: true });
 		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
@@ -477,7 +488,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing,
 			'd2l-dialog-outer-scroll': this._scroll,
 			'd2l-dialog-fullscreen-mobile': info.fullscreenMobile,
-			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
+			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0,
+			'd2l-dialog-dropdown-mobile': this._mobileDropdownShowing
 		};
 
 		return html`${this._useNative ?
