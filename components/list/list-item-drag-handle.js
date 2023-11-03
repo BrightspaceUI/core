@@ -72,7 +72,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 			:host {
 				display: flex;
 				margin: 0.25rem;
-				pointer-events: all; /* required since its parent may set point-events: none; (see generic layout) */
+				pointer-events: auto; /* required since its parent may set point-events: none; (see generic layout) */
 			}
 			:host([hidden]) {
 				display: none;
