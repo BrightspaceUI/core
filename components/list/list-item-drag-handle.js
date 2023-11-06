@@ -72,6 +72,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 			:host {
 				display: flex;
 				margin: 0.25rem;
+				pointer-events: auto; /* required since its parent may set point-events: none; (see generic layout) */
 			}
 			:host([hidden]) {
 				display: none;
@@ -181,25 +182,6 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 		this.activateKeyboardMode();
 	}
 
-	_onKeyboardButtonFocusIn() {
-		if (hasDisplayedKeyboardTooltip) return;
-		this._displayKeyboardTooltip = true;
-		hasDisplayedKeyboardTooltip = true;
-	}
-
-	_onKeyboardButtonFocusOut(e) {
-		this._displayKeyboardTooltip = false;
-		if (this._movingElement) {
-			this._movingElement = false;
-			e.stopPropagation();
-			e.preventDefault();
-			return;
-		}
-		this._keyboardActive = false;
-		this._dispatchAction(dragActions.save);
-		e.stopPropagation();
-	}
-
 	async _onMoveButtonAction(e) {
 
 		let action = null;
@@ -245,6 +227,25 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 
 	}
 
+	_onMoveButtonFocusIn() {
+		if (hasDisplayedKeyboardTooltip) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
+	}
+
+	_onMoveButtonFocusOut(e) {
+		this._displayKeyboardTooltip = false;
+		if (this._movingElement) {
+			this._movingElement = false;
+			e.stopPropagation();
+			e.preventDefault();
+			return;
+		}
+		this._keyboardActive = false;
+		this._dispatchAction(dragActions.save);
+		e.stopPropagation();
+	}
+
 	async _onMoveButtonKeydown(e) {
 		if (!this._keyboardActive) {
 			return;
@@ -274,6 +275,10 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 
 	}
 
+	_onMoveButtonMouseDown(e) {
+		e.preventDefault();
+	}
+
 	_renderDragger() {
 		return html`
 			<button
@@ -292,10 +297,11 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 			<d2l-button-move
 				class="d2l-list-item-drag-handle-button"
 				@d2l-button-move-action="${this._onMoveButtonAction}"
-				@focusin="${this._onKeyboardButtonFocusIn}"
-				@focusout="${this._onKeyboardButtonFocusOut}"
+				@focusin="${this._onMoveButtonFocusIn}"
+				@focusout="${this._onMoveButtonFocusOut}"
 				id="${this._buttonId}"
 				@keydown="${this._onMoveButtonKeydown}"
+				@mousedown="${this._onMoveButtonMouseDown}"
 				text="${this._defaultLabel}">
 			</d2l-button-move>
 			${this._displayKeyboardTooltip ? html`<d2l-tooltip class="vdiff-target" align="start" announced for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
