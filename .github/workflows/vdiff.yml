@@ -21,4 +21,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          timeout: 10000
+          test-timeout: 10000
