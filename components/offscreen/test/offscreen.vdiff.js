@@ -15,7 +15,10 @@ describe('offscreen', () => {
 			{ name: 'sass', template: html`<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>` }
 		].forEach(({ name, template }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
+				const now = Date.now();
 				const elem = await fixture(html`<div><p>Offscreen text:</p>${template}</div>`, { rtl });
+				// eslint-disable-next-line no-console
+				console.log(`offscreen-${name}${rtl ? '-rtl' : ''}: Fixture done in ${Date.now() - now} milliseconds`);
 				await expect(elem).to.be.golden();
 			});
 		});
