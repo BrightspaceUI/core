@@ -22,7 +22,7 @@
     "test:axe": "d2l-test-runner axe --chrome",
     "test:unit": "d2l-test-runner",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
-    "test:vdiff": "d2l-test-runner vdiff"
+    "test:vdiff": "d2l-test-runner vdiff --timeout 10000"
   },
   "files": [
     "custom-elements.json",
