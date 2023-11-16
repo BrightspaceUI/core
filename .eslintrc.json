@@ -27,5 +27,9 @@
       "no-undef": 0,
       "indent": 0
     }
+  },
+  {
+    "files": "**/test/*",
+    "extends": "brightspace/open-wc-testing-config"
   }]
 }
