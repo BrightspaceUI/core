@@ -133,16 +133,5 @@ describe('d2l-tag-list-item-mixin-consumer', () => {
 			const child = elem.children[3];
 			expect(child._plainText).to.be.equal('Tag');
 		});
-
-		it('should error if not provided', async() => {
-			let error;
-			try {
-				await fixture(html`<d2l-tag-list-item-mixin-consumer></d2l-tag-list-item-mixin-consumer>`);
-			} catch (e) {
-				error = e;
-			}
-			expect(error?.name).to.equal('TypeError');
-		});
-
 	});
 });

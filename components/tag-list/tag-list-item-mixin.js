@@ -136,6 +136,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.keyboardTooltipShown = false;
 		this._id = getUniqueId();
 		this._plainText = '';
+		this._validatingPlainTextTimeout = null;
 	}
 
 	firstUpdated(changedProperties) {
@@ -216,7 +217,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_renderTag(tagContent, options = {}) {
-		if (options.plainText?.constructor !== String) throw new TypeError('options.plainText must be a string');
+		this._validatePlainText();
 		this._plainText = options.plainText || '';
 
 		const buttonText = this.localize('components.tag-list.clear', { value: this._plainText });
@@ -274,6 +275,18 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 					</d2l-button-icon>` : null}
 			</div>
 		`;
+	}
+
+	_validatePlainText() {
+		clearTimeout(this._validatingPlainTextTimeout);
+		// don't error immediately in case it doesn't get set immediately
+		this._validatingPlainTextTimeout = setTimeout(() => {
+			this._validatingPlainTextTimeout = null;
+			const hasPlainText = (typeof this._plainText === 'string') && this._plainText.length > 0;
+			if (!hasPlainText) {
+				throw new Error(`TagListItemMixin: "${this.tagName.toLowerCase()}" called "_render()" with empty "plainText" option`);
+			}
+		}, 3000);
 	}
 
 };
