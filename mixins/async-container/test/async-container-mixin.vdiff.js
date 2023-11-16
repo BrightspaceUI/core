@@ -45,7 +45,7 @@ describe('async-container-mixin', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('mixed', async function() {
+	it('mixed', async() => {
 		const elem = await fixture(createTemplate({ numItems: 2 }));
 		const items = elem.querySelectorAll('d2l-async-demo-item');
 		items[0].key = 'Key 1';
@@ -55,7 +55,7 @@ describe('async-container-mixin', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('failure', async function() {
+	it('failure', async() => {
 		const elem = await fixture(createTemplate());
 		const item = elem.querySelector('d2l-async-demo-item');
 		item.key = 'key';
@@ -64,7 +64,7 @@ describe('async-container-mixin', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('complete', async function() {
+	it('complete', async() => {
 		const elem = await fixture(createTemplate());
 		const item = elem.querySelector('d2l-async-demo-item');
 		item.key = 'key';
