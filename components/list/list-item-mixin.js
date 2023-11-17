@@ -654,7 +654,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
+			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this.localizeHTML('components.list.keyboard')}</d2l-tooltip>` : ''}
 		`;
 
 	}
@@ -678,17 +678,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	_renderOutsideControlHandleOnly(dragHandle) {
 		return html`<div slot="outside-control" class="handle-only" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
-	}
-
-	_renderTooltipContent() {
-		return html`
-			<div>${this.localize('components.list-item-tooltip.title')}</div>
-			<ul>
-				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.up-down-key')}</span> - ${this.localize('components.list-item-tooltip.up-down-desc')}</li>
-				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.left-right-key')}</span> - ${this.localize('components.list-item-tooltip.left-right-desc')}</li>
-				<li><span class="d2l-list-item-tooltip-key">${this.localize('components.list-item-tooltip.page-up-down-key')}</span> - ${this.localize('components.list-item-tooltip.page-up-down-desc')}</li>
-			</ul>
-		`;
 	}
 
 	_tryFocus() {
