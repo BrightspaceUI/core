@@ -282,6 +282,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		// don't error immediately in case it doesn't get set immediately
 		this._validatingPlainTextTimeout = setTimeout(() => {
 			this._validatingPlainTextTimeout = null;
+			if (!this.isConnected) return;
 			const hasPlainText = (this._plainText?.constructor !== String) && this._plainText?.length > 0;
 			if (!hasPlainText) {
 				throw new Error(`TagListItemMixin: "${this.tagName.toLowerCase()}" called "_render()" with empty "plainText" option`);
