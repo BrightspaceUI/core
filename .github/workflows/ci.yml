@@ -85,7 +85,7 @@ jobs:
             | URL | https://live.d2l.dev/prs/${{ github.repository }}/pr-${{ github.event.number }}/ |
             |---|---|
 
-            > **Note**
+            > [!NOTE]
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
           only-post-once: true
