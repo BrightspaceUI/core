@@ -1,18 +1,16 @@
-import '../tooltip/tooltip.js';
+import '../colors/colors.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A component for quickly adding items to a specific locaiton.
- * TODO:
- * - smarter margin and padding and top
- * - focus
- * - simplify html and css
  */
-class ButtonAdd extends LocalizeCoreElement(LitElement) {
+class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -39,51 +37,53 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 				--d2l-button-add-line-style: solid;
 			}
 			button {
+				align-items: center;
 				background-color: transparent;
 				border: 0;
-				font-family: inherit;
+				box-shadow: none;
 				display: flex;
+				font-family: inherit;
 				justify-content: center;
 				outline: none;
 				padding: 0;
 				position: relative;
+				white-space: nowrap;
 				width: 100%;
 			}
+
 			.line {
 				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
 				margin: 3px 0;
 				width: 100%;
 			}
-			:host(:hover) .line,
+			button:hover .line,
 			button:focus .line {
 				border-top-color: var(--d2l-color-celestine);
 			}
-			button:focus d2l-icon {
-				color: var(--d2l-color-celestine);
-			}
-			d2l-icon.icon-no-text {
+
+			.content {
 				background-color: white;
-				color: var(--d2l-color-mica);
 				padding: 3px;
 				position: absolute;
-				top: -8px;
-			}
-			:host(:hover) d2l-icon {
-				color: var(--d2l-color-celestine);
-			}
-			.icon-text {
 				align-items: center;
-				background-color: white;
-				color: var(--d2l-color-celestine);
 				display: flex;
-				height: 30px;
-				padding: 0 0.6rem;
-				position: absolute;
-				top: -11px;
 			}
-			.icon-text d2l-icon {
+			:host([visible-text]) .content {
 				color: var(--d2l-color-celestine);
-				padding-right: 3px;
+				height: 1.5rem;
+				padding: 0 0.6rem;
+			}
+
+			:host([visible-text]) d2l-icon,
+			:host(:not([visible-text])) button:hover d2l-icon,
+			:host(:not([visible-text])) button:focus d2l-icon {
+				color: var(--d2l-color-celestine);
+			}
+			:host(:not([visible-text])) d2l-icon {
+				color: var(--d2l-color-galena);
+			}
+			:host([visible-text]) d2l-icon {
+				padding-right: 0.2rem;
 			}
 		`];
 	}
@@ -92,28 +92,28 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 		super();
 
 		this.visibleText = false;
-		this._iconId = getUniqueId();
+		this._buttonId = getUniqueId();
 
 		this.addEventListener('click', this._onClick);
+	}
+
+	static get focusElementSelector() {
+		return 'button';
 	}
 
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const label = this.label || this.localize('components.button-add.addItem');
+
 		return html`
-			<button class="d2l-label-text" aria-label="Add Button">
+			<button class="d2l-label-text" id="${this._buttonId}">
 				<div class="line"></div>
-				${this.visibleText
-					? html`
-						<div class="icon-text">
-							<d2l-icon icon="tier1:plus-default"></d2l-icon>
-							<span>${text}</span>
-						</div>`
-					: html`
-						<d2l-icon icon="tier1:plus-default"  class="icon-no-text"></d2l-icon>
-						<d2l-tooltip class="vdiff-target" offset="15">${label}</d2l-tooltip>
-					`
-				}
+				<div class="content">
+					<d2l-icon icon="tier1:plus-default"></d2l-icon>
+					${this.visibleText
+		? html`<span>${text}</span>`
+		: html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}">${label}</d2l-tooltip>`}
+				</div>
 			</button>
 		`;
 	}

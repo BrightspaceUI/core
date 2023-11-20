@@ -1,5 +1,5 @@
 import '../button-add.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('button-add', () => {
 	[
@@ -23,6 +23,7 @@ describe('button-add', () => {
 					let elem = await fixture(template);
 					if (elem.tagName !== 'D2L-BUTTON-ADD') elem = elem.querySelector('d2l-button-add');
 					if (action) await action(elem);
+					if ((name === 'hover' || name === 'focus') && !elem.visibleText) await oneEvent(elem, 'd2l-tooltip-show');
 					await expect(elem).to.be.golden();
 				});
 			});
