@@ -1,4 +1,5 @@
 import '../tooltip/tooltip.js';
+import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { labelStyles } from '../typography/styles.js';
@@ -54,8 +55,11 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 				width: 100%;
 			}
 			:host(:hover) .line,
-			:host(:focus-visible) .line {
+			button:focus .line {
 				border-top-color: var(--d2l-color-celestine);
+			}
+			button:focus d2l-icon {
+				color: var(--d2l-color-celestine);
 			}
 			d2l-icon.icon-no-text {
 				background-color: white;
@@ -87,8 +91,9 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 
-		this._iconId = getUniqueId();
 		this.visibleText = false;
+		this._iconId = getUniqueId();
+
 		this.addEventListener('click', this._onClick);
 	}
 
@@ -96,7 +101,7 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const label = this.label || this.localize('components.button-add.addItem');
 		return html`
-			<button class="d2l-label-text">
+			<button class="d2l-label-text" aria-label="Add Button">
 				<div class="line"></div>
 				${this.visibleText
 					? html`
@@ -105,8 +110,8 @@ class ButtonAdd extends LocalizeCoreElement(LitElement) {
 							<span>${text}</span>
 						</div>`
 					: html`
-						<d2l-icon icon="tier1:plus-default" id="${this._iconId}" class="icon-no-text"></d2l-icon>
-						<d2l-tooltip for="${this._iconId}">${label}</d2l-tooltip>
+						<d2l-icon icon="tier1:plus-default"  class="icon-no-text"></d2l-icon>
+						<d2l-tooltip class="vdiff-target" offset="15">${label}</d2l-tooltip>
 					`
 				}
 			</button>
