@@ -112,7 +112,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					<d2l-icon icon="tier1:plus-default"></d2l-icon>
 					${this.visibleText
 		? html`<span>${text}</span>`
-		: html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}">${label}</d2l-tooltip>`}
+		: html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${label}</d2l-tooltip>`}
 				</div>
 			</button>
 		`;
