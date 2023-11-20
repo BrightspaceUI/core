@@ -53,7 +53,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 			.line {
 				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
-				margin: 3px 0;
+				margin: 3px 0; /** hover/click target */
 				width: 100%;
 			}
 			button:hover .line,
@@ -62,16 +62,15 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			}
 
 			.content {
-				background-color: white;
-				padding: 3px;
-				position: absolute;
 				align-items: center;
+				background-color: white;
 				display: flex;
+				position: absolute;
 			}
 			:host([visible-text]) .content {
 				color: var(--d2l-color-celestine);
 				height: 1.5rem;
-				padding: 0 0.6rem;
+				padding: 0 0.3rem;
 			}
 
 			:host([visible-text]) d2l-icon,
@@ -81,6 +80,8 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			}
 			:host(:not([visible-text])) d2l-icon {
 				color: var(--d2l-color-galena);
+				margin: -3px; /** hover/click target */
+				padding: 3px; /** hover/click target */
 			}
 			:host([visible-text]) d2l-icon {
 				padding-right: 0.2rem;
