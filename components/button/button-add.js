@@ -84,7 +84,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				padding: 3px; /** hover/click target */
 			}
 			:host([visible-text]) d2l-icon {
-				padding-right: 0.2rem;
+				padding-inline-end: 0.2rem;
 			}
 		`];
 	}
