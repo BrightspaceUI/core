@@ -27,7 +27,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * When true, show the button with icon and visible text. When false, only show icon.
 			 * @type {boolean}
 			 */
-			visibleText: { type: Boolean, attribute: 'visible-text' }
+			visibleText: { type: Boolean, reflect: true, attribute: 'visible-text' }
 		};
 	}
 
