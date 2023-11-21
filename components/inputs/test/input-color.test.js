@@ -1,5 +1,6 @@
 import '../input-color.js';
 import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { createDefaultMessage } from '../../../mixins/property-required/property-required-mixin.js';
 
 describe('d2l-input-color', () => {
 
@@ -124,6 +125,37 @@ describe('d2l-input-color', () => {
 			));
 			expect(fail).to.be.false;
 			expect(elem.value).to.equal('#FF0000');
+		});
+
+	});
+
+	describe('validation', () => {
+
+		['foreground', 'background'].forEach(type => {
+			it(`should not require a label when type is "${type}"`, async() => {
+				const elem = await fixture(html`<d2l-input-color type="${type}"></d2l-input-color>`);
+				expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
+			});
+		});
+
+		it('should throw when type is "custom" and no label', async() => {
+			const elem = await fixture(html`<d2l-input-color type="custom"></d2l-input-color>`);
+			expect(() => elem.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createDefaultMessage('d2l-input-color', 'label'));
+		});
+
+		it('should not throw when type is "custom" and label is provided', async() => {
+			const elem = await fixture(html`<d2l-input-color label="value" type="custom"></d2l-input-color>`);
+			expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
+		});
+
+		it('should require a label when type changes to "custom"', async() => {
+			const elem = await fixture(html`<d2l-input-color type="foreground"></d2l-input-color>`);
+			expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
+			elem.setAttribute('type', 'custom');
+			await elem.updateComplete;
+			expect(() => elem.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createDefaultMessage('d2l-input-color', 'label'));
 		});
 
 	});

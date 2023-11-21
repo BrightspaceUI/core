@@ -1,5 +1,6 @@
 
 import { cssEscape } from '../../helpers/dom.js';
+import { PropertyRequiredMixin } from '../property-required/property-required-mixin.js';
 
 const getCommonAncestor = (elem1, elem2) => {
 
@@ -74,7 +75,7 @@ export const LabelMixin = superclass => class extends superclass {
 
 };
 
-export const LabelledMixin = superclass => class extends superclass {
+export const LabelledMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -96,19 +97,22 @@ export const LabelledMixin = superclass => class extends superclass {
 		this.labelRequired = true;
 		this._labelElem = null;
 		this._missingLabelErrorHasBeenThrown = false;
-		this._validatingLabelTimeout = null;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._validateLabel(); // need to check this even if "label" isn't updated in case it's never set
+		this.addRequiredProperty('label', {
+			message: defaultMessage => {
+				if (!this.labelledBy) return defaultMessage;
+				return `LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`;
+			},
+			validator: hasValue => {
+				if (!this.labelRequired || hasValue) return true;
+				if (!this.labelledBy) return false;
+				return this._labelElem !== null;
+			}
+		});
 	}
 
 	async updated(changedProperties) {
 
 		super.updated(changedProperties);
-
-		if (changedProperties.has('label')) this._validateLabel();
 
 		if (!changedProperties.has('labelledBy')) return;
 
@@ -199,28 +203,6 @@ export const LabelledMixin = superclass => class extends superclass {
 			this._dispatchChangeEvent();
 		}
 
-	}
-
-	_validateLabel() {
-		clearTimeout(this._validatingLabelTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingLabelTimeout = setTimeout(() => {
-			this._validatingLabelTimeout = null;
-			const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-			if (this.isConnected && !hasLabel) {
-				if (this.labelledBy) {
-					if (this._labelElem) {
-						this._throwError(
-							new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`)
-						);
-					}
-				} else {
-					this._throwError(
-						new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`)
-					);
-				}
-			}
-		}, 3000);
 	}
 
 };
