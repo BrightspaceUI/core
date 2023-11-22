@@ -104,7 +104,13 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 			 * REQUIRED: Label for the input, comes with a default value for background & foreground types.
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: {
+				type: String,
+				required: {
+					dependentProps: ['type'],
+					validator: (_value, elem, hasValue) => elem.type !== 'custom' || hasValue
+				}
+			},
 			/**
 			 * Hides the label visually
 			 * @type {boolean}
@@ -233,10 +239,6 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._missingLabelErrorHasBeenThrown = false;
 		this._opened = false;
 		this._value = undefined;
-		this.addRequiredProperty('label', {
-			dependentProps: ['type'],
-			validator: hasValue => this.type !== 'custom' || hasValue
-		});
 	}
 
 	get associatedValue() { return this._associatedValue; }

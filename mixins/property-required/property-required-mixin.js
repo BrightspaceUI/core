@@ -6,19 +6,14 @@ export function createDefaultMessage(tagName, propertyName) {
 	return `${tagName}: "${propertyName}" attribute is required.`;
 }
 
-export function createUndefinedPropertyMessage(tagName, propertyName) {
-	return `PropertyRequiredMixin: "${tagName.toLowerCase()}" has no property "${propertyName}".`;
-}
-
 export function createInvalidPropertyTypeMessage(tagName, propertyName) {
-	return `PropertyRequiredMixin: only String properties can be required ("${tagName}" required property "${propertyName}".`;
+	return `PropertyRequiredMixin: only String properties can be required ("${tagName}" required property "${propertyName}").`;
 }
 
 export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this._allProperties = new Map();
 		this._requiredProperties = new Map();
 		this._initProperties(Object.getPrototypeOf(this));
 	}
@@ -39,20 +34,21 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		});
 	}
 
-	addRequiredProperty(name, opts) {
-
-		const prop = this._allProperties.get(name);
-		if (prop === undefined) {
-			throw new Error(createUndefinedPropertyMessage(this.tagName.toLowerCase(), name));
+	flushRequiredPropertyErrors() {
+		for (const name of this._requiredProperties.keys()) {
+			this._flushRequiredPropertyError(name);
 		}
+	}
 
-		if (prop.type !== String) {
-			throw new Error(createInvalidPropertyTypeMessage(this.tagName.toLowerCase(), name));
-		}
+	_addRequiredProperty(name, prop) {
 
-		opts = {
-			...{ dependentProps: [], message: defaultMessage => defaultMessage, validator: hasValue => hasValue },
-			...opts
+		const opts = {
+			...{
+				dependentProps: [],
+				message: (_value, _elem, defaultMessage) => defaultMessage,
+				validator: (_value, _elem, hasValue) => hasValue
+			},
+			...prop.required
 		};
 
 		this._requiredProperties.set(name, {
@@ -61,15 +57,10 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 			message: opts.message,
 			thrown: false,
 			timeout: null,
+			type: prop.type,
 			validator: opts.validator
 		});
 
-	}
-
-	flushRequiredPropertyErrors() {
-		for (const name of this._requiredProperties.keys()) {
-			this._flushRequiredPropertyError(name);
-		}
 	}
 
 	_flushRequiredPropertyError(name) {
@@ -80,13 +71,18 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		clearTimeout(info.timeout);
 		info.timeout = null;
 
-		const hasValue = this[name]?.constructor === String && this[name]?.length > 0;
-		const success = info.validator(hasValue);
+		if (info.type !== undefined && info.type !== String) {
+			throw new Error(createInvalidPropertyTypeMessage(this.tagName.toLowerCase(), name));
+		}
+
+		const value = this[name];
+		const hasValue = value?.constructor === String && value?.length > 0;
+		const success = info.validator(value, this, hasValue);
 		if (!success) {
 			if (info.thrown) return;
 			info.thrown = true;
 			const defaultMessage = createDefaultMessage(this.tagName.toLowerCase(), info.attrName);
-			throw new TypeError(info.message(defaultMessage));
+			throw new TypeError(info.message(value, this, defaultMessage));
 		}
 
 	}
@@ -95,7 +91,10 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		if (base === null) return;
 		this._initProperties(Object.getPrototypeOf(base));
 		for (const name in base.constructor.properties) {
-			this._allProperties.set(name, base.constructor.properties[name]);
+			const prop = base.constructor.properties[name];
+			if (prop.required) {
+				this._addRequiredProperty(name, prop);
+			}
 		}
 	}
 
