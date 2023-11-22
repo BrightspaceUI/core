@@ -191,7 +191,7 @@ const offsetParent = getLegacyOffsetParent(element);
 
 Plugin helpers provide a way for modules to implement and register objects that can be plugged into other project's modules without requiring the plugin consumer to import those modules or objects directly. A higher order module (ex. in BSI) is responsible for importing the plugin registrations.
 
-The plugin implementor uses the `registerPlugin` helper method to make its implementation available to interested consumers. The implementor provides a key for the set of plugins in which to register, and the plugin.
+The plugin implementor uses the `registerPlugin` helper method to make its implementation available to interested consumers. The implementor provides a key for the set of plugins in which to register and the plugin implementation.
 
 Optionally, an object to specify a `key` for the plugin and/or the `sort` value may be provided. The `key` is useful if consumers intend to request a specific plugin, while the `sort` is useful in cases where the order of plugins is important to consumers. If `sort` is not specified for at least one plugin, they will be provided to consumers in registration order.
 
