@@ -3,7 +3,7 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from
 
 describe('button-add', () => {
 	[ true, false ].forEach((textVisible) => {
-		describe(`text-visible="${textVisible}"`, () => {
+		describe(`text-visible ${textVisible}`, () => {
 			[
 				{ category: 'basic', template: html`<d2l-button-add ?text-visible="${textVisible}"></d2l-button-add>` },
 				{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?text-visible="${textVisible}"></d2l-button-add>` },

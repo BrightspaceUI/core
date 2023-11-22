@@ -20,8 +20,7 @@ describe('d2l-button-add', () => {
 
 	it('focused', async() => {
 		const el = await fixture(html`<d2l-button-add></d2l-button-add>`);
-		setTimeout(() => el.focus());
-		await oneEvent(el, 'focus');
+		await focusElem(el);
 		await expect(el).to.be.accessible();
 	});
 
