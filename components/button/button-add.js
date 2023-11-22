@@ -1,8 +1,9 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -54,7 +55,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				width: 100%;
 			}
 			button:hover .line,
-			button:focus .line {
+			button:${unsafeCSS(getFocusPseudoClass())} .line {
 				border-top-color: var(--d2l-color-celestine);
 			}
 
@@ -72,7 +73,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 			:host([text-visible]) d2l-icon,
 			:host(:not([text-visible])) button:hover d2l-icon,
-			:host(:not([text-visible])) button:focus d2l-icon {
+			:host(:not([text-visible])) button:${unsafeCSS(getFocusPseudoClass())} d2l-icon {
 				color: var(--d2l-color-celestine);
 			}
 			:host(:not([text-visible])) d2l-icon {
