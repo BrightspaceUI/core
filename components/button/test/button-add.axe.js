@@ -1,5 +1,5 @@
 import '../button-add.js';
-import { expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-add', () => {
 
