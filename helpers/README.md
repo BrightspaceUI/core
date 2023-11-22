@@ -210,7 +210,7 @@ registerPlugin('foo-plugins', { prop1: 'other value' }, { key: 'key-2', sort: 2 
 
 // Defer loading dependencies until needed
 registerPlugin('foo-plugins', { getRenderer: async () => {
-    return (await import('./some-module.js').catch(() => {}))?.renderer
+    return (await import('./some-module.js')).renderer
 }});
 ```
 
