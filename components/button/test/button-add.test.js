@@ -1,5 +1,5 @@
 import '../button-add.js';
-import { fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-add', () => {
 
@@ -13,10 +13,10 @@ describe('d2l-button-add', () => {
 
 	describe('events', () => {
 
-		it('dispatches d2l-button-add-click event when clicked', async() => {
+		it('dispatches click event when clicked', async() => {
 			const el = await fixture(html`<d2l-button-add></d2l-button-add>`);
-			setTimeout(() => el.click());
-			await oneEvent(el, 'd2l-button-add-click');
+			setTimeout(() => clickElem(el));
+			await oneEvent(el, 'click');
 		});
 
 	});

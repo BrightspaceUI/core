@@ -4,7 +4,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { labelStyles } from '../typography/styles.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
@@ -14,12 +14,7 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * The text to be shown in the tooltip as a hint when visible-text is false
-			 * @type {string}
-			 */
-			label: { type: String },
-			/**
-			 * The text to show in the button when visible-text is true
+			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
 			 */
 			text: { type: String },
@@ -27,12 +22,12 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * When true, show the button with icon and visible text. When false, only show icon.
 			 * @type {boolean}
 			 */
-			visibleText: { type: Boolean, reflect: true, attribute: 'visible-text' }
+			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' }
 		};
 	}
 
 	static get styles() {
-		return [labelStyles, css`
+		return css`
 			:host {
 				--d2l-button-add-line-style: solid;
 			}
@@ -41,12 +36,14 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				background-color: transparent;
 				border: 0;
 				box-shadow: none;
+				cursor: pointer;
 				display: flex;
 				font-family: inherit;
 				justify-content: center;
 				outline: none;
 				padding: 0;
 				position: relative;
+				user-select: none;
 				white-space: nowrap;
 				width: 100%;
 			}
@@ -67,35 +64,40 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				display: flex;
 				position: absolute;
 			}
-			:host([visible-text]) .content {
+			:host([text-visible]) .content {
 				color: var(--d2l-color-celestine);
 				height: 1.5rem;
 				padding: 0 0.3rem;
 			}
 
-			:host([visible-text]) d2l-icon,
-			:host(:not([visible-text])) button:hover d2l-icon,
-			:host(:not([visible-text])) button:focus d2l-icon {
+			:host([text-visible]) d2l-icon,
+			:host(:not([text-visible])) button:hover d2l-icon,
+			:host(:not([text-visible])) button:focus d2l-icon {
 				color: var(--d2l-color-celestine);
 			}
-			:host(:not([visible-text])) d2l-icon {
+			:host(:not([text-visible])) d2l-icon {
 				color: var(--d2l-color-galena);
 				margin: -3px; /** hover/click target */
 				padding: 3px; /** hover/click target */
 			}
-			:host([visible-text]) d2l-icon {
+			:host([text-visible]) d2l-icon {
 				padding-inline-end: 0.2rem;
 			}
-		`];
+
+			span {
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.2px;
+				line-height: 1rem;
+			}
+		`;
 	}
 
 	constructor() {
 		super();
 
-		this.visibleText = false;
+		this.textVisible = false;
 		this._buttonId = getUniqueId();
-
-		this.addEventListener('click', this._onClick);
 	}
 
 	static get focusElementSelector() {
@@ -104,27 +106,19 @@ class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
-		const label = this.label || this.localize('components.button-add.addItem');
+		const id = !this.textVisible ? this._buttonId : undefined;
 
 		return html`
-			<button class="d2l-label-text" id="${this._buttonId}">
+			<button class="d2l-label-text" id="${ifDefined(id)}">
 				<div class="line"></div>
 				<div class="content">
 					<d2l-icon icon="tier1:plus-default"></d2l-icon>
-					${this.visibleText
+					${this.textVisible
 		? html`<span>${text}</span>`
-		: html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${label}</d2l-tooltip>`}
+		: html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`}
 				</div>
 			</button>
 		`;
-	}
-
-	_onClick() {
-		/** Dispatched when click happens */
-		this.dispatchEvent(new CustomEvent('d2l-button-add-click', {
-			bubbles: true,
-			composed: true
-		}));
 	}
 }
 customElements.define('d2l-button-add', ButtonAdd);
