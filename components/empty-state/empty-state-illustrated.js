@@ -3,6 +3,7 @@ import { html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -15,7 +16,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for empty state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class EmptyStateIllustrated extends LitElement {
+class EmptyStateIllustrated extends PropertyRequiredMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -23,7 +24,7 @@ class EmptyStateIllustrated extends LitElement {
 			 * REQUIRED: A description giving details about the empty state
 			 * @type {string}
 			 */
-			description: { type: String },
+			description: { type: String, required: true },
 			/**
 			 * The name of the preset image you would like to display in the component
 			 * @type {string}
@@ -33,7 +34,7 @@ class EmptyStateIllustrated extends LitElement {
 			 * REQUIRED: A title for the empty state
 			 * @type {string}
 			 */
-			titleText: { type: String, attribute: 'title-text' },
+			titleText: { type: String, attribute: 'title-text', required: true },
 			_contentHeight: { state: true },
 			_titleSmall: { state: true }
 		};
@@ -46,11 +47,8 @@ class EmptyStateIllustrated extends LitElement {
 	constructor() {
 		super();
 		this._contentHeight = 330;
-		this._missingDescriptionErrorHasBeenThrown = false;
-		this._missingTitleTextErrorHasBeenThrown = false;
 		this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
 		this._titleSmall = false;
-		this._validatingAttributesTimeout = null;
 	}
 
 	connectedCallback() {
@@ -63,11 +61,6 @@ class EmptyStateIllustrated extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
 		this._resizeObserver.disconnect();
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._validateAttributes();
 	}
 
 	render() {
@@ -124,30 +117,6 @@ class EmptyStateIllustrated extends LitElement {
 			this._contentHeight = Math.min(entry.contentRect.right / illustrationAspectRatio, 330);
 			this._titleSmall = entry.contentRect.right <= 615;
 		});
-	}
-
-	_validateAttributes() {
-		clearTimeout(this._validatingAttributesTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingAttributesTimeout = setTimeout(() => {
-			this._validatingAttributesTimeout = null;
-			const hasTitleText = (typeof this.titleText === 'string') && this.titleText.length > 0;
-			const hasDescription = (typeof this.description === 'string') && this.description.length > 0;
-
-			if (!hasTitleText && !this._missingTitleTextErrorHasBeenThrown) {
-				this._missingTitleTextErrorHasBeenThrown = true;
-				setTimeout(() => {
-					throw new Error('<d2l-empty-state-illustrated>: missing required "titleText" attribute.');
-				});
-			}
-
-			if (!hasDescription && !this._missingDescriptionErrorHasBeenThrown) {
-				this._missingDescriptionErrorHasBeenThrown = true;
-				setTimeout(() => {
-					throw new Error('<d2l-empty-state-illustrated>: missing required "description" attribute.');
-				});
-			}
-		}, 3000);
 	}
 
 }
