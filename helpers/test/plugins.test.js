@@ -1,4 +1,4 @@
-import { getPlugin, getPlugins, registerPlugin, resetPlugins } from '../plugins.js';
+import { getPlugins, registerPlugin, resetPlugins, tryGetPluginByKey } from '../plugins.js';
 import { expect } from '@brightspace-ui/testing';
 
 describe('plugins', () => {
@@ -73,17 +73,17 @@ describe('plugins', () => {
 		});
 
 		it('getPlugin should return undefined for invalid plugin set key', () => {
-			const plugin = getPlugin('invalid-plugin-set-key', 'plugin1');
-			expect(plugin).to.not.be.defined;
+			const plugin = tryGetPluginByKey('invalid-plugin-set-key', 'plugin1');
+			expect(plugin).to.be.null;
 		});
 
 		it('getPlugin should return undefined for invalid plugin key', () => {
-			const plugin = getPlugin('test-plugins', 'pluginx');
-			expect(plugin).to.equal(undefined);
+			const plugin = tryGetPluginByKey('test-plugins', 'pluginx');
+			expect(plugin).to.be.null;
 		});
 
 		it('getPlugin should return plugin for specified keys', () => {
-			const plugin = getPlugin('test-plugins', 'plugin1');
+			const plugin = tryGetPluginByKey('test-plugins', 'plugin1');
 			expect(plugin.prop1).to.equal('beer');
 		});
 

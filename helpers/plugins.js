@@ -1,10 +1,5 @@
 const pluginSets = new Map();
 
-export function getPlugin(setKey, pluginKey) {
-	const pluginSet = pluginSets.get(setKey);
-	return pluginSet?.plugins.find(plugin => plugin.options.key === pluginKey)?.plugin;
-}
-
 export function getPlugins(setKey) {
 	const pluginSet = pluginSets.get(setKey);
 	if (!pluginSet) return [];
@@ -33,4 +28,10 @@ export function registerPlugin(setKey, plugin, options) {
 // Do not import! Testing only!!
 export function resetPlugins() {
 	pluginSets.clear();
+}
+
+export function tryGetPluginByKey(setKey, pluginKey) {
+	const pluginSet = pluginSets.get(setKey);
+	const plugin = pluginSet?.plugins.find(plugin => plugin.options.key === pluginKey)?.plugin;
+	return plugin || null;
 }
