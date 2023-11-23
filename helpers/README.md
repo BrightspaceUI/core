@@ -214,16 +214,16 @@ registerPlugin('foo-plugins', { getRenderer: async () => {
 }});
 ```
 
-The plugin consumer uses the `getPlugins` helper method to get references to the registered plugins by providing a key for the set of plugins. If the consumer knows the key of the plugin it needs, it can request the plugin by using `getPlugin` and specifying the plugin set key and plugin key.
+The plugin consumer uses the `getPlugins` helper method to get references to the registered plugins by providing a key for the set of plugins. If the consumer knows the key of the plugin it needs, it can request the plugin by using `tryGetPluginByKey` and specifying the plugin set key and plugin key.
 
 ```js
-import { getPlugin, getPlugins } from '@brightspace-ui/core/helpers/plugins.js';
+import { getPlugins, tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
 
 // Call getPlugins to get plugins
 const plugins = getPlugins('foo-plugins');
 
-// Call getPlugin to get a specific plugin by key
-const plugin = getPlugin('foo-plugins', 'key-1');
+// Call tryGetPluginByKey to get a specific plugin by key
+const plugin = tryGetPluginByKey('foo-plugins', 'key-1');
 ```
 
 ## queueMicrotask
