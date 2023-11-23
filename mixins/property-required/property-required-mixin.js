@@ -4,11 +4,11 @@ const TIMEOUT_DURATION = 3000;
 export const ERROR_CODE = '(@brightspace-ui/core:PropertyRequiredMixin)';
 
 export function createDefaultMessage(tagName, propertyName) {
-	return `${tagName}: "${propertyName}" attribute is required. ${ERROR_CODE}`;
+	return `<${tagName}>: "${propertyName}" attribute is required. ${ERROR_CODE}`;
 }
 
 export function createInvalidPropertyTypeMessage(tagName, propertyName) {
-	return `PropertyRequiredMixin: only String properties can be required ("${tagName}" required property "${propertyName}"). ${ERROR_CODE}`;
+	return `PropertyRequiredMixin: only String properties can be required ("<${tagName}>" required property "${propertyName}"). ${ERROR_CODE}`;
 }
 
 export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
