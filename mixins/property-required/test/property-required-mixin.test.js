@@ -1,20 +1,12 @@
-import { createDefaultMessage, createInvalidPropertyTypeMessage, createUndefinedPropertyMessage, PropertyRequiredMixin } from '../property-required-mixin.js';
+import { createDefaultMessage, createInvalidPropertyTypeMessage, PropertyRequiredMixin } from '../property-required-mixin.js';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
-
-const tagValid = defineCE(
-	class extends PropertyRequiredMixin(LitElement) {}
-);
 
 const tagString = defineCE(
 	class extends PropertyRequiredMixin(LitElement) {
 		static properties = {
-			attr: { type: String }
+			attr: { type: String, required: true }
 		};
-		constructor() {
-			super();
-			this.addRequiredProperty('attr');
-		}
 	}
 );
 
@@ -81,12 +73,8 @@ describe('PropertyRequiredMixin', () => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					requiredAttr: { attribute: 'required-attr', type: String }
+					requiredAttr: { attribute: 'required-attr', type: String, required: true }
 				};
-				constructor() {
-					super();
-					this.addRequiredProperty('requiredAttr');
-				}
 			}
 		);
 		const elem = await fixture(`<${tag}></${tag}>`);
@@ -94,75 +82,61 @@ describe('PropertyRequiredMixin', () => {
 			.to.throw(TypeError, createDefaultMessage(tag, 'required-attr'));
 	});
 
-	it('should throw if no property is defined', async() => {
-		const elem = await fixture(`<${tagValid}></${tagValid}>`);
-		expect(() => elem.addRequiredProperty('missing'))
-			.to.throw(createUndefinedPropertyMessage(tagValid, 'missing'));
-	});
-
 	it('should throw if type is non-String', async() => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					attr: { type: Boolean }
+					attr: { type: Boolean, required: true }
 				};
 			}
 		);
-		const elem = await fixture(`<${tag}></${tag}>`);
-		expect(() => elem.addRequiredProperty('attr'))
+		const elem = await fixture(`<${tag} attr="value"></${tag}>`);
+		expect(() => elem.flushRequiredPropertyErrors())
 			.to.throw(createInvalidPropertyTypeMessage(tag, 'attr'));
 	});
 
-	it('should use custom message', async() => {
+	it('should not throw if type is undefined (defaults to String)', async() => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					attr: { type: String }
+					attr: { required: true }
 				};
-				constructor() {
-					super();
-					this.addRequiredProperty('attr', {
-						message: () => 'custom message'
-					});
-				}
 			}
 		);
-		const elem = await fixture(`<${tag}></${tag}>`);
-		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, 'custom message');
+		const elem = await fixture(`<${tag} attr="value"></${tag}>`);
+		expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
 	});
 
-	it('should use custom validator', async() => {
+	it('should use custom validator and message', async() => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					attr: { type: String }
+					attr: {
+						type: String,
+						required: {
+							message: (value, elem) => `${elem.tagName.toLowerCase()}: custom message! "${value}"`,
+							validator: (value) => value === 'valid'
+						}
+					}
 				};
-				constructor() {
-					super();
-					this.addRequiredProperty('attr', {
-						validator: () => this.attr === 'valid'
-					});
-				}
 			}
 		);
 		const elem = await fixture(`<${tag} attr="oh no"></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tag, 'attr'));
+			.to.throw(TypeError, `${tag.toLowerCase()}: custom message! "oh no"`);
 	});
 
 	it('should pass hasValue to custom validator', async() => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					attr: { type: String }
+					attr: {
+						type: String,
+						required: {
+							validator: (_value, _elem, hasValue) => hasValue
+						}
+					}
 				};
-				constructor() {
-					super();
-					this.addRequiredProperty('attr', {
-						validator: hasValue => hasValue
-					});
-				}
 			}
 		);
 		const elem = await fixture(`<${tag}></${tag}>`);
@@ -174,16 +148,15 @@ describe('PropertyRequiredMixin', () => {
 		const tag = defineCE(
 			class extends PropertyRequiredMixin(LitElement) {
 				static properties = {
-					attr1: { type: String },
+					attr1: {
+						type: String,
+						required: {
+							dependentProps: ['attr2'],
+							validator: (_value, elem) => elem.attr2 === 'valid'
+						}
+					},
 					attr2: { type: String }
 				};
-				constructor() {
-					super();
-					this.addRequiredProperty('attr1', {
-						dependentProps: ['attr2'],
-						validator: () => this.attr2 === 'valid'
-					});
-				}
 			}
 		);
 		const elem = await fixture(`<${tag} attr1="value" attr2="valid"></${tag}>`);
@@ -197,12 +170,8 @@ describe('PropertyRequiredMixin', () => {
 	it('should work in a subclass/mixin', async() => {
 		const TestMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 			static properties = {
-				attr1: { type: String }
+				attr1: { type: String, required: true }
 			};
-			constructor() {
-				super();
-				this.addRequiredProperty('attr1');
-			}
 		};
 		const tagMixin = defineCE(
 			class extends TestMixin(LitElement) {

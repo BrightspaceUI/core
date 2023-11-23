@@ -88,7 +88,20 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 			 * REQUIRED: Explicitly defined label for the element
 			 * @type {string}
 			 */
-			label: { type: String }
+			label: {
+				type: String,
+				required: {
+					message: (_value, elem, defaultMessage) => {
+						if (!elem.labelledBy) return defaultMessage;
+						return `LabelledMixin: "${elem.tagName.toLowerCase()}" is labelled-by="${elem.labelledBy}", but its label is empty`;
+					},
+					validator: (_value, elem, hasValue) => {
+						if (!elem.labelRequired || hasValue) return true;
+						if (!elem.labelledBy) return false;
+						return elem._labelElem !== null;
+					}
+				}
+			}
 		};
 	}
 
@@ -97,17 +110,6 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 		this.labelRequired = true;
 		this._labelElem = null;
 		this._missingLabelErrorHasBeenThrown = false;
-		this.addRequiredProperty('label', {
-			message: defaultMessage => {
-				if (!this.labelledBy) return defaultMessage;
-				return `LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`;
-			},
-			validator: hasValue => {
-				if (!this.labelRequired || hasValue) return true;
-				if (!this.labelledBy) return false;
-				return this._labelElem !== null;
-			}
-		});
 	}
 
 	async updated(changedProperties) {
