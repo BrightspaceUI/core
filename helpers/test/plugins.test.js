@@ -74,7 +74,7 @@ describe('plugins', () => {
 
 		it('getPlugin should return undefined for invalid plugin set key', () => {
 			const plugin = getPlugin('invalid-plugin-set-key', 'plugin1');
-			expect(plugin).to.equal(undefined);
+			expect(plugin).to.not.be.defined;
 		});
 
 		it('getPlugin should return undefined for invalid plugin key', () => {
