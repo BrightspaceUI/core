@@ -1,4 +1,4 @@
-import { createDefaultMessage, createInvalidPropertyTypeMessage, PropertyRequiredMixin } from '../property-required-mixin.js';
+import { createDefaultMessage, createInvalidPropertyTypeMessage, ERROR_CODE, PropertyRequiredMixin } from '../property-required-mixin.js';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 
@@ -123,7 +123,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tag} attr="oh no"></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, `${tag.toLowerCase()}: custom message! "oh no"`);
+			.to.throw(TypeError, `${tag.toLowerCase()}: custom message! "oh no" ${ERROR_CODE}`);
 	});
 
 	it('should pass hasValue to custom validator', async() => {

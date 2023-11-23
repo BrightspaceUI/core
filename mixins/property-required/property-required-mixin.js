@@ -1,13 +1,14 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 const TIMEOUT_DURATION = 3000;
+export const ERROR_CODE = '(@brightspace-ui/core:PropertyRequiredMixin)';
 
 export function createDefaultMessage(tagName, propertyName) {
-	return `${tagName}: "${propertyName}" attribute is required.`;
+	return `${tagName}: "${propertyName}" attribute is required. ${ERROR_CODE}`;
 }
 
 export function createInvalidPropertyTypeMessage(tagName, propertyName) {
-	return `PropertyRequiredMixin: only String properties can be required ("${tagName}" required property "${propertyName}").`;
+	return `PropertyRequiredMixin: only String properties can be required ("${tagName}" required property "${propertyName}"). ${ERROR_CODE}`;
 }
 
 export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
@@ -28,8 +29,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		this._requiredProperties.forEach((value, name) => {
-			const doValidate = changedProperties.has(name) ||
-			value.dependentProps.includes(name);
+			const doValidate = changedProperties.has(name) || value.dependentProps.includes(name);
 			if (doValidate) this._validateRequiredProperty(name);
 		});
 	}
@@ -82,7 +82,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 			if (info.thrown) return;
 			info.thrown = true;
 			const defaultMessage = createDefaultMessage(this.tagName.toLowerCase(), info.attrName);
-			throw new TypeError(info.message(value, this, defaultMessage));
+			throw new TypeError(`${info.message(value, this, defaultMessage)} ${ERROR_CODE}`);
 		}
 
 	}
