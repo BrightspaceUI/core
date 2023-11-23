@@ -1,4 +1,4 @@
-import { createDefaultMessage, createInvalidPropertyTypeMessage, ERROR_CODE, PropertyRequiredMixin } from '../property-required-mixin.js';
+import { createInvalidPropertyTypeMessage, createMessage, PropertyRequiredMixin } from '../property-required-mixin.js';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 
@@ -33,13 +33,13 @@ describe('PropertyRequiredMixin', () => {
 	it('should throw if value is initially missing', async() => {
 		const elem = await fixture(`<${tagString}></${tagString}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagString, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 	});
 
 	it('should throw if value is initially empty', async() => {
 		const elem = await fixture(`<${tagString} attr=""></${tagString}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagString, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 	});
 
 	it('should throw if value is later removed', async() => {
@@ -47,7 +47,7 @@ describe('PropertyRequiredMixin', () => {
 		elem.removeAttribute('attr');
 		await elem.updateComplete;
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagString, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 	});
 
 	it('should throw if value is later set to empty', async() => {
@@ -55,13 +55,13 @@ describe('PropertyRequiredMixin', () => {
 		elem.setAttribute('attr', '');
 		await elem.updateComplete;
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagString, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 	});
 
 	it('should only throw once', async() => {
 		const elem = await fixture(`<${tagString} attr=""></${tagString}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagString, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 		elem.setAttribute('attr', 'value');
 		await elem.updateComplete;
 		elem.removeAttribute('attr');
@@ -79,7 +79,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tag}></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tag, 'required-attr'));
+			.to.throw(TypeError, createMessage(elem, 'required-attr'));
 	});
 
 	it('should throw if type is non-String', async() => {
@@ -92,7 +92,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tag} attr="value"></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(createInvalidPropertyTypeMessage(tag, 'attr'));
+			.to.throw(createInvalidPropertyTypeMessage(elem, 'attr'));
 	});
 
 	it('should not throw if type is undefined (defaults to String)', async() => {
@@ -114,7 +114,7 @@ describe('PropertyRequiredMixin', () => {
 					attr: {
 						type: String,
 						required: {
-							message: (value, elem) => `${elem.tagName.toLowerCase()}: custom message! "${value}"`,
+							message: (value, elem) => `${elem.tagName.toLowerCase()} custom message! "${value}"`,
 							validator: (value) => value === 'valid'
 						}
 					}
@@ -123,7 +123,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tag} attr="oh no"></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, `${tag.toLowerCase()}: custom message! "oh no" ${ERROR_CODE}`);
+			.to.throw(TypeError, createMessage(elem, 'attr', `${tag.toLowerCase()} custom message! "oh no"`));
 	});
 
 	it('should pass hasValue to custom validator', async() => {
@@ -141,7 +141,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tag}></${tag}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tag, 'attr'));
+			.to.throw(TypeError, createMessage(elem, 'attr'));
 	});
 
 	it('should validate when dependent property changes', async() => {
@@ -164,7 +164,7 @@ describe('PropertyRequiredMixin', () => {
 		elem.removeAttribute('attr2');
 		await elem.updateComplete;
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tag, 'attr1'));
+			.to.throw(TypeError, createMessage(elem, 'attr1'));
 	});
 
 	it('should work in a subclass/mixin', async() => {
@@ -182,7 +182,7 @@ describe('PropertyRequiredMixin', () => {
 		);
 		const elem = await fixture(`<${tagMixin}></${tagMixin}>`);
 		expect(() => elem.flushRequiredPropertyErrors())
-			.to.throw(TypeError, createDefaultMessage(tagMixin, 'attr1'));
+			.to.throw(TypeError, createMessage(elem, 'attr1'));
 	});
 
 });

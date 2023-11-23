@@ -1,14 +1,25 @@
+import { createElementErrorMessage } from '../../helpers/error.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 const TIMEOUT_DURATION = 3000;
-export const ERROR_CODE = '(@brightspace-ui/core:PropertyRequiredMixin)';
 
-export function createDefaultMessage(tagName, propertyName) {
-	return `<${tagName}>: "${propertyName}" attribute is required. ${ERROR_CODE}`;
+const defaultMessage = (propertyName) => `"${propertyName}" attribute is required`;
+
+export function createMessage(elem, propertyName, message = defaultMessage(propertyName)) {
+	return createElementErrorMessage(
+		'PropertyRequiredMixin',
+		elem,
+		message,
+		{ composedPath: true }
+	);
 }
 
-export function createInvalidPropertyTypeMessage(tagName, propertyName) {
-	return `PropertyRequiredMixin: only String properties can be required ("<${tagName}>" required property "${propertyName}"). ${ERROR_CODE}`;
+export function createInvalidPropertyTypeMessage(elem, propertyName) {
+	return createMessage(
+		elem,
+		propertyName,
+		`only String properties can be required (property: "${propertyName}")`
+	);
 }
 
 export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
@@ -72,7 +83,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		info.timeout = null;
 
 		if (info.type !== undefined && info.type !== String) {
-			throw new Error(createInvalidPropertyTypeMessage(this.tagName.toLowerCase(), name));
+			throw new Error(createInvalidPropertyTypeMessage(this, name));
 		}
 
 		const value = this[name];
@@ -81,8 +92,8 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		if (!success) {
 			if (info.thrown) return;
 			info.thrown = true;
-			const defaultMessage = createDefaultMessage(this.tagName.toLowerCase(), info.attrName);
-			throw new TypeError(`${info.message(value, this, defaultMessage)} ${ERROR_CODE}`);
+			const message = createMessage(this, info.attrName, info.message(value, this, defaultMessage(info.attrName)));
+			throw new TypeError(message);
 		}
 
 	}
