@@ -21,6 +21,16 @@ export function registerPlugin(setKey, plugin, options) {
 		pluginSet = { plugins: [], requiresSorting: false };
 		pluginSets.set(setKey, pluginSet);
 	}
+
+	if (options?.key !== undefined && pluginSet.plugins.find(registeredPlugin => registeredPlugin.options.key === options?.key)) {
+		throw new Error(`Plugin Set "${setKey}" already has plugin with defined key "${options.key}".`);
+	}
+
 	pluginSet.plugins.push({ plugin, options: Object.assign({ key: undefined, sort: 0 }, options) });
 	pluginSet.requiresSorting = pluginSet.requiresSorting || (options?.sort !== undefined);
+}
+
+// Do not import! Testing only!!
+export function resetPlugins() {
+	pluginSets.clear();
 }
