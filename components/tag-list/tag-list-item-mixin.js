@@ -9,6 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
@@ -18,7 +19,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
-export const TagListItemMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
+export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
 
 	static get properties() {
 		return {
@@ -39,7 +40,16 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			/**
 			 * @ignore
 			 */
-			keyboardTooltipShown: { type: Boolean, attribute: 'keyboard-tooltip-shown' }
+			keyboardTooltipShown: { type: Boolean, attribute: 'keyboard-tooltip-shown' },
+			/**
+			 * @ignore
+			 */
+			_plainText: {
+				state: true,
+				required: {
+					message: (_value, elem) => `TagListItemMixin: "${elem.tagName.toLowerCase()}" called "_renderTag()" with empty "plainText" option`
+				}
+			}
 		};
 	}
 
@@ -136,7 +146,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.keyboardTooltipShown = false;
 		this._id = getUniqueId();
 		this._plainText = '';
-		this._validatingPlainTextTimeout = null;
 	}
 
 	firstUpdated(changedProperties) {
@@ -217,7 +226,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_renderTag(tagContent, options = {}) {
-		this._validatePlainText();
 		this._plainText = options.plainText || '';
 
 		const buttonText = this.localize('components.tag-list.clear', { value: this._plainText });
@@ -275,19 +283,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 					</d2l-button-icon>` : null}
 			</div>
 		`;
-	}
-
-	_validatePlainText() {
-		clearTimeout(this._validatingPlainTextTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingPlainTextTimeout = setTimeout(() => {
-			this._validatingPlainTextTimeout = null;
-			if (!this.isConnected) return;
-			const hasPlainText = (this._plainText?.constructor === String) && this._plainText?.length > 0;
-			if (!hasPlainText) {
-				throw new Error(`TagListItemMixin: "${this.tagName.toLowerCase()}" called "_render()" with empty "plainText" option`);
-			}
-		}, 3000);
 	}
 
 };
