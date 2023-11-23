@@ -19,7 +19,6 @@ describe('button-add', () => {
 					].forEach(({ action, name }) => {
 						it(name, async() => {
 							let elem = await fixture(template);
-							if (elem.tagName !== 'D2L-BUTTON-ADD') elem = elem.querySelector('d2l-button-add');
 							if (action) await action(elem);
 							if ((name === 'hover' || name === 'focus') && !elem.textVisible) await oneEvent(elem, 'd2l-tooltip-show');
 							await expect(elem).to.be.golden();
