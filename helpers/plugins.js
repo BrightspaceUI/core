@@ -20,10 +20,10 @@ export function registerPlugin(setKey, plugin, options) {
 	if (!pluginSet) {
 		pluginSet = { plugins: [], requiresSorting: false };
 		pluginSets.set(setKey, pluginSet);
-	}
-
-	if (options?.key !== undefined && pluginSet.plugins.find(registeredPlugin => registeredPlugin.options.key === options?.key)) {
-		throw new Error(`Plugin Set "${setKey}" already has plugin with defined key "${options.key}".`);
+	} else if (options?.key !== undefined) {
+		if (pluginSet.plugins.find(registeredPlugin => registeredPlugin.options.key === options?.key)) {
+			throw new Error(`Plugin Set "${setKey}" already has plugin with defined key "${options.key}".`);
+		}
 	}
 
 	pluginSet.plugins.push({ plugin, options: Object.assign({ key: undefined, sort: 0 }, options) });

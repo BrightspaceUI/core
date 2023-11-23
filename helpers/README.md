@@ -204,7 +204,7 @@ import { registerPlugin } from '@brightspace-ui/core/helpers/plugins.js';
 registerPlugin('foo-plugins', { prop1: 'some value' });
 registerPlugin('foo-plugins', { prop1: 'other value' });
 
-// Optionally provide key and/or value
+// Optionally provide key and/or sort value
 registerPlugin('foo-plugins', { prop1: 'some value' }, { key: 'key-1', sort: 1 });
 registerPlugin('foo-plugins', { prop1: 'other value' }, { key: 'key-2', sort: 2 });
 
