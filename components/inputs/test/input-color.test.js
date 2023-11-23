@@ -1,6 +1,6 @@
 import '../input-color.js';
 import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { createDefaultMessage } from '../../../mixins/property-required/property-required-mixin.js';
+import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 
 describe('d2l-input-color', () => {
 
@@ -141,7 +141,7 @@ describe('d2l-input-color', () => {
 		it('should throw when type is "custom" and no label', async() => {
 			const elem = await fixture(html`<d2l-input-color type="custom"></d2l-input-color>`);
 			expect(() => elem.flushRequiredPropertyErrors())
-				.to.throw(TypeError, createDefaultMessage('d2l-input-color', 'label'));
+				.to.throw(TypeError, createMessage(elem, 'label'));
 		});
 
 		it('should not throw when type is "custom" and label is provided', async() => {
@@ -155,7 +155,7 @@ describe('d2l-input-color', () => {
 			elem.setAttribute('type', 'custom');
 			await elem.updateComplete;
 			expect(() => elem.flushRequiredPropertyErrors())
-				.to.throw(TypeError, createDefaultMessage('d2l-input-color', 'label'));
+				.to.throw(TypeError, createMessage(elem, 'label'));
 		});
 
 	});
