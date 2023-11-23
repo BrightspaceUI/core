@@ -31,6 +31,12 @@ describe('plugins', () => {
 		expect(plugins[1].prop1).to.equal('beer');
 	});
 
+	it('getPlugins should return copy of the array for each consumer', () => {
+		const plugins1 = getPlugins('test-plugins');
+		const plugins2 = getPlugins('test-plugins');
+		expect(plugins1).not.to.equal(plugins2);
+	});
+
 	it('getPlugins should return array of plugins in new sort order if additional plugins are registered', () => {
 		registerPlugin('test-plugins-sorted-add', { prop1: 'beer' }, { sort: 3 });
 		registerPlugin('test-plugins-sorted-add', { prop1: 'donuts' }, { sort: 1 });
