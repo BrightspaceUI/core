@@ -555,6 +555,7 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 	}
 
 	_handleClick(e) {
+		this._suppressEvent(e);
 		const input = this.shadowRoot?.querySelector('.d2l-input');
 		if (!input || e.composedPath()[0] !== this) return;
 		input.focus();
