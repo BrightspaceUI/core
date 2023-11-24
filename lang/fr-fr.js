@@ -1,6 +1,7 @@
 export default {
 	"components.alert.close": "Fermer l'alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
+	"components.button-add.addItem": "Add Item",
 	"components.calendar.notSelected": "Non sélectionné.",
 	"components.calendar.selected": "Sélectionné.",
 	"components.calendar.show": "Afficher {month}",

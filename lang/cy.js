@@ -1,6 +1,7 @@
 export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
+	"components.button-add.addItem": "Add Item",
 	"components.calendar.notSelected": "Heb ei Ddewis.",
 	"components.calendar.selected": "Wedi'i Ddewis.",
 	"components.calendar.show": "Dangos {month}",

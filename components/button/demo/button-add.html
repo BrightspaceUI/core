@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button-add.js';
+		</script>
+		<style>
+			.d2l-button-add-dashed {
+				--d2l-button-add-line-style: dashed;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-button-add">
+
+			<h2>Add Button</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Add Button, dashed line</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add class="d2l-button-add-dashed"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Add Button, custom text</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text="Custom Tooltip"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+
+			<h2>Add Button, text-visible</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text-visible></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+
+			<h2>Add Button, text-visible, custom text</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text-visible text="Custom Text"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('click', e => {
+				if (e.target.tagName !== 'D2L-BUTTON-ADD') return;
+				console.log('add button clicked', e.target);
+			});
+		</script>
+
+	</body>
+</html>
