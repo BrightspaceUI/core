@@ -11,6 +11,7 @@ import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const DEFAULT_VALUE = '#000000';
@@ -80,7 +81,7 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
  * This component allows for inputting a HEX color value.
  * @fires change - Dispatched when an alteration to the value is committed by the user.
  */
-class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
+class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -103,7 +104,13 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 			 * REQUIRED: Label for the input, comes with a default value for background & foreground types.
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: {
+				type: String,
+				required: {
+					dependentProps: ['type'],
+					validator: (_value, elem, hasValue) => elem.type !== 'custom' || hasValue
+				}
+			},
 			/**
 			 * Hides the label visually
 			 * @type {boolean}
@@ -231,7 +238,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 		this._associatedValue = undefined;
 		this._missingLabelErrorHasBeenThrown = false;
 		this._opened = false;
-		this._validatingLabelTimeout = null;
 		this._value = undefined;
 	}
 
@@ -258,11 +264,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 		return '#opener';
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._validateLabel();
-	}
-
 	render() {
 
 		const label = !this.labelHidden ? html`<div class="d2l-input-label">${this._getLabel()}</div>` : nothing;
@@ -276,8 +277,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 	async updated(changedProperties) {
 
 		super.updated(changedProperties);
-
-		if (changedProperties.has('label') || changedProperties.has('type')) this._validateLabel();
 
 		if (changedProperties.has('value') || changedProperties.has('type') || changedProperties.has('disallowNone')) {
 			this.setFormValue(this.value);
@@ -395,18 +394,6 @@ class InputColor extends FocusMixin(FormElementMixin(LocalizeCoreElement(LitElem
 		this.dispatchEvent(new CustomEvent(
 			'change', { bubbles: true, composed: false }
 		));
-	}
-
-	_validateLabel() {
-		clearTimeout(this._validatingLabelTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingLabelTimeout = setTimeout(() => {
-			this._validatingLabelTimeout = null;
-			const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-			if (!hasLabel && this.type === 'custom') {
-				throw new Error('<d2l-input-color>: "label" attribute is required when "type" is "custom"');
-			}
-		}, 3000);
 	}
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "2.161.1",
+  "version": "2.164.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -51,7 +51,6 @@
     "@rollup/plugin-node-resolve": "^15",
     "@rollup/plugin-replace": "^5",
     "@web/dev-server": "^0.2",
-    "axe-core": "^4",
     "chalk": "^5",
     "eslint": "^8",
     "eslint-config-brightspace": "^0.23",

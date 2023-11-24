@@ -187,6 +187,45 @@ import { getLegacyOffsetParent } from '@brightspace-ui/core/helpers/offsetParent
 const offsetParent = getLegacyOffsetParent(element);
 ```
 
+## Plugins
+
+Plugin helpers provide a way for modules to implement and register objects that can be plugged into other project's modules without requiring the plugin consumer to import those modules or objects directly. A higher order module (ex. in BSI) is responsible for importing the plugin registrations.
+
+The plugin implementor uses the `registerPlugin` helper method to make its implementation available to interested consumers. The implementor provides a key for the set of plugins in which to register and the plugin implementation.
+
+Optionally, an object to specify a `key` for the plugin and/or the `sort` value may be provided. The `key` is useful if consumers intend to request a specific plugin, while the `sort` is useful in cases where the order of plugins is important to consumers. If `sort` is not specified for at least one plugin, they will be provided to consumers in registration order.
+
+**Important!** plugin registrations should defer loading their dependencies using dynamic imports. They should **not** be synchronously imported in the registration module.
+
+```js
+import { registerPlugin } from '@brightspace-ui/core/helpers/plugins.js';
+
+// Provide plugin set key, plugin
+registerPlugin('foo-plugins', { prop1: 'some value' });
+registerPlugin('foo-plugins', { prop1: 'other value' });
+
+// Optionally provide key and/or sort value
+registerPlugin('foo-plugins', { prop1: 'some value' }, { key: 'key-1', sort: 1 });
+registerPlugin('foo-plugins', { prop1: 'other value' }, { key: 'key-2', sort: 2 });
+
+// Defer loading dependencies until needed
+registerPlugin('foo-plugins', { getRenderer: async () => {
+    return (await import('./some-module.js')).renderer
+}});
+```
+
+The plugin consumer uses the `getPlugins` helper method to get references to the registered plugins by providing a key for the set of plugins. If the consumer knows the key of the plugin it needs, it can request the plugin by using `tryGetPluginByKey` and specifying the plugin set key and plugin key.
+
+```js
+import { getPlugins, tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
+
+// Call getPlugins to get plugins
+const plugins = getPlugins('foo-plugins');
+
+// Call tryGetPluginByKey to get a specific plugin by key
+const plugin = tryGetPluginByKey('foo-plugins', 'key-1');
+```
+
 ## queueMicrotask
 
 A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
