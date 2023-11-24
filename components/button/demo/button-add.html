@@ -18,7 +18,9 @@
 
 		<d2l-demo-page page-title="d2l-button-add">
 
-			<h2>Add Button</h2>
+			<h2>Add Button: hint-timing="always" (default)</h2>
+
+			<h3>Icon only (default)</h3>
 
 			<d2l-demo-snippet>
 				<template>
@@ -26,7 +28,7 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Add Button, dashed line</h2>
+			<h3>Icon only, dashed line</h3>
 
 			<d2l-demo-snippet>
 				<template>
@@ -34,7 +36,7 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Add Button, custom text</h2>
+			<h3>Icon only, custom text</h3>
 
 			<d2l-demo-snippet>
 				<template>
@@ -43,7 +45,7 @@
 			</d2l-demo-snippet>
 
 
-			<h2>Add Button, text-visible</h2>
+			<h3>Text visible</h3>
 
 			<d2l-demo-snippet>
 				<template>
@@ -52,11 +54,63 @@
 			</d2l-demo-snippet>
 
 
-			<h2>Add Button, text-visible, custom text</h2>
+			<h3>Text visible, custom text</h3>
 
 			<d2l-demo-snippet>
 				<template>
 					<d2l-button-add text-visible text="Custom Text"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Add Button: hint-timing="nearby"</h2>
+
+			<h3>Icon only</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add hint-timing="nearby"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Icon only, dashed line</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add class="d2l-button-add-dashed" hint-timing="nearby"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Icon only, custom text</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text="Custom Tooltip" hint-timing="nearby"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Add Button: hint-timing="never"</h2>
+
+			<h3>Icon only</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add hint-timing="never"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Icon only, dashed line</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add class="d2l-button-add-dashed" hint-timing="never"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Icon only, custom text</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text="Custom Tooltip" hint-timing="never"></d2l-button-add>
 				</template>
 			</d2l-demo-snippet>
 
