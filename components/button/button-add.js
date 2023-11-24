@@ -7,18 +7,19 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
  * A component for quickly adding items to a specific locaiton.
  */
-class ButtonAdd extends FocusMixin(LocalizeCoreElement(LitElement)) {
+class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
 	static get properties() {
 		return {
 			/**
 			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
 			 */
-			text: { type: String },
+			text: { type: String, required: true },
 			/**
 			 * When true, show the button with icon and visible text. When false, only show icon.
 			 * @type {boolean}
