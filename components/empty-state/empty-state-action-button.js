@@ -2,13 +2,14 @@ import '../button/button.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
  * `d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component.
  * @fires d2l-empty-state-action - Dispatched when the action button is clicked
  * @fires d2l-empty-state-illustrated-check - Internal event
  */
-class EmptyStateActionButton extends LitElement {
+class EmptyStateActionButton extends PropertyRequiredMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -16,7 +17,7 @@ class EmptyStateActionButton extends LitElement {
 			 * REQUIRED: The action text to be used in the button
 			 * @type {string}
 			 */
-			text: { type: String },
+			text: { type: String, required: true },
 			/**
 			 * This will change the action button to use a primary button instead of the default subtle button. The primary attribute is only valid when `d2l-empty-state-action-button` is placed within `d2l-empty-state-illustrated` components
 			 * @type {boolean}
@@ -37,8 +38,6 @@ class EmptyStateActionButton extends LitElement {
 	constructor() {
 		super();
 		this._illustrated = false;
-		this._missingTextErrorHasBeenThrown = false;
-		this._validatingTextTimeout = null;
 	}
 
 	connectedCallback() {
@@ -51,11 +50,6 @@ class EmptyStateActionButton extends LitElement {
 			this.dispatchEvent(e);
 			this._illustrated = e.detail.illustrated | false;
 		});
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._validateText();
 	}
 
 	render() {
@@ -82,20 +76,6 @@ class EmptyStateActionButton extends LitElement {
 	_handleActionClick(e) {
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-empty-state-action'));
-	}
-
-	_validateText() {
-		clearTimeout(this._validatingTextTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingTextTimeout = setTimeout(() => {
-			this._validatingTextTimeout = null;
-			const hasText = (typeof this.text === 'string') && this.text.length > 0;
-
-			if (!hasText && !this._missingTextErrorHasBeenThrown) {
-				this._missingTextErrorHasBeenThrown = true;
-				setTimeout(() => { throw new Error('<d2l-empty-state-action-button>: missing required "text" attribute.'); });
-			}
-		}, 3000);
 	}
 
 }
