@@ -44,7 +44,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-date-time-range.startDate": "Date de début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyer sur entrée pour interagir, sur Echap pour quitter",
 	"components.link.open-in-new-window": "S’ouvre dans une nouvelle fenêtre.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Utilisez les <b>touches fléchées</b> pour vous concentrer sur cette liste, ou <b>faites défiler la page vers le haut/bas</b> pour la faire défiler de 5 cm",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Action de réorganisation de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments, position actuelle {currentPosition} sur {size}. Pour déplacer cet élément, appuyez sur les flèches vers le haut ou vers le bas.",
@@ -99,8 +99,8 @@ export default {
 	"components.selection.selected": "{count} sélectionnés",
 	"components.selection.selected-plus": "{count}+ sélectionné(e)(s)",
 	"components.selection-controls.label": "Actions pour la sélection",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-controls.label": "Actions du tableau",

@@ -44,7 +44,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure à {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyez sur Entrée pour interagir, sur Échapper pour quitter",
 	"components.link.open-in-new-window": "Ouvre une nouvelle fenêtre.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Utiliser les <b>touches fléchées</b> pour parcourir cette liste ou les touches <b>page up/down</b> pour monter ou descendre 5 éléments à la fois.",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
@@ -99,8 +99,8 @@ export default {
 	"components.selection.selected": "{count} sélectionné(s)",
 	"components.selection.selected-plus": "{count}+ sélectionné",
 	"components.selection-controls.label": "Actions à sélectionner",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-controls.label": "Actions pour la table",

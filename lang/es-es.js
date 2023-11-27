@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Pulse Enter para interactuar y Escape para salir",
 	"components.link.open-in-new-window": "Se abre en una ventana nueva.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Utilice las <b>teclas de flecha</b> para mover el enfoque dentro de esta lista, o <b>avanzar/retroceder página</b> para saltar cinco elementos hacia arriba o hacia abajo",
 	"components.list-controls.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Reordenar acción de elemento para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos, posición actual {currentPosition} de {size}. Para mover este elemento, pulse las flechas arriba o abajo.",
@@ -99,8 +99,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.table-controls.label": "Acciones para la tabla",

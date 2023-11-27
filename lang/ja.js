@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "開始時刻",
 	"components.interactive.instructions": "対話を始めるには Enter キー、終了するには Esc キーを押します",
 	"components.link.open-in-new-window": "新規ウィンドウで開きます。",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "<b>方向キー</b>を使用して、このリスト内のフォーカスを移動するか、<b>page up/down</b> キーを使用して上下に 5 つずつ移動します",
 	"components.list-controls.label": "リストのアクション",
 	"components.list-item-drag-handle.default": "{name} の項目並べ替えアクション",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え、現在の位置 {currentPosition}、サイズ {size}。この項目を移動するには、上矢印または下矢印を押します。",
