@@ -16,7 +16,7 @@ const HINT_TIMING = {
 	NEARBY: 'nearby',
 	NEVER: 'never'
 };
-const DEFAULT_HINT_DISTANCE = 37;
+const HINT_DISTANCE_DEFAULT = 37;
 
 /**
  * A component for quickly adding items to a specific locaiton.
@@ -85,18 +85,17 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	constructor() {
 		super();
 
-		this.hintNearbyDistance = DEFAULT_HINT_DISTANCE;
+		this.hintNearbyDistance = HINT_DISTANCE_DEFAULT;
 		this.hintTiming = HINT_TIMING.ALWAYS;
 		this.textVisible = false;
 
 		this._buttonId = getUniqueId();
 		this._hasFocusOrHover = false;
-		this._visibleDistance = 0;
 
-		this.addEventListener('focus', this._onFocusHover);
-		this.addEventListener('mouseover', this._onFocusHover);
-		this.addEventListener('blur', this._onBlur);
-		this.addEventListener('mouseout', this._onBlur);
+		this.addEventListener('focus', this._onFocusMouseOver);
+		this.addEventListener('mouseover', this._onFocusMouseOver);
+		this.addEventListener('blur', this._onBlurMouseOut);
+		this.addEventListener('mouseout', this._onBlurMouseOut);
 	}
 
 	static get focusElementSelector() {
@@ -104,9 +103,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	render() {
-		const buttonSpacing = this._getButtonSpacing();
+		const visibleDistance = this.hintTiming === HINT_TIMING.NEARBY ? (this.hintNearbyDistance || HINT_DISTANCE_DEFAULT) : 0;
+		const buttonSpacing = this._getButtonSpacing(visibleDistance);
 		const text = this.text || this.localize('components.button-add.addItem');
-		const content = this.textVisible ? this._renderWithTextVisible(text) : this._renderWithTextHidden(text);
+		const content = this.textVisible ? this._renderWithTextVisible(text, visibleDistance) : this._renderWithTextHidden(text, visibleDistance);
 		const id = !this.textVisible ? this._buttonId : undefined;
 
 		return html`
@@ -121,30 +121,26 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		`;
 	}
 
-	_getButtonSpacing() {
+	_getButtonSpacing(visibleDistance) {
 		if (this.textVisible || this.hintTiming !== HINT_TIMING.NEARBY) return {};
-
-		this._visibleDistance = this.hintNearbyDistance || DEFAULT_HINT_DISTANCE;
 		return {
-			marginBottom: `-${this._visibleDistance}px`,
-			marginTop: `-${this._visibleDistance}px`,
-			paddingBottom: `${this._visibleDistance}px`,
-			paddingTop: `${this._visibleDistance}px`
+			marginBottom: `-${visibleDistance}px`,
+			marginTop: `-${visibleDistance}px`,
+			paddingBottom: `${visibleDistance}px`,
+			paddingTop: `${visibleDistance}px`
 		};
 	}
 
-	_onBlur() {
+	_onBlurMouseOut() {
 		this._hasFocusOrHover = false;
 	}
-	_onFocusHover() {
+	_onFocusMouseOver() {
 		this._hasFocusOrHover = true;
 	}
 
-	_renderWithTextHidden(text) {
-		if (this.textVisible) return this._renderWithTextVisible();
-
+	_renderWithTextHidden(text, visibleDistance) {
 		const visibleOnAncestor = this.hintTiming === HINT_TIMING.NEARBY || this.hintTiming === HINT_TIMING.NEVER;
-		const offset = -(this._visibleDistance - 18);
+		const offset = -(visibleDistance - 18);
 
 		return html`
 			<d2l-button-add-icon-text
@@ -156,12 +152,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	_renderWithTextVisible(text) {
-		if (!this.textVisible) return this._renderWithTextHidden();
-
 		return html`
 			<d2l-button-add-icon-text
-				text="${text}"
 				?show-focus="${this._hasFocusOrHover}"
+				text="${text}"
 			></d2l-button-add-icon-text>
 		`;
 	}
