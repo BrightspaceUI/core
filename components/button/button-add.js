@@ -25,14 +25,12 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	static get properties() {
 		return {
 			/**
-			 * ONLY when visible-text is FALSE and hint-timing is nearby
-			 * Distance in px where when the user is hovering within that distance the icon will appears. Default is 37.
+			 * ONLY used when text-visible is FALSE and hint-timing is "nearby". Distance in px where when the user is hovering within that distance the icon will appears. Default is 37.
 			 * @type {number}
 			 */
 			hintNearbyDistance: { type: Number, reflect: true, attribute: 'hint-nearby-distance' },
 			/**
-			 * ONLY when visible-text is FALSE
-			 * When to show the icon/icon text. Always - always visible, Nearby - when mouse within certain distance, Never - do not show until hover/focus.
+			 * ONLY used when text-visible is FALSE. When to show the icon/icon text with user interaction. "always" - always visible, "nearby" - when mouse within hint-nearby-distance, "never" - do not show until hover/focus. Default is "always".
 			 * @type {'always'|'nearby'|'never'}
 			 */
 			hintTiming: { type: String, reflect: true, attribute: 'hint-timing' },
@@ -46,7 +44,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			 * @type {boolean}
 			 */
 			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' },
-			_hasFocus: { state: true }
+			_hasFocusOrHover: { state: true }
 		};
 	}
 
@@ -87,11 +85,12 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	constructor() {
 		super();
 
+		this.hintNearbyDistance = DEFAULT_HINT_DISTANCE;
 		this.hintTiming = HINT_TIMING.ALWAYS;
 		this.textVisible = false;
 
 		this._buttonId = getUniqueId();
-		this._hasFocus = false;
+		this._hasFocusOrHover = false;
 		this._visibleDistance = 0;
 
 		this.addEventListener('focus', this._onFocusHover);
@@ -111,7 +110,11 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		const id = !this.textVisible ? this._buttonId : undefined;
 
 		return html`
-			<button class="d2l-label-text d2l-visible-on-ancestor-target" id="${ifDefined(id)}" style="${styleMap(buttonSpacing)}">
+			<button
+				class="d2l-label-text d2l-visible-on-ancestor-target"
+				id="${ifDefined(id)}"
+				style="${styleMap(buttonSpacing)}"
+				type="button">
 				<div class="line"></div>
 				${content}
 			</button>
@@ -131,10 +134,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	_onBlur() {
-		this._hasFocus = false;
+		this._hasFocusOrHover = false;
 	}
 	_onFocusHover() {
-		this._hasFocus = true;
+		this._hasFocusOrHover = true;
 	}
 
 	_renderWithTextHidden(text) {
@@ -145,7 +148,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 		return html`
 			<d2l-button-add-icon-text
-				?show-focus="${this._hasFocus}"
+				?show-focus="${this._hasFocusOrHover}"
 				?visible-on-ancestor="${visibleOnAncestor}"
 			></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
@@ -158,7 +161,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		return html`
 			<d2l-button-add-icon-text
 				text="${text}"
-				?show-focus="${this._hasFocus}"
+				?show-focus="${this._hasFocusOrHover}"
 			></d2l-button-add-icon-text>
 		`;
 	}
