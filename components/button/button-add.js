@@ -11,12 +11,12 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const HINT_TIMING = {
+const VISIBILITY_CONDITION = {
 	ALWAYS: 'always',
 	NEARBY: 'nearby',
-	NEVER: 'never'
+	HOVER_FOCUS: 'hover-focus'
 };
-const HINT_DISTANCE_DEFAULT = 37;
+const NEARBY_VISIBILITY_DISTANCE_DEFAULT = 0.55;
 
 /**
  * A component for quickly adding items to a specific locaiton.
@@ -25,15 +25,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	static get properties() {
 		return {
 			/**
-			 * ONLY used when text-visible is FALSE and hint-timing is "nearby". Distance in px where when the user is hovering within that distance the icon will appears. Default is 37.
+			 * ONLY used when text-visible is FALSE and visibility-condition is "nearby". Distance in rem where when the user is hovering within that distance the icon will appears. Default is 0.55.
 			 * @type {number}
 			 */
-			hintNearbyDistance: { type: Number, reflect: true, attribute: 'hint-nearby-distance' },
-			/**
-			 * ONLY used when text-visible is FALSE. When to show the icon/icon text with user interaction. "always" - always visible, "nearby" - when mouse within hint-nearby-distance, "never" - do not show until hover/focus. Default is "always".
-			 * @type {'always'|'nearby'|'never'}
-			 */
-			hintTiming: { type: String, reflect: true, attribute: 'hint-timing' },
+			nearbyVisibilityDistance: { type: Number, reflect: true, attribute: 'nearby-visibility-distance' },
 			/**
 			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
@@ -44,6 +39,11 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			 * @type {boolean}
 			 */
 			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' },
+			/**
+			 * ONLY used when text-visible is FALSE. When to show the icon/icon text with user interaction. "always" - always visible, "nearby" - when mouse within hint-nearby-distance, "hover-focus" - do not show until hover/focus. Default is "always".
+			 * @type {'always'|'nearby'|'hover-focus'}
+			 */
+			visibilityCondition: { type: String, reflect: true, attribute: 'visibility-condition' },
 			_hasFocusOrHover: { state: true }
 		};
 	}
@@ -85,9 +85,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	constructor() {
 		super();
 
-		this.hintNearbyDistance = HINT_DISTANCE_DEFAULT;
-		this.hintTiming = HINT_TIMING.ALWAYS;
+		this.nearbyVisibilityDistance = NEARBY_VISIBILITY_DISTANCE_DEFAULT;
 		this.textVisible = false;
+		this.visibilityCondition = VISIBILITY_CONDITION.ALWAYS;
 
 		this._buttonId = getUniqueId();
 		this._hasFocusOrHover = false;
@@ -103,7 +103,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	render() {
-		const visibleDistance = this.hintTiming === HINT_TIMING.NEARBY ? (this.hintNearbyDistance || HINT_DISTANCE_DEFAULT) : 0;
+		const visibleDistance = this.visibilityCondition === VISIBILITY_CONDITION.NEARBY ? (this.nearbyVisibilityDistance || NEARBY_VISIBILITY_DISTANCE_DEFAULT) : 0;
 		const buttonSpacing = this._getButtonSpacing(visibleDistance);
 		const text = this.text || this.localize('components.button-add.addItem');
 		const content = this.textVisible ? this._renderWithTextVisible(text, visibleDistance) : this._renderWithTextHidden(text, visibleDistance);
@@ -123,12 +123,12 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	_getButtonSpacing(visibleDistance) {
-		if (this.textVisible || this.hintTiming !== HINT_TIMING.NEARBY) return {};
+		if (this.textVisible || this.visibilityCondition !== VISIBILITY_CONDITION.NEARBY) return {};
 		return {
-			marginBottom: `-${visibleDistance}px`,
-			marginTop: `-${visibleDistance}px`,
-			paddingBottom: `${visibleDistance}px`,
-			paddingTop: `${visibleDistance}px`
+			marginBottom: `-${visibleDistance}rem`,
+			marginTop: `-${visibleDistance}rem`,
+			paddingBottom: `${visibleDistance}rem`,
+			paddingTop: `${visibleDistance}rem`
 		};
 	}
 
@@ -140,8 +140,8 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	_renderWithTextHidden(text, visibleDistance) {
-		const visibleOnAncestor = this.hintTiming === HINT_TIMING.NEARBY || this.hintTiming === HINT_TIMING.NEVER;
-		const offset = visibleDistance !== 0 ? -(visibleDistance - 18 - 4) : 18;
+		const visibleOnAncestor = this.visibilityCondition === VISIBILITY_CONDITION.NEARBY || this.visibilityCondition === VISIBILITY_CONDITION.HOVER_FOCUS;
+		const offset = visibleDistance !== 0 ? -(visibleDistance - 18) : 18;
 		const styles = {
 			position: visibleOnAncestor && !this._hasFocusOrHover ? 'absolute' : 'static'
 		};

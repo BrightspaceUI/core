@@ -2,14 +2,14 @@ import '../button-add.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('button-add', () => {
-	[ 'always', 'nearby', 'never', undefined ].forEach((hintTiming) => {
-		describe(`hint-timing ${hintTiming}`, () => {
+	[ 'always', 'nearby', 'hover-focus', undefined ].forEach((hintTiming) => {
+		describe(`visibility-condition ${hintTiming}`, () => {
 			[ true, false ].forEach((textVisible) => {
 				describe(`text-visible ${textVisible}`, () => {
 					[
-						{ category: 'basic', template: html`<d2l-button-add ?text-visible="${textVisible}" hint-timing="${hintTiming}"></d2l-button-add>` },
-						{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?text-visible="${textVisible}" hint-timing="${hintTiming}"></d2l-button-add>` },
-						{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" ?text-visible="${textVisible}" hint-timing="${hintTiming}"></d2l-button-add>` }
+						{ category: 'basic', template: html`<d2l-button-add ?text-visible="${textVisible}" visibility-condition="${hintTiming}"></d2l-button-add>` },
+						{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?text-visible="${textVisible}" visibility-condition="${hintTiming}"></d2l-button-add>` },
+						{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" ?text-visible="${textVisible}" visibility-condition="${hintTiming}"></d2l-button-add>` }
 					].forEach(({ category, template }) => {
 
 						describe(category, () => {
