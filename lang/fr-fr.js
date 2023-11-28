@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Heure de début",
 	"components.interactive.instructions": "Appuyer sur entrée pour interagir, sur Echap pour quitter",
 	"components.link.open-in-new-window": "S’ouvre dans une nouvelle fenêtre.",
-	"components.list.keyboard": "Utilisez les <b>touches fléchées</b> pour vous concentrer sur cette liste, ou <b>faites défiler la page vers le haut/bas</b> pour la faire défiler de 5 cm",
+	"components.list.keyboard": "Utilisez les <b>touches fléchées</b> pour vous concentrer sur cette liste, ou <b>faites défiler la page vers le haut/bas</b> pour la faire défiler de 5",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item-drag-handle.default": "Action de réorganisation de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments, position actuelle {currentPosition} sur {size}. Pour déplacer cet élément, appuyez sur les flèches vers le haut ou vers le bas.",
