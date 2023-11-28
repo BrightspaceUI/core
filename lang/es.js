@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.interactive.instructions": "Presione Intro para interactuar y Escape para salir",
 	"components.link.open-in-new-window": "Se abre en una ventana nueva.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Use las <b>teclas de flecha</b> para mover el enfoque dentro de esta lista o <b>avance/retroceda la página</b> para mover hacia arriba o hacia abajo en 5",
 	"components.list-controls.label": "Acciones para la lista",
 	"components.list-item-drag-handle.default": "Acción de reordenar elemento de {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elemento, posición actual {currentPosition} de {size}. Para mover este elemento, presione las flechas hacia arriba o hacia abajo.",

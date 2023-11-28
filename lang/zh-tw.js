@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "開始時間",
 	"components.interactive.instructions": "按下 Enter 來互動，按下 Escape 即可結束",
 	"components.link.open-in-new-window": "在新視窗中開啟。",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "使用<b>方向鍵</b>在此清單內移動焦點，或使用<b>頁面上捲/下捲</b>向上或向下移動 5 個項目",
 	"components.list-controls.label": "清單的動作",
 	"components.list-item-drag-handle.default": "重新排序 {name} 的項目動作",
 	"components.list-item-drag-handle.keyboard": "重新排序項目，目前位置 {currentPosition}，總共為 {size}。若要移除這個項目，請按向上或向下箭頭。",

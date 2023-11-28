@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Hora de início",
 	"components.interactive.instructions": "Pressione Enter para interagir, Escape para sair",
 	"components.link.open-in-new-window": "Abre em uma nova janela.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Use <b>teclas de seta</b> para mover o foco dentro dessa lista, ou <b>página acima/abaixo</b> para subir ou descer 5",
 	"components.list-controls.label": "Ações para a lista",
 	"components.list-item-drag-handle.default": "Reordenar ação de item para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar item, posição atual {currentPosition} de {size}. Para mover este item, pressione as setas para cima ou para baixo.",
