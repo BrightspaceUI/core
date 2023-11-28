@@ -61,10 +61,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				cursor: pointer;
 				display: flex;
 				font-family: inherit;
+				height: 7px;
 				justify-content: center;
 				outline: none;
 				padding: 0;
-				position: relative;
 				user-select: none;
 				white-space: nowrap;
 				width: 100%;
@@ -117,6 +117,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				type="button">
 				<div class="line"></div>
 				${content}
+				<div class="line"></div>
 			</button>
 		`;
 	}
@@ -140,12 +141,16 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 	_renderWithTextHidden(text, visibleDistance) {
 		const visibleOnAncestor = this.hintTiming === HINT_TIMING.NEARBY || this.hintTiming === HINT_TIMING.NEVER;
-		const offset = -(visibleDistance - 18);
+		const offset = visibleDistance !== 0 ? -(visibleDistance - 18 - 4) : 18;
+		const styles = {
+			position: visibleOnAncestor && !this._hasFocusOrHover ? 'absolute' : 'static'
+		};
 
 		return html`
 			<d2l-button-add-icon-text
 				?show-focus="${this._hasFocusOrHover}"
 				?visible-on-ancestor="${visibleOnAncestor}"
+				style="${styleMap(styles)}"
 			></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
@@ -178,9 +183,7 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 		return [visibleOnAncestorStyles, css`
 			:host {
 				align-items: center;
-				background-color: white;
 				display: flex;
-				position: absolute;
 			}
 			:host([text]) {
 				color: var(--d2l-color-celestine);
