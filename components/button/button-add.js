@@ -1,10 +1,9 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -43,8 +42,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			 * ONLY used when text-visible is FALSE. When to show the icon/icon text with user interaction. "always" - always visible, "nearby" - when mouse within hint-nearby-distance, "hover-focus" - do not show until hover/focus. Default is "always".
 			 * @type {'always'|'nearby'|'hover-focus'}
 			 */
-			visibilityCondition: { type: String, reflect: true, attribute: 'visibility-condition' },
-			_hasFocusOrHover: { state: true }
+			visibilityCondition: { type: String, reflect: true, attribute: 'visibility-condition' }
 		};
 	}
 
@@ -76,8 +74,17 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				width: 100%;
 			}
 			button:hover .line,
-			button:${unsafeCSS(getFocusPseudoClass())} .line {
+			button:focus .line {
 				border-top-color: var(--d2l-color-celestine);
+			}
+
+			button:hover d2l-button-add-icon-text,
+			button:focus d2l-button-add-icon-text {
+				--d2l-button-add-icon-text-icon-color: var(--d2l-color-celestine);
+			}
+			:host([visibility-condition="nearby"]) button:not(:focus):not(:hover) d2l-button-add-icon-text,
+			:host([visibility-condition="hover-focus"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
+				position: absolute;
 			}
 		`;
 	}
@@ -90,12 +97,6 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		this.visibilityCondition = VISIBILITY_CONDITION.ALWAYS;
 
 		this._buttonId = getUniqueId();
-		this._hasFocusOrHover = false;
-
-		this.addEventListener('focus', this._onFocusMouseOver);
-		this.addEventListener('mouseover', this._onFocusMouseOver);
-		this.addEventListener('blur', this._onBlurMouseOut);
-		this.addEventListener('mouseout', this._onBlurMouseOut);
 	}
 
 	static get focusElementSelector() {
@@ -106,8 +107,11 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		const visibleDistance = this.visibilityCondition === VISIBILITY_CONDITION.NEARBY ? (this.nearbyVisibilityDistance || NEARBY_VISIBILITY_DISTANCE_DEFAULT) : 0;
 		const buttonSpacing = this._getButtonSpacing(visibleDistance);
 		const text = this.text || this.localize('components.button-add.addItem');
-		const content = this.textVisible ? this._renderWithTextVisible(text, visibleDistance) : this._renderWithTextHidden(text, visibleDistance);
 		const id = !this.textVisible ? this._buttonId : undefined;
+
+		const content = this.textVisible
+			? html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`
+			: this._renderWithTextHidden(text, visibleDistance);
 
 		return html`
 			<button
@@ -132,36 +136,15 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		};
 	}
 
-	_onBlurMouseOut() {
-		this._hasFocusOrHover = false;
-	}
-	_onFocusMouseOver() {
-		this._hasFocusOrHover = true;
-	}
-
 	_renderWithTextHidden(text, visibleDistance) {
 		const visibleOnAncestor = this.visibilityCondition === VISIBILITY_CONDITION.NEARBY || this.visibilityCondition === VISIBILITY_CONDITION.HOVER_FOCUS;
-		const offset = visibleDistance !== 0 ? -(visibleDistance - 18) : 18;
-		const styles = {
-			position: visibleOnAncestor && !this._hasFocusOrHover ? 'absolute' : 'static'
-		};
+		const offset = visibleDistance !== 0 ? -(visibleDistance - 12) : 18;
 
 		return html`
 			<d2l-button-add-icon-text
-				?show-focus="${this._hasFocusOrHover}"
 				?visible-on-ancestor="${visibleOnAncestor}"
-				style="${styleMap(styles)}"
 			></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
-		`;
-	}
-
-	_renderWithTextVisible(text) {
-		return html`
-			<d2l-button-add-icon-text
-				?show-focus="${this._hasFocusOrHover}"
-				text="${text}"
-			></d2l-button-add-icon-text>
 		`;
 	}
 
@@ -174,14 +157,14 @@ customElements.define('d2l-button-add', ButtonAdd);
 class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	static get properties() {
 		return {
-			text: { type: String },
-			showFocus: { type: Boolean, reflect: true, attribute: 'show-focus' }
+			text: { type: String }
 		};
 	}
 
 	static get styles() {
 		return [visibleOnAncestorStyles, css`
 			:host {
+				--d2l-button-add-icon-text-icon-color: var(--d2l-color-galena);
 				align-items: center;
 				display: flex;
 			}
@@ -191,17 +174,14 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				padding: 0 0.3rem;
 			}
 
-			:host([text]) d2l-icon,
-			:host([show-focus]:not([text])) d2l-icon {
+			:host([text]) d2l-icon {
 				color: var(--d2l-color-celestine);
+				padding-inline-end: 0.2rem;
 			}
 			:host(:not([text])) d2l-icon {
-				color: var(--d2l-color-galena);
+				color: var(--d2l-button-add-icon-text-icon-color);
 				margin: -3px; /** hover/click target */
 				padding: 3px; /** hover/click target */
-			}
-			:host([text]) d2l-icon {
-				padding-inline-end: 0.2rem;
 			}
 
 			span {
