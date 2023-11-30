@@ -2,13 +2,13 @@ import '../button-add.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('button-add', () => {
-	[ 'always', 'nearby', 'hover-focus', undefined ].forEach((hintTiming) => {
-		describe(`visibility-condition ${hintTiming}`, () => {
+	[ true, false ].forEach((iconOnlyVisibleOnHoverFocus) => {
+		describe(`icon-only-visible-on-hover-focus ${iconOnlyVisibleOnHoverFocus}`, () => {
 			describe('text-visible false', () => {
 				[
-					{ category: 'basic', template: html`<d2l-button-add visibility-condition="${hintTiming}"></d2l-button-add>` },
-					{ category: 'text', template: html`<d2l-button-add text="Custom Text" visibility-condition="${hintTiming}"></d2l-button-add>` },
-					{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" visibility-condition="${hintTiming}"></d2l-button-add>` }
+					{ category: 'basic', template: html`<d2l-button-add ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` },
+					{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` },
+					{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` }
 				].forEach(({ category, template }) => {
 
 					describe(category, () => {
