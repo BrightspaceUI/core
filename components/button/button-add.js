@@ -45,7 +45,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				cursor: pointer;
 				display: flex;
 				font-family: inherit;
-				height: 7px;
+				height: 0.9rem;
 				justify-content: center;
 				outline: none;
 				padding: 0;
@@ -56,7 +56,6 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 			.line {
 				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
-				margin: 3px 0; /** hover/click target */
 				width: 100%;
 			}
 			button:hover .line,
