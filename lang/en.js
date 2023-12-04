@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Opens in a new window.",
 	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
 	"components.list-controls.label": "Actions for list",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Reorder item action for {name}",
 	"components.list-item-drag-handle.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press up or down arrows.",
 	"components.list-item-drag-handle-tooltip.title": "Keyboard Controls for Reordering:",

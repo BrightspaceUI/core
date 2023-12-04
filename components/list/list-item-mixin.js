@@ -1,3 +1,4 @@
+import '../button/button-add.js';
 import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
@@ -82,6 +83,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
+			_showAddButton: { tyep: Boolean, attribute: '_show-add-button', reflect: true },
 			_hasNestedList: { state: true },
 			_siblingHasColor: { state: true },
 		};
@@ -139,6 +141,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="control-container"]::after,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
+			:host([_show-add-button]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -286,6 +289,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 				margin-bottom: -1px;
+			}
+			:host([_hovering-primary-action]) d2l-button-add,
+			:host([_hovering-selection]) d2l-button-add,
+			:host([_focusing-primary-action]) d2l-button-add,
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) d2l-button-add,
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) d2l-button-add,
+			:host(:not([selection-disabled]):not([skeleton])[selected]) d2l-button-add {
+				--d2l-button-add-line-color: #b6cbe8;
 			}
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"] {
@@ -595,6 +606,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
+
+		const rootList = this.getRootList();
+		this._showAddButton = rootList?.addButton || undefined;
+		const addButtonText = rootList?.addButtonText || this.localize('components.list-item.addItem');
+		const addButtonAlwaysVisible = rootList?.addButtonAlwaysVisible || false;
+
 		const innerView = html`
 			<d2l-list-item-generic-layout
 				align-nested="${ifDefined(alignNested)}"
@@ -646,6 +663,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
+				${this._showAddButton ? html`
+				<div slot="add">
+					<d2l-button-add text="${ifDefined(addButtonText)}" ?icon-only-visible-on-hover-focus="${!addButtonAlwaysVisible}"></d2l-button-add>
+				</div>
+				` : nothing}
 				${this._renderNested(nested)}
 			</d2l-list-item-generic-layout>
 		`;

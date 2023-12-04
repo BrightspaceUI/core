@@ -68,7 +68,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
-				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
+				grid-template-rows:
+					[main] minmax(0, min-content)
+					[add-start add-end] minmax(0, min-content)
+					[nested-start nested-end] minmax(0, min-content);
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
@@ -170,6 +173,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				grid-row: nested-start / nested-end;
 			}
+			::slotted([slot="add"]) {
+				grid-column: color-start / end;
+				grid-row: add-start / add-end;
+				margin-bottom: -9.6px;
+				margin-top: -8.4px;
+			/*	padding-right: 6px; /** can we only do this when rounded? */
+				z-index: 10;
+			}
 		`;
 	}
 
@@ -217,6 +228,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
 
 			<slot name="drop-target"></slot>
+			<slot name="add"></slot>
 			<slot name="nested"></slot>
 		`;
 	}

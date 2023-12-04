@@ -33,6 +33,21 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * When true, show the inline add button after each list item.
+			 * @type {boolean}
+			 */
+			addButton: { type: Boolean, reflect: true, attribute: 'add-button' },
+			/**
+			 * Text to show in label tooltip on inline add button. Defaults to "Add Item".
+			 * @type {string}
+			 */
+			addButtonText: { type: String, reflect: true, attribute: 'add-button-text' },
+			/**
+			 * When to show the add button. When true, the button is always visible. When false (default), the button is only visible on hover or focus.
+			 * @type {boolean}
+			 */
+			addButtonAlwaysVisible: { type: Boolean, reflect: true, attribute: 'add-button-icon-always-visible' },
+			/**
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
 			 * @type {array}
 			 */
@@ -115,6 +130,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	constructor() {
 		super();
+		this.addButton = false;
+		this.addButtonAlwaysVisible = false;
 		this.breakpoints = DEFAULT_BREAKPOINTS;
 		this.dragMultiple = false;
 		this.extendSeparators = false;

@@ -35,6 +35,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	static get styles() {
 		return css`
 			:host {
+				--d2l-button-add-line-color: var(--d2l-color-mica);
 				--d2l-button-add-line-style: solid;
 			}
 			button {
@@ -55,7 +56,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			}
 
 			.line {
-				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
+				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-button-add-line-color);
 				width: 100%;
 			}
 			button:hover .line,
