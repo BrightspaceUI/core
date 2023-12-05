@@ -701,7 +701,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					dimension.appliedCount--;
 					this._totalAppliedCount--;
 				}
-				this._activeFiltersSubscribers.updateSubscribers();
+				this._dispatchChangeEvent(dimension, { valueKey: e.detail.valueKey, selected: newValue });
 			} else if (prop === 'values') {
 				if (dimension.searchValue || dimension.searchType === 'manual') shouldSearch = true;
 				shouldRecount = true;
