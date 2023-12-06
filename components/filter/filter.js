@@ -292,6 +292,17 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		super.update(changedProperties);
 	}
 
+	requestFilterChangeEvent(allCleared, dimensions, detail) {
+		detail = detail || {};
+		detail.allCleared = allCleared;
+		detail.dimensions = dimensions;
+		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
+			bubbles: true,
+			composed: false,
+			detail
+		}));
+	}
+
 	requestFilterClearAll() {
 		this._handleClearAll();
 	}
@@ -587,12 +598,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		dimensions.forEach(dimension => {
 			dimension.changes = Array.from(dimension.changes.values());
 		});
+		this.requestFilterChangeEvent(allCleared, dimensions);
 
-		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
-			bubbles: true,
-			composed: false,
-			detail: { allCleared: allCleared, dimensions: dimensions }
-		}));
 		this._changeEventsToDispatch = new Map();
 		this._changeEventTimeout = null;
 

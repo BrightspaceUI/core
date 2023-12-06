@@ -95,6 +95,13 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
+	_getFilterParent(classList, filterSet) {
+		const isOverflowFilter = classList && classList.contains(OVERFLOW_CLASS);
+		if (!isOverflowFilter) return null;
+		const filterParent = filterSet.parentNode;
+		return (!filterParent || filterParent.tagName !== 'D2L-FILTER') ? null : filterParent;
+	}
+
 	_handleFilterChange(e) {
 		const target = (e.target.classList && e.target.classList.contains(OVERFLOW_CLASS)) ? this : e.target;
 		e.detail.dimensions.forEach((dimension) => {
@@ -105,6 +112,8 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 				if (!filterSetValue) return;
 				filterSetValue.selected = change.selected;
 			});
+
+			this._getFilterParent(e.target.classList, filterSet)?.requestFilterChangeEvent(e.detail.allCleared, [dimension], { overflowEvent: true });
 		});
 	}
 
