@@ -307,6 +307,18 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._handleClearAll();
 	}
 
+	requestFilterLoadMoreEvent(key, searchValue, callback) {
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
+			detail: {
+				key: key,
+				value: searchValue,
+				loadMoreCompleteCallback: callback
+			},
+			bubbles: true,
+			composed: false
+		}));
+	}
+
 	requestFilterValueClear(keyObject) {
 		const dimension = this._getDimensionByKey(keyObject.dimension);
 
@@ -746,20 +758,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimensionKey = e.target.parentNode.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._getDimensionByKey(dimensionKey);
 		const applySearch = this._getSearchCallback(dimension);
-
-		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
-			detail: {
-				key: dimensionKey,
-				value: dimension.searchValue,
-				loadMoreCompleteCallback: (options) => {
-					applySearch(options);
-					const menu = this.shadowRoot.querySelector('d2l-dropdown-menu');
-					menu ? menu.addEventListener('d2l-dropdown-position', e.detail.complete, { once: true }) : e.detail.complete();
-				}
-			},
-			bubbles: true,
-			composed: false
-		}));
+		const callback = (options) => {
+			applySearch(options);
+			const menu = this.shadowRoot.querySelector('d2l-dropdown-menu');
+			menu ? menu.addEventListener('d2l-dropdown-position', e.detail.complete, { once: true }) : e.detail.complete();
+		};
+		this.requestFilterLoadMoreEvent(dimensionKey, dimension.searchValue, callback);
 	}
 
 	_handleDimensionShowComplete() {

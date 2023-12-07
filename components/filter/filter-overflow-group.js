@@ -89,7 +89,11 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 	getOverflowContainer(overflowItems) {
 		return html`
-			<d2l-filter class="${OVERFLOW_CLASS} vdiff-target" @d2l-filter-change="${this._handleFilterChange}">
+			<d2l-filter
+				class="${OVERFLOW_CLASS} vdiff-target"
+				@d2l-filter-change="${this._handleFilterChange}"
+				@d2l-filter-dimension-load-more="${this._handleFilterLoadMore}"
+				@d2l-filter-dimension-search="${this._handleFilterSearch}">
 				${overflowItems}
 			</d2l-filter>
 		`;
@@ -115,6 +119,35 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 			this._getFilterParent(e.target.classList, filterSet)?.requestFilterChangeEvent(e.detail.allCleared, [dimension], { overflowEvent: true });
 		});
+	}
+
+	_handleFilterLoadMore(e) {
+		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
+		if (!filterSet) return;
+		this._getFilterParent(e.target.classList, filterSet)?.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
+	}
+
+	/** need to update the clone?? */
+	_handleFilterSearch(e) {
+		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
+		if (!filterSet) return;
+		const filter = this._getFilterParent(e.target.classList, filterSet);
+		filterSet.loading = true;
+		filter.requestUpdate();
+
+		filter.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+			bubbles: false,
+			composed: false,
+			detail: {
+				key: e.detail.key,
+				value: e.detail.value,
+				searchCompleteCallback: () => {
+					e.detail.searchCompleteCallback();
+					console.log('hurr')
+					filter.requestFilterChangeEvent(false, []);
+				}
+			}
+		}));
 	}
 
 }
