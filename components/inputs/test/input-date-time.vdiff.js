@@ -1,7 +1,7 @@
 import '../input-date-time.js';
 import { expect, fixture, focusElem, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const create = (opts = {}) => {
 	const { disabled, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {

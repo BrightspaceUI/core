@@ -1,7 +1,7 @@
 import '../input-time.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const create = (opts = {}) => {
 	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, value } = {
