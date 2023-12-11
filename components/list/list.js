@@ -172,7 +172,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 						detail: this._listItemChanges
 					}));
 					this._listItemChanges = [];
-				}, 30);
+				}, 60);
 			}
 			this._listItemChanges.push(e.detail);
 
