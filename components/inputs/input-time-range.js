@@ -208,7 +208,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		}
 		this._initialValues = false;
 
-		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this);
 	}
 
 	render() {
