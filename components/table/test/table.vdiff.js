@@ -156,9 +156,9 @@ function createGradesRows(opts) {
 describe('table', () => {
 
 	[
-		{ type: 'default', rtl: false  },
-		{ type: 'default', rtl: true  },
-		{ type: 'light', rtl: false  },
+		{ type: 'default', rtl: false },
+		{ type: 'default', rtl: true },
+		{ type: 'light', rtl: false },
 		{ type: 'light', rtl: true }
 	].forEach(({ type, rtl }) => {
 		describe(`${rtl ? 'rtl' : 'ltr'}-${type}`, () => {

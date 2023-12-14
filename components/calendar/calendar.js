@@ -70,7 +70,7 @@ export function getDatesInMonthArray(shownMonth, shownYear) {
 	let nextMonthDay = 1;
 	let firstDateOfWeek = daysInWeek - numDaysFromPrevMonthToShow + 1;
 	const numWeeks = Math.ceil((numDaysFromPrevMonthToShow + numDays) / daysInWeek);
-	const nextMonth =  getNextMonth(shownMonth);
+	const nextMonth = getNextMonth(shownMonth);
 	const nextMonthYear = (shownMonth === 11) ? (shownYear + 1) : shownYear;
 	for (let i = 1; i < numWeeks; i++) {
 		const week = [];

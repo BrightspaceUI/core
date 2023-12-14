@@ -4,7 +4,7 @@ import { footer, general, long } from './dialog-shared-contents.js';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, fullHeight: false, width: 400 };
-	const { content, fullHeight, width } =  { ...defaults, ...opts };
+	const { content, fullHeight, width } = { ...defaults, ...opts };
 	return html`
 		<d2l-dialog title-text="Dialog Title" ?full-height="${fullHeight}" width="${width}" opened>
 			${content}

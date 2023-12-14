@@ -405,6 +405,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 	}
 
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
+	}
+
 	focus() {
 		this._tryFocus();
 	}
@@ -449,12 +455,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	updateSiblingHasColor(siblingHasColor) {
 		this._siblingHasColor = siblingHasColor;
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
-			this._hasColorSlot = this.color || this._siblingHasColor;
-		}
 	}
 
 	_getFlattenedListItems(listItem) {

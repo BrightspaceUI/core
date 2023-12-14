@@ -233,7 +233,7 @@ describe('d2l-menu', () => {
 			class extends MenuItemMixin(LitElement) {
 				static get properties() {
 					return {
-						_ready: { type: Boolean, state: true  }
+						_ready: { type: Boolean, state: true }
 					};
 				}
 				constructor() {
@@ -242,16 +242,16 @@ describe('d2l-menu', () => {
 					this._readyPromise = new Promise((resolve) => makeReady = resolve);
 					this._readyPromise.then(() => this._ready = true);
 				}
+				async getUpdateComplete() {
+					await super.getUpdateComplete();
+					return this._readyPromise;
+				}
 				render() {
 					return 'i am slow';
 				}
 				shouldUpdate(changedProperties) {
 					if (!this._ready) return false;
 					return super.shouldUpdate(changedProperties);
-				}
-				async getUpdateComplete() {
-					await super.getUpdateComplete();
-					return this._readyPromise;
 				}
 			}
 		);

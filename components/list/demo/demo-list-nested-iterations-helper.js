@@ -132,7 +132,7 @@ class ListNestedIterationsHelper extends LitElement {
 			items.push(html`
 				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${childL2Text}</d2l-list-item-content>
-					${i === 1  || !childOptions[1] ? nothing : html`
+					${i === 1 || !childOptions[1] ? nothing : html`
 						<d2l-list slot="nested">
 							<d2l-list-item key="${`${childKey}-child`}" label="${childL3Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" color="${ifDefined(childOptions[3] ? '#00ff00' : undefined)}">
 								<d2l-list-item-content>${childL3Text}</d2l-list-item-content>
