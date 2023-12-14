@@ -261,7 +261,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 		});
 
-		return new SelectionInfo(keys, selectionInfo.state);
+		return new SelectionInfo(keys, selectionInfo.state, selectionInfo.numDisabledKeys);
 	}
 
 	resizedCallback(width, breakpointsChanged) {
