@@ -89,15 +89,15 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		this.selected = (this.selectionInfo.state === SelectionInfo.states.all);
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('selectionDisabled') && this.selectionDisabled === true) this._hoveringSelection = false;
+	}
+
 	setSelected(selected, suppressEvent = false) {
 		if (this.selected === selected || (this.selected === undefined && !selected)) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
-	}
-
-	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);
-		if (changedProperties.has('selectionDisabled') && this.selectionDisabled === true) this._hoveringSelection = false;
 	}
 
 	async _dispatchSelected(value) {

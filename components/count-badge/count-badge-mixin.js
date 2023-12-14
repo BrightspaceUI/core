@@ -101,7 +101,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		};
 	}
 
-	static get styles()  {
+	static get styles() {
 		return [super.styles, offscreenStyles, css`
 			:host([hidden]) {
 				display: none;

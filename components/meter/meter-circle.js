@@ -57,7 +57,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 
 		const primary = this._primary(this.value, this.max) || '';
 		const secondary = this._secondary(this.value, this.max, this.text);
-		const textClasses =  {
+		const textClasses = {
 			'd2l-meter-circle-text-ltr': !this.percent,
 			'd2l-body-standard': true,
 			'd2l-meter-circle-text': true

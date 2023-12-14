@@ -709,7 +709,7 @@ describe('list', () => {
 			{ name: 'extend separators nested selectable', template: createColorList({ selectable: true }) },
 			{ name: 'extend separators nested selectable hover', template: createColorList({ selectable: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]')) },
 			{ name: 'extend separators selectable draggable', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }) },
-			{ name: 'extend separators selectable draggable hover', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]'))  }
+			{ name: 'extend separators selectable draggable hover', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]')) }
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);

@@ -23,7 +23,7 @@ const mathjaxFontMappings = new Map([
 	['MJXTEX-FRB', 'MathJax_Fraktur-Bold'],
 	['MJXTEX-SS', 'MathJax_SansSerif-Regular'],
 	['MJXTEX-SSB', 'MathJax_SansSerif-Bold'],
-	['MJXTEX-SSI',  'MathJax_SansSerif-Italic'],
+	['MJXTEX-SSI', 'MathJax_SansSerif-Italic'],
 	['MJXTEX-SC', 'MathJax_Script-Regular'],
 	['MJXTEX-T', 'MathJax_Typewriter-Regular'],
 	['MJXTEX-V', 'MathJax_Vector-Regular'],

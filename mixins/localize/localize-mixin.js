@@ -10,7 +10,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 
 	static get properties() {
 		return {
-			__resources: { type: Object, attribute: false  }
+			__resources: { type: Object, attribute: false }
 		};
 	}
 
@@ -61,6 +61,16 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		this.__updatedProperties.clear();
 	}
 
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		const hasResources = this._hasResources();
+		const resourcesLoaded = this.__resources !== undefined;
+		if (!hasResources || resourcesLoaded) {
+			return;
+		}
+		await this.__resourcesLoadedPromise;
+	}
+
 	shouldUpdate(changedProperties) {
 
 		const hasResources = this._hasResources();
@@ -85,16 +95,6 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 
 		return super.shouldUpdate(changedProperties);
 
-	}
-
-	async getUpdateComplete() {
-		await super.getUpdateComplete();
-		const hasResources = this._hasResources();
-		const resourcesLoaded = this.__resources !== undefined;
-		if (!hasResources || resourcesLoaded) {
-			return;
-		}
-		await this.__resourcesLoadedPromise;
 	}
 
 	localize(key) {

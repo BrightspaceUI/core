@@ -7,7 +7,7 @@ import '../card.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 function createCardTemplate(opts) {
-	const { alignCenter, content, subtle } =  { alignCenter: false, subtle: false, ...opts };
+	const { alignCenter, content, subtle } = { alignCenter: false, subtle: false, ...opts };
 	return html`
 		<d2l-card style="height: 260px; width: 210px;" ?align-center="${alignCenter}" ?subtle="${subtle}">
 			${content}

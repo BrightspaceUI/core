@@ -165,7 +165,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 
 	async _doAction(action) {
 		this._dispatchAction(action);
-		const cell = findComposedAncestor(this, (parent) =>  parent.hasAttribute && parent.hasAttribute('draggable'));
+		const cell = findComposedAncestor(this, (parent) => parent.hasAttribute && parent.hasAttribute('draggable'));
 		if (cell) await cell.updateComplete;
 		await this.updateComplete;
 		this.focus();

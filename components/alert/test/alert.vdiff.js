@@ -2,7 +2,7 @@ import '../alert.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 
 function createAlertWithCloseButton(opts) {
-	const { noPadding } =  { noPadding: false, ...opts };
+	const { noPadding } = { noPadding: false, ...opts };
 	return html`
 		<d2l-alert type="default" button-text="Do it!" has-close-button ?no-padding="${noPadding}"
 			subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">

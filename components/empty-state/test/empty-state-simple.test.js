@@ -4,7 +4,7 @@ import '../empty-state-simple.js';
 import { fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { html } from 'lit';
 
-describe('d2l-empty-state-simple',  () => {
+describe('d2l-empty-state-simple', () => {
 
 	it('should construct empty-state-simple', () => {
 		runConstructor('d2l-empty-state-simple');

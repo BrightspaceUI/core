@@ -36,8 +36,8 @@ function createMenuItem(node) {
 }
 
 function createMenuItemLink(node) {
-	const text =  node.textContent.trim();
-	const href =  node.href;
+	const text = node.textContent.trim();
+	const href = node.href;
 	const target = node.target;
 
 	return html`<d2l-menu-item-link
@@ -186,7 +186,7 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 	_createMenuItemMenu(node) {
 		const menuOpener =
 			node.querySelector('d2l-dropdown-button')
-			||  node.querySelector('d2l-dropdown-button-subtle');
+			|| node.querySelector('d2l-dropdown-button-subtle');
 
 		const openerText = node.text || menuOpener.text;
 		const disabled = !!node.disabled;
