@@ -43,6 +43,18 @@ describe('typography', () => {
 				{ name: 'label', template: html`<div class="d2l-label-text">Some wonky label</div>` },
 				{ name: 'blockquote', template: html`<blockquote class="d2l-blockquote">${longText}</blockquote>` },
 				{ name: 'blockquote-rtl', rtl: true, template: html`<blockquote class="d2l-blockquote">${longText}</blockquote>` },
+				{ name: 'bcsans', template: html`
+					<div style="font-family: BC Sans;">
+						<p style="font-weight: 300;">ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+						<p>ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+						<p style="font-weight: 700;">ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+					</div>
+					<div style="font-family: BC Sans; font-style: italic;">
+						<p style="font-weight: 300;">ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+						<p>ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+						<p style="font-weight: 700;">ᐂ ᐪ ᒤ ᔆ ᔌ ᔕ ᔤ ᔧ ᕯ ᗯ ᘏ ᘗ ᘩ ᘨ ᣱ</p>
+					</div>
+				` }
 			].forEach(({ name, template, rtl }) => {
 				it(name, async() => {
 					const elem = await fixture(createTypographyWrapper(template), { viewport, rtl });
