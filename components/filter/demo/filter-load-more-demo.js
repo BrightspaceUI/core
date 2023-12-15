@@ -64,7 +64,7 @@ class FilterLoadMoreDemo extends LitElement {
 		return html`
 		<d2l-filter-overflow-group max-to-show="1">
 
-<d2l-filter  id="filter1">
+				<d2l-filter  id="filter1">
 					<d2l-filter-dimension-set key="skill" text="Skill">
 						<d2l-filter-dimension-set-value key="communication" text="Fall"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="leadership" text="Winter"></d2l-filter-dimension-set-value>
@@ -72,7 +72,7 @@ class FilterLoadMoreDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="planning" text="Summer"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
-			<d2l-filter
+			<d2l-filter id="filter2"
 				@d2l-filter-change="${this._handleFilterChange}"
 				@d2l-filter-dimension-load-more=${this._handleLoadMore}
 				@d2l-filter-dimension-search=${this._handleSearch}>

@@ -121,33 +121,20 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 		});
 	}
 
-	_handleFilterLoadMore(e) {
-		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
-		if (!filterSet) return;
-		this._getFilterParent(e.target.classList, filterSet)?.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
-	}
-
-	/** need to update the clone?? */
-	_handleFilterSearch(e) {
+	async _handleFilterLoadMore(e) {
 		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
 		if (!filterSet) return;
 		const filter = this._getFilterParent(e.target.classList, filterSet);
-		filterSet.loading = true;
-		filter.requestUpdate();
+		filter.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
+		this._handleSlotChange();
+	}
 
-		filter.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-			bubbles: false,
-			composed: false,
-			detail: {
-				key: e.detail.key,
-				value: e.detail.value,
-				searchCompleteCallback: () => {
-					e.detail.searchCompleteCallback();
-					console.log('hurr')
-					filter.requestFilterChangeEvent(false, []);
-				}
-			}
-		}));
+	async _handleFilterSearch(e) {
+		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
+		if (!filterSet) return;
+		const filter = this._getFilterParent(e.target.classList, filterSet);
+		filter.requestFilterSearchEvent(e.detail.key, e.detail.value);
+		this._handleSlotChange();
 	}
 
 }
