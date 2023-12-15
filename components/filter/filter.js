@@ -292,14 +292,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		super.update(changedProperties);
 	}
 
-	requestFilterChangeEvent(allCleared, dimensions, detail) {
-		detail = detail || {};
-		detail.allCleared = allCleared;
-		detail.dimensions = dimensions;
+	requestFilterChangeEvent(allCleared, dimensions) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
 			bubbles: true,
 			composed: false,
-			detail
+			detail: { allCleared, dimensions }
 		}));
 	}
 

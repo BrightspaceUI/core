@@ -117,7 +117,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 				filterSetValue.selected = change.selected;
 			});
 
-			this._getFilterParent(e.target.classList, filterSet)?.requestFilterChangeEvent(e.detail.allCleared, [dimension], { overflowEvent: true });
+			this._getFilterParent(e.target.classList, filterSet)?.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
 		});
 	}
 
