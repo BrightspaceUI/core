@@ -48,6 +48,8 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
+		const indeterminate = this.selectionInfo.state === SelectionInfo.states.some
+			|| (this.selectionInfo.state === SelectionInfo.states.all && this.selectionInfo.numDisabledKeys > 0);
 
 		return html`
 			<d2l-input-checkbox
@@ -56,7 +58,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 				?checked="${this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages}"
 				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
-				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
+				?indeterminate="${indeterminate}">
 			</d2l-input-checkbox>
 		`;
 	}
