@@ -6,20 +6,9 @@ import { html, LitElement } from 'lit';
 
 class FilterDemo extends LitElement {
 
-	firstUpdated(changedProps) {
-		super.firstUpdated(changedProps);
-
-		this.addEventListener('d2l-filter-change', () => {
-			console.log('change!!!! ');
-		})
-		this.addEventListener('d2l-filter-dimension-search', () => {
-			console.log('search')
-		})
-	}
-
 	render() {
 		return html`
-				<d2l-filter-overflow-group max-to-show="1">
+			<d2l-filter-overflow-group>
 				<d2l-filter  id="filter1">
 					<d2l-filter-dimension-set key="skill" text="Skill">
 						<d2l-filter-dimension-set-value key="communication" text="Fall"></d2l-filter-dimension-set-value>
@@ -51,7 +40,7 @@ class FilterDemo extends LitElement {
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 				<d2l-filter  id="filter5" @d2l-filter-change="${this._handleChange}" @d2l-filter-dimension-load-more="${this._handleLoadMore}">
-					<d2l-filter-dimension-set key="language" text="Language" selection-single has-more >
+					<d2l-filter-dimension-set key="language" text="Language" selection-single has-more search-type="manual">
 						<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="french" text="French"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="spanish" text="Spanish"></d2l-filter-dimension-set-value>
@@ -72,12 +61,12 @@ class FilterDemo extends LitElement {
 						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 					<d2l-filter-dimension-set key="duration" text="Duration">
-						<d2l-filter-dimension-set-value key="lessthanthree" text="< 3 months"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="lessthanthree" text="less than 3 months"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="threetosix" text="3-6 months"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="sixtotwelve" text="6-12 months"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 					<d2l-filter-dimension-set key="hoursperweek" text="SemesterNested" selection-single search-type="manual">
-						<d2l-filter-dimension-set-value key="lessthanfive" text="< 5 hrs/week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="lessthanfive" text="less than 5 hrs/week"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="fivetoten" text="5-10 hrs/week" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="tentotwenty" text="10-20 hrs/week"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
@@ -86,13 +75,12 @@ class FilterDemo extends LitElement {
 	}
 
 	_handleChange(e) {
-		console.log('change!!! ' + JSON.stringify(e.detail))
+		console.warn('change event: ', JSON.stringify(e.detail));
 	}
 
 	_handleLoadMore() {
-		console.log('load more!')
+		console.warn('load more event');
 	}
 }
-
 
 customElements.define('d2l-filter-demo', FilterDemo);

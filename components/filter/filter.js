@@ -319,6 +319,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}));
 	}
 
+	requestFilterSearchEvent(key, searchValue) {
+		const dimension = this._getDimensionByKey(key);
+		dimension.searchValue = searchValue;
+		this._search(dimension);
+	}
+
 	requestFilterValueClear(keyObject) {
 		const dimension = this._getDimensionByKey(keyObject.dimension);
 
@@ -941,12 +947,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				}
 			}));
 		}
-	}
-
-	requestFilterSearchEvent(key, searchValue) {
-		const dimension = this._getDimensionByKey(key);
-		dimension.searchValue = searchValue;
-		this._search(dimension);
 	}
 
 	_setDimensionChangeEvent(dimension, change, dimensionCleared) {
