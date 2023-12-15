@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
 function createEmptySingleDim(opts) {
-	const { customEmptyState } =  { customEmptyState: false, ...opts };
+	const { customEmptyState } = { customEmptyState: false, ...opts };
 	return html`
 		<d2l-filter>
 			<d2l-filter-dimension-set key="course" text="Course">
@@ -17,7 +17,7 @@ function createEmptySingleDim(opts) {
 	`;
 }
 function createSingleDim(opts) {
-	const { selected, searchType, selectAll, clampingValues } =  { selected: false, selectAll: false, clampingValues: false, ...opts };
+	const { selected, searchType, selectAll, clampingValues } = { selected: false, selectAll: false, clampingValues: false, ...opts };
 	return html`
 		<d2l-filter>
 			<d2l-filter-dimension-set key="course" text="Course" search-type="${ifDefined(searchType)}" ?select-all="${selectAll}">
@@ -37,7 +37,7 @@ function createSingleDim(opts) {
 	`;
 }
 function createSingleDimWithCounts(opts) {
-	const { headerText, selectedFirst, short } =  { selectedFirst: false, short: false, ...opts };
+	const { headerText, selectedFirst, short } = { selectedFirst: false, short: false, ...opts };
 	return html`
 		<d2l-filter>
 			<d2l-filter-dimension-set key="course" text="Course" ?selected-first="${selectedFirst}" header-text="${ifDefined(headerText)}">
@@ -61,7 +61,7 @@ function createSingleDimWithCounts(opts) {
 	`;
 }
 function createSingleDimSingleSelection(opts) {
-	const { selected, introductoryText } =  { selected: false, ...opts };
+	const { selected, introductoryText } = { selected: false, ...opts };
 	return html`
 		<d2l-filter>
 			<d2l-filter-dimension-set key="semester" text="Semester" selection-single ?select-all="${selected}" introductory-text="${ifDefined(introductoryText)}">

@@ -296,8 +296,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	_handleResize() {
-		this._icon =  mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
-		this._headerStyle =  mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
+		this._icon = mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
+		this._headerStyle = mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
 	}
 
 }

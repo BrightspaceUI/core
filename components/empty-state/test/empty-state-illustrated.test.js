@@ -4,7 +4,7 @@ import '../empty-state-action-link.js';
 import { fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { html } from 'lit';
 
-describe('d2l-empty-state-illustrated',  () => {
+describe('d2l-empty-state-illustrated', () => {
 
 	it('should construct', () => {
 		runConstructor('d2l-empty-state-illustrated');
