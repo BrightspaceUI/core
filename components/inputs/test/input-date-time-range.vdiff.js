@@ -1,8 +1,8 @@
 import '../input-date-time-range.js';
-import { expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -78,6 +78,14 @@ const minMaxFixture = create({ labelHidden: false, maxValue: '2018-09-30T12:30:0
 const wideHiddenLabelsValuesFixture = create({ childLabelsHidden: true, endLabel: 'Finish', endValue: '2021-12-04T10:30:00.000Z', labelHidden: false, startLabel: 'Start', startValue: '2020-12-02T06:00:00.000Z', width: 800 });
 
 const newToday = new Date('2018-02-12T12:00Z');
+
+const tag = defineCE(
+	class extends LitElement {
+		render() {
+			return html`<d2l-input-date-time-range class="vdiff-target" child-labels-hidden label="Custom Range"></d2l-input-date-time-range>`;
+		}
+	}
+);
 
 describe('d2l-input-date-time-range', () => {
 
@@ -369,6 +377,17 @@ describe('d2l-input-date-time-range', () => {
 			const elem = wrapper.querySelector('d2l-input-date-time-range');
 			wrapper.style.width = '250px';
 			await nextFrame();
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	describe('within custom elem', () => {
+		it('is correct at default width', async() => {
+			const elem = await fixture(`<${tag}></${tag}>`);
+			await expect(elem).to.be.golden();
+		});
+		it('is correct at small width', async() => {
+			const elem = await fixture(`<${tag}></${tag}>`, { viewport: { width: 350 } });
 			await expect(elem).to.be.golden();
 		});
 	});

@@ -218,7 +218,7 @@ export class NewPositionEventDetails {
 				list[i] = list[i - 1];
 			}
 		} else {
-			destination = this.dropLocation === dropLocation.above  ? Math.max(destination - 1, 0) : destination;
+			destination = this.dropLocation === dropLocation.above ? Math.max(destination - 1, 0) : destination;
 			for (let i = origin; i < destination; i++) {
 				list[i] = list[i + 1];
 			}

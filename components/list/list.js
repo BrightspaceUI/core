@@ -172,7 +172,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 						detail: this._listItemChanges
 					}));
 					this._listItemChanges = [];
-				}, 30);
+				}, 60);
 			}
 			this._listItemChanges.push(e.detail);
 
@@ -290,7 +290,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_getLazyLoadItems() {
 		const items = this.getItems();
-		return items.length > 0 ?  items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
 
 	_handleKeyDown(e) {

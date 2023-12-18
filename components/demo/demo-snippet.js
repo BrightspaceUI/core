@@ -219,9 +219,9 @@ class DemoSnippet extends LitElement {
 		});
 
 		return lines.join('\n')
-			.replace(/ class=""/g, '')      // replace empty class attributes (class="")
-			.replace(/_[^=]*="[^"]*"/, '')  // replace private reflected properties (_attr="value")
-			.replace(/=""/g, '');           // replace empty strings for boolean attributes (="")
+			.replace(/ class=""/g, '') // replace empty class attributes (class="")
+			.replace(/_[^=]*="[^"]*"/, '') // replace private reflected properties (_attr="value")
+			.replace(/=""/g, ''); // replace empty strings for boolean attributes (="")
 	}
 
 	async _handleFullscreenChange(e) {

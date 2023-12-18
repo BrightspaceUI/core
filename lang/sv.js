@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Starttid",
 	"components.interactive.instructions": "Tryck på Enter för att interagera och Escape för att avsluta",
 	"components.link.open-in-new-window": "Öppnas i ett nytt fönster.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Använd <b>piltangenterna</b> för att flytta fokus i listan eller <b>Page Up/Down</b> för att gå fem upp eller ned",
 	"components.list-controls.label": "Åtgärder för lista",
 	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Flytta objekt. Aktuell position: {currentPosition} av {size}. Om du vill flytta det här objektet trycker du på uppåt- eller nedåtpilen.",

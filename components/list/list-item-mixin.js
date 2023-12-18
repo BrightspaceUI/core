@@ -19,7 +19,7 @@ import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -405,6 +405,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 	}
 
+	willUpdate(changedProperties) {
+		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
+			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
+	}
+
 	focus() {
 		this._tryFocus();
 	}
@@ -449,12 +455,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	updateSiblingHasColor(siblingHasColor) {
 		this._siblingHasColor = siblingHasColor;
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
-			this._hasColorSlot = this.color || this._siblingHasColor;
-		}
 	}
 
 	_getFlattenedListItems(listItem) {

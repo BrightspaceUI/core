@@ -41,9 +41,9 @@ class FilterLoadMoreDemo extends LitElement {
 		super();
 		const dimensions = [];
 		for (const dim of FullData) {
-			const values =  {};
+			const values = {};
 			let selectedCount = 0;
-			for (const v of dim.values)  {
+			for (const v of dim.values) {
 				if (!v.selected) continue;
 				values[v.key] = { ...v };
 				selectedCount++;

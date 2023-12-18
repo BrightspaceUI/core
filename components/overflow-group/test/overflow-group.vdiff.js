@@ -13,7 +13,7 @@ import { clickElem, expect, fixture, html, waitUntil } from '@brightspace-ui/tes
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 function createOverflowGroup(numButtons, opts) {
-	const { minToShow, maxToShow, hideButton, noShow, openerStyle, openerType } =  { hideButton: false, noShow: false, ...opts };
+	const { minToShow, maxToShow, hideButton, noShow, openerStyle, openerType } = { hideButton: false, noShow: false, ...opts };
 	return html`
 		<d2l-overflow-group
 			min-to-show="${ifDefined(minToShow)}"
@@ -33,7 +33,7 @@ function createOverflowGroup(numButtons, opts) {
 	`;
 }
 function createAutoShowOverflowGroup(opts) {
-	const { width } =  { width: '500px', ...opts };
+	const { width } = { width: '500px', ...opts };
 	return html`
 		<d2l-overflow-group auto-show style="width: ${width}">
 			<d2l-button>Button 1</d2l-button>

@@ -873,7 +873,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		maxWidthOverride = `${maxWidthOverride}px`;
 		minWidthOverride = `${minWidthOverride}px`;
-		const  contentWidth = `${widthOverride + 18}px`;
+		const contentWidth = `${widthOverride + 18}px`;
 		/* add 2 to content width since scrollWidth does not include border */
 		const containerWidth = `${widthOverride + 20}px`;
 
@@ -1045,7 +1045,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	async _handleMobileResize() {
-		this._useMobileStyling =  this.mediaQueryList.matches;
+		this._useMobileStyling = this.mediaQueryList.matches;
 		if (this.opened) this._showBackdrop = this._useMobileStyling && this.mobileTray;
 		if (this.opened) await this.__position();
 	}
@@ -1125,7 +1125,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			</d2l-focus-trap>`;
 		}
 
-		const dropdown =  html`
+		const dropdown = html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
 					 ${dropdownContentSlots}
 			</div>

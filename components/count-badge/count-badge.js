@@ -43,7 +43,7 @@ class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	render() {
 		const tabbable = (this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) && !this.skeleton;
-		const innerHtml =  html`
+		const innerHtml = html`
 			<div
 			class="d2l-count-badge-wrapper d2l-skeletize"
 			id="${this._badgeId}"

@@ -1,7 +1,8 @@
 import '../input-time-range.js';
-import { expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -72,6 +73,14 @@ const createHiddenLabels = (opts = {}) => {
 
 const newToday = new Date('2018-07-12T09:33Z');
 const viewport = { width: 476, height: 2300 };
+
+const tag = defineCE(
+	class extends LitElement {
+		render() {
+			return html`<d2l-input-time-range class="vdiff-target" child-labels-hidden label="Custom Range"></d2l-input-time-range>`;
+		}
+	}
+);
 
 describe('d2l-input-time-range', () => {
 
@@ -207,6 +216,17 @@ describe('d2l-input-time-range', () => {
 			const elem = await fixture(createHiddenLabels(), { viewport });
 			elem.style.maxWidth = '240px';
 			await nextFrame();
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	describe('within custom elem', () => {
+		it('is correct at default width', async() => {
+			const elem = await fixture(`<${tag}></${tag}>`);
+			await expect(elem).to.be.golden();
+		});
+		it('is correct at small width', async() => {
+			const elem = await fixture(`<${tag}></${tag}>`, { viewport: { width: 250 } });
 			await expect(elem).to.be.golden();
 		});
 	});

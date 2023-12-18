@@ -12,7 +12,7 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 
 	constructor() {
 		super();
-		this._anySubscribersWithSkeletonActive  = false;
+		this._anySubscribersWithSkeletonActive = false;
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			onSubscribe: this.onSubscriberChange.bind(this),
 			onUnsubscribe: this.onSubscriberChange.bind(this),

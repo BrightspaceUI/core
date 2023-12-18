@@ -163,8 +163,7 @@ class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		if (!this.label) {
 			console.warn('d2l-input-date-range component requires label text');
 		}
-
-		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this);
 	}
 
 	render() {

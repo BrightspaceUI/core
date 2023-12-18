@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "Startzeit",
 	"components.interactive.instructions": "Drücken Sie die Eingabetaste zum Interagieren oder die Escape-Taste, um das Fenster zu schließen",
 	"components.link.open-in-new-window": "Wird in einem neuen Fenster geöffnet.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "Verwenden Sie die <b>Pfeiltasten</b>, um den Fokus innerhalb dieser Liste zu verschieben, oder die Tasten <b>Bild hoch/Bild runter</b>, um ihn um 5 Zeilen hinauf oder hinunter zu verschieben",
 	"components.list-controls.label": "Aktionen für Liste",
 	"components.list-item-drag-handle.default": "Elementaktion für {name} neu anordnen",
 	"components.list-item-drag-handle.keyboard": "Elemente neu anordnen; aktuelle Position: {currentPosition} von {size}. Drücken Sie zum Bewegen dieses Elements auf den Pfeil nach oben oder den Pfeil nach unten.",

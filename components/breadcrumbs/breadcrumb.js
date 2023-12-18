@@ -16,7 +16,7 @@ class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 			/**
 			 * @ignore
 			 */
-			_compact: { attribute: 'data-compact', reflect: true, type: Boolean  },
+			_compact: { attribute: 'data-compact', reflect: true, type: Boolean },
 			/**
 			 * @ignore
 			 */

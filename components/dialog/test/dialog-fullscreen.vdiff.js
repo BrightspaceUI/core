@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, noPadding: false };
-	const { content, noPadding, width } =  { ...defaults, ...opts };
+	const { content, noPadding, width } = { ...defaults, ...opts };
 	return html`
 		<d2l-dialog-fullscreen title-text="Dialog Title" ?no-padding="${noPadding}" width="${ifDefined(width)}" opened>
 			${content}

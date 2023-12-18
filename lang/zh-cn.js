@@ -68,7 +68,7 @@ export default {
 	"components.input-time-range.startTime": "开始时间",
 	"components.interactive.instructions": "按 Enter 键进行交互，按 Esc 键退出",
 	"components.link.open-in-new-window": "在新窗口中打开。",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
+	"components.list.keyboard": "使用<b>箭头键</b>在此列表中移动焦点，或使用<b>上/下翻页</b>以 5 个列表项为幅度进行上移或下移",
 	"components.list-controls.label": "针对列表的操作",
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",

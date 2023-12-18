@@ -2,6 +2,7 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOffsetParent } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -157,7 +158,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	}
 
 	setParentNode(node) {
-		this._parentNode = node;
+		this._parentNode = node.parentNode instanceof ShadowRoot ? getOffsetParent(node) : node.parentNode;
 	}
 
 	_disconnectObservers() {
