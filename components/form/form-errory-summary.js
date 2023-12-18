@@ -1,6 +1,6 @@
 import '../alert/alert.js';
 import '../expand-collapse/expand-collapse-content.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { linkStyles } from '../link/link.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -88,7 +88,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				</d2l-expand-collapse-content>
 			</d2l-alert>
 		`;
-		return this.errors.length > 0 ? errorSummary : html``;
+		return this.errors.length > 0 ? errorSummary : nothing;
 	}
 
 	async focus() {

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
@@ -121,7 +121,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			'd2l-meter-linear-primary-ltr': !this.percent,
 			'd2l-meter-linear-primary': true
 		};
-		const secondaryTextElement = secondary ? html`<div class="d2l-meter-linear-secondary">${secondary}</div>` : html``;
+		const secondaryTextElement = secondary ? html`<div class="d2l-meter-linear-secondary">${secondary}</div>` : nothing;
 
 		return html `
 			<div
