@@ -138,7 +138,7 @@ This repo uses [@brightspace-ui/testing](https://github.com/BrightspaceUI/testin
 npm run test:vdiff
 
 # re-generate goldens
-npm run test:vdiff golden
+npm run test:vdiff -- --golden
 ```
 
 ### Versioning and Releasing
