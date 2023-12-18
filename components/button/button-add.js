@@ -28,7 +28,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			 * When true, show the button with icon and visible text. When false, only show icon.
 			 * @type {boolean}
 			 */
-			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' }
+			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' },
+			_hasFocus: { state: true },
+			_hasHover: { state: true }
 		};
 	}
 
@@ -80,6 +82,8 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		this.textVisible = false;
 
 		this._buttonId = getUniqueId();
+		this._hasFocus = false;
+		this._hasHover = false;
 	}
 
 	static get focusElementSelector() {
@@ -89,13 +93,18 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.textVisible ? this._buttonId : undefined;
+		const hoverFocusIcon = this._hasHover || this._hasFocus;
 
 		const content = this.textVisible
-			? html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`
-			: this._renderWithTextHidden(text);
+			? html`<d2l-button-add-icon-text ?hover-focus-icon="${hoverFocusIcon}" text="${text}"></d2l-button-add-icon-text>`
+			: this._renderWithTextHidden(text, hoverFocusIcon);
 
 		return html`
 			<button
+				@blur="${this._onBlur}"
+				@focus="${this._onFocus}"
+				@mouseenter="${this._onMouseEnter}"
+				@mouseleave="${this._onMouseLeave}"
 				class="d2l-label-text d2l-visible-on-ancestor-target"
 				id="${ifDefined(id)}"
 				type="button">
@@ -106,9 +115,25 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		`;
 	}
 
-	_renderWithTextHidden(text) {
+	_onBlur() {
+		this._hasFocus = false;
+	}
+
+	_onFocus() {
+		this._hasFocus = true;
+	}
+
+	_onMouseEnter() {
+		this._hasHover = true;
+	}
+
+	_onMouseLeave() {
+		this._hasHover = false;
+	}
+
+	_renderWithTextHidden(text, hoverFocusIcon) {
 		return html`
-			<d2l-button-add-icon-text ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}"></d2l-button-add-icon-text>
+			<d2l-button-add-icon-text ?hover-focus-icon="${hoverFocusIcon}" ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}"></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
 	}
@@ -122,6 +147,7 @@ customElements.define('d2l-button-add', ButtonAdd);
 class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	static get properties() {
 		return {
+			hoverFocusIcon: { type: Boolean, attribute: 'hover-focus-icon' },
 			text: { type: String }
 		};
 	}
@@ -159,8 +185,9 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	}
 
 	render() {
+		const icon = this.hoverFocusIcon ? 'tier1:add-filled' : 'tier1:add';
 		return html`
-			<d2l-icon icon="tier1:plus-default"></d2l-icon>
+			<d2l-icon icon="${icon}"></d2l-icon>
 			${this.text ? html`<span class="d2l-label-text">${this.text}</span>` : nothing}
 		`;
 	}
