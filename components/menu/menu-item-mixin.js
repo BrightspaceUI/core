@@ -18,6 +18,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			hidden: { type: Boolean, reflect: true },
 			/**
 			 * @ignore
@@ -26,10 +27,12 @@ export const MenuItemMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			tabindex: { type: String, reflect: true },
 			/**
 			 * REQUIRED: Text displayed by the menu item

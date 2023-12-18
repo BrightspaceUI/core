@@ -36,6 +36,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, attribute: 'role' }
 		};
 	}

@@ -19,6 +19,7 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * Disables the button

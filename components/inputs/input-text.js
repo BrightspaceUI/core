@@ -45,9 +45,9 @@ class InputText extends PropertyRequiredMixin(FocusMixin(LabelledMixin(FormEleme
 			 */
 			autocomplete: { type: String },
 			/**
-			 * When set, will automatically place focus on the input
-			 * @type {boolean}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean },
 			/**
 			 * Additional information communicated in the aria-describedby on the input
@@ -135,9 +135,9 @@ class InputText extends PropertyRequiredMixin(FocusMixin(LabelledMixin(FormEleme
 			 */
 			step: { type: String },
 			/**
-			 * Text for additional screenreader and mouseover context
-			 * @type {string}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			title: { type: String },
 			/**
 			 * The type of the text input

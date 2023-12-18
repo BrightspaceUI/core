@@ -14,6 +14,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			hidden: { type: Boolean },
 			/**
 			 * Name of an optional icon to display
