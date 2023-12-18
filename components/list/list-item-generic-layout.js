@@ -47,6 +47,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
 			 * Specifies whether the grid is active or not
