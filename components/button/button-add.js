@@ -36,9 +36,6 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 	static get styles() {
 		return css`
-			:host {
-				--d2l-button-add-line-style: solid;
-			}
 			button {
 				align-items: center;
 				background-color: transparent;
@@ -47,7 +44,6 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				cursor: pointer;
 				display: flex;
 				font-family: inherit;
-				height: 0.9rem;
 				justify-content: center;
 				outline: none;
 				padding: 0;
@@ -55,21 +51,41 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				white-space: nowrap;
 				width: 100%;
 			}
+			:host(:not([icon-only-visible-on-hover-focus])) button {
+				min-height: 1.5rem;
+			}
 
 			.line {
-				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
+				height: 1px;
+				margin: 3px 0;
+				transition: 300ms ease-in;
 				width: 100%;
 			}
-			button:hover .line,
-			button:focus .line {
-				border-top-color: var(--d2l-color-celestine);
+			@media (prefers-reduced-motion: reduce) {
+				.line {
+					transition: none;
+				}
+			}
+			.line-start {
+				background: linear-gradient(to right, var(--d2l-color-mica) 50%, var(--d2l-color-celestine) 50%) left center / 200%;
+			}
+			.line-end {
+				background: linear-gradient(to left, var(--d2l-color-mica) 50%, var(--d2l-color-celestine) 50%) right center / 200%;
+			}
+			button:hover .line-end,
+			button:focus .line-end {
+				background-position: left;
+			}
+			button:hover .line-start,
+			button:focus .line-start {
+				background-position: right;
 			}
 
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
 				--d2l-button-add-icon-text-icon-color: var(--d2l-color-celestine);
 			}
-			:host([icon-only-visible-on-hover-focus]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
+			:host([icon-only-visible-on-hover-focus]) d2l-button-add-icon-text {
 				position: absolute;
 			}
 		`;
@@ -108,9 +124,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				class="d2l-label-text d2l-visible-on-ancestor-target"
 				id="${ifDefined(id)}"
 				type="button">
-				<div class="line"></div>
+				<div class="line line-start"></div>
 				${content}
-				<div class="line"></div>
+				<div class="line line-end"></div>
 			</button>
 		`;
 	}
@@ -132,9 +148,11 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	}
 
 	_renderWithTextHidden(text, hoverFocusIcon) {
+		const delay = this.iconOnlyVisibleOnHoverFocus ? 400 : 300;
+		const offset = this.iconOnlyVisibleOnHoverFocus ? 20 : 8;
 		return html`
-			<d2l-button-add-icon-text ?hover-focus-icon="${hoverFocusIcon}" ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}"></d2l-button-add-icon-text>
-			<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
+			<d2l-button-add-icon-text ?hover-focus-icon="${hoverFocusIcon}" ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}" simple-animation></d2l-button-add-icon-text>
+			<d2l-tooltip class="vdiff-target" delay="${delay}" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
 	}
 
@@ -171,8 +189,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 			}
 			:host(:not([text])) d2l-icon {
 				color: var(--d2l-button-add-icon-text-icon-color);
-				margin: -3px; /** hover/click target */
-				padding: 3px; /** hover/click target */
+				margin: -0.3rem; /** hover/click target */
+				padding: 0.3rem; /** hover/click target */
 			}
 
 			span {

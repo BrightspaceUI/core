@@ -5,14 +5,22 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const visibleOnAncestorStyles = css`
 
-	:host([__voa-state="hidden"]),
-	:host([__voa-state="hiding"]) {
+	:host([__voa-state="hidden"]):not([simple-animation]),
+	:host([__voa-state="hiding"]):not([simple-animation]) {
 		opacity: 0 !important;
 		transform: translateY(-10px) !important;
 	}
 	:host([__voa-state="showing"]),
-	:host([__voa-state="hiding"]) {
+	:host([__voa-state="hiding"]):not([simple-animation]) {
 		transition: transform 200ms ease-out, opacity 200ms ease-out !important;
+	}
+
+	:host([__voa-state="hidden"][simple-animation]),
+	:host([__voa-state="hiding"][simple-animation]) {
+		opacity: 0 !important;
+	}
+	:host([__voa-state="showing"][simple-animation]) {
+		transition: opacity 300ms ease-in !important;
 	}
 
 	@media only screen and (hover: none), only screen and (-moz-touch-enabled: 1) {
@@ -34,6 +42,10 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
+			simpleAnimation: { type: Boolean, reflect: true, attribute: 'simple-animation' },
 			/**
 			 * @ignore
 			 */

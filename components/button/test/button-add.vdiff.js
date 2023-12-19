@@ -7,8 +7,7 @@ describe('button-add', () => {
 			describe('text-visible false', () => {
 				[
 					{ category: 'basic', template: html`<d2l-button-add ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` },
-					{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` },
-					{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` }
+					{ category: 'text', template: html`<d2l-button-add text="Custom Text" ?icon-only-visible-on-hover-focus="${iconOnlyVisibleOnHoverFocus}"></d2l-button-add>` }
 				].forEach(({ category, template }) => {
 
 					describe(category, () => {
@@ -33,8 +32,7 @@ describe('button-add', () => {
 	describe('text-visible true', () => {
 		[
 			{ category: 'basic', template: html`<d2l-button-add text-visible></d2l-button-add>` },
-			{ category: 'text', template: html`<d2l-button-add text="Custom Text" text-visible></d2l-button-add>` },
-			{ category: 'dashed line', template: html`<d2l-button-add style="--d2l-button-add-line-style: dashed;" text-visible></d2l-button-add>` }
+			{ category: 'text', template: html`<d2l-button-add text="Custom Text" text-visible></d2l-button-add>` }
 		].forEach(({ category, template }) => {
 
 			describe(category, () => {
