@@ -12,6 +12,7 @@ import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PerfMonitor } from '../../helpers/perfMonitor.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -24,7 +25,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))) {
+class InputText extends PropertyRequiredMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -44,9 +45,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			autocomplete: { type: String },
 			/**
-			 * When set, will automatically place focus on the input
-			 * @type {boolean}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean },
 			/**
 			 * Additional information communicated in the aria-describedby on the input
@@ -134,9 +135,9 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 */
 			step: { type: String },
 			/**
-			 * Text for additional screenreader and mouseover context
-			 * @type {string}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			title: { type: String },
 			/**
 			 * The type of the text input
@@ -152,7 +153,18 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			 * Accessible label for the unit which will not be visually rendered
 			 * @type {string}
 			 */
-			unitLabel: { attribute: 'unit-label', type: String },
+			unitLabel: {
+				attribute: 'unit-label',
+				required: {
+					dependentProps: ['unit'],
+					message: (_value, elem) => `<d2l-input-text>: missing required attribute "unit-label" for unit "${elem.unit}"`,
+					validator: (_value, elem, hasValue) => {
+						const hasUnit = (typeof elem.unit === 'string') && elem.unit.length > 0;
+						return !(hasUnit && elem.unit !== '%' && !hasValue);
+					}
+				},
+				type: String
+			},
 			/**
 			 * Value of the input
 			 * @type {string}
@@ -270,7 +282,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._lastSlotWidth = 0;
-		this._missingUnitLabelErrorHasBeenThrown = false;
 		this._prevValue = '';
 
 		this._handleBlur = this._handleBlur.bind(this);
@@ -278,7 +289,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		this._handleMouseEnter = this._handleMouseEnter.bind(this);
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
 		this._perfMonitor = new PerfMonitor(this);
-		this._validatingUnitTimeout = null;
 	}
 
 	get value() { return this._value; }
@@ -355,7 +365,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		super.firstUpdated(changedProperties);
 
 		this._setValue(this.value, true);
-		this._validateUnit();
 
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
@@ -484,7 +493,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'unit' || prop === 'unitLabel') {
 				this._updateInputLayout();
-				this._validateUnit();
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
@@ -653,21 +661,6 @@ class InputText extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(
 			this._lastSlotWidth = 0;
 		}
 
-	}
-
-	_validateUnit() {
-		if (this._missingUnitLabelErrorHasBeenThrown) return;
-		clearTimeout(this._validatingUnitTimeout);
-		// don't error immediately in case it doesn't get set immediately
-		this._validatingUnitTimeout = setTimeout(() => {
-			this._validatingUnitTimeout = null;
-			const hasUnit = (typeof this.unit === 'string') && this.unit.length > 0;
-			const hasUnitLabel = (typeof this.unitLabel === 'string') && this.unitLabel.length > 0;
-			if (hasUnit && this.unit !== '%' && !hasUnitLabel) {
-				this._missingUnitLabelErrorHasBeenThrown = true;
-				throw new Error(`<d2l-input-text>: missing required attribute "unit-label" for unit "${this.unit}"`);
-			}
-		}, 3000);
 	}
 
 }

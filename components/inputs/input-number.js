@@ -85,9 +85,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			autocomplete: { type: String },
 			/**
-			 * ADVANCED: When set, will automatically place focus on the input
-			 * @type {boolean}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean },
 			/**
 			 * Disables the input
@@ -149,11 +149,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * @type {boolean}
 			 */
 			required: { type: Boolean },
-			/**
-			 * Text for additional screen reader and mouseover context
-			 * @type {string}
-			 */
-			title: { type: String },
 			/**
 			 * @ignore
 			 */
@@ -361,7 +356,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
-				title="${ifDefined(this.title)}"
 				unit="${ifDefined(this.unit)}"
 				unit-label="${ifDefined(this.unitLabel)}"
 				.value="${this._formattedValue}"

@@ -709,7 +709,7 @@ describe('list', () => {
 			{ name: 'extend separators nested selectable', template: createColorList({ selectable: true }) },
 			{ name: 'extend separators nested selectable hover', template: createColorList({ selectable: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]')) },
 			{ name: 'extend separators selectable draggable', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }) },
-			{ name: 'extend separators selectable draggable hover', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]'))  }
+			{ name: 'extend separators selectable draggable hover', template: createColorList({ draggable: true, selectable: true, nestedMultiple: true }), action: elem => hoverElem(elem.querySelector('[key="L1-2"]')) }
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
@@ -728,7 +728,7 @@ describe('list-nested', () => {
 			{ name: 'all-iterations-draggable-force-show', draggable: true, media: 'print' }
 		].forEach(({ name, draggable, media }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
+				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
 					{ media, rtl, viewport: { width: 1300, height: 7000 } }
 				);
 				await nextFrame();

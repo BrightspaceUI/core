@@ -182,7 +182,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 		if (!selectionInput) {
 			// no selection-input since next/previous focusable is before/after list... cycle to first/last
-			focusable = forward ?  getFirstFocusableDescendant(this, false) : getLastFocusableDescendant(this, false);
+			focusable = forward ? getFirstFocusableDescendant(this, false) : getLastFocusableDescendant(this, false);
 			selectionInput = getSelectionInput(focusable, forward);
 		}
 

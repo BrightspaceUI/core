@@ -208,7 +208,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		}
 		this._initialValues = false;
 
-		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this);
 	}
 
 	render() {
@@ -216,7 +216,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
 
 		const startTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-time-range-start');
-		const endTimeInput =  this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-time-range-end');
+		const endTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-time-range-end');
 		/**
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */

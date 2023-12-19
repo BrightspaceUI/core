@@ -155,7 +155,7 @@ function fetchWithQueuing(resource) {
 
 function formatCacheKey(resource) {
 
-	return  formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
+	return formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 }
 
 async function fetchWithCaching(resource) {

@@ -502,7 +502,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						description="${this.localize('components.filter.searchResults', { number: count })}">
 					</d2l-empty-state-simple>
 				`;
-			searchResults =  html`
+			searchResults = html`
 				<div class="${classMap(classes)}" role="alert">
 					${emptyState}
 				</div>
@@ -714,7 +714,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		if (shouldSearch) this._performDimensionSearch(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
-		if (shouldUpdate)  this.requestUpdate();
+		if (shouldUpdate) this.requestUpdate();
 		if (shouldResizeDropdown) {
 			this._requestDropdownResize();
 		}

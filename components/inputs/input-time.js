@@ -58,7 +58,7 @@ export function getDefaultTime(time, enforceTimeIntervals, timeInterval) {
 			const today = getToday();
 			const date = new Date(today.year, today.month - 1, today.date, today.hours, today.minutes, 0);
 			const originalDate = new Date(date); // create new var for date for comparison
-			const timeAtInterval =  getTimeAtInterval(timeInterval, date);
+			const timeAtInterval = getTimeAtInterval(timeInterval, date);
 
 			// set to next interval if original time is already equal to an interval
 			if (timeAtInterval.getTime() === originalDate.getTime()) timeAtInterval.setMinutes(timeAtInterval.getMinutes() + getIntervalNumber(timeInterval));

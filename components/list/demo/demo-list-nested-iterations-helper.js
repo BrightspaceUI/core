@@ -8,7 +8,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 class ListNestedIterationsHelper extends LitElement {
 	static get properties() {
 		return {
-			draggable: { type: Boolean }
+			isDraggable: { attribute: 'is-draggable', type: Boolean }
 		};
 	}
 
@@ -55,7 +55,7 @@ class ListNestedIterationsHelper extends LitElement {
 
 	constructor() {
 		super();
-		this.draggable = false;
+		this.isDraggable = false;
 	}
 
 	render() {
@@ -130,11 +130,11 @@ class ListNestedIterationsHelper extends LitElement {
 		for (let i = 0; i < 3; i++) {
 			const childKey = `child-${i}-${childOptions[0]}-${childOptions[1]}`;
 			items.push(html`
-				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}">
+				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${childL2Text}</d2l-list-item-content>
-					${i === 1  || !childOptions[1] ? nothing : html`
+					${i === 1 || !childOptions[1] ? nothing : html`
 						<d2l-list slot="nested">
-							<d2l-list-item key="${`${childKey}-child`}" label="${childL3Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.draggable}" color="${ifDefined(childOptions[3] ? '#00ff00' : undefined)}">
+							<d2l-list-item key="${`${childKey}-child`}" label="${childL3Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" color="${ifDefined(childOptions[3] ? '#00ff00' : undefined)}">
 								<d2l-list-item-content>${childL3Text}</d2l-list-item-content>
 							</d2l-list-item>
 						</d2l-list>
@@ -152,7 +152,7 @@ class ListNestedIterationsHelper extends LitElement {
 		for (let i = 0; i < 3; i++) {
 			const parentKey = `parent-${i}-${parentOptions[0]}-${parentOptions[1]}`;
 			items.push(html`
-				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.draggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}" color="${ifDefined((parentOptions[2] && i === 0) || parentOptions[3] ? '#ff0000' : undefined)}">
+				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}" color="${ifDefined((parentOptions[2] && i === 0) || parentOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${parentText}</d2l-list-item-content>
 					${i === 1 || (i === 2 && !parentOptions[1]) ? nothing : html`
 						<d2l-list slot="nested">${nested}</d2l-list>

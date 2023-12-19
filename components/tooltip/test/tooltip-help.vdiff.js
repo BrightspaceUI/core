@@ -17,9 +17,9 @@ describe('tooltip-help', () => {
 		{ name: 'focused', action: focusElem },
 		{ name: 'clicked', action: clickElem },
 		{ name: 'skeleton', skeleton: true },
-		{ name: 'skeleton and hovered',  skeleton: true, action: hoverElem },
-		{ name: 'skeleton and focused',  skeleton: true, action: focusElem },
-		{ name: 'skeleton and hovered and focused',  skeleton: true, action: async(elem) => {
+		{ name: 'skeleton and hovered', skeleton: true, action: hoverElem },
+		{ name: 'skeleton and focused', skeleton: true, action: focusElem },
+		{ name: 'skeleton and hovered and focused', skeleton: true, action: async(elem) => {
 			await focusElem(elem);
 			await hoverElem(elem);
 		} }

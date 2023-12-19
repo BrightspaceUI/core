@@ -241,7 +241,7 @@ describe('selection-components', () => {
 
 describe('selection-mixin', () => {
 	function createTemplate(opts) {
-		const { external, singleSelection, selected } =  { external: false, singleSelection: false, selected: [false, false, false], ...opts };
+		const { external, singleSelection, selected } = { external: false, singleSelection: false, selected: [false, false, false], ...opts };
 		return html`
 			<div>
 				${external ? html`

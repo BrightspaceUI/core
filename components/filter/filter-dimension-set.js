@@ -116,6 +116,16 @@ class FilterDimensionSet extends LitElement {
 		}
 	}
 
+	willUpdate(changedProperties) {
+		if (changedProperties.has('hasMore') && this.hasMore) {
+			if (this.searchType !== 'manual') {
+				console.warn('Paging requires search type set to manual.');
+				this.hasMore = false;
+			}
+			else this.selectedFirst = true;
+		}
+	}
+
 	getSearchEmptyState() {
 		return this._getEmptyState(this._searchEmptyStateSlot, 'search');
 	}
@@ -136,16 +146,6 @@ class FilterDimensionSet extends LitElement {
 			};
 		});
 		return values;
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('hasMore') && this.hasMore) {
-			if (this.searchType !== 'manual') {
-				console.warn('Paging requires search type set to manual.');
-				this.hasMore = false;
-			}
-			else this.selectedFirst = true;
-		}
 	}
 
 	_dispatchDataChangeEvent(eventDetail) {

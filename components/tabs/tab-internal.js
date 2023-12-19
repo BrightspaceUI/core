@@ -16,6 +16,7 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 		return {
 			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
 			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			text: { type: String }
 		};

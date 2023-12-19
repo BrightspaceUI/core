@@ -172,7 +172,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const hasActions = this.buttonText && this.buttonText.length > 0  || this.hasCloseButton;
+		const hasActions = this.buttonText && this.buttonText.length > 0 || this.hasCloseButton;
 		const alertTextClasses = {
 			'd2l-alert-text': true,
 			'd2l-alert-text-with-actions': hasActions,

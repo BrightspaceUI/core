@@ -218,7 +218,7 @@ export class NewPositionEventDetails {
 				list[i] = list[i - 1];
 			}
 		} else {
-			destination = this.dropLocation === dropLocation.above  ? Math.max(destination - 1, 0) : destination;
+			destination = this.dropLocation === dropLocation.above ? Math.max(destination - 1, 0) : destination;
 			for (let i = origin; i < destination; i++) {
 				list[i] = list[i + 1];
 			}
@@ -254,6 +254,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 * **Drag & drop:** Whether the item is draggable
 			 * @type {boolean}
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			draggable: { type: Boolean, reflect: true },
 			/**
 			 * @ignore

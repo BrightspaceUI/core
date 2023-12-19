@@ -1,9 +1,15 @@
 import '../colors/colors.js';
 
-export const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
+export const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.0/assets/';
 export const fonts = {
-	regular: 'Lato-400',
-	bold: 'Lato-700'
+	LatoRegular: 'Lato-400',
+	LatoBold: 'Lato-700',
+	BCSansLight: 'BCSans-Light',
+	BCSansRegular: 'BCSans-Regular',
+	BCSansBold: 'BCSans-Bold',
+	BCSansLightItalic: 'BCSans-LightItalic',
+	BCSansItalic: 'BCSans-Italic',
+	BCSansBoldItalic: 'BCSans-BoldItalic'
 };
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
@@ -22,13 +28,49 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			font-family: 'Lato';
 			font-style: normal;
 			font-weight: 400;
-			src: local('Lato Regular'), local('Lato-Regular'), url(${new URL(`${fonts.regular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.regular}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.regular}.ttf`, importUrl)}) format('truetype');
+			src: local('Lato Regular'), local('Lato-Regular'), url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.LatoRegular}.ttf`, importUrl)}) format('truetype');
 		}
 		@font-face {
 			font-family: 'Lato';
 			font-style: normal;
 			font-weight: 700;
-			src: local('Lato Bold'), local('Lato-Bold'), url(${new URL(`${fonts.bold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.bold}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.bold}.ttf`, importUrl)}) format('truetype');
+			src: local('Lato Bold'), local('Lato-Bold'), url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.LatoBold}.ttf`, importUrl)}) format('truetype');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: normal;
+			font-weight: 300;
+			src: url(${new URL(`${fonts.BCSansLight}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLight}.woff`, importUrl)}) format('woff');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: normal;
+			font-weight: 400;
+			src: url(${new URL(`${fonts.BCSansRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansRegular}.woff`, importUrl)}) format('woff');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: normal;
+			font-weight: 700;
+			src: url(${new URL(`${fonts.BCSansBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBold}.woff`, importUrl)}) format('woff');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: italic;
+			font-weight: 300;
+			src: url(${new URL(`${fonts.BCSansLightItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLightItalic}.woff`, importUrl)}) format('woff');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: italic;
+			font-weight: 400;
+			src: url(${new URL(`${fonts.BCSansItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansItalic}.woff`, importUrl)}) format('woff');
+		}
+		@font-face {
+			font-family: 'BC Sans';
+			font-style: italic;
+			font-weight: 700;
+			src: url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
 		}
 
 		.d2l-typography {

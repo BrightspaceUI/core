@@ -8,6 +8,7 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			dir: { type: String, reflect: true }
 		};
 	}

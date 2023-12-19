@@ -23,7 +23,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			expanded: { type: Boolean, reflect: true },
 			_siblingHasNestedItems: { state: true },
 			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
-			_showNestedLoadingSpinner: {  state: true }
+			_showNestedLoadingSpinner: { state: true }
 		};
 	}
 

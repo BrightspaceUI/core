@@ -513,7 +513,7 @@ class MobileTouchResizer extends Resizer {
 		let isScrollable;
 		let secondaryHeight = this.panelSize;
 		if (delta > 0) {
-			if (isScrollingDivider ||  curScroll === 0) {
+			if (isScrollingDivider || curScroll === 0) {
 				secondaryHeight = this.clampMaxHeight(this.panelSize - delta);
 			}
 			isScrollable = curScroll > 0;
