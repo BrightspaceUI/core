@@ -8,11 +8,12 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A component for quickly adding items to a specific locaiton.
  */
-class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
+class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement)))) {
 	static get properties() {
 		return {
 			/**
@@ -66,18 +67,24 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 					transition: none;
 				}
 			}
-			.line-start {
+			.line-start,
+			:host([dir="rtl"]) .line-end {
 				background: linear-gradient(to right, var(--d2l-color-mica) 50%, var(--d2l-color-celestine) 50%) left center / 200%;
 			}
-			.line-end {
+			.line-end,
+			:host([dir="rtl"]) .line-start {
 				background: linear-gradient(to left, var(--d2l-color-mica) 50%, var(--d2l-color-celestine) 50%) right center / 200%;
 			}
 			button:hover .line-end,
-			button:focus .line-end {
+			button:focus .line-end,
+			:host([dir="rtl"]) button:hover .line-start,
+			:host([dir="rtl"]) button:focus .line-start {
 				background-position: left;
 			}
 			button:hover .line-start,
-			button:focus .line-start {
+			button:focus .line-start,
+			:host([dir="rtl"]) button:hover .line-end,
+			:host([dir="rtl"]) button:focus .line-end {
 				background-position: right;
 			}
 
