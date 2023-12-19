@@ -177,8 +177,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="add"]) {
 				grid-column: color-start / end;
 				grid-row: add-start / add-end;
-				margin-bottom: -9.6px;
-				margin-top: -8.4px;
+				margin-bottom: -4px;
+				margin-top: -3px;
 			/*	padding-right: 6px; /** can we only do this when rounded? */
 				z-index: 10;
 			}
