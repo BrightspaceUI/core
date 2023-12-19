@@ -5,7 +5,7 @@ export default {
 	"components.calendar.notSelected": "選択されていません。",
 	"components.calendar.selected": "選択されています。",
 	"components.calendar.show": "{month} を表示",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "このダイアログを閉じる",
 	"components.dropdown.close": "閉じる",
 	"components.filter.activeFilters": "アクティブフィルタ:",

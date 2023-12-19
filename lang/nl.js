@@ -5,7 +5,7 @@ export default {
 	"components.calendar.notSelected": "Niet geselecteerd.",
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} weergeven",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
 	"components.dropdown.close": "Sluiten",
 	"components.filter.activeFilters": "Actieve filters:",

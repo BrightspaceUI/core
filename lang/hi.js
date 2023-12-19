@@ -5,7 +5,7 @@ export default {
 	"components.calendar.notSelected": "चयनित नहीं।",
 	"components.calendar.selected": "चयनित।",
 	"components.calendar.show": "{month} दिखाएँ",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "यह संवाद बंद करें",
 	"components.dropdown.close": "बंद करें",
 	"components.filter.activeFilters": "सक्रिय फ़िल्टर्स:",

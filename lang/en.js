@@ -5,7 +5,7 @@ export default {
 	"components.calendar.notSelected": "Not Selected.",
 	"components.calendar.selected": "Selected.",
 	"components.calendar.show": "Show {month}",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Close this dialog",
 	"components.dropdown.close": "Close",
 	"components.filter.activeFilters": "Active Filters:",
