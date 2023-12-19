@@ -185,7 +185,7 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	}
 
 	render() {
-		const icon = this.hoverFocusIcon ? 'tier1:add-filled' : 'tier1:add';
+		const icon = this.hoverFocusIcon ? 'tier1:add-circle-filled' : 'tier1:add-circle';
 		return html`
 			<d2l-icon icon="${icon}"></d2l-icon>
 			${this.text ? html`<span class="d2l-label-text">${this.text}</span>` : nothing}
