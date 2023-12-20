@@ -53,7 +53,7 @@
     "@web/dev-server": "^0.2",
     "chalk": "^5",
     "eslint": "^8",
-    "eslint-config-brightspace": "^0.25",
+    "eslint-config-brightspace": "^1",
     "glob-all": "^3",
     "messageformat-validator": "^2",
     "node-sass": "^9",
