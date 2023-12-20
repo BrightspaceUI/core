@@ -141,8 +141,6 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 			}
 			:host([text]) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-celestine);
-			}
-			:host([text]) {
 				color: var(--d2l-button-add-icon-text-color);
 				height: 1.5rem;
 				padding: 0 0.3rem;
