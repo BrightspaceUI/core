@@ -146,7 +146,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	}
 
 	__voaShow() {
-		if (reduceMotion) {
+		if (reduceMotion && !this.simpleAnimation) {
 			this.__voaState = 'shown';
 		} else {
 			const handleTransitionEnd = (e) => {

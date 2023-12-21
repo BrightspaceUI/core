@@ -137,11 +137,11 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	}
 
 	_renderWithTextHidden(text) {
-		const delay = this.iconOnlyVisibleOnHoverFocus ? 400 : 300;
+		const delay = 100;
 		const offset = this.iconOnlyVisibleOnHoverFocus ? 20 : 8;
 		return html`
 			<d2l-button-add-icon-text ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}" simple-animation></d2l-button-add-icon-text>
-			<d2l-tooltip class="vdiff-target" delay="${delay}" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
+			<d2l-tooltip class="vdiff-target" delay="100" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
 	}
 
