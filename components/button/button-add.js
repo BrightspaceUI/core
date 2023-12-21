@@ -8,6 +8,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
+const MODE = {
+	ICON: 'icon',
+	ICON_AND_TEXT: 'icon-and-text',
+	ICON_WHEN_INTERACTED: 'icon-when-interacted'
+};
+
 /**
  * A component for quickly adding items to a specific locaiton.
  */
@@ -15,27 +21,20 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	static get properties() {
 		return {
 			/**
-			 * ONLY used when text-visible is FALSE. When true, icon is only visible when component receives hover or focus. When false (default), icon is always visible.
+			 * Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus).
+			 * @type {'icon'|'icon-and-text'|'icon-when-interacted'}
 			 */
-			iconOnlyVisibleOnHoverFocus: { type: Boolean, reflect: true, attribute: 'icon-only-visible-on-hover-focus' },
+			mode: { type: String },
 			/**
 			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
 			 */
-			text: { type: String, required: true },
-			/**
-			 * When true, show the button with icon and visible text. When false, only show icon.
-			 * @type {boolean}
-			 */
-			textVisible: { type: Boolean, reflect: true, attribute: 'text-visible' }
+			text: { type: String, required: true }
 		};
 	}
 
 	static get styles() {
 		return css`
-			:host {
-				--d2l-button-add-line-style: solid;
-			}
 			button {
 				align-items: center;
 				background-color: transparent;
@@ -54,7 +53,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			}
 
 			.line {
-				border-top: 1px var(--d2l-button-add-line-style) var(--d2l-color-mica);
+				border-top: 1px solid var(--d2l-color-mica);
 				width: 100%;
 			}
 
@@ -67,7 +66,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				--d2l-button-add-icon-text-color: var(--d2l-color-celestine-minus-1);
 			}
 
-			:host([icon-only-visible-on-hover-focus]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
+			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
 				position: absolute;
 			}
 		`;
@@ -76,8 +75,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	constructor() {
 		super();
 
-		this.iconOnlyVisibleOnHoverFocus = false;
-		this.textVisible = false;
+		this.mode = MODE.ICON;
 
 		this._buttonId = getUniqueId();
 		this._hasFocus = false;
@@ -90,18 +88,14 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
-		const id = !this.textVisible ? this._buttonId : undefined;
+		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
 
-		const content = this.textVisible
+		const content = this.mode === MODE.ICON_AND_TEXT
 			? html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`
 			: this._renderWithTextHidden(text);
 
 		return html`
 			<button
-				@blur="${this._onBlur}"
-				@focus="${this._onFocus}"
-				@mouseenter="${this._onMouseEnter}"
-				@mouseleave="${this._onMouseLeave}"
 				class="d2l-label-text d2l-visible-on-ancestor-target"
 				id="${ifDefined(id)}"
 				type="button">
@@ -114,7 +108,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 	_renderWithTextHidden(text) {
 		return html`
-			<d2l-button-add-icon-text ?visible-on-ancestor="${this.iconOnlyVisibleOnHoverFocus}"></d2l-button-add-icon-text>
+			<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}"></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
 	}
