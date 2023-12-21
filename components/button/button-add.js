@@ -57,6 +57,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 
 			.line {
+				background: var(--d2l-color-mica);
 				height: 1px;
 				margin: 3px 0;
 				transition: 300ms ease-in;
@@ -67,25 +68,26 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 					transition: none;
 				}
 			}
-			.line-start,
-			:host([dir="rtl"]) .line-end {
-				background: linear-gradient(to right, var(--d2l-color-mica) 50%, var(--d2l-color-celestine-minus-1) 50%) left center / 200%;
-			}
-			.line-end,
-			:host([dir="rtl"]) .line-start {
-				background: linear-gradient(to left, var(--d2l-color-mica) 50%, var(--d2l-color-celestine-minus-1) 50%) right center / 200%;
-			}
+			button:hover .line-start,
+			button:focus .line-start,
 			button:hover .line-end,
-			button:focus .line-end,
-			:host([dir="rtl"]) button:hover .line-start,
-			:host([dir="rtl"]) button:focus .line-start {
-				background-position: left;
+			button:focus .line-end {
+				animation-fill-mode: forwards;
+				animation-duration: 300ms;
+				animation-timing-function: ease-in;
+				animation-delay: 50ms;
 			}
 			button:hover .line-start,
 			button:focus .line-start,
 			:host([dir="rtl"]) button:hover .line-end,
 			:host([dir="rtl"]) button:focus .line-end {
-				background-position: right;
+				animation-name: line-start-animation;
+			}
+			button:hover .line-end,
+			button:focus .line-end,
+			:host([dir="rtl"]) button:hover .line-start,
+			:host([dir="rtl"]) button:focus .line-start {
+				animation-name: line-end-animation;
 			}
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
@@ -93,6 +95,15 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 			:host([icon-only-visible-on-hover-focus]) button:not(:hover):not(:focus) d2l-button-add-icon-text {
 				position: absolute;
+			}
+
+			@keyframes line-start-animation {
+				0% { background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 135%; }
+				100% { background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 135%; background-position: right; }
+			}
+			@keyframes line-end-animation {
+				0% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; }
+				100% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; background-position: left; }
 			}
 		`;
 	}
