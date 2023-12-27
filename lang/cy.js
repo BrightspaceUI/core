@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.calendar.notSelected": "Heb ei Ddewis.",
 	"components.calendar.selected": "Wedi'i Ddewis.",
 	"components.calendar.show": "Dangos {month}",
@@ -115,7 +115,7 @@ export default {
 	"components.tag-list.role-description": "Rhestr o Dagiau",
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Byselli Saeth",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Symud rhwng tagiau",
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",

@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.calendar.notSelected": "चयनित नहीं।",
 	"components.calendar.selected": "चयनित।",
 	"components.calendar.show": "{month} दिखाएँ",

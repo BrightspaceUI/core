@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Agregar elemento",
 	"components.calendar.notSelected": "No seleccionado.",
 	"components.calendar.selected": "Seleccionado.",
 	"components.calendar.show": "Mostrar {month}",
@@ -99,8 +99,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.table-controls.label": "Acciones para la tabla",
