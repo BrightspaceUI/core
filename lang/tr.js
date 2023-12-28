@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Öğe Ekle",
 	"components.calendar.notSelected": "Seçili Değil.",
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} Göster",
