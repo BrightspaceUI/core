@@ -59,15 +59,11 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				margin: 3px 0;
 				width: 100%;
 			}
-			button:hover .line-start,
-			button:focus .line-start,
-			button:hover .line-end,
-			button:focus .line-end {
-				animation: line-start-animation 300ms ease-in 50ms 1 forwards;
-			}
+			button:hover .line,
+			button:focus .line,
 			:host([dir="rtl"]) button:hover .line-end,
 			:host([dir="rtl"]) button:focus .line-end {
-				animation-name: line-start-animation;
+				animation: line-start-animation 300ms ease-in 50ms 1 forwards;
 			}
 			button:hover .line-end,
 			button:focus .line-end,
@@ -75,11 +71,11 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			:host([dir="rtl"]) button:focus .line-start {
 				animation-name: line-end-animation;
 			}
+
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
 				--d2l-button-add-icon-text-color: var(--d2l-color-celestine-minus-1);
 			}
-
 			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
 				position: absolute;
 			}
