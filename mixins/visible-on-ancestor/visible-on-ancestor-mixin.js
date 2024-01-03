@@ -5,22 +5,25 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const visibleOnAncestorStyles = css`
 
-	:host([__voa-state="hidden"]):not([simple-animation]),
-	:host([__voa-state="hiding"]):not([simple-animation]) {
+	:host([__voa-state="hidden"]),
+	:host([__voa-state="hiding"]) {
 		opacity: 0 !important;
 		transform: translateY(-10px) !important;
 	}
 	:host([__voa-state="showing"]),
-	:host([__voa-state="hiding"]):not([simple-animation]) {
+	:host([__voa-state="hiding"]) {
 		transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 	}
 
-	:host([__voa-state="hidden"][simple-animation]),
-	:host([__voa-state="hiding"][simple-animation]) {
-		opacity: 0 !important;
+	:host([__voa-state="hidden"][animation-type="opacity"]),
+	:host([__voa-state="hiding"][animation-type="opacity"]) {
+		transform: none !important;
 	}
-	:host([__voa-state="showing"][simple-animation]) {
+	:host([__voa-state="showing"][animation-type="opacity"]) {
 		transition: opacity 300ms ease-in !important;
+	}
+	:host([__voa-state="hiding"][animation-type="opacity"]) {
+		transition: none !important;
 	}
 
 	@media only screen and (hover: none), only screen and (-moz-touch-enabled: 1) {
@@ -45,7 +48,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			simpleAnimation: { type: Boolean, reflect: true, attribute: 'simple-animation' },
+			animationType: { type: String, reflect: true, attribute: 'animation-type' },
 			/**
 			 * @ignore
 			 */
@@ -57,6 +60,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
+		this.animationType = 'opacity-transform';
 		this.visibleOnAncestor = false;
 	}
 
@@ -146,7 +150,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	}
 
 	__voaShow() {
-		if (reduceMotion && !this.simpleAnimation) {
+		if (reduceMotion && this.animationType !== 'opacity') {
 			this.__voaState = 'shown';
 		} else {
 			const handleTransitionEnd = (e) => {

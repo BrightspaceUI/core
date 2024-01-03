@@ -44,6 +44,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				cursor: pointer;
 				display: flex;
 				font-family: inherit;
+				height: 0.9rem;
 				justify-content: center;
 				outline: none;
 				padding: 0;
@@ -51,36 +52,19 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				white-space: nowrap;
 				width: 100%;
 			}
-			:host(:not([icon-only-visible-on-hover-focus])) button {
-				min-height: 1.5rem;
-			}
-			:host([icon-only-visible-on-hover-focus]) button {
-				height: 0.35rem;
-			}
 
 			.line {
 				background: var(--d2l-color-mica);
 				height: 1px;
 				margin: 3px 0;
-				transition: 300ms ease-in;
 				width: 100%;
-			}
-			@media (prefers-reduced-motion: reduce) {
-				.line {
-					transition: none;
-				}
 			}
 			button:hover .line-start,
 			button:focus .line-start,
 			button:hover .line-end,
 			button:focus .line-end {
-				animation-fill-mode: forwards;
-				animation-duration: 300ms;
-				animation-timing-function: ease-in;
-				animation-delay: 50ms;
+				animation: line-start-animation 300ms ease-in 50ms 1 forwards;
 			}
-			button:hover .line-start,
-			button:focus .line-start,
 			:host([dir="rtl"]) button:hover .line-end,
 			:host([dir="rtl"]) button:focus .line-end {
 				animation-name: line-start-animation;
@@ -99,6 +83,21 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
 				position: absolute;
 			}
+			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
+			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
+				animation: position-change-animation 50ms step-end 0ms 1 forwards; /* add delay in changing position to avoid flash of missing icon space */
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				button:hover .line,
+				button:focus .line {
+					animation: none !important;
+					background: var(--d2l-color-celestine-minus-1);
+				}
+				:host([mode="icon-when-interacted"]) button:hover .line {
+					transition: background 100ms step-end;
+				}
+			}
 
 			@keyframes line-start-animation {
 				0% { background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 135%; }
@@ -107,6 +106,10 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			@keyframes line-end-animation {
 				0% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; }
 				100% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; background-position: left; }
+			}
+			@keyframes position-change-animation {
+				0% { position: absolute; }
+				100% { position: static; }
 			}
 		`;
 	}
@@ -147,7 +150,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 	_renderWithTextHidden(text) {
 		return html`
-			<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" simple-animation></d2l-button-add-icon-text>
+			<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>
 			<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
 		`;
 	}
