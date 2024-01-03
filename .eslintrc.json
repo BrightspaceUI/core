@@ -13,14 +13,6 @@
     }
   },
   {
-    "files": [
-      "lang/*.js"
-    ],
-    "rules": {
-      "quotes": 0
-    }
-  },
-  {
     "files": "mixins/demo/**.html",
     "rules": {
       "quotes": 0,
@@ -30,6 +22,6 @@
   },
   {
     "files": "**/test/*",
-    "extends": "brightspace/open-wc-testing-config"
+    "extends": "brightspace/testing-config"
   }]
 }

@@ -9,9 +9,6 @@
 			import '../button-add.js';
 		</script>
 		<style>
-			.d2l-button-add-dashed {
-				--d2l-button-add-line-style: dashed;
-			}
 			.d2l-button-add-demo-snippet-background {
 				background-color: var(--d2l-color-zircon-plus-2);
 			}
@@ -21,73 +18,27 @@
 
 		<d2l-demo-page page-title="d2l-button-add">
 
-			<h2>Add Button (default)</h2>
+			<h2>Default Mode (icon)</h2>
 
-			<h3>Icon only (default)</h3>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-add text="Add Item"></d2l-button-add>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>"icon-and-text" Mode</h2>
 
 			<d2l-demo-snippet class="d2l-button-add-demo-snippet-background">
 				<template>
-					<d2l-button-add></d2l-button-add>
+					<d2l-button-add mode="icon-and-text" text="Custom Text"></d2l-button-add>
 				</template>
 			</d2l-demo-snippet>
 
-			<h3>Icon only, dashed line</h3>
+			<h2>"icon-when-interacted" Mode</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-add class="d2l-button-add-dashed"></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-			<h3>Icon only, custom text</h3>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button-add text="Custom Tooltip"></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-
-			<h3>Text visible</h3>
-
-			<d2l-demo-snippet class="d2l-button-add-demo-snippet-background">
-				<template>
-					<d2l-button-add text-visible></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-
-			<h3>Text visible, custom text</h3>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button-add text-visible text="Custom Text"></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Add Button, iconOnlyVisibleOnHoverFocus=true</h2>
-
-			<h3>Icon only</h3>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button-add icon-only-visible-on-hover-focus></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-			<h3>Icon only, dashed line</h3>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button-add class="d2l-button-add-dashed" icon-only-visible-on-hover-focus></d2l-button-add>
-				</template>
-			</d2l-demo-snippet>
-
-			<h3>Icon only, custom text</h3>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button-add text="Custom Tooltip" icon-only-visible-on-hover-focus></d2l-button-add>
+					<d2l-button-add mode="icon-when-interacted" text="Add Content"></d2l-button-add>
 				</template>
 			</d2l-demo-snippet>
 
