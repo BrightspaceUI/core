@@ -56,7 +56,6 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `min-fraction-digits` | Number, default: `0` | Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits` |
 | `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
-| `title` | String | Text for additional screen reader and mouseover context. |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `value` | Number | Value of the input. |
 
@@ -82,7 +81,6 @@ To make your usage of `d2l-input-number` accessible, use the following propertie
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
 | `labelled-by` | Use when another visible element should act as the label |
 | `unit` | Use to render the unit (offscreen) as part of the label. |
-| `title` | Use for additional screen reader and mouseover context. |
 
 ### Usage
 
@@ -128,7 +126,6 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 | `min-fraction-digits` | Number | Minimum number of digits allowed after the decimal place. |
 | `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
-| `title` | String | Text for additional screen reader and mouseover context. |
 | `value` | Number | Value of the input. |
 
 ### Events
@@ -151,4 +148,3 @@ To make your usage of `d2l-input-percent` accessible, use the following properti
 |---|---|
 | `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
-| `title` | Use for additional screen reader and mouseover context. |

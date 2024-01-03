@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getClosestValidDate, getDateFromDateObj, getDateFromISODate, getToday, isDateInRange } from '../../helpers/dateTime.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -436,7 +436,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	render() {
 		if (this._shownMonth === undefined || !this._shownYear) {
-			return html``;
+			return nothing;
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`

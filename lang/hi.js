@@ -1,11 +1,11 @@
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.calendar.notSelected": "चयनित नहीं।",
 	"components.calendar.selected": "चयनित।",
 	"components.calendar.show": "{month} दिखाएँ",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "यह संवाद बंद करें",
 	"components.dropdown.close": "बंद करें",
 	"components.filter.activeFilters": "सक्रिय फ़िल्टर्स:",

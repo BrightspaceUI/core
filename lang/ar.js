@@ -1,11 +1,11 @@
 export default {
 	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "إضافة عنصر",
 	"components.calendar.notSelected": "لم يتم التحديد.",
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.activeFilters": "عوامل تصفية نشطة:",

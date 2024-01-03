@@ -18,9 +18,9 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 	static get properties() {
 		return {
 			/**
-			 * When set, will automatically place focus on the input
-			 * @type {boolean}
+			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean },
 			/**
 			 * Disables the input
@@ -57,11 +57,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 * @type {boolean}
 			 */
 			required: { type: Boolean },
-			/**
-			 * Text for additional screenreader and mouseover context
-			 * @type {string}
-			 */
-			title: { type: String },
 			/**
 			 * Value of the input
 			 * @type {number}
@@ -128,7 +123,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
-				title="${ifDefined(this.title)}"
 				unit="%"
 				value="${ifDefined(this.value)}"
 				value-align="end">

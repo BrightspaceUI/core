@@ -1,11 +1,11 @@
 export default {
 	"components.alert.close": "Stängningsvarning",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Lägg till objekt",
 	"components.calendar.notSelected": "Inte vald.",
 	"components.calendar.selected": "Markerad.",
 	"components.calendar.show": "Visa {month}",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Stäng dialogrutan",
 	"components.dropdown.close": "Stäng",
 	"components.filter.activeFilters": "Aktiva filter:",

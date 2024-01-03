@@ -13,6 +13,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
 			 * Use to select the tab
