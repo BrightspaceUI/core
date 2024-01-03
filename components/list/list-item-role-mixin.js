@@ -7,6 +7,7 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			_nested: { type: Boolean, reflect: true },
 			_separators: { type: String, reflect: true }

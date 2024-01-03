@@ -1,11 +1,11 @@
 export default {
 	"components.alert.close": "Luk besked",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Tilføj element",
 	"components.calendar.notSelected": "Ikke valgt.",
 	"components.calendar.selected": "Valgt.",
 	"components.calendar.show": "Vis {month}",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Luk denne dialogboks",
 	"components.dropdown.close": "Luk",
 	"components.filter.activeFilters": "Aktive filtre:",

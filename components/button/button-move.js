@@ -40,6 +40,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * A description to be added to the button for accessibility when text on button does not provide enough context

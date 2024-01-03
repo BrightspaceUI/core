@@ -254,6 +254,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 * **Drag & drop:** Whether the item is draggable
 			 * @type {boolean}
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			draggable: { type: Boolean, reflect: true },
 			/**
 			 * @ignore

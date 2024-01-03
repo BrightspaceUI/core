@@ -1,11 +1,11 @@
 export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
-	"components.button-add.addItem": "Add Item",
+	"components.button-add.addItem": "Agregar elemento",
 	"components.calendar.notSelected": "No seleccionado.",
 	"components.calendar.selected": "Seleccionado.",
 	"components.calendar.show": "Mostrar {month}",
-	"components.count-badge.plus" : "{number}+",
+	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Cerrar este cuadro de diálogo",
 	"components.dropdown.close": "Cerrar",
 	"components.filter.activeFilters": "Filtros activos:",
