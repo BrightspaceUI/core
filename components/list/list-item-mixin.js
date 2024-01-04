@@ -666,7 +666,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				${this._showAddButton ? html`
 				<div slot="add">
-					<d2l-button-add text="${ifDefined(addButtonText)}" ?icon-only-visible-on-hover-focus="${!addButtonAlwaysVisible}"></d2l-button-add>
+					<d2l-button-add text="${ifDefined(addButtonText)}" mode="icon-when-interacted"></d2l-button-add>
 				</div>
 				` : nothing}
 				${this._renderNested(nested)}
