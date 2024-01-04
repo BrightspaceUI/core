@@ -378,6 +378,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-left: 0;
 				margin-right: -6px;
 			}
+
+			[slot="add"] {
+				margin-bottom: -4px;
+				margin-top: -3px;
+				z-index: 10;
+			}
+			:host([draggable][selectable]) [slot="add"] {
+				padding-inline-end: 6px;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
