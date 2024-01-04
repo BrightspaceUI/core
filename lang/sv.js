@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Öppnas i ett nytt fönster.",
 	"components.list.keyboard": "Använd <b>piltangenterna</b> för att flytta fokus i listan eller <b>Page Up/Down</b> för att gå fem upp eller ned",
 	"components.list-controls.label": "Åtgärder för lista",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Flytta objekt. Aktuell position: {currentPosition} av {size}. Om du vill flytta det här objektet trycker du på uppåt- eller nedåtpilen.",
 	"components.list-item-drag-handle-tooltip.title": "Tangentbordskontroller för omsortering:",

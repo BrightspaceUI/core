@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "새 창에서 열립니다.",
 	"components.list.keyboard": "<b>화살표 키</b>를 사용하여 이 목록 내에서 포커스를 이동하거나 <b>페이지 업/다운</b>을 사용하여 위 또는 아래로 5개씩 이동합니다.",
 	"components.list-controls.label": "목록에 대한 작업",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "{name}에 대한 항목 작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "전체 {size}에서 현재 위치 {currentPosition} 항목 재정렬 이 항목을 이동하라면 위쪽 또는 아래쪽 화살표를 누르십시오.",
 	"components.list-item-drag-handle-tooltip.title": "재정렬을 위한 키보드 컨트롤:",

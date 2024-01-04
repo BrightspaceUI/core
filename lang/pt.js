@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Abre em uma nova janela.",
 	"components.list.keyboard": "Use <b>teclas de seta</b> para mover o foco dentro dessa lista, ou <b>página acima/abaixo</b> para subir ou descer 5",
 	"components.list-controls.label": "Ações para a lista",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Reordenar ação de item para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar item, posição atual {currentPosition} de {size}. Para mover este item, pressione as setas para cima ou para baixo.",
 	"components.list-item-drag-handle-tooltip.title": "Controles do teclado para reordenação:",

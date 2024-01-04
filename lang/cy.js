@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Yn agor mewn ffenestr newydd",
 	"components.list.keyboard": "Defnyddiwch y <b>bysellau saeth</b> i symud ffocws y tu mewn i'r rhestr hon, neu <b>tudalen i fyny/i lawr</b> i symud i fyny neu i lawr erbyn 5",
 	"components.list-controls.label": "Camau gweithredu ar gyfer rhestr",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
 	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu'r saeth i lawr.",
 	"components.list-item-drag-handle-tooltip.title": "Rheolaethau bysellfwrdd ar gyfer aildrefnu:",

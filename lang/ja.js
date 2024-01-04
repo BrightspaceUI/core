@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "新規ウィンドウで開きます。",
 	"components.list.keyboard": "<b>方向キー</b>を使用して、このリスト内のフォーカスを移動するか、<b>page up/down</b> キーを使用して上下に 5 つずつ移動します",
 	"components.list-controls.label": "リストのアクション",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "{name} の項目並べ替えアクション",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え、現在の位置 {currentPosition}、サイズ {size}。この項目を移動するには、上矢印または下矢印を押します。",
 	"components.list-item-drag-handle-tooltip.title": "並べ替え用のキーボードコントロール:",

@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Yeni bir pencerede açılır.",
 	"components.list.keyboard": "Odağı bu listenin içine taşımak için <b>ok tuşlarını</b>, beşer beşer yukarı veya aşağı gitmek için ise <b>sayfa yukarı/aşağı</b> tuşlarını kullanın",
 	"components.list-controls.label": "Liste için eylemler",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "{name} için öğe eylemini yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeyi yeniden sırala, mevcut konum {currentPosition} / {size}. Bu öğeyi taşımak için yukarı veya aşağı oklara basın.",
 	"components.list-item-drag-handle-tooltip.title": "Yeniden Sıralama için Klavye Kontrolleri:",

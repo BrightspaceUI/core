@@ -179,7 +179,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: add-start / add-end;
 				margin-bottom: -4px;
 				margin-top: -3px;
-			/*	padding-right: 6px; /** can we only do this when rounded? */
+				/*	padding-right: 6px; /** can we only do this when rounded? */
 				z-index: 10;
 			}
 		`;

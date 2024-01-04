@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "在新窗口中打开。",
 	"components.list.keyboard": "使用<b>箭头键</b>在此列表中移动焦点，或使用<b>上/下翻页</b>以 5 个列表项为幅度进行上移或下移",
 	"components.list-controls.label": "针对列表的操作",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",
 	"components.list-item-drag-handle-tooltip.title": "用于重新排序的键盘控制键：",

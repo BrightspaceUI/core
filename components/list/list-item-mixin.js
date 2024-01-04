@@ -535,6 +535,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		}
 	}
 
+	_handleButtonAddClick() {
+		/** Dispatched when the add button directly after the item is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-list-item-add-button-click', { bubbles: true, composed: true }));
+	}
+
 	_isListItem(node) {
 		if (!node) node = this;
 		return node.role === 'rowgroup' || node.role === 'listitem';
@@ -665,7 +670,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				${this._showAddButton ? html`
 				<div slot="add">
-					<d2l-button-add text="${ifDefined(addButtonText)}" mode="icon-when-interacted"></d2l-button-add>
+					<d2l-button-add text="${ifDefined(addButtonText)}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>
 				` : nothing}
 				${this._renderNested(nested)}
