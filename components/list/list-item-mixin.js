@@ -83,7 +83,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_showAddButton: { tyep: Boolean, attribute: '_show-add-button', reflect: true },
+			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_hasNestedList: { state: true },
 			_siblingHasColor: { state: true },
 		};
@@ -611,7 +611,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const rootList = this.getRootList();
 		this._showAddButton = rootList?.addButton || undefined;
 		const addButtonText = rootList?.addButtonText || this.localize('components.list-item.addItem');
-		const addButtonAlwaysVisible = rootList?.addButtonAlwaysVisible || false;
 
 		const innerView = html`
 			<d2l-list-item-generic-layout

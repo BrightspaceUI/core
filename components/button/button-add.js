@@ -54,6 +54,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				white-space: nowrap;
 				width: 100%;
 			}
+			:host([mode="icon-when-interacted"]) button {
+				height: 7px;
+			}
 
 			.line {
 				border-top: 1px solid var(--d2l-button-add-line-color);

@@ -41,7 +41,7 @@ describe('list', () => {
 
 		it('no-padding', async() => {
 			const elem = await fixture(html`
-				<d2l-list add-button style="width: 400px" add-button>
+				<d2l-list add-button style="width: 400px">
 					<d2l-list-item label="1" padding-type="none">Item 1</d2l-list-item>
 				</d2l-list>
 			`);
@@ -52,7 +52,7 @@ describe('list', () => {
 	describe('illustration', () => {
 		it('default', async() => {
 			const elem = await fixture(html`
-				<d2l-list add-button style="width: 400px" add-button>
+				<d2l-list add-button style="width: 400px">
 					<d2l-list-item>
 						<div>Item 1</div>
 						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
