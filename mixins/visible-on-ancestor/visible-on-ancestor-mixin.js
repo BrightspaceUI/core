@@ -20,7 +20,7 @@ export const visibleOnAncestorStyles = css`
 		transform: none !important;
 	}
 	:host([__voa-state="showing"][animation-type="opacity"]) {
-		transition: opacity 300ms ease-in !important;
+		transition: opacity 200ms ease-in !important;
 	}
 	:host([__voa-state="hiding"][animation-type="opacity"]) {
 		transition: none !important;

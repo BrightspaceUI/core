@@ -1,8 +1,9 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -25,7 +26,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			 * Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus).
 			 * @type {'icon'|'icon-and-text'|'icon-when-interacted'}
 			 */
-			mode: { type: String },
+			mode: { type: String, reflect: true },
 			/**
 			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
@@ -36,6 +37,10 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 	static get styles() {
 		return css`
+			:host {
+				--d2l-button-add-animation-delay: 50ms;
+				--d2l-button-add-animation-duration: 200ms;
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
@@ -63,7 +68,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:focus .line,
 			:host([dir="rtl"]) button:hover .line-end,
 			:host([dir="rtl"]) button:focus .line-end {
-				animation: line-start-animation 300ms ease-in 50ms 1 forwards;
+				animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
 			}
 			button:hover .line-end,
 			button:focus .line-end,
@@ -81,7 +86,19 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
 			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
-				animation: position-change-animation 50ms step-end 0ms 1 forwards; /* add delay in changing position to avoid flash of missing icon space */
+				animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
+				animation-fill-mode: forwards;
+			}
+			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				border-radius: 0.3rem;
+				box-shadow: 0 0 0 3px var(--d2l-color-celestine-minus-1);
+				transition-duration: var(--d2l-button-add-animation-duration);
+				transition-property: box-shadow, color, fill;
+				transition-timing-function: ease-in;
+			}
+			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
+			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				padding: 0.1rem;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -89,19 +106,38 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				button:focus .line {
 					animation: none !important;
 					background: var(--d2l-color-celestine-minus-1);
+					height: 2px;
 				}
 				:host([mode="icon-when-interacted"]) button:hover .line {
-					transition: background 100ms step-end;
+					transition-delay: var(--d2l-button-add-animation-delay);
+					transition-property: background, height;
+				}
+				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+					transition: none;
 				}
 			}
 
 			@keyframes line-start-animation {
-				0% { background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 135%; }
-				100% { background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 135%; background-position: right; }
+				0% {
+					background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 113%;
+					opacity: 10%;
+				}
+				100% {
+					background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 113%;
+					background-position: right;
+					height: 2px;
+				}
 			}
 			@keyframes line-end-animation {
-				0% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; }
-				100% { background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 135%; background-position: left; }
+				0% {
+					background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 113%;
+					opacity: 10%;
+				}
+				100% {
+					background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 113%;
+					background-position: left;
+					height: 2px;
+				}
 			}
 			@keyframes position-change-animation {
 				0% { position: absolute; }
@@ -170,16 +206,16 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-galena);
 				align-items: center;
 				display: flex;
+				fill: var(--d2l-button-add-icon-text-color);
 			}
+			:host([visible-on-ancestor]),
 			:host([text]) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-celestine);
+			}
+			:host([text]) {
 				color: var(--d2l-button-add-icon-text-color);
 				height: 1.5rem;
 				padding: 0 0.3rem;
-			}
-
-			svg {
-				fill: var(--d2l-button-add-icon-text-color);
 			}
 
 			:host([text]) svg {
