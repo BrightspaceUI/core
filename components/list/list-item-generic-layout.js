@@ -225,7 +225,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
 
 			<slot name="drop-target"></slot>
-			<slot name="add"></slot>
+			<slot name="add" class="d2l-cell" data-cell-num="9"></slot>
 			<slot name="nested"></slot>
 		`;
 	}
