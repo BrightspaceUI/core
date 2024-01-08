@@ -90,9 +90,12 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
 
-		const content = this.mode === MODE.ICON_AND_TEXT
-			? html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`
-			: this._renderWithTextHidden(text);
+		const content = this.mode !== MODE.ICON_AND_TEXT
+			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}"></d2l-button-add-icon-text>`
+			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
+		const tooltip = this.mode !== MODE.ICON_AND_TEXT
+			? html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			: nothing;
 
 		return html`
 			<button
@@ -103,13 +106,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				${content}
 				<div class="line"></div>
 			</button>
-		`;
-	}
-
-	_renderWithTextHidden(text) {
-		return html`
-			<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}"></d2l-button-add-icon-text>
-			<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
+			${tooltip}
 		`;
 	}
 
