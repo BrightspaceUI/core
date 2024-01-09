@@ -164,9 +164,12 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
 
-		const content = this.mode === MODE.ICON_AND_TEXT
-			? html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`
-			: this._renderWithTextHidden(text);
+		const content = this.mode !== MODE.ICON_AND_TEXT
+			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
+			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
+		const tooltip = this.mode !== MODE.ICON_AND_TEXT
+			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			: nothing;
 
 		return html`
 			<button
@@ -177,16 +180,9 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				${content}
 				<div class="line line-end"></div>
 			</button>
+			${tooltip}
 		`;
 	}
-
-	_renderWithTextHidden(text) {
-		return html`
-			<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>
-			<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>
-		`;
-	}
-
 }
 customElements.define('d2l-button-add', ButtonAdd);
 
