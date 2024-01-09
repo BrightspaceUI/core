@@ -11,7 +11,6 @@ import { heading3Styles } from '../typography/styles.js';
  */
 class DialogConfirm extends DialogMixin(LitElement) {
 
-	// Test comment
 	static get properties() {
 		return {
 			/**
