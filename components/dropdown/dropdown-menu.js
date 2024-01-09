@@ -65,7 +65,11 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		if (e.target.getAttribute('role') !== 'menuitemradio') {
 			return;
 		}
-		this.close();
+
+		const duration = 1500;
+		setTimeout(() => {
+			this.close();
+		}, duration);
 	}
 
 	_onClose(e) {
