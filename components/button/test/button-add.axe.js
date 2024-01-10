@@ -13,8 +13,13 @@ describe('d2l-button-add', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it('visible text', async() => {
-		const el = await fixture(html`<d2l-button-add text-visible></d2l-button-add>`);
+	it('icon-and-text mode', async() => {
+		const el = await fixture(html`<d2l-button-add mode="icon-and-text"></d2l-button-add>`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('icon-when-interacted mode', async() => {
+		const el = await fixture(html`<d2l-button-add mode="icon-when-interacted"></d2l-button-add>`);
 		await expect(el).to.be.accessible();
 	});
 
@@ -24,8 +29,13 @@ describe('d2l-button-add', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it('focused, visible text', async() => {
-		const el = await fixture(html`<d2l-button-add text-visible></d2l-button-add>`);
+	it('focused, icon-and-text mode', async() => {
+		const el = await fixture(html`<d2l-button-add mode="icon-and-text"></d2l-button-add>`);
+		await focusElem(el);
+		await expect(el).to.be.accessible();
+	});
+	it('focused, icon-when-interacted mode', async() => {
+		const el = await fixture(html`<d2l-button-add mode="icon-when-interacted"></d2l-button-add>`);
 		await focusElem(el);
 		await expect(el).to.be.accessible();
 	});
