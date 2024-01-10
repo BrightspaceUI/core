@@ -221,8 +221,8 @@ export const dropdownContentStyles = css`
 	}
 
 	@keyframes d2l-dropdown-close-animation {
-		0% { opacity: 1; transform: translate(0, 0); display: inline-block; }
-		100% { opacity: 0; transform: translate(0, -10px); display: none; }
+		0% { display: inline-block; opacity: 1; transform: translate(0, 0); }
+		100% { display: none; opacity: 0; transform: translate(0, -10px); }
 	}
 
 	@keyframes d2l-dropdown-close-animation-dark {
