@@ -84,9 +84,9 @@ The `illustration-name` property can be set to use one of the preset illustratio
 
 ## Empty State Action Button [d2l-empty-state-action-button]
 
-`d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component. Only a single action can be placed within an empty state component. 
+`d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component. Only a single action can be placed within an empty state component.
 
-The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`. 
+The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`.
 
 <!-- docs: demo code properties name:d2l-empty-state-action-button -->
 ```html
@@ -145,24 +145,6 @@ The `primary` attribute can be set to render a primary button in place of the de
 	<d2l-empty-state-action-link text="Create Learning Paths" href="#"></d2l-empty-state-action-link>
 </d2l-empty-state-illustrated>
 ```
-
-## Preset Empty State Illustrations
-
-| Illustration | Name |
-| :---: | :--- |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/assembly-line.svg?sanitize=true) | assembly-line |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/blueprint.svg?sanitize=true) | blueprint |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/calendar.svg?sanitize=true) | calendar |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/cat-computer.svg?sanitize=true) | cat-computer |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/checklist.svg?sanitize=true) | checklist |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/data-tracking.svg?sanitize=true) | data-tracking |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/desert-road.svg?sanitize=true) | desert-road |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/fish-hook.svg?sanitize=true) | fish-hook |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/oven.svg?sanitize=true) | oven |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/pipeline.svg?sanitize=true) | pipeline |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/race.svg?sanitize=true) | race |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/rockets.svg?sanitize=true) | rockets |
-| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/tumbleweed.svg?sanitize=true) | tumbleweed |
 
 ## Preset Empty State Illustrations
 
