@@ -66,7 +66,8 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 
-		const duration = 1500;
+		// Add a small delay before closing the menu
+		const duration = 750;
 		setTimeout(() => {
 			this.close();
 		}, duration);

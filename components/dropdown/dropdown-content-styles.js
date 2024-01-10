@@ -6,6 +6,7 @@ export const dropdownContentStyles = css`
 	:host {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation;
+		--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation;
 		--d2l-dropdown-background-color: #ffffff;
 		--d2l-dropdown-border-color: var(--d2l-color-mica);
 		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
@@ -24,6 +25,7 @@ export const dropdownContentStyles = css`
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
+		--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
 		--d2l-dropdown-background-color: #333536; /* tungsten @ 70% */
 		--d2l-dropdown-border-color: var(--d2l-color-tungsten);
 		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);
@@ -40,6 +42,10 @@ export const dropdownContentStyles = css`
 		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
+	}
+
+	:host(:not([opened])) {
+		animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
 	}
 
 	:host([data-mobile][opened]:not([mobile-tray])) {
@@ -214,6 +220,16 @@ export const dropdownContentStyles = css`
 		100% { opacity: 1; transform: translate(0, 0); }
 	}
 
+	@keyframes d2l-dropdown-close-animation {
+		0% { opacity: 1; transform: translate(0, 0); display: inline-block; }
+		100% { opacity: 0; transform: translate(0, -10px); display: none; }
+	}
+
+	@keyframes d2l-dropdown-close-animation-dark {
+		0% { opacity: 0.9; transform: translate(0, 0); }
+		100% { opacity: 0; transform: translate(0, -10px); }
+	}
+
 	@keyframes d2l-dropdown-mobile-tray-right-close {
 		0% { opacity: 1; transform: translate(0, 0); }
 		100% { opacity: 0; transform: translateX(100%); }
@@ -279,7 +295,7 @@ export const dropdownContentStyles = css`
 		animation: d2l-dropdown-mobile-tray-bottom 300ms ease-out;
 		bottom: 0;
 	}
-	
+
 	:host([data-mobile][mobile-tray="right"][opened]) .d2l-dropdown-content-width[data-closing] {
 		animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 	}
