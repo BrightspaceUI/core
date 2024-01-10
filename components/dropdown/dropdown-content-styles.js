@@ -194,10 +194,6 @@ export const dropdownContentStyles = css`
 		}
 	}
 
-	:host([close-radio]) {
-		animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		:host([close-radio]) {
 			animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
