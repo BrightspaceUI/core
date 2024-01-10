@@ -68,13 +68,20 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:focus .line,
 			:host([dir="rtl"]) button:hover .line-end,
 			:host([dir="rtl"]) button:focus .line-end {
-				animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
+				background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 113%;
+				background-position: right;
+				height: 2px;
 			}
 			button:hover .line-end,
 			button:focus .line-end,
 			:host([dir="rtl"]) button:hover .line-start,
 			:host([dir="rtl"]) button:focus .line-start {
-				animation-name: line-end-animation;
+				background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 113%;
+				background-position: left;
+			}
+			:host([mode="icon-when-interacted"]) button:hover .line {
+				transition-delay: var(--d2l-button-add-animation-delay);
+				transition-property: background, height;
 			}
 
 			button:hover d2l-button-add-icon-text,
@@ -84,64 +91,67 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
 				position: absolute;
 			}
-			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
-			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
-				animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
-				animation-fill-mode: forwards;
-			}
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 3px var(--d2l-color-celestine-minus-1);
-				transition-duration: var(--d2l-button-add-animation-duration);
-				transition-property: box-shadow, color, fill;
-				transition-timing-function: ease-in;
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				padding: 0.1rem;
 			}
-
-			@media (prefers-reduced-motion: reduce) {
-				button:hover .line,
-				button:focus .line {
-					animation: none !important;
-					background: var(--d2l-color-celestine-minus-1);
-					height: 2px;
-				}
-				:host([mode="icon-when-interacted"]) button:hover .line {
-					transition-delay: var(--d2l-button-add-animation-delay);
-					transition-property: background, height;
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-					transition: none;
-				}
-			}
-
-			@keyframes line-start-animation {
-				0% {
-					background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 113%;
-					opacity: 10%;
-				}
-				100% {
-					background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) left center / 113%;
-					background-position: right;
-					height: 2px;
-				}
-			}
-			@keyframes line-end-animation {
-				0% {
-					background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 113%;
-					opacity: 10%;
-				}
-				100% {
-					background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-color-celestine-minus-1) 11%) right center / 113%;
-					background-position: left;
-					height: 2px;
-				}
+			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
+			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
+				animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
 			}
 			@keyframes position-change-animation {
 				0% { position: absolute; }
 				100% { position: static; }
+			}
+			@media (prefers-reduced-motion: reduce) {
+				button:hover .line {
+					background: var(--d2l-color-celestine-minus-1);
+				}
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				button:hover .line {
+					transition: height var(--d2l-button-add-animation-duration) ease-in;
+				}
+				button:hover .line,
+				button:focus .line,
+				:host([dir="rtl"]) button:hover .line-end,
+				:host([dir="rtl"]) button:focus .line-end {
+					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in;
+				}
+				button:hover .line-end,
+				button:focus .line-end,
+				:host([dir="rtl"]) button:hover .line-start,
+				:host([dir="rtl"]) button:focus .line-start {
+					animation-name: line-end-animation;
+				}
+				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+					transition-duration: var(--d2l-button-add-animation-duration);
+					transition-property: box-shadow, color, fill;
+					transition-timing-function: ease-in;
+				}
+
+				@keyframes line-start-animation {
+					0% {
+						background-position: left;
+						opacity: 10%;
+					}
+					100% {
+						background-position: right;
+					}
+				}
+				@keyframes line-end-animation {
+					0% {
+						background-position: right;
+						opacity: 10%;
+					}
+					100% {
+						background-position: left;
+					}
+				}
 			}
 		`;
 	}

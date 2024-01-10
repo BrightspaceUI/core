@@ -154,7 +154,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 			this.__voaState = 'shown';
 		} else {
 			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'transform') return;
+				if (e.propertyName !== 'transform' && e.propertyName !== 'opacity') return;
 				this.removeEventListener('transitionend', handleTransitionEnd);
 				this.__voaState = 'shown';
 			};
