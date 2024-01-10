@@ -178,6 +178,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'opened-above'
 			},
 			/**
+			 * Close dropdown action.
+			 * @type {boolean}
+			 */
+			closeAction: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'close-action'
+			},
+			/**
  			* Optionally render a d2l-focus-trap around the dropdown content
 			 * @type {boolean}
  			*/
@@ -247,6 +256,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
 		this.trapFocus = false;
+		this.closeAction = false;
 		this._useMobileStyling = false;
 
 		this.__opened = false;
@@ -346,7 +356,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this._closing = true;
 			this._showBackdrop = false;
 		} else {
+			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
 			hide();
+			setTimeout(() => { this.closeAction = false; }, 100);
 		}
 	}
 

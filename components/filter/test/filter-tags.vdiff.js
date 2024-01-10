@@ -124,7 +124,7 @@ describe('filter-tags', () => {
 			await sendKeys('press', 'ArrowRight');
 			await sendKeys('press', 'Delete');
 
-			await aTimeout('300'); // clearing has a 200ms delay
+			await aTimeout('400'); // clearing has a 200ms delay
 			await expect(elem).to.be.golden();
 		});
 

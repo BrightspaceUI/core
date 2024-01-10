@@ -44,7 +44,7 @@ export const dropdownContentStyles = css`
 		top: auto;
 	}
 
-	:host(:not([opened])) {
+	:host([close-action]) {
 		animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
 	}
 
