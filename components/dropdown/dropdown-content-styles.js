@@ -44,10 +44,6 @@ export const dropdownContentStyles = css`
 		top: auto;
 	}
 
-	:host([close-action]) {
-		animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
-	}
-
 	:host([data-mobile][opened]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-animation-name) 300ms ease;
 		display: inline-block;
@@ -198,6 +194,16 @@ export const dropdownContentStyles = css`
 		}
 	}
 
+	:host([close-radio]) {
+		animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:host([close-radio]) {
+			animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
+		}
+	}
+
 	@keyframes d2l-dropdown-animation {
 		0% { opacity: 0; transform: translate(0, -10px); }
 		100% { opacity: 1; transform: translate(0, 0); }
@@ -226,8 +232,8 @@ export const dropdownContentStyles = css`
 	}
 
 	@keyframes d2l-dropdown-close-animation-dark {
-		0% { opacity: 0.9; transform: translate(0, 0); }
-		100% { opacity: 0; transform: translate(0, -10px); }
+		0% { display: inline-block; opacity: 0.9; transform: translate(0, 0); }
+		100% { display: none; opacity: 0; transform: translate(0, -10px); }
 	}
 
 	@keyframes d2l-dropdown-mobile-tray-right-close {

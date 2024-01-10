@@ -3,6 +3,8 @@ import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
+const closeTimeoutDuration = 50;
+
 /**
  * A container for a "d2l-menu". It provides additional support on top of "d2l-dropdown-content" for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
  * @slot - Anything inside of "d2l-dropdown-content" that isn't in the "header" or "footer" slots appears as regular content
@@ -12,6 +14,19 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
  */
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
+	static get properties() {
+		return {
+			/**
+			 * Close dropdown when radio is pressed.
+			 * @type {boolean}
+			 */
+			closeRadio: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'close-radio'
+			},
+		}
+	}
 	static get styles() {
 		return dropdownContentStyles;
 	}
@@ -20,6 +35,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		super();
 		this.noAutoFocus = true;
 		this.noPadding = true;
+		this.closeRadio = false;
 		this._initiallyOpenedSuppressFocus = false;
 		this._maxHeightNonTray = this.maxHeight;
 	}
@@ -67,11 +83,13 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		}
 
 		// Add a small delay before closing the menu
-		const duration = 50;
 		setTimeout(() => {
-			this.closeAction = true;
+			this.closeRadio = true;
 			this.close();
-		}, duration);
+		}, closeTimeoutDuration);
+
+		// Wait until animation is complete before toggling value
+		setTimeout(() => { this.closeRadio = false; }, 100);
 	}
 
 	_onClose(e) {
