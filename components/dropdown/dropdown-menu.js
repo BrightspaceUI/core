@@ -25,7 +25,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				reflect: true,
 				attribute: 'close-radio'
 			},
-		}
+		};
 	}
 	static get styles() {
 		return dropdownContentStyles;
