@@ -1,4 +1,4 @@
-import { html, css, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
