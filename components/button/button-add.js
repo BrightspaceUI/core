@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const MODE = {
 	ICON: 'icon',
@@ -17,14 +19,14 @@ const MODE = {
 /**
  * A component for quickly adding items to a specific locaiton.
  */
-class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
+class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement)))) {
 	static get properties() {
 		return {
 			/**
 			 * Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus).
 			 * @type {'icon'|'icon-and-text'|'icon-when-interacted'}
 			 */
-			mode: { type: String },
+			mode: { type: String, reflect: true },
 			/**
 			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
 			 * @type {string}
@@ -36,6 +38,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 	static get styles() {
 		return css`
 			:host {
+				--d2l-button-add-animation-delay: 50ms;
+				--d2l-button-add-animation-duration: 200ms;
+				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
 				--d2l-button-add-line-color: var(--d2l-color-mica);
 			}
 			button {
@@ -59,21 +64,87 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			}
 
 			.line {
-				border-top: 1px solid var(--d2l-button-add-line-color);
+				background: var(--d2l-button-add-line-color);
+				height: 1px;
+				margin: 3px 0;
 				width: 100%;
 			}
 
 			button:hover .line,
 			button:focus .line {
-				border-top-color: var(--d2l-color-celestine-minus-1);
+				background: var(--d2l-button-add-hover-focus-color);
+				height: 2px;
 			}
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
-				--d2l-button-add-icon-text-color: var(--d2l-color-celestine-minus-1);
+				--d2l-button-add-icon-text-color: var(--d2l-button-add-hover-focus-color);
+			}
+			:host([mode="icon-when-interacted"]) button:hover .line {
+				transition-delay: var(--d2l-button-add-animation-delay);
 			}
 
 			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
 				position: absolute;
+			}
+			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
+			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
+				animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
+			}
+			@keyframes position-change-animation {
+				0% { position: absolute; }
+				100% { position: static; }
+			}
+
+			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				border-radius: 0.3rem;
+				box-shadow: 0 0 0 3px var(--d2l-button-add-hover-focus-color);
+			}
+			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
+			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				padding: 0.1rem;
+			}
+
+			@media (prefers-reduced-motion: no-preference) {
+				button:hover .line,
+				button:focus .line {
+					transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
+				}
+				button:hover .line,
+				button:focus .line,
+				:host([dir="rtl"]) button:hover .line-end,
+				:host([dir="rtl"]) button:focus .line-end {
+					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
+				}
+				button:hover .line-end,
+				button:focus .line-end,
+				:host([dir="rtl"]) button:hover .line-start,
+				:host([dir="rtl"]) button:focus .line-start {
+					animation-name: line-end-animation;
+				}
+				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+					transition: all var(--d2l-button-add-animation-duration) ease-in;
+				}
+
+				@keyframes line-start-animation {
+					0% {
+						background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%;
+						opacity: 10%;
+					}
+					100% {
+						background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%; /* safari */
+						background-position: right;
+					}
+				}
+				@keyframes line-end-animation {
+					0% {
+						background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%;
+						opacity: 10%;
+					}
+					100% {
+						background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%; /* safari */
+						background-position: left;
+					}
+				}
 			}
 		`;
 	}
@@ -97,10 +168,10 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
 
 		const content = this.mode !== MODE.ICON_AND_TEXT
-			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}"></d2l-button-add-icon-text>`
+			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
 			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
 		const tooltip = this.mode !== MODE.ICON_AND_TEXT
-			? html`<d2l-tooltip class="vdiff-target" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
 			: nothing;
 
 		return html`
@@ -108,9 +179,9 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 				class="d2l-label-text d2l-visible-on-ancestor-target"
 				id="${ifDefined(id)}"
 				type="button">
-				<div class="line"></div>
+				<div class="line line-start"></div>
 				${content}
-				<div class="line"></div>
+				<div class="line line-end"></div>
 			</button>
 			${tooltip}
 		`;
@@ -135,24 +206,24 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-galena);
 				align-items: center;
 				display: flex;
+				fill: var(--d2l-button-add-icon-text-color);
 			}
+			:host([visible-on-ancestor]),
 			:host([text]) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-celestine);
+			}
+			:host([text]) {
 				color: var(--d2l-button-add-icon-text-color);
 				height: 1.5rem;
 				padding: 0 0.3rem;
-			}
-
-			svg {
-				fill: var(--d2l-button-add-icon-text-color);
 			}
 
 			:host([text]) svg {
 				padding-inline-end: 0.2rem;
 			}
 			:host(:not([text])) svg {
-				margin: -3px; /** hover/click target */
-				padding: 3px; /** hover/click target */
+				margin: -0.3rem; /** hover/click target */
+				padding: 0.3rem; /** hover/click target */
 			}
 
 			span {
