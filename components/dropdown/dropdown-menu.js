@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, css, LitElement } from 'lit';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
@@ -28,8 +28,34 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			},
 		};
 	}
+
 	static get styles() {
-		return dropdownContentStyles;
+		return [
+			dropdownContentStyles,
+			css`
+				:host {
+					--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation;
+				}
+				:host([close-radio]) {
+					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
+				}
+
+				@media (prefers-reduced-motion: reduce) {
+					:host([close-radio]) {
+						animation: none !important;
+					}
+				}
+				@keyframes d2l-dropdown-close-animation {
+					0% { display: inline-block; opacity: 1; transform: translate(0, 0); }
+					100% { display: none; opacity: 0; transform: translate(0, -10px); }
+				}
+
+				@keyframes d2l-dropdown-close-animation-dark {
+					0% { display: inline-block; opacity: 0.9; transform: translate(0, 0); }
+					100% { display: none; opacity: 0; transform: translate(0, -10px); }
+				}
+			`
+		];
 	}
 
 	constructor() {
