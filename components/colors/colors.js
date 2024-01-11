@@ -47,7 +47,7 @@ if (!document.head.querySelector('#d2l-colors')) {
 			/* cinnabar */
 			--d2l-color-cinnabar-plus-2: #ffede8;
 			--d2l-color-cinnabar-plus-1: #ff575a;
-			--d2l-color-cinnabar: #cd2026;
+			--d2l-color-cinnabar: #b01015;
 			--d2l-color-cinnabar-minus-1: #990006;
 
 			/* carnelian */
