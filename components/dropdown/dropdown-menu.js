@@ -18,13 +18,12 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Close dropdown when radio is pressed.
-			 * @type {boolean}
+			 * @ignore
 			 */
-			closeRadio: {
+			_closeRadio: {
 				type: Boolean,
 				reflect: true,
-				attribute: 'close-radio'
+				attribute: '_close-radio'
 			},
 		};
 	}
@@ -41,12 +40,12 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 					--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
 				}
 
-				:host([close-radio]) {
+				:host([_close-radio]) {
 					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
 				}
 
 				@media (prefers-reduced-motion: reduce) {
-					:host([close-radio]) {
+					:host([_close-radio]) {
 						animation: none !important;
 					}
 				}
@@ -67,7 +66,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		super();
 		this.noAutoFocus = true;
 		this.noPadding = true;
-		this.closeRadio = false;
+		this._closeRadio = false;
 		this._initiallyOpenedSuppressFocus = false;
 		this._maxHeightNonTray = this.maxHeight;
 	}
@@ -116,7 +115,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		// Add a small delay before closing the menu
 		setTimeout(() => {
-			this.closeRadio = true;
+			this._closeRadio = true;
 			this.close();
 		}, closeTimeoutDuration);
 	}
@@ -128,7 +127,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		}
 
 		// Wait until animation (300ms) is completed before toggling value
-		setTimeout(() => { this.closeRadio = false; }, 300);
+		setTimeout(() => { this._closeRadio = false; }, 300);
 
 		// reset to root view
 		const menu = this.__getMenuElement();
