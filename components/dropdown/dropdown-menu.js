@@ -3,7 +3,8 @@ import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
-const closeTimeoutDuration = 50;
+// The duration of the delay needs to be atleast as long as the animation (300ms in this case)
+const closeTimeoutDuration = 300;
 
 /**
  * A container for a "d2l-menu". It provides additional support on top of "d2l-dropdown-content" for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
@@ -87,9 +88,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			this.closeRadio = true;
 			this.close();
 		}, closeTimeoutDuration);
-
-		// Wait until animation is complete before toggling value
-		setTimeout(() => { this.closeRadio = false; }, 100);
 	}
 
 	_onClose(e) {
@@ -97,6 +95,9 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		if (e.target !== this) {
 			return;
 		}
+
+		// Wait until animation (300ms) is completed before toggling value
+		setTimeout(() => { this.closeRadio = false; }, 300);
 
 		// reset to root view
 		const menu = this.__getMenuElement();
