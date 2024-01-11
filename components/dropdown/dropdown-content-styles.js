@@ -24,7 +24,6 @@ export const dropdownContentStyles = css`
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
-		--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
 		--d2l-dropdown-background-color: #333536; /* tungsten @ 70% */
 		--d2l-dropdown-border-color: var(--d2l-color-tungsten);
 		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);

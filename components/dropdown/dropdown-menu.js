@@ -36,6 +36,11 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				:host {
 					--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation;
 				}
+
+				:host([theme="dark"]) {
+					--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
+				}
+
 				:host([close-radio]) {
 					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
 				}
