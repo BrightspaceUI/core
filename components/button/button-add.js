@@ -38,10 +38,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	static get styles() {
 		return css`
 			:host {
-				--d2l-button-add-animation-delay: 50ms;
+				--d2l-button-add-animation-delay: 0ms;
 				--d2l-button-add-animation-duration: 200ms;
 				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
 				--d2l-button-add-line-color: var(--d2l-color-mica);
+			}
+			:host([mode="icon-when-interacted"]) {
+				--d2l-button-add-animation-delay: 50ms;
 			}
 			button {
 				align-items: center;
@@ -101,6 +104,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				border-radius: 0.2rem;
 				padding: 0.1rem;
 			}
 
@@ -155,8 +159,6 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 		this.mode = MODE.ICON;
 
 		this._buttonId = getUniqueId();
-		this._hasFocus = false;
-		this._hasHover = false;
 	}
 
 	static get focusElementSelector() {

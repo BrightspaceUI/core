@@ -69,10 +69,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
-				grid-template-rows:
-					[main] minmax(0, min-content)
-					[add-start add-end] minmax(0, min-content)
-					[nested-start nested-end] minmax(0, min-content);
+				grid-template-rows: [main-start] [main-end add-start] [add-end nested-start] [nested-end];
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
@@ -176,7 +173,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="add"]) {
 				grid-column: color-start / end;
-				grid-row: add-start / add-end;
+				grid-row: add;
 			}
 		`;
 	}
