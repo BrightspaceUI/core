@@ -21,7 +21,7 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-zircon-minus-1: #035670;
 
 			/* celestine */
-			--d2l-color-celestine-plus-2: #e8f8ff;
+			--d2l-color-celestine-plus-2: #e9e8ff;
 			--d2l-color-celestine-plus-1: #29a6ff;
 			--d2l-color-celestine: #006fbf;
 			--d2l-color-celestine-minus-1: #004489;
