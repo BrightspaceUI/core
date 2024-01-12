@@ -3,9 +3,6 @@ import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
-// The duration of the delay needs to be atleast as long as the animation (300ms in this case)
-const closeTimeoutDuration = 300;
-
 /**
  * A container for a "d2l-menu". It provides additional support on top of "d2l-dropdown-content" for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
  * @slot - Anything inside of "d2l-dropdown-content" that isn't in the "header" or "footer" slots appears as regular content
@@ -38,7 +35,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				}
 
 				:host([_close-radio]) {
-					animation: var(--d2l-dropdown-close-animation-name) ${closeTimeoutDuration}ms ease-out;
+					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
 					display: inline-block;
 				}
 
@@ -88,7 +85,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		this.addEventListener('d2l-selection-action-click', this._onSelect);
 		this.addEventListener('d2l-menu-item-change', this._onChange);
 		this.addEventListener('focus', this._onFocus);
-		this.addEventListener('close-radio', this._closeRadioAction);
 	}
 
 	render() {
@@ -114,7 +110,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		this._closeRadio = true;
 		this.close();
-		this.dispatchEvent(new CustomEvent('close-radio'));
 	}
 
 	_onClose(e) {
@@ -123,15 +118,13 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 
+		this.addEventListener('animationend', () => {
+			this._closeRadio = false;
+		});
+
 		// reset to root view
 		const menu = this.__getMenuElement();
 		menu.show({ preventFocus: true });
-	}
-
-	_closeRadioAction() {
-		setTimeout(() => {
-			this._closeRadio = false;
-		}, closeTimeoutDuration);
 	}
 
 	_onFocus(e) {
