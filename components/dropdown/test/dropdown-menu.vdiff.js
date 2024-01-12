@@ -42,7 +42,7 @@ const createMenu = (dark) => html`
 const dropdownRadioMenu = html`
 	<d2l-menu label="Astronomy">
     	<d2l-menu-item-radio text="Chapter 0" value="0"></d2l-menu-item-radio>
-    	<d2l-menu-item-radio text="Chapter 1" value="1"></d2l-menu-item-radio>
+    	<d2l-menu-item-radio id="select-radio" text="Chapter 1" value="1"></d2l-menu-item-radio>
     	<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
     </d2l-menu>
 `;
@@ -158,10 +158,7 @@ describe('dropdown-menu', () => {
 		const dropdown = elem.querySelector('d2l-dropdown');
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
-		clickElem(elem.querySelector('d2l-menu-item-radio'));
-		setTimeout(async () => {
-			await oneEvent(dropdown, 'd2l-dropdown-close');
-		}, 1000);
+		clickElem(elem.querySelector('#select-radio'));
 		await expect(dropdown).to.be.golden();
 	});
 });
