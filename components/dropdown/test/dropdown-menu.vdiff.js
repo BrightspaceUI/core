@@ -39,14 +39,6 @@ const createMenu = (dark) => html`
 	</d2l-menu>
 `;
 
-const dropdownRadioMenu = html`
-	<d2l-menu label="Astronomy">
-    	<d2l-menu-item-radio text="Chapter 0" value="0"></d2l-menu-item-radio>
-    	<d2l-menu-item-radio id="select-radio" text="Chapter 1" value="1"></d2l-menu-item-radio>
-    	<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
-    </d2l-menu>
-`;
-
 const menuWithHeaderFooter = html`
 	<div slot="header">Topics</div>
 	${createMenu()}
