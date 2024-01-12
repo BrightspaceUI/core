@@ -218,6 +218,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
 			this.resizedCallback(this.offsetWidth, true);
 		}
+		if (changedProperties.has('add-button') || changedProperties.has('add-button-text')) {
+			this._listChildrenUpdatedSubscribers.updateSubscribers();
+		}
 	}
 
 	getItems(slot) {
@@ -369,12 +372,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_updateActiveSubscriber(subscriber) {
 		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
 		subscriber.updateSiblingHasColor(this._childHasColor);
+		subscriber.updateParentHasAddButon(this.addButton, this.addButtonText);
 	}
 
 	_updateActiveSubscribers(subscribers) {
 		subscribers.forEach(subscriber => {
 			subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
 			subscriber.updateSiblingHasColor(this._childHasColor);
+			subscriber.updateParentHasAddButon(this.addButton, this.addButtonText);
 		});
 	}
 

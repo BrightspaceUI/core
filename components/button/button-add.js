@@ -168,12 +168,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
+		const offset = this.mode === MODE.ICON_WHEN_INTERACTED ? 23 : 18;
 
 		const content = this.mode !== MODE.ICON_AND_TEXT
 			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
 			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
 		const tooltip = this.mode !== MODE.ICON_AND_TEXT
-			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
 			: nothing;
 
 		return html`
