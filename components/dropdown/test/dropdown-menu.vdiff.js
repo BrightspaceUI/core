@@ -158,8 +158,10 @@ describe('dropdown-menu', () => {
 		const dropdown = elem.querySelector('d2l-dropdown');
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
-		clickElem(dialog.shadowRoot.querySelector('d2l-menu-item-radio'));
-		await oneEvent(dropdown, 'd2l-dropdown-close');
+		clickElem(elem.querySelector('d2l-menu-item-radio'));
+		setTimeout(async () => {
+			await oneEvent(dropdown, 'd2l-dropdown-close');
+		}, 1000);
 		await expect(dropdown).to.be.golden();
 	});
 });
