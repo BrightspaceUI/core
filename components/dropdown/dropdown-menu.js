@@ -3,7 +3,6 @@ import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
-
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const dropdownDelay = 300;
 /**
