@@ -384,10 +384,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -4px;
 				margin-top: -3px;
 			}
-			d2l-button-add {
-				position: relative;
-				z-index: 10;
-			}
 			:host([draggable][selectable]) [slot="add"] {
 				padding-inline-end: 6px;
 			}
