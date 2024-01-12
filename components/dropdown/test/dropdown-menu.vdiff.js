@@ -3,7 +3,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const nestedDropdownMenu = html`
@@ -37,6 +37,14 @@ const createMenu = (dark) => html`
 		<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
 		<d2l-menu-item text="The Universe"></d2l-menu-item>
 	</d2l-menu>
+`;
+
+const dropdownRadioMenu = html`
+	<d2l-menu label="Astronomy">
+    	<d2l-menu-item-radio text="Chapter 0" value="0"></d2l-menu-item-radio>
+    	<d2l-menu-item-radio text="Chapter 1" value="1"></d2l-menu-item-radio>
+    	<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
+    </d2l-menu>
 `;
 
 const menuWithHeaderFooter = html`
@@ -133,6 +141,25 @@ describe('dropdown-menu', () => {
 		const dropdown = elem.querySelector('d2l-dropdown');
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
+		await expect(dropdown).to.be.golden();
+	});
+
+	it('radio-button-close', async() => {
+		const elem = await fixture(html`
+			<div style="background-color: #000000; padding: 250px;">
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu theme="dark" class="vdiff-include">
+						${dropdownRadioMenu}
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</div>
+		`);
+		const dropdown = elem.querySelector('d2l-dropdown');
+		dropdown.toggleOpen();
+		await oneEvent(dropdown, 'd2l-dropdown-open');
+		clickElem(dialog.shadowRoot.querySelector('d2l-menu-item-radio'));
+		await oneEvent(dropdown, 'd2l-dropdown-close');
 		await expect(dropdown).to.be.golden();
 	});
 });

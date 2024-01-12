@@ -36,6 +36,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 				:host([_close-radio]) {
 					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
+					animation-delay: 50ms;
 					display: inline-block;
 				}
 
@@ -78,6 +79,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			this.maxHeight = this._maxHeightNonTray;
 		}
 
+		this.addEventListener('animationend', this._closeRadioAction);
 		this.addEventListener('d2l-dropdown-open', this._onOpen);
 		this.addEventListener('d2l-dropdown-close', this._onClose);
 		this.addEventListener('d2l-menu-resize', this._onMenuResize);
@@ -103,6 +105,10 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
 
+	_closeRadioAction() {
+		this._closeRadio = false;
+	}
+
 	_onChange(e) {
 		if (e.target.getAttribute('role') !== 'menuitemradio') {
 			return;
@@ -117,10 +123,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		if (e.target !== this) {
 			return;
 		}
-
-		this.addEventListener('animationend', () => {
-			this._closeRadio = false;
-		});
 
 		// reset to root view
 		const menu = this.__getMenuElement();
