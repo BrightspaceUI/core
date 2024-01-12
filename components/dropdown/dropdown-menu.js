@@ -17,9 +17,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			/**
-			 * @ignore
-			 */
 			_closeRadio: {
 				type: Boolean,
 				reflect: true,
@@ -41,7 +38,8 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				}
 
 				:host([_close-radio]) {
-					animation: var(--d2l-dropdown-close-animation-name) 300ms ease-out;
+					animation: var(--d2l-dropdown-close-animation-name) ${closeTimeoutDuration}ms ease-out;
+					display: inline-block;
 				}
 
 				@media (prefers-reduced-motion: reduce) {
@@ -50,13 +48,13 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 					}
 				}
 				@keyframes d2l-dropdown-close-animation {
-					0% { display: inline-block; opacity: 1; transform: translate(0, 0); }
-					100% { display: none; opacity: 0; transform: translate(0, -10px); }
+					0% { opacity: 1; transform: translate(0, 0); }
+					100% { opacity: 0; transform: translate(0, -10px); }
 				}
 
 				@keyframes d2l-dropdown-close-animation-dark {
-					0% { display: inline-block; opacity: 0.9; transform: translate(0, 0); }
-					100% { display: none; opacity: 0; transform: translate(0, -10px); }
+					0% { opacity: 0.9; transform: translate(0, 0); }
+					100% { opacity: 0; transform: translate(0, -10px); }
 				}
 			`
 		];
@@ -90,6 +88,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		this.addEventListener('d2l-selection-action-click', this._onSelect);
 		this.addEventListener('d2l-menu-item-change', this._onChange);
 		this.addEventListener('focus', this._onFocus);
+		this.addEventListener('close-radio', this._closeRadioAction);
 	}
 
 	render() {
@@ -113,11 +112,9 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 
-		// Add a small delay before closing the menu
-		setTimeout(() => {
-			this._closeRadio = true;
-			this.close();
-		}, closeTimeoutDuration);
+		this._closeRadio = true;
+		this.close();
+		this.dispatchEvent(new CustomEvent('close-radio'));
 	}
 
 	_onClose(e) {
@@ -126,12 +123,15 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 
-		// Wait until animation (300ms) is completed before toggling value
-		setTimeout(() => { this._closeRadio = false; }, 300);
-
 		// reset to root view
 		const menu = this.__getMenuElement();
 		menu.show({ preventFocus: true });
+	}
+
+	_closeRadioAction() {
+		setTimeout(() => {
+			this._closeRadio = false;
+		}, closeTimeoutDuration);
 	}
 
 	_onFocus(e) {
