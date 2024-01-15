@@ -8,6 +8,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getValidHexColor } from '../../helpers/color.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -136,7 +137,8 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 			 * @ignore
 			 */
 			launchType: { attribute: 'launch-type', type: String },
-			_opened: { state: true }
+			_opened: { state: true },
+			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -239,6 +241,8 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._missingLabelErrorHasBeenThrown = false;
 		this._opened = false;
 		this._value = undefined;
+		this._inlinehelpId = getUniqueId();
+		this._inlineHelpDefined = false;
 	}
 
 	get associatedValue() { return this._associatedValue; }
@@ -270,7 +274,18 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		const tooltip = !this._opened ? html`<d2l-tooltip for="opener" for-type="label" class="vdiff-target">${this._getTooltipLabel()}</d2l-tooltip>` : nothing;
 		const opener = this._getOpener();
 
-		return html`${label}${opener}${tooltip}`;
+		return html`
+			<>
+				${label}${opener}${tooltip}
+				<div
+					class="d2l-body-small"
+					style="${this._handleInlineHelpStyles()}"
+					aria-describedby="${this._inlinehelpId}"
+				>
+					<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
+				</div>
+			</>
+		`;
 
 	}
 
@@ -356,6 +371,14 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._updateValueAndDispatchEvent(e.detail.newValue);
 	}
 
+	_handleInlineHelpStyles() {
+		const style = {
+			fontSize: '15px',
+			marginTop: '0.5rem'
+		}
+		return this._inlineHelpDefined ? styleMap(style) : '';
+	}
+
 	_handleOpenDialog() {
 		if (this.launchType !== 'dialog') return;
 		if (window?.D2L?.LP?.Web?.UI?.Desktop?.MasterPages?.Dialog?.Open === undefined) {
@@ -385,6 +408,12 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-color-open', { bubbles: false, composed: false }
 		));
+	}
+
+	_hasInlineHelpContent(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._inlineHelpDefined = content?.length > 0;
 	}
 
 	_updateValueAndDispatchEvent(newVal) {
