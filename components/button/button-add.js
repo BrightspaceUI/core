@@ -101,12 +101,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				border-radius: 0.2rem;
+				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				padding: 0.1rem;
+				border-radius: 0.2rem;
+				padding: 0.15rem;
 			}
 
 			@media (prefers-reduced-motion: no-preference) {
@@ -125,9 +126,6 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				:host([dir="rtl"]) button:hover .line-start,
 				:host([dir="rtl"]) button:focus .line-start {
 					animation-name: line-end-animation;
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-					transition: all var(--d2l-button-add-animation-duration) ease-in;
 				}
 
 				@keyframes line-start-animation {
@@ -225,8 +223,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				padding-inline-end: 0.2rem;
 			}
 			:host(:not([text])) svg {
-				margin: -0.3rem; /** hover/click target */
-				padding: 0.3rem; /** hover/click target */
+				margin: -0.15rem; /** hover/click target */
+				padding: 0.15rem; /** hover/click target */
 			}
 
 			span {
