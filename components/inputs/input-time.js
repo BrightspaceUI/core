@@ -18,6 +18,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
 const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
@@ -169,7 +170,8 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_hiddenContentWidth: { type: String }
+			_hiddenContentWidth: { type: String },
+			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -228,6 +230,8 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
+		this._inlinehelpId = getUniqueId();
+		this._inlineHelpDefined = false;
 	}
 
 	get value() { return this._value; }
@@ -370,6 +374,12 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
+			<div
+				class="d2l-body-small"
+				style="${this._handleInlineHelpStyles()}"
+			>
+				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
+			</div>
 		`;
 	}
 
@@ -441,6 +451,14 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		));
 	}
 
+	_handleInlineHelpStyles() {
+		const style = {
+			fontSize: '15px',
+			marginTop: '0.5rem'
+		}
+		return this._inlineHelpDefined ? styleMap(style) : '';
+	}
+
 	async _handleKeydown(e) {
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
@@ -450,5 +468,10 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		}
 	}
 
+	_hasInlineHelpContent(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._inlineHelpDefined = content?.length > 0;
+	}
 }
 customElements.define('d2l-input-time', InputTime);
