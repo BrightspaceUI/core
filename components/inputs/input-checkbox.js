@@ -7,6 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
@@ -100,7 +101,8 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
+			value: { type: String },
+			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -173,6 +175,8 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.notTabbable = false;
 		this.value = 'on';
 		this._descriptionId = getUniqueId();
+		this._inlinehelpId = getUniqueId();
+		this._inlineHelpDefined = false;
 	}
 
 	static get focusElementSelector() {
@@ -189,11 +193,12 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
+		const ariaDescribeById = ifDefined(this.description ? `${this._inlinehelpId} ${this._descriptionId}` : this._inlinehelpId)
 		return html`
 			<label>
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
-					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
+					aria-describedby="${ariaDescribeById}"
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this._handleChange}"
 					class="d2l-input-checkbox"
@@ -206,7 +211,13 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
-			${offscreenContainer}
+			<div
+				class="d2l-body-small"
+				style="${this._handleInlineHelpStyles()}"
+			>
+				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
+			</div>
+		  	${offscreenContainer}
 		`;
 	}
 
@@ -240,5 +251,18 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		}
 	}
 
+	_hasInlineHelpContent(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+
+		this._inlineHelpDefined = content?.length > 0;
+	}
+
+	_handleInlineHelpStyles() {
+		const style = {
+			fontSize: '15px',
+			marginTop: '0.5rem'
+		}
+		return this._inlineHelpDefined ? styleMap(style) : '';
+	}
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);
