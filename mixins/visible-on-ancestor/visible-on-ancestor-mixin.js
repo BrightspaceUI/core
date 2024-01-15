@@ -15,6 +15,17 @@ export const visibleOnAncestorStyles = css`
 		transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 	}
 
+	:host([__voa-state="hidden"][animation-type="opacity"]),
+	:host([__voa-state="hiding"][animation-type="opacity"]) {
+		transform: none !important;
+	}
+	:host([__voa-state="showing"][animation-type="opacity"]) {
+		transition: opacity 200ms ease-in !important;
+	}
+	:host([__voa-state="hiding"][animation-type="opacity"]) {
+		transition: none !important;
+	}
+
 	@media only screen and (hover: none), only screen and (-moz-touch-enabled: 1) {
 		:host([__voa-state="hidden"]),
 		:host([__voa-state="hiding"]) {
@@ -37,6 +48,10 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
+			animationType: { type: String, reflect: true, attribute: 'animation-type' },
+			/**
+			 * @ignore
+			 */
 			visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
 			__voaState: { type: String, reflect: true, attribute: '__voa-state' }
 		};
@@ -45,6 +60,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
+		this.animationType = 'opacity-transform';
 		this.visibleOnAncestor = false;
 	}
 
@@ -97,7 +113,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 			this.__voaState = 'hidden';
 		} else {
 			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'transform') return;
+				if (e.propertyName !== 'transform' && e.propertyName !== 'opacity') return;
 				this.removeEventListener('transitionend', handleTransitionEnd);
 				this.__voaState = 'hidden';
 			};
@@ -134,11 +150,11 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	}
 
 	__voaShow() {
-		if (reduceMotion) {
+		if (reduceMotion && this.animationType !== 'opacity') {
 			this.__voaState = 'shown';
 		} else {
 			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'transform') return;
+				if (e.propertyName !== 'transform' && e.propertyName !== 'opacity') return;
 				this.removeEventListener('transitionend', handleTransitionEnd);
 				this.__voaState = 'shown';
 			};

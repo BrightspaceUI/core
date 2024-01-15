@@ -24,6 +24,11 @@ describe('button-add', () => {
 					});
 				});
 			});
+
+			it('rtl', async() => {
+				const elem = await fixture(html`<d2l-button-add mode="${mode}"></d2l-button-add>`, { rtl: true });
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 });
