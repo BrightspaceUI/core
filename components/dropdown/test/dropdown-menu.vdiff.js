@@ -3,7 +3,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
-import { clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const nestedDropdownMenu = html`
@@ -37,14 +37,6 @@ const createMenu = (dark) => html`
 		<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
 		<d2l-menu-item text="The Universe"></d2l-menu-item>
 	</d2l-menu>
-`;
-
-const dropdownRadioMenu = html`
-	<d2l-menu label="Astronomy">
-    	<d2l-menu-item-radio text="Chapter 0" value="0"></d2l-menu-item-radio>
-    	<d2l-menu-item-radio id="select-radio" text="Chapter 1" value="1"></d2l-menu-item-radio>
-    	<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
-    </d2l-menu>
 `;
 
 const menuWithHeaderFooter = html`
