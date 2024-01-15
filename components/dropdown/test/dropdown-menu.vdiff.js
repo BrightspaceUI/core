@@ -3,7 +3,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const nestedDropdownMenu = html`
