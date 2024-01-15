@@ -3,7 +3,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
-import { clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const nestedDropdownMenu = html`
@@ -159,6 +159,7 @@ describe('dropdown-menu', () => {
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		clickElem(elem.querySelector('#select-radio'));
+		await aTimeout(1000);
 		await expect(dropdown).to.be.golden();
 	});
 });
