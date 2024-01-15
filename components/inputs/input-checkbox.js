@@ -253,7 +253,9 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleInlineHelpStyles() {
-		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
+		const styles = { ...inlineHelpStyles };
+		styles.marginLeft = "1.7rem" // Check box has width 1.2rem, text has margin-left 0.5rem
+		return this._inlineHelpDefined ? styleMap(styles) : '';
 	}
 
 	_hasInlineHelpContent(e) {
