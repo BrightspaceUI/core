@@ -138,6 +138,11 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					vertical-align: top;
 					white-space: normal;
 				}
+				.d2l-inline-help {
+					font-size: 15px;
+					margin-top: 0.5rem;
+					margin-left: 1.7rem;
+				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
 					margin-left: 0;
 					margin-right: 0.5rem;
@@ -213,7 +218,7 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
 			<div
-				class="d2l-body-small"
+				class="d2l-body-small d2l-inline-help"
 				style="${this._handleInlineHelpStyles()}"
 			>
 				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
@@ -255,7 +260,8 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	_handleInlineHelpStyles() {
 		const styles = { ...inlineHelpStyles };
 		styles.marginLeft = '1.7rem'; // Check box has width 1.2rem, text has margin-left 0.5rem
-		return this._inlineHelpDefined ? styleMap(styles) : '';
+		styles.display = 'none';
+		return !this._inlineHelpDefined ? styleMap(styles) : '';
 	}
 
 	_hasInlineHelpContent(e) {
