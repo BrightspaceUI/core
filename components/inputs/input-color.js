@@ -10,11 +10,11 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpStyles } from './input-styles.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { inlineHelpStyles } from './input-styles.js';
 
 const DEFAULT_VALUE = '#000000';
 const DEFAULT_VALUE_BG = '#FFFFFF';
@@ -276,16 +276,14 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		const opener = this._getOpener();
 
 		return html`
-			<>
-				${label}${opener}${tooltip}
-				<div
-					class="d2l-body-small"
-					style="${this._handleInlineHelpStyles()}"
-					aria-describedby="${this._inlinehelpId}"
-				>
-					<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
-				</div>
-			</>
+			${label}${opener}${tooltip}
+			<div
+				class="d2l-body-small"
+				style="${this._handleInlineHelpStyles()}"
+				aria-describedby="${this._inlinehelpId}"
+			>
+				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
+			</div>
 		`;
 
 	}

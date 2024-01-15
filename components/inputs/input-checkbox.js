@@ -4,11 +4,11 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { inlineHelpStyles } from './input-styles.js';
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
@@ -194,7 +194,7 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
-		const ariaDescribeById = ifDefined(this.description ? `${this._inlinehelpId} ${this._descriptionId}` : this._inlinehelpId)
+		const ariaDescribeById = ifDefined(this.description ? `${this._inlinehelpId} ${this._descriptionId}` : this._inlinehelpId);
 		return html`
 			<label>
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
@@ -252,14 +252,14 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		}
 	}
 
+	_handleInlineHelpStyles() {
+		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
+	}
+
 	_hasInlineHelpContent(e) {
 		const content = e.target.assignedNodes({ flatten: true });
 
 		this._inlineHelpDefined = content?.length > 0;
-	}
-
-	_handleInlineHelpStyles() {
-		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
 	}
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);
