@@ -39,7 +39,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				:host([_close-radio]) {
 					animation: var(--d2l-dropdown-close-animation-name) ${dropdownDelay}ms ease-out;
 					animation-delay: 50ms;
-					display: inline-block;
 				}
 
 				@media (prefers-reduced-motion: reduce) {
@@ -107,8 +106,10 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
 
-	_closeRadioAction() {
+	_onAnimationEnd() {
+		if (!this._closeRadio) return;
 		this._closeRadio = false;
+		this.close();
 	}
 
 	_onChange(e) {
@@ -123,7 +124,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			}, dropdownDelay);
 		} else {
 			this._closeRadio = true;
-			this.close();
 		}
 	}
 
