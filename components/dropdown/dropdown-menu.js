@@ -81,7 +81,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			this.maxHeight = this._maxHeightNonTray;
 		}
 
-		this.addEventListener('animationend', this._closeRadioAction);
+		this.addEventListener('animationend', this._onAnimationEnd);
 		this.addEventListener('d2l-dropdown-open', this._onOpen);
 		this.addEventListener('d2l-dropdown-close', this._onClose);
 		this.addEventListener('d2l-menu-resize', this._onMenuResize);
