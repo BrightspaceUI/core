@@ -135,4 +135,22 @@ describe('dropdown-menu', () => {
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		await expect(dropdown).to.be.golden();
 	});
+
+	it('radio-button-close', async() => {
+		const elem = await fixture(html`
+			<div style="background-color: #000000; padding: 250px;">
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu theme="dark" class="vdiff-include">
+						${dropdownRadioMenu}
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</div>
+		`);
+		const dropdown = elem.querySelector('d2l-dropdown');
+		dropdown.toggleOpen();
+		await oneEvent(dropdown, 'd2l-dropdown-open');
+		clickElem(elem.querySelector('#select-radio'));
+		await expect(dropdown).to.be.golden();
+	});
 });
