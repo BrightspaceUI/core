@@ -191,7 +191,6 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			${tooltip}
 		`;
 	}
-
 }
 customElements.define('d2l-button-add', ButtonAdd);
 

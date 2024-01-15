@@ -160,7 +160,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
+		this.addEventListener('d2l-list-item-add-button-click', (e) => this._handleListItemAddButtonClick(e));
 		ro.observe(this);
+	}
+
+	_handleListItemAddButtonClick(e) {
+		e.stopPropagation();
+		/** Dispatched when the add button directly after the item is clicked. Event detail includes the key of the item directly above where the add button was clicked. */
+		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key } }));
+
 	}
 
 	disconnectedCallback() {

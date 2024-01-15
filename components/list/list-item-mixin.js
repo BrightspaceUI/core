@@ -553,8 +553,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_handleButtonAddClick() {
-		/** Dispatched when the add button directly after the item is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-add-button-click', { bubbles: true, composed: true }));
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-list-item-add-button-click', { bubbles: true }));
 	}
 
 	_isListItem(node) {
@@ -629,7 +629,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
-
 		const innerView = html`
 			<d2l-list-item-generic-layout
 				align-nested="${ifDefined(alignNested)}"
