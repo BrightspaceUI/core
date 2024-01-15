@@ -101,12 +101,11 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				border-radius: 0.3rem;
-				box-shadow: 0 0 0 3px var(--d2l-button-add-hover-focus-color);
+				border-radius: 0.2rem;
+				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				border-radius: 0.2rem;
 				padding: 0.1rem;
 			}
 
