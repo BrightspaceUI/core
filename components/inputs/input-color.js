@@ -14,6 +14,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { inlineHelpStyles } from './input-styles.js';
 
 const DEFAULT_VALUE = '#000000';
 const DEFAULT_VALUE_BG = '#FFFFFF';
@@ -372,11 +373,7 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 	}
 
 	_handleInlineHelpStyles() {
-		const style = {
-			fontSize: '15px',
-			marginTop: '0.5rem'
-		}
-		return this._inlineHelpDefined ? styleMap(style) : '';
+		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
 	}
 
 	_handleOpenDialog() {

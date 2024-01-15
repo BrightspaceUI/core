@@ -114,3 +114,8 @@ export const inputStyles = css`
 		background-image: none;
 	}
 `;
+
+export const inlineHelpStyles = {
+	fontSize: '15px',
+	marginTop: '0.5rem'
+};

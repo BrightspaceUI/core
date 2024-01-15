@@ -8,6 +8,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { inlineHelpStyles } from './input-styles.js';
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
@@ -258,11 +259,7 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleInlineHelpStyles() {
-		const style = {
-			fontSize: '15px',
-			marginTop: '0.5rem'
-		}
-		return this._inlineHelpDefined ? styleMap(style) : '';
+		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
 	}
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);

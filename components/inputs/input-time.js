@@ -12,7 +12,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
-import { inputStyles } from './input-styles.js';
+import { inlineHelpStyles, inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -452,11 +452,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	_handleInlineHelpStyles() {
-		const style = {
-			fontSize: '15px',
-			marginTop: '0.5rem'
-		}
-		return this._inlineHelpDefined ? styleMap(style) : '';
+		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
 	}
 
 	async _handleKeydown(e) {
