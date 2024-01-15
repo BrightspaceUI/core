@@ -45,14 +45,6 @@ const menuWithHeaderFooter = html`
 	<div slot="footer">Available 2020</div>
 `;
 
-const dropdownRadioMenu = html`
-	<d2l-menu label="Study Guide">
-		<d2l-menu-item-radio text="Introduction" value="0"></d2l-menu-item-radio>
-		<d2l-menu-item-radio id="select-radio" text="Chapter 1" value="1"></d2l-menu-item-radio>
-		<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
-	</d2l-menu>
-`;
-
 describe('dropdown-menu', () => {
 	it('initially opened', async() => {
 		const elem = await fixture(html`
@@ -150,7 +142,11 @@ describe('dropdown-menu', () => {
 				<d2l-dropdown>
 					<button class="d2l-dropdown-opener">Open it!</button>
 					<d2l-dropdown-menu theme="dark" class="vdiff-include">
-						${dropdownRadioMenu}
+						<d2l-menu label="Study Guide">
+							<d2l-menu-item-radio text="Introduction" value="0"></d2l-menu-item-radio>
+							<d2l-menu-item-radio id="select-radio" text="Chapter 1" value="1"></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 2" value="2"></d2l-menu-item-radio>
+						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
 			</div>
