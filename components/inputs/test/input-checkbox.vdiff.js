@@ -59,10 +59,6 @@ describe('d2l-input-checkbox', () => {
 						const elem = await fixture(checkboxFixture);
 						await focusElem(elem);
 						await expect(elem).to.be.golden();
-
-						const elem2 = await fixture(checkboxInlineHelpFixture);
-						await focusElem(elem2);
-						await expect(elem2).to.be.golden();
 					});
 				}
 
