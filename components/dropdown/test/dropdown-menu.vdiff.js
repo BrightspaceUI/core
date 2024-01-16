@@ -138,7 +138,7 @@ describe('dropdown-menu', () => {
 	});
 
 	it('radio-button-close', async() => {
-		const elem = await fixture(html`
+		const dropdown = await fixture(html`
 			<d2l-dropdown>
 				<button class="d2l-dropdown-opener">Open it!</button>
 				<d2l-dropdown-menu theme="dark" class="vdiff-include">
@@ -150,7 +150,6 @@ describe('dropdown-menu', () => {
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`);
-		const dropdown = elem.querySelector('d2l-dropdown');
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		clickElem(elem.querySelector('#select-radio'));
