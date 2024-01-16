@@ -62,7 +62,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				user-select: none;
 				white-space: nowrap;
 				width: 100%;
-				z-index: 10;
+				z-index: 1;
 			}
 			:host([mode="icon-when-interacted"]) button {
 				height: 7px;

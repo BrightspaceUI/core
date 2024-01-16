@@ -384,7 +384,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -4px;
 				margin-top: -3px;
 			}
-			:host([draggable][selectable]) [slot="add"] {
+			:host([draggable][selectable][_hovering]) [slot="add"],
+			:host([draggable][selectable][_focusing]) [slot="add"] {
 				padding-inline-end: 6px;
 			}
 			.dragging [slot="add"] {
@@ -478,7 +479,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	updateParentHasAddButon(addButton, addButtonText) {
-		this._addButtonText = addButtonText || this.localize('components.list-item.addItem');
+		this._addButtonText = addButtonText;
 		this._showAddButton = addButton;
 	}
 
@@ -629,6 +630,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
 		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
+		const addButtonText = this._addButtonText || this.localize('components.list-item.addItem');
 		const innerView = html`
 			<d2l-list-item-generic-layout
 				align-nested="${ifDefined(alignNested)}"
@@ -682,7 +684,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				${this._showAddButton ? html`
 				<div slot="add">
-					<d2l-button-add text="${ifDefined(this._addButtonText)}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
+					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>
 				` : nothing}
 				${this._renderNested(nested)}
