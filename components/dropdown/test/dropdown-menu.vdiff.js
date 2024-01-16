@@ -4,7 +4,7 @@ import '../../menu/menu-item.js';
 import '../../menu/menu-item-radio.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
-import { aTimeout, clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const nestedDropdownMenu = html`
