@@ -1,4 +1,5 @@
 import { css, html } from 'lit';
+import { bodySmallStyles } from '../typography/styles.js';
 
 export const InputInlineHelpMixin = superclass => class extends superclass {
 
@@ -9,7 +10,7 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 	}
 
 	static get styles() {
-		return [ super.styles, css`
+		return [ super.styles, bodySmallStyles, css`
 			:host([_has-inline-help]) .d2l-input-inline-help {
 				display: block;
 			}
