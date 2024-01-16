@@ -10,7 +10,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpStyles } from './input-styles.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -83,7 +83,7 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
  * This component allows for inputting a HEX color value.
  * @fires change - Dispatched when an alteration to the value is committed by the user.
  */
-class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
+class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -139,7 +139,6 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 			 */
 			launchType: { attribute: 'launch-type', type: String },
 			_opened: { state: true },
-			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -243,7 +242,6 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._opened = false;
 		this._value = undefined;
 		this._inlinehelpId = getUniqueId();
-		this._inlineHelpDefined = false;
 	}
 
 	get associatedValue() { return this._associatedValue; }
@@ -277,13 +275,7 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 
 		return html`
 			${label}${opener}${tooltip}
-			<div
-				class="d2l-body-small"
-				style="${this._handleInlineHelpStyles()}"
-				aria-describedby="${this._inlinehelpId}"
-			>
-				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
-			</div>
+			${this._renderInlineHelp(this._inlinehelpId)}
 		`;
 
 	}
@@ -370,10 +362,6 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._updateValueAndDispatchEvent(e.detail.newValue);
 	}
 
-	_handleInlineHelpStyles() {
-		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
-	}
-
 	_handleOpenDialog() {
 		if (this.launchType !== 'dialog') return;
 		if (window?.D2L?.LP?.Web?.UI?.Desktop?.MasterPages?.Dialog?.Open === undefined) {
@@ -403,12 +391,6 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-color-open', { bubbles: false, composed: false }
 		));
-	}
-
-	_hasInlineHelpContent(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-
-		this._inlineHelpDefined = content?.length > 0;
 	}
 
 	_updateValueAndDispatchEvent(newVal) {

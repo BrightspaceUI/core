@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { css, html } from 'lit';
 
 export const InputInlineHelpMixin = superclass => class extends superclass {
 
@@ -9,7 +9,7 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 	}
 
 	static get styles() {
-		return [ super.styles, bodySmallStyles, css`
+		return [ super.styles, css`
 			:host([_has-inline-help]) .d2l-input-inline-help {
 				display: block;
 			}
@@ -32,13 +32,6 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
-	}
-
-	_handleInlineHelpStyles() {
-		const styles = { ...inlineHelpStyles };
-		styles.marginLeft = '1.7rem'; // Check box has width 1.2rem, text has margin-left 0.5rem
-		styles.display = 'none';
-		return !this._inlineHelpDefined ? styleMap(styles) : '';
 	}
 
 	_handleInlineHelpSlotChange(e) {

@@ -6,19 +6,19 @@ import '../menu/menu-item-radio.js';
 import { css, html, LitElement } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
-import { inlineHelpStyles, inputStyles } from './input-styles.js';
+import { inputStyles } from './input-styles.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
 const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
@@ -119,7 +119,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
-class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement))))) {
+class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -171,7 +171,6 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String },
 			_hiddenContentWidth: { type: String },
-			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -231,7 +230,6 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
 		this._inlinehelpId = getUniqueId();
-		this._inlineHelpDefined = false;
 	}
 
 	get value() { return this._value; }
@@ -374,12 +372,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
-			<div
-				class="d2l-body-small"
-				style="${this._handleInlineHelpStyles()}"
-			>
-				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
-			</div>
+			${this._renderInlineHelp(this._inlinehelpId)}
 		`;
 	}
 
@@ -451,10 +444,6 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		));
 	}
 
-	_handleInlineHelpStyles() {
-		return this._inlineHelpDefined ? styleMap(inlineHelpStyles) : '';
-	}
-
 	async _handleKeydown(e) {
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
@@ -462,12 +451,6 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this.opened = true;
 			e.preventDefault();
 		}
-	}
-
-	_hasInlineHelpContent(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-
-		this._inlineHelpDefined = content?.length > 0;
 	}
 }
 customElements.define('d2l-input-time', InputTime);

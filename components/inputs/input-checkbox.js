@@ -4,12 +4,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpStyles } from './input-styles.js';
 import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 export const cssSizes = {
 	inputBoxSize: 1.2,
@@ -109,6 +107,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 * @type {string}
 			 */
 			value: { type: String },
+			_hasMargin : { type: Boolean, reflect: true, attribute: '_has-margin' }
 		};
 	}
 
@@ -164,6 +163,9 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					bottom: 0.3rem;
 					top: 0.3rem;
 				}
+				:host([_has-margin]) .d2l-input-inline-help {
+					margin-left: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
+				}
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
 				}
@@ -187,6 +189,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		this.value = 'on';
 		this._descriptionId = getUniqueId();
 		this._inlinehelpId = getUniqueId();
+		this._hasMargin = true;
 	}
 
 	static get focusElementSelector() {
@@ -254,14 +257,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		if (this.indeterminate && (browserType.indexOf('Edge') > -1)) {
 			this.simulateClick();
 		}
-	}
-
-	_handleInlineHelpStyles() {
-		super._handleInlineHelpStyles();
-		const styles = { ...inlineHelpStyles };
-		styles.marginLeft = `${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem`;
-		styles.display = 'none';
-		return !this._inlineHelpDefined ? styleMap(styles) : '';
 	}
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);
