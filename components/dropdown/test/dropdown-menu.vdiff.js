@@ -156,7 +156,7 @@ describe('dropdown-menu', () => {
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		clickElem(elem.querySelector('#select-radio'));
-		await aTimeout(1000);
+		await oneEvent(dropdown, 'd2l-dropdown-close');
 		await expect(dropdown).to.be.golden();
 	});
 });
