@@ -12,7 +12,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 export const cssSizes = {
 	inputBoxSize: 1.2,
 	checkboxMargin: 0.5,
-}
+};
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {

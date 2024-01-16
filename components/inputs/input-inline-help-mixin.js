@@ -27,6 +27,11 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 		this._hasInlineHelp = false;
 	}
 
+	_handleInlineHelpSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+		this._hasInlineHelp = content?.length > 0;
+	}
+
 	_renderInlineHelp(id) {
 		return html`
 			<div id="${id}" class="d2l-body-small d2l-input-inline-help">
@@ -34,10 +39,4 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 			</div>
 		`;
 	}
-
-	_handleInlineHelpSlotChange(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-		this._hasInlineHelp = content?.length > 0;
-	}
-
 };
