@@ -75,7 +75,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
-			_addButtonText: { type: String },
+			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hovering: { type: Boolean, reflect: true },

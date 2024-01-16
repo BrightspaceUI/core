@@ -62,7 +62,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				user-select: none;
 				white-space: nowrap;
 				width: 100%;
-				z-index: 1;
+				z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
 			}
 			:host([mode="icon-when-interacted"]) button {
 				height: 7px;
