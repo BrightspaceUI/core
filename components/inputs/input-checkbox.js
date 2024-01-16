@@ -5,10 +5,16 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpStyles } from './input-styles.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+export const cssSizes = {
+	inputBoxSize: 1.2,
+	checkboxMargin: 0.5,
+}
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
@@ -17,17 +23,17 @@ export const checkboxStyles = css`
 		appearance: none;
 		background-position: center center;
 		background-repeat: no-repeat;
-		background-size: 1.2rem 1.2rem;
+		background-size: ${cssSizes.inputBoxSize}rem ${cssSizes.inputBoxSize}rem;
 		border-radius: 0.3rem;
 		border-style: solid;
 		box-sizing: border-box;
 		display: inline-block;
-		height: 1.2rem;
+		height: ${cssSizes.inputBoxSize}rem;
 		margin: 0;
 		outline: none;
 		padding: 0;
 		vertical-align: middle;
-		width: 1.2rem;
+		width: ${cssSizes.inputBoxSize}rem;
 	}
 	input[type="checkbox"].d2l-input-checkbox:checked {
 		background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23494C4E%22%20d%3D%22M8.4%2016.6c.6.6%201.5.6%202.1%200l8-8c.6-.6.6-1.5%200-2.1-.6-.6-1.5-.6-2.1%200l-6.9%207-1.9-1.9c-.6-.6-1.5-.6-2.1%200-.6.6-.6%201.5%200%202.1l2.9%202.9z%22/%3E%3C/svg%3E%0A");
@@ -59,7 +65,7 @@ export const checkboxStyles = css`
  * @slot - Checkbox information (e.g., text)
  * @fires change - Dispatched when the checkbox's state changes
  */
-class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
+class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -103,7 +109,6 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 * @type {string}
 			 */
 			value: { type: String },
-			_inlineHelpDefined: { type: Boolean }
 		};
 	}
 
@@ -112,7 +117,7 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			css`
 				:host {
 					display: block;
-					line-height: 1.2rem;
+					line-height: ${cssSizes.inputBoxSize}rem;
 					margin-bottom: 0.9rem;
 				}
 				:host([hidden]) {
@@ -134,18 +139,18 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					display: inline-block;
 					font-size: 0.8rem;
 					font-weight: 400;
-					margin-left: 0.5rem;
+					margin-left: ${cssSizes.checkboxMargin}rem;
 					vertical-align: top;
 					white-space: normal;
 				}
 				.d2l-inline-help {
 					font-size: 15px;
-					margin-top: 0.5rem;
+					margin-top: ${cssSizes.checkboxMargin}rem;
 					margin-left: 1.7rem;
 				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
 					margin-left: 0;
-					margin-right: 0.5rem;
+					margin-right: ${cssSizes.checkboxMargin}rem;
 				}
 				:host([aria-label]) .d2l-input-checkbox-text {
 					margin-left: 0;
@@ -182,7 +187,6 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.value = 'on';
 		this._descriptionId = getUniqueId();
 		this._inlinehelpId = getUniqueId();
-		this._inlineHelpDefined = false;
 	}
 
 	static get focusElementSelector() {
@@ -217,12 +221,7 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
-			<div
-				class="d2l-body-small d2l-inline-help"
-				style="${this._handleInlineHelpStyles()}"
-			>
-				<slot name="inline-help" @slotchange="${this._hasInlineHelpContent}"></slot>
-			</div>
+			${this._renderInlineHelp(this._inlinehelpId)}
 		  	${offscreenContainer}
 		`;
 	}
@@ -258,16 +257,11 @@ class InputCheckbox extends FocusMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleInlineHelpStyles() {
+		super._handleInlineHelpStyles();
 		const styles = { ...inlineHelpStyles };
-		styles.marginLeft = '1.7rem'; // Check box has width 1.2rem, text has margin-left 0.5rem
+		styles.marginLeft = `${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem`;
 		styles.display = 'none';
 		return !this._inlineHelpDefined ? styleMap(styles) : '';
-	}
-
-	_hasInlineHelpContent(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-
-		this._inlineHelpDefined = content?.length > 0;
 	}
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);

@@ -1,15 +1,4 @@
-import '../backdrop/backdrop.js';
-import '../button/button.js';
-import '../focus-trap/focus-trap.js';
-import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { html } from 'lit';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
-import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 export const InputInlineHelpMixin = superclass => class extends superclass {
 
@@ -43,6 +32,13 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
+	}
+
+	_handleInlineHelpStyles() {
+		const styles = { ...inlineHelpStyles };
+		styles.marginLeft = '1.7rem'; // Check box has width 1.2rem, text has margin-left 0.5rem
+		styles.display = 'none';
+		return !this._inlineHelpDefined ? styleMap(styles) : '';
 	}
 
 	_handleInlineHelpSlotChange(e) {
