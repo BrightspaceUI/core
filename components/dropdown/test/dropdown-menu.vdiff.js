@@ -1,6 +1,7 @@
 import '../../button/button.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../menu/menu-item-radio.js';
 import '../dropdown.js';
 import '../dropdown-menu.js';
 import { aTimeout, clickElem, expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
