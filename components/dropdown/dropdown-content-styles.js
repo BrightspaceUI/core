@@ -279,7 +279,7 @@ export const dropdownContentStyles = css`
 		animation: d2l-dropdown-mobile-tray-bottom 300ms ease-out;
 		bottom: 0;
 	}
-	
+
 	:host([data-mobile][mobile-tray="right"][opened]) .d2l-dropdown-content-width[data-closing] {
 		animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 	}

@@ -84,9 +84,9 @@ The `illustration-name` property can be set to use one of the preset illustratio
 
 ## Empty State Action Button [d2l-empty-state-action-button]
 
-`d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component. Only a single action can be placed within an empty state component. 
+`d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component. Only a single action can be placed within an empty state component.
 
-The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`. 
+The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`.
 
 <!-- docs: demo code properties name:d2l-empty-state-action-button -->
 ```html
