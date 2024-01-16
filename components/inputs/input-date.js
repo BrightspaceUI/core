@@ -180,9 +180,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			if (minDate && maxDate) {
 				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
 			} else if (maxDate) {
-				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
+				return this.localize(`${this._namespace}.errorMaxDateOnly2`, { maxDate });
 			} else if (this.minValue) {
-				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
+				return this.localize(`${this._namespace}.errorMinDateOnly2`, { minDate });
 			}
 		}
 		return super.validationMessage;
