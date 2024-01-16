@@ -142,11 +142,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					vertical-align: top;
 					white-space: normal;
 				}
-				.d2l-inline-help {
-					font-size: 15px;
-					margin-top: ${cssSizes.checkboxMargin}rem;
-					margin-left: 1.7rem;
-				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
 					margin-left: 0;
 					margin-right: ${cssSizes.checkboxMargin}rem;
