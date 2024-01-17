@@ -128,7 +128,7 @@ export const dropdownContentStyles = css`
 	.d2l-dropdown-content-bottom {
 		box-sizing: border-box;
 		max-width: 100%;
-		min-height: 3rem;
+		min-height: 0.3rem;
 		position: relative;
 		z-index: 2;
 	}
