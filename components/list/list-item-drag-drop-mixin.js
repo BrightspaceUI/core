@@ -542,6 +542,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			this._dispatchListItemsMove(dragState.dragTargets, dragState.dropTarget, dragState.dropLocation, false);
 
 		}
+		const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+		if (nodeImage) nodeImage.classList.remove('dragging');
 
 		clearDragState();
 	}
@@ -632,6 +634,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		} else {
 			if (this.shadowRoot) {
 				const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+				nodeImage.classList.add('dragging');
 				e.dataTransfer.setDragImage(nodeImage, 50, 50);
 			}
 		}

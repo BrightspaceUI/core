@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "在新視窗中開啟。",
 	"components.list.keyboard": "使用<b>方向鍵</b>在此清單內移動焦點，或使用<b>頁面上捲/下捲</b>向上或向下移動 5 個項目",
 	"components.list-controls.label": "清單的動作",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "重新排序 {name} 的項目動作",
 	"components.list-item-drag-handle.keyboard": "重新排序項目，目前位置 {currentPosition}，總共為 {size}。若要移除這個項目，請按向上或向下箭頭。",
 	"components.list-item-drag-handle-tooltip.title": "重新排序的鍵盤控制項：",

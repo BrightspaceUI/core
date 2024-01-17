@@ -42,7 +42,6 @@ describe('d2l-list', () => {
 						<d2l-list-item label="item">
 							<d2l-list id="L2" slot="nested" grid label="Test Label">
 								<d2l-list-item label="item"></d2l-list-item>
-								</d2l-list-item>
 							</d2l-list>
 						</d2l-list-item>
 					</d2l-list>
@@ -170,6 +169,14 @@ describe('d2l-list', () => {
 			expect(elem.getSelectedListItems().length).to.equal(1);
 		});
 
+		it('dispatches d2l-list-add-button-click event when add button clicked', async() => {
+			const el = await fixture(html`<d2l-list add-button><d2l-list-item label="item" key="L1-1"></d2l-list-item></d2l-list>`);
+			const item = el.querySelector('d2l-list-item');
+			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
+			const e = await oneEvent(el, 'd2l-list-add-button-click');
+			expect(e.detail.key).to.equal('L1-1');
+		});
+
 	});
 
 	describe('nested', () => {
@@ -281,6 +288,13 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`<d2l-list-item-button label="item"></d2l-list-item-button>`);
 			clickElem(el.shadowRoot.querySelector('button'));
 			await oneEvent(el, 'd2l-list-item-button-click');
+		});
+
+		it('dispatches d2l-list-item-add-button-click event when add button clicked', async() => {
+			const el = await fixture(html`<d2l-list add-button><d2l-list-item label="item"></d2l-list-item></d2l-list>`);
+			const item = el.querySelector('d2l-list-item');
+			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(item, 'd2l-list-item-add-button-click');
 		});
 
 	});

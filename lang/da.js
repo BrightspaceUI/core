@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Åbnes i et nyt vindue.",
 	"components.list.keyboard": "Brug <b>piletasterne</b> til at flytte fokus inden for denne liste, eller <b>page up/down</b> til at flytte op eller ned med 5",
 	"components.list-controls.label": "Handlinger for liste",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger element, aktuel position {currentPosition} ud af {size}. For at flytte dette element skal du trykke på pil op eller pil ned.",
 	"components.list-item-drag-handle-tooltip.title": "Tastaturkontrolelementer for omorganisering:",
