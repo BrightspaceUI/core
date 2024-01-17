@@ -36,6 +36,17 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Search Input with Inline Help</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
+						<div slot="inline-help">
+							Help text <b>right here</b>!
+						</div>
+					</d2l-input-search>
+				</template>
+			</d2l-demo-snippet>
+
 			<script>
 				document.body.addEventListener('d2l-input-search-searched', (e) => {
 					// eslint-disable-next-line no-console

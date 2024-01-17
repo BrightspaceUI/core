@@ -39,4 +39,12 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 			</div>
 		`;
 	}
+
+	_renderInlineHelpNested(id) {
+		return html`
+			<slot name="inline-help">
+				${this._renderInlineHelp(id)}
+			</slot>
+		`
+	}
 };
