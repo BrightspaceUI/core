@@ -252,7 +252,7 @@ describe('list', () => {
 			[
 				{ name: 'default' },
 				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
-				{ name: 'focus add-button', action: focusElem, margin: disabled ? undefined : 24, addButton: true },
+				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true },
 				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
 			].forEach(({ name, action, margin, addButton }) => {
 				it(name, async() => {
