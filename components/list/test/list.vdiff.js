@@ -22,9 +22,14 @@ const simpleListItemContent = html`
 `;
 
 function createSimpleList(opts) {
-	const { color1, color2, extendSeparators, separatorType, addButton } = { extendSeparators: false, addButton: false, ...opts };
+	const { color1, color2, extendSeparators, separatorType, addButton, addButtonText } = { extendSeparators: false, addButton: false, ...opts };
 	return html`
-		<d2l-list ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}" style="width: 400px" ?add-button="${addButton}">
+		<d2l-list
+			?extend-separators="${extendSeparators}"
+			separators="${ifDefined(separatorType)}"
+			style="width: 400px"
+			?add-button="${addButton}"
+			add-button-text="${ifDefined(addButtonText)}">
 			<d2l-list-item label="1" color="${ifDefined(color1)}">Item 1</d2l-list-item>
 			<d2l-list-item label="2" color="${ifDefined(color2)}">Item 2</d2l-list-item>
 			<d2l-list-item>Item 3</d2l-list-item>
@@ -46,6 +51,12 @@ describe('list', () => {
 
 		it('add-button focus', async() => {
 			const elem = await fixture(createSimpleList({ addButton: true }));
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('add-button add-button-text focus', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true, addButtonText: 'Custom Text' }));
 			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
 			await expect(elem).to.be.golden();
 		});
