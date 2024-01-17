@@ -164,6 +164,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-empty-state-container {
 				padding: 0.9rem;
+				margin-top: 0.3rem;
 			}
 
 			.list-header-text {
