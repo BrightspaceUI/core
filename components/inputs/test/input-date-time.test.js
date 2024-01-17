@@ -130,7 +130,7 @@ describe('d2l-input-date-time', () => {
 				await oneEvent(elem, 'change');
 				expect(elem.value).to.equal('2018-08-27T03:29:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal(`Date must be after ${expectedStart}`);
+				expect(elem.validationError).to.equal(`Date must be on or after ${expectedStart}`);
 			});
 
 			it('should change value if max value and typed date after maxValue', async() => {
@@ -147,7 +147,7 @@ describe('d2l-input-date-time', () => {
 				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-09-30T17:31:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal(`Date must be before ${expectedEnd}`);
+				expect(elem.validationError).to.equal(`Date must be before or on ${expectedEnd}`);
 			});
 		});
 	});
