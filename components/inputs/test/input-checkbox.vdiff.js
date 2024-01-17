@@ -34,25 +34,9 @@ describe('d2l-input-checkbox', () => {
 						?skeleton="${skeleton}">Checkbox (${text})</d2l-input-checkbox>
 				`;
 
-				const checkboxInlineHelpFixture = html`
-					<d2l-input-checkbox
-						?checked="${checked === 'checked'}"
-						?disabled="${disabled}"
-						?indeterminate="${checked === 'indeterminate'}"
-						?skeleton="${skeleton}">
-						Checkbox (${text})
-						<div slot="inline-help">
-							Help text <b>right here</b>!
-						</div>
-					</d2l-input-checkbox>
-				`;
-
 				it(name, async() => {
 					const elem = await fixture(checkboxFixture);
 					await expect(elem).to.be.golden();
-
-					const elem2 = await fixture(checkboxInlineHelpFixture);
-					await expect(elem2).to.be.golden();
 				});
 				if (!disabled) {
 					it(`${name}-focus`, async() => {
@@ -120,6 +104,17 @@ describe('d2l-input-checkbox', () => {
 						also line up nicely with the checkbox.
 					</d2l-input-checkbox-spacer>
 				</div>
+			`
+		},
+		{
+			name: 'inline-help',
+			template: html`
+				<d2l-input-checkbox>
+					Inline help checkbox
+					<div slot="inline-help">
+						Help text <b>right here</b>!
+					</div>
+				</d2l-input-checkbox>
 			`
 		}
 	].forEach(({ name, template }) => {
