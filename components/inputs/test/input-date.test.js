@@ -256,7 +256,7 @@ describe('d2l-input-date', () => {
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2019-12-31');
 			expect(elem.invalid).to.be.true;
-			expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
+			expect(elem.validationError).to.equal('Date must be on or after Jan 2, 2020');
 		});
 
 		it('should change value if typed date after maxValue', async() => {
@@ -270,7 +270,7 @@ describe('d2l-input-date', () => {
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2021-12-31');
 			expect(elem.invalid).to.be.true;
-			expect(elem.validationError).to.equal('Date must be before Dec 2, 2020');
+			expect(elem.validationError).to.equal('Date must be before or on Dec 2, 2020');
 		});
 
 		it('should change value if typed date between min and max values', async() => {
@@ -318,7 +318,7 @@ describe('d2l-input-date', () => {
 				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2019-12-31');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
+				expect(elem.validationError).to.equal('Date must be on or after Jan 2, 2020');
 			});
 
 			it('should not fire "change" event when input value removed', async() => {
