@@ -127,7 +127,17 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid', template: iconRightInvalidFixture },
 		{ name: 'icon-right-invalid-focus', template: iconRightInvalidFixture, focus: true },
 		{ name: 'icon-right-invalid-rtl', template: iconRightInvalidFixture, rtl: true },
-		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true }
+		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
+		{
+			name: 'inline-help',
+			template: html`
+				<d2l-input-text label="Name">
+					<div slot="inline-help">
+						Help text <b>right here</b>!
+					</div>
+				</d2l-input-text>
+			`
+		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 
 		it(name, async() => {
