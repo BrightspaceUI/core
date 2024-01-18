@@ -368,6 +368,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._updateItemShowingCount();
+		const items = this.getItems();
+		if (items.length > 0) items[0].first = true;
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {

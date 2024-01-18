@@ -61,6 +61,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			color: { type: String },
 			/**
+			 * @ignore
+			 */
+			first: { type: Boolean, reflect: true },
+			/**
 			 * Whether to allow the drag target to be the handle only rather than the entire cell
 			 * @type {boolean}
 			 */
@@ -143,6 +147,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::after,
+			:host([_show-add-button]) [slot="control-container"]::before,
+			:host([_show-add-button]:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -380,9 +386,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-right: -6px;
 			}
 
-			[slot="add"] {
+			[slot="add"],
+			[slot="add-top"] {
 				margin-bottom: -4px;
 				margin-top: -3px;
+			}
+			:host([has-controls]) [slot="add-top"] {
+				margin-top: 5px;
 			}
 			:host([draggable][selectable][_hovering]) [slot="add"],
 			:host([draggable][selectable][_focusing]) [slot="add"] {
@@ -399,6 +409,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	constructor() {
 		super();
+		this.first = false;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
 		this._contentId = getUniqueId();
@@ -640,6 +651,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				?grid-active="${this.role === 'rowgroup'}"
 				?no-primary-action="${this.noPrimaryAction}">
+				${this._showAddButton && this.first ? html`
+				<div slot="add-top">
+					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
+				</div>
+				` : nothing}
 				<div slot="outside-control-container"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
