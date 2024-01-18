@@ -220,7 +220,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<slot name="add-top" class="d2l-cell" data-cell-num="10"></slot>
+			<slot name="add-top" class="d2l-cell"></slot>
 
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
