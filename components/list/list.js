@@ -320,7 +320,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_handleListItemAddButtonClick(e) {
 		e.stopPropagation();
 		/** Dispatched when the add button directly after the item is clicked. Event detail includes the key of the item directly above where the add button was clicked. */
-		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key } }));
+		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, isFirstItem: e.detail.isFirstItem } }));
 	}
 
 	_handleListItemNestedChange(e) {

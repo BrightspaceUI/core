@@ -74,7 +74,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[add-top-end main-start] minmax(0, min-content)
 					[main-end add-start] minmax(0, min-content)
 					[add-end nested-start] minmax(0, min-content)
-					[nested-end end] minmax(0, min-content)
+					[nested-end end];
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
