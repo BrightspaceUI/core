@@ -143,7 +143,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 	}
 
 	static get styles() {
-		return [ buttonStyles, inputLabelStyles,
+		return [ super.styles, buttonStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
