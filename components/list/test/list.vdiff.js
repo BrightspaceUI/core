@@ -22,9 +22,14 @@ const simpleListItemContent = html`
 `;
 
 function createSimpleList(opts) {
-	const { color1, color2, extendSeparators, separatorType } = { extendSeparators: false, ...opts };
+	const { color1, color2, extendSeparators, separatorType, addButton, addButtonText } = { extendSeparators: false, addButton: false, ...opts };
 	return html`
-		<d2l-list ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}" style="width: 400px">
+		<d2l-list
+			?extend-separators="${extendSeparators}"
+			separators="${ifDefined(separatorType)}"
+			style="width: 400px"
+			?add-button="${addButton}"
+			add-button-text="${ifDefined(addButtonText)}">
 			<d2l-list-item label="1" color="${ifDefined(color1)}">Item 1</d2l-list-item>
 			<d2l-list-item label="2" color="${ifDefined(color2)}">Item 2</d2l-list-item>
 			<d2l-list-item>Item 3</d2l-list-item>
@@ -39,9 +44,41 @@ describe('list', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('add-button', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true }));
+			await expect(elem).to.be.golden();
+		});
+
+		it('add-button focus', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true }));
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('add-button add-button-text focus', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true, addButtonText: 'Custom Text' }));
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('add-button hover', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true }));
+			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden();
+		});
+
 		it('no-padding', async() => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px">
+					<d2l-list-item label="1" padding-type="none">Item 1</d2l-list-item>
+				</d2l-list>
+			`);
+			await expect(elem).to.be.golden();
+		});
+
+		it('no-padding add-button', async() => {
+			const elem = await fixture(html`
+				<d2l-list style="width: 400px" add-button>
 					<d2l-list-item label="1" padding-type="none">Item 1</d2l-list-item>
 				</d2l-list>
 			`);
@@ -64,16 +101,18 @@ describe('list', () => {
 	});
 
 	describe('separators', () => {
-		[
-			{ name: 'default', template: createSimpleList({ color1: '#0000ff' }) },
-			{ name: 'none', template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none' }) },
-			{ name: 'all', template: createSimpleList({ separatorType: 'all' }) },
-			{ name: 'between', template: createSimpleList({ separatorType: 'between' }) },
-			{ name: 'extended', template: createSimpleList({ color1: '#00ff00', extendSeparators: true }) }
-		].forEach(({ name, template }) => {
-			it(name, async() => {
-				const elem = await fixture(template);
-				await expect(elem).to.be.golden();
+		[ true, false ].forEach((addButton) => {
+			[
+				{ name: `default${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#0000ff', addButton }) },
+				{ name: `none${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none', addButton }) },
+				{ name: `all${addButton ? ' add-button' : ''}`, template: createSimpleList({ separatorType: 'all', addButton }) },
+				{ name: `between${addButton ? ' add-button' : ''}`, template: createSimpleList({ separatorType: 'between', addButton }) },
+				{ name: `extended${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#00ff00', extendSeparators: true, addButton }) }
+			].forEach(({ name, template }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden();
+				});
 			});
 		});
 	});
@@ -213,11 +252,12 @@ describe('list', () => {
 			[
 				{ name: 'default' },
 				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
+				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true },
 				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
-			].forEach(({ name, action, margin }) => {
+			].forEach(({ name, action, margin, addButton }) => {
 				it(name, async() => {
 					const elem = await fixture(html`
-						<d2l-list style="width: 400px;">
+						<d2l-list style="width: 400px;" ?add-button="${addButton || false}">
 							<d2l-list-item-button ?button-disabled="${disabled}">
 								${simpleListItemContent}
 							</d2l-list-item-button>
@@ -238,18 +278,18 @@ describe('list', () => {
 			</d2l-list>
 		`;
 		function createSelectableList(opts) {
-			const { selected } = { selected: false, ...opts };
+			const { selected, addButton } = { selected: false, addButton: false, ...opts };
 			return html`
-				<d2l-list style="width: 400px;">
+				<d2l-list style="width: 400px;" ?add-button="${addButton}">
 					<d2l-list-item label="Item 1" selectable key="1" ?selected="${selected}" color="${ifDefined(!selected ? '#00ff00' : undefined)}">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" selection-disabled selectable key="2" ?selected="${selected}" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
 				</d2l-list>
 			`;
 		}
 		function createSelectableContentList(opts) {
-			const { skeleton } = { skeleton: false, ...opts };
+			const { skeleton, addButton } = { skeleton: false, addButton: false, ...opts };
 			return html`
-				<d2l-list style="width: 400px;">
+				<d2l-list style="width: 400px;" ?add-button="${addButton}">
 					<d2l-list-item label="Item 1" selectable key="1" ?skeleton="${skeleton}">
 						${simpleListItemContent}
 					</d2l-list-item>
@@ -261,14 +301,17 @@ describe('list', () => {
 			{ name: 'not selected', template: createSelectableList() },
 			{ name: 'not selected focus', template: createSelectableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'not selected hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'not selected add-button', template: createSelectableList({ addButton: true }) },
 			{ name: 'selection-disabled hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
 			{ name: 'button selection-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="3"]')), margin: 24 },
 			{ name: 'button selection-disabled button-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="4"]')) },
 			{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
 			{ name: 'selected focus', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'selected hover', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'selected add-button', template: createSelectableList({ selected: true, addButton: true }), margin: 24 },
 			{ name: 'item-content', template: createSelectableContentList() },
 			{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
+			{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
 			{ name: 'extended separators', template: html`
 				<d2l-list extend-separators style="width: 400px;">
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
@@ -343,12 +386,16 @@ describe('list', () => {
 				{ name: 'sticky' },
 				{ name: 'sticky color', color1: '#ff0000' },
 				{ name: 'sticky extended separators', extendSeparators: true },
-				{ name: 'sticky extended separators color', color2: '#00ff00', extendSeparators: true }
-			].forEach(({ name, color1, color2, extendSeparators = false }) => {
+				{ name: 'sticky extended separators color', color2: '#00ff00', extendSeparators: true },
+				{ name: 'sticky add-button', addButton: true },
+				{ name: 'sticky color add-button', color1: '#ff0000', addButton: true },
+				{ name: 'sticky extended separators add-button', extendSeparators: true, addButton: true },
+				{ name: 'sticky extended separators color add-button', color2: '#00ff00', extendSeparators: true, addButton: true }
+			].forEach(({ name, color1, color2, extendSeparators = false, addButton = false }) => {
 				it(`${name}-${actionName}`, async() => {
 					const elem = await fixture(html`
 						<div style="height: 200px; overflow: scroll; width: 400px;">
-							<d2l-list style="padding: 0 20px;" ?extend-separators="${extendSeparators}">
+							<d2l-list style="padding: 0 20px;" ?extend-separators="${extendSeparators}" ?add-button="${addButton}">
 								<d2l-list-controls slot="controls"></d2l-list-controls>
 								<d2l-list-item label="Item 1" selectable key="1" color="${ifDefined(color1)}">
 									<d2l-list-item-content>
@@ -375,14 +422,52 @@ describe('list', () => {
 					await expect(elem).to.be.golden();
 				});
 			});
+
+			it('sticky add-button focus scrolled', async() => {
+				const elem = await fixture(html`
+					<div style="height: 200px; overflow: scroll; width: 400px;">
+						<d2l-list style="padding: 0 20px;" add-button>
+							<d2l-list-controls slot="controls"></d2l-list-controls>
+							<d2l-list-item label="Item 1" selectable key="1">
+								<d2l-list-item-content>
+									<div>Item 1</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item label="Item 2" selectable key="2">
+								<d2l-list-item-content>
+									<div>Item 2</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item label="Item 3" selectable key="3">
+								<d2l-list-item-content>
+									<div>Item 3</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item label="Item 4" selectable key="4">
+								<d2l-list-item-content>
+									<div>Item 4</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</div>
+				`);
+				const addButton = elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add');
+				await focusElem(addButton);
+				await elem.scrollTo(0, 90);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
 	describe('draggable', () => {
 		function createDraggableList(opts) {
-			const { color1, color2, extendSeparators, handleOnly, selectable } = { extendSeparators: false, handleOnly: false, selectable: false, ...opts };
+			const { color1, color2, extendSeparators, handleOnly, selectable, addButton } = { extendSeparators: false, handleOnly: false, selectable: false, addButton: false, ...opts };
 			return html`
-				<d2l-list style="width: 400px;" ?extend-separators="${extendSeparators}">
+				<d2l-list style="width: 400px;" ?extend-separators="${extendSeparators}" ?add-button="${addButton}">
 					<d2l-list-item label="Item 1" color="${ifDefined(color1)}" draggable ?drag-target-handle-only="${handleOnly}" ?selectable="${selectable}" key="1" href="${ifDefined(selectable ? 'http://www.d2l.com' : undefined)}">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" color="${ifDefined(color2)}" draggable ?drag-target-handle-only="${handleOnly}" ?selectable="${selectable}" key="2" href="${ifDefined(selectable ? 'http://www.d2l.com' : undefined)}">Item 2</d2l-list-item>
 				</d2l-list>
@@ -393,6 +478,9 @@ describe('list', () => {
 			{ name: 'default', template: createDraggableList() },
 			{ name: 'focus', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'add-button', template: createDraggableList({ addButton: true }) },
+			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="1"]')) },
+			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
@@ -405,6 +493,8 @@ describe('list', () => {
 			{ name: 'color selectable hover', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'extended separators', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }) },
 			{ name: 'extended separators hover', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
+			{ name: 'extended separators add-button', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true, addButton: true }) },
+			{ name: 'extended separators add-button hover', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true, addButton: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);

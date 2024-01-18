@@ -16,6 +16,7 @@ import '../list-item.js';
 import '../list.js';
 import { css, html, LitElement } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 const items = [{
@@ -116,6 +117,7 @@ class DemoList extends LitElement {
 
 	static get properties() {
 		return {
+			addButton: { type: Boolean, attribute: 'add-button' },
 			grid: { type: Boolean },
 			extendSeparators: { type: Boolean, attribute: 'extend-separators' },
 			_lastItemLoadedIndex: { state: true }
@@ -148,8 +150,14 @@ class DemoList extends LitElement {
 	render() {
 		const loadedItems = this.items.slice(0, this._lastItemLoadedIndex + 1);
 		const remainingItemCount = this.items.length - loadedItems.length;
+		const addButtonText = this.addButton ? 'Add New Item' : undefined;
 		return html`
-			<d2l-list ?grid="${this.grid}" item-count="${this.items.length}" ?extend-separators="${this.extendSeparators}">
+			<d2l-list
+				?grid="${this.grid}"
+				item-count="${this.items.length}"
+				?extend-separators="${this.extendSeparators}"
+				?add-button="${this.addButton}"
+				add-button-text="${ifDefined(addButtonText)}">
 				<d2l-list-controls slot="controls" select-all-pages-allowed>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
