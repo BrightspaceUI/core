@@ -49,7 +49,7 @@ const inlineHelpComponents = {
 			</div>
 		</d2l-input-time>
 	`
-}
+};
 
 const newToday = new Date('2018-02-12T19:12Z');
 const viewport = { width: 650, height: 1100 };
