@@ -106,7 +106,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
+			value: { type: String }
 		};
 	}
 
