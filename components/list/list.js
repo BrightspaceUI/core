@@ -33,6 +33,16 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * When true, show the inline add button after each list item.
+			 * @type {boolean}
+			 */
+			addButton: { type: Boolean, reflect: true, attribute: 'add-button' },
+			/**
+			 * Text to show in label tooltip on inline add button. Defaults to "Add Item".
+			 * @type {string}
+			 */
+			addButtonText: { type: String, reflect: true, attribute: 'add-button-text' },
+			/**
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
 			 * @type {array}
 			 */
@@ -115,6 +125,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	constructor() {
 		super();
+		this.addButton = false;
 		this.breakpoints = DEFAULT_BREAKPOINTS;
 		this.dragMultiple = false;
 		this.extendSeparators = false;
@@ -147,8 +158,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-item-showing-count-change', this._handleListItemShowingCountChange);
-		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListIemNestedChange(e));
+		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListItemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
+		this.addEventListener('d2l-list-item-add-button-click', (e) => this._handleListItemAddButtonClick(e));
 		ro.observe(this);
 	}
 
@@ -161,7 +173,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		// check if list items are expandable on first render so we adjust sibling spacing appropriately
-		this._handleListIemNestedChange();
+		this._handleListItemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
 
 			// batch the changes from select-all and nested lists
@@ -206,6 +218,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
 			this.resizedCallback(this.offsetWidth, true);
+		}
+		if (changedProperties.has('add-button') || changedProperties.has('add-button-text')) {
+			this._listChildrenUpdatedSubscribers.updateSubscribers();
 		}
 	}
 
@@ -302,7 +317,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (focusable) focusable.focus();
 	}
 
-	_handleListIemNestedChange(e) {
+	_handleListItemAddButtonClick(e) {
+		e.stopPropagation();
+		/** Dispatched when the add button directly after the item is clicked. Event detail includes the key of the item directly above where the add button was clicked. */
+		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key } }));
+	}
+
+	_handleListItemNestedChange(e) {
 		if (e) {
 			e.stopPropagation();
 		}
@@ -327,7 +348,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				this._listChildrenUpdatedSubscribers.updateSubscribers();
 			} else {
 				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
-				this._handleListIemNestedChange(e);
+				this._handleListItemNestedChange(e);
 			}
 		}
 	}
@@ -358,12 +379,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_updateActiveSubscriber(subscriber) {
 		subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
 		subscriber.updateSiblingHasColor(this._childHasColor);
+		subscriber.updateParentHasAddButon(this.addButton, this.addButtonText);
 	}
 
 	_updateActiveSubscribers(subscribers) {
 		subscribers.forEach(subscriber => {
 			subscriber.updateSiblingHasChildren(this._childHasExpandCollapseToggle);
 			subscriber.updateSiblingHasColor(this._childHasColor);
+			subscriber.updateParentHasAddButon(this.addButton, this.addButtonText);
 		});
 	}
 

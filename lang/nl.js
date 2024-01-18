@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Wordt geopend in een nieuw venster.",
 	"components.list.keyboard": "Navigeer binnen deze lijst met behulp van de <b>pijltjestoetsen</b> of gebruik <b>pagina omhoog/omlaag</b> om steeds vijf plekken omhoog of omlaag te bewegen",
 	"components.list-controls.label": "Acties voor lijst",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",
 	"components.list-item-drag-handle-tooltip.title": "Toetsenbordknoppen voor opnieuw ordenen:",
