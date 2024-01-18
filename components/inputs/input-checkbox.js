@@ -107,7 +107,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 * @type {string}
 			 */
 			value: { type: String },
-			_hasMargin : { type: Boolean, reflect: true, attribute: '_has-margin' }
 		};
 	}
 
@@ -158,7 +157,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					bottom: 0.3rem;
 					top: 0.3rem;
 				}
-				:host([_has-margin]) .d2l-input-inline-help {
+				.d2l-input-inline-help {
 					margin-left: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
 				}
 				.d2l-input-checkbox-text-disabled {
@@ -183,8 +182,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		this.notTabbable = false;
 		this.value = 'on';
 		this._descriptionId = getUniqueId();
-		this._inlinehelpId = getUniqueId();
-		this._hasMargin = true;
+		this._inlineHelpId = getUniqueId();
 	}
 
 	static get focusElementSelector() {
@@ -201,12 +199,12 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
-		const ariaDescribeById = ifDefined(this.description ? `${this._inlinehelpId} ${this._descriptionId}` : this._inlinehelpId);
+		const ariaDescribedByIds = `${this.description ? this._descriptionId : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
 		return html`
 			<label>
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
-					aria-describedby="${ariaDescribeById}"
+					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this._handleChange}"
 					class="d2l-input-checkbox"
@@ -219,7 +217,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
-			${this._renderInlineHelp(this._inlinehelpId)}
+			${this._renderInlineHelp(this._inlineHelpId)}
 		  	${offscreenContainer}
 		`;
 	}

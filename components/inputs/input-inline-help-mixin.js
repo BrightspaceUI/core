@@ -10,16 +10,18 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 	}
 
 	static get styles() {
-		return [ super.styles, bodySmallStyles, css`
+		const styles = [ bodySmallStyles, css`
 			:host([_has-inline-help]) .d2l-input-inline-help {
 				display: block;
 			}
 			.d2l-input-inline-help {
 				display: none;
-				margin-top: 0.5rem;
+				margin-top: 0.5rem !important;
 			}
-		`
-		];
+		`];
+
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	constructor() {
