@@ -11,6 +11,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
@@ -118,7 +119,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
-class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement))))) {
+class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -228,6 +229,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
+		this._inlineHelpId = getUniqueId();
 	}
 
 	get value() { return this._value; }
@@ -323,6 +325,8 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
 		const opened = this.opened && !this.disabled && !this.skeleton;
+		const dropdownIdTimezone = `${this._dropdownId}-timezone`;
+		const ariaDescribedByIds = `${this._dropdownId ? dropdownIdTimezone : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -338,7 +342,7 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
-					aria-describedby="${this._dropdownId}-timezone"
+					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-expanded="false"
 					aria-haspopup="true"
 					aria-required="${ifDefined(ariaRequired)}"
@@ -367,9 +371,10 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 						role="listbox">
 						${menuItems}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
+					<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
+			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 	}
 
@@ -449,6 +454,5 @@ class InputTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			e.preventDefault();
 		}
 	}
-
 }
 customElements.define('d2l-input-time', InputTime);
