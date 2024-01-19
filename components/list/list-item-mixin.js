@@ -148,7 +148,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::before,
-			:host([_show-add-button]:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -616,6 +615,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const nestedList = this._getNestedList();
 		if (this._hasNestedList !== !!nestedList) {
 			this._hasNestedList = !!nestedList;
+			this._hasNestedListAddButton = nestedList.hasAttribute('add-button');
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-nested-change', { bubbles: true, composed: true }));
 		}
@@ -695,7 +695,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				${this._showAddButton ? html`
+				${this._showAddButton && !this._hasNestedListAddButton ? html`
 				<div slot="add">
 					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>

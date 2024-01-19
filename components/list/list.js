@@ -120,6 +120,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				--d2l-list-item-color-border-radius: 3px;
 				--d2l-list-item-color-width: 3px;
 			}
+			:host([add-button]) ::slotted([slot="controls"]) {
+				margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
+			}
 		`;
 	}
 

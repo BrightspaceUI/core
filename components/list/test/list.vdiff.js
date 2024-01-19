@@ -466,6 +466,25 @@ describe('list', () => {
 				await elem.scrollTo(0, 90);
 				await expect(elem).to.be.golden();
 			});
+
+			it('sticky add-button focus', async() => {
+				const elem = await fixture(html`
+					<div style="height: 200px; overflow: scroll; width: 400px;">
+						<d2l-list style="padding: 0 20px;" add-button>
+							<d2l-list-controls slot="controls"></d2l-list-controls>
+							<d2l-list-item label="Item 1" selectable key="1">
+								<d2l-list-item-content>
+									<div>Item 1</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</div>
+				`);
+				const addButton = elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add');
+				await focusElem(addButton);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
