@@ -171,12 +171,11 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 		this._initializingHeight = true;
+		this._closeRadio = false;
 
 		const menu = this.__getMenuElement();
 
 		menu.resize();
-
-		this._closeRadio = false;
 
 		// If dropdown-menu is opened on first render, do not focus
 		if (this._initiallyOpenedSuppressFocus) this._initiallyOpenedSuppressFocus = false;
