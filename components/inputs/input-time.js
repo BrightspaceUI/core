@@ -338,10 +338,10 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				<div>${formattedWideTimePM}</div>
 			</div>
 			<label
-				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize d2l-input-time-container' : 'd2l-offscreen'}"
+				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown class="d2l-skeletize d2l-input-time-container" ?disabled="${disabled}">
+			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
