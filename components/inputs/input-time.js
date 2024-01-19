@@ -193,6 +193,9 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
 					text-align: center;
 				}
+				.d2l-input-inline-help {
+					min-width: 20rem;
+				}
 				.d2l-input-label {
 					display: inline-block;
 					vertical-align: top;
@@ -335,10 +338,10 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				<div>${formattedWideTimePM}</div>
 			</div>
 			<label
-				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
+				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize d2l-input-time-container' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
+			<d2l-dropdown class="d2l-skeletize d2l-input-time-container" ?disabled="${disabled}">
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
