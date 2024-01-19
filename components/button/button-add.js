@@ -38,9 +38,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	static get styles() {
 		return css`
 			:host {
-				--d2l-button-add-animation-delay: 50ms;
+				--d2l-button-add-animation-delay: 0ms;
 				--d2l-button-add-animation-duration: 200ms;
 				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
+				--d2l-button-add-line-color: var(--d2l-color-mica);
+			}
+			:host([mode="icon-when-interacted"]) {
+				--d2l-button-add-animation-delay: 50ms;
 			}
 			button {
 				align-items: center;
@@ -54,13 +58,18 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				justify-content: center;
 				outline: none;
 				padding: 0;
+				position: relative;
 				user-select: none;
 				white-space: nowrap;
 				width: 100%;
+				z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
+			}
+			:host([mode="icon-when-interacted"]) button {
+				height: 7px;
 			}
 
 			.line {
-				background: var(--d2l-color-mica);
+				background: var(--d2l-button-add-line-color);
 				height: 1px;
 				margin: 3px 0;
 				width: 100%;
@@ -93,11 +102,12 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				border-radius: 0.3rem;
-				box-shadow: 0 0 0 3px var(--d2l-button-add-hover-focus-color);
+				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				padding: 0.1rem;
+				border-radius: 0.2rem;
+				padding: 0.15rem;
 			}
 
 			@media (prefers-reduced-motion: no-preference) {
@@ -116,9 +126,6 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				:host([dir="rtl"]) button:hover .line-start,
 				:host([dir="rtl"]) button:focus .line-start {
 					animation-name: line-end-animation;
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-					transition: all var(--d2l-button-add-animation-duration) ease-in;
 				}
 
 				@keyframes line-start-animation {
@@ -151,8 +158,6 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 		this.mode = MODE.ICON;
 
 		this._buttonId = getUniqueId();
-		this._hasFocus = false;
-		this._hasHover = false;
 	}
 
 	static get focusElementSelector() {
@@ -162,12 +167,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
+		const offset = this.mode === MODE.ICON_WHEN_INTERACTED ? 23 : 18;
 
 		const content = this.mode !== MODE.ICON_AND_TEXT
 			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
 			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
 		const tooltip = this.mode !== MODE.ICON_AND_TEXT
-			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="18" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
 			: nothing;
 
 		return html`
@@ -217,8 +223,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				padding-inline-end: 0.2rem;
 			}
 			:host(:not([text])) svg {
-				margin: -0.3rem; /** hover/click target */
-				padding: 0.3rem; /** hover/click target */
+				margin: -0.15rem; /** hover/click target */
+				padding: 0.15rem; /** hover/click target */
 			}
 
 			span {

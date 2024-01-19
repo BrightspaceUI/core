@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Se abre en una ventana nueva.",
 	"components.list.keyboard": "Utilice las <b>teclas de flecha</b> para mover el enfoque dentro de esta lista, o <b>avanzar/retroceder página</b> para saltar cinco elementos hacia arriba o hacia abajo",
 	"components.list-controls.label": "Acciones para la lista",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Reordenar acción de elemento para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos, posición actual {currentPosition} de {size}. Para mover este elemento, pulse las flechas arriba o abajo.",
 	"components.list-item-drag-handle-tooltip.title": "Controles del teclado para reordenar:",
