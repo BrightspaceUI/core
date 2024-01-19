@@ -158,7 +158,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					top: 0.3rem;
 				}
 				.d2l-input-inline-help {
-					margin-left: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
+					margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
 				}
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
