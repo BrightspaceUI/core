@@ -176,6 +176,8 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		menu.resize();
 
+		this._closeRadio = false;
+
 		// If dropdown-menu is opened on first render, do not focus
 		if (this._initiallyOpenedSuppressFocus) this._initiallyOpenedSuppressFocus = false;
 		else menu.focus();
