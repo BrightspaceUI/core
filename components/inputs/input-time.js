@@ -193,9 +193,6 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
 					text-align: center;
 				}
-				.d2l-input-inline-help {
-					min-width: 20rem;
-				}
 				.d2l-input-label {
 					display: inline-block;
 					vertical-align: top;

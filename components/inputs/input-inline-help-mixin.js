@@ -17,6 +17,7 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 			.d2l-input-inline-help {
 				display: none;
 				margin-top: 0.5rem !important;
+				overflow-wrap: anywhere;
 			}
 		`];
 
