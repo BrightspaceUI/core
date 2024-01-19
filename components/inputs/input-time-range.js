@@ -127,12 +127,16 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 		return [super.styles, css`
 			:host {
 				display: inline-block;
+				position: relative;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			d2l-input-time {
 				display: block;
+			}
+			[slot="inline-help"] {
+				position: absolute;
 			}
 		`];
 	}
@@ -252,6 +256,9 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 						slot="left"
 						time-interval="${ifDefined(timeInterval)}"
 						value="${ifDefined(this.startValue)}">
+						<div slot="inline-help">
+							<slot name="inline-help"></slot>
+						</div>
 					</d2l-input-time>
 					<d2l-input-time
 						?novalidate="${this.noValidate}"
