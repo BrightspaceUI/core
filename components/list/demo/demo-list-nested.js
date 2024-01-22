@@ -19,6 +19,7 @@ class ListDemoNested extends LitElement {
 
 	static get properties() {
 		return {
+			addButton: { type: Boolean, attribute: 'add-button' },
 			demoItemKey: { type: String, attribute: 'demo-item-key' },
 			isDraggable: { attribute: 'is-draggable', type: Boolean },
 			selectable: { type: Boolean },
@@ -169,7 +170,11 @@ class ListDemoNested extends LitElement {
 
 	_renderList(items, nested, includeControls = false, showLoadMore = false) {
 		return html`
-			<d2l-list ?grid="${!this.disableListGrid}" drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}" item-count="${this._items.length}">
+			<d2l-list
+				?grid="${!this.disableListGrid}"
+				drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}"
+				item-count="${this._items.length}"
+				?add-button="${this.addButton}">
 				${ includeControls ? this._renderListControls() : nothing }
 				${repeat(items, item => item.key, item => html`
 					${this._renderListItem(item)}

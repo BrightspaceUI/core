@@ -146,7 +146,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="control-container"]::after,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
-			:host([_show-add-button]) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::before,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
@@ -391,7 +390,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-top: -3px;
 			}
 			:host([draggable][selectable][_hovering]) [slot="add"],
-			:host([draggable][selectable][_focusing]) [slot="add"] {
+			:host([draggable][selectable][_focusing]) [slot="add"],
+			:host([draggable][selectable][_hovering]) [slot="add-top"],
+			:host([draggable][selectable][_focusing]) [slot="add-top"] {
 				padding-inline-end: 6px;
 			}
 			.dragging [slot="add"] {
@@ -695,7 +696,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
-				${this._showAddButton && !this._hasNestedListAddButton ? html`
+				${this._showAddButton && (!this._hasNestedListAddButton || (this.expandable && !this.expanded)) ? html`
 				<div slot="add">
 					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>
