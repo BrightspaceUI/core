@@ -279,7 +279,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		this._focused = false;
 		this._hasAfterContent = false;
 		this._hovered = false;
-		this._inlinehelpId = getUniqueId();
+		this._inlineHelpId = getUniqueId();
 		this._inputId = getUniqueId();
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
@@ -429,12 +429,13 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		const unit = this.unit
 			? html`<span aria-hidden="true" class="d2l-input-unit" @click="${this._handleUnitClick}">${this.unit}</span>`
 			: null;
-		const ariaDescribeById = ifDefined(this.description ? `${this._inlinehelpId} ${this._descriptionId}` : this._inlinehelpId);
+		const ariaDescribedByIds = `${this.description ? this._descriptionId : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
 
 		const input = html`
 			<div class="d2l-input-container">
 				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
-					<input aria-describedby="${ariaDescribeById}"
+					<input
+						aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 						aria-invalid="${ifDefined(ariaInvalid)}"
 						aria-label="${ifDefined(this._getAriaLabel())}"
@@ -466,7 +467,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					<div class="d2l-input-inside-after" @keypress="${this._suppressEvent}">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
-					${this._renderInlineHelp(this._inlinehelpId)}
+					${this._renderInlineHelp(this._inlineHelpId)}
 				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._handleAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
