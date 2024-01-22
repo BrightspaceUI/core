@@ -138,7 +138,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 			 * @ignore
 			 */
 			launchType: { attribute: 'launch-type', type: String },
-			_opened: { state: true },
+			_opened: { state: true }
 		};
 	}
 
