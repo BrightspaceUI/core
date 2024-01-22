@@ -36,6 +36,23 @@ const minMaxFixture = create({ maxValue: '2018-02-27', minValue: '2018-02-13' })
 const placeholderFixture = create();
 const requiredFixture = create({ label: 'Date', labelHidden: false, required: true });
 const valueFixture = create({ value: '2019-12-20' });
+const inlineHelpComponents = {
+	normal: html`
+		<d2l-input-date label="Date">
+			<div slot="inline-help">
+				Help text <b>right here</b>!
+			</div>
+		</d2l-input-date>
+	`,
+	multiline: html`
+		<d2l-input-date label="Date">
+			<div slot="inline-help">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+			</div>
+		</d2l-input-date>
+	`
+};
 
 const newToday = new Date('2018-02-12T12:00Z');
 
@@ -54,6 +71,8 @@ describe('d2l-input-date', () => {
 		{ name: 'required', template: requiredFixture },
 		{ name: 'value', template: valueFixture },
 		{ name: 'value-focus', template: valueFixture, focus: true },
+		{ name: 'inline-help', template: inlineHelpComponents.normal, focus: true },
+		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline, focus: true },
 	].forEach(({ name, template, focus }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
