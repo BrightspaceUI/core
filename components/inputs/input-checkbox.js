@@ -106,8 +106,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
-			_hasMargin : { type: Boolean, reflect: true, attribute: '_has-margin' }
+			value: { type: String }
 		};
 	}
 
