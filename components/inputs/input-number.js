@@ -1,11 +1,11 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit';
 import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
