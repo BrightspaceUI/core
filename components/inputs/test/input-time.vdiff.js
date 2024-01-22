@@ -28,6 +28,29 @@ const create = (opts = {}) => {
 	`;
 };
 
+const inlineHelpComponents = {
+	normal: html`
+		<d2l-input-time label="Start Time" default-value="09:00:00">
+			<div slot="inline-help">
+				<b>Inline</b> help text!
+			</div>
+		</d2l-input-time>
+	`,
+	multiline: html`
+		<d2l-input-time label="Start Time" default-value="09:00:00">
+			<div slot="inline-help">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+				qui officia deserunt mollit anim id est laborum.
+			</div>
+		</d2l-input-time>
+	`
+};
+
 const newToday = new Date('2018-02-12T19:12Z');
 const viewport = { width: 650, height: 1100 };
 
@@ -43,7 +66,9 @@ describe('d2l-input-time', () => {
 		{ name: 'labelled-skeleton', template: create({ labelHidden: false, skeleton: true, value: '2:00:00' }) },
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
-		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) }
+		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
+		{ name: 'inline-help', template: inlineHelpComponents.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

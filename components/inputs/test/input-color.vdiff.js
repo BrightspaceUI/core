@@ -17,6 +17,7 @@ describe('d2l-input-color', () => {
 		{ name: 'custom-disabled', template: html`<d2l-input-color type="custom" label="Custom Fun Color" value="#0000ff" disabled></d2l-input-color>` },
 		{ name: 'custom-readonly', template: html`<d2l-input-color type="custom" label="Custom Fun Color" value="#0000ff" readonly></d2l-input-color>` },
 		{ name: 'label-hidden', template: html`<d2l-input-color type="custom" label="Custom Fun Color" label-hidden value="#0000ff"></d2l-input-color>` },
+		{ name: 'inline-help', template: html`<d2l-input-color label="Custom Color" type="custom" value="#8ad934" disabled><div slot="inline-help">Inline help</div></d2l-input-color>` },
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

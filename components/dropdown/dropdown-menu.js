@@ -171,6 +171,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			return;
 		}
 		this._initializingHeight = true;
+		this._closeRadio = false;
 
 		const menu = this.__getMenuElement();
 
