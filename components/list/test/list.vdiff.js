@@ -70,6 +70,7 @@ describe('list', () => {
 		it('add-button hover', async() => {
 			const elem = await fixture(createSimpleList({ addButton: true }));
 			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 

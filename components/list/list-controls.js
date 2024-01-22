@@ -19,7 +19,7 @@ export class ListControls extends SelectionControls {
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color);
 				--d2l-selection-controls-padding: var(--d2l-list-controls-padding, 18px);
-				z-index: 6;  /* must be greater than d2l-list-item-active-border */
+				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
 			:host([no-sticky]) {
 				z-index: auto;
