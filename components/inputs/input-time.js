@@ -229,7 +229,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
-		this._inlinehelpId = getUniqueId();
+		this._inlineHelpId = getUniqueId();
 	}
 
 	get value() { return this._value; }
@@ -325,6 +325,8 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
 		const opened = this.opened && !this.disabled && !this.skeleton;
+		const dropdownIdTimezone = `${this._dropdownId}-timezone`;
+		const ariaDescribedByIds = `${this._dropdownId ? dropdownIdTimezone : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -340,7 +342,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
-					aria-describedby="${this._dropdownId}-timezone"
+					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-expanded="false"
 					aria-haspopup="true"
 					aria-required="${ifDefined(ariaRequired)}"
@@ -369,10 +371,10 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						role="listbox">
 						${menuItems}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
+					<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
-			${this._renderInlineHelp(this._inlinehelpId)}
+			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 	}
 

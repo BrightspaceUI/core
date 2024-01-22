@@ -143,7 +143,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 	}
 
 	static get styles() {
-		return [ buttonStyles, inputLabelStyles,
+		return [ super.styles, buttonStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -241,7 +241,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 		this._missingLabelErrorHasBeenThrown = false;
 		this._opened = false;
 		this._value = undefined;
-		this._inlinehelpId = getUniqueId();
+		this._inlineHelpId = getUniqueId();
 	}
 
 	get associatedValue() { return this._associatedValue; }
@@ -275,7 +275,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 
 		return html`
 			${label}${opener}${tooltip}
-			${this._renderInlineHelp(this._inlinehelpId)}
+			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 
 	}
@@ -308,7 +308,14 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 		};
 		const ariaLabel = this._opened ? this._getTooltipLabel() : undefined;
 		const button = html`
-			<button id="opener" class="${classMap(buttonClass)}" aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}" aria-label="${ifDefined(ariaLabel)}" @click="${this._handleOpenDialog}">
+			<button
+				id="opener"
+				class="${classMap(buttonClass)}"
+				aria-describedby="${ifDefined(this._hasInlineHelp ? this._inlineHelpId : undefined)}"
+				aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
+				aria-label="${ifDefined(ariaLabel)}"
+				@click="${this._handleOpenDialog}"
+			>
 				${this._getSwatch()}
 				<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
 					<path fill="#202122" d="M4.792 5.528a.733.733 0 0 1-.537-.223L.224 1.282a.745.745 0 0 1 0-1.065.751.751 0 0 1 1.057 0l3.51 3.511L8.303.218A.751.751 0 0 1 9.36 1.281L5.337 5.305a.753.753 0 0 1-.535.223h-.01Z"/>

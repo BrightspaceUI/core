@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "Ouvre une nouvelle fenêtre.",
 	"components.list.keyboard": "Utiliser les <b>touches fléchées</b> pour parcourir cette liste ou les touches <b>page up/down</b> pour monter ou descendre 5 éléments à la fois.",
 	"components.list-controls.label": "Actions pour la liste",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
 	"components.list-item-drag-handle-tooltip.title": "Commandes du clavier pour la réorganisation :",

@@ -9,6 +9,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 
 	static get properties() {
 		return {
+			addButton: { type: Boolean, attribute: 'add-button' },
 			list: { type: Array },
 			// below are for demonstration only
 			grid: { type: Boolean },
@@ -66,8 +67,13 @@ class ListDemoDragAndDropPosition extends LitElement {
 	}
 
 	render() {
+		const addButtonText = this.addButton ? 'Add New Item' : undefined;
 		return html`
-			<d2l-list ?grid="${this.grid}" @d2l-list-item-position-change="${this._moveItems}">
+			<d2l-list
+				?grid="${this.grid}"
+				@d2l-list-item-position-change="${this._moveItems}"
+				?add-button="${this.addButton}"
+				add-button-text="${ifDefined(addButtonText)}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"

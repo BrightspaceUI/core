@@ -52,6 +52,10 @@ export class ListControls extends SelectionControls {
 		if (this._extendSeparator) this.style.setProperty('--d2l-selection-controls-padding', '0px');
 	}
 
+	updateParentHasAddButon() {
+		// N/A
+	}
+
 	updateSiblingHasChildren() {
 		// TODO: implement this in order to have consistent spacing when nested items
 	}

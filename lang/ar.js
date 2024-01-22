@@ -70,6 +70,7 @@ export default {
 	"components.link.open-in-new-window": "يفتح في نافذة جديدة.",
 	"components.list.keyboard": "استخدم <b>مفاتيح الأسهم</b> لنقل التركيز داخل هذه القائمة، أو <b>صفحة إلى الأعلى/الأسفل</b> للتحرك إلى الأعلى أو الأسفل بمقدار 5",
 	"components.list-controls.label": "إجراءات القائمة",
+	"components.list-item.addItem": "Add Item",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
 	"components.list-item-drag-handle-tooltip.title": "عناصر التحكم بلوحة المفاتيح لإعادة الترتيب:",
