@@ -365,9 +365,9 @@ class InputNumber extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleton
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>
+					${this._renderInlineHelpNested(this._inlineHelpId)}
 			</d2l-input-text>
 			${this._getTooltip()}
-			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 	}
 
