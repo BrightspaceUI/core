@@ -170,7 +170,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_hiddenContentWidth: { type: String },
+			_hiddenContentWidth: { type: String }
 		};
 	}
 
