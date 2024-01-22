@@ -37,7 +37,6 @@ const inlineHelpComponents = {
 	`,
 	multiline: html`
 		<d2l-input-text label="Name">
-			Inline help checkbox
 			<div slot="inline-help">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

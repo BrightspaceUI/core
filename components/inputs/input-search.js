@@ -69,7 +69,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 	}
 
 	static get styles() {
-		return [inputStyles, css`
+		return [ super.styles, inputStyles, css`
 				:host {
 					display: inline-block;
 					width: 100%;
@@ -98,7 +98,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 		this.noClear = false;
 		this.searchOnInput = false;
 		this.value = '';
-		this._inlinehelpId = getUniqueId();
+		this._inlineHelpId = getUniqueId();
 	}
 
 	/** @ignore */
@@ -143,8 +143,8 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 				type="search"
 				.value="${this.value}">
 				${search}
-				${this._renderInlineHelp(this._inlinehelpId)}
 			</d2l-input-text>
+			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 	}
 
