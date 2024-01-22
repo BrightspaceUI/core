@@ -91,6 +91,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 
 	constructor() {
 		super();
+		this._inlineHelpId = getUniqueId();
 		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
 		this._suppressEnter = false;
@@ -98,7 +99,6 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 		this.noClear = false;
 		this.searchOnInput = false;
 		this.value = '';
-		this._inlineHelpId = getUniqueId();
 	}
 
 	/** @ignore */
