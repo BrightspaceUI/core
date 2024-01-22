@@ -4,6 +4,28 @@ import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } fro
 
 const simpleFixture = html`<d2l-input-percent label="Percent"></d2l-input-percent>`;
 const requiredFixture = html`<d2l-input-percent label="Percent" required></d2l-input-percent>`;
+const inlineHelpComponents = {
+	normal: html`
+		<d2l-input-percent label="Grade" value="92">
+			<div slot="inline-help">
+				Help text <b>right here</b>!
+			</div>
+		</d2l-input-percent>
+	`,
+	multiline: html`
+		<d2l-input-percent label="Grade" value="92">
+			<div slot="inline-help">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+				qui officia deserunt mollit anim id est laborum.
+			</div>
+		</d2l-input-percent>
+	`
+};
 
 const viewport = { width: 376 };
 
@@ -100,6 +122,16 @@ describe('d2l-input-percent', () => {
 
 	it('custom-width-skeleton', async() => {
 		const elem = await fixture(html`<d2l-input-percent label="Percent" value="10" input-width="10rem" skeleton></d2l-input-percent>`, { viewport });
+		await expect(elem).to.be.golden();
+	});
+
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpComponents.normal, { viewport });
+		await expect(elem).to.be.golden();
+	});
+
+	it('inline-help-multiline', async() => {
+		const elem = await fixture(inlineHelpComponents.multiline, { viewport });
 		await expect(elem).to.be.golden();
 	});
 
