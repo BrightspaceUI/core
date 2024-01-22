@@ -6,6 +6,7 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
@@ -19,7 +20,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))) {
+class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -160,6 +161,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 
 		this._descriptionId = getUniqueId();
 		this._hovered = false;
+		this._inlineHelpId = getUniqueId();
 		this._textareaId = getUniqueId();
 	}
 
@@ -217,6 +219,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
 		const disabled = this.disabled || this.skeleton;
+		const ariaDescribedByIds = `${this.description ? this._descriptionId : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
 
 		const mirrorStyles = {};
 
@@ -234,7 +237,8 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 				<div class="d2l-input d2l-input-textarea-mirror" style="${styleMap(mirrorStyles)}" aria-invalid="${ifDefined(ariaInvalid)}">
 					${lines.map(line => html`${line}<br />`)}
 				</div>
-				<textarea aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
+				<textarea
+					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-invalid="${ifDefined(ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
@@ -252,6 +256,7 @@ class InputTextArea extends FocusMixin(LabelledMixin(FormElementMixin(SkeletonMi
 					.value="${this.value}">${this.value}</textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
+			${this._renderInlineHelp(this._inlineHelpId)}
 			${offscreenContainer}
 		`;
 
