@@ -67,7 +67,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	}
 
 	static get styles() {
-		return [ inputStyles, css`
+		return [inputStyles, css`
 				:host {
 					display: inline-block;
 					width: 100%;
