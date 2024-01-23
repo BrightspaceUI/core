@@ -302,10 +302,10 @@ class InputDate extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					style="${styleMap({ maxWidth: inputTextWidth })}"
 					.value="${this._formattedValue}">
 					${icon}
+					${this._renderInlineHelpNested(this._inlineHelpId)}
 				</d2l-input-text>
 				${dropdownContent}
 			</d2l-dropdown>
-			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 	}
 
