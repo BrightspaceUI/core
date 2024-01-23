@@ -40,6 +40,21 @@ export const inlineHelpFixtures = {
 				${inlineHelpSlots.normal}
 			</d2l-input-color>`
 	},
+	date: {
+		normal: html`
+			<d2l-input-date label="Date">
+				${inlineHelpSlots.normal}
+			</d2l-input-date>
+		`,
+		multiline: html`
+			<d2l-input-date label="Date">
+				<div slot="inline-help">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+					sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				</div>
+			</d2l-input-date>
+		`
+	},
 	number: {
 		normal: html`
 			<d2l-input-number label="Age" value="18">
