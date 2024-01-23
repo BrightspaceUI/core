@@ -2,7 +2,7 @@ import '../input-date.js';
 import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
