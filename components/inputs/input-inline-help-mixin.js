@@ -35,13 +35,9 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 		this._hasInlineHelp = content?.length > 0;
 	}
 
-	_renderInlineHelp({ id, withoutAria=false }) {
+	_renderInlineHelp(id) {
 		return html`
-			<div
-				id="${id}"
-				class="d2l-body-small d2l-input-inline-help"
-				aria-hidden="${withoutAria}"
-			>
+			<div id="${id}" class="d2l-body-small d2l-input-inline-help">
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
