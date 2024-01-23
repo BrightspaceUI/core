@@ -67,7 +67,7 @@ class InputFieldset extends InputInlineHelpMixin(SkeletonMixin(RtlMixin(LitEleme
 			>
 				<legend class="${classMap(legendClasses)}">${this.label}</legend>
 				<slot></slot>
-				${this._renderInlineHelp({ id: this._inlineHelpId })}
+				${this._renderInlineHelp(this._inlineHelpId)}
 			</fieldset>
 		`;
 	}
