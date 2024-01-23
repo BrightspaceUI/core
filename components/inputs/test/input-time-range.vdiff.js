@@ -4,6 +4,7 @@ import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const {
@@ -107,7 +108,9 @@ describe('d2l-input-time-range', () => {
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start time label explanation' }) },
 		{ name: 'start-end-value', template: create({ endValue: '12:22:00', startValue: '03:30:00' }) },
 		{ name: 'start-value', template: create({ startValue: '13:30:00' }) },
-		{ name: 'time-interval', template: create({ timeInterval: 'ten' }) }
+		{ name: 'time-interval', template: create({ timeInterval: 'ten' }) },
+		{ name: 'inline-help', template: inlineHelpFixtures.timeRange.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.timeRange.multiline },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

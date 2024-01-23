@@ -2,6 +2,7 @@ import '../input-date-time.js';
 import { expect, fixture, focusElem, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {
@@ -61,7 +62,9 @@ describe('d2l-input-date-time', () => {
 		{ name: 'invalid-value', template: create({ labelHidden: false, value: '2019-03-02' }) },
 		{ name: 'localized', template: localizedFixture },
 		{ name: 'no-value', template: create() },
-		{ name: 'required', template: requiredFixture }
+		{ name: 'required', template: requiredFixture },
+		{ name: 'inline-help', template: inlineHelpFixtures.dateTime.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateTime.multiline },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

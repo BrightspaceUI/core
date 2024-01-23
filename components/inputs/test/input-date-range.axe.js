@@ -1,5 +1,6 @@
 import '../input-date-range.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-date-range', () => {
 
@@ -22,6 +23,11 @@ describe('d2l-input-date-range', () => {
 
 	it('required', async() => {
 		const elem = await fixture(html`<d2l-input-date-range label="label text" required></d2l-input-date-range>`);
+		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
+	});
+
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpFixtures.dateRange.normal);
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 

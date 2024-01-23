@@ -52,6 +52,42 @@ export const inlineHelpFixtures = {
 			</d2l-input-number>
 		`
 	},
+	dateRange: {
+		normal: html`
+			<d2l-input-date-range label="Assignment Dates">
+				${inlineHelpSlots.normal}
+			</d2l-input-date-range>
+		`,
+		multiline: html`
+			<d2l-input-date-range label="Assignment Dates">
+				${inlineHelpSlots.multiline}
+			</d2l-input-date-range>
+		`
+	},
+	dateTimeRange: {
+		normal: html`
+			<d2l-input-date-time-range label="Assignment Dates">
+				${inlineHelpSlots.normal}
+			</d2l-input-date-time-range>
+		`,
+		multiline: html`
+			<d2l-input-date-time-range label="Assignment Dates">
+				${inlineHelpSlots.multiline}
+			</d2l-input-date-time-range>
+		`
+	},
+	dateTime: {
+		normal: html`
+			<d2l-input-date-time label="Name (with min and max)" min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T12:30:00Z" value="2018-08-30T12:30:00Z">
+				${inlineHelpSlots.normal}
+			</d2l-input-date-time>
+		`,
+		multiline: html`
+			<d2l-input-date-time label="Name (with min and max)" min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T12:30:00Z" value="2018-08-30T12:30:00Z">
+				${inlineHelpSlots.multiline}
+			</d2l-input-date-time>
+		`
+	},
 	search: {
 		normal: html`
 			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
@@ -74,6 +110,18 @@ export const inlineHelpFixtures = {
 			<d2l-input-text label="Name">
 				${inlineHelpSlots.multiline}
 			</d2l-input-text>
+		`
+	},
+	timeRange: {
+		normal: html`
+			<d2l-input-time-range label="Time Range">
+				${inlineHelpSlots.normal}
+			</d2l-input-time-range>
+		`,
+		multiline: html`
+			<d2l-input-time-range label="Time Range">
+				${inlineHelpSlots.multiline}
+			</d2l-input-time-range>
 		`
 	},
 	time: {

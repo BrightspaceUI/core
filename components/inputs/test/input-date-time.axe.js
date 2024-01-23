@@ -1,5 +1,6 @@
 import '../input-date-time.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-date-time', () => {
 
@@ -30,6 +31,11 @@ describe('d2l-input-date-time', () => {
 			<d2l-input-date-time labelled-by="label"></d2l-input-date-time>
 			<span id="label">label text</span>
 		</div>`);
+		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
+	});
+
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpFixtures.dateTime.normal);
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 

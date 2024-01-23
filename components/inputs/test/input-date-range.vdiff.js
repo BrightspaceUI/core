@@ -4,6 +4,7 @@ import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const {
@@ -107,7 +108,9 @@ describe('d2l-input-date-range', () => {
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true }) },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start date label explanation' }) },
-		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) }
+		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) },
+		{ name: 'inline-help', template: inlineHelpFixtures.dateRange.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateRange.multiline }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
