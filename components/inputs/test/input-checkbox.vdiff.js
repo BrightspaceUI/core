@@ -2,31 +2,7 @@ import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-
-const inlineHelpFixtures = {
-	normal: html`
-		<d2l-input-checkbox>
-			Inline help checkbox
-			<div slot="inline-help">
-				Help text <b>right here</b>!
-			</div>
-		</d2l-input-checkbox>
-	`,
-	multiline: html`
-		<d2l-input-checkbox>
-			Inline help checkbox
-			<div slot="inline-help">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-				qui officia deserunt mollit anim id est laborum.
-			</div>
-		</d2l-input-checkbox>
-	`
-};
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -133,11 +109,11 @@ describe('d2l-input-checkbox', () => {
 		},
 		{
 			name: 'inline-help',
-			template: inlineHelpFixtures.normal
+			template: inlineHelpFixtures.checkbox.normal
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.multiline
+			template: inlineHelpFixtures.checkbox.multiline
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {

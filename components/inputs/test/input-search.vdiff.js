@@ -1,30 +1,9 @@
 import '../input-search.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const noValueFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const hasValueFixture = html`<d2l-input-search label="search" value="Apples"></d2l-input-search>`;
-const inlineHelpFixtures = {
-	normal: html`
-		<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-			<div slot="inline-help">
-				Help text <b>right here</b>!
-			</div>
-		</d2l-input-search>
-	`,
-	multiline: html`
-		<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-			<div slot="inline-help">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-				qui officia deserunt mollit anim id est laborum.
-			</div>
-		</d2l-input-search>
-	`
-};
 
 const viewport = { width: 376 };
 
@@ -39,8 +18,8 @@ describe('d2l-input-search', () => {
 		{ name: 'placeholder-disabled', template: html`<d2l-input-search label="search" placeholder="Search for something..." disabled></d2l-input-search>` },
 		{ name: 'padding', template: html`<d2l-input-search label="search" style="padding: 10px;"></d2l-input-search>` },
 		{ name: 'flexbox', template: html`<div style="display: flex;"><d2l-input-search label="search"></d2l-input-search><p>stuff</p></div>` },
-		{ name: 'inline-help', template: inlineHelpFixtures.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.search.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.search.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });
