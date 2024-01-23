@@ -27,6 +27,28 @@ const iconRightInvalidFixture = html`
 `;
 const invalidFixture = html`<d2l-input-text label="Name" label-hidden type="email" value="invalid@"></d2l-input-text>`;
 const ariaInvalidFixture = html`<d2l-input-text label="Name" label-hidden value="aria-invalid" aria-invalid="true"></d2l-input-text>`;
+const inlineHelpFixtures = {
+	normal: html`
+		<d2l-input-text label="Name">
+			<div slot="inline-help">
+				Help text <b>right here</b>!
+			</div>
+		</d2l-input-text>
+	`,
+	multiline: html`
+		<d2l-input-text label="Name">
+			<div slot="inline-help">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+				qui officia deserunt mollit anim id est laborum.
+			</div>
+		</d2l-input-text>
+	`
+};
 
 const viewport = { width: 376 };
 
@@ -127,7 +149,15 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid', template: iconRightInvalidFixture },
 		{ name: 'icon-right-invalid-focus', template: iconRightInvalidFixture, focus: true },
 		{ name: 'icon-right-invalid-rtl', template: iconRightInvalidFixture, rtl: true },
-		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true }
+		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
+		{
+			name: 'inline-help',
+			template: inlineHelpFixtures.normal
+		},
+		{
+			name: 'inline-help-multiline',
+			template: inlineHelpFixtures.multiline
+		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 
 		it(name, async() => {

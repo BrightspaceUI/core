@@ -4,6 +4,28 @@ import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } fro
 
 const requiredFixture = html`<d2l-input-number label="Number" required></d2l-input-number>`;
 const simpleFixture = html`<d2l-input-number label="Number"></d2l-input-number>`;
+const inlineHelpFixtures = {
+	normal: html`
+		<d2l-input-number label="Age" value="18">
+			<div slot="inline-help">
+				Help text <b>right here</b>!
+			</div>
+		</d2l-input-number>
+	`,
+	multiline: html`
+		<d2l-input-number label="Age" value="18">
+			<div slot="inline-help">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+				qui officia deserunt mollit anim id est laborum.
+			</div>
+		</d2l-input-number>
+	`
+};
 
 const viewport = { width: 376 };
 
@@ -24,7 +46,9 @@ describe('d2l-input-number', () => {
 				</d2l-input-number>
 			`
 		},
-		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` }
+		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` },
+		{ name: 'inline-help', template: inlineHelpFixtures.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

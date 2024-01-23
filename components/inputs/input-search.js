@@ -140,6 +140,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 				type="search"
 				.value="${this.value}">
 				${search}
+				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-text>
 		`;
 	}
