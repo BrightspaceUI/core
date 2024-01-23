@@ -1,3 +1,5 @@
+import { html } from '@brightspace-ui/testing';
+
 export const inlineHelpSlots = {
 	normal: html`
 		<div slot="inline-help">
