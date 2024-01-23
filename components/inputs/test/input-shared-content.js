@@ -34,6 +34,12 @@ export const inlineHelpFixtures = {
 			</d2l-input-checkbox>
 		`
 	},
+	color: {
+		normal: html`
+			<d2l-input-color label="Custom Color" type="custom" value="#8ad934" disabled>
+				${inlineHelpSlots.normal}
+			</d2l-input-color>`
+	},
 	number: {
 		normal: html`
 			<d2l-input-number label="Age" value="18">
