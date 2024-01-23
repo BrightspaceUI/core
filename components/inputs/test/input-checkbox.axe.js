@@ -1,6 +1,6 @@
 import '../input-checkbox.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { inlineHelpCheckboxFixtures } from './input-checkbox.vdiff.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -32,7 +32,7 @@ describe('d2l-input-checkbox', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpCheckboxFixtures.normal);
+		const elem = await fixture(inlineHelpFixtures.checkbox.normal);
 		await expect(elem).to.be.accessible();
 	});
 

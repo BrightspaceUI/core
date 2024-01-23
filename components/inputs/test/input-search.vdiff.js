@@ -1,21 +1,9 @@
 import '../input-search.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
-import { inlineHelpSlots } from './input-shared-content.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const noValueFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const hasValueFixture = html`<d2l-input-search label="search" value="Apples"></d2l-input-search>`;
-export const inlineHelpSearchFixtures = {
-	normal: html`
-		<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-			${inlineHelpSlots.normal}
-		</d2l-input-search>
-	`,
-	multiline: html`
-		<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-			${inlineHelpSlots.multiline}
-		</d2l-input-search>
-	`
-};
 
 const viewport = { width: 376 };
 
@@ -30,8 +18,8 @@ describe('d2l-input-search', () => {
 		{ name: 'placeholder-disabled', template: html`<d2l-input-search label="search" placeholder="Search for something..." disabled></d2l-input-search>` },
 		{ name: 'padding', template: html`<d2l-input-search label="search" style="padding: 10px;"></d2l-input-search>` },
 		{ name: 'flexbox', template: html`<div style="display: flex;"><d2l-input-search label="search"></d2l-input-search><p>stuff</p></div>` },
-		{ name: 'inline-help', template: inlineHelpSearchFixtures.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpSearchFixtures.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.search.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.search.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

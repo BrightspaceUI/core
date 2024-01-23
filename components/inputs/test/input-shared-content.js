@@ -18,3 +18,68 @@ export const inlineHelpSlots = {
 		</div>
 	`
 };
+
+export const inlineHelpFixtures = {
+	checkbox: {
+		normal: html`
+			<d2l-input-checkbox>
+				Inline help checkbox
+				${inlineHelpSlots.normal}
+			</d2l-input-checkbox>
+		`,
+		multiline: html`
+			<d2l-input-checkbox>
+				Inline help checkbox
+				${inlineHelpSlots.multiline}
+			</d2l-input-checkbox>
+		`
+	},
+	number: {
+		normal: html`
+			<d2l-input-number label="Age" value="18">
+				${inlineHelpSlots.normal}
+			</d2l-input-number>
+		`,
+		multiline: html`
+			<d2l-input-number label="Age" value="18">
+				${inlineHelpSlots.multiline}
+			</d2l-input-number>
+		`
+	},
+	search: {
+		normal: html`
+			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
+				${inlineHelpSlots.normal}
+			</d2l-input-search>
+		`,
+		multiline: html`
+			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
+				${inlineHelpSlots.multiline}
+			</d2l-input-search>
+		`
+	},
+	text: {
+		normal: html`
+			<d2l-input-text label="Name">
+				${inlineHelpSlots.normal}
+			</d2l-input-text>
+		`,
+		multiline: html`
+			<d2l-input-text label="Name">
+				${inlineHelpSlots.multiline}
+			</d2l-input-text>
+		`
+	},
+	time: {
+		normal: html`
+			<d2l-input-time label="Start Time" default-value="09:00:00">
+				${inlineHelpSlots.normal}
+			</d2l-input-time>
+		`,
+		multiline: html`
+			<d2l-input-time label="Start Time" default-value="09:00:00">
+				${inlineHelpSlots.multiline}
+			</d2l-input-time>
+		`
+	},
+}

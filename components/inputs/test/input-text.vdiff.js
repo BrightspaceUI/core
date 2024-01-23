@@ -3,7 +3,7 @@ import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-import { inlineHelpSlots } from './input-shared-content.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
 
@@ -28,18 +28,6 @@ const iconRightInvalidFixture = html`
 `;
 const invalidFixture = html`<d2l-input-text label="Name" label-hidden type="email" value="invalid@"></d2l-input-text>`;
 const ariaInvalidFixture = html`<d2l-input-text label="Name" label-hidden value="aria-invalid" aria-invalid="true"></d2l-input-text>`;
-export const inlineHelpTextFixtures = {
-	normal: html`
-		<d2l-input-text label="Name">
-			${inlineHelpSlots.normal}
-		</d2l-input-text>
-	`,
-	multiline: html`
-		<d2l-input-text label="Name">
-			${inlineHelpSlots.multiline}
-		</d2l-input-text>
-	`
-};
 
 const viewport = { width: 376 };
 
@@ -143,11 +131,11 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
 		{
 			name: 'inline-help',
-			template: inlineHelpTextFixtures.normal
+			template: inlineHelpFixtures.text.normal
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpTextFixtures.multiline
+			template: inlineHelpFixtures.text.multiline
 		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 
