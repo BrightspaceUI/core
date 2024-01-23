@@ -1,22 +1,10 @@
 import '../input-number.js';
 import '../../button/button-icon.js';
 import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpSlots } from './input-shared-content.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const requiredFixture = html`<d2l-input-number label="Number" required></d2l-input-number>`;
 const simpleFixture = html`<d2l-input-number label="Number"></d2l-input-number>`;
-export const inlineHelpNumberFixtures = {
-	normal: html`
-		<d2l-input-number label="Age" value="18">
-			${inlineHelpSlots.normal}
-		</d2l-input-number>
-	`,
-	multiline: html`
-		<d2l-input-number label="Age" value="18">
-			${inlineHelpSlots.multiline}
-		</d2l-input-number>
-	`
-};
 
 const viewport = { width: 376 };
 
@@ -38,8 +26,8 @@ describe('d2l-input-number', () => {
 			`
 		},
 		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` },
-		{ name: 'inline-help', template: inlineHelpNumberFixtures.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpNumberFixtures.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.number.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.number.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

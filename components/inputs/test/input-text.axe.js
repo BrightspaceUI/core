@@ -1,6 +1,6 @@
 import '../input-text.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { inlineHelpTextFixtures } from './input-text.vdiff.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-text', () => {
 
@@ -60,7 +60,7 @@ describe('d2l-input-text', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpTextFixtures.normal);
+		const elem = await fixture(inlineHelpFixtures.text.normal);
 		await expect(elem).to.be.accessible();
 	});
 
