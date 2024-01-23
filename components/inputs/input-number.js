@@ -5,7 +5,6 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -76,7 +75,7 @@ function roundPrecisely(val, maxFractionDigits) {
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputNumber extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))))) {
+class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -211,7 +210,6 @@ class InputNumber extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleton
 
 		this._formattedValue = '';
 		this._hintType = HINT_TYPES.NONE;
-		this._inlineHelpId = getUniqueId();
 		this._inputId = getUniqueId();
 		this._trailingZeroes = false;
 		this._valueTrailingZeroes = '';
@@ -365,7 +363,7 @@ class InputNumber extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleton
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>
-					${this._renderInlineHelpNested(this._inlineHelpId)}
+					<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-text>
 			${this._getTooltip()}
 		`;

@@ -3,9 +3,7 @@ import '../colors/colors.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -17,7 +15,7 @@ export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
  * This component wraps the native "<input type="search">"" element and is for text searching.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
-class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
+class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -69,7 +67,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 	}
 
 	static get styles() {
-		return [ super.styles, inputStyles, css`
+		return [ inputStyles, css`
 				:host {
 					display: inline-block;
 					width: 100%;
@@ -91,7 +89,6 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 
 	constructor() {
 		super();
-		this._inlineHelpId = getUniqueId();
 		this._inputTimeout = undefined;
 		this._lastSearchValue = '';
 		this._suppressEnter = false;
@@ -143,7 +140,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 				type="search"
 				.value="${this.value}">
 				${search}
-				${this._renderInlineHelpNested(this._inlineHelpId)}
+				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-text>
 		`;
 	}
