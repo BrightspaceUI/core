@@ -27,7 +27,7 @@ const iconRightInvalidFixture = html`
 `;
 const invalidFixture = html`<d2l-input-text label="Name" label-hidden type="email" value="invalid@"></d2l-input-text>`;
 const ariaInvalidFixture = html`<d2l-input-text label="Name" label-hidden value="aria-invalid" aria-invalid="true"></d2l-input-text>`;
-const inlineHelpComponents = {
+const inlineHelpFixtures = {
 	normal: html`
 		<d2l-input-text label="Name">
 			<div slot="inline-help">
@@ -152,11 +152,11 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
 		{
 			name: 'inline-help',
-			template: inlineHelpComponents.normal
+			template: inlineHelpFixtures.normal
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpComponents.multiline
+			template: inlineHelpFixtures.multiline
 		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 

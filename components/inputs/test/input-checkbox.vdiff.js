@@ -3,7 +3,7 @@ import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
-const inlineHelpComponents = {
+const inlineHelpFixtures = {
 	normal: html`
 		<d2l-input-checkbox>
 			Inline help checkbox
@@ -133,11 +133,11 @@ describe('d2l-input-checkbox', () => {
 		},
 		{
 			name: 'inline-help',
-			template: inlineHelpComponents.normal
+			template: inlineHelpFixtures.normal
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpComponents.multiline
+			template: inlineHelpFixtures.multiline
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {

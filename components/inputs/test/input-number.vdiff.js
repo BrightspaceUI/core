@@ -4,7 +4,7 @@ import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } fro
 
 const requiredFixture = html`<d2l-input-number label="Number" required></d2l-input-number>`;
 const simpleFixture = html`<d2l-input-number label="Number"></d2l-input-number>`;
-const inlineHelpComponents = {
+const inlineHelpFixtures = {
 	normal: html`
 		<d2l-input-number label="Age" value="18">
 			<div slot="inline-help">
@@ -47,8 +47,8 @@ describe('d2l-input-number', () => {
 			`
 		},
 		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` },
-		{ name: 'inline-help', template: inlineHelpComponents.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

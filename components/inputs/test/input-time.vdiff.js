@@ -28,7 +28,7 @@ const create = (opts = {}) => {
 	`;
 };
 
-const inlineHelpComponents = {
+const inlineHelpFixtures = {
 	normal: html`
 		<d2l-input-time label="Start Time" default-value="09:00:00">
 			<div slot="inline-help">
@@ -67,8 +67,8 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'inline-help', template: inlineHelpComponents.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });
