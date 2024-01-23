@@ -4,13 +4,11 @@ import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class InputDateTimeRangeTo extends InputInlineHelpMixin(SkeletonMixin(LocalizeCoreElement(LitElement))) {
+class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -131,21 +129,16 @@ class InputDateTimeRangeTo extends InputInlineHelpMixin(SkeletonMixin(LocalizeCo
 		};
 
 		return html`
-			<div
-				aria-describedby="${ifDefined(this._hasInlineHelp ? this._inlineHelpId : undefined)}"
-			>
-				<div class="${classMap(containerClassMap)}">
-					<div class="d2l-input-date-time-range-start-container">
-						<slot name="left"></slot>
-					</div>
-					<div class="d2l-input-date-time-range-end-container">
-						<div class="d2l-body-small d2l-skeletize d2l-input-date-time-range-to-to">
-							${this.localize('components.input-date-time-range-to.to')}
-						</div>
-						<slot name="right"></slot>
-					</div>
+			<div class="${classMap(containerClassMap)}">
+				<div class="d2l-input-date-time-range-start-container">
+					<slot name="left"></slot>
 				</div>
-				${this._renderInlineHelp({ id: this._inlineHelpId })}
+				<div class="d2l-input-date-time-range-end-container">
+					<div class="d2l-body-small d2l-skeletize d2l-input-date-time-range-to-to">
+						${this.localize('components.input-date-time-range-to.to')}
+					</div>
+					<slot name="right"></slot>
+				</div>
 			</div>
 		`;
 	}

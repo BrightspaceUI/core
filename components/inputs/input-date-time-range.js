@@ -277,6 +277,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 						<slot name="end" @slotchange="${this._onSlotChange}"></slot>
 					</div>
 				</d2l-input-date-time-range-to>
+				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-fieldset>
 		`;
 	}

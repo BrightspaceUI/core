@@ -272,6 +272,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 						value="${ifDefined(this.endValue)}">
 					</d2l-input-time>
 				</d2l-input-date-time-range-to>
+				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-fieldset>
 		`;
 	}

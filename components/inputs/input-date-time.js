@@ -282,6 +282,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 						.value="${parsedValue}">
 					</d2l-input-date>${inputTime}
 				</div>
+				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-fieldset>
 		`;
 	}
