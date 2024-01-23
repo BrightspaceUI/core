@@ -2,9 +2,7 @@ import './input-number.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -15,7 +13,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputPercent extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))))) {
+class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -88,7 +86,6 @@ class InputPercent extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleto
 		this.disabled = false;
 		this.labelHidden = false;
 		this.required = false;
-		this._inlineHelpId = getUniqueId();
 	}
 
 	get value() { return this._value; }
@@ -130,7 +127,7 @@ class InputPercent extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleto
 				value="${ifDefined(this.value)}"
 				value-align="end">
 					<slot slot="after" name="after"></slot>
-					${this._renderInlineHelp({ id: this._inlineHelpId, nested: true })}
+					<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-number>
 		`;
 	}

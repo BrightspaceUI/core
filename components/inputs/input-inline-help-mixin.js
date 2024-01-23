@@ -35,8 +35,8 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 		this._hasInlineHelp = content?.length > 0;
 	}
 
-	_renderInlineHelp({ id, nested=false, withoutAria=false }) {
-		const regularComponent = html`
+	_renderInlineHelp({ id, withoutAria=false }) {
+		return html`
 			<div
 				id="${id}"
 				class="d2l-body-small d2l-input-inline-help"
@@ -45,12 +45,5 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
-
-		const nestedComponent =  html`
-			<slot slot="inline-help" name="inline-help">
-				${regularComponent}
-			</slot>
-		`;
-		return nested ? nestedComponent : regularComponent;
 	}
 };
