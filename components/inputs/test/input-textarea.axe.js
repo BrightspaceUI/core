@@ -1,5 +1,6 @@
 import '../input-textarea.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpTextAreaFixtures } from './input-textarea.vdiff.js';
 
 describe('d2l-input-textarea', () => {
 
@@ -45,6 +46,11 @@ describe('d2l-input-textarea', () => {
 
 	it('no border', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" no-border></d2l-input-textarea>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpTextAreaFixtures.normal);
 		await expect(elem).to.be.accessible();
 	});
 

@@ -1,6 +1,20 @@
 import '../input-textarea.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpSlots } from './input-shared-content.js';
+
+export const inlineHelpTextAreaFixtures = {
+	normal: html`
+		<d2l-input-textarea label="Description">
+			${inlineHelpSlots.normal}
+		</d2l-input-textarea>
+	`,
+	multiline: html`
+		<d2l-input-textarea label="Description">
+			${inlineHelpSlots.multiline}
+		</d2l-input-textarea>
+	`
+};
 
 const viewport = { width: 376 };
 
@@ -10,28 +24,6 @@ describe('d2l-input-textarea', () => {
 	const placeholderFixture = html`<d2l-input-textarea label="Label" placeholder="placeholder"></d2l-input-textarea>`;
 	const invalidFixture = html`<d2l-input-textarea label="Label" value="invalid" aria-invalid="true"></d2l-input-textarea>`;
 	const noBorderPaddingFixture = html`<d2l-input-textarea label="Label" value="text" no-border no-padding></d2l-input-textarea>`;
-	const inlineHelpComponents = {
-		normal: html`
-			<d2l-input-textarea label="Description">
-				<div slot="inline-help">
-					Help text <b>right here</b>!
-				</div>
-			</d2l-input-textarea>
-		`,
-		multiline: html`
-			<d2l-input-textarea label="Description">
-				<div slot="inline-help">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-					sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-					Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-					qui officia deserunt mollit anim id est laborum.
-				</div>
-			</d2l-input-textarea>
-		`
-	};
 	[
 		{ name: 'default', template: defaultFixture },
 		{ name: 'default-focus', template: defaultFixture, action: async(elem) => await focusElem(elem) },
@@ -58,8 +50,8 @@ describe('d2l-input-textarea', () => {
 		{ name: 'skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
 		{ name: 'no-border-padding', template: noBorderPaddingFixture },
 		{ name: 'no-border-padding-focus', template: noBorderPaddingFixture, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help', template: inlineHelpComponents.normal, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline, action: async(elem) => focusElem(elem) }
+		{ name: 'inline-help', template: inlineHelpTextAreaFixtures.normal, action: async(elem) => focusElem(elem) },
+		{ name: 'inline-help-multiline', template: inlineHelpTextAreaFixtures.multiline, action: async(elem) => focusElem(elem) }
 	].forEach(({ name, template, action, rtl }) => {
 
 		it(name, async() => {

@@ -2,6 +2,7 @@ import '../input-date.js';
 import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpSlots } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
@@ -36,12 +37,10 @@ const minMaxFixture = create({ maxValue: '2018-02-27', minValue: '2018-02-13' })
 const placeholderFixture = create();
 const requiredFixture = create({ label: 'Date', labelHidden: false, required: true });
 const valueFixture = create({ value: '2019-12-20' });
-const inlineHelpComponents = {
+export const inlineHelpDateFixtures = {
 	normal: html`
 		<d2l-input-date label="Date">
-			<div slot="inline-help">
-				Help text <b>right here</b>!
-			</div>
+			${inlineHelpSlots.normal}
 		</d2l-input-date>
 	`,
 	multiline: html`
@@ -71,8 +70,8 @@ describe('d2l-input-date', () => {
 		{ name: 'required', template: requiredFixture },
 		{ name: 'value', template: valueFixture },
 		{ name: 'value-focus', template: valueFixture, focus: true },
-		{ name: 'inline-help', template: inlineHelpComponents.normal, focus: true },
-		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline, focus: true },
+		{ name: 'inline-help', template: inlineHelpDateComponents.normal, focus: true },
+		{ name: 'inline-help-multiline', template: inlineHelpDateComponents.multiline, focus: true },
 	].forEach(({ name, template, focus }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
