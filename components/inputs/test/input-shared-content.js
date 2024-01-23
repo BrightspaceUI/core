@@ -67,6 +67,18 @@ export const inlineHelpFixtures = {
 			</d2l-input-number>
 		`
 	},
+	percent: {
+		normal: html`
+			<d2l-input-percent label="Grade" value="92">
+				${inlineHelpSlots.normal}
+			</d2l-input-percent>
+		`,
+		multiline: html`
+			<d2l-input-percent label="Grade" value="92">
+				${inlineHelpSlots.multiline}
+			</d2l-input-percent>
+		`
+	},
 	search: {
 		normal: html`
 			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
@@ -77,6 +89,18 @@ export const inlineHelpFixtures = {
 			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
 				${inlineHelpSlots.multiline}
 			</d2l-input-search>
+		`
+	},
+	textArea: {
+		normal: html`
+			<d2l-input-textarea label="Description">
+				${inlineHelpSlots.normal}
+			</d2l-input-textarea>
+		`,
+		multiline: html`
+			<d2l-input-textarea label="Description">
+				${inlineHelpSlots.multiline}
+			</d2l-input-textarea>
 		`
 	},
 	text: {

@@ -1,20 +1,7 @@
 import '../input-textarea.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-import { inlineHelpSlots } from './input-shared-content.js';
-
-export const inlineHelpTextAreaFixtures = {
-	normal: html`
-		<d2l-input-textarea label="Description">
-			${inlineHelpSlots.normal}
-		</d2l-input-textarea>
-	`,
-	multiline: html`
-		<d2l-input-textarea label="Description">
-			${inlineHelpSlots.multiline}
-		</d2l-input-textarea>
-	`
-};
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const viewport = { width: 376 };
 
@@ -50,8 +37,8 @@ describe('d2l-input-textarea', () => {
 		{ name: 'skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
 		{ name: 'no-border-padding', template: noBorderPaddingFixture },
 		{ name: 'no-border-padding-focus', template: noBorderPaddingFixture, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help', template: inlineHelpTextAreaFixtures.normal, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help-multiline', template: inlineHelpTextAreaFixtures.multiline, action: async(elem) => focusElem(elem) }
+		{ name: 'inline-help', template: inlineHelpFixtures.textArea.normal, action: async(elem) => focusElem(elem) },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.textArea.multiline, action: async(elem) => focusElem(elem) }
 	].forEach(({ name, template, action, rtl }) => {
 
 		it(name, async() => {
