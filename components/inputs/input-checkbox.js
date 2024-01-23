@@ -217,7 +217,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
-			${this._renderInlineHelp({ id: this._inlineHelpId })}
+			${this._renderInlineHelp(this._inlineHelpId)}
 		  	${offscreenContainer}
 		`;
 	}

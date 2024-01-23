@@ -275,7 +275,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 
 		return html`
 			${label}${opener}${tooltip}
-			${this._renderInlineHelp({ id: this._inlineHelpId })}
+			${this._renderInlineHelp(this._inlineHelpId)}
 		`;
 
 	}
