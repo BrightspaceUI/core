@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 
-export const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.0/assets/';
+export const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.1/assets/';
 export const fonts = {
 	LatoRegular: 'Lato-400',
 	LatoBold: 'Lato-700',
