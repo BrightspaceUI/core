@@ -88,4 +88,4 @@ export const inlineHelpFixtures = {
 			</d2l-input-time>
 		`
 	},
-}
+};
