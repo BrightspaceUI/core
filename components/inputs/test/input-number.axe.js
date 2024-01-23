@@ -1,6 +1,6 @@
 import '../input-number.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
-import { inlineHelpNumberFixtures } from './input-number.vdiff.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-number', () => {
 	it('normal', async() => {
@@ -48,7 +48,7 @@ describe('d2l-input-number', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpNumberFixtures.normal);
+		const elem = await fixture(inlineHelpFixtures.number.normal);
 		await expect(elem).to.be.accessible();
 	});
 });

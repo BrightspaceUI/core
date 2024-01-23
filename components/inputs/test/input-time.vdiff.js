@@ -2,20 +2,7 @@ import '../input-time.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpSlots } from './input-shared-content.js';
-
-export const inlineHelpTimeFixtures = {
-	normal: html`
-		<d2l-input-time label="Start Time" default-value="09:00:00">
-			${inlineHelpSlots.normal}
-		</d2l-input-time>
-	`,
-	multiline: html`
-		<d2l-input-time label="Start Time" default-value="09:00:00">
-			${inlineHelpSlots.multiline}
-		</d2l-input-time>
-	`
-};
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, value } = {
@@ -58,8 +45,8 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'inline-help', template: inlineHelpTimeFixtures.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpTimeFixtures.multiline }
+		{ name: 'inline-help', template: inlineHelpFixtures.time.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.time.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });
