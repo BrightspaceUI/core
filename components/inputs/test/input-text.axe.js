@@ -59,7 +59,7 @@ describe('d2l-input-text', () => {
 		await expect(elem).to.be.accessible();
 	});
 
-	it('invalid', async() => {
+	it('inline-help', async() => {
 		const elem = await fixture(inlineHelpTextFixtures.normal);
 		await expect(elem).to.be.accessible();
 	});
