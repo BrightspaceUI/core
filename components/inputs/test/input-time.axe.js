@@ -1,5 +1,6 @@
 import '../input-time.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpTimeFixtures } from './input-time.vdiff.js';
 
 describe('d2l-input-time', () => {
 
@@ -38,4 +39,8 @@ describe('d2l-input-time', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpTimeFixtures.normal);
+		await expect(elem).to.be.accessible();
+	});
 });

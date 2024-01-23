@@ -2,6 +2,20 @@ import '../input-time.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpSlots } from './input-shared-content.js';
+
+export const inlineHelpTimeFixtures = {
+	normal: html`
+		<d2l-input-time label="Start Time" default-value="09:00:00">
+			${inlineHelpSlots.normal}
+		</d2l-input-time>
+	`,
+	multiline: html`
+		<d2l-input-time label="Start Time" default-value="09:00:00">
+			${inlineHelpSlots.multiline}
+		</d2l-input-time>
+	`
+};
 
 const create = (opts = {}) => {
 	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, value } = {
@@ -28,29 +42,6 @@ const create = (opts = {}) => {
 	`;
 };
 
-const inlineHelpComponents = {
-	normal: html`
-		<d2l-input-time label="Start Time" default-value="09:00:00">
-			<div slot="inline-help">
-				<b>Inline</b> help text!
-			</div>
-		</d2l-input-time>
-	`,
-	multiline: html`
-		<d2l-input-time label="Start Time" default-value="09:00:00">
-			<div slot="inline-help">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-				qui officia deserunt mollit anim id est laborum.
-			</div>
-		</d2l-input-time>
-	`
-};
-
 const newToday = new Date('2018-02-12T19:12Z');
 const viewport = { width: 650, height: 1100 };
 
@@ -67,8 +58,8 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'inline-help', template: inlineHelpComponents.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpComponents.multiline }
+		{ name: 'inline-help', template: inlineHelpTimeFixtures.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpTimeFixtures.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });
