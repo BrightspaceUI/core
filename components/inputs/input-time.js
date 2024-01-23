@@ -374,7 +374,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
-			${this._renderInlineHelp(this._inlineHelpId)}
+			${this._renderInlineHelp({ id: this._inlineHelpId })}
 		`;
 	}
 

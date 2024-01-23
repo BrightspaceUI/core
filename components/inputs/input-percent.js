@@ -130,7 +130,7 @@ class InputPercent extends InputInlineHelpMixin(FocusMixin(LabelledMixin(Skeleto
 				value="${ifDefined(this.value)}"
 				value-align="end">
 					<slot slot="after" name="after"></slot>
-					${this._renderInlineHelpNested(this._inlineHelpId)}
+					${this._renderInlineHelp({ id: this._inlineHelpId, nested: true })}
 			</d2l-input-number>
 		`;
 	}

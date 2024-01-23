@@ -143,7 +143,7 @@ class InputSearch extends InputInlineHelpMixin(FocusMixin(LocalizeCoreElement(Rt
 				type="search"
 				.value="${this.value}">
 				${search}
-				${this._renderInlineHelpNested(this._inlineHelpId)}
+				${this._renderInlineHelp({ id: this._inlineHelpId, nested: true })}
 			</d2l-input-text>
 		`;
 	}
