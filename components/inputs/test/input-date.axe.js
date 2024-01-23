@@ -1,6 +1,6 @@
 import '../input-date.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { inlineHelpDateComponents } from './input-date.vdiff.js';
+import { inlineHelpDateFixtures } from './input-date.vdiff.js';
 
 describe('d2l-input-date', () => {
 
@@ -40,7 +40,7 @@ describe('d2l-input-date', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpDateComponents.normal);
+		const elem = await fixture(inlineHelpDateFixtures.normal);
 		await expect(elem).to.be.accessible();
 	});
 
