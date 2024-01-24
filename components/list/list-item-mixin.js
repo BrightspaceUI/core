@@ -82,6 +82,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
+			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
@@ -89,7 +90,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
-			_hasNestedList: { state: true },
 			_siblingHasColor: { state: true },
 		};
 	}
@@ -124,6 +124,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				content: "";
 				position: absolute;
 				width: 100%;
+			}
+            :host([_show-add-button][_has-nested-list]) [slot="control-container"]::after {
+                background-clip: content-box, border-box;
+                background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
+                background-origin: border-box;
+            }
+			:host([_show-add-button][_has-nested-list]:not([selection-disabled]):not([skeleton])[selected]) [slot="control-container"]::after {
+                background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
@@ -265,9 +273,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0 -12px;
 			}
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
-				border-left: none;
-				border-radius: 0;
-				border-right: none;
+				border-left: none !important;
+				border-radius: 0 !important;
+				border-right: none !important;
 			}
 			:host([draggable]) [slot="outside-control-container"],
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
@@ -297,10 +305,25 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 				margin-bottom: -1px;
 			}
+			/* below hides the border under the d2l-button-add */
+			:host([_hovering-primary-action][_show-add-button]) [slot="outside-control-container"],
+			:host([_hovering-selection][_show-add-button]) [slot="outside-control-container"],
+			:host([_focusing-primary-action][_show-add-button]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selected][_show-add-button]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection][_show-add-button]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing][_show-add-button]) [slot="outside-control-container"] {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+				background-origin: border-box;
+				border: double 1px transparent;
+				border-radius: 6px;
+			}
+			:host(:not([selection-disabled]):not([skeleton])[selected][_show-add-button]) [slot="outside-control-container"] {
+				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+			}
 			:host([_hovering-primary-action]) d2l-button-add,
 			:host([_hovering-selection]) d2l-button-add,
 			:host([_focusing-primary-action]) d2l-button-add,
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selected]) d2l-button-add {
 				--d2l-button-add-line-color: #b6cbe8;
@@ -387,8 +410,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			[slot="add"],
 			[slot="add-top"] {
-				margin-bottom: -4px;
-				margin-top: -3px;
+				margin-bottom: -6px;
+				margin-top: -5px;
 			}
 			:host([draggable][selectable][_hovering]) [slot="add"],
 			:host([draggable][selectable][_focusing]) [slot="add"] {

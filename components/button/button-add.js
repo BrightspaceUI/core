@@ -54,7 +54,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				cursor: pointer;
 				display: flex;
 				font-family: inherit;
-				height: 0.9rem;
+				height: 11px;
 				justify-content: center;
 				outline: none;
 				padding: 0;
@@ -64,14 +64,11 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				width: 100%;
 				z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
 			}
-			:host([mode="icon-when-interacted"]) button {
-				height: 7px;
-			}
 
 			.line {
 				background: var(--d2l-button-add-line-color);
 				height: 1px;
-				margin: 3px 0;
+				margin: 5px 0;
 				width: 100%;
 			}
 
@@ -167,7 +164,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
-		const offset = this.mode === MODE.ICON_WHEN_INTERACTED ? 23 : 18;
+		const offset = this.mode === MODE.ICON_WHEN_INTERACTED ? 21 : 18;
 
 		const content = this.mode !== MODE.ICON_AND_TEXT
 			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
