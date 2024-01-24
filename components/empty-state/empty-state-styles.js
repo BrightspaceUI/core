@@ -18,8 +18,8 @@ export const emptyStateStyles = css`
 	.action-slot::slotted(d2l-empty-state-action-button:first-of-type),
 	.action-slot::slotted(d2l-empty-state-action-link:first-of-type) {
 		display: inline;
+		padding-inline: 0.5rem;
 	}
-
 `;
 
 export const emptyStateSimpleStyles = css`
@@ -30,14 +30,8 @@ export const emptyStateSimpleStyles = css`
 		padding: 1.2rem 1.5rem;
 	}
 
-	:host([dir="rtl"]) .d2l-empty-state-description {
-		padding-left: 0.5rem;
-		padding-right: 0;
-	}
-
 	.d2l-empty-state-description {
 		display: inline;
-		padding-right: 0.5rem;
 	}
 
 `;
@@ -66,7 +60,7 @@ export const emptyStateIllustratedStyles = css`
 	.d2l-empty-state-title {
 		margin-bottom: 0.9rem;
 	}
-	
+
 	.d2l-empty-state-title-large {
 		font-size: 1.5rem;
 		line-height: 1.8rem;
