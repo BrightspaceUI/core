@@ -125,13 +125,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: absolute;
 				width: 100%;
 			}
-            :host([_show-add-button][_has-nested-list]) [slot="control-container"]::after {
-                background-clip: content-box, border-box;
-                background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
-                background-origin: border-box;
-            }
-			:host([_show-add-button][_has-nested-list]:not([selection-disabled]):not([skeleton])[selected]) [slot="control-container"]::after {
-                background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+			:host([_show-add-button][_has-nested-list]) [slot="before-content"] {
+				border-bottom: 1px solid var(--d2l-color-mica);
+				margin-bottom: -1px;
+			}
+			:host([_show-add-button][_has-nested-list]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
+				border-bottom-color: #b6cbe8;
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
@@ -677,6 +676,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				` : nothing}
 				<div slot="outside-control-container"></div>
+				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
