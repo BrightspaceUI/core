@@ -8,7 +8,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  * A tag-list allowing the user to see (and remove) the currently applied filters.
  */
 
-const CLEAR_TIMEOUT = 210; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
+const CLEAR_TIMEOUT = 310; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
 
 class FilterTags extends LocalizeCoreElement(LitElement) {
 	static get properties() {
