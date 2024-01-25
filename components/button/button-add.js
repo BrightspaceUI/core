@@ -11,9 +11,9 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const MODE = {
-	ICON: 'icon',
-	ICON_AND_TEXT: 'icon-and-text',
-	ICON_WHEN_INTERACTED: 'icon-when-interacted'
+	icon: 'icon',
+	icon_and_text: 'icon-and-text',
+	icon_when_interacted: 'icon-when-interacted'
 };
 
 /**
@@ -23,12 +23,12 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	static get properties() {
 		return {
 			/**
-			 * Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus).
+			 * Display mode of the component. Defaults to `icon` (plus icon is always visible). Other options are `icon-and-text` (plus icon and text are always visible), and `icon-when-interacted` (plus icon is only visible when hover or focus).
 			 * @type {'icon'|'icon-and-text'|'icon-when-interacted'}
 			 */
 			mode: { type: String, reflect: true },
 			/**
-			 * When text-visible is true, the text to show in the button. When text-visible is false, the text to show in the tooltip.
+			 * The text associated with the button. When mode is `icon-and-text` this text is displayed next to the icon, otherwise this text is in a tooltip.
 			 * @type {string}
 			 */
 			text: { type: String, required: true }
@@ -155,7 +155,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	constructor() {
 		super();
 
-		this.mode = MODE.ICON;
+		this.mode = MODE.icon;
 
 		this._buttonId = getUniqueId();
 	}
@@ -166,13 +166,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
-		const id = !this.mode !== MODE.ICON_AND_TEXT ? this._buttonId : undefined;
-		const offset = this.mode === MODE.ICON_WHEN_INTERACTED ? 23 : 18;
+		const id = !this.mode !== MODE.icon_and_text ? this._buttonId : undefined;
+		const offset = this.mode === MODE.icon_when_interacted ? 23 : 18;
 
-		const content = this.mode !== MODE.ICON_AND_TEXT
-			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.ICON_WHEN_INTERACTED}" animation-type="opacity"></d2l-button-add-icon-text>`
+		const content = this.mode !== MODE.icon_and_text
+			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.icon_when_interacted}" animation-type="opacity"></d2l-button-add-icon-text>`
 			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
-		const tooltip = this.mode !== MODE.ICON_AND_TEXT
+		const tooltip = this.mode !== MODE.icon_and_text
 			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
 			: nothing;
 
