@@ -593,6 +593,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			detail: { allCleared: allCleared, dimensions: dimensions }
 		}));
 		this._changeEventsToDispatch = new Map();
+		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
