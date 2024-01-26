@@ -659,7 +659,7 @@ describe('list', () => {
 			});
 		});
 
-		it('add button but nested list not', async() => {
+		it('add button only on root list', async() => {
 			const template = html`
 				<d2l-list style="width: 600px;" add-button>
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
@@ -687,7 +687,7 @@ describe('list', () => {
 			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
-		it('nested list has add button', async() => {
+		it('add button only on nested list', async() => {
 			const template = html`
 				<d2l-list style="width: 600px;">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
