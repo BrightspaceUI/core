@@ -114,7 +114,7 @@ describe('filter-tags', () => {
 			const deleteButton = items[6].shadowRoot.querySelector('d2l-button-icon');
 
 			await clickElem(deleteButton);
-			await aTimeout('300'); // clearing has a 200ms delay
+			await aTimeout('400'); // clearing has a 300ms delay
 			await expect(elem).to.be.golden();
 		});
 
@@ -124,7 +124,7 @@ describe('filter-tags', () => {
 			await sendKeys('press', 'ArrowRight');
 			await sendKeys('press', 'Delete');
 
-			await aTimeout('300'); // clearing has a 200ms delay
+			await aTimeout('400'); // clearing has a 300ms delay
 			await expect(elem).to.be.golden();
 		});
 
