@@ -175,6 +175,27 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 </d2l-button-icon>
 ```
 
+## Add Button [d2l-button-add]
+
+The `d2l-button-add` element is for quickly adding new items inline (for example in a list).
+
+<!-- docs: demo code properties name:d2l-button-add display:block autoSize:false size:xsmall -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-add.js';
+</script>
+<d2l-button-add text="Add New Item"></d2l-button-add>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | The text associated with the button. When mode is "icon-and-text", this text is displayed next to the icon. Otherwise this text is in a tooltip. |
+| `mode` | String | Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus). |
+<!-- docs: end hidden content -->
+
 ## Floating Buttons [d2l-floating-buttons]
 
 See [floating buttons](https://github.com/BrightspaceUI/core/tree/main/components/button/floating-buttons.md).
