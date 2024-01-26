@@ -2,6 +2,7 @@ import '../input-time.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, value } = {
@@ -43,7 +44,9 @@ describe('d2l-input-time', () => {
 		{ name: 'labelled-skeleton', template: create({ labelHidden: false, skeleton: true, value: '2:00:00' }) },
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
-		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) }
+		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
+		{ name: 'inline-help', template: inlineHelpFixtures.time.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.time.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

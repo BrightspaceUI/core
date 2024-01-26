@@ -363,6 +363,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>
+					<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-text>
 			${this._getTooltip()}
 		`;

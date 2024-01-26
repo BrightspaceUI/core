@@ -3,6 +3,7 @@ import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
 
@@ -127,7 +128,15 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid', template: iconRightInvalidFixture },
 		{ name: 'icon-right-invalid-focus', template: iconRightInvalidFixture, focus: true },
 		{ name: 'icon-right-invalid-rtl', template: iconRightInvalidFixture, rtl: true },
-		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true }
+		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
+		{
+			name: 'inline-help',
+			template: inlineHelpFixtures.text.normal
+		},
+		{
+			name: 'inline-help-multiline',
+			template: inlineHelpFixtures.text.multiline
+		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 
 		it(name, async() => {

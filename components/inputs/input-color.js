@@ -7,8 +7,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -81,7 +83,7 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
  * This component allows for inputting a HEX color value.
  * @fires change - Dispatched when an alteration to the value is committed by the user.
  */
-class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
+class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -141,7 +143,7 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 	}
 
 	static get styles() {
-		return [ buttonStyles, inputLabelStyles,
+		return [ super.styles, buttonStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -239,6 +241,7 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		this._missingLabelErrorHasBeenThrown = false;
 		this._opened = false;
 		this._value = undefined;
+		this._inlineHelpId = getUniqueId();
 	}
 
 	get associatedValue() { return this._associatedValue; }
@@ -270,7 +273,10 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		const tooltip = !this._opened ? html`<d2l-tooltip for="opener" for-type="label" class="vdiff-target">${this._getTooltipLabel()}</d2l-tooltip>` : nothing;
 		const opener = this._getOpener();
 
-		return html`${label}${opener}${tooltip}`;
+		return html`
+			${label}${opener}${tooltip}
+			${this._renderInlineHelp(this._inlineHelpId)}
+		`;
 
 	}
 
@@ -302,7 +308,14 @@ class InputColor extends PropertyRequiredMixin(FocusMixin(FormElementMixin(Local
 		};
 		const ariaLabel = this._opened ? this._getTooltipLabel() : undefined;
 		const button = html`
-			<button id="opener" class="${classMap(buttonClass)}" aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}" aria-label="${ifDefined(ariaLabel)}" @click="${this._handleOpenDialog}">
+			<button
+				id="opener"
+				class="${classMap(buttonClass)}"
+				aria-describedby="${ifDefined(this._hasInlineHelp ? this._inlineHelpId : undefined)}"
+				aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
+				aria-label="${ifDefined(ariaLabel)}"
+				@click="${this._handleOpenDialog}"
+			>
 				${this._getSwatch()}
 				<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
 					<path fill="#202122" d="M4.792 5.528a.733.733 0 0 1-.537-.223L.224 1.282a.745.745 0 0 1 0-1.065.751.751 0 0 1 1.057 0l3.51 3.511L8.303.218A.751.751 0 0 1 9.36 1.281L5.337 5.305a.753.753 0 0 1-.535.223h-.01Z"/>
