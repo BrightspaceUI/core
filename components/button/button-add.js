@@ -56,6 +56,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				font-family: inherit;
 				height: 11px;
 				justify-content: center;
+				margin: 6.5px 0; /* (d2l-button-add-icon-text height - line height) / 2 */
 				outline: none;
 				padding: 0;
 				position: relative;
@@ -63,6 +64,9 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				white-space: nowrap;
 				width: 100%;
 				z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
+			}
+			:host([mode="icon-and-text"]) button {
+				margin: calc((1.5rem - 11px) / 2) 0; /* (d2l-button-add-icon-text height - line height) / 2 */
 			}
 
 			.line {
@@ -164,13 +168,12 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
 		const id = !this.mode !== MODE.icon_and_text ? this._buttonId : undefined;
-		const offset = this.mode === MODE.icon_when_interacted ? 21 : 18;
 
 		const content = this.mode !== MODE.icon_and_text
 			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.icon_when_interacted}" animation-type="opacity"></d2l-button-add-icon-text>`
 			: html`<d2l-button-add-icon-text text="${text}"></d2l-button-add-icon-text>`;
 		const tooltip = this.mode !== MODE.icon_and_text
-			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="${offset}" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
+			? html`<d2l-tooltip class="vdiff-target" delay="100" offset="21" for="${this._buttonId}" for-type="label">${text}</d2l-tooltip>`
 			: nothing;
 
 		return html`
