@@ -583,8 +583,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_handleButtonAddClick(e) {
+		const position = e.target.hasAttribute('data-is-first') ? 'before' : 'after';
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-add-button-click', { bubbles: true, detail: { isFirstItem: e.target.hasAttribute('data-is-first') } }));
+		this.dispatchEvent(new CustomEvent('d2l-list-item-add-button-click', { bubbles: true, detail: { position } }));
 	}
 
 	_isListItem(node) {

@@ -1,5 +1,6 @@
 import '../input-search.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const noValueFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const hasValueFixture = html`<d2l-input-search label="search" value="Apples"></d2l-input-search>`;
@@ -16,7 +17,9 @@ describe('d2l-input-search', () => {
 		{ name: 'placeholder', template: html`<d2l-input-search label="search" placeholder="Search for something..."></d2l-input-search>` },
 		{ name: 'placeholder-disabled', template: html`<d2l-input-search label="search" placeholder="Search for something..." disabled></d2l-input-search>` },
 		{ name: 'padding', template: html`<d2l-input-search label="search" style="padding: 10px;"></d2l-input-search>` },
-		{ name: 'flexbox', template: html`<div style="display: flex;"><d2l-input-search label="search"></d2l-input-search><p>stuff</p></div>` }
+		{ name: 'flexbox', template: html`<div style="display: flex;"><d2l-input-search label="search"></d2l-input-search><p>stuff</p></div>` },
+		{ name: 'inline-help', template: inlineHelpFixtures.search.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.search.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

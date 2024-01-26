@@ -175,7 +175,7 @@ describe('d2l-list', () => {
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
 			expect(e.detail.key).to.equal('L1-1');
-			expect(e.detail.isFirstItem).to.equal(true);
+			expect(e.detail.position).to.equal('before');
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when second add button on first item clicked', async() => {
@@ -189,7 +189,7 @@ describe('d2l-list', () => {
 			clickElem(item.shadowRoot.querySelectorAll('d2l-button-add')[1]);
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
 			expect(e.detail.key).to.equal('L1-1');
-			expect(e.detail.isFirstItem).to.equal(false);
+			expect(e.detail.position).to.equal('after');
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when add button on second item clicked', async() => {
@@ -202,8 +202,8 @@ describe('d2l-list', () => {
 			const item = el.querySelectorAll('d2l-list-item')[1];
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
-			expect(e.detail.isFirstItem).to.equal(false);
 			expect(e.detail.key).to.equal('L1-2');
+			expect(e.detail.position).to.equal('after');
 		});
 
 	});
@@ -324,7 +324,7 @@ describe('d2l-list-item-button', () => {
 			const item = el.querySelector('d2l-list-item');
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
-			expect(e.detail.isFirstItem).to.equal(true);
+			expect(e.detail.position).to.equal('before');
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when second add button on first item clicked', async() => {
@@ -337,7 +337,7 @@ describe('d2l-list-item-button', () => {
 			const item = el.querySelector('d2l-list-item');
 			clickElem(item.shadowRoot.querySelectorAll('d2l-button-add')[1]);
 			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
-			expect(e.detail.isFirstItem).to.equal(false);
+			expect(e.detail.position).to.equal('after');
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when add button on second item clicked', async() => {
@@ -350,7 +350,7 @@ describe('d2l-list-item-button', () => {
 			const item = el.querySelectorAll('d2l-list-item')[1];
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
-			expect(e.detail.isFirstItem).to.equal(false);
+			expect(e.detail.position).to.equal('after');
 		});
 
 	});

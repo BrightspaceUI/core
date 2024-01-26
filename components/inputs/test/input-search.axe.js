@@ -1,5 +1,6 @@
 import '../input-search.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-search', () => {
 
@@ -35,4 +36,8 @@ describe('d2l-input-search', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpFixtures.search.normal);
+		await expect(elem).to.be.accessible();
+	});
 });

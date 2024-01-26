@@ -322,8 +322,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleListItemAddButtonClick(e) {
 		e.stopPropagation();
-		/** Dispatched when the add button directly after the item is clicked. Event detail includes the key of the item directly above where the add button was clicked. */
-		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, isFirstItem: e.detail.isFirstItem } }));
+		/**
+		 * Dispatched when the add button directly after the item is clicked. Event detail includes position ('before' or 'after') and key.
+		 * The key belongs to the list item adjacent to where the new item should be positioned.
+		 * The position represents where the new item should be positioned relative to the item with that key.
+		 * */
+		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, position: e.detail.position } }));
 	}
 
 	_handleListItemNestedChange(e) {
@@ -371,8 +375,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._updateItemShowingCount();
-		const items = this.getItems();
-		if (items.length > 0) items[0].first = true;
+		this.getItems().forEach((item, i) => {
+			if (i === 0) item.first = true;
+			else item.first = false;
+		});
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
