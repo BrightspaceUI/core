@@ -177,7 +177,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 
 ## Add Button [d2l-button-add]
 
-The `d2l-button-add` element is is for quickly adding new items inline (for example in a list).
+The `d2l-button-add` element is for quickly adding new items inline (for example in a list).
 
 <!-- docs: demo code properties name:d2l-button-add display:block autoSize:false size:xsmall -->
 ```html
