@@ -1,6 +1,7 @@
 import '../input-number.js';
 import '../../button/button-icon.js';
 import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const requiredFixture = html`<d2l-input-number label="Number" required></d2l-input-number>`;
 const simpleFixture = html`<d2l-input-number label="Number"></d2l-input-number>`;
@@ -24,7 +25,9 @@ describe('d2l-input-number', () => {
 				</d2l-input-number>
 			`
 		},
-		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` }
+		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` },
+		{ name: 'inline-help', template: inlineHelpFixtures.number.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.number.multiline }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

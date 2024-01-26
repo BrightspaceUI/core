@@ -300,6 +300,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					style="${styleMap({ maxWidth: inputTextWidth })}"
 					.value="${this._formattedValue}">
 					${icon}
+					<slot slot="inline-help" name="inline-help"></slot>
 				</d2l-input-text>
 				${dropdownContent}
 			</d2l-dropdown>
