@@ -69,7 +69,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
-				grid-template-rows: [main-start] [main-end add-start] [add-end nested-start] [nested-end];
+				grid-template-rows:
+					[start add-top-start] minmax(0, min-content)
+					[add-top-end main-start] minmax(0, min-content)
+					[main-end add-start] minmax(0, min-content)
+					[add-end nested-start] minmax(0, min-content)
+					[nested-end end];
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
@@ -92,7 +97,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="outside-control-container"]),
 			::slotted([slot="control-container"]),
 			::slotted([slot="drop-target"]) {
-				grid-row: 1 / 2;
+				grid-row: 2 / 3;
 			}
 
 			::slotted([slot="outside-control"]) {
@@ -169,11 +174,18 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="nested"]) {
 				grid-column: content-start / end;
-				grid-row: nested-start / nested-end;
+				grid-row: nested;
 			}
+
+			::slotted([slot="add"]) {
+				grid-row: add;
+			}
+			::slotted([slot="add-top"]) {
+				grid-row: add-top;
+			}
+			::slotted([slot="add-top"]),
 			::slotted([slot="add"]) {
 				grid-column: color-start / end;
-				grid-row: add;
 			}
 		`;
 	}
@@ -208,6 +220,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<slot name="add-top" class="d2l-cell" data-cell-num="10"></slot>
+
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
 
