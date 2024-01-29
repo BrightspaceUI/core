@@ -2,8 +2,8 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
+import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
 

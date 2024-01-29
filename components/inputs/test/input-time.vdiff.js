@@ -1,8 +1,8 @@
 import '../input-time.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, inlineHelp, value } = {
