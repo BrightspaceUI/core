@@ -2,8 +2,8 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
 
@@ -136,6 +136,14 @@ describe('d2l-input-text', () => {
 		{
 			name: 'inline-help-multiline',
 			template: inlineHelpFixtures.text.multiline
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: html`
+				<d2l-input-text label="Name" value="text" skeleton>
+					${inlineHelpSlots.normal}
+				</d2l-input-text>
+			`
 		},
 	].forEach(({ name, template, action, focus, rtl }) => {
 
