@@ -3,7 +3,6 @@ import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getOffsetParent } from '../../helpers/dom.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -114,7 +113,6 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		this._blockDisplay = false;
 		this._leftElemResizeObserver = null;
 		this._parentElemResizeObserver = null;
-		this._inlineHelpId = getUniqueId();
 	}
 
 	disconnectedCallback() {
