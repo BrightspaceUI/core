@@ -12,9 +12,9 @@ export const emptyStateStyles = css`
 	}
 
 	.empty-state-container {
+		align-items: center;
 		display: flex;
 		flex-direction: row;
-		align-items: center;
 		flex-wrap: wrap;
 	}
 
