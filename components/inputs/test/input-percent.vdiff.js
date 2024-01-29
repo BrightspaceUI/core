@@ -5,19 +5,6 @@ import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 
 const simpleFixture = html`<d2l-input-percent label="Percent"></d2l-input-percent>`;
 const requiredFixture = html`<d2l-input-percent label="Percent" required></d2l-input-percent>`;
-export const inlineHelpPercentFixtures = {
-	normal: html`
-		<d2l-input-percent label="Grade" value="92">
-			${inlineHelpSlots.normal}
-		</d2l-input-percent>
-	`,
-	multiline: html`
-		<d2l-input-percent label="Grade" value="92">
-			${inlineHelpSlots.multiline}
-		</d2l-input-percent>
-	`
-};
-
 const viewport = { width: 376 };
 
 describe('d2l-input-percent', () => {

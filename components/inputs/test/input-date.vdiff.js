@@ -40,21 +40,6 @@ const minMaxFixture = create({ maxValue: '2018-02-27', minValue: '2018-02-13' })
 const placeholderFixture = create();
 const requiredFixture = create({ label: 'Date', labelHidden: false, required: true });
 const valueFixture = create({ value: '2019-12-20' });
-export const inlineHelpDateFixtures = {
-	normal: html`
-		<d2l-input-date label="Date">
-			${inlineHelpSlots.normal}
-		</d2l-input-date>
-	`,
-	multiline: html`
-		<d2l-input-date label="Date">
-			<div slot="inline-help">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-			</div>
-		</d2l-input-date>
-	`
-};
 
 const newToday = new Date('2018-02-12T12:00Z');
 
