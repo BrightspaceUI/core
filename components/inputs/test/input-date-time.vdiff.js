@@ -2,11 +2,12 @@ import '../input-date-time.js';
 import { expect, fixture, focusElem, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {
+	const { disabled, inlineHelp, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {
 		disabled: false,
+		inlineHelp: false,
 		label: 'Start Date',
 		labelHidden: true,
 		localized: false,
@@ -26,7 +27,9 @@ const create = (opts = {}) => {
 			?opened="${opened}"
 			?required="${required}"
 			?skeleton="${skeleton}"
-			value="${ifDefined(value)}"></d2l-input-date-time>
+			value="${ifDefined(value)}">
+			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
+		</d2l-input-date-time>
 	`;
 };
 
@@ -65,6 +68,7 @@ describe('d2l-input-date-time', () => {
 		{ name: 'required', template: requiredFixture },
 		{ name: 'inline-help', template: inlineHelpFixtures.dateTime.normal },
 		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateTime.multiline },
+		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true, value: '2019-03-02T05:00:00.000Z' }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

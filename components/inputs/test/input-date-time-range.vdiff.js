@@ -3,7 +3,7 @@ import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKe
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -15,6 +15,7 @@ const create = (opts = {}) => {
 		endOpened,
 		endValue,
 		inclusiveDateRange,
+		inlineHelp,
 		label,
 		labelHidden,
 		localized,
@@ -34,6 +35,7 @@ const create = (opts = {}) => {
 		disabled: false,
 		endOpened: false,
 		inclusiveDateRange: false,
+		inlineHelp: false,
 		label: 'Dates',
 		labelHidden: true,
 		localized: false,
@@ -68,7 +70,10 @@ const create = (opts = {}) => {
 			start-label="${ifDefined(startLabel)}"
 			?start-opened="${startOpened}"
 			start-value="${ifDefined(startValue)}"
-			style="${styleMap(styles)}">${slotted}</d2l-input-date-time-range>
+			style="${styleMap(styles)}">
+			${slotted}
+			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
+		</d2l-input-date-time-range>
 	`;
 	return html`<div style="width: ${width}px">${elem}</div>`;
 };
@@ -117,6 +122,7 @@ describe('d2l-input-date-time-range', () => {
 		{ name: 'wide-start-end-value', template: create({ endValue: '2021-01-12T08:30:00.000Z', startValue: '2020-12-02T15:00:00.000Z', width: 800 }) },
 		{ name: 'inline-help', template: inlineHelpFixtures.dateTimeRange.normal },
 		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateTimeRange.multiline },
+		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

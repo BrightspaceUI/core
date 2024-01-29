@@ -2,7 +2,7 @@ import '../input-date-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -15,6 +15,7 @@ const create = (opts = {}) => {
 		endOpened,
 		endValue,
 		inclusiveDateRange,
+		inlineHelp,
 		label,
 		labelHidden,
 		maxValue,
@@ -31,6 +32,7 @@ const create = (opts = {}) => {
 		disabled: false,
 		endOpened: false,
 		inclusiveDateRange: false,
+		inlineHelp: false,
 		label: 'Dates',
 		labelHidden: true,
 		required: false,
@@ -60,7 +62,9 @@ const create = (opts = {}) => {
 			start-label="${ifDefined(startLabel)}"
 			?start-opened="${startOpened}"
 			start-value="${ifDefined(startValue)}"
-			style="${styleMap(styles)}"></d2l-input-date-range>
+			style="${styleMap(styles)}">
+			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
+		</d2l-input-date-range>
 	`;
 	return wrapped ? html`<div>${elem}</div>` : elem;
 };
@@ -110,7 +114,8 @@ describe('d2l-input-date-range', () => {
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start date label explanation' }) },
 		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) },
 		{ name: 'inline-help', template: inlineHelpFixtures.dateRange.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateRange.multiline }
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateRange.multiline },
+		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

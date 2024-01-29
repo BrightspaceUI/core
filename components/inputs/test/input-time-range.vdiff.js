@@ -2,7 +2,7 @@ import '../input-time-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -14,6 +14,7 @@ const create = (opts = {}) => {
 		endLabel,
 		endValue,
 		inclusiveTimeRange,
+		inlineHelp,
 		label,
 		labelHidden,
 		required,
@@ -28,6 +29,7 @@ const create = (opts = {}) => {
 		childLabelsHidden: false,
 		disabled: false,
 		inclusiveTimeRange: false,
+		inlineHelp: false,
 		label: 'Times',
 		labelHidden: true,
 		required: false,
@@ -55,7 +57,9 @@ const create = (opts = {}) => {
 			?start-opened="${startOpened}"
 			start-value="${ifDefined(startValue)}"
 			style="${styleMap(styles)}"
-			time-interval="${ifDefined(timeInterval)}"></d2l-input-time-range>
+			time-interval="${ifDefined(timeInterval)}">
+			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
+		</d2l-input-time-range>
 	`;
 	return wrapped ? html`<div>${elem}</div>` : elem;
 };
@@ -111,6 +115,7 @@ describe('d2l-input-time-range', () => {
 		{ name: 'time-interval', template: create({ timeInterval: 'ten' }) },
 		{ name: 'inline-help', template: inlineHelpFixtures.timeRange.normal },
 		{ name: 'inline-help-multiline', template: inlineHelpFixtures.timeRange.multiline },
+		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });
