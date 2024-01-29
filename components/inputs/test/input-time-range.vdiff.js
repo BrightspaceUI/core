@@ -2,9 +2,9 @@ import '../input-time-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
 	const {

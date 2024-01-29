@@ -3,8 +3,8 @@ import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKe
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
 	const {
