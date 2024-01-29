@@ -11,6 +11,13 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	.empty-state-container {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
 	.action-slot::slotted(*) {
 		display: none;
 	}
@@ -31,11 +38,7 @@ export const emptyStateSimpleStyles = css`
 
 	.d2l-empty-state-description {
 		display: inline;
-	}
-
-	.d2l-empty-state-description + .action-slot::slotted(d2l-empty-state-action-button:first-of-type),
-	.d2l-empty-state-description + .action-slot::slotted(d2l-empty-state-action-link:first-of-type) {
-		margin-inline-start: 0.5rem;
+		margin-inline-end: 0.5rem;
 	}
 `;
 

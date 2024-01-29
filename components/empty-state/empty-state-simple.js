@@ -27,8 +27,10 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 
 	render() {
 		return html`
-			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
-			<slot class="action-slot"></slot>
+			<div class="empty-state-container">
+				<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
+				<slot class="action-slot"></slot>
+			</div>
 		`;
 	}
 
