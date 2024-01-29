@@ -49,21 +49,28 @@ describe('list', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it('add-button focus', async() => {
+		it('add-button focus first item top', async() => {
 			const elem = await fixture(createSimpleList({ addButton: true }));
 			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden({ margin: 20 });
+		});
+
+		it('add-button focus first item bottom', async() => {
+			const elem = await fixture(createSimpleList({ addButton: true }));
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1]);
 			await expect(elem).to.be.golden();
 		});
 
 		it('add-button add-button-text focus', async() => {
 			const elem = await fixture(createSimpleList({ addButton: true, addButtonText: 'Custom Text' }));
 			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ margin: 20 });
 		});
 
 		it('add-button hover', async() => {
 			const elem = await fixture(createSimpleList({ addButton: true }));
 			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 
@@ -455,9 +462,28 @@ describe('list', () => {
 						</d2l-list>
 					</div>
 				`);
-				const addButton = elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add');
+				const addButton = elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1];
 				await focusElem(addButton);
 				await elem.scrollTo(0, 90);
+				await expect(elem).to.be.golden();
+			});
+
+			it('sticky add-button focus', async() => {
+				const elem = await fixture(html`
+					<div style="height: 200px; overflow: scroll; width: 400px;">
+						<d2l-list style="padding: 0 20px;" add-button>
+							<d2l-list-controls slot="controls"></d2l-list-controls>
+							<d2l-list-item label="Item 1" selectable key="1">
+								<d2l-list-item-content>
+									<div>Item 1</div>
+									<div slot="supporting-info">Supporting info</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</div>
+				`);
+				const addButton = elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add');
+				await focusElem(addButton);
 				await expect(elem).to.be.golden();
 			});
 		});
@@ -479,7 +505,7 @@ describe('list', () => {
 			{ name: 'focus', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'add-button', template: createDraggableList({ addButton: true }) },
-			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="1"]')) },
+			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="2"]')) },
 			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },

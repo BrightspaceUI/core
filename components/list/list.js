@@ -120,6 +120,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				--d2l-list-item-color-border-radius: 3px;
 				--d2l-list-item-color-width: 3px;
 			}
+			:host([add-button]) ::slotted([slot="controls"]) {
+				margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
+			}
 		`;
 	}
 
@@ -319,8 +322,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleListItemAddButtonClick(e) {
 		e.stopPropagation();
-		/** Dispatched when the add button directly after the item is clicked. Event detail includes the key of the item directly above where the add button was clicked. */
-		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key } }));
+		/**
+		 * Dispatched when the add button directly after the item is clicked. Event detail includes position ('before' or 'after') and key.
+		 * The key belongs to the list item adjacent to where the new item should be positioned.
+		 * The position represents where the new item should be positioned relative to the item with that key.
+		 * */
+		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, position: e.detail.position } }));
 	}
 
 	_handleListItemNestedChange(e) {
@@ -368,6 +375,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._updateItemShowingCount();
+		this.getItems().forEach((item, i) => {
+			if (i === 0) item.first = true;
+			else item.first = false;
+		});
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {

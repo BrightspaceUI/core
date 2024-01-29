@@ -1,6 +1,6 @@
 import '../input-percent.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
-import { inlineHelpPercentFixtures } from './input-percent.vdiff.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-percent', () => {
 	it('normal', async() => {
@@ -49,7 +49,7 @@ describe('d2l-input-percent', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpPercentFixtures.normal);
+		const elem = await fixture(inlineHelpFixtures.percent.normal);
 		await expect(elem).to.be.accessible();
 	});
 });
