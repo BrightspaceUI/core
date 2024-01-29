@@ -175,6 +175,35 @@ describe('d2l-list', () => {
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
 			expect(e.detail.key).to.equal('L1-1');
+			expect(e.detail.position).to.equal('before');
+		});
+
+		it('dispatches d2l-list-item-add-button-click event when second add button on first item clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list add-button>
+					<d2l-list-item label="item" key="L1-1"></d2l-list-item>
+					<d2l-list-item label="item 2" key="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			const item = el.querySelector('d2l-list-item');
+			clickElem(item.shadowRoot.querySelectorAll('d2l-button-add')[1]);
+			const e = await oneEvent(el, 'd2l-list-add-button-click');
+			expect(e.detail.key).to.equal('L1-1');
+			expect(e.detail.position).to.equal('after');
+		});
+
+		it('dispatches d2l-list-item-add-button-click event when add button on second item clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list add-button>
+					<d2l-list-item label="item" key="L1-1"></d2l-list-item>
+					<d2l-list-item label="item 2" key="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			const item = el.querySelectorAll('d2l-list-item')[1];
+			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
+			const e = await oneEvent(el, 'd2l-list-add-button-click');
+			expect(e.detail.key).to.equal('L1-2');
+			expect(e.detail.position).to.equal('after');
 		});
 
 	});
@@ -290,11 +319,38 @@ describe('d2l-list-item-button', () => {
 			await oneEvent(el, 'd2l-list-item-button-click');
 		});
 
-		it('dispatches d2l-list-item-add-button-click event when add button clicked', async() => {
+		it('dispatches d2l-list-item-add-button-click event when first add button clicked', async() => {
 			const el = await fixture(html`<d2l-list add-button><d2l-list-item label="item"></d2l-list-item></d2l-list>`);
 			const item = el.querySelector('d2l-list-item');
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
-			await oneEvent(item, 'd2l-list-item-add-button-click');
+			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
+			expect(e.detail.position).to.equal('before');
+		});
+
+		it('dispatches d2l-list-item-add-button-click event when second add button on first item clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list add-button>
+					<d2l-list-item label="item"></d2l-list-item>
+					<d2l-list-item label="item 2"></d2l-list-item>
+				</d2l-list>
+			`);
+			const item = el.querySelector('d2l-list-item');
+			clickElem(item.shadowRoot.querySelectorAll('d2l-button-add')[1]);
+			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
+			expect(e.detail.position).to.equal('after');
+		});
+
+		it('dispatches d2l-list-item-add-button-click event when add button on second item clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list add-button>
+					<d2l-list-item label="item"></d2l-list-item>
+					<d2l-list-item label="item 2"></d2l-list-item>
+				</d2l-list>
+			`);
+			const item = el.querySelectorAll('d2l-list-item')[1];
+			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
+			const e = await oneEvent(item, 'd2l-list-item-add-button-click');
+			expect(e.detail.position).to.equal('after');
 		});
 
 	});
