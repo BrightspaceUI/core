@@ -1,17 +1,18 @@
 import '../input-date.js';
 import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
+	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, inlineHelp, value } = {
 		disabled: false,
 		label: 'Start Date',
 		labelHidden: true,
 		opened: false,
 		required: false,
 		skeleton: false,
+		inlineHelp: false,
 		...opts
 	};
 	return html`
@@ -25,7 +26,9 @@ const create = (opts = {}) => {
 			?opened="${opened}"
 			?required="${required}"
 			?skeleton="${skeleton}"
-			value="${ifDefined(value)}"></d2l-input-date>
+			value="${ifDefined(value)}">
+			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
+		</d2l-input-date>
 	`;
 };
 
@@ -335,6 +338,7 @@ describe('d2l-input-date', () => {
 		[
 			{ name: 'label', template: create({ labelHidden: false, skeleton: true, value: '2019-03-02' }) },
 			{ name: 'label-hidden', template: create({ skeleton: true, value: '2020-12-30' }) },
+			{ name: 'inline-help', template: create({ skeleton: true, inlineHelp: true, value: '2020-12-30' }) },
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);

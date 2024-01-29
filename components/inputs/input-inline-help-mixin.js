@@ -1,7 +1,8 @@
 import { css, html } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const InputInlineHelpMixin = superclass => class extends superclass {
+export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -37,7 +38,7 @@ export const InputInlineHelpMixin = superclass => class extends superclass {
 
 	_renderInlineHelp(id) {
 		return html`
-			<div id="${id}" class="d2l-body-small d2l-input-inline-help">
+			<div id="${id}" class="d2l-body-small d2l-input-inline-help d2l-skeletize">
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
