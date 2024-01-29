@@ -1,5 +1,6 @@
 import '../input-date.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-date', () => {
 
@@ -35,6 +36,11 @@ describe('d2l-input-date', () => {
 			<d2l-input-date labelled-by="label"></d2l-input-date>
 			<span id="label">label text</span>
 		</div>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('inline-help', async() => {
+		const elem = await fixture(inlineHelpFixtures.date.normal);
 		await expect(elem).to.be.accessible();
 	});
 
