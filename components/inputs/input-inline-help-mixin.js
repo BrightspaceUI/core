@@ -1,7 +1,8 @@
 import { css, html } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const InputInlineHelpMixin = superclass => class extends superclass {
+export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
