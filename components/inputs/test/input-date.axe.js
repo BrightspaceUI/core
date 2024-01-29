@@ -43,4 +43,5 @@ describe('d2l-input-date', () => {
 		const elem = await fixture(inlineHelpFixtures.date.normal);
 		await expect(elem).to.be.accessible();
 	});
+
 });
