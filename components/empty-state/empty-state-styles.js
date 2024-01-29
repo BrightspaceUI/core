@@ -13,6 +13,7 @@ export const emptyStateStyles = css`
 
 	.empty-state-container {
 		align-items: center;
+		column-gap: 0.5rem;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -38,7 +39,6 @@ export const emptyStateSimpleStyles = css`
 
 	.d2l-empty-state-description {
 		display: inline;
-		margin-inline-end: 0.5rem;
 	}
 `;
 
