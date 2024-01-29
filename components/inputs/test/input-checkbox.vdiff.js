@@ -2,7 +2,7 @@ import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -35,10 +35,27 @@ describe('d2l-input-checkbox', () => {
 						?skeleton="${skeleton}">Checkbox (${text})</d2l-input-checkbox>
 				`;
 
+				const checkboxInlineHelpFixture = html`
+					<d2l-input-checkbox
+						?checked="${checked === 'checked'}"
+						?disabled="${disabled}"
+						?indeterminate="${checked === 'indeterminate'}"
+						?skeleton="${skeleton}">
+						Checkbox (${text})
+						${inlineHelpSlots.normal}
+					</d2l-input-checkbox>
+				`;
+
 				it(name, async() => {
 					const elem = await fixture(checkboxFixture);
 					await expect(elem).to.be.golden();
 				});
+
+				it(`${name}-inline-help`, async() => {
+					const elem = await fixture(checkboxInlineHelpFixture);
+					await expect(elem).to.be.golden();
+				});
+
 				if (!disabled) {
 					it(`${name}-focus`, async() => {
 						const elem = await fixture(checkboxFixture);
