@@ -1,7 +1,7 @@
 import '../input-percent.js';
 import '../../button/button-icon.js';
 import { clickAt, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures } from './input-shared-content.js';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 
 const simpleFixture = html`<d2l-input-percent label="Percent"></d2l-input-percent>`;
 const requiredFixture = html`<d2l-input-percent label="Percent" required></d2l-input-percent>`;
@@ -123,6 +123,11 @@ describe('d2l-input-percent', () => {
 
 	it('inline-help-multiline', async() => {
 		const elem = await fixture(inlineHelpFixtures.percent.multiline, { viewport });
+		await expect(elem).to.be.golden();
+	});
+
+	it('inline-help-skeleton', async() => {
+		const elem = await fixture(html`<d2l-input-percent label="Percent" skeleton>${inlineHelpSlots.normal}</d2l-input-percent>`, { viewport });
 		await expect(elem).to.be.golden();
 	});
 
