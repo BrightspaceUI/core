@@ -11,7 +11,7 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
-	.empty-state-container {
+	:host([description]) .empty-state-container {
 		align-items: center;
 		column-gap: 0.5rem;
 		display: flex;
@@ -38,6 +38,7 @@ export const emptyStateSimpleStyles = css`
 
 	.d2l-empty-state-description {
 		display: inline;
+		line-height: 28px
 		margin: 0;
 	}
 `;
