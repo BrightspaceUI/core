@@ -36,6 +36,7 @@ function getValidISOTimeAtInterval(val, timeInterval) {
 
 /**
  * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
+ * @slot inline-help - Inline help text content.
  * @fires change - Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`).
  */
 
