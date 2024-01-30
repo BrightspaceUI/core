@@ -17,7 +17,7 @@ export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(su
 			}
 			.d2l-input-inline-help {
 				display: none;
-				margin-top: 0.5rem !important;
+				margin-top: 0.3rem !important;
 				overflow-wrap: anywhere;
 			}
 		`];
