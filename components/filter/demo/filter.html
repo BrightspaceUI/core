@@ -58,6 +58,21 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Single Set Dimension - Custom Empty</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter>
+					<d2l-filter-dimension-set key="course" text="Course">
+						<d2l-filter-dimension-set-empty-state
+							slot="set-empty-state"
+							description="No courses."
+							action-text="Add a Course">
+						</d2l-filter-dimension-set-empty-state>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</template>
+		</d2l-demo-snippet>
+
 		<h2>Single Set Dimension - Header Text and Selected First</h2>
 		<d2l-demo-snippet>
 			<template>
@@ -127,7 +142,7 @@
 						<d2l-filter-dimension-set-value key="stats" text="Statistics"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
-					
+
 				</d2l-filter>
 				<d2l-filter text="More Filters">
 					<d2l-filter-dimension-set key="course" text="Course" loading select-all></d2l-filter-dimension-set>
