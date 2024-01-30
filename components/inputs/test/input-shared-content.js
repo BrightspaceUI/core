@@ -81,14 +81,18 @@ export const inlineHelpFixtures = {
 	},
 	dateTimeRange: {
 		normal: html`
-			<d2l-input-date-time-range label="Assignment Dates">
-				${inlineHelpSlots.normal}
-			</d2l-input-date-time-range>
+			<div style="width: 400px">
+				<d2l-input-date-time-range class="vdiff-include" label="Assignment Dates">
+					${inlineHelpSlots.normal}
+				</d2l-input-date-time-range>
+			</div>
 		`,
 		multiline: html`
-			<d2l-input-date-time-range label="Assignment Dates">
-				${inlineHelpSlots.multiline}
-			</d2l-input-date-time-range>
+			<div style="width: 400px">
+				<d2l-input-date-time-range class="vdiff-include" label="Assignment Dates">
+					${inlineHelpSlots.multiline}
+				</d2l-input-date-time-range>
+			</div>
 		`
 	},
 	dateTime: {
