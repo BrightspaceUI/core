@@ -154,6 +154,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::before,
+			:host([_show-add-button]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
