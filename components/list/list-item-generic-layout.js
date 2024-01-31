@@ -92,6 +92,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="content"]),
 			::slotted([slot="actions"]),
 			::slotted([slot="outside-control-action"]),
+			::slotted([slot="before-content"]),
 			::slotted([slot="control-action"]),
 			::slotted([slot="content-action"]),
 			::slotted([slot="outside-control-container"]),
@@ -125,6 +126,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="color-indicator"]) {
 				grid-column: color-start / color-end;
+			}
+
+			::slotted([slot="before-content"]) {
+				grid-column: color-start / content-start;
 			}
 
 			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
@@ -224,6 +229,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
+			<slot name="before-content"></slot>
 
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
