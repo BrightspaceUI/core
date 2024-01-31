@@ -1,8 +1,8 @@
 import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { inlineHelpFixtures } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
