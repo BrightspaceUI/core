@@ -1,8 +1,8 @@
 import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
-import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -51,6 +51,19 @@ describe('d2l-input-checkbox', () => {
 			});
 		});
 	});
+
+	it('inline-help-disabled', async() => {
+		const fixture = html`
+			<d2l-input-checkbox
+				?disabled="true">
+				Checkbox
+				${inlineHelpSlots.normal}
+			</d2l-input-checkbox>
+		`;
+
+		const elem = await fixture(fixture);
+		await expect(elem).to.be.golden();
+	})
 
 	describe('sass', () => {
 		[false, true].forEach(disabled => {
