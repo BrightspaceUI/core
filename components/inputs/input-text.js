@@ -485,7 +485,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 				// this tooltip is using "announced" since we don't want aria-describedby wire-up which would bury the message in VoiceOver's More Content Available menu
 				tooltip = html`<d2l-tooltip state="error" announced align="start" class="vdiff-target">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
 			} else if (this.instructions) {
-				tooltip = html`<d2l-tooltip align="start" for="${this._inputId}" delay="1000" class="vdiff-target">${this.instructions}</d2l-tooltip>`;
+				if (!this._hasInlineHelp)
+					tooltip = html`<d2l-tooltip align="start" for="${this._inputId}" delay="1000" class="vdiff-target">${this.instructions}</d2l-tooltip>`;
+				else
+					tooltip = html`<d2l-tooltip align="start" noAnnounce for="${this._inputId}" delay="1000" class="vdiff-target">${this.instructions}</d2l-tooltip>`;
 			}
 		}
 

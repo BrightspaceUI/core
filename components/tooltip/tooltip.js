@@ -117,6 +117,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
+			noAnnounce: { type: Boolean },
+			/**
+			 * @ignore
+			 */
 			boundary: { type: Object },
 			/**
 			 * ADVANCED: Causes the tooltip to close when its target is clicked
@@ -435,6 +439,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
 		this.announced = false;
+		this.noAnnounce = false;
 		this.closeOnClick = false;
 		this.delay = 300;
 		this.disableFocusLock = false;
@@ -940,7 +945,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
 				elemIdListAdd(this._target, 'aria-labelledby', this.id);
-			} else if (!this.announced || isInteractive) {
+			} else if ((!this.announced || isInteractive) && !this.noAnnounce) {
+				console.log(this.noAnnounce)
 				elemIdListAdd(this._target, 'aria-describedby', this.id);
 			}
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
