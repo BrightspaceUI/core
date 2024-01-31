@@ -1,6 +1,6 @@
 import '../button/button-subtle.js';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -18,18 +18,30 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			description: { type: String, required: true },
+			_hasDescription: { type: Boolean, reflect: true, attribute: '_has-description' }
 		};
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
+		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles, css`
+			:host([_has-description]) .empty-state-container {
+				align-items: center;
+				column-gap: 0.5rem;
+				display: flex;
+				flex-wrap: wrap;
+			}
+		`];
+	}
+
+	_handleActionSlotChange() {
+		this._hasDescription = this.description.trim().length > 0;
 	}
 
 	render() {
 		return html`
 			<div class="empty-state-container">
 				<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
-				<slot class="action-slot"></slot>
+				<slot class="action-slot" @slotchange="${this._handleActionSlotChange}"></slot>
 			</div>
 		`;
 	}
