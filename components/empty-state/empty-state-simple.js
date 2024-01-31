@@ -1,6 +1,6 @@
 import '../button/button-subtle.js';
-import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { css, html, LitElement } from 'lit';
+import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -33,10 +33,6 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	_handleActionSlotChange() {
-		this._hasDescription = this.description.trim().length > 0;
-	}
-
 	render() {
 		return html`
 			<div class="empty-state-container">
@@ -44,6 +40,10 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 				<slot class="action-slot" @slotchange="${this._handleActionSlotChange}"></slot>
 			</div>
 		`;
+	}
+
+	_handleActionSlotChange() {
+		this._hasDescription = this.description.trim().length > 0;
 	}
 
 }
