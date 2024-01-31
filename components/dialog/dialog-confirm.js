@@ -77,7 +77,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content">
-					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
+					<div>${this?.text?.split ? this.text.split('\n').map(line => html`<p>${line}</p>`) : this.text}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
