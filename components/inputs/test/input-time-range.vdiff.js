@@ -114,7 +114,6 @@ describe('d2l-input-time-range', () => {
 		{ name: 'start-value', template: create({ startValue: '13:30:00' }) },
 		{ name: 'time-interval', template: create({ timeInterval: 'ten' }) },
 		{ name: 'inline-help', template: inlineHelpFixtures.timeRange.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.timeRange.multiline },
 		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {

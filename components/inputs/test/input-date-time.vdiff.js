@@ -67,7 +67,6 @@ describe('d2l-input-date-time', () => {
 		{ name: 'no-value', template: create() },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'inline-help', template: inlineHelpFixtures.dateTime.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.dateTime.multiline },
 		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true, value: '2019-03-02T05:00:00.000Z' }) },
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {

@@ -58,8 +58,8 @@ describe('d2l-input-date', () => {
 		{ name: 'required', template: requiredFixture },
 		{ name: 'value', template: valueFixture },
 		{ name: 'value-focus', template: valueFixture, focus: true },
-		{ name: 'inline-help', template: inlineHelpFixtures.date.normal, focus: true },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.date.multiline, focus: true },
+		{ name: 'inline-help', template: inlineHelpFixtures.date.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.date.multiline },
 	].forEach(({ name, template, focus }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

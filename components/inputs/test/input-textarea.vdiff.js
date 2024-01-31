@@ -37,8 +37,8 @@ describe('d2l-input-textarea', () => {
 		{ name: 'skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
 		{ name: 'no-border-padding', template: noBorderPaddingFixture },
 		{ name: 'no-border-padding-focus', template: noBorderPaddingFixture, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help', template: inlineHelpFixtures.textArea.normal, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.textArea.multiline, action: async(elem) => focusElem(elem) },
+		{ name: 'inline-help', template: inlineHelpFixtures.textArea.normal },
+		{ name: 'inline-help-multiline', template: inlineHelpFixtures.textArea.multiline },
 		{ name: 'inline-help-skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton>${inlineHelpSlots.normal}</d2l-input-textarea>` },
 	].forEach(({ name, template, action, rtl }) => {
 

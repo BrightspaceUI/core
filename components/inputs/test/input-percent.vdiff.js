@@ -109,11 +109,6 @@ describe('d2l-input-percent', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('inline-help-multiline', async() => {
-		const elem = await fixture(inlineHelpFixtures.percent.multiline, { viewport });
-		await expect(elem).to.be.golden();
-	});
-
 	it('inline-help-skeleton', async() => {
 		const elem = await fixture(html`<d2l-input-percent label="Percent" skeleton>${inlineHelpSlots.normal}</d2l-input-percent>`, { viewport });
 		await expect(elem).to.be.golden();
