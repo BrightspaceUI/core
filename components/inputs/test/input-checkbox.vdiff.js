@@ -63,7 +63,7 @@ describe('d2l-input-checkbox', () => {
 
 		const elem = await fixture(fixture);
 		await expect(elem).to.be.golden();
-	})
+	});
 
 	describe('sass', () => {
 		[false, true].forEach(disabled => {
