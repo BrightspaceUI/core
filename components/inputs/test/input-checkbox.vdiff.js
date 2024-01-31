@@ -53,7 +53,7 @@ describe('d2l-input-checkbox', () => {
 	});
 
 	it('inline-help-disabled', async() => {
-		const fixture = html`
+		const checkboxFixture = html`
 			<d2l-input-checkbox
 				?disabled="true">
 				Checkbox
@@ -61,7 +61,7 @@ describe('d2l-input-checkbox', () => {
 			</d2l-input-checkbox>
 		`;
 
-		const elem = await fixture(fixture);
+		const elem = await fixture(checkboxFixture);
 		await expect(elem).to.be.golden();
 	});
 
