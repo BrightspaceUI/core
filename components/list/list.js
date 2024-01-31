@@ -323,9 +323,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_handleListItemAddButtonClick(e) {
 		e.stopPropagation();
 		/**
-		 * Dispatched when the add button directly after the item is clicked. Event detail includes position ('before' or 'after') and key.
-		 * The key belongs to the list item adjacent to where the new item should be positioned.
-		 * The position represents where the new item should be positioned relative to the item with that key.
+		 * Dispatched when the add button directly before or after the item is clicked. Event detail includes position ('before' or 'after') and key.
+		 * The `key` belongs to the list item adjacent to where the new item should be positioned.
+		 * The `position` represents where the new item should be positioned relative to the item with that key.
 		 * */
 		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, position: e.detail.position } }));
 	}
