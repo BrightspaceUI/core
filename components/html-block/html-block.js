@@ -76,16 +76,22 @@ export const htmlBlockContentStyles = css`
 	ul, ul[type="disc"] {
 		list-style-type: disc;
 	}
-	ul ul, ul ol,
-	ol ul, ol ol {
+	ul ul,
+	ul ol,
+	ol ul,
+	ol ol {
 		margin-bottom: 0;
 		margin-top: 0;
 	}
-	ul ul, ol ul, ul[type="circle"] {
+	ul ul,
+	ol ul,
+	ul[type="circle"] {
 		list-style-type: circle;
 	}
-	ul ul ul, ul ol ul,
-	ol ul ul, ol ol ul,
+	ul ul ul,
+	ul ol ul,
+	ol ul ul,
+	ol ol ul,
 	ul[type="square"] {
 		list-style-type: square;
 	}
