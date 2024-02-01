@@ -11,6 +11,13 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	:host([description]) .empty-state-container {
+		align-items: center;
+		column-gap: 0.5rem;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 	.action-slot::slotted(*) {
 		display: none;
 	}
