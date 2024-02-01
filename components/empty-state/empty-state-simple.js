@@ -17,7 +17,7 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 			 * REQUIRED: A description giving details about the empty state
 			 * @type {string}
 			 */
-			description: { type: String, required: true }
+			description: { type: String, required: true },
 		};
 	}
 
@@ -32,10 +32,6 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 				<slot class="action-slot"></slot>
 			</div>
 		`;
-	}
-
-	_handleActionSlotChange() {
-		this._hasDescription = this.description.trim().length > 0;
 	}
 
 }
