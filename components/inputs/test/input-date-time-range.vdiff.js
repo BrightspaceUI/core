@@ -3,6 +3,7 @@ import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKe
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -67,7 +68,9 @@ const create = (opts = {}) => {
 			start-label="${ifDefined(startLabel)}"
 			?start-opened="${startOpened}"
 			start-value="${ifDefined(startValue)}"
-			style="${styleMap(styles)}">${slotted}</d2l-input-date-time-range>
+			style="${styleMap(styles)}">
+			${slotted}
+		</d2l-input-date-time-range>
 	`;
 	return html`<div style="width: ${width}px">${elem}</div>`;
 };
@@ -123,6 +126,34 @@ describe('d2l-input-date-time-range', () => {
 				await oneEvent(elem, 'd2l-tooltip-show');
 			}
 			await expect(actualElem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().dateTimeRange()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).dateTimeRange()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
 		});
 	});
 

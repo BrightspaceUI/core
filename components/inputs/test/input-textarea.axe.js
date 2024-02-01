@@ -50,7 +50,7 @@ describe('d2l-input-textarea', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.textArea.normal);
+		const elem = await fixture(new inlineHelpFixtures().textArea());
 		await expect(elem).to.be.accessible();
 	});
 

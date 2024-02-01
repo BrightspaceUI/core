@@ -49,7 +49,7 @@ describe('d2l-input-percent', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.percent.normal);
+		const elem = await fixture(new inlineHelpFixtures().percent());
 		await expect(elem).to.be.accessible();
 	});
 });

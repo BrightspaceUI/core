@@ -40,7 +40,7 @@ describe('d2l-input-time', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.time.normal);
+		const elem = await fixture(new inlineHelpFixtures().time());
 		await expect(elem).to.be.accessible();
 	});
 });
