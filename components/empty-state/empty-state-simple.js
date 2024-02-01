@@ -1,5 +1,5 @@
 import '../button/button-subtle.js';
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
