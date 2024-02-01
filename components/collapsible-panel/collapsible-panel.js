@@ -215,7 +215,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel-header-actions::after {
 				border-inline-end: 1px solid var(--d2l-color-mica);
-				content: '';
+				content: "";
 				display: flex;
 				margin: 0.3rem;
 			}

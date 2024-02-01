@@ -153,7 +153,7 @@ export const codeStyles = css`
 	pre[class*="language-"].d2l-code,
 	pre[class*="language-"].d2l-code > code[class*="language-"],
 	code[class*="language-"].d2l-code {
-		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+		font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 		line-height: 1.5;
 		text-shadow: none;
 	}
@@ -189,7 +189,7 @@ export const codeStyles = css`
 	pre[class*="language-"].d2l-code::before {
 		color: var(--d2l-code-language);
 		content: attr(data-language);
-		font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 		margin: 0.1rem 0.4rem;
 		position: absolute;
 		right: 0;
