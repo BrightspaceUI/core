@@ -554,6 +554,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	__startResizeObserver() {
 		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
+		if (!content) return;
+
 		this.__bound_dispatchViewResize = this.__bound_dispatchViewResize || this.__dispatchViewResize.bind(this);
 		this.__resizeObserver = this.__resizeObserver || new ResizeObserver(this.__bound_dispatchViewResize);
 		this.__resizeObserver.disconnect();

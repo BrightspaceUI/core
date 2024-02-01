@@ -35,7 +35,7 @@ describe('d2l-input-date-time', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.dateTime.normal);
+		const elem = await fixture(new inlineHelpFixtures().dateTime());
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 

@@ -48,7 +48,7 @@ describe('d2l-input-number', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.number.normal);
+		const elem = await fixture(new inlineHelpFixtures().number());
 		await expect(elem).to.be.accessible();
 	});
 });

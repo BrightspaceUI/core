@@ -32,7 +32,7 @@ describe('d2l-input-checkbox', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.checkbox.normal);
+		const elem = await fixture(new inlineHelpFixtures().checkbox());
 		await expect(elem).to.be.accessible();
 	});
 

@@ -18,8 +18,26 @@ describe('d2l-input-search', () => {
 		{ name: 'placeholder-disabled', template: html`<d2l-input-search label="search" placeholder="Search for something..." disabled></d2l-input-search>` },
 		{ name: 'padding', template: html`<d2l-input-search label="search" style="padding: 10px;"></d2l-input-search>` },
 		{ name: 'flexbox', template: html`<div style="display: flex;"><d2l-input-search label="search"></d2l-input-search><p>stuff</p></div>` },
-		{ name: 'inline-help', template: inlineHelpFixtures.search.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.search.multiline }
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().search()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).search()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).search()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).search()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).search()
+		}
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

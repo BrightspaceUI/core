@@ -1,9 +1,9 @@
 import '../input-date-time-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -15,7 +15,6 @@ const create = (opts = {}) => {
 		endOpened,
 		endValue,
 		inclusiveDateRange,
-		inlineHelp,
 		label,
 		labelHidden,
 		localized,
@@ -35,7 +34,6 @@ const create = (opts = {}) => {
 		disabled: false,
 		endOpened: false,
 		inclusiveDateRange: false,
-		inlineHelp: false,
 		label: 'Dates',
 		labelHidden: true,
 		localized: false,
@@ -72,7 +70,6 @@ const create = (opts = {}) => {
 			start-value="${ifDefined(startValue)}"
 			style="${styleMap(styles)}">
 			${slotted}
-			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
 		</d2l-input-date-time-range>
 	`;
 	return html`<div style="width: ${width}px">${elem}</div>`;
@@ -131,6 +128,34 @@ describe('d2l-input-date-time-range', () => {
 				await oneEvent(elem, 'd2l-tooltip-show');
 			}
 			await expect(actualElem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().dateTimeRange()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).dateTimeRange()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
 		});
 	});
 

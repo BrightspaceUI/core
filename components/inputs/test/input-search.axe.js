@@ -37,7 +37,7 @@ describe('d2l-input-search', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.search.normal);
+		const elem = await fixture(new inlineHelpFixtures().search());
 		await expect(elem).to.be.accessible();
 	});
 });

@@ -1,8 +1,8 @@
 import '../input-time-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -14,7 +14,6 @@ const create = (opts = {}) => {
 		endLabel,
 		endValue,
 		inclusiveTimeRange,
-		inlineHelp,
 		label,
 		labelHidden,
 		required,
@@ -29,7 +28,6 @@ const create = (opts = {}) => {
 		childLabelsHidden: false,
 		disabled: false,
 		inclusiveTimeRange: false,
-		inlineHelp: false,
 		label: 'Times',
 		labelHidden: true,
 		required: false,
@@ -58,7 +56,6 @@ const create = (opts = {}) => {
 			start-value="${ifDefined(startValue)}"
 			style="${styleMap(styles)}"
 			time-interval="${ifDefined(timeInterval)}">
-			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
 		</d2l-input-time-range>
 	`;
 	return wrapped ? html`<div>${elem}</div>` : elem;
@@ -113,8 +110,26 @@ describe('d2l-input-time-range', () => {
 		{ name: 'start-end-value', template: create({ endValue: '12:22:00', startValue: '03:30:00' }) },
 		{ name: 'start-value', template: create({ startValue: '13:30:00' }) },
 		{ name: 'time-interval', template: create({ timeInterval: 'ten' }) },
-		{ name: 'inline-help', template: inlineHelpFixtures.timeRange.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().timeRange()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).timeRange()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).timeRange()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).timeRange()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).timeRange()
+		}
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

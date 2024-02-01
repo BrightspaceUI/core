@@ -19,164 +19,185 @@ export const inlineHelpSlots = {
 	`
 };
 
-export const inlineHelpFixtures = {
-	checkbox: {
-		normal: html`
-			<d2l-input-checkbox>
+export class inlineHelpFixtures {
+	constructor({
+		multiline = false,
+		skeleton = false,
+		disabled = false
+	} = {}) {
+		this.multiline = multiline;
+		this.skeleton = skeleton;
+		this.disabled = disabled;
+
+		this.inlineHelpSlot = this.multiline ? inlineHelpSlots.multiline : inlineHelpSlots.normal;
+	}
+
+	checkbox() {
+		return html`
+			<d2l-input-checkbox
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+			>
 				Inline help checkbox
-				${inlineHelpSlots.normal}
+				${this.inlineHelpSlot}
 			</d2l-input-checkbox>
-		`,
-		multiline: html`
-			<d2l-input-checkbox>
-				Inline help checkbox
-				${inlineHelpSlots.multiline}
-			</d2l-input-checkbox>
-		`
-	},
-	color: {
-		normal: html`
-			<d2l-input-color label="Custom Color" type="custom" value="#8ad934" disabled>
-				${inlineHelpSlots.normal}
-			</d2l-input-color>`
-	},
-	date: {
-		normal: html`
-			<d2l-input-date label="Date">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	color() {
+		return html`
+			<d2l-input-color
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Custom Color"
+				type="custom"
+				value="#8ad934"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-color>
+		`;
+	}
+
+	date() {
+		return html`
+			<d2l-input-date
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Date"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-date>
-		`,
-		multiline: html`
-			<d2l-input-date label="Date">
-				<div slot="inline-help">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-					sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-				</div>
-			</d2l-input-date>
-		`
-	},
-	number: {
-		normal: html`
-			<d2l-input-number label="Age" value="18">
-				${inlineHelpSlots.normal}
-			</d2l-input-number>
-		`,
-		multiline: html`
-			<d2l-input-number label="Age" value="18">
-				${inlineHelpSlots.multiline}
-			</d2l-input-number>
-		`
-	},
-	dateRange: {
-		normal: html`
-			<d2l-input-date-range label="Assignment Dates">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	dateRange() {
+		return html`
+			<d2l-input-date-range
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Date"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-date-range>
-		`,
-		multiline: html`
-			<d2l-input-date-range label="Assignment Dates">
-				${inlineHelpSlots.multiline}
-			</d2l-input-date-range>
-		`
-	},
-	dateTimeRange: {
-		normal: html`
+		`;
+	}
+
+	dateTime() {
+		return html`
+			<d2l-input-date-time
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Name (with min and max)"
+				min-value="2018-08-27T12:30:00Z"
+				max-value="2018-09-30T12:30:00Z"
+				value="2018-08-30T12:30:00Z"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-date-time>
+		`;
+	}
+
+	dateTimeRange() {
+		return html`
 			<div style="width: 400px">
-				<d2l-input-date-time-range class="vdiff-include" label="Assignment Dates">
-					${inlineHelpSlots.normal}
+				<d2l-input-date-time-range
+					?disabled="${this.disabled}"
+					?skeleton="${this.skeleton}"
+					class="vdiff-include"
+					label="Assignment Dates"
+				>
+					${this.inlineHelpSlot}
 				</d2l-input-date-time-range>
 			</div>
-		`,
-		multiline: html`
-			<div style="width: 400px">
-				<d2l-input-date-time-range class="vdiff-include" label="Assignment Dates">
-					${inlineHelpSlots.multiline}
-				</d2l-input-date-time-range>
-			</div>
-		`
-	},
-	dateTime: {
-		normal: html`
-			<d2l-input-date-time label="Name (with min and max)" min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T12:30:00Z" value="2018-08-30T12:30:00Z">
-				${inlineHelpSlots.normal}
-			</d2l-input-date-time>
-		`,
-		multiline: html`
-			<d2l-input-date-time label="Name (with min and max)" min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T12:30:00Z" value="2018-08-30T12:30:00Z">
-				${inlineHelpSlots.multiline}
-			</d2l-input-date-time>
-		`
-	},
-	percent: {
-		normal: html`
-			<d2l-input-percent label="Grade" value="92">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	number() {
+		return html`
+			<d2l-input-number
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Age"
+				value="18"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-number>
+		`;
+	}
+
+	percent() {
+		return html`
+			<d2l-input-percent
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Grade"
+				value="92"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-percent>
-		`,
-		multiline: html`
-			<d2l-input-percent label="Grade" value="92">
-				${inlineHelpSlots.multiline}
-			</d2l-input-percent>
-		`
-	},
-	search: {
-		normal: html`
-			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	search() {
+		return html`
+			<d2l-input-search
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Search"
+				value="apples"
+				placeholder="Search for some stuff"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-search>
-		`,
-		multiline: html`
-			<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
-				${inlineHelpSlots.multiline}
-			</d2l-input-search>
-		`
-	},
-	textArea: {
-		normal: html`
-			<d2l-input-textarea label="Description">
-				${inlineHelpSlots.normal}
-			</d2l-input-textarea>
-		`,
-		multiline: html`
-			<d2l-input-textarea label="Description">
-				${inlineHelpSlots.multiline}
-			</d2l-input-textarea>
-		`
-	},
-	text: {
-		normal: html`
-			<d2l-input-text label="Name">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	text() {
+		return html`
+			<d2l-input-text
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Name"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-text>
-		`,
-		multiline: html`
-			<d2l-input-text label="Name">
-				${inlineHelpSlots.multiline}
-			</d2l-input-text>
-		`
-	},
-	timeRange: {
-		normal: html`
-			<d2l-input-time-range label="Time Range">
-				${inlineHelpSlots.normal}
-			</d2l-input-time-range>
-		`,
-		multiline: html`
-			<d2l-input-time-range label="Time Range">
-				${inlineHelpSlots.multiline}
-			</d2l-input-time-range>
-		`
-	},
-	time: {
-		normal: html`
-			<d2l-input-time label="Start Time" default-value="09:00:00">
-				${inlineHelpSlots.normal}
+		`;
+	}
+
+	textArea() {
+		return html`
+			<d2l-input-textarea
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Description"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-textarea>
+		`;
+	}
+
+	time() {
+		return html`
+			<d2l-input-time
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Start Time"
+				default-value="09:00:00"
+			>
+				${this.inlineHelpSlot}
 			</d2l-input-time>
-		`,
-		multiline: html`
-			<d2l-input-time label="Start Time" default-value="09:00:00">
-				${inlineHelpSlots.multiline}
-			</d2l-input-time>
-		`
-	},
-};
+		`;
+	}
+
+	timeRange() {
+		return html`
+			<d2l-input-time-range
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Time Range"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-time-range>
+		`;
+	}
+}

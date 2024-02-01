@@ -52,6 +52,36 @@ describe('d2l-input-checkbox', () => {
 		});
 	});
 
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().checkbox()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).checkbox()
+		}
+	].forEach(({ name, template }) => {
+		[false, true].forEach(rtl => {
+			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
+				const elem = await fixture(template, { rtl });
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
 	describe('sass', () => {
 		[false, true].forEach(disabled => {
 			[true, false].forEach(checked => {
@@ -107,14 +137,6 @@ describe('d2l-input-checkbox', () => {
 					</d2l-input-checkbox-spacer>
 				</div>
 			`
-		},
-		{
-			name: 'inline-help',
-			template: inlineHelpFixtures.checkbox.normal
-		},
-		{
-			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.checkbox.multiline
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {
