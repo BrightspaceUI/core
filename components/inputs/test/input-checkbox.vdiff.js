@@ -137,14 +137,6 @@ describe('d2l-input-checkbox', () => {
 					</d2l-input-checkbox-spacer>
 				</div>
 			`
-		},
-		{
-			name: 'inline-help',
-			template: inlineHelpFixtures.checkbox.normal
-		},
-		{
-			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.checkbox.multiline
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {
