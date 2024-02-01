@@ -1,6 +1,6 @@
 import '../button/button-subtle.js';
-import { html, LitElement } from 'lit';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
+import { html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
