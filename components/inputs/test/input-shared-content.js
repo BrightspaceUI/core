@@ -152,18 +152,6 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	textArea() {
-		return html`
-			<d2l-input-textarea
-				?disabled="${this.disabled}"
-				?skeleton="${this.skeleton}"
-				label="Description"
-			>
-				${this.inlineHelpSlot}
-			</d2l-input-textarea>
-		`;
-	}
-
 	text() {
 		return html`
 			<d2l-input-text
@@ -173,6 +161,18 @@ export class inlineHelpFixtures {
 			>
 				${this.inlineHelpSlot}
 			</d2l-input-text>
+		`;
+	}
+
+	textArea() {
+		return html`
+			<d2l-input-textarea
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Description"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-textarea>
 		`;
 	}
 
