@@ -117,7 +117,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
-			noAnnounce: { type: Boolean },
+			hasInlineHelp: { type: Boolean },
 			/**
 			 * @ignore
 			 */
@@ -439,7 +439,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
 		this.announced = false;
-		this.noAnnounce = false;
+		this.hasInlineHelp = false;
 		this.closeOnClick = false;
 		this.delay = 300;
 		this.disableFocusLock = false;
@@ -945,8 +945,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
 				elemIdListAdd(this._target, 'aria-labelledby', this.id);
-			} else if ((!this.announced || isInteractive) && !this.noAnnounce) {
-				console.log(this.noAnnounce)
+			} else if ((!this.announced || isInteractive) && !this.hasInlineHelp) {
 				elemIdListAdd(this._target, 'aria-describedby', this.id);
 			}
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
