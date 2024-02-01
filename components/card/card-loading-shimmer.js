@@ -36,7 +36,7 @@ class CardLoadingShimmer extends LitElement {
 				animation: loadingShimmer 1.5s ease-in-out infinite;
 				background: linear-gradient(90deg, rgba(249, 250, 251, 0.1), rgba(114, 119, 122, 0.1), rgba(249, 250, 251, 0.1));
 				background-color: var(--d2l-color-regolith);
-				content: '';
+				content: "";
 				height: 100%;
 				left: 0;
 				position: absolute;
