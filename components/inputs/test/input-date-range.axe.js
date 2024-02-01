@@ -27,7 +27,7 @@ describe('d2l-input-date-range', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.dateRange.normal);
+		const elem = await fixture(new inlineHelpFixtures().dateRange());
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 

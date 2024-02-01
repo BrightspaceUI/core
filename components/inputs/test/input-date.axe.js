@@ -40,7 +40,7 @@ describe('d2l-input-date', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.date.normal);
+		const elem = await fixture(new inlineHelpFixtures().date());
 		await expect(elem).to.be.accessible();
 	});
 

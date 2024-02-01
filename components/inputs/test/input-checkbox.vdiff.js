@@ -1,8 +1,8 @@
 import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -52,17 +52,34 @@ describe('d2l-input-checkbox', () => {
 		});
 	});
 
-	it('inline-help-disabled', async() => {
-		const checkboxFixture = html`
-			<d2l-input-checkbox
-				?disabled="true">
-				Checkbox
-				${inlineHelpSlots.normal}
-			</d2l-input-checkbox>
-		`;
-
-		const elem = await fixture(checkboxFixture);
-		await expect(elem).to.be.golden();
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().checkbox()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).checkbox()
+		}
+	].forEach(({ name, template }) => {
+		[false, true].forEach(rtl => {
+			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
+				const elem = await fixture(template, { rtl });
+				await expect(elem).to.be.golden();
+			});
+		});
 	});
 
 	describe('sass', () => {

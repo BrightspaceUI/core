@@ -27,7 +27,7 @@ describe('d2l-input-time-range', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.timeRange.normal);
+		const elem = await fixture(new inlineHelpFixtures().timeRange());
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 

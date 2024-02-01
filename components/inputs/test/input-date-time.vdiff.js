@@ -1,13 +1,12 @@
 import '../input-date-time.js';
 import { expect, fixture, focusElem, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, inlineHelp, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {
+	const { disabled, label, labelHidden, localized, maxValue, minValue, opened, required, skeleton, value } = {
 		disabled: false,
-		inlineHelp: false,
 		label: 'Start Date',
 		labelHidden: true,
 		localized: false,
@@ -28,7 +27,6 @@ const create = (opts = {}) => {
 			?required="${required}"
 			?skeleton="${skeleton}"
 			value="${ifDefined(value)}">
-			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
 		</d2l-input-date-time>
 	`;
 };
@@ -65,9 +63,7 @@ describe('d2l-input-date-time', () => {
 		{ name: 'invalid-value', template: create({ labelHidden: false, value: '2019-03-02' }) },
 		{ name: 'localized', template: localizedFixture },
 		{ name: 'no-value', template: create() },
-		{ name: 'required', template: requiredFixture },
-		{ name: 'inline-help', template: inlineHelpFixtures.dateTime.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true, value: '2019-03-02T05:00:00.000Z' }) },
+		{ name: 'required', template: requiredFixture }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
@@ -75,6 +71,34 @@ describe('d2l-input-date-time', () => {
 				focusElem(elem.shadowRoot.querySelector('d2l-input-date'));
 				await oneEvent(elem, 'd2l-tooltip-show');
 			}
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().dateTime()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).dateTime()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).dateTime()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).dateTime()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).dateTime()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
 			await expect(elem).to.be.golden();
 		});
 	});

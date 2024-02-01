@@ -31,8 +31,23 @@ describe('d2l-input-color', () => {
 		});
 	});
 
-	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.color.normal);
-		await expect(elem).to.be.golden();
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().color()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).color()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).color()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
 	});
 });

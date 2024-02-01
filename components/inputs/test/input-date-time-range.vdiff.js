@@ -1,9 +1,9 @@
 import '../input-date-time-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const create = (opts = {}) => {
@@ -15,7 +15,6 @@ const create = (opts = {}) => {
 		endOpened,
 		endValue,
 		inclusiveDateRange,
-		inlineHelp,
 		label,
 		labelHidden,
 		localized,
@@ -35,7 +34,6 @@ const create = (opts = {}) => {
 		disabled: false,
 		endOpened: false,
 		inclusiveDateRange: false,
-		inlineHelp: false,
 		label: 'Dates',
 		labelHidden: true,
 		localized: false,
@@ -72,7 +70,6 @@ const create = (opts = {}) => {
 			start-value="${ifDefined(startValue)}"
 			style="${styleMap(styles)}">
 			${slotted}
-			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
 		</d2l-input-date-time-range>
 	`;
 	return html`<div style="width: ${width}px">${elem}</div>`;
@@ -119,9 +116,7 @@ describe('d2l-input-date-time-range', () => {
 		{ name: 'wide-basic', template: create({ width: 800 }) },
 		{ name: 'wide-hidden-labels-values', template: wideHiddenLabelsValuesFixture },
 		{ name: 'wide-hidden-labels-values-skeleton', template: create({ childLabelsHidden: true, endLabel: 'Finish', endValue: '2021-12-04T10:30:00.000Z', labelHidden: false, skeleton: true, startLabel: 'Start', startValue: '2020-12-02T06:00:00.000Z', width: 800 }) },
-		{ name: 'wide-start-end-value', template: create({ endValue: '2021-01-12T08:30:00.000Z', startValue: '2020-12-02T15:00:00.000Z', width: 800 }) },
-		{ name: 'inline-help', template: inlineHelpFixtures.dateTimeRange.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
+		{ name: 'wide-start-end-value', template: create({ endValue: '2021-01-12T08:30:00.000Z', startValue: '2020-12-02T15:00:00.000Z', width: 800 }) }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
@@ -133,6 +128,35 @@ describe('d2l-input-date-time-range', () => {
 			await expect(actualElem).to.be.golden();
 		});
 	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().dateTimeRange()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).dateTimeRange()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).dateTimeRange()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
+	});
+
 
 	describe('opened behavior', () => {
 
