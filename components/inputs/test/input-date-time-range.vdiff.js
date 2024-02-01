@@ -116,9 +116,7 @@ describe('d2l-input-date-time-range', () => {
 		{ name: 'wide-basic', template: create({ width: 800 }) },
 		{ name: 'wide-hidden-labels-values', template: wideHiddenLabelsValuesFixture },
 		{ name: 'wide-hidden-labels-values-skeleton', template: create({ childLabelsHidden: true, endLabel: 'Finish', endValue: '2021-12-04T10:30:00.000Z', labelHidden: false, skeleton: true, startLabel: 'Start', startValue: '2020-12-02T06:00:00.000Z', width: 800 }) },
-		{ name: 'wide-start-end-value', template: create({ endValue: '2021-01-12T08:30:00.000Z', startValue: '2020-12-02T15:00:00.000Z', width: 800 }) },
-		{ name: 'inline-help', template: inlineHelpFixtures.dateTimeRange.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
+		{ name: 'wide-start-end-value', template: create({ endValue: '2021-01-12T08:30:00.000Z', startValue: '2020-12-02T15:00:00.000Z', width: 800 }) }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

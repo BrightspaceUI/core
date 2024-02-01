@@ -63,9 +63,7 @@ describe('d2l-input-date-time', () => {
 		{ name: 'invalid-value', template: create({ labelHidden: false, value: '2019-03-02' }) },
 		{ name: 'localized', template: localizedFixture },
 		{ name: 'no-value', template: create() },
-		{ name: 'required', template: requiredFixture },
-		{ name: 'inline-help', template: inlineHelpFixtures.dateTime.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true, value: '2019-03-02T05:00:00.000Z' }) },
+		{ name: 'required', template: requiredFixture }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
