@@ -176,18 +176,6 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	timeRange() {
-		return html`
-			<d2l-input-time-range
-				?disabled="${this.disabled}"
-				?skeleton="${this.skeleton}"
-				label="Time Range"
-			>
-				${this.inlineHelpSlot}
-			</d2l-input-time-range>
-		`;
-	}
-
 	time() {
 		return html`
 			<d2l-input-time
@@ -198,6 +186,18 @@ export class inlineHelpFixtures {
 			>
 				${this.inlineHelpSlot}
 			</d2l-input-time>
+		`;
+	}
+
+	timeRange() {
+		return html`
+			<d2l-input-time-range
+				?disabled="${this.disabled}"
+				?skeleton="${this.skeleton}"
+				label="Time Range"
+			>
+				${this.inlineHelpSlot}
+			</d2l-input-time-range>
 		`;
 	}
 }
