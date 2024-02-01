@@ -15,7 +15,6 @@ const create = (opts = {}) => {
 		endOpened,
 		endValue,
 		inclusiveDateRange,
-		inlineHelp,
 		label,
 		labelHidden,
 		maxValue,
@@ -32,7 +31,6 @@ const create = (opts = {}) => {
 		disabled: false,
 		endOpened: false,
 		inclusiveDateRange: false,
-		inlineHelp: false,
 		label: 'Dates',
 		labelHidden: true,
 		required: false,
@@ -111,9 +109,7 @@ describe('d2l-input-date-range', () => {
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true }) },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'start-end-label', template: create({ endLabel: 'Finish', startLabel: 'A long start date label explanation' }) },
-		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) },
-		{ name: 'inline-help', template: inlineHelpFixtures.dateRange.normal },
-		{ name: 'inline-help-skeleton', template: create({ inlineHelp: true, skeleton: true }) },
+		{ name: 'start-end-value', template: create({ endValue: '2020-10-12', startValue: '2019-03-02' }) }
 	].forEach(({ name, focus, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
