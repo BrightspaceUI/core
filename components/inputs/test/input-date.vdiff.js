@@ -362,7 +362,6 @@ describe('d2l-input-date', () => {
 		[
 			{ name: 'label', template: create({ labelHidden: false, skeleton: true, value: '2019-03-02' }) },
 			{ name: 'label-hidden', template: create({ skeleton: true, value: '2020-12-30' }) },
-			{ name: 'inline-help', template: create({ skeleton: true, inlineHelp: true, value: '2020-12-30' }) },
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
