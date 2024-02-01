@@ -59,7 +59,7 @@ export class inlineHelpFixtures {
 	}
 
 	date() {
-		return  html`
+		return html`
 			<d2l-input-date
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}"
@@ -98,7 +98,7 @@ export class inlineHelpFixtures {
 	}
 
 	dateTimeRange() {
-		return  html`
+		return html`
 			<div style="width: 400px">
 				<d2l-input-date-time-range
 					?disabled="${this.disabled}"
@@ -113,7 +113,7 @@ export class inlineHelpFixtures {
 	}
 
 	number() {
-		return  html`
+		return html`
 			<d2l-input-number
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}"
@@ -126,7 +126,7 @@ export class inlineHelpFixtures {
 	}
 
 	percent() {
-		return  html`
+		return html`
 			<d2l-input-percent
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}"
@@ -177,7 +177,7 @@ export class inlineHelpFixtures {
 	}
 
 	timeRange() {
-		return  html`
+		return html`
 			<d2l-input-time-range
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}"
