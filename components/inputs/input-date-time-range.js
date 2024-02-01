@@ -62,7 +62,7 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
  * @slot start - Optional content that would appear below the start input-date-time
  * @slot end - Optional content that would appear below the end input-date-time
- * @slot inline-help - Inline help text content.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
 class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {

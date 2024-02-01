@@ -13,7 +13,7 @@ export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
- * @slot inline-help - Inline help text content.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
 class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
