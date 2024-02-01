@@ -20,8 +20,7 @@ export const inlineHelpSlots = {
 };
 
 export class inlineHelpFixtures {
-	constructor(
-	{
+	constructor({
 		multiline = false,
 		skeleton = false,
 		disabled = false
@@ -33,7 +32,7 @@ export class inlineHelpFixtures {
 		this.inlineHelpSlot = this.multiline ? inlineHelpSlots.multiline : inlineHelpSlots.normal;
 	}
 
-	checkbox = () => {
+	checkbox() {
 		return html`
 			<d2l-input-checkbox
 				?disabled="${this.disabled}"
@@ -45,7 +44,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	color = () => {
+	color() {
 		return html`
 			<d2l-input-color
 				?disabled="${this.disabled}"
@@ -59,7 +58,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	date = () => {
+	date() {
 		return  html`
 			<d2l-input-date
 				?disabled="${this.disabled}"
@@ -71,7 +70,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	dateRange = () => {
+	dateRange() {
 		return html`
 			<d2l-input-date-range
 				?disabled="${this.disabled}"
@@ -83,7 +82,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	dateTime = () => {
+	dateTime() {
 		return html`
 			<d2l-input-date-time
 				?disabled="${this.disabled}"
@@ -98,7 +97,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	dateTimeRange = () => {
+	dateTimeRange() {
 		return  html`
 			<div style="width: 400px">
 				<d2l-input-date-time-range
@@ -113,7 +112,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	number = () => {
+	number() {
 		return  html`
 			<d2l-input-number
 				?disabled="${this.disabled}"
@@ -126,7 +125,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	percent = () => {
+	percent() {
 		return  html`
 			<d2l-input-percent
 				?disabled="${this.disabled}"
@@ -139,7 +138,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	search = () => {
+	search() {
 		return html`
 			<d2l-input-search
 				?disabled="${this.disabled}"
@@ -153,7 +152,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	textArea = () => {
+	textArea() {
 		return html`
 			<d2l-input-textarea
 				?disabled="${this.disabled}"
@@ -165,7 +164,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	text = () => {
+	text() {
 		return html`
 			<d2l-input-text
 				?disabled="${this.disabled}"
@@ -177,7 +176,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	timeRange = () => {
+	timeRange() {
 		return  html`
 			<d2l-input-time-range
 				?disabled="${this.disabled}"
@@ -189,7 +188,7 @@ export class inlineHelpFixtures {
 		`;
 	}
 
-	time = () => {
+	time() {
 		return html`
 			<d2l-input-time
 				?disabled="${this.disabled}"

@@ -157,7 +157,6 @@ describe('d2l-input-date-time-range', () => {
 		});
 	});
 
-
 	describe('opened behavior', () => {
 
 		it('intially start opened', async() => {
