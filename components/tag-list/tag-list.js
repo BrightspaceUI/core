@@ -359,6 +359,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
+		const refocus = document.activeElement;
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
@@ -374,10 +375,15 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			this._chomp();
 		}
 		this._contentReady = true;
+		if (this.contains(refocus)) {
+			await this.updateComplete;
+			refocus.focus();
+		}
 	}
 
 	async _handleSlotChange() {
 		if (!this._hasResized) return;
+		const refocus = document.activeElement;
 		this._contentReady = false;
 		await this.updateComplete;
 
@@ -400,6 +406,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._contentReady = true;
 		this._items[0].setAttribute('keyboard-tooltip-item', true);
 		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
+		if (this.contains(refocus)) {
+			await this.updateComplete;
+			refocus.focus();
+		}
 	}
 
 	async _toggleHiddenTagVisibility(e) {
@@ -409,14 +419,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		const isMoreButton = e.target.classList.contains('d2l-tag-list-button-show-more');
 		await this.updateComplete;
-		await new Promise((r) => setTimeout(r, 100)); // wait for items to appear before focusing
 		if (isMoreButton) {
 			this._items[this._chompIndex].focus();
 		} else {
 			this.shadowRoot.querySelector('.d2l-tag-list-button')?.focus();
 		}
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-tag-list-focus', { bubbles: false, composed: false }));
 	}
 }
 

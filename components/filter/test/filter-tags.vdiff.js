@@ -97,10 +97,7 @@ describe('filter-tags', () => {
 				const tagList = filterTags.shadowRoot.querySelector('d2l-tag-list');
 				const showMoreButton = tagList.shadowRoot.querySelector('.d2l-tag-list-button');
 
-				if (showMoreButton) {
-					clickElem(showMoreButton);
-					await oneEvent(tagList, 'd2l-tag-list-focus');
-				}
+				if (showMoreButton) await clickElem(showMoreButton);
 				await expect(elem).to.be.golden();
 			});
 		});
