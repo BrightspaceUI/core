@@ -599,9 +599,9 @@ describe('list', () => {
 
 	describe('nested', () => {
 		function createNestedList(opts) {
-			const { color1, color3, selected } = { selected: [false, false, false], ...opts };
+			const { color1, color3, selected, addButton } = { selected: [false, false, false], addButton: false, ...opts };
 			return html`
-				<d2l-list style="width: 600px;">
+				<d2l-list style="width: 600px;" ?add-button="${addButton}">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 					<d2l-list-item selectable label="L1-1" key="L1-1">
 						<d2l-list-item-content>
@@ -612,7 +612,7 @@ describe('list', () => {
 							<button>action 1</button>
 							<button>action 2</button>
 						</div>
-						<d2l-list slot="nested" separators="between">
+						<d2l-list slot="nested" separators="between" ?add-button="${addButton}">
 							<d2l-list-item selectable ?selected="${selected[0]}" color="${ifDefined(color1)}" label="L2-1" key="L2-1">
 								<d2l-list-item-content>
 									<div>Level 2, Item 1</div>
@@ -624,7 +624,7 @@ describe('list', () => {
 									<div>Level 2, Item 2</div>
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 								</d2l-list-item-content>
-								<d2l-list slot="nested" separators="between">
+								<d2l-list slot="nested" separators="between" ?add-button="${addButton}">
 									<d2l-list-item selectable ?selected="${selected[1]}" label="L3-1" key="L3-1">
 										<d2l-list-item-content>
 											<div>Level 3, Item 1</div>
@@ -648,18 +648,77 @@ describe('list', () => {
 		[
 			{ name: 'none-selected', template: createNestedList({ color1: '#00ff00' }) },
 			{ name: 'some-selected', template: createNestedList({ selected: [false, false, true], color3: '#00ff00' }) },
-			{ name: 'all-selected', template: createNestedList({ selected: [true, true, true] }) }
+			{ name: 'all-selected', template: createNestedList({ selected: [true, true, true] }) },
+			{ name: 'add-button', template: createNestedList({ addButton: true }) },
+			{ name: 'add-button some-selected', template: createNestedList({ addButton: true, selected: [false, false, true] }) },
+			{ name: 'add-button all-selected', template: createNestedList({ addButton: true, selected: [true, true, true] }) },
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
 				await expect(elem).to.be.golden({ margin: 24 });
 			});
 		});
+
+		it('add button only on root list', async() => {
+			const template = html`
+				<d2l-list style="width: 600px;" add-button>
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
+					<d2l-list-item selectable label="L1-1" key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested">
+							<d2l-list-item selectable label="L2-1" key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item selectable label="L2-2" key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			`;
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden({ margin: 24 });
+		});
+
+		it('add button only on nested list', async() => {
+			const template = html`
+				<d2l-list style="width: 600px;">
+					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
+					<d2l-list-item selectable label="L1-1" key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+						</d2l-list-item-content>
+						<d2l-list slot="nested" add-button>
+							<d2l-list-item selectable label="L2-1" key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item selectable label="L2-2" key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			`;
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden({ margin: 24 });
+		});
 	});
 
 	describe('expand-collapse', () => {
 		function createExpandableList(opts) {
-			const { color1, color2, color3, draggable, expanded, nested, nestedMultiple, secondTopLevelItem, selectable, skeleton } = {
+			const { color1, color2, color3, draggable, expanded, nested, nestedMultiple, secondTopLevelItem, selectable, skeleton, addButton } = {
 				draggable: false,
 				expanded: false,
 				nested: true,
@@ -667,16 +726,17 @@ describe('list', () => {
 				selectable: false,
 				secondTopLevelItem: false,
 				skeleton: false,
+				addButton: false,
 				...opts };
 			return html`
-				<d2l-list style="width: 600px;">
+				<d2l-list style="width: 600px;" ?add-button="${addButton}">
 					<d2l-list-item ?draggable="${draggable}" expandable ?expanded="${expanded}" ?selectable="${selectable}" ?skeleton="${skeleton}" color="${ifDefined(color1)}" label="L1-1" key="L1-1">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
 							<div slot="supporting-info">Supporting text for top level list item</div>
 						</d2l-list-item-content>
 						${nested ? html`
-							<d2l-list slot="nested">
+							<d2l-list slot="nested" ?add-button="${addButton}">
 								<d2l-list-item ?draggable="${draggable}" ?selectable="${selectable}" color="${ifDefined(color2)}" label="L2-1" key="L2-1">
 									<d2l-list-item-content>
 										<div>Level 2, Item 1</div>
@@ -688,7 +748,7 @@ describe('list', () => {
 										<div>Level 2, Item 2</div>
 										<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 									</d2l-list-item-content>
-									<d2l-list slot="nested">
+									<d2l-list slot="nested" ?add-button="${addButton}">
 										<d2l-list-item ?draggable="${draggable}" ?selectable="${selectable}" label="L3-1" key="L3-1">
 											<d2l-list-item-content>
 												<div>Level 3, Item 1</div>
@@ -707,7 +767,7 @@ describe('list', () => {
 											<div>Level 2, Item 3</div>
 											<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 										</d2l-list-item-content>
-										<d2l-list slot="nested">
+										<d2l-list slot="nested" ?add-button="${addButton}">
 											<d2l-list-item label="L3-1b" key="L3-1b">
 												<d2l-list-item-content>
 													<div>Level 3, Item 1b</div>
@@ -760,6 +820,34 @@ describe('list', () => {
 				if (action) await action(elem);
 				await expect(elem).to.be.golden();
 			});
+		});
+
+		it('hover first add button', async() => {
+			const elem = await fixture(createExpandableList({ addButton: true }));
+			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover second add button, not expanded', async() => {
+			const elem = await fixture(createExpandableList({ addButton: true }));
+			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1]);
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover second add button, expanded', async() => {
+			const elem = await fixture(createExpandableList({ addButton: true, expanded: true }));
+			await hoverElem(elem.querySelectorAll('d2l-list-item')[1].shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover add button at bottom of nested list', async() => {
+			const elem = await fixture(createExpandableList({ addButton: true, expanded: true, nestedMultiple: true }));
+			await hoverElem(elem.querySelector('d2l-list-item[key="L3-2b"]').shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
 		});
 	});
 

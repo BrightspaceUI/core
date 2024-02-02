@@ -1,8 +1,8 @@
 import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
 
@@ -35,24 +35,8 @@ describe('d2l-input-checkbox', () => {
 						?skeleton="${skeleton}">Checkbox (${text})</d2l-input-checkbox>
 				`;
 
-				const checkboxInlineHelpFixture = html`
-					<d2l-input-checkbox
-						?checked="${checked === 'checked'}"
-						?disabled="${disabled}"
-						?indeterminate="${checked === 'indeterminate'}"
-						?skeleton="${skeleton}">
-						Checkbox (${text})
-						${inlineHelpSlots.normal}
-					</d2l-input-checkbox>
-				`;
-
 				it(name, async() => {
 					const elem = await fixture(checkboxFixture);
-					await expect(elem).to.be.golden();
-				});
-
-				it(`${name}-inline-help`, async() => {
-					const elem = await fixture(checkboxInlineHelpFixture);
 					await expect(elem).to.be.golden();
 				});
 
@@ -64,6 +48,36 @@ describe('d2l-input-checkbox', () => {
 					});
 				}
 
+			});
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().checkbox()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).checkbox()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).checkbox()
+		}
+	].forEach(({ name, template }) => {
+		[false, true].forEach(rtl => {
+			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
+				const elem = await fixture(template, { rtl });
+				await expect(elem).to.be.golden();
 			});
 		});
 	});
@@ -123,14 +137,6 @@ describe('d2l-input-checkbox', () => {
 					</d2l-input-checkbox-spacer>
 				</div>
 			`
-		},
-		{
-			name: 'inline-help',
-			template: inlineHelpFixtures.checkbox.normal
-		},
-		{
-			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.checkbox.multiline
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {
