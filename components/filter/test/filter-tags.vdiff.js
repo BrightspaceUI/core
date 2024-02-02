@@ -2,7 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import '../filter-tags.js';
-import { aTimeout, clickElem, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 
 const singleFilter = html`
 	<d2l-filter id="filter">
@@ -113,18 +113,18 @@ describe('filter-tags', () => {
 			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
 			const deleteButton = items[6].shadowRoot.querySelector('d2l-button-icon');
 
-			await clickElem(deleteButton);
-			await aTimeout('300'); // clearing has a 200ms delay
+			clickElem(deleteButton);
+			await oneEvent(elem, 'd2l-filter-change');
 			await expect(elem).to.be.golden();
 		});
 
 		it('deleting second item', async() => {
 			const elem = await fixture(tagsSingleFilter, { viewport: { width: 1700 } });
+
 			await sendKeysElem(elem.querySelector('d2l-filter-tags'), 'press', 'Tab');
 			await sendKeys('press', 'ArrowRight');
-			await sendKeys('press', 'Delete');
-
-			await aTimeout('300'); // clearing has a 200ms delay
+			sendKeys('press', 'Delete');
+			await oneEvent(elem, 'd2l-filter-change');
 			await expect(elem).to.be.golden();
 		});
 
