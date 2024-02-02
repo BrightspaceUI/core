@@ -2,8 +2,8 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
 
@@ -131,20 +131,29 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
 		{
 			name: 'inline-help',
-			template: inlineHelpFixtures.text.normal
+			template: new inlineHelpFixtures().text()
+		},
+		{
+			name: 'inline-help-rtl',
+			template: new inlineHelpFixtures().text(),
+			rtl: true
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.text.multiline
+			template: new inlineHelpFixtures({ multiline: true }).text()
 		},
 		{
 			name: 'inline-help-skeleton',
-			template: html`
-				<d2l-input-text label="Name" value="text" skeleton>
-					${inlineHelpSlots.normal}
-				</d2l-input-text>
-			`
+			template: new inlineHelpFixtures({ skeleton: true }).text()
 		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).text()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).text()
+		}
 	].forEach(({ name, template, action, focus, rtl }) => {
 
 		it(name, async() => {

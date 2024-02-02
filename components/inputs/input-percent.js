@@ -11,6 +11,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * This component wraps the "<d2l-input-number>" tag and is intended for inputting percent values.
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
 class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {

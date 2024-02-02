@@ -60,7 +60,7 @@ describe('d2l-input-text', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.text.normal);
+		const elem = await fixture(new inlineHelpFixtures().text());
 		await expect(elem).to.be.accessible();
 	});
 
