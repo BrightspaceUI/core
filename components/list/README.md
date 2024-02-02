@@ -165,7 +165,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ### add-button Property
 
-The `add-button` attribute inserts the `d2l-button-add` component above and below each item in a list. Each nested list that wants to have this functionality will need to have this attribute on the nested `d2l-list` as well. Each list item needs to have its own `key` in order to be able to communicate where a new item should be positioned.
+The `add-button` attribute inserts the `d2l-button-add` component above and below each item in a list. Each nested list that wants to have this functionality will need to have this attribute on the nested `d2l-list` as well. Each list item needs to have its own `key` in order to communicate where a new item should be positioned.
 
 The adding of a new item into the list is to be entirely handled by consumers through listening for the `d2l-list-add-button-click` event. A simple example scenario is below.
 
