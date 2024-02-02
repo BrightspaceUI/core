@@ -359,7 +359,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
-		const refocus = document.activeElement;
+		const refocus = this.shadowRoot.activeElement || (this.contains(document.activeElement) && document.activeElement);
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
@@ -375,15 +375,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			this._chomp();
 		}
 		this._contentReady = true;
-		if (this.contains(refocus)) {
-			await this.updateComplete;
-			refocus.focus();
-		}
+		await this.updateComplete;
+		refocus.focus?.();
 	}
 
 	async _handleSlotChange() {
 		if (!this._hasResized) return;
-		const refocus = document.activeElement;
+		const refocus = this.shadowRoot.activeElement || (this.contains(document.activeElement) && document.activeElement);
 		this._contentReady = false;
 		await this.updateComplete;
 
@@ -406,10 +404,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._contentReady = true;
 		this._items[0].setAttribute('keyboard-tooltip-item', true);
 		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
-		if (this.contains(refocus)) {
-			await this.updateComplete;
-			refocus.focus();
-		}
+		await this.updateComplete;
+		refocus.focus?.();
 	}
 
 	async _toggleHiddenTagVisibility(e) {
