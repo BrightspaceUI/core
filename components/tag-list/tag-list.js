@@ -359,7 +359,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
-		const refocus = this.shadowRoot.activeElement || (this.contains(document.activeElement) && document.activeElement);
+		const rootFocused = this.getRootNode().activeElement;
+		const refocus = this.shadowRoot.activeElement || (this.contains(rootFocused) && rootFocused);
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
@@ -381,7 +382,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 	async _handleSlotChange() {
 		if (!this._hasResized) return;
-		const refocus = this.shadowRoot.activeElement || (this.contains(document.activeElement) && document.activeElement);
+		const rootActiveEl = this.getRootNode().activeElement;
+		const refocus = this.shadowRoot.activeElement || (this.contains(rootActiveEl) && rootActiveEl);
 		this._contentReady = false;
 		await this.updateComplete;
 
