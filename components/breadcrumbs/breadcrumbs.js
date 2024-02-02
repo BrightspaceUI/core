@@ -35,7 +35,7 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host::after {
 				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				bottom: 0;
-				content: '';
+				content: "";
 				pointer-events: none;
 				position: absolute;
 				right: 0;
