@@ -116,8 +116,9 @@ describe('tag-list', () => {
 		});
 
 		it('delete first item', async() => {
-			await sendKeys('press', 'Tab');
+			elem.focus();
 			sendKeys('press', 'Delete');
+			await oneEvent(elem, 'd2l-tag-list-item-clear');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
