@@ -359,8 +359,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
-		const rootFocused = this.getRootNode().activeElement;
-		const refocus = this.shadowRoot.activeElement || (this.contains(rootFocused) && rootFocused);
+		const rootActiveEl = this.getRootNode().activeElement;
+		const refocus = this.shadowRoot.activeElement || (this.contains(rootActiveEl) && rootActiveEl);
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
