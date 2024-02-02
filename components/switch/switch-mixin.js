@@ -47,7 +47,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 
 			.d2l-switch-container {
-				background-color: var(--d2l-switch-container-background-color, "#fff");
+				background-color: var(--d2l-switch-container-background-color, #ffffff);
 				border: 2px solid transparent;
 				border-radius: 1rem;
 				box-sizing: border-box;
