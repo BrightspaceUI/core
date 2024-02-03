@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -359,8 +360,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
-		const rootActiveEl = this.getRootNode().activeElement;
-		const refocus = this.shadowRoot.activeElement || (this.contains(rootActiveEl) && rootActiveEl);
+		const refocus = getComposedActiveElement();
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
@@ -377,13 +377,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		this._contentReady = true;
 		await this.updateComplete;
-		refocus.focus?.();
+		refocus.focus();
 	}
 
 	async _handleSlotChange() {
 		if (!this._hasResized) return;
-		const rootActiveEl = this.getRootNode().activeElement;
-		const refocus = this.shadowRoot.activeElement || (this.contains(rootActiveEl) && rootActiveEl);
+		const refocus = getComposedActiveElement();
 		this._contentReady = false;
 		await this.updateComplete;
 
@@ -407,7 +406,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._items[0].setAttribute('keyboard-tooltip-item', true);
 		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
 		await this.updateComplete;
-		refocus.focus?.();
+		refocus.focus();
 	}
 
 	async _toggleHiddenTagVisibility(e) {
