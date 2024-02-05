@@ -573,13 +573,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_dispatchChangeEvent(dimension, change) {
 		this._setDimensionChangeEvent(dimension, change, false);
+		clearTimeout(this._changeEventTimeout);
 
-		if (!this._changeEventTimeout) {
-			/** 200 ms timeout used in filter-tags CLEAR_TIMEOUT. If the timeout here changes, update that as well */
-			this._changeEventTimeout = setTimeout(() => {
-				this._dispatchChangeEventNow(false);
-			}, 200);
-		}
+		/** 300 ms timeout used in filter-tags CLEAR_TIMEOUT. If the timeout here changes, update that as well */
+		this._changeEventTimeout = setTimeout(() => {
+			this._dispatchChangeEventNow(false);
+		}, 300);
 	}
 
 	_dispatchChangeEventNow(allCleared) {
@@ -594,8 +593,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			detail: { allCleared: allCleared, dimensions: dimensions }
 		}));
 		this._changeEventsToDispatch = new Map();
-		this._changeEventTimeout = null;
-
+		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
