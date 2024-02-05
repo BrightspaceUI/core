@@ -175,7 +175,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-info-message {
 				color: var(--d2l-color-ferrite);
+				display: flex;
+				justify-content: center;
 				text-align: center;
+			}
+
+			.d2l-empty-state-action {
+				padding-inline-start: 0.5rem;
 			}
 
 			/* Needed to "undo" the menu-item style for multiple dimensions */
@@ -448,6 +454,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			emptyStateAction = html`
 				<d2l-empty-state-action-button
 					@d2l-empty-state-action="${this._handleEmptyStateAction}"
+					class="d2l-empty-state-action"
 					data-dimension-key="${dimensionKey}"
 					data-type="${emptyState.type}"
 					text="${emptyState.actionText}">

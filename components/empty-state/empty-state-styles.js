@@ -11,6 +11,13 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	:host([description]) .empty-state-container {
+		align-items: center;
+		column-gap: 0.5rem;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 	.action-slot::slotted(*) {
 		display: none;
 	}
@@ -30,14 +37,10 @@ export const emptyStateSimpleStyles = css`
 		padding: 1.2rem 1.5rem;
 	}
 
-	:host([dir="rtl"]) .d2l-empty-state-description {
-		padding-left: 0.5rem;
-		padding-right: 0;
-	}
-
 	.d2l-empty-state-description {
 		display: inline;
-		padding-right: 0.5rem;
+		line-height: 28px;
+		margin: 0;
 	}
 
 `;
@@ -66,7 +69,7 @@ export const emptyStateIllustratedStyles = css`
 	.d2l-empty-state-title {
 		margin-bottom: 0.9rem;
 	}
-	
+
 	.d2l-empty-state-title-large {
 		font-size: 1.5rem;
 		line-height: 1.8rem;
