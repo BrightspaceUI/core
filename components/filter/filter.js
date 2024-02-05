@@ -445,7 +445,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
 				<d2l-empty-state-action-link
-					class="d2l-empty-state-action"
 					href="${emptyState.actionHref}"
 					text="${emptyState.actionText}">
 				</d2l-empty-state-action-link>
