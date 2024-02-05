@@ -2,6 +2,7 @@ import '../input-date-range.js';
 import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 import { LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -59,7 +60,8 @@ const create = (opts = {}) => {
 			start-label="${ifDefined(startLabel)}"
 			?start-opened="${startOpened}"
 			start-value="${ifDefined(startValue)}"
-			style="${styleMap(styles)}"></d2l-input-date-range>
+			style="${styleMap(styles)}">
+		</d2l-input-date-range>
 	`;
 	return wrapped ? html`<div>${elem}</div>` : elem;
 };
@@ -117,6 +119,34 @@ describe('d2l-input-date-range', () => {
 				await oneEvent(elem, 'd2l-tooltip-show');
 			}
 			await expect(actualElem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().dateRange()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).dateRange()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).dateRange()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).dateRange()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).dateRange()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
 		});
 	});
 

@@ -663,7 +663,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			/* prevent margin colapse on slotted children */
 			aside::before,
 			aside::after {
-				content: ' ';
+				content: " ";
 				display: table;
 			}
 			[data-background-shading="primary"] > main,
@@ -749,7 +749,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			.d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: var(--d2l-color-galena);
 				border-radius: 0.05rem;
-				content: '';
+				content: "";
 				display: inline-block;
 				width: 0.1rem;
 			}

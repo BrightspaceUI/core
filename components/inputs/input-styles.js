@@ -95,15 +95,15 @@ export const inputStyles = css`
 		background-position: top calc(12px - 1px) right calc(18px - 1px);
 		padding-right: calc(18px + 0.8rem - 1px);
 	}
-	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"] {
+	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"] {
 		background-position: top 12px left 18px;
 		padding: var(--d2l-input-padding, 0.75rem);
 		padding-bottom: 0.5rem;
 		padding-left: calc(18px + 0.8rem);
 		padding-top: 0.5rem;
 	}
-	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:focus,
-	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:hover {
+	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:focus,
+	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:hover {
 		background-position: top calc(12px - 1px) left calc(18px - 1px);
 		padding: var(--d2l-input-padding-focus, calc(0.75rem - 1px));
 		padding-bottom: calc(0.5rem - 1px);
