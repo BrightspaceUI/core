@@ -143,7 +143,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
 			}
-			:host([dir='rtl']) .d2l-input-textarea-mirror[aria-invalid="true"] {
+			:host([dir="rtl"]) .d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-left: calc(18px + 0.8rem);
 				padding-right: 0.75rem;
 			}

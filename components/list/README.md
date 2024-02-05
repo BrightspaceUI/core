@@ -163,6 +163,99 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
 
+### add-button Property
+
+The `add-button` attribute inserts the `d2l-button-add` component above and below each item in a list. Each nested list that wants to have this functionality will need to have this attribute on the nested `d2l-list` as well. Each list item needs to have its own `key` in order to communicate where a new item should be positioned.
+
+Adding new items to the list is handled entirely by consumers by listening for the `d2l-list-add-button-click` event. A simple example scenario is below.
+
+<!-- docs: demo code display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-controls.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import { css, html, LitElement } from 'lit';
+  import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
+
+  class ListDemoAddButton extends LitElement {
+
+    _handleListAddButtonClick(e) {
+      const newItem = this._newItem();
+      const siblingItem = this.shadowRoot.querySelector(`[key="${e.detail.key}"]`);
+
+      if (e.detail.position === 'before') {
+        siblingItem.insertAdjacentElement('beforebegin', newItem);
+      } else {
+        siblingItem.insertAdjacentElement('afterend', newItem);
+      }
+    }
+
+    _newItem() {
+      const elem = document.createElement('d2l-list-item');
+      const key = getUniqueId();
+      elem.key = key;
+      elem.label = 'New Item';
+      elem.selectable = true;
+
+      const childElem = document.createElement('d2l-list-item-content');
+      childElem.textContent = `Item ${key}`;
+
+      elem.appendChild(childElem);
+      return elem;
+    }
+
+    render() {
+      return html`
+        <d2l-list grid add-button @d2l-list-add-button-click="${this._handleListAddButtonClick}">
+          <d2l-list-controls slot="controls">
+            <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+          </d2l-list-controls>
+          <d2l-list-item selectable expandable key="expand-1" label="Expandable item #1">
+            <d2l-list-item-content>
+              <div>Expandable item #1</div>
+              <div slot="supporting-info">Supporting information</div>
+            </d2l-list-item-content>
+            <d2l-list grid add-button slot="nested" @d2l-list-add-button-click="${this._handleListAddButtonClick}">
+              <d2l-list-item selectable key="nested-1" label="Nested 1">
+                <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+              </d2l-list-item>
+              <d2l-list-item selectable key="nested-2" label="Nested 2">
+                <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+              </d2l-list-item>
+            </d2l-list>
+          </d2l-list-item>
+          <d2l-list-item selectable expandable expanded key="expand-2" label="Expandable item #2">
+            <d2l-list-item-content>
+              <div>Expandable Item #2</div>
+              <div slot="supporting-info">Supporting information</div>
+            </d2l-list-item-content>
+            <d2l-list grid add-button slot="nested" @d2l-list-add-button-click="${this._handleListAddButtonClick}">
+              <d2l-list-item selectable key="nested-3" label="Nested 3">
+                <d2l-list-item-content><div>Nested item #3</div></d2l-list-item-content>
+              </d2l-list-item>
+              <d2l-list-item selectable key="nested-4" label="Nested 4">
+                <d2l-list-item-content><div>Nested item #4</div></d2l-list-item-content>
+              </d2l-list-item>
+            </d2l-list>
+          </d2l-list-item>
+          <d2l-list-item selectable key="expand-3" label="Item with no children">
+            <d2l-list-item-content>
+              <div>Item with no children</div>
+              <div slot="supporting-info">Supporting information</div>
+            </d2l-list-item-content>
+          </d2l-list-item>
+        </d2l-list>
+      `;
+    }
+  }
+  customElements.define('d2l-list-demo-add-button', ListDemoAddButton);
+</script>
+<d2l-list-demo-add-button></d2l-list-demo-add-button>
+```
+
 ### Methods
 
 - `getItems()` (Array): returns the list items within the list

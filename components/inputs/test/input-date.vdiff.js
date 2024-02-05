@@ -1,18 +1,17 @@
 import '../input-date.js';
 import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
-import { inlineHelpFixtures, inlineHelpSlots } from './input-shared-content.js';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, inlineHelp, value } = {
+	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
 		disabled: false,
 		label: 'Start Date',
 		labelHidden: true,
 		opened: false,
 		required: false,
 		skeleton: false,
-		inlineHelp: false,
 		...opts
 	};
 	return html`
@@ -27,7 +26,6 @@ const create = (opts = {}) => {
 			?required="${required}"
 			?skeleton="${skeleton}"
 			value="${ifDefined(value)}">
-			${ifDefined(inlineHelp ? inlineHelpSlots.normal : undefined)}
 		</d2l-input-date>
 	`;
 };
@@ -57,9 +55,7 @@ describe('d2l-input-date', () => {
 		{ name: 'placeholder', template: placeholderFixture },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'value', template: valueFixture },
-		{ name: 'value-focus', template: valueFixture, focus: true },
-		{ name: 'inline-help', template: inlineHelpFixtures.date.normal, focus: true },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.date.multiline, focus: true },
+		{ name: 'value-focus', template: valueFixture, focus: true }
 	].forEach(({ name, template, focus }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
@@ -68,6 +64,34 @@ describe('d2l-input-date', () => {
 				elem._inputTextFocusShowTooltip = true;
 				await nextFrame();
 			}
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().date()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).date()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).date()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).date()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).date()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
 			await expect(elem).to.be.golden();
 		});
 	});
@@ -338,7 +362,6 @@ describe('d2l-input-date', () => {
 		[
 			{ name: 'label', template: create({ labelHidden: false, skeleton: true, value: '2019-03-02' }) },
 			{ name: 'label-hidden', template: create({ skeleton: true, value: '2020-12-30' }) },
-			{ name: 'inline-help', template: create({ skeleton: true, inlineHelp: true, value: '2020-12-30' }) },
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
