@@ -13,7 +13,7 @@ export const emptyStateStyles = css`
 
 	:host([description]) .empty-state-container {
 		align-items: center;
-		column-gap: 0.5rem;
+		column-gap: 0.3rem;
 		display: flex;
 		flex-wrap: wrap;
 	}
