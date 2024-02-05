@@ -1,7 +1,7 @@
 import '../tag-list.js';
 import '../tag-list-item.js';
 import './tag-list-item-mixin-consumer.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -116,8 +116,7 @@ describe('tag-list', () => {
 		});
 
 		it('delete first item', async() => {
-			elem.focus();
-			sendKeys('press', 'Delete');
+			sendKeysElem(elem, 'press', 'Delete');
 			await oneEvent(elem, 'd2l-tag-list-item-clear');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
