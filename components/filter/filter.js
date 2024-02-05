@@ -181,7 +181,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-empty-state-action {
-				padding-inline-start: 0.5rem;
+				padding-inline-start: 0.3rem;
 			}
 
 			/* Needed to "undo" the menu-item style for multiple dimensions */
