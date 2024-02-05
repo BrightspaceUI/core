@@ -11,9 +11,13 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
+	.empty-state-container {
+		padding-inline: 0.5rem;
+	}
+
 	:host([description]) .empty-state-container {
 		align-items: center;
-		column-gap: 0.3rem;
+		column-gap: 0.5rem;
 		display: flex;
 		flex-wrap: wrap;
 	}
