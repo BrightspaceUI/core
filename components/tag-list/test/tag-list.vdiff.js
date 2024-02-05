@@ -124,7 +124,7 @@ describe('tag-list', () => {
 
 		it('click clear all', async() => {
 			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button'));
-			await waitUntil(() => elem.clientHeight === 30);
+			await waitUntil(() => elem.clientHeight === 30, 'Element did not reach expected height', { timeout: 2000 });
 			await expect(elem).to.be.golden();
 		});
 	});
