@@ -152,6 +152,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				color: var(--d2l-color-chromite);
 			}
 
+			.d2l-empty-state-action {
+				padding-inline-start: 0.5rem;
+			}
+
 			.d2l-filter-dimension-intro-text {
 				margin: 0;
 				padding: 0.6rem 1.5rem 1.5rem;
@@ -441,6 +445,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
 				<d2l-empty-state-action-link
+					class="d2l-empty-state-action"
 					href="${emptyState.actionHref}"
 					text="${emptyState.actionText}">
 				</d2l-empty-state-action-link>
@@ -450,6 +455,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			emptyStateAction = html`
 				<d2l-empty-state-action-button
 					@d2l-empty-state-action="${this._handleEmptyStateAction}"
+					class="d2l-empty-state-action"
 					data-dimension-key="${dimensionKey}"
 					data-type="${emptyState.type}"
 					text="${emptyState.actionText}">
