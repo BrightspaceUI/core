@@ -1,4 +1,4 @@
-@import '../../colors/colors.scss';
+@import "../../colors/colors.scss";
 
 @mixin d2l-input-text(
 		$include-pseudo-classes: true,
@@ -6,7 +6,7 @@
 		$padding: 0.4rem 0.75rem,
 		$padding-focus: calc(0.4rem - 1px) calc(0.75rem - 1px)
 	) {
-	background-color: #ffffff;	
+	background-color: #ffffff;
 	border-radius: 0.3rem;
 	border-style: solid;
 	border-width: 1px;
@@ -40,7 +40,7 @@
 		outline-width: 0;
 		padding: $padding-focus;
 	}
-	&[aria-invalid='true'] {
+	&[aria-invalid="true"] {
 		border-color: $d2l-color-cinnabar;
 	}
 	&,
@@ -60,8 +60,8 @@
 		}
 		&::-ms-clear {
 			display: none;
-			width: 0;
 			height: 0;
+			width: 0;
 		}
 	}
 }

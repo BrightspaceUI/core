@@ -1,4 +1,4 @@
-@import '../colors/colors.scss';
+@import "../colors/colors.scss";
 
 @mixin d2l-link() {
 	&,
@@ -6,8 +6,8 @@
 	&:link,
 	&:active {
 		color: $d2l-color-celestine;
-		text-decoration: none;
 		cursor: pointer;
+		text-decoration: none;
 	}
 	&:hover {
 		color: $d2l-color-celestine-minus-1;
@@ -31,8 +31,8 @@
 	}
 	&[small] {
 		font-size: 0.7rem;
-		line-height: 1.05rem;
 		letter-spacing: 0.01rem;
+		line-height: 1.05rem;
 	}
 	@media print {
 		&, &:visited, &:link, &:active {
