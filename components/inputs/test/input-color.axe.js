@@ -31,7 +31,7 @@ describe('d2l-input-color', () => {
 	});
 
 	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.color.normal);
+		const elem = await fixture(new inlineHelpFixtures().color());
 		await expect(elem).to.be.accessible();
 	});
 });

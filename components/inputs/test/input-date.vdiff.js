@@ -25,7 +25,8 @@ const create = (opts = {}) => {
 			?opened="${opened}"
 			?required="${required}"
 			?skeleton="${skeleton}"
-			value="${ifDefined(value)}"></d2l-input-date>
+			value="${ifDefined(value)}">
+		</d2l-input-date>
 	`;
 };
 
@@ -54,9 +55,7 @@ describe('d2l-input-date', () => {
 		{ name: 'placeholder', template: placeholderFixture },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'value', template: valueFixture },
-		{ name: 'value-focus', template: valueFixture, focus: true },
-		{ name: 'inline-help', template: inlineHelpFixtures.date.normal, focus: true },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.date.multiline, focus: true },
+		{ name: 'value-focus', template: valueFixture, focus: true }
 	].forEach(({ name, template, focus }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
@@ -65,6 +64,34 @@ describe('d2l-input-date', () => {
 				elem._inputTextFocusShowTooltip = true;
 				await nextFrame();
 			}
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().date()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).date()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).date()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).date()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).date()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
 			await expect(elem).to.be.golden();
 		});
 	});

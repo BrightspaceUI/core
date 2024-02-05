@@ -131,12 +131,29 @@ describe('d2l-input-text', () => {
 		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
 		{
 			name: 'inline-help',
-			template: inlineHelpFixtures.text.normal
+			template: new inlineHelpFixtures().text()
+		},
+		{
+			name: 'inline-help-rtl',
+			template: new inlineHelpFixtures().text(),
+			rtl: true
 		},
 		{
 			name: 'inline-help-multiline',
-			template: inlineHelpFixtures.text.multiline
+			template: new inlineHelpFixtures({ multiline: true }).text()
 		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).text()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).text()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).text()
+		}
 	].forEach(({ name, template, action, focus, rtl }) => {
 
 		it(name, async() => {

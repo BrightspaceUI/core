@@ -104,14 +104,32 @@ describe('d2l-input-percent', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('inline-help', async() => {
-		const elem = await fixture(inlineHelpFixtures.percent.normal, { viewport });
-		await expect(elem).to.be.golden();
-	});
-
-	it('inline-help-multiline', async() => {
-		const elem = await fixture(inlineHelpFixtures.percent.multiline, { viewport });
-		await expect(elem).to.be.golden();
+	[
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().percent()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).percent()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).percent()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).percent()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).percent()
+		}
+	].forEach(({ name, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
 	});
 
 });

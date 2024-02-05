@@ -25,7 +25,8 @@ const create = (opts = {}) => {
 			?opened="${opened}"
 			?required="${required}"
 			?skeleton="${skeleton}"
-			value="${ifDefined(value)}"></d2l-input-time>
+			value="${ifDefined(value)}">
+			</d2l-input-time>
 	`;
 };
 
@@ -45,8 +46,26 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'inline-help', template: inlineHelpFixtures.time.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.time.multiline }
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().time()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).time()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).time()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).time()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).time()
+		}
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

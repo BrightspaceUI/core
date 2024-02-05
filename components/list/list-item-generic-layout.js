@@ -69,7 +69,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
-				grid-template-rows: [main-start] [main-end add-start] [add-end nested-start] [nested-end];
+				grid-template-rows:
+					[start add-top-start] minmax(0, min-content)
+					[add-top-end main-start] minmax(0, min-content)
+					[main-end add-start] minmax(0, min-content)
+					[add-end nested-start] minmax(0, min-content)
+					[nested-end end];
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
@@ -87,12 +92,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="content"]),
 			::slotted([slot="actions"]),
 			::slotted([slot="outside-control-action"]),
+			::slotted([slot="before-content"]),
 			::slotted([slot="control-action"]),
 			::slotted([slot="content-action"]),
 			::slotted([slot="outside-control-container"]),
 			::slotted([slot="control-container"]),
 			::slotted([slot="drop-target"]) {
-				grid-row: 1 / 2;
+				grid-row: 2 / 3;
 			}
 
 			::slotted([slot="outside-control"]) {
@@ -120,6 +126,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="color-indicator"]) {
 				grid-column: color-start / color-end;
+			}
+
+			::slotted([slot="before-content"]) {
+				grid-column: color-start / content-start;
 			}
 
 			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
@@ -169,11 +179,18 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="nested"]) {
 				grid-column: content-start / end;
-				grid-row: nested-start / nested-end;
+				grid-row: nested;
 			}
+
+			::slotted([slot="add"]) {
+				grid-row: add;
+			}
+			::slotted([slot="add-top"]) {
+				grid-row: add-top;
+			}
+			::slotted([slot="add-top"]),
 			::slotted([slot="add"]) {
 				grid-column: color-start / end;
-				grid-row: add;
 			}
 		`;
 	}
@@ -208,8 +225,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
+			<slot name="add-top" class="d2l-cell" data-cell-num="10"></slot>
+
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
+			<slot name="before-content"></slot>
 
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>

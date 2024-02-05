@@ -26,8 +26,26 @@ describe('d2l-input-number', () => {
 			`
 		},
 		{ name: 'trailing-zeroes', template: html`<d2l-input-number label="Number" value-trailing-zeroes="1.000" trailing-zeroes></d2l-input-number>` },
-		{ name: 'inline-help', template: inlineHelpFixtures.number.normal },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.number.multiline }
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().number()
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).number()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).number()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).number()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).number()
+		}
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport });

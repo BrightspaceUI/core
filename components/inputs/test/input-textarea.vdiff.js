@@ -37,8 +37,31 @@ describe('d2l-input-textarea', () => {
 		{ name: 'skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
 		{ name: 'no-border-padding', template: noBorderPaddingFixture },
 		{ name: 'no-border-padding-focus', template: noBorderPaddingFixture, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help', template: inlineHelpFixtures.textArea.normal, action: async(elem) => focusElem(elem) },
-		{ name: 'inline-help-multiline', template: inlineHelpFixtures.textArea.multiline, action: async(elem) => focusElem(elem) }
+		{
+			name: 'inline-help',
+			template: new inlineHelpFixtures().textArea()
+		},
+		{
+			name: 'inline-help-rtl',
+			template: new inlineHelpFixtures().textArea(),
+			rtl: true
+		},
+		{
+			name: 'inline-help-multiline',
+			template: new inlineHelpFixtures({ multiline: true }).textArea()
+		},
+		{
+			name: 'inline-help-skeleton',
+			template: new inlineHelpFixtures({ skeleton: true }).textArea()
+		},
+		{
+			name: 'inline-help-skeleton-multiline',
+			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).textArea()
+		},
+		{
+			name: 'inline-help-disabled',
+			template: new inlineHelpFixtures({ disabled: true }).textArea()
+		}
 	].forEach(({ name, template, action, rtl }) => {
 
 		it(name, async() => {
