@@ -12,7 +12,7 @@ export const emptyStateStyles = css`
 	}
 
 	.empty-state-container {
-		padding-inline: 0;
+		padding-inline: 0.2rem;
 	}
 
 	:host([description]) .empty-state-container {
@@ -20,6 +20,7 @@ export const emptyStateStyles = css`
 		column-gap: 0.5rem;
 		display: flex;
 		flex-wrap: wrap;
+		padding-inline: 0;
 	}
 
 	.action-slot::slotted(*) {
