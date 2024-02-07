@@ -88,7 +88,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
-			_hideBottomBorder: { type: Boolean, attribute: '_hide-bottom-border', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
@@ -156,7 +155,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::before,
-			:host([_hide-bottom-border]) [slot="control-container"]::after,
+			.hide-bottom-border[slot="control-container"]::after,
 			:host([_has-nested-list-add-button]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
@@ -308,19 +307,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -1px;
 			}
 			/* below hides the border under the d2l-button-add */
-			:host([_hovering-primary-action][_hide-bottom-border]) [slot="outside-control-container"],
-			:host([_hovering-selection][_hide-bottom-border]) [slot="outside-control-container"],
-			:host([_focusing-primary-action][_hide-bottom-border]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hide-bottom-border]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection][_hide-bottom-border]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing][_hide-bottom-border]) [slot="outside-control-container"] {
+			:host([_hovering-primary-action]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_focusing-primary-action]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hide-bottom-border]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
 				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
 			}
 			:host([_hovering-primary-action]) d2l-button-add,
@@ -515,7 +514,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	updateParentHasAddButon(addButton, addButtonText) {
 		this._addButtonText = addButtonText;
 		this._showAddButton = addButton;
-		this._hideBottomBorder = this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton);
 	}
 
 	updateSiblingHasColor(siblingHasColor) {
@@ -645,7 +643,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (this._hasNestedList !== !!nestedList) {
 			this._hasNestedList = !!nestedList;
 			this._hasNestedListAddButton = nestedList.hasAttribute('add-button');
-			this._hideBottomBorder = this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton);
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-nested-change', { bubbles: true, composed: true }));
 		}
@@ -663,6 +660,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const colorClasses = {
 			'd2l-list-item-color-inner': true,
 			'd2l-skeletize': this.color
+		};
+		const bottomBorderClasses = {
+			'hide-bottom-border': this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton)
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
@@ -683,12 +683,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}" data-is-first></d2l-button-add>
 				</div>
 				` : nothing}
-				<div slot="outside-control-container"></div>
+				<div slot="outside-control-container" class="${classMap(bottomBorderClasses)}"></div>
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
-				<div slot="control-container"></div>
+				<div slot="control-container" class="${classMap(bottomBorderClasses)}"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
 					<div class="${classMap(colorClasses)}" style="${styleMap(colorStyles)}"></div>
