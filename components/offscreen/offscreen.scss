@@ -2,13 +2,13 @@
 
 	$offset: -10000px;
 
-	position: absolute !important;
+	height: 1px;
 	inset-inline-start: $offset;
 	left: $offset;
 	overflow: hidden;
-	width: 1px;
-	height: 1px;
+	position: absolute !important;
 	white-space: nowrap;
+	width: 1px;
 
 	[dir="rtl"] & {
 		left: auto;
