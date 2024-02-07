@@ -83,6 +83,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
+			_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
@@ -126,11 +127,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: absolute;
 				width: 100%;
 			}
-			:host([_show-add-button][_has-nested-list]) [slot="before-content"] {
+			:host([_has-nested-list-add-button]) [slot="before-content"] {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
-			:host([_show-add-button][_has-nested-list]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
+			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: #b6cbe8;
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
@@ -156,6 +157,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host([_show-add-button]) [slot="control-container"]::before,
 			:host([_hide-bottom-border]) [slot="control-container"]::after,
+			:host([_has-nested-list-add-button]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
