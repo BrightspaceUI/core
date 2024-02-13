@@ -17,7 +17,7 @@ export const skeletonStyles = css`
 		100% { background-color: var(--d2l-color-sylvite); }
 	}
 	:host([skeleton]) {
-		opacity: 0.999;
+		isolation: isolate;
 	}
 	:host([skeleton]) .d2l-skeletize::before {
 		animation: ${animation};
