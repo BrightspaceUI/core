@@ -239,9 +239,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			return;
 		}
 
-		e.composedPath()[0].scrollIntoView(false);
-		if (this.__content.scrollTop > 0) {
+		debugger;
+		const target = e.composedPath()[0];
+
+		if (this.__content.scrollTop) {
+			this.__content.scrollTo({ top: 0, behavior: 'instant' });
 			this.__expand();
+			setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }));
 			this.__autoExpanded = true;
 		}
 	}
