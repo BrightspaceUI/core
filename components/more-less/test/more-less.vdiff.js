@@ -4,11 +4,11 @@ import { nothing } from 'lit';
 
 const viewport = { width: 326 };
 
-const content = ({ withLinks = false }) => html`
+const content = ({ withLinks = false } = {}) => html`
 	<p>
 		${ withLinks ? html`<a href="https://d2l.com">d2l</a> ` : nothing }
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-		${withLinks ? html`<br><br><a href="https://d2l.com">d2l</a>` : nothing }
+		${ withLinks ? html`<br><br><a href="https://d2l.com">d2l</a>` : nothing }
 	</p>
 `;
 
