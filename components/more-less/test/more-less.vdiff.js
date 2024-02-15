@@ -4,8 +4,12 @@ import { nothing } from 'lit';
 
 const viewport = { width: 326 };
 
-const content = (withLink = false) => html`
-	<p>${withLink ? html`<a href="https://d2l.com">d2l</a> ` : nothing}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.${withLink ? html`<br><br><a href="https://d2l.com">d2l</a> ` : nothing}</p>
+const content = ({ withLinks = false }) => html`
+	<p>
+		${ withLink ? html`<a href="https://d2l.com">d2l</a> ` : nothing }
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		${withLink ? html`<br><br><a href="https://d2l.com">d2l</a>` : nothing }
+	</p>
 `;
 
 describe('more-less', () => {
