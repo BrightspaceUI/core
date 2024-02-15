@@ -1,6 +1,7 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -242,7 +243,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			return;
 		}
 
-		const target = e.composedPath()[0];
+		const target = e.composedPath()[0] || e.target;
 
 		if (isSafari) {
 			target.scrollIntoViewIfNeeded();
@@ -254,13 +255,14 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			if (reduceMotion) {
 				target.scrollIntoView({ behavior: 'instant' });
 			} else {
-				setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }, 100));
+				setTimeout(() => target.getRootNode().activeElement === target && target.scrollIntoView({ behavior: 'smooth' }), 100);
 			}
 			this.__autoExpanded = true;
 		}
 	}
 
 	__focusOut(e) {
+
 		if (this.inactive
 			|| !this.__autoExpanded
 			|| isComposedAncestor(this.__content, e.relatedTarget)
@@ -268,8 +270,16 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			return;
 		}
 
+		const target = e.relatedTarget;
+
 		this.__shrink();
 		this.__autoExpanded = false;
+		setTimeout(() => {
+			const activeElement = getComposedActiveElement();
+			if (target === activeElement || isComposedAncestor(target, activeElement)) {
+				target.scrollIntoView({ behavior: 'instant' })
+			}
+		}, 400);
 	}
 
 	__init_measureBaseHeight() {
@@ -332,14 +342,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__reactToChanges() {
-		if (!this.__transitionAdded) {
-			this.__reactToChanges_setupTransition();
-		} else {
-			this.__adjustToContent();
-		}
-	}
-
-	__reactToChanges_setupTransition() {
 		this.__transitionAdded = true;
 		this.__adjustToContent();
 	}
