@@ -239,7 +239,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			return;
 		}
 
-		e.composedPath()[0].scrollIntoViewIfNeeded();
+		e.composedPath()[0].scrollIntoView(false);
 		if (this.__content.scrollTop > 0) {
 			this.__expand();
 			this.__autoExpanded = true;
@@ -308,7 +308,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			this.__contentSlot.addEventListener('slotchange', this.__reactToChanges.bind(this));
 			this.__contentSlot.addEventListener('slotchange', this.__startObserving.bind(this));
 		}
-		this.__content.addEventListener('focusin', this.__focusIn.bind(this), { capture: true });
+		this.__content.addEventListener('focusin', this.__focusIn.bind(this));
 		this.__content.addEventListener('focusout', this.__focusOut.bind(this));
 	}
 
