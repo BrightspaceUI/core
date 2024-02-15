@@ -5,7 +5,7 @@ import { nothing } from 'lit';
 const viewport = { width: 326 };
 
 const content = (withLink = false) => html`
-	<p>${withLink ? html`<a href="https://d2l.com">d2l<a> ` : nothing}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+	<p>${withLink ? html`<a href="https://d2l.com">d2l</a> ` : nothing}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.${withLink ? html`<br><br><a href="https://d2l.com">d2l</a> ` : nothing}</p>
 `;
 
 describe('more-less', () => {
@@ -45,15 +45,29 @@ describe('more-less', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('auto-expands on focus-in', async() => {
-		const elem = await fixture(html`<d2l-more-less>${content({ withLink: true })}</d2l-more-less>`, { viewport });
+	it('auto-expands on focus-in when scrolled', async() => {
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
+		await focusElem(elem.querySelectorAll('a')[1]);
+		await expect(elem).to.be.golden();
+	});
+
+	it('does not auto-expand on focus-in when not scrolled', async() => {
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
 		await focusElem(elem.querySelector('a'));
 		await expect(elem).to.be.golden();
 	});
 
 	it('auto-collapses on focus-out', async() => {
-		const elem = await fixture(html`<d2l-more-less>${content({ withLink: true })}</d2l-more-less>`, { viewport });
-		await focusElem(elem.querySelector('a'));
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
+		await focusElem(elem.querySelectorAll('a')[1]);
+		await sendKeys('press', 'Shift+Tab');
+		await sendKeys('press', 'Shift+Tab');
+		await expect(elem).to.be.golden();
+	});
+
+	it('does not auto-collapse on focus-out when still active', async() => {
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
+		await focusElem(elem.querySelectorAll('a')[1]);
 		await sendKeys('press', 'Shift+Tab');
 		await expect(elem).to.be.golden();
 	});
