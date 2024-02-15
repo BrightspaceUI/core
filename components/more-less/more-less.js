@@ -8,6 +8,9 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
  * @slot - Default content placed inside of the component
@@ -239,13 +242,20 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			return;
 		}
 
-		debugger;
 		const target = e.composedPath()[0];
+
+		if (isSafari) {
+			target.scrollIntoViewIfNeeded();
+		}
 
 		if (this.__content.scrollTop) {
 			this.__content.scrollTo({ top: 0, behavior: 'instant' });
 			this.__expand();
-			setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }));
+			if (reduceMotion) {
+				target.scrollIntoView({ behavior: 'instant' });
+			} else {
+				setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }, 100));
+			}
 			this.__autoExpanded = true;
 		}
 	}
