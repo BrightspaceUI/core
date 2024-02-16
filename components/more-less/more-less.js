@@ -1,8 +1,8 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -10,7 +10,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
 
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
@@ -65,7 +65,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				overflow: hidden;
 			}
 			.d2l-more-less-transition {
-				transition: max-height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.d2l-more-less-blur {
 				display: none;
@@ -238,7 +238,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.expanded = true;
 	}
 
-	__focusIn(e) {
+	async __focusIn(e) {
 		if (this.inactive || this.expanded) {
 			return;
 		}
@@ -246,40 +246,41 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		const target = e.composedPath()[0] || e.target;
 
 		if (isSafari) {
-			target.scrollIntoViewIfNeeded();
+			target.scrollIntoViewIfNeeded?.();
+			setTimeout(() => this.__content.scrollTo({ top: 0, behavior: 'instant' }), 1);
 		}
 
 		if (this.__content.scrollTop) {
 			this.__content.scrollTo({ top: 0, behavior: 'instant' });
 			this.__expand();
-			if (reduceMotion) {
-				target.scrollIntoView({ behavior: 'instant' });
-			} else {
-				setTimeout(() => target.getRootNode().activeElement === target && target.scrollIntoView({ behavior: 'smooth' }), 100);
-			}
 			this.__autoExpanded = true;
+			await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
+			if (target.getRootNode().activeElement === target) {
+				target.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
+			}
 		}
 	}
 
-	__focusOut(e) {
+	async __focusOut({ relatedTarget }) {
 
 		if (this.inactive
 			|| !this.__autoExpanded
-			|| isComposedAncestor(this.__content, e.relatedTarget)
+			|| isComposedAncestor(this.__content, relatedTarget)
 		) {
 			return;
 		}
 
-		const target = e.relatedTarget;
-
 		this.__shrink();
 		this.__autoExpanded = false;
-		setTimeout(() => {
-			const activeElement = getComposedActiveElement();
-			if (target === activeElement || isComposedAncestor(target, activeElement)) {
-				target.scrollIntoView({ behavior: 'instant' })
-			}
-		}, 400);
+
+		relatedTarget && await new Promise(r => relatedTarget.addEventListener('focus', r, { once: true }));
+		const target = getComposedActiveElement();
+
+		await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
+		const activeElement = getComposedActiveElement();
+		if (target === activeElement) {
+			target.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
+		}
 	}
 
 	__init_measureBaseHeight() {
@@ -361,6 +362,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__transitionAdded = true;
 		this.__maxHeight = this.height;
 		this.expanded = false;
+		this.__content.scrollTo({ top: 0, behavior: 'instant' });
 	}
 
 	__startObserving() {
