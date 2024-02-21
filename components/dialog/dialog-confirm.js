@@ -14,6 +14,11 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Whether the dialog should indicate that its message is important to the user
+			 */
+			critical: { type: Boolean },
+
+			/**
 			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
 			 * @type {string}
 			 */
@@ -66,12 +71,18 @@ class DialogConfirm extends DialogMixin(LitElement) {
 		`];
 	}
 
+	constructor() {
+		super();
+		this.critical = false;
+	}
+
 	render() {
 		if (!this._titleId) this._titleId = getUniqueId();
 		if (!this._textId) this._textId = getUniqueId();
 
 		const inner = html`
 			<div class="d2l-dialog-inner">
+				<div class="d2l-dialog-highlight"></div>
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>

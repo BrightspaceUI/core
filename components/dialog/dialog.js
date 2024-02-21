@@ -29,6 +29,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			async: { type: Boolean },
 
 			/**
+			 * Whether the dialog should indicate that its message is important to the user
+			 */
+			critical: { type: Boolean },
+
+			/**
 			 * Whether to read the contents of the dialog on open
 			 */
 			describeContent: { type: Boolean, attribute: 'describe-content' },
@@ -83,6 +88,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	constructor() {
 		super();
 		this.async = false;
+		this.critical = false;
 		this.describeContent = false;
 		this.fullHeight = false;
 		this.width = 600;
@@ -149,6 +155,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
+				<div class="d2l-dialog-highlight"></div>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>

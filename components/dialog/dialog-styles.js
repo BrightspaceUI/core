@@ -94,6 +94,18 @@ export const dialogStyles = css`
 		height: 100%;
 	}
 
+	:host([critical]) .d2l-dialog-highlight {
+		background-color: var(--d2l-color-cinnabar);
+		border-radius: 0.3rem 0 0 0.3rem;
+		bottom: 0;
+		left: 0;
+		margin: -1px;
+		min-width: 0.3rem;
+		position: absolute;
+		top: 0;
+		width: 0.3rem;
+	}
+
 	.d2l-dialog-header {
 		box-sizing: border-box;
 		flex: none;
