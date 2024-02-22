@@ -30,7 +30,7 @@ export const emptyStateSimpleStyles = css`
 		padding: 1.2rem 1.5rem;
 	}
 
-	:host([description]) .d2l-empty-state-container {
+	:host([description]) .empty-state-container {
 		align-items: center;
 		column-gap: 0.75rem;
 		display: flex;
