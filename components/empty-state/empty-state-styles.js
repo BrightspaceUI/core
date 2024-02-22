@@ -11,18 +11,6 @@ export const emptyStateStyles = css`
 		display: none;
 	}
 
-	.empty-state-container {
-		padding-inline-start: 10px;
-	}
-
-	:host([description]) .empty-state-container {
-		align-items: center;
-		column-gap: 0.5rem;
-		display: flex;
-		flex-wrap: wrap;
-		padding-inline: 0;
-	}
-
 	.action-slot::slotted(*) {
 		display: none;
 	}
@@ -42,9 +30,15 @@ export const emptyStateSimpleStyles = css`
 		padding: 1.2rem 1.5rem;
 	}
 
+	:host([description]) .d2l-empty-state-container {
+		align-items: center;
+		column-gap: 0.75rem;
+		display: flex;
+		flex-wrap: wrap;
+		padding-inline-start: 0;
+	}
+
 	.d2l-empty-state-description {
-		display: inline;
-		line-height: 28px;
 		margin: 0;
 	}
 
