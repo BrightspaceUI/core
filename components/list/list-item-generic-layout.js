@@ -72,9 +72,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-template-rows:
 					[start add-top-start] minmax(0, min-content)
 					[add-top-end main-start] minmax(0, min-content)
-					[main-end add-start] minmax(0, min-content)
-					[add-end nested-start] minmax(0, min-content)
-					[nested-end end];
+					[main-end nested-start] minmax(0, min-content)
+					[nested-end add-start] minmax(0, min-content)
+					[add-end end];
 			}
 
 			:host([align-nested="control"]) ::slotted([slot="nested"]) {
@@ -242,8 +242,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="actions" class="d2l-cell" data-cell-num="7"></slot>
 
 			<slot name="drop-target"></slot>
-			<slot name="add" class="d2l-cell" data-cell-num="9"></slot>
 			<slot name="nested"></slot>
+			<slot name="add" class="d2l-cell" data-cell-num="9"></slot>
 		`;
 	}
 
