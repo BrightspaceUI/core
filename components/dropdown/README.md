@@ -253,7 +253,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 * `async resize()`: Call if the size of the content changes due to a change in a nested component. The nested component may choose to fire a custom event, which the component containing the `d2l-dropdown-content` can catch and call this method. |
 
 ## Content: Menu [d2l-dropdown-menu]
-`d2l-dropdown-menu` is a container for a [d2l-menu](../menu/README.md) component. It provides additional support on top of `d2l-dropdown-content` for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
+`d2l-dropdown-menu` is a container for a [d2l-menu](https://github.com/BrightspaceUI/core/tree/main/components/menu) component. It provides additional support on top of `d2l-dropdown-content` for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
 
 <!-- docs: demo code properties name:d2l-dropdown-menu align:flex-start autoSize:false size:medium -->
 ```html
@@ -292,7 +292,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ```
 
 ## Content: Tabs [d2l-dropdown-tabs]
-`d2l-dropdown-tabs` is a container for a [d2l-tabs](https://github.com/BrightspaceUI/tabs) component. It provides additional support on top of `d2l-dropdown-content` for automatic resizing when the tab changes.
+`d2l-dropdown-tabs` is a container for a [d2l-tabs](https://github.com/BrightspaceUI/core/tree/main/components/tabs) component. It provides additional support on top of `d2l-dropdown-content` for automatic resizing when the tab changes.
 
 <!-- docs: demo code properties name:d2l-dropdown-tabs autoOpen:true autoSize:false align:flex-start size:large -->
 ```html
