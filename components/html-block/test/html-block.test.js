@@ -128,8 +128,11 @@ describe('d2l-html-block', () => {
 		const htmlBlock = await fixture(emptyReplacementFixture);
 		// Wait a frame for rendering to finish, since we temporarily add elements to the DOM
 		requestAnimationFrame(() => {
-			expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
-				.to.equal('');
+			const renderContainer = htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered');
+
+			// This will contain Lit's default template marker, but there should be no non-whitespace text and no element nodes.
+			expect(renderContainer.innerText.trim()).to.equal('');
+			expect(renderContainer.children).to.be.empty;
 		});
 	});
 
