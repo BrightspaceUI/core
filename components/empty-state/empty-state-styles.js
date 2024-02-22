@@ -12,7 +12,7 @@ export const emptyStateStyles = css`
 	}
 
 	.empty-state-container {
-		padding-inline-start: 0.5rem;
+		padding-inline-start: 10px;
 	}
 
 	:host([description]) .empty-state-container {
