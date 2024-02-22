@@ -5,7 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
-
+import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
 
 export const htmlBlockContentStyles = css`
@@ -276,6 +276,8 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _processRenderers(elem) {
+		await renderEmbeds(elem);
+
 		await this._contextObserverControllerInitialized;
 		const renderers = await getRenderers();
 		const loadingCompletePromises = [];
