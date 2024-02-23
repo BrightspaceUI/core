@@ -96,14 +96,14 @@ export const dialogStyles = css`
 
 	:host([critical]) .d2l-dialog-highlight {
 		background-color: var(--d2l-color-cinnabar);
-		border-radius: 0.3rem 0 0 0.3rem;
-		bottom: 0;
+		border-radius: 0.3rem 0.3rem 0 0;
+		height: 0.3rem;
 		left: 0;
-		margin: -1px;
+		margin-top: -1px;
 		min-width: 0.3rem;
 		position: absolute;
 		top: 0;
-		width: 0.3rem;
+		width: 100%;
 	}
 
 	.d2l-dialog-header {
