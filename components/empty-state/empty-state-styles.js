@@ -31,6 +31,7 @@ export const emptyStateSimpleStyles = css`
 	}
 
 	:host([description]) .empty-state-container {
+		align-items: center;
 		column-gap: 0.75rem;
 		display: flex;
 		flex-wrap: wrap;
