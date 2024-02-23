@@ -16,13 +16,7 @@ class RenderNode {
 	}
 
 	async renderNode(options) {
-		for await (const childNode of this.#childNodes) {
-			await childNode.renderNode(options);
-		}
-
-		if (this.#node.id === '3') {
-			console.log('wee');
-		}
+		await Promise.all(this.#childNodes.map(childNode => childNode.renderNode(options)));
 
 		const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', this.#node.dataset.d2lEmbedType);
 		if (!embedRendererPlugin) return;
@@ -74,5 +68,5 @@ export async function renderEmbeds(node, options) {
 	};
 
 	elems.forEach(constructRenderNode);
-	rootNodes.forEach(async rootNode => await rootNode.renderNode(options));
+	await Promise.all(rootNodes.map(rootNode => rootNode.renderNode(options)));
 }
