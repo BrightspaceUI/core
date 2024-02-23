@@ -2,6 +2,8 @@ import { html, render } from 'lit';
 import { findComposedAncestor } from '../helpers/dom.js';
 import { tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
 
+const embedTypeAttributeName = 'data-d2l-embed-type';
+
 class RenderNode {
 	#childNodes;
 	#node;
@@ -50,7 +52,7 @@ export async function createEmbedPlaceholder(embedType, options) {
 }
 
 export async function renderEmbeds(node, options) {
-	const elems = [...node.querySelectorAll('div[data-d2l-embed-type], span[data-d2l-embed-type]')];
+	const elems = node.querySelectorAll(`div[${embedTypeAttributeName}], span[${embedTypeAttributeName}]`);
 	if (elems.length === 0) return;
 
 	const renderNodes = new Map();
@@ -61,7 +63,12 @@ export async function renderEmbeds(node, options) {
 		const renderNode = new RenderNode(elem);
 		renderNodes.set(elem, renderNode);
 
-		const nearestEmbedAncestor = findComposedAncestor(elem, ancestor => ancestor !== elem && elems.includes(ancestor));
+		const isEmbedAncestor = ancestor => {
+			if (ancestor === elem || ancestor.nodeType !== Node.ELEMENT_NODE) return;
+			return ancestor.hasAttribute(embedTypeAttributeName);
+		};
+
+		const nearestEmbedAncestor = findComposedAncestor(elem, isEmbedAncestor);
 		if (!nearestEmbedAncestor) {
 			rootNodes.push(renderNode);
 			return;
