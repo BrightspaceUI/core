@@ -36,7 +36,7 @@ class RenderNode {
 
 		const embed = await embedRendererPlugin.renderView(fragment, props || {}, options || {});
 		if (embed) {
-			render(embed, this.#node.parentNode);
+			render(embed, this.#node.parentNode, { renderBefore: this.#node });
 			this.#node.remove();
 		}
 	}
