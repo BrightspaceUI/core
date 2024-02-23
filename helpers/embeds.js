@@ -1,5 +1,5 @@
+import { html, render } from 'lit';
 import { findComposedAncestor } from '../helpers/dom.js';
-import { html } from 'lit';
 import { tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
 
 class RenderNode {
@@ -33,7 +33,10 @@ class RenderNode {
 		} catch (e) { /* empty */ }
 
 		const embed = await embedRendererPlugin.renderView(fragment, props || {}, options || {});
-		if (embed) this.#node.replaceWith(embed);
+		if (embed) {
+			render(embed, this.#node.parentNode);
+			this.#node.remove();
+		}
 	}
 
 }
