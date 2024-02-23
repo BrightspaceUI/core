@@ -96,11 +96,8 @@ export const dialogStyles = css`
 
 	:host([critical]) .d2l-dialog-highlight {
 		background-color: var(--d2l-color-cinnabar);
-		border-radius: 0.3rem 0.3rem 0 0;
-		height: 0.3rem;
-		left: 0;
-		margin-top: -1px;
-		min-width: 0.3rem;
+		border-radius: 0.4rem 0.4rem 0 0;
+		height: 0.4rem;
 		position: absolute;
 		top: 0;
 		width: 100%;
@@ -112,6 +109,9 @@ export const dialogStyles = css`
 		padding: 19px 30px 23px 30px;
 		position: relative; /* stack header overflow shadow on top of content */
 		z-index: 1; /* stack header overflow shadow on top of content */
+	}
+	:host([critical]) .d2l-dialog-header {
+		padding-top: 1.4rem;
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-top .d2l-dialog-header {
