@@ -7,6 +7,7 @@ export default {
 	"components.calendar.show": "{month} weergeven",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
+	"components.dialog.critical": "Critical!",
 	"components.dropdown.close": "Sluiten",
 	"components.filter.activeFilters": "Actieve filters:",
 	"components.filter.clear": "Wissen",

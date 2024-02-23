@@ -7,6 +7,7 @@ export default {
 	"components.calendar.show": "Visa {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Stäng dialogrutan",
+	"components.dialog.critical": "Critical!",
 	"components.dropdown.close": "Stäng",
 	"components.filter.activeFilters": "Aktiva filter:",
 	"components.filter.clear": "Rensa",

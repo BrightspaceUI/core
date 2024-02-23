@@ -1,15 +1,17 @@
-import { css, html, LitElement } from 'lit';
+import '../offscreen/offscreen.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
  * @slot footer - Slot for footer content such as workflow buttons
  */
-class DialogConfirm extends DialogMixin(LitElement) {
+class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -74,13 +76,14 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	constructor() {
 		super();
 		this.critical = false;
+		this._offscreenId = getUniqueId();
+		this._textId = getUniqueId();
+		this._titleId = getUniqueId();
 	}
 
 	render() {
-		if (!this._titleId) this._titleId = getUniqueId();
-		if (!this._textId) this._textId = getUniqueId();
-
 		const inner = html`
+			${this.critical ? html`<d2l-offscreen id="${this._offscreenId}">${this.localize('components.dialog.critical')}</d2l-offscreen>` : nothing}
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-highlight"></div>
 				${this.titleText ? html`
@@ -96,13 +99,14 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			</div>`;
 
 		const labelId = (this.titleText && this.text) ? this._titleId : this._textId;
+		const fullLabelId = this.critical ? `${this._offscreenId} ${labelId}` : labelId;
 		const descId = (this.titleText && this.text) ? this._textId : undefined;
 		return this._render(
 			inner,
 			{
 				descId: descId,
 				fullscreenMobile: false,
-				labelId: labelId,
+				labelId: fullLabelId,
 				role: 'alertdialog'
 			}
 		);

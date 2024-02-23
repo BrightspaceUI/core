@@ -98,9 +98,11 @@ export const dialogStyles = css`
 		background-color: var(--d2l-color-cinnabar);
 		border-radius: 0.4rem 0.4rem 0 0;
 		height: 0.4rem;
+		margin-inline-start: -1px;
+		margin-top: -1px;
 		position: absolute;
 		top: 0;
-		width: 100%;
+		width: calc(100% + 1px);
 	}
 
 	.d2l-dialog-header {
