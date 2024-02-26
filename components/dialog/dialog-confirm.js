@@ -84,7 +84,6 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
-				<div class="d2l-dialog-highlight"></div>
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>

@@ -158,7 +158,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
-				<div class="d2l-dialog-highlight"></div>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
