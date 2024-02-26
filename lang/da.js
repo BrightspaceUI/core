@@ -7,6 +7,7 @@ export default {
 	"components.calendar.show": "Vis {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Luk denne dialogboks",
+	"components.dialog.critical": "Critical!",
 	"components.dropdown.close": "Luk",
 	"components.filter.activeFilters": "Aktive filtre:",
 	"components.filter.clear": "Ryd",
