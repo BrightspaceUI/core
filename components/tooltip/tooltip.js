@@ -355,22 +355,22 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 
-			:host([_open-dir="bottom"]) .d2l-tooltip-container {
+			:host([_open-dir="bottom"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-bottom-animation 200ms ease;
 				animation: d2l-tooltip-bottom-animation 200ms ease;
 			}
 
-			:host([_open-dir="top"]) .d2l-tooltip-container {
+			:host([_open-dir="top"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-top-animation 200ms ease;
 				animation: d2l-tooltip-top-animation 200ms ease;
 			}
 
-			:host([_open-dir="left"]) .d2l-tooltip-container {
+			:host([_open-dir="left"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-left-animation 200ms ease;
 				animation: d2l-tooltip-left-animation 200ms ease;
 			}
 
-			:host([_open-dir="right"]) .d2l-tooltip-container {
+			:host([_open-dir="right"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
