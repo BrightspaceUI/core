@@ -387,10 +387,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				:host([_open-dir="bottom"]) .d2l-tooltip-container,
-				:host([_open-dir="top"]) .d2l-tooltip-container,
-				:host([_open-dir="left"]) .d2l-tooltip-container,
-				:host([_open-dir="right"]) .d2l-tooltip-container {
+				:host([_open-dir="bottom"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="top"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="left"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="right"][showing]) .d2l-tooltip-container {
 					-webkit-animation: none;
 					animation: none;
 				}
