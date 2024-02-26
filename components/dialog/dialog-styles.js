@@ -94,6 +94,15 @@ export const dialogStyles = css`
 		height: 100%;
 	}
 
+	:host([critical]) .d2l-dialog-header {
+		border-block-start: 0.4rem solid var(--d2l-color-cinnabar);
+		border-start-end-radius: 0.4rem;
+		border-start-start-radius: 0.4rem;
+		margin-block: -1px 0;
+		margin-inline: -1px;
+		padding: 1rem 31px 23px 31px;
+	}
+
 	.d2l-dialog-header {
 		box-sizing: border-box;
 		flex: none;

@@ -3,10 +3,10 @@ import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 import { footer, general, long } from './dialog-shared-contents.js';
 
 function createDialog(opts) {
-	const defaults = { content: html`${general}${footer}`, fullHeight: false, width: 400 };
-	const { content, fullHeight, width } = { ...defaults, ...opts };
+	const defaults = { content: html`${general}${footer}`, fullHeight: false, width: 400, critical: false };
+	const { content, fullHeight, width, critical } = { ...defaults, ...opts };
 	return html`
-		<d2l-dialog title-text="Dialog Title" ?full-height="${fullHeight}" width="${width}" opened>
+		<d2l-dialog title-text="Dialog Title" ?full-height="${fullHeight}" width="${width}" opened ?critical="${critical}">
 			${content}
 		</d2l-dialog>
 	`;
@@ -57,6 +57,7 @@ describe('dialog', () => {
 
 				[
 					{ name: 'no-footer-content', template: createDialog({ content: long }) },
+					{ name: 'critical', template: createDialog({ content: long, critical: true }) },
 					{ name: 'scroll-bottom-shadow', template: createDialog({ content: html`${long}${footer}` }) },
 					{ name: 'scroll-top-shadow', template: createDialog({ content: html`${long}${footer}` }), action: elem => elem.querySelector('#bottom').scrollIntoView() },
 					{ name: 'fullscreen-within-on', template: createDialog(), action: elem => dispatchFullscreenWithinEvent(elem.querySelector('#top'), true) },

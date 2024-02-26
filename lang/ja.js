@@ -7,6 +7,7 @@ export default {
 	"components.calendar.show": "{month} を表示",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "このダイアログを閉じる",
+	"components.dialog.critical": "Critical!",
 	"components.dropdown.close": "閉じる",
 	"components.filter.activeFilters": "アクティブフィルタ:",
 	"components.filter.clear": "クリア",
