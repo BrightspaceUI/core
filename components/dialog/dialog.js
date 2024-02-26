@@ -54,7 +54,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
 
-			.d2l-dialog-header {
+			.d2l-dialog-header,
+			:host([critical]) .d2l-dialog-header {
 				padding-bottom: 15px;
 			}
 
