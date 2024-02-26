@@ -1,6 +1,5 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
-import '../offscreen/offscreen.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -93,8 +92,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this.describeContent = false;
 		this.fullHeight = false;
 		this.width = 600;
+		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
-		this._offscreenId = getUniqueId();
 		this._titleId = getUniqueId();
 	}
 
@@ -155,9 +154,9 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
-		const labelId = this.critical ? `${this._offscreenId} ${this._titleId}` : this._titleId;
+		const labelId = this.critical ? `${this._criticalLabelId} ${this._titleId}` : this._titleId;
 		const inner = html`
-			${this.critical ? html`<d2l-offscreen id="${this._offscreenId}">${this.localize('components.dialog.critical')}</d2l-offscreen>` : nothing}
+			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-highlight"></div>
 				<div class="d2l-dialog-header">

@@ -1,4 +1,3 @@
-import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
@@ -76,14 +75,14 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	constructor() {
 		super();
 		this.critical = false;
-		this._offscreenId = getUniqueId();
+		this._criticalLabelId = getUniqueId();
 		this._textId = getUniqueId();
 		this._titleId = getUniqueId();
 	}
 
 	render() {
 		const inner = html`
-			${this.critical ? html`<d2l-offscreen id="${this._offscreenId}">${this.localize('components.dialog.critical')}</d2l-offscreen>` : nothing}
+			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-highlight"></div>
 				${this.titleText ? html`
@@ -99,7 +98,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 			</div>`;
 
 		const labelId = (this.titleText && this.text) ? this._titleId : this._textId;
-		const fullLabelId = this.critical ? `${this._offscreenId} ${labelId}` : labelId;
+		const fullLabelId = this.critical ? `${this._criticalLabelId} ${labelId}` : labelId;
 		const descId = (this.titleText && this.text) ? this._textId : undefined;
 		return this._render(
 			inner,

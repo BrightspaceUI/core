@@ -94,15 +94,12 @@ export const dialogStyles = css`
 		height: 100%;
 	}
 
-	:host([critical]) .d2l-dialog-highlight {
-		background-color: var(--d2l-color-cinnabar);
-		border-radius: 0.4rem 0.4rem 0 0;
-		height: 0.4rem;
+	:host([critical]) .d2l-dialog-header {
 		margin-inline-start: -1px;
 		margin-top: -1px;
-		position: absolute;
-		top: 0;
-		width: calc(100% + 1px);
+		border-radius: 0.4rem;
+		border-top: 0.4rem solid var(--d2l-color-cinnabar);
+		padding-top: 1rem;
 	}
 
 	.d2l-dialog-header {
@@ -111,9 +108,6 @@ export const dialogStyles = css`
 		padding: 19px 30px 23px 30px;
 		position: relative; /* stack header overflow shadow on top of content */
 		z-index: 1; /* stack header overflow shadow on top of content */
-	}
-	:host([critical]) .d2l-dialog-header {
-		padding-top: 1.4rem;
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-top .d2l-dialog-header {
