@@ -107,6 +107,9 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			.d2l-input-date-time-container {
 				margin-top: -0.3rem;
 			}
+			d2l-input-date {
+				position: relative;
+			}
 			d2l-input-date,
 			d2l-input-time {
 				margin-top: 0.3rem;

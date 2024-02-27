@@ -213,6 +213,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					position: relative;
 				}
 				#after-slot {
 					display: inline-block;

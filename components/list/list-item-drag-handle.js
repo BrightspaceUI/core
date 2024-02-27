@@ -85,6 +85,9 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 				padding: 0;
 				width: 0.9rem;
 			}
+			d2l-button-move {
+				position: relative;
+			}
 			/* Firefox includes a hidden border which messes up button dimensions */
 			button::-moz-focus-inner {
 				border: 0;

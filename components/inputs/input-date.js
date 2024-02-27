@@ -137,6 +137,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				margin-top: 0.3rem;
 				padding-top: 0.3rem;
 			}
+			d2l-input-text {
+				position: relative;
+			}
 		`];
 	}
 

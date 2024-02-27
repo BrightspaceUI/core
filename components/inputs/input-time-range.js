@@ -134,6 +134,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			}
 			d2l-input-time {
 				display: block;
+				position: relative;
 			}
 		`];
 	}

@@ -142,7 +142,7 @@ describe('form-helper', () => {
 
 		const implicitLabelWithTooltipFixture = html`
 			<label>Do you like peas?
-				<input id='target' type="checkbox" name="peas">
+				<input id='target' type="checkbox" name="peas" style="position: relative;">
 				<d2l-tooltip for="target">Tooltip that shouldn't be included in label text</d2l-tooltip>
 			</label>
 		`;

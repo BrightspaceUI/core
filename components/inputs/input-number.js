@@ -194,6 +194,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				:host([hidden]) {
 					display: none;
 				}
+				d2l-input-text {
+					position: relative;
+				}
 			`
 		];
 	}

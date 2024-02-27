@@ -165,6 +165,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 			}
 			d2l-input-date-time {
 				display: block;
+				position: relative;
 			}
 			::slotted(*) {
 				margin-top: 0.6rem;

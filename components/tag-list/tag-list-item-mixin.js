@@ -89,6 +89,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				outline: none;
 				overflow: hidden;
 				padding: 0.25rem 0.6rem;
+				position: relative;
 				text-overflow: ellipsis;
 			}
 			:host(:focus-within) .tag-list-item-container,
