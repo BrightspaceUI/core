@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import './color-calc.js';
+		</script>
+		<style>
+			d2l-color-calc {
+				margin-bottom: 12px;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-colors">
+
+			<!--
+			#706c84 *
+			#3a273f *
+			#643a3a *
+			#a27c7c *
+			#312b2b *
+			#000000 *
+			#d76565 (rounding?)
+			#5e4040 (rounding?)
+
+			#004489
+			#745db1 good
+			#c25bac;
+			-->
+
+			<!--
+			luminance of #004489 = 0.059403871830153915
+			luminance of #18191a = 0.009640328730265312
+
+			contrast = (L1 + 0.05) / (L2 + 0.05)
+			9.59:1 => 9.59
+
+			L1 = (contrast * (L2 + 0.05)) - 0.05
+			L2 = ((L1 + 0.05) / contrast) - 0.05
+
+			calc luminance of new color
+			9.59 = (L1 + 0.05) / (0.00964 + 0.05)
+			9.59 = (L1 + 0.05) / 0.05964
+			0.5719 = L1 + 0.05
+			L1 = 0.5219
+
+			calc lightness of new color (L* = Math.pow(Ylum, 0.43) * 100;)    0 to 100
+			L* = (0.5219^0.43) * 100
+			L* = 75.61
+			-->
+
+			<h2>Adapt Colors</h2>
+
+			<d2l-demo-snippet class="d2l-body-compact" full-width>
+				<template>
+
+					<div style="display: flex; margin-bottom: 12px;">
+						<div style="width: 272px;">Light</div>
+						<div style="width: 272px;">Dark (none)</div>
+						<div style="width: 272px;">Dark (method 1)</div>
+						<div style="width: 272px;">Dark (method 2)</div>
+					</div>
+
+					custom
+					<d2l-color-calc id="custom" color-1="#000000" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					<div style="margin-bottom: 12px;">
+						<input type="color" id="color1">
+						<input type="color" id="bg-color1">
+						<input type="color" id="bg-color2">
+					</div>
+
+					random
+					<d2l-color-calc color-1="#004489" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="#745db1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="#c25bac" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="#1d817a" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					greys
+					<d2l-color-calc color-1="--d2l-color-ferrite" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-tungsten" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-galena" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-chromite" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-corundum" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-mica" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-gypsum" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-sylvite" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-regolith" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					celestine
+					<d2l-color-calc color-1="rgb(140, 197, 255)" bg-color-1="#18191a" bg-color-2="#ffffff"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-celestine-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-celestine" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-celestine-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-celestine-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					zircon
+					<d2l-color-calc color-1="--d2l-color-zircon-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-zircon" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-zircon-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-zircon-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					amethyst
+					<d2l-color-calc color-1="--d2l-color-amethyst-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-amethyst" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-amethyst-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-amethyst-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					fluorite
+					<d2l-color-calc color-1="--d2l-color-fluorite-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-fluorite" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-fluorite-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-fluorite-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					tourmaline
+					<d2l-color-calc color-1="--d2l-color-tourmaline-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-tourmaline" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-tourmaline-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-tourmaline-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					cinnabar
+					<d2l-color-calc color-1="--d2l-color-cinnabar-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-cinnabar" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-cinnabar-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-cinnabar-plus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					carnelian
+					<d2l-color-calc color-1="--d2l-color-carnelian-minus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-carnelian-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-carnelian" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-carnelian-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					citrine
+					<d2l-color-calc color-1="--d2l-color-citrine-minus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-citrine-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-citrine" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-citrine-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					peridot
+					<d2l-color-calc color-1="--d2l-color-peridot-minus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-peridot-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-peridot" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-peridot-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					olivine
+					<d2l-color-calc color-1="--d2l-color-olivine-minus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-olivine-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-olivine" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-olivine-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					malachite
+					<d2l-color-calc color-1="--d2l-color-malachite-minus-2" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-malachite-minus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-malachite" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+					<d2l-color-calc color-1="--d2l-color-malachite-plus-1" bg-color-1="#ffffff" bg-color-2="#18191a"></d2l-color-calc>
+
+					<script>
+						document.querySelector('#color1').addEventListener('change', (e) => {
+							document.querySelector('#custom').color1 = e.target.value;
+						});
+						document.querySelector('#bg-color1').addEventListener('change', (e) => {
+							document.querySelector('#custom').bgColor1 = e.target.value;
+						});
+						document.querySelector('#bg-color2').addEventListener('change', (e) => {
+							document.querySelector('#custom').bgColor2 = e.target.value;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
