@@ -198,7 +198,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		if (!numberStyles || numberStyles.visibility !== 'hidden') {
 			numberStyles = {
 				...numberStyles,
-				visibility: hideNumber ? 'hidden' : 'visible'
+				visibility: hideNumber ? 'hidden' : 'visible',
+				zIndex: 1
 			};
 		}
 		return html`
@@ -213,7 +214,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		<div id="${this._labelId}"
 			aria-label="${this.text}"
 			aria-atomic="true"
-			aria-live="${this.announceChanges ? 'polite' : 'off'}">
+			aria-live="${this.announceChanges ? 'polite' : 'off'}"
+			style="isolation: isolate">
 			${innerHtml}
 		</div>
 		${this.hasTooltip && !this.skeleton ? html`<d2l-tooltip class="vdiff-target" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
