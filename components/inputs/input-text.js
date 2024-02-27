@@ -211,9 +211,9 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 				.d2l-input {
 					-webkit-appearance: textfield;
 					overflow: hidden;
+					position: relative;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					position: relative;
 				}
 				#after-slot {
 					display: inline-block;
