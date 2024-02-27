@@ -21,11 +21,11 @@ class NestedForm extends LitElement {
 			<d2l-form ?no-nesting=${this.noNesting}>
 				<label>
 					First Name
-					<input type="text" id="composed-nested-first-name" name="first-name" required minlength="4" maxlength="15">
+					<input type="text" id="composed-nested-first-name" name="first-name" required minlength="4" maxlength="15" style="position: relative;">
 				</label>
-				<d2l-validation-custom for="composed-nested-pets" @d2l-validation-custom-validate=${this._validateSelect} failure-text="Expected Hamster" >
+				<d2l-validation-custom for="composed-nested-pets" @d2l-validation-custom-validate=${this._validateSelect} failure-text="Expected Hamster">
 				</d2l-validation-custom>
-				<select aria-label="Pets" name="pets" id="composed-nested-pets">
+				<select aria-label="Pets" name="pets" id="composed-nested-pets" style="position: relative;">
 					<option value="">--Please choose an option--</option>
 					<option value="dog">Dog</option>
 					<option value="cat">Cat</option>
@@ -34,7 +34,7 @@ class NestedForm extends LitElement {
 					<option value="spider">Spider</option>
 					<option value="goldfish">Goldfish</option>
 				</select>
-				<input type="radio" id="composed-nested-my-radio" name="composed-nested-optional-radio">
+				<input type="radio" id="composed-nested-my-radio" name="composed-nested-optional-radio" style="position: relative;">
 				<d2l-test-form-element id="composed-nested-custom-ele"></d2l-test-form-element>
 			</d2l-form>
 		`;

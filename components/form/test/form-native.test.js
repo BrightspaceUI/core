@@ -14,9 +14,9 @@ describe('d2l-form-native', () => {
 		<d2l-form-native>
 			<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate=${_validateCheckbox} failure-text="The checkbox failed validation" >
 			</d2l-validation-custom>
-			<input type="checkbox" id="mycheck" name="checkers" value="red-black">
+			<input type="checkbox" id="mycheck" name="checkers" value="red-black" style="position: relative;">
 			<input type="file" name="optional-file">
-			<select aria-label="Pets" name="pets" id="pets" required>
+			<select aria-label="Pets" name="pets" id="pets" required style="position: relative;">
 				<option value="">--Please choose an option--</option>
 				<option value="dog">Dog</option>
 				<option value="cat">Cat</option>

@@ -68,6 +68,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		d2l-icon {
 			border: 2px solid transparent;
 			border-radius: 6px;
+			position: relative;
 		}
 		`];
 	}

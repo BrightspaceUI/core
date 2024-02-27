@@ -209,13 +209,14 @@ describe('d2l-tooltip', () => {
 			const targetTag = defineCE(class extends LitElement {
 				render() {return html`<button>nested target</button>`; }
 			});
-			const elem = await fixture(`<div><${targetTag} id="target"></${targetTag}></div>`);
+			const elem = await fixture(`<div id="wrap" style="position: relative;"><${targetTag} id="target"></${targetTag}></div>`);
 			const target = elem.querySelector(targetTag);
 
 			await focusElem(target.shadowRoot.querySelector('button'));
 
 			const tooltip = document.createElement('d2l-tooltip');
 			tooltip.announced = true;
+			tooltip.for = 'wrap';
 			elem.appendChild(tooltip);
 
 			await oneEvent(elem, 'd2l-tooltip-show');

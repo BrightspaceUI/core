@@ -18,6 +18,7 @@ class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 		.d2l-count-badge-wrapper {
 			border: 2px solid transparent;
+			position: relative;
 		}
 
 		:host([size="small"]) .d2l-count-badge-wrapper {

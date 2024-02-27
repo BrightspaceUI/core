@@ -17,9 +17,9 @@ describe('d2l-form', () => {
 			<d2l-form>
 				<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate=${_validateCheckbox} failure-text="The checkbox failed validation" >
 				</d2l-validation-custom>
-				<input type="checkbox" id="mycheck" name="checkers" value="red-black">
+				<input type="checkbox" id="mycheck" name="checkers" value="red-black" style="position: relative;">
 				<input type="file" name="optional-file">
-				<select aria-label="Pets" name="pets" id="pets" required>
+				<select aria-label="Pets" name="pets" id="pets" required style="position: relative;">
 					<option value="">--Please choose an option--</option>
 					<option value="dog">Dog</option>
 					<option value="cat">Cat</option>
@@ -116,23 +116,23 @@ describe('d2l-form', () => {
 
 		const rootFormFixture = html`
 			<d2l-form>
-				<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate=${_validateCheckbox} failure-text="The checkbox failed validation" >
+				<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate="${_validateCheckbox}" failure-text="The checkbox failed validation" >
 				</d2l-validation-custom>
-				<input type="checkbox" id="mycheck" name="checkers" value="red-black">
+				<input type="checkbox" id="mycheck" name="checkers" value="red-black" style="position: relative;">
 				<div>
 					<d2l-form id="nested-form">
-						<select aria-label="Home planet" name="home-planet" id="nested-home-planet" required>
+						<select aria-label="Home planet" name="home-planet" id="nested-home-planet" required style="position: relative;">
 							<option value="">--Please choose an option--</option>
 							<option value="earth">Earth</option>
 							<option value="other">Other</option>
 						</select>
-						<label>Story<input type="text" id="nested-story" name="story"></label>
-						<d2l-validation-custom for="nested-story" @d2l-validation-custom-validate=${_validateStory} failure-text="Wrong story" >
+						<label>Story<input type="text" id="nested-story" name="story" style="position: relative;"></label>
+						<d2l-validation-custom for="nested-story" @d2l-validation-custom-validate="${_validateStory}" failure-text="Wrong story" style="position: relative;">
 						</d2l-validation-custom>
 						<d2l-test-form-element id="nested-custom-ele"></d2l-test-form-element>
 					</d2l-form>
 				</div>
-				<select aria-label="Pets" name="pets" id="pets" required>
+				<select aria-label="Pets" name="pets" id="pets" required style="position: relative;">
 					<option value="">--Please choose an option--</option>
 					<option value="dog">Dog</option>
 					<option value="cat">Cat</option>

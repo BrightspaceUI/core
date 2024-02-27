@@ -126,6 +126,7 @@ class InputDateRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			}
 			d2l-input-date {
 				display: block;
+				position: relative;
 			}
 		`];
 	}

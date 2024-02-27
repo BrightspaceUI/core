@@ -472,11 +472,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		requestAnimationFrame(() => {
 			if (this.isConnected) {
 				this._updateTarget();
-				if ((this.for && !this._target) || window.getComputedStyle(this._target).position === 'static') {
-					const host = this.getRootNode().host?.tagName.toLowerCase() ?? 'body';
-					const targetSelector = this.for ? `(#${this.for}) ` : '';
-					console.warn(`In <${host}>, <d2l-tooltip> target element ${targetSelector}does not have a CSS position. The tooltip may not position itself correctly on the page.`);
-				}
 			}
 		});
 	}
@@ -730,14 +725,21 @@ class Tooltip extends RtlMixin(LitElement) {
 	_findTarget() {
 		const ownerRoot = this.getRootNode();
 
-		let target;
+		let target, targetSelector;
 		if (this.for) {
-			const targetSelector = `#${cssEscape(this.for)}`;
+			targetSelector = `#${cssEscape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
-			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
+			target = target || ownerRoot?.host?.querySelector(targetSelector);
 		} else {
+			console.warn('<d2l-tooltip>: missing required attribute "for"');
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
+		}
+
+		if (window.getComputedStyle(target).position === 'static') {
+			const host = this.getRootNode().host?.tagName.toLowerCase() ?? 'body';
+			const selectorText = targetSelector ? `(${targetSelector}) ` : '';
+			console.warn(`In <${host}>, <d2l-tooltip> target element ${selectorText}does not have a CSS position. The tooltip may not position itself correctly on the page.`);
 		}
 
 		return target;
