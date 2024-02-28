@@ -175,7 +175,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-info-message {
 				color: var(--d2l-color-ferrite);
-				text-align: center;
+				display: flex;
+				justify-content: center;
 			}
 
 			/* Needed to "undo" the menu-item style for multiple dimensions */

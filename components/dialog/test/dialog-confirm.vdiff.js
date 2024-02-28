@@ -41,6 +41,7 @@ describe('dialog-confirm', () => {
 
 				[
 					{ name: 'short', template: confirmDialog },
+					{ name: 'critical', template: html`<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened critical>${buttons}</d2l-dialog-confirm>` },
 					{ name: 'long-title', template: html`
 						<d2l-dialog-confirm title-text="A title that is really long and should wrap onto a second line." text="Are you sure?" opened>
 							${buttons}

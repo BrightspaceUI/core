@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
@@ -29,6 +29,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			async: { type: Boolean },
 
 			/**
+			 * Whether the dialog should indicate that its message is important to the user
+			 */
+			critical: { type: Boolean },
+
+			/**
 			 * Whether to read the contents of the dialog on open
 			 */
 			describeContent: { type: Boolean, attribute: 'describe-content' },
@@ -49,7 +54,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
 
-			.d2l-dialog-header {
+			.d2l-dialog-header,
+			:host([critical]) .d2l-dialog-header {
 				padding-bottom: 15px;
 			}
 
@@ -83,10 +89,13 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	constructor() {
 		super();
 		this.async = false;
+		this.critical = false;
 		this.describeContent = false;
 		this.fullHeight = false;
 		this.width = 600;
+		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
+		this._titleId = getUniqueId();
 	}
 
 	get asyncContainerCustom() {
@@ -146,8 +155,9 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
-		if (!this._titleId) this._titleId = getUniqueId();
+		const labelId = this.critical ? `${this._criticalLabelId} ${this._titleId}` : this._titleId;
 		const inner = html`
+			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
@@ -168,7 +178,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			{
 				descId: descId,
 				fullscreenMobile: true,
-				labelId: this._titleId,
+				labelId: labelId,
 				role: 'dialog'
 			},
 			topOverride
