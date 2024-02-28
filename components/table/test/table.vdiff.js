@@ -172,6 +172,7 @@ describe('table', () => {
 								<d2l-table-wrapper
 									?no-column-border="${opts.noColumnBorder}"
 									?sticky-headers="${opts.stickyHeaders}"
+									?sticky-headers-scroll-wrapper="${opts.stickyHeadersScrollWrapper}"
 									style="--d2l-input-position: static;"
 									type="${type}">
 									${ opts.noTable ? tableContents : html`
@@ -369,7 +370,7 @@ describe('table', () => {
 							${createRows([1], { selected: true })}
 							${createRows([2])}
 							${createRows([3], { selected: true })}
-						</tbody>		
+						</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -377,7 +378,7 @@ describe('table', () => {
 				it('selected-all', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>	
+						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -393,7 +394,7 @@ describe('table', () => {
 				it('no-column-border', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { noColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
@@ -401,7 +402,7 @@ describe('table', () => {
 				it('no-column-border-legacy', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { legacyNoColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
@@ -424,181 +425,183 @@ describe('table', () => {
 				});
 			});
 
-			describe('sticky', () => {
-				const inputRow = html`
-					<tr class="down">
-						<td>Cell 2-A</td>
-						<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
-						<td>Cell 2-C</td>
-					</tr>
-				`;
-				[
-					{
-						name: 'one-row-thead',
-						template: html`
-								<thead>${createHeaderRow({ trClass: 'top' })}</thead>
+			[true, false].forEach((hasStickyHeadersScrollWrapper) => {
+				describe(`sticky${hasStickyHeadersScrollWrapper ? '-scroll-wrapper' : ''}`, () => {
+					const inputRow = html`
+						<tr class="down">
+							<td>Cell 2-A</td>
+							<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
+							<td>Cell 2-C</td>
+						</tr>
+					`;
+					[
+						{
+							name: 'one-row-thead',
+							template: html`
+									<thead>${createHeaderRow({ trClass: 'top' })}</thead>
+									<tbody>
+										${createRows([1])}
+										${inputRow}
+										${createRows([3])}
+									</tbody>
+								</table>
+							`
+						},
+						{
+							name: 'one-row-no-thead-class',
+							template: html`
 								<tbody>
+									${createHeaderRow({ trClass: 'd2l-table-header top' })}
 									${createRows([1])}
 									${inputRow}
 									${createRows([3])}
 								</tbody>
-							</table>
-						`
-					},
-					{
-						name: 'one-row-no-thead-class',
-						template: html`
-							<tbody>
-								${createHeaderRow({ trClass: 'd2l-table-header top' })}
-								${createRows([1])}
-								${inputRow}
-								${createRows([3])}
-							</tbody>
-						`
-					},
-					{
-						name: 'one-row-no-thead-attr',
-						template: html`
-							<tbody>
-								${createHeaderRow({ headerAttribute: true, trClass: 'top' })}
-								${createRows([1])}
-								${inputRow}
-								${createRows([3])}
-							</tbody>
-						`
-					},
-					{
-						name: 'multi-row-thead',
-						template: html`
-							<thead>${createFruitHeaderRows()}</thead>
-							<tbody>${createFruitRows()}</tbody>
-						`
-					},
-					{
-						name: 'multi-row-no-thead-class',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ trClass: 'd2l-table-header' })}
-								${createFruitRows()}
-							</tbody>
-						`
-					},
-					{
-						name: 'multi-row-no-thead-attr',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true })}
-								${createFruitRows()}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-one-row',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [false, true, false] })}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-top-bottom',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [true, false, true] })}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-all',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [true, true, true] })}
-							</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'down'].forEach((position) => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(
-								template,
-								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
-							);
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
-							await nextFrame();
-							await expect(elem).to.be.golden();
+							`
+						},
+						{
+							name: 'one-row-no-thead-attr',
+							template: html`
+								<tbody>
+									${createHeaderRow({ headerAttribute: true, trClass: 'top' })}
+									${createRows([1])}
+									${inputRow}
+									${createRows([3])}
+								</tbody>
+							`
+						},
+						{
+							name: 'multi-row-thead',
+							template: html`
+								<thead>${createFruitHeaderRows()}</thead>
+								<tbody>${createFruitRows()}</tbody>
+							`
+						},
+						{
+							name: 'multi-row-no-thead-class',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ trClass: 'd2l-table-header' })}
+									${createFruitRows()}
+								</tbody>
+							`
+						},
+						{
+							name: 'multi-row-no-thead-attr',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true })}
+									${createFruitRows()}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-one-row',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [false, true, false] })}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-top-bottom',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [true, false, true] })}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-all',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [true, true, true] })}
+								</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'down'].forEach((position) => {
+							it(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(
+									template,
+									{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+								);
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+								await nextFrame();
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
-				});
 
-				[
-					{
-						name: 'fixed-column-class',
-						template: html`
-							<thead>${createFruitHeaderRows({ selectable: true, stickyClass: 'd2l-table-sticky-cell' })}</thead>
-							<tbody>
-								${createFruitRows({ selectable: true, selected : [false, true, false], stickyClass: 'd2l-table-sticky-cell', inputNumber: false })}
-							</tbody>
-						`
-					},
-					{
-						name: 'fixed-column-attr',
-						template: html`
-							<thead>${createFruitHeaderRows({ selectable: true, stickyAttribute: true })}</thead>
-							<tbody>
-								${createFruitRows({ selectable: true, selected : [false, true, false], stickyAttribute: true, inputNumber: false })}
-							</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'down', 'over'].forEach((position) => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(
-								template,
-								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
-							);
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
-							await expect(elem).to.be.golden();
+					[
+						{
+							name: 'fixed-column-class',
+							template: html`
+								<thead>${createFruitHeaderRows({ selectable: true, stickyClass: 'd2l-table-sticky-cell' })}</thead>
+								<tbody>
+									${createFruitRows({ selectable: true, selected : [false, true, false], stickyClass: 'd2l-table-sticky-cell', inputNumber: false })}
+								</tbody>
+							`
+						},
+						{
+							name: 'fixed-column-attr',
+							template: html`
+								<thead>${createFruitHeaderRows({ selectable: true, stickyAttribute: true })}</thead>
+								<tbody>
+									${createFruitRows({ selectable: true, selected : [false, true, false], stickyAttribute: true, inputNumber: false })}
+								</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'down', 'over'].forEach((position) => {
+							it(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(
+									template,
+									{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+								);
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
-				});
 
-				it('one-column', async() => {
-					const elem = await createTableFixture(html`
-						<thead>
-							<tr><th class="top">Header A</th></tr>
-						</thead>
-						<tbody>
-							<tr><td>Cell 1-A</td></tr>
-						</tbody>
-					`, { bottomMargin: true, stickyHeaders: true });
-					elem.shadowRoot.querySelector('.top').scrollIntoView();
-					await expect(elem).to.be.golden();
-				});
+					it('one-column', async() => {
+						const elem = await createTableFixture(html`
+							<thead>
+								<tr><th class="top">Header A</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>Cell 1-A</td></tr>
+							</tbody>
+						`, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
+						elem.shadowRoot.querySelector('.top').scrollIntoView();
+						await expect(elem).to.be.golden();
+					});
 
-				[
-					{
-						name: 'grades-row-header',
-						template: html`
-							<thead>${createGradesHeaderRow({ withDropdown: true })}</thead>
-							<tbody>${createGradesRows()}</tbody>
-						`
-					},
-					{
-						name: 'grades-column-header',
-						template: html`
-							<thead>${createGradesHeaderRow()}</thead>
-							<tbody>${createGradesRows({ withDropdown: true })}</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'over'].forEach(position => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true });
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
-							await expect(elem).to.be.golden();
+					[
+						{
+							name: 'grades-row-header',
+							template: html`
+								<thead>${createGradesHeaderRow({ withDropdown: true })}</thead>
+								<tbody>${createGradesRows()}</tbody>
+							`
+						},
+						{
+							name: 'grades-column-header',
+							template: html`
+								<thead>${createGradesHeaderRow()}</thead>
+								<tbody>${createGradesRows({ withDropdown: true })}</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'over'].forEach(position => {
+							it(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
 				});
