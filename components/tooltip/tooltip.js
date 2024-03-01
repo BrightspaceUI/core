@@ -585,8 +585,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		let offsetTop, offsetLeft;
 		if (offsetParent && offsetParent.tagName !== 'BODY') {
 			const offsetRect = offsetParent.getBoundingClientRect();
-			offsetTop = offsetRect.top + offsetParent.clientTop;// - offsetParent.scrollTop;
-			offsetLeft = offsetRect.left + offsetParent.clientLeft;// - offsetParent.scrollLeft;
+			offsetTop = offsetRect.top + offsetParent.clientTop - offsetParent.scrollTop;
+			offsetLeft = offsetRect.left + offsetParent.clientLeft - offsetParent.scrollLeft;
 		} else {
 			offsetTop = -document.documentElement.scrollTop;
 			offsetLeft = -document.documentElement.scrollLeft;
