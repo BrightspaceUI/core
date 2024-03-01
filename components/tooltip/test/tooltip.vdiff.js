@@ -152,7 +152,7 @@ describe('tooltip', () => {
 					const tooltip = elem.querySelector('d2l-tooltip');
 					tooltip.show();
 					await oneEvent(tooltip, 'd2l-tooltip-show');
-					expect(elem).to.be.golden();
+					await expect(elem).to.be.golden();
 				});
 
 			});
