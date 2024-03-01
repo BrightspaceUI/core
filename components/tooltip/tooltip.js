@@ -582,18 +582,17 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._openDir = space.dir;
 
 		// Compute the x and y position of the tooltip relative to its target
-		let parentTop;
-		let parentLeft;
+		let offsetTop, offsetLeft;
 		if (offsetParent && offsetParent.tagName !== 'BODY') {
-			const parentRect = offsetParent.getBoundingClientRect();
-			parentTop = parentRect.top + offsetParent.clientTop;
-			parentLeft = parentRect.left + offsetParent.clientLeft;
+			const offsetRect = offsetParent.getBoundingClientRect();
+			offsetTop = offsetRect.top + offsetParent.clientTop;// - offsetParent.scrollTop;
+			offsetLeft = offsetRect.left + offsetParent.clientLeft;// - offsetParent.scrollLeft;
 		} else {
-			parentTop = -document.documentElement.scrollTop;
-			parentLeft = -document.documentElement.scrollLeft;
+			offsetTop = -document.documentElement.scrollTop;
+			offsetLeft = -document.documentElement.scrollLeft;
 		}
-		const top = targetRect.top - parentTop;
-		const left = targetRect.left - parentLeft;
+		const top = targetRect.top - offsetTop;
+		const left = targetRect.left - offsetLeft;
 
 		let positionRect;
 		if (this._isAboveOrBelow()) {
@@ -699,18 +698,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		});
 
 		if (this.boundary && offsetParent) {
-			const parentRect = offsetParent.getBoundingClientRect();
+			const offsetRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {
-				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
+				spaceAround.left = Math.min(targetRect.left - offsetRect.left - this.boundary.left, spaceAround.left);
 			}
 			if (!isNaN(this.boundary.right)) {
-				spaceAround.right = Math.min(parentRect.right - targetRect.right - this.boundary.right, spaceAround.right);
+				spaceAround.right = Math.min(offsetRect.right - targetRect.right - this.boundary.right, spaceAround.right);
 			}
 			if (!isNaN(this.boundary.top)) {
-				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
+				spaceAround.above = Math.min(targetRect.top - offsetRect.top - this.boundary.top, spaceAround.above);
 			}
 			if (!isNaN(this.boundary.bottom)) {
-				spaceAround.below = Math.min(parentRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
+				spaceAround.below = Math.min(offsetRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
 			}
 		}
 		const isRTL = this.getAttribute('dir') === 'rtl';
@@ -729,8 +728,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this.for) {
 			const targetSelector = `#${cssEscape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
-			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
+			target = target || ownerRoot?.host?.querySelector(targetSelector);
 		} else {
+			console.warn('<d2l-tooltip>: missing required attribute "for"');
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
