@@ -122,26 +122,24 @@ describe('tooltip', () => {
 			</p>
 		`;
 
-		[
-			{
-				name: 'offsetParent',
-				template: html`
-					<div style="max-height: 250px; max-width: 450px; overflow: auto; position: relative;">
+		[{
+			name: 'offsetParent',
+			template: html`
+				<div style="max-height: 250px; max-width: 450px; overflow: auto; position: relative;">
+					${content}
+				</div>
+			`
+		},
+		{
+			name: 'boundingContainer',
+			template: html`
+				<div style="max-height: 250px; max-width: 450px; overflow: auto;">
+					<div style="position: relative;">
 						${content}
 					</div>
-				`
-			},
-			{
-				name: 'boundingContainer',
-				template: html`
-					<div style="max-height: 250px; max-width: 450px; overflow: auto;">
-						<div style="position: relative;">
-							${content}
-						</div>
-					</div>
-				`
-			}
-		].forEach(({ name, template }) => {
+				</div>
+			`
+		}].forEach(({ name, template }) => {
 			[
 				{ x: 0, y: 100 },
 				{ x: 25, y: 100 },
