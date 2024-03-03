@@ -416,12 +416,12 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	_handleSlotFocusIn() {
-		this.querySelector(':first-child').setAttribute('tabindex', '-1');
+		this._items[0].setAttribute('tabindex', '-1');
 	}
 
 	_handleSlotFocusOut(e) {
 		if (!isComposedAncestor(e.currentTarget, e.relatedTarget)) {
-			this.querySelector(':first-child').setAttribute('tabindex', '0');
+			this._items[0].setAttribute('tabindex', '0');
 		}
 	}
 
