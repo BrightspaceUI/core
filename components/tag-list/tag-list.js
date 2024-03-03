@@ -1,10 +1,10 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
+import { getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
-import { getOffsetParent } from '../../helpers/dom.js';
 import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -109,6 +109,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._listContainerObserver = null;
 		this._resizeObserver = null;
 		this._showHiddenTags = false;
+		this._refocus = null;
 	}
 
 	disconnectedCallback() {
@@ -197,7 +198,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				aria-roledescription="${this.localize('components.tag-list.role-description')}"
 				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
 				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}">
-				<slot @slotchange="${this._handleSlotChange}"></slot>
+				<slot @slotchange="${this._handleSlotChange}" @focusout="${this._handleSlotFocusOut}" @focusin="${this._handleSlotFocusIn}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
 					class="${classMap(clearableClasses)}"
@@ -219,9 +220,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 					<d2l-button-subtle aria-hidden="true" slim text="${this.localize('components.tag-list.num-hidden', { count: '##' })}" class="d2l-tag-list-hidden-button"></d2l-button-subtle>
 					${this.arrowKeysContainer(list)}
 				</div>
-			`, this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 }),
+			`,
+			this.localize('components.tag-list.interactive-label', { count: this._items ? this._items.length : 0 }),
 			() => {
-				if (this._items && this._items.length > 0) this._items[0].focus();
+				this._items?.[0]?.focus?.();
 			}
 		);
 	}
@@ -350,7 +352,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const itemIndex = children.indexOf(rootTarget);
 
 		if (children.length <= 1) return;
-		const focusableElem = children[itemIndex - 1] || children[itemIndex + 1];
+		const focusableElem = children[itemIndex - 1] || children[itemIndex];
 
 		setTimeout(() => focusableElem.focus(), this.clearFocusTimeout);
 	}
@@ -406,7 +408,21 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._items[0].setAttribute('keyboard-tooltip-item', true);
 		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
 		await this.updateComplete;
-		refocus.focus?.();
+		if (this._refocus?.classList.contains('d2l-tag-list-button')) {
+			this._refocus = this.shadowRoot.querySelector('.d2l-tag-list-button');
+		}
+		(this._refocus || refocus).focus?.();
+		this._refocus = null;
+	}
+
+	_handleSlotFocusIn() {
+		this.querySelector(':first-child').setAttribute('tabindex', '-1');
+	}
+
+	_handleSlotFocusOut(e) {
+		if (!isComposedAncestor(e.currentTarget, e.relatedTarget)) {
+			this.querySelector(':first-child').setAttribute('tabindex', '0');
+		}
 	}
 
 	async _toggleHiddenTagVisibility(e) {
@@ -417,9 +433,9 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const isMoreButton = e.target.classList.contains('d2l-tag-list-button-show-more');
 		await this.updateComplete;
 		if (isMoreButton) {
-			this._items[this._chompIndex].focus();
+			this._refocus = this._items[this._chompIndex];
 		} else {
-			this.shadowRoot.querySelector('.d2l-tag-list-button')?.focus();
+			this._refocus = this.shadowRoot.querySelector('.d2l-tag-list-button');
 		}
 	}
 }

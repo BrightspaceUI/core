@@ -172,7 +172,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			}
 
 			await this.updateComplete;
-
+			this.setAttribute('tabindex', '-1');
 			container.focus();
 		});
 
