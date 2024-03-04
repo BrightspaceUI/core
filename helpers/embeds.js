@@ -5,11 +5,11 @@ import { tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
 
 const embedTypeAttributeName = 'data-d2l-embed-type';
 
-export async function createEmbedPlaceholder(embedType, options) {
+export async function createEmbedPlaceholder(embedType, props) {
 	const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', embedType);
 	if (!embedRendererPlugin) return;
 
-	const placeholderData = await embedRendererPlugin.getPlaceholder(options);
+	const placeholderData = await embedRendererPlugin.getPlaceholder(props);
 	const contents = placeholderData.contents
 		? map(Object.entries(placeholderData.contents), ([id, content]) => html`<template data-d2l-embed-template-id=${id}>${content}</template>`)
 		: nothing;
