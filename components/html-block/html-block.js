@@ -226,7 +226,6 @@ class HtmlBlock extends LitElement {
 
 	render() {
 		this._validateHtml();
-		this._processEmbeds();
 
 		const renderContainerClasses = {
 			'd2l-html-block-rendered': true,
