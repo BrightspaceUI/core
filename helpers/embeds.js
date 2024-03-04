@@ -1,7 +1,7 @@
 import { html, nothing, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { map } from 'lit/directives/map.js';
-import { tryGetPluginByKey } from '@brightspace-ui/core/helpers/plugins.js';
+import { tryGetPluginByKey } from './plugins.js';
 
 const embedTypeAttributeName = 'data-d2l-embed-type';
 
