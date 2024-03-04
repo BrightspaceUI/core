@@ -352,9 +352,11 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const itemIndex = children.indexOf(rootTarget);
 
 		if (children.length <= 1) return;
-		const focusableElem = children[itemIndex - 1] || children[itemIndex];
 
-		setTimeout(() => focusableElem.focus(), this.clearFocusTimeout);
+		setTimeout(() => {
+			const focusableElem = children[itemIndex - 1] || (children[itemIndex] !== e.target ? children[itemIndex] : children[itemIndex + 1]);
+			focusableElem.focus();
+		}, this.clearFocusTimeout);
 	}
 
 	_handleKeyboardTooltipShown() {
