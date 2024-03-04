@@ -58,8 +58,6 @@ describe('d2l-tag-list', () => {
 				const startItem = list._items[testcase.start];
 				await sendKeysElem(startItem, 'press', testcase.key);
 
-				console.log(testcase.result(list));
-
 				expect(getComposedActiveElement()).to.equal(testcase.result(list));
 			});
 		});
