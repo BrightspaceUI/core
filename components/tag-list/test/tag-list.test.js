@@ -48,7 +48,7 @@ describe('d2l-tag-list', () => {
 
 		[
 			{ name: 'Tab exits list fowards', key: 'Tab', start: 3, result: list => list.shadowRoot.querySelector('.d2l-tag-list-clear-button').shadowRoot.querySelector('button') },
-			{ name: 'Shift + tab exists list backwards', key: 'Shift+Tab', start: 3, result: list => getPreviousFocusable(list) }
+			{ name: 'Shift + tab exits list backwards', key: 'Shift+Tab', start: 3, result: list => getPreviousFocusable(list) }
 		].forEach(testcase => {
 			it(testcase.name, async() => {
 				const list = await fixture(clearableFixture);
