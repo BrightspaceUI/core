@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { until } from 'lit/directives/until.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -224,6 +226,7 @@ class HtmlBlock extends LitElement {
 
 	render() {
 		this._validateHtml();
+		this._processEmbeds();
 
 		const renderContainerClasses = {
 			'd2l-html-block-rendered': true,
@@ -231,7 +234,9 @@ class HtmlBlock extends LitElement {
 		};
 
 		return html`
-			<div class="${classMap(renderContainerClasses)}"></div>
+			<div class="${classMap(renderContainerClasses)}">
+				${!this.noDeferredRendering ? until(this._processEmbeds(), unsafeHTML(this.html)) : nothing}
+			</div>
 			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
 		`;
 	}
@@ -275,9 +280,13 @@ class HtmlBlock extends LitElement {
 		await this._renderInline(e.target);
 	}
 
-	async _processRenderers(elem) {
-		await renderEmbeds(elem);
+	async _processEmbeds() {
+		const htmlFragment = document.createRange().createContextualFragment(this.html);
+		await renderEmbeds(htmlFragment);
+		return htmlFragment;
+	}
 
+	async _processRenderers(elem) {
 		await this._contextObserverControllerInitialized;
 		const renderers = await getRenderers();
 		const loadingCompletePromises = [];
@@ -326,7 +335,6 @@ class HtmlBlock extends LitElement {
 
 	async _updateRenderContainer() {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
 	}
 
