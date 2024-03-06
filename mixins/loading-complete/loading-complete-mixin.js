@@ -11,7 +11,7 @@ export const LoadingCompleteMixin = (superclass) => class extends superclass {
 		return this._loadingCompletePromise;
 	}
 
-	loadingComplete() {
+	resolveLoadingComplete() {
 		if (this._loadingCompleteResolve) {
 			this._loadingCompleteResolve();
 			this._loadingCompleteResolve = null;
