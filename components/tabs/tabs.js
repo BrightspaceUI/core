@@ -54,7 +54,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement))))) {
+class Tabs extends LocalizeCoreElement(LoadingCompleteMixin(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -271,6 +271,7 @@ class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(Skele
 
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+		console.log('First render');
 
 		this.arrowKeysFocusablesProvider = async() => {
 			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
@@ -309,7 +310,7 @@ class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(Skele
 		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
 		await this.loadingComplete;
-		alert(`I got these langterms:\n${Object.entries(this.__resources).filter(([k]) => k.includes('.tabs.')).map(([k, v]) => `${k}: ${v.value}`).join('\n')}`);
+		console.log('Loading complete');
 	}
 
 	render() {
@@ -383,11 +384,6 @@ class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(Skele
 
 	focus() {
 		return this._focusSelected();
-	}
-
-	async getLoadingComplete() {
-		await super.getLoadingComplete();
-		await new Promise(r => setTimeout(r, 2000));
 	}
 
 	getTabListRect() {
@@ -905,8 +901,8 @@ class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(Skele
 		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
 		return Promise.all([
 			scrollVisibilityPromise,
-			scrollToPromise
-		]).then(this.resolveLoadingComplete);
+			scrollToPromise,
+		]).then(() => new Promise(r => setTimeout(r, 5000))).then(this.resolveLoadingComplete);
 	}
 
 	_updateScrollVisibility(measures) {
