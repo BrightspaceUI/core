@@ -1,21 +1,36 @@
-export const LoadingCompleteMixin = (superclass) => class extends superclass {
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
-	constructor() {
-		super();
-		this._loadingCompletePromise = new Promise(resolve => {
-			this._loadingCompleteResolve = resolve;
-		});
+export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends superclass {
+
+	#loadingCompleteResolve;
+
+	// eslint-disable-next-line sort-class-members/sort-class-members
+	#loadingCompletePromise = this.getLoadingComplete === this.#getLoadingComplete
+		? new Promise(resolve => this.#loadingCompleteResolve = resolve)
+		: Promise.resolve();
+
+	get getLoadingComplete() {
+		return this.#getLoadingComplete;
 	}
 
-	getLoadingComplete() {
-		return this._loadingCompletePromise;
+	get loadingComplete() {
+		return this.#getLoadingComplete();
 	}
 
-	resolveLoadingComplete() {
-		if (this._loadingCompleteResolve) {
-			this._loadingCompleteResolve();
-			this._loadingCompleteResolve = null;
+	get resolveLoadingComplete() {
+		return this.#resolveLoadingComplete.bind(this);
+	}
+
+	async #getLoadingComplete() {
+		await super.getLoadingComplete?.();
+		return this.#loadingCompletePromise;
+	}
+
+	#resolveLoadingComplete() {
+		if (this.#loadingCompleteResolve) {
+			this.#loadingCompleteResolve();
+			this.#loadingCompleteResolve = null;
 		}
 	}
 
-};
+});
