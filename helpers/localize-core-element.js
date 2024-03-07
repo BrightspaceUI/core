@@ -1,4 +1,4 @@
-import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
+import { LoadingCompleteMixin } from '../mixins/loading-complete/loading-complete-mixin.js';
 import { LocalizeMixin } from '../mixins/localize/localize-mixin.js';
 
 export const LocalizeCoreElement = superclass => class extends LoadingCompleteMixin(LocalizeMixin(superclass)) {
@@ -8,7 +8,7 @@ export const LocalizeCoreElement = superclass => class extends LoadingCompleteMi
 			importFunc: async lang => {
 				await new Promise(r => setTimeout(r, 2000));
 				const langterms = (await import(`../lang/${lang}.js`)).default;
-				console.log('Loaded langterms');
+				console.log('Loaded langterms'); // eslint-disable-line
 				return langterms;
 			},
 			lazyLoad: true

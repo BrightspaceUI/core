@@ -54,7 +54,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(LoadingCompleteMixin(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement))))) {
+class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -271,7 +271,7 @@ class Tabs extends LocalizeCoreElement(LoadingCompleteMixin(ArrowKeysMixin(Skele
 
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		console.log('First render');
+		console.log('First render'); // eslint-disable-line
 
 		this.arrowKeysFocusablesProvider = async() => {
 			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
@@ -310,7 +310,7 @@ class Tabs extends LocalizeCoreElement(LoadingCompleteMixin(ArrowKeysMixin(Skele
 		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
 		await this.loadingComplete;
-		console.log('Loading complete');
+		console.log('Loading complete'); // eslint-disable-line
 	}
 
 	render() {
