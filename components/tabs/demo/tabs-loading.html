@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button-subtle.js';
+			import '../../dropdown/dropdown-button-subtle.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../tabs.js';
+			import '../tab-panel.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-tabs">
+
+			<h2>Tabs</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs>
+						<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
+						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel text="Earth &amp; Planetary Sciences">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
+						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('d2l-tab-panel-selected', (e) => {
+				console.log('tab panel selected', e);
+			});
+			document.addEventListener('d2l-tab-panel-text-changed', (e) => {
+				console.log('tab panel text changed', e);
+			});
+		</script>
+
+	</body>
+</html>

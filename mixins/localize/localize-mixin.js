@@ -26,6 +26,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 				const resourcesLoadedPromise = Promise.all(localizeResources);
 				resourcesLoadedPromise
 					.then((results) => {
+
 						if (results.length === 0) {
 							return;
 						}
@@ -62,6 +63,10 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 	}
 
 	async getUpdateComplete() {
+		if (this.constructor.localizeConfig?.lazyLoad) {
+			return super.getUpdateComplete();
+		}
+
 		await super.getUpdateComplete();
 		const hasResources = this._hasResources();
 		const resourcesLoaded = this.__resources !== undefined;
@@ -78,7 +83,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 			return super.shouldUpdate(changedProperties);
 		}
 
-		const ready = this.__resources !== undefined;
+		const ready = this.constructor.localizeConfig?.lazyLoad || this.__resources !== undefined;
 		if (!ready) {
 			changedProperties.forEach((oldValue, propName) => {
 				this.__updatedProperties.set(propName, oldValue);
@@ -95,6 +100,13 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 
 		return super.shouldUpdate(changedProperties);
 
+	}
+
+	async getLoadingComplete() {
+		if (this.constructor.localizeConfig?.lazyLoad) {
+			await super.getLoadingComplete?.();
+			return this.__resourcesLoadedPromise;
+		}
 	}
 
 	localize(key) {

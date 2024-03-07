@@ -8,6 +8,7 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -53,7 +54,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class Tabs extends LoadingCompleteMixin(LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -244,8 +245,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
-		this._loadingCompleteResolve = undefined;
-		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
@@ -270,7 +269,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
@@ -309,6 +308,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this._resizeObserver = new ResizeObserver(this._handleResize);
 		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
+		await this.loadingComplete;
+		alert(`I got these langterms:\n${Object.entries(this.__resources).filter(([k]) => k.includes('.tabs.')).map(([k, v]) => `${k}: ${v.value}`).join('\n')}`);
 	}
 
 	render() {
@@ -385,7 +386,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	async getLoadingComplete() {
-		return this._loadingCompletePromise;
+		await super.getLoadingComplete();
+		await new Promise(r => setTimeout(r, 2000));
 	}
 
 	getTabListRect() {
@@ -896,22 +898,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		};
 	}
 
-	_updateScrollPosition(selectedTabInfo) {
+	async _updateScrollPosition(selectedTabInfo) {
 		const measures = this._getMeasures();
 		const newTranslationValue = this._calculateScrollPosition(selectedTabInfo, measures);
 		const scrollToPromise = this._scrollToPosition(newTranslationValue);
 		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
-		const p = Promise.all([
+		return Promise.all([
 			scrollVisibilityPromise,
 			scrollToPromise
-		]);
-		p.then(() => {
-			if (this._loadingCompleteResolve) {
-				this._loadingCompleteResolve();
-				this._loadingCompleteResolve = undefined;
-			}
-		});
-		return p;
+		]).then(this.resolveLoadingComplete);
 	}
 
 	_updateScrollVisibility(measures) {
