@@ -14,7 +14,7 @@ export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends su
 	}
 
 	get loadingComplete() {
-		return this.#getLoadingComplete();
+		return this.getLoadingComplete();
 	}
 
 	get resolveLoadingComplete() {
