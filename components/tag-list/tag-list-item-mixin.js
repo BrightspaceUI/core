@@ -172,8 +172,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			}
 
 			await this.updateComplete;
-			this.setAttribute('tabindex', '-1');
-			container.focus();
+			// delay the focus to allow focusin to fire
+			setTimeout(() => container.focus());
 		});
 
 		this.addEventListener('keydown', this._handleKeydown);
