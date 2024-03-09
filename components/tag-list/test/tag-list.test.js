@@ -1,7 +1,7 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement, getPreviousFocusable } from '../../../helpers/focus.js';
 
 const basicFixture = html`
@@ -56,7 +56,9 @@ describe('d2l-tag-list', () => {
 				list.insertAdjacentElement('beforebegin', button);
 
 				const startItem = list._items[testcase.start];
-				await sendKeysElem(startItem, 'press', testcase.key);
+				startItem.focus();
+				await aTimeout(); // wait for retargeted focus
+				await sendKeys('press', testcase.key);
 
 				expect(getComposedActiveElement()).to.equal(testcase.result(list));
 			});
