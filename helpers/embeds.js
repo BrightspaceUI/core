@@ -5,7 +5,7 @@ import { tryGetPluginByKey } from './plugins.js';
 
 const embedTypeAttributeName = 'data-d2l-embed-type';
 
-export async function createEmbedPlaceholder(embedType, props) {
+export async function createEmbedViewPlaceholder(embedType, props) {
 	const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', embedType);
 	if (!embedRendererPlugin) return;
 
@@ -14,21 +14,21 @@ export async function createEmbedPlaceholder(embedType, props) {
 		? map(Object.entries(placeholderData.contents), ([id, content]) => html`<template data-d2l-embed-template-id=${id}>${content}</template>`)
 		: nothing;
 
-	const attributes = placeholderData.attributes ? JSON.stringify(placeholderData.attributes) : undefined;
+	const properties = placeholderData.properties ? JSON.stringify(placeholderData.properties) : undefined;
 
 	return placeholderData.inline
 		? html`
-			<span data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(attributes)}">
+			<span data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}">
 				${contents}
 			</span>
 		` : html`
-			<div data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(attributes)}">
+			<div data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}">
 				${contents}
 			</div>
 		`;
 }
 
-export async function renderEmbeds(node, options) {
+export async function renderEmbeds(node) {
 	const placeholders = [...node.querySelectorAll(`div[${embedTypeAttributeName}], span[${embedTypeAttributeName}]`)];
 	if (placeholders.length === 0) return;
 
@@ -41,7 +41,7 @@ export async function renderEmbeds(node, options) {
 		const templates = [...placeholder.querySelectorAll('template[data-d2l-embed-template-id]')];
 		const processedTemplates = await Promise.all(templates.map(async template => {
 			const templateNode = template.content.cloneNode(true);
-			await renderEmbeds(templateNode, options);
+			await renderEmbeds(templateNode);
 			return html`${templateNode}`;
 		}));
 
@@ -51,7 +51,7 @@ export async function renderEmbeds(node, options) {
 		}, {});
 
 		const props = JSON.parse(placeholder.dataset.d2lEmbedProps);
-		return embedRendererPlugin.renderView(processedTemplateContents, props, options || {});
+		return embedRendererPlugin.renderView(processedTemplateContents, props);
 	};
 
 	const embeds = await Promise.all(placeholders.map(processPlaceholder));
