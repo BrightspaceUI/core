@@ -52,8 +52,12 @@ export const tableStyles = css`
 	.d2l-table > * > tr[header] > th {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
-		font-weight: bold;
 		line-height: 0.9rem;
+	}
+	.d2l-table > thead > tr > th:hover,
+	.d2l-table > * > tr.d2l-table-header > th:hover,
+	.d2l-table > * > tr[header] > th:hover {
+		background-color: var(--d2l-color-mica);
 	}
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
