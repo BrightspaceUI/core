@@ -146,7 +146,7 @@ describe('tooltip', () => {
 				{ x: 50, y: 100 }
 			].forEach(({ x, y }) => {
 
-				it(`${name} (${x}, ${y})`, async() => {
+				it(`${name} (${x},${y})`, async() => {
 					const elem = await fixture(template);
 					elem.scrollTo(x, y);
 					const tooltip = elem.querySelector('d2l-tooltip');
