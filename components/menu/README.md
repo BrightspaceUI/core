@@ -138,6 +138,10 @@ This `d2l-menu-item-link` is used for navigating. It gives users the ability to 
 | `href` | String, required | The URL the menu item link navigates to |
 | `text` | String, required | Text displayed by the menu item |
 | `disabled` | Boolean | Disables the menu item |
+
+### Slots
+
+* `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -180,6 +184,10 @@ The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up
 | `value` | String, required | |
 | `disabled` | Boolean | Disables the menu item |
 | `selected` | Boolean | Thie will set the item to be selected by default |
+
+### Slots
+
+* `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
 
 ### Events
 
@@ -226,6 +234,10 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 | `value` | String, required | |
 | `disabled` | Boolean | Disables the menu item |
 | `selected` | Boolean | This will set the item to be seelcted by default |
+
+### Slots
+
+* `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
 
 ### Events
 

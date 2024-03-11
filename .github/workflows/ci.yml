@@ -88,4 +88,4 @@ jobs:
             > [!NOTE]
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
-          only-post-once: true
+          post-mode: once
