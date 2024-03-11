@@ -38,6 +38,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			paging: { type: Boolean, reflect: true },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
+			sortOptions: { type: String, reflect: true },
 			_data: { state: true },
 			_sortField: { state: true },
 			_sortDesc: { state: true }
@@ -61,6 +62,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this.paging = false;
 		this.stickyControls = false;
 		this.visibleBackground = false;
+		this.sortOptions = "";
 		this._data = data();
 		this._sortField = undefined;
 		this._sortDesc = false;
@@ -153,7 +155,10 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit}</d2l-table-col-sort-button>
+					?nosort="${noSort}"
+					sortOptions="${this.sortOptions}">
+					${fruit}
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}

@@ -27,6 +27,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * Show the different sort options available.
+			 * @type {String}
+			 */
+			sortOptions: {
+				reflect: true,
+				type: String
 			}
 		};
 	}
@@ -42,6 +50,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
+				font-weight: bold;
 				letter-spacing: inherit;
 				margin: 0;
 				padding: 0;
@@ -69,6 +78,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		super();
 		this.nosort = false;
 		this.desc = false;
+		this.sortOptions = "";
 	}
 
 	static get focusElementSelector() {
@@ -77,9 +87,28 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	render() {
 		const iconView = !this.nosort ?
-			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
-			null;
-		return html`<button type="button"><slot></slot>${iconView}</button>`;
+			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}">
+				</d2l-icon>`
+			: null;
+		return this.sortOptions.length > 1 ?
+				html`<d2l-dropdown>
+						<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
+						<d2l-dropdown-content>
+							<d2l-list>
+								${this.sortOptions.split(",").forEach(option => {
+									return html`
+										<d2l-list-item>
+											<d2l-list-item-content>
+												<div>${option}</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+									`
+								})}
+							</d2l-list>
+						</d2l-dropdown-content>
+					</d2l-dropdown>`
+				:
+				html`<button type="button"><slot></slot>${iconView}</button>`;
 	}
 
 }
