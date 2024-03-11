@@ -104,6 +104,17 @@ describe('filter-tags', () => {
 	});
 
 	describe('clearable behavior', () => {
+		it('deleting the first item', async() => {
+			const elem = await fixture(tagsSingleFilter, { viewport: { width: 1700 } });
+			const filterTags = elem.querySelector('d2l-filter-tags');
+			const items = filterTags.shadowRoot.querySelectorAll('d2l-tag-list-item');
+			const deleteButton = items[0].shadowRoot.querySelector('d2l-button-icon');
+
+			clickElem(deleteButton);
+			await oneEvent(elem, 'd2l-filter-change');
+			await expect(elem).to.be.golden();
+		});
+
 		it('deleting the last item', async() => {
 			const elem = await fixture(tagsSingleFilter, { viewport: { width: 1700 } });
 			const filterTags = elem.querySelector('d2l-filter-tags');
