@@ -1,4 +1,4 @@
-import { defineCE, fixture } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, fixture } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { LoadingCompleteMixin } from '../loading-complete-mixin.js';
 
@@ -6,17 +6,31 @@ const DummyMixin = superclass => class extends superclass {
 
 	async getLoadingComplete() {
 		await super.getLoadingComplete?.();
-		this.resolveLoadingComplete();
+		return aTimeout();
 	}
 
 };
 
 const mixinSubclassTag = defineCE(
-	class extends LoadingCompleteMixin(DummyMixin(LitElement)) {}
+	class extends LoadingCompleteMixin(DummyMixin(LitElement)) {
+
+		connectedCallback() {
+			super.connectedCallback();
+			this.resolveLoadingComplete();
+		}
+
+	}
 );
 
 const mixinSuperclassTag = defineCE(
-	class extends DummyMixin(LoadingCompleteMixin(LitElement)) {}
+	class extends DummyMixin(LoadingCompleteMixin(LitElement)) {
+
+		connectedCallback() {
+			super.connectedCallback();
+			this.resolveLoadingComplete();
+		}
+
+	}
 );
 
 const componentLevelOverrideTag = defineCE(
