@@ -34,7 +34,9 @@ export async function renderEmbeds(node, options) {
 
 	const processPlaceholder = async placeholder => {
 		const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', placeholder.dataset.d2lEmbedType);
-		if (!embedRendererPlugin) return;
+		if (!embedRendererPlugin) {
+			console.warn(`d2l-html-embed-renderer: Can't find plugin for ${placeholder.dataset.d2lEmbedType} embed type.`);
+		}
 
 		const templates = [...placeholder.querySelectorAll('template[data-d2l-embed-template-id]')];
 		const processedTemplates = await Promise.all(templates.map(async template => {
@@ -48,17 +50,16 @@ export async function renderEmbeds(node, options) {
 			return acc;
 		}, {});
 
-		let props = placeholder.dataset.d2lEmbedProps;
-		try {
-			props = JSON.parse(placeholder.dataset.d2lEmbedProps);
-		} catch (e) { /* empty */ }
-
+		const props = JSON.parse(placeholder.dataset.d2lEmbedProps);
 		return embedRendererPlugin.renderView(processedTemplateContents, props, options || {});
 	};
 
 	const embeds = await Promise.all(placeholders.map(processPlaceholder));
 	placeholders.forEach((placeholder, index) => {
-		if (!embeds[index]) return;
+		if (!embeds[index]) {
+			console.warn(`d2l-html-embed-renderer: Can't find valid embed for placeholder with ${placeholder.dataset.d2lEmbedType} embed type`);
+		}
+
 		render(embeds[index], placeholder.parentNode, { renderBefore: placeholder });
 		placeholder.remove();
 	});
