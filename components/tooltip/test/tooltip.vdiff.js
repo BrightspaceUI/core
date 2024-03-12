@@ -106,4 +106,58 @@ describe('tooltip', () => {
 			await expect(document).to.be.golden();
 		});
 	});
+
+	describe('scrolling', () => {
+
+		const content = html`
+			<p style="width: 500px;">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet mattis vulputate enim nulla aliquet. Nunc consequat interdum varius sit amet. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt.
+			</p>
+			<d2l-button id="target">Target</d2l-button>
+			<d2l-tooltip for="target">
+				${shortText}
+			</d2l-tooltip>
+			<p>
+				Suscipit adipiscing bibendum est ultricies. At risus viverra adipiscing at in tellus. Cursus risus at ultrices mi tempus.
+			</p>
+		`;
+
+		[{
+			name: 'offsetParent',
+			template: html`
+				<div style="max-height: 250px; max-width: 450px; overflow: auto; position: relative;">
+					${content}
+				</div>
+			`
+		},
+		{
+			name: 'boundingContainer',
+			template: html`
+				<div style="max-height: 250px; max-width: 450px; overflow: auto;">
+					<div style="position: relative;">
+						${content}
+					</div>
+				</div>
+			`
+		}].forEach(({ name, template }) => {
+			[
+				{ x: 0, y: 100 },
+				{ x: 25, y: 100 },
+				{ x: 50, y: 100 }
+			].forEach(({ x, y }) => {
+
+				it(`${name} (${x},${y})`, async() => {
+					const elem = await fixture(template);
+					elem.scrollTo(x, y);
+					const tooltip = elem.querySelector('d2l-tooltip');
+					tooltip.show();
+					await oneEvent(tooltip, 'd2l-tooltip-show');
+					await expect(elem).to.be.golden();
+				});
+
+			});
+		});
+
+	});
+
 });

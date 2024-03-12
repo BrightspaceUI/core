@@ -6,6 +6,7 @@ import { menuItemStyles } from './menu-item-styles.js';
 /**
  * A menu item component used for navigating.
  * @fires click - Dispatched when the link is clicked
+ * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  */
 class MenuItemLink extends MenuItemMixin(LitElement) {
 
