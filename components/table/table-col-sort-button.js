@@ -38,6 +38,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				align-items: center;
 				background-color: transparent;
 				border: none;
+				box-sizing: border-box;
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
@@ -46,7 +47,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				letter-spacing: inherit;
 				height: 100%;
 				margin: 0;
-				padding: 0;
+				padding: var(--d2l-table-cell-padding);
 				text-decoration: none;
 				width: 100%;
 			}

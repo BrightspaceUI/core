@@ -53,7 +53,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				--d2l-table-controls-background-color: #dddddd;
 			}
 			.sortableCell {
-				padding: 0.15rem 0.15rem !important;
+				padding: 0.15rem !important;
 			}
 		`];
 	}
