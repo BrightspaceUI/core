@@ -27,8 +27,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
-			},
-			_hasItems: { type: Boolean, reflect: true, attribute: '_has-item' }
+			}
 		};
 	}
 
@@ -73,7 +72,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		super();
 		this.nosort = false;
 		this.desc = false;
-		this._hasItems = false;
 	}
 
 	static get focusElementSelector() {
@@ -82,7 +80,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	_handleSlotChange(e) {
 		const content = e.target.assignedNodes({ flatten: true });
-		this._hasItems = content?.length > 0;
 	}
 
 	render() {
@@ -90,18 +87,16 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		const defaultButton = html`<button type="button"><slot></slot>${iconView}</button>`;
-		const itemDropdownButton = html`
+		return  html`
 			<d2l-dropdown>
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
-				<d2l-dropdown-menu id="dropdown">
-					<d2l-menu label="Items">
+				<d2l-dropdown-menu>
+					<d2l-menu>
 						<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
-		return this._hasItems ? itemDropdownButton : defaultButton;
 	}
 
 }

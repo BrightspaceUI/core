@@ -158,7 +158,9 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">
 					${fruit}
-					<slot slot="items" name="items"></slot>
+					<div slot="items">
+						<button type="button">Hello</button>
+					</div>
 				</d2l-table-col-sort-button>
 			</th>
 		`;
