@@ -5,11 +5,20 @@ import { tryGetPluginByKey } from './plugins.js';
 
 const embedTypeAttributeName = 'data-d2l-embed-type';
 
-export async function createEmbedViewPlaceholder(embedType, props) {
+function tryGetEmbedRendererPlugin(embedType) {
 	const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', embedType);
+	if (!embedRendererPlugin) {
+		console.warn(`d2l-html-embed-renderer: Can't find plugin for ${embedType} embed type.`);
+	}
+
+	return embedRendererPlugin;
+}
+
+export async function createEmbedViewPlaceholder(embedType, props) {
+	const embedRendererPlugin = tryGetEmbedRendererPlugin(embedType);
 	if (!embedRendererPlugin) return;
 
-	const placeholderData = await embedRendererPlugin.getPlaceholder(props);
+	const placeholderData = await embedRendererPlugin.getViewPlaceholderData(props);
 	const contents = placeholderData.contents
 		? map(Object.entries(placeholderData.contents), ([id, content]) => html`<template data-d2l-embed-template-id=${id}>${content}</template>`)
 		: nothing;
@@ -18,12 +27,41 @@ export async function createEmbedViewPlaceholder(embedType, props) {
 
 	return placeholderData.inline
 		? html`
-			<span data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}">
+			<span data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}" style="${placeholderData.style}">
 				${contents}
 			</span>
 		` : html`
-			<div data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}">
+			<div data-d2l-embed-type="${embedType}" data-d2l-embed-props="${ifDefined(properties)}" style="${placeholderData.style}">
 				${contents}
+			</div>
+		`;
+}
+
+export async function createEmbedEditorPlaceholder(embedType, props) {
+	const embedRendererPlugin = tryGetEmbedRendererPlugin(embedType);
+	if (!embedRendererPlugin) return;
+
+	const placeholderData = await embedRendererPlugin.getEditorPlaceholderData(props);
+	const text = placeholderData.text || nothing;
+
+	const properties = placeholderData.properties ? JSON.stringify(placeholderData.properties) : undefined;
+
+	return placeholderData.inline
+		? html`
+			<span
+				contentEditable="${ifDefined(placeholderData.contentEditable)}"
+				data-d2l-embed-type="${embedType}"
+				data-d2l-embed-props="${ifDefined(properties)}"
+				style="${placeholderData.style}">
+				${text}
+			</span>
+		` : html`
+			<div
+				contentEditable="${ifDefined(placeholderData.contentEditable)}"
+				data-d2l-embed-type="${embedType}"
+				data-d2l-embed-props="${ifDefined(properties)}"
+				style="${placeholderData.style}">
+				${text}
 			</div>
 		`;
 }
@@ -33,10 +71,8 @@ export async function renderEmbeds(node) {
 	if (placeholders.length === 0) return;
 
 	const processPlaceholder = async placeholder => {
-		const embedRendererPlugin = tryGetPluginByKey('d2l-html-embed-renderer', placeholder.dataset.d2lEmbedType);
-		if (!embedRendererPlugin) {
-			console.warn(`d2l-html-embed-renderer: Can't find plugin for ${placeholder.dataset.d2lEmbedType} embed type.`);
-		}
+		const embedRendererPlugin = tryGetEmbedRendererPlugin(placeholder.dataset.d2lEmbedType);
+		if (!embedRendererPlugin) return;
 
 		const templates = [...placeholder.querySelectorAll('template[data-d2l-embed-template-id]')];
 		const processedTemplates = await Promise.all(templates.map(async template => {
