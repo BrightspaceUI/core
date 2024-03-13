@@ -46,7 +46,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				letter-spacing: inherit;
 				height: 100%;
 				margin: 0;
-				padding: var(--d2l-table-cell-padding);
+				padding: 1rem 1rem;
 				text-decoration: none;
 				width: 100%;
 			}
@@ -64,10 +64,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: 0;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
+				padding: 0.8rem 0rem 0.8rem 1rem;
 			}
 			d2l-dropdown {
 				width: 100%;
-				padding: 0.5rem 0;
+				padding: 0;
 			}
 			d2l-dropdown:hover {
 				background-color: var(--d2l-color-gypsum);
