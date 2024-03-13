@@ -61,9 +61,16 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
+				border-radius: 0;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
+			}
+			d2l-dropdown {
+				width: 100%;
+				padding: 0.5rem 0;
+			}
+			d2l-dropdown:hover {
+				background-color: var(--d2l-color-gypsum);
 			}
 		`;
 	}
@@ -90,7 +97,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		return  html`
 			<d2l-dropdown>
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
-				<d2l-dropdown-menu>
+				<d2l-dropdown-menu id="dropdown">
 					<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>

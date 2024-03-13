@@ -53,7 +53,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				--d2l-table-controls-background-color: #dddddd;
 			}
 			.sortableCell {
-				padding: 0.15rem !important;
+				padding: 0 !important;
 			}
 		`];
 	}
@@ -149,6 +149,10 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this._sortDesc = !desc;
 	}
 
+	_handleMenuClick(e) {
+		console.log("HELLLLLLOOOOOOOOOO")
+	}
+
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
@@ -158,8 +162,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">
 					${fruit}
-					<d2l-menu slot="items">
-						<d2l-menu-item text="Introduction"></d2l-menu-item>
+					<d2l-menu label="Fruits" slot="items">
+						<d2l-menu-item text="Introduction" @click="${this._handleMenuClick}"></d2l-menu-item>
 						<d2l-menu-item text="Matter"></d2l-menu-item>
 						<d2l-menu-item text="Speed"></d2l-menu-item>
 						<d2l-menu-item text="Velocity"></d2l-menu-item>
