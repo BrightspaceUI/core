@@ -65,6 +65,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
 				padding: 0.8rem 0rem 0.8rem 1rem;
+				width: 98%;
 			}
 			d2l-dropdown {
 				width: 100%;
