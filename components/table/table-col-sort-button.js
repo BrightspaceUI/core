@@ -27,7 +27,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
-			}
+			},
+			/**
+			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
+			 * @type {'default'|'light'}
+			 */
+			type: {
+				reflect: true,
+				type: String
+			},
 		};
 	}
 
@@ -61,7 +69,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0;
+				border-radius: var(--d2l-sortable-button-border-radius);
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
 				padding: 0.8rem 0rem 0.8rem 1rem;
@@ -73,6 +81,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			d2l-dropdown:hover {
 				background-color: var(--d2l-color-gypsum);
+				border-radius: var(--d2l-sortable-button-border-radius);
 			}
 		`;
 	}
