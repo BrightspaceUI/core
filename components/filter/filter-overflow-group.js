@@ -89,10 +89,21 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 
 	getOverflowContainer(overflowItems) {
 		return html`
-			<d2l-filter class="${OVERFLOW_CLASS} vdiff-target" @d2l-filter-change="${this._handleFilterChange}">
+			<d2l-filter
+				class="${OVERFLOW_CLASS} vdiff-target"
+				@d2l-filter-change="${this._handleFilterChange}"
+				@d2l-filter-dimension-load-more="${this._handleFilterLoadMore}"
+				@d2l-filter-dimension-search="${this._handleFilterSearch}">
 				${overflowItems}
 			</d2l-filter>
 		`;
+	}
+
+	_getFilterParent(classList, filterSet) {
+		const isOverflowFilter = classList && classList.contains(OVERFLOW_CLASS);
+		if (!isOverflowFilter) return null;
+		const filterParent = filterSet.parentNode;
+		return (!filterParent || filterParent.tagName !== 'D2L-FILTER') ? null : filterParent;
 	}
 
 	_handleFilterChange(e) {
@@ -105,7 +116,25 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 				if (!filterSetValue) return;
 				filterSetValue.selected = change.selected;
 			});
+
+			this._getFilterParent(e.target.classList, filterSet)?.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
 		});
+	}
+
+	async _handleFilterLoadMore(e) {
+		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
+		if (!filterSet) return;
+		const filter = this._getFilterParent(e.target.classList, filterSet);
+		filter.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
+		this._handleSlotChange();
+	}
+
+	async _handleFilterSearch(e) {
+		const filterSet = this.querySelector(`d2l-filter-dimension-set[key=${e.detail.key}`);
+		if (!filterSet) return;
+		const filter = this._getFilterParent(e.target.classList, filterSet);
+		filter.requestFilterSearchEvent(e.detail.key, e.detail.value);
+		this._handleSlotChange();
 	}
 
 }
