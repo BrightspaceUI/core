@@ -249,6 +249,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
 				--d2l-sortable-button-border-radius: 0;
+				--d2l-sortable-button-focus-padding: 0.8rem 0rem 0.8rem 1rem;
 				display: block;
 				width: 100%;
 			}
@@ -264,6 +265,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
+				--d2l-sortable-button-focus-padding: 0.8rem 0rem 0.8rem 1rem;
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;

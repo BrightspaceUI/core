@@ -41,6 +41,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get styles() {
 		return css`
+			:host([desc]) .d2l-sortable-button-icon {
+				padding: 0;
+			}
+			:host(:not([desc])) .d2l-sortable-button-icon {
+				padding: 0;
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
@@ -64,15 +70,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:disabled {
 				opacity: 0.5;
 			}
-			button:hover {
-				text-decoration: underline;
-			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-radius);
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
-				padding: 0.8rem 0rem 0.8rem 1rem;
+				padding: var(--d2l-sortable-button-focus-padding);
 				width: 98%;
 			}
 			d2l-dropdown {
@@ -102,7 +105,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	render() {
 		const iconView = !this.nosort ?
-			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
+			html`<d2l-icon class="d2l-sortable-button-icon" icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
 		return  html`
