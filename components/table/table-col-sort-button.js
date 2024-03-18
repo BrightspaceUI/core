@@ -57,6 +57,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
+				gap: 0.5rem;
 				letter-spacing: inherit;
 				height: 100%;
 				margin: 0;

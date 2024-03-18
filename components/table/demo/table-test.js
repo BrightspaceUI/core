@@ -66,15 +66,20 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this.visibleBackground = false;
 		this._data = data();
 		this._sortField = undefined;
+		this._compositeField = undefined;
 		this._sortDesc = false;
 	}
 
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return b.fruit[this._sortField] - a.fruit[this._sortField];
+				return ifDefined(this._compositeField) ?
+					b.fruit[this._sortField] - a.fruit[this._sortField] || b.name - a.name :
+					b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
-			return a.fruit[this._sortField] - b.fruit[this._sortField];
+			return ifDefined(this._compositeField) ?
+				a.fruit[this._sortField] - b.fruit[this._sortField] || a.name - b.name :
+				a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
@@ -154,6 +159,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
 			this._sortField = field;
+			this._compositeField = undefined;
 			this._sortDesc = !desc;
 		}
 	}
@@ -165,6 +171,31 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = true;
 			this._sortField = field;
+			this._compositeField = undefined;
+			this._sortDesc = !desc;
+		}
+	}
+
+	_handleCompositeAtoZ(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = false;
+			this._sortField = field;
+			this._compositeField = false;
+			this._sortDesc = !desc;
+		}
+	}
+
+	_handleCompositeZtoA(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = true;
+			this._sortField = field;
+			this._compositeField = true;
 			this._sortDesc = !desc;
 		}
 	}
@@ -180,6 +211,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					${fruit}
 					<d2l-menu-item slot="items" text="A to Z" @click="${this._handleAtoZ}"></d2l-menu-item>
 					<d2l-menu-item slot="items" text="Z to A" @click="${this._handleZtoA}"></d2l-menu-item>
+					<d2l-menu-item slot="items" text="Country, A to Z" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
+					<d2l-menu-item slot="items" text="Country, Z to A" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
 				</d2l-table-col-sort-button>
 			</th>
 		`;
