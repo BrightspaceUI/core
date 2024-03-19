@@ -22,6 +22,7 @@ A switch is used to toggle between two states, on and off, just like a light swi
 
 <!-- docs: start donts -->
 * Don't toggle the language in the label, it should remain static
+  * The [Visibility Switch](#d2l-switch-visibility) is a necessary exception to this rule
 * Don't use a switch in a form, use a checkbox or radio options in stead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
