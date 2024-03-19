@@ -138,38 +138,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
-	_handlePagerLoadMore(e) {
-		const startIndex = this._data.length + 1;
-		for (let i = 0; i < e.target.pageSize; i++) {
-			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
-		}
-		this.requestUpdate();
-		e.detail.complete();
-	}
-
-	_handleSort(e) {
-		const field = e.target.innerText.toLowerCase();
-		this._sortField = field;
-	}
-
 	_handleAtoZ(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
-			this._sortField = field;
-			this._compositeField = undefined;
-			this._sortDesc = !desc;
-		}
-	}
-
-	_handleZtoA(e) {
-		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-
-		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
-			const desc = true;
 			this._sortField = field;
 			this._compositeField = undefined;
 			this._sortDesc = !desc;
@@ -199,6 +173,33 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortDesc = !desc;
 		}
 	}
+
+	_handlePagerLoadMore(e) {
+		const startIndex = this._data.length + 1;
+		for (let i = 0; i < e.target.pageSize; i++) {
+			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+		}
+		this.requestUpdate();
+		e.detail.complete();
+	}
+
+	_handleSort(e) {
+		const field = e.target.innerText.toLowerCase();
+		this._sortField = field;
+	}
+
+	_handleZtoA(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = true;
+			this._sortField = field;
+			this._compositeField = undefined;
+			this._sortDesc = !desc;
+		}
+	}
+
 
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();

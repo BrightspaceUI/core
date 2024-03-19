@@ -104,21 +104,17 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		return 'button';
 	}
 
-	_handleSlotChange(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-	}
-
 	render() {
 		const iconView = !this.nosort ?
 			html`<d2l-icon class="d2l-sortable-button-icon" icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return  html`
+		return html`
 			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
 				<d2l-dropdown-menu id="dropdown">
 					<d2l-menu>
-						<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
+						<slot name="items"></slot>
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
