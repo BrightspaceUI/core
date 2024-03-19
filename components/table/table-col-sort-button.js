@@ -77,16 +77,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
 				padding-inline-start: 0.8rem;
-				width: 96%;
+				width: 95%;
 			}
-			.d2l-sortable-button-dropdown:focus-within {
+			.d2l-sortable-button-dropdown:focus-within:has(:focus-visible){
 				padding-inline-start: 0.2rem;
 				height: var(--d2l-table-cell-height);
 			}
 			d2l-dropdown {
 				width: 100%;
 				height: calc(var(--d2l-table-cell-height) + 0.3rem);
-				padding: 0;
 			}
 			d2l-dropdown:hover {
 				background-color: var(--d2l-color-gypsum);
@@ -115,7 +114,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 
 		return  html`
-			<d2l-dropdown class="d2l-sortable-button-dropdown">
+			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
 				<d2l-dropdown-menu id="dropdown">
 					<d2l-menu>
