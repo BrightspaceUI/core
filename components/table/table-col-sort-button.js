@@ -50,10 +50,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				font-family: inherit;
 				font-size: inherit;
 				gap: 0.4rem;
+				height: 100%;
 				letter-spacing: inherit;
 				margin: 0;
 				padding-inline-start: 1rem;
-				height: 100%;
 				text-decoration: none;
 				width: 100%;
 			}
@@ -71,13 +71,13 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding-inline-start: 0.8rem;
 				width: 95%;
 			}
-			.d2l-sortable-button-dropdown:focus-within:has(:focus-visible){
-				padding-inline-start: 0.2rem;
+			.d2l-sortable-button-dropdown:focus-within:has(:focus-visible) {
 				height: var(--d2l-table-cell-height);
+				padding-inline-start: 0.2rem;
 			}
 			d2l-dropdown {
-				width: 100%;
 				height: calc(var(--d2l-table-cell-height) + 0.3rem);
+				width: 100%;
 			}
 			d2l-dropdown:hover {
 				background-color: var(--d2l-color-gypsum);
