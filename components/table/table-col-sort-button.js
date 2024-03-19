@@ -27,15 +27,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
-			},
-			/**
-			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
-			 * @type {'default'|'light'}
-			 */
-			type: {
-				reflect: true,
-				type: String
-			},
+			}
 		};
 	}
 
