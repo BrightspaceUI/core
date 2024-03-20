@@ -55,7 +55,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin: 0;
 				padding-inline-start: 1rem;
 				text-decoration: none;
-				width: 100%;
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -69,11 +68,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
 				padding-inline-start: 0.8rem;
-				width: 95%;
+				width: 100%;
 			}
 			.d2l-sortable-button-dropdown:focus-within:has(:focus-visible) {
 				height: var(--d2l-table-cell-height);
 				padding-inline-start: 0.2rem;
+				width: 95%;
 			}
 			d2l-dropdown {
 				height: calc(var(--d2l-table-cell-height) + 0.3rem);
@@ -82,6 +82,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			d2l-dropdown:hover {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+			d2l-dropdown:hover:has(:focus-within):has(:focus-visible) {
+				width: 95%;
 			}
 		`;
 	}
