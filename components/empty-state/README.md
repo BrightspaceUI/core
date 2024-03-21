@@ -84,7 +84,7 @@ The `illustration-name` property can be set to use one of the preset illustratio
 
 ## Empty State Action Button [d2l-empty-state-action-button]
 
-Use a `d2l-empty-state-action-button` to add a button that provides users with an easy next step, assuming the next step is to perform an action. If the next step is to navigate to another page, consider using an [Empty State Action Link](d2l-empty-state-action-link) instead.
+Use a `d2l-empty-state-action-button` to add a button that provides users with an easy next step, assuming the next step is to perform an action. If the next step is to navigate to another page, consider using an [Empty State Action Link](#d2l-empty-state-action-link) instead.
 
 To add the button, place a `d2l-empty-state-action-button` component inside of the default slot of `empty-state-simple` or `empty-state-illustrated`. Only a single action can be placed within an empty state component.
 
