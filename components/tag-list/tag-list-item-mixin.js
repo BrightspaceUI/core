@@ -34,6 +34,10 @@ function addTabListener() {
 	});
 }
 
+export function resetHasDisplayedKeyboardTooltip() {
+	hasDisplayedKeyboardTooltip = false;
+}
+
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -197,10 +201,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		});
 
 		this.addEventListener('keydown', this._handleKeydown);
-	}
-
-	resetHasDisplayedKeyboardTooltip() {
-		hasDisplayedKeyboardTooltip = false;
 	}
 
 	_handleClearItem() {

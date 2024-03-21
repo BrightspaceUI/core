@@ -4,6 +4,7 @@ import './tag-list-item-mixin-consumer.js';
 import { clickAt, clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
+import { resetHasDisplayedKeyboardTooltip } from '../tag-list-item-mixin.js';
 
 const viewport = { width: 1500 };
 
@@ -36,20 +37,19 @@ describe('tag-list', () => {
 	});
 
 	describe('tag list item style', () => {
-		let elem;
 		afterEach(() => {
-			elem.querySelector('d2l-tag-list-item').resetHasDisplayedKeyboardTooltip();
+			resetHasDisplayedKeyboardTooltip();
 		});
 
 		it('focus', async() => {
-			elem = await fixture(createTagList(), { viewport });
+			const elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus twice', async() => {
-			elem = await fixture(createTagList(), { viewport });
+			const elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			clickAt(0, 0);
@@ -58,13 +58,13 @@ describe('tag-list', () => {
 		});
 
 		it('hover', async() => {
-			elem = await fixture(createTagList(), { viewport });
+			const elem = await fixture(createTagList(), { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus and hover', async() => {
-			elem = await fixture(createTagList(), { viewport });
+			const elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
@@ -72,7 +72,7 @@ describe('tag-list', () => {
 		});
 
 		it('hover first elem long', async() => {
-			elem = await fixture(html`
+			const elem = await fixture(html`
 					<d2l-tag-list description="A bunch of example tags">
 							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
 							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
@@ -85,7 +85,7 @@ describe('tag-list', () => {
 		});
 
 		it('hover then focus first elem long', async() => {
-			elem = await fixture(html`
+			const elem = await fixture(html`
 					<d2l-tag-list description="A bunch of example tags">
 							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
 							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
@@ -100,7 +100,7 @@ describe('tag-list', () => {
 		});
 
 		it('hover first elem description', async() => {
-			elem = await fixture(html`
+			const elem = await fixture(html`
 					<d2l-tag-list description="A bunch of example tags">
 							<d2l-tag-list-item text="Example Tag" class="vdiff-include" description="An item description"></d2l-tag-list-item>
 							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
