@@ -52,6 +52,9 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			:host([visible-background]) {
 				--d2l-table-controls-background-color: #dddddd;
 			}
+			.sortableCell {
+				padding: 0 !important;
+			}
 		`];
 	}
 
@@ -63,15 +66,20 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this.visibleBackground = false;
 		this._data = data();
 		this._sortField = undefined;
+		this._compositeField = undefined;
 		this._sortDesc = false;
 	}
 
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return b.fruit[this._sortField] - a.fruit[this._sortField];
+				return ifDefined(this._compositeField) ?
+					b.fruit[this._sortField] - a.fruit[this._sortField] || b.name - a.name :
+					b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
-			return a.fruit[this._sortField] - b.fruit[this._sortField];
+			return ifDefined(this._compositeField) ?
+				a.fruit[this._sortField] - b.fruit[this._sortField] || a.name - b.name :
+				a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
@@ -140,20 +148,27 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	}
 
 	_handleSort(e) {
-		const field = e.target.innerText.toLowerCase();
-		const desc = e.target.hasAttribute('desc');
-		this._sortField = field;
-		this._sortDesc = !desc;
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = true;
+			this._sortField = field;
+			this._compositeField = undefined;
+			this._sortDesc = !desc;
+		}
 	}
 
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th scope="col">
+			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit}</d2l-table-col-sort-button>
+					?nosort="${noSort}">
+					${fruit}
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
