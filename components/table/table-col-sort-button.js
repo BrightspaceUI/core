@@ -70,20 +70,20 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding-inline-start: 0.8rem;
 				width: 100%;
 			}
-			.d2l-sortable-button-dropdown:focus-within:has(:focus-visible) {
+			.d2l-sortable-button-container:focus-within:has(:focus-visible) {
 				height: var(--d2l-table-cell-height);
 				padding-inline-start: 0.2rem;
 				width: 95%;
 			}
-			d2l-dropdown {
+			.d2l-sortable-button-container {
 				height: calc(var(--d2l-table-cell-height) + 0.3rem);
 				width: 100%;
 			}
-			d2l-dropdown:hover {
+			.d2l-sortable-button-container:hover {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
-			d2l-dropdown:hover:has(:focus-within):has(:focus-visible) {
+			.d2l-sortable-button-container:hover:has(:focus-within):has(:focus-visible) {
 				width: 95%;
 			}
 		`;
@@ -105,14 +105,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 
 		return html`
-			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
+			<div class="d2l-sortable-button-container">
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
-				<d2l-dropdown-menu id="dropdown">
-					<d2l-menu>
-						<slot name="items"></slot>
-					</d2l-menu>
-				</d2l-dropdown-menu>
-			</d2l-dropdown>
+			</div>
 		`;
 	}
 
