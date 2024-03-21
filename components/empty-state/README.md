@@ -35,7 +35,7 @@ Empty state components are used to convey that there is no data available to be 
 * Use clear language to indicate there is no data available
 * Offer concise guidance about next steps
 * Include an [Empty State Action](#d2l-empty-state-action-button) or [Link](#d2l-empty-state-action-link) if it can help the user
-* Replace the entire content with its empty state, do not show an empty table or list header
+* Replace the entire content with its empty state; do not show an empty table or list header
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
