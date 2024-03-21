@@ -66,20 +66,15 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this.visibleBackground = false;
 		this._data = data();
 		this._sortField = undefined;
-		this._compositeField = undefined;
 		this._sortDesc = false;
 	}
 
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return ifDefined(this._compositeField) ?
-					b.fruit[this._sortField] - a.fruit[this._sortField] || b.name - a.name :
-					b.fruit[this._sortField] - a.fruit[this._sortField];
+				return b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
-			return ifDefined(this._compositeField) ?
-				a.fruit[this._sortField] - b.fruit[this._sortField] || a.name - b.name :
-				a.fruit[this._sortField] - b.fruit[this._sortField];
+			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
