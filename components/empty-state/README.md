@@ -32,10 +32,10 @@ Empty state components are used to convey that there is no data available to be 
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Do make it clear that there is no data available to be displayed
-* Do include guidance on next steps if available, either as short instructions or as a Call to Action
-* Do use a link for navigation and a button for actions
-* Do replace the entire content with its empty state for accessibility
+* Use clear language to indicate there is no data available
+* Offer concise guidance about next steps
+* Include an [Empty State Action](#d2l-empty-state-action-button) or [Link](#d2l-empty-state-action-link) if it can help the user
+* Replace the entire content with its empty state, do not show an empty table or list header
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -84,7 +84,9 @@ The `illustration-name` property can be set to use one of the preset illustratio
 
 ## Empty State Action Button [d2l-empty-state-action-button]
 
-`d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component. Only a single action can be placed within an empty state component.
+Use a `d2l-empty-state-action-button` to add a button that provides users with an easy next step, assuming the next step is to perform an action. If the next step is to navigate to another page, consider using an [Empty State Action Link](d2l-empty-state-action-link) instead.
+
+To add the button, place a `d2l-empty-state-action-button` component inside of the default slot of `empty-state-simple` or `empty-state-illustrated`. Only a single action can be placed within an empty state component.
 
 The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`.
 
@@ -117,7 +119,9 @@ The `primary` attribute can be set to render a primary button in place of the de
 
 ## Empty State Action Link [d2l-empty-state-action-link]
 
-`d2l-empty-state-action-link` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a link action to the component. Only a single action can be placed within an empty state component.
+Use a `d2l-empty-state-action-link` to add a link that provides users with an easy next step, provided the next step is to navigate to another page. If the next step is actually an action, use an [Empty State Action Button](#d2l-empty-state-action-button) instead.
+
+To add the link, place a `d2l-empty-state-action-link` component inside of the default slot of `empty-state-simple` or `empty-state-illustrated`. Only a single action can be placed within an empty state component.
 
 <!-- docs: demo code properties name:d2l-empty-state-action-link -->
 ```html
