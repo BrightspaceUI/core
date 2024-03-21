@@ -152,9 +152,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 		if (sortButtonComponent) {
 			const field = sortButtonComponent.innerText.toLowerCase();
-			const desc = true;
+			const desc = e.target.hasAttribute('desc');
 			this._sortField = field;
-			this._compositeField = undefined;
 			this._sortDesc = !desc;
 		}
 	}
