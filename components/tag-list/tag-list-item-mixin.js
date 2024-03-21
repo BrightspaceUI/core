@@ -18,6 +18,21 @@ const keyCodes = {
 	ENTER: 13,
 	SPACE: 32
 };
+let hasDisplayedKeyboardTooltip = false;
+let tabPressed = false;
+let tabListenerAdded = false;
+function addTabListener() {
+	if (tabListenerAdded) return;
+	tabListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = false;
+	});
+}
 
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
 
@@ -40,16 +55,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			/**
 			 * @ignore
 			 */
-			keyboardTooltipShown: { type: Boolean, attribute: 'keyboard-tooltip-shown' },
-			/**
-			 * @ignore
-			 */
 			_plainText: {
 				state: true,
 				required: {
 					message: (_value, elem) => `TagListItemMixin: "${elem.tagName.toLowerCase()}" called "_renderTag()" with empty "plainText" option`
 				}
-			}
+			},
+			_displayKeyboardTooltip: { state: true }
 		};
 	}
 
@@ -143,9 +155,14 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;
-		this.keyboardTooltipShown = false;
+		this._displayKeyboardTooltip = false;
 		this._id = getUniqueId();
 		this._plainText = '';
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		addTabListener();
 	}
 
 	firstUpdated(changedProperties) {
@@ -157,7 +174,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
 			const tagList = findComposedAncestor(this, elem => elem.tagName === 'D2L-TAG-LIST');
-			if (this.keyboardTooltipItem && this.keyboardTooltipShown && !isComposedAncestor(tagList, e.relatedTarget)) {
+			if (this.keyboardTooltipItem && hasDisplayedKeyboardTooltip && !isComposedAncestor(tagList, e.relatedTarget)) {
 				const arrows = this.localize('components.tag-list-item.tooltip-arrow-keys');
 				const arrowsDescription = this.localize('components.tag-list-item.tooltip-arrow-keys-desc');
 
@@ -173,10 +190,17 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 			await this.updateComplete;
 			// delay the focus to allow focusin to fire
-			setTimeout(() => container.focus());
+			setTimeout(() => {
+				this._onFocusIn();
+				container.focus();
+			});
 		});
 
 		this.addEventListener('keydown', this._handleKeydown);
+	}
+
+	resetHasDisplayedKeyboardTooltip() {
+		hasDisplayedKeyboardTooltip = false;
 	}
 
 	_handleClearItem() {
@@ -192,25 +216,20 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_handleKeyboardTooltipHide() {
-		this.keyboardTooltipShown = true;
-	}
-
-	_handleKeyboardTooltipShow() {
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tag-list-item-tooltip-show',
-			{ bubbles: true, composed: true }
-		));
+		this._displayKeyboardTooltip = false;
 	}
 
 	_handleKeydown(e) {
-		const openKeys = e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER;
-		if (this.keyboardTooltipItem && !this.keyboardTooltipShown && openKeys) this.keyboardTooltipShown = true;
-
 		const clearKeys = e.keyCode === keyCodes.BACKSPACE || e.keyCode === keyCodes.DELETE;
 		if (!this.clearable || !clearKeys) return;
 		e.preventDefault();
 		this._handleClearItem();
+	}
+
+	_onFocusIn() {
+		if (!tabPressed || hasDisplayedKeyboardTooltip || !this.keyboardTooltipItem) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_renderKeyboardTooltipContent() {
@@ -233,13 +252,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		const hasDescription = !!options.description;
 
 		let tooltip = nothing;
-		if (this.keyboardTooltipItem && !this.keyboardTooltipShown) {
+		if (this._displayKeyboardTooltip) {
 			tooltip = html`
 				<d2l-tooltip
 					class="vdiff-target"
 					align="start"
 					@d2l-tooltip-hide="${this._handleKeyboardTooltipHide}"
-					@d2l-tooltip-show="${this._handleKeyboardTooltipShow}"
 					for="${this._id}">
 						${this._renderKeyboardTooltipContent()}
 				</d2l-tooltip>`;

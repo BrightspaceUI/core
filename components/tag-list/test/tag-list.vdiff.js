@@ -1,7 +1,7 @@
 import '../tag-list.js';
 import '../tag-list-item.js';
 import './tag-list-item-mixin-consumer.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { clickAt, clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -36,25 +36,79 @@ describe('tag-list', () => {
 	});
 
 	describe('tag list item style', () => {
+		let elem;
+		afterEach(() => {
+			elem.querySelector('d2l-tag-list-item').resetHasDisplayedKeyboardTooltip();
+		});
+
 		it('focus', async() => {
-			const elem = await fixture(createTagList(), { viewport });
+			elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus twice', async() => {
+			elem = await fixture(createTagList(), { viewport });
+			sendKeys('press', 'Tab');
+			await oneEvent(elem, 'd2l-tooltip-show');
+			clickAt(0, 0);
+			sendKeys('press', 'Tab');
 			await expect(elem).to.be.golden();
 		});
 
 		it('hover', async() => {
-			const elem = await fixture(createTagList(), { viewport });
+			elem = await fixture(createTagList(), { viewport });
+			await hoverElem(elem.querySelector('d2l-tag-list-item'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus and hover', async() => {
+			elem = await fixture(createTagList(), { viewport });
+			sendKeys('press', 'Tab');
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await hoverElem(elem.querySelector('d2l-tag-list-item'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover first elem long', async() => {
+			elem = await fixture(html`
+					<d2l-tag-list description="A bunch of example tags">
+							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Example Tag" class="vdiff-include"></d2l-tag-list-item>
+					</d2l-tag-list>
+				`, { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 
-		it('focus and hover', async() => {
-			const elem = await fixture(createTagList(), { viewport });
+		it('hover then focus first elem long', async() => {
+			elem = await fixture(html`
+					<d2l-tag-list description="A bunch of example tags">
+							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Example Tag" class="vdiff-include"></d2l-tag-list-item>
+					</d2l-tag-list>
+				`, { viewport });
+			await hoverElem(elem.querySelector('d2l-tag-list-item'));
+			await oneEvent(elem, 'd2l-tooltip-show');
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover first elem description', async() => {
+			elem = await fixture(html`
+					<d2l-tag-list description="A bunch of example tags">
+							<d2l-tag-list-item text="Example Tag" class="vdiff-include" description="An item description"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+							<d2l-tag-list-item text="Example Tag 3" class="vdiff-include"></d2l-tag-list-item>
+					</d2l-tag-list>
+				`, { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
+			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 	});

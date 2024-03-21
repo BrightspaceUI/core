@@ -104,7 +104,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		this._clearButtonWidth = 0;
 		this._contentReady = false;
 		this._hasResized = false;
-		this._hasShownKeyboardTooltip = false;
 		this._itemHeight = 0;
 		this._listContainerObserver = null;
 		this._resizeObserver = null;
@@ -196,8 +195,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				class="${classMap(containerClasses)}"
 				role="group"
 				aria-roledescription="${this.localize('components.tag-list.role-description')}"
-				@d2l-tag-list-item-clear="${this._handleItemDeleted}"
-				@d2l-tag-list-item-tooltip-show="${this._handleKeyboardTooltipShown}">
+				@d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}" @focusout="${this._handleSlotFocusOut}" @focusin="${this._handleSlotFocusIn}"></slot>
 				${overflowButton}
 				<d2l-button-subtle
@@ -359,10 +357,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}, this.clearFocusTimeout);
 	}
 
-	_handleKeyboardTooltipShown() {
-		if (!this._hasShownKeyboardTooltip) this._hasShownKeyboardTooltip = true;
-	}
-
 	async _handleResize() {
 		const refocus = getComposedActiveElement();
 		this._contentReady = false;
@@ -408,7 +402,6 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 		this._contentReady = true;
 		this._items[0].setAttribute('keyboard-tooltip-item', true);
-		if (this._hasShownKeyboardTooltip) this._items[0].setAttribute('keyboard-tooltip-shown', true);
 		await this.updateComplete;
 		if (this._refocus?.classList.contains('d2l-tag-list-button')) {
 			this._refocus = this.shadowRoot.querySelector('.d2l-tag-list-button');
