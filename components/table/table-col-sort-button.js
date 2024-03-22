@@ -90,7 +90,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 
 		return html`
-				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
+				<button type="button"><slot></slot>${iconView}</button>
 		`;
 	}
 
