@@ -44,11 +44,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				font-family: inherit;
 				font-size: inherit;
 				gap: 0.4rem;
-				height: 100%;
+				height: calc(var(--d2l-table-cell-height) + 0.3rem);
 				letter-spacing: inherit;
 				margin: 0;
 				padding-inline-start: 1rem;
 				text-decoration: none;
+				width: 100%;
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -58,27 +59,17 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: var(--d2l-sortable-button-border-radius);
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				border-radius: var(--d2l-sortable-button-border-radius);
+				height: var(--d2l-table-cell-height);
+				margin-inline-start: 0.2rem;
 				outline-style: none;
 				padding-inline-start: 0.8rem;
-				width: 100%;
-			}
-			.d2l-sortable-button-container:focus-within:has(:focus-visible) {
-				height: var(--d2l-table-cell-height);
-				padding-inline-start: 0.2rem;
 				width: 95%;
 			}
-			.d2l-sortable-button-container {
-				height: calc(var(--d2l-table-cell-height) + 0.3rem);
-				width: 100%;
-			}
-			.d2l-sortable-button-container:hover {
+			button:hover {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
-			}
-			.d2l-sortable-button-container:hover:has(:focus-within):has(:focus-visible) {
-				width: 95%;
 			}
 		`;
 	}
@@ -99,9 +90,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 
 		return html`
-			<div class="d2l-sortable-button-container">
 				<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>
-			</div>
 		`;
 	}
 
