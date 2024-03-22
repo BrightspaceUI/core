@@ -25,9 +25,11 @@ export const tableStyles = css`
 		border-bottom: var(--d2l-table-border);
 		font-weight: inherit;
 		height: var(--d2l-table-cell-height);
-		padding: var(--d2l-table-cell-padding);
 		text-align: left;
 		vertical-align: middle;
+	}
+	.d2l-table > * > tr > :not(.d2l-sortable-button-container) {
+		padding: var(--d2l-table-cell-padding);
 	}
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;

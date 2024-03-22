@@ -72,6 +72,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			.d2l-sortable-button-container {
 				height: calc(var(--d2l-table-cell-height) + 0.3rem);
 				width: 100%;
+				margin: calc(-1 * var(--d2l-table-cell-padding));
 			}
 			.d2l-sortable-button-container:hover {
 				background-color: var(--d2l-color-gypsum);

@@ -156,7 +156,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th class="sortableCell" scope="col">
+			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
