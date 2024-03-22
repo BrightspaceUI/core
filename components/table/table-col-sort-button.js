@@ -96,7 +96,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	render() {
 		const iconView = !this.nosort ?
-			html`<d2l-icon class="d2l-sortable-button-icon" icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
+			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
 		return html`

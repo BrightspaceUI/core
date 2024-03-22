@@ -52,9 +52,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			:host([visible-background]) {
 				--d2l-table-controls-background-color: #dddddd;
 			}
-			.sortableCell {
-				padding: 0 !important;
-			}
 		`];
 	}
 
@@ -156,7 +153,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
 		return html`
-			<th scope="col">
+			<th class="d2l-sortable-cell" scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
