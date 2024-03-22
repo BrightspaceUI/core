@@ -140,14 +140,10 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	}
 
 	_handleSort(e) {
-		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-
-		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
-			const desc = e.target.hasAttribute('desc');
-			this._sortField = field;
-			this._sortDesc = !desc;
-		}
+		const field = e.target.innerText.toLowerCase();
+		const desc = e.target.hasAttribute('desc');
+		this._sortField = field;
+		this._sortDesc = !desc;
 	}
 
 	_renderSortButton(fruit) {
