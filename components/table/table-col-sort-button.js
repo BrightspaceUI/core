@@ -33,12 +33,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get styles() {
 		return css`
-			:host([desc]) .d2l-sortable-button-icon {
-				padding: 0;
-			}
-			:host(:not([desc])) .d2l-sortable-button-icon {
-				padding: 0;
-			}
 			button {
 				align-items: center;
 				background-color: transparent;
