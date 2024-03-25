@@ -59,8 +59,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: var(--d2l-sortable-button-border-radius);
 				border: solid var(--d2l-color-celestine) 2px;
+				border-radius: var(--d2l-sortable-button-border-radius);
 				padding-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * var(--d2l-sortable-button-focus-padding));
 				outline-style: none;
 			}
