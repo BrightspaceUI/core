@@ -29,9 +29,6 @@ export const tableStyles = css`
 		text-align: left;
 		vertical-align: middle;
 	}
-	.d2l-sortable-cell {
-		--d2l-table-cell-padding: 0;
-	}
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
@@ -383,6 +380,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
+				const isSortableCell = Array.from(c.childNodes).find((element) => element.localName === 'd2l-table-col-sort-button')
+				if (isSortableCell) {
+					c.style.padding = 0;
+				}
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));

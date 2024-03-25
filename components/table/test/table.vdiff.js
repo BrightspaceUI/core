@@ -21,9 +21,9 @@ function createHeaderRow(opts) {
 function createSortableHeaderRow() {
 	return html`
 		<tr>
-			<th class="d2l-sortable-cell"><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
-			<th class="d2l-sortable-cell"><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
-			<th class="d2l-sortable-cell"><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
 	`;
 }
