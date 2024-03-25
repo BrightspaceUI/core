@@ -255,6 +255,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-sortable-button-padding: 1rem;
 				--d2l-sortable-button-height: calc(var(--d2l-table-cell-height) * 0.15);
 				--d2l-sortable-button-focus-height: var(--d2l-table-cell-height);
+				--d2l-sortable-button-focus-margin: 0.2;
+				--d2l-sortable-button-focus-width: 95%;
 				display: block;
 				width: 100%;
 			}
@@ -271,8 +273,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
 				--d2l-sortable-button-padding: 0.6rem;
-				--d2l-sortable-button-height: var(--d2l-table-cell-height);
-				--d2l-sortable-button-focus-height: calc(var(--d2l-table-cell-height) * 1.75);
+				--d2l-sortable-button-height: calc(var(--d2l-table-cell-height) * 0.9);
+				--d2l-sortable-button-focus-height: calc(var(--d2l-table-cell-height) * 1.55);
+				--d2l-sortable-button-focus-margin: 0.35;
+				--d2l-sortable-button-focus-width: 92%;
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;

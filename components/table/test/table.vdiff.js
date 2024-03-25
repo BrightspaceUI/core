@@ -21,9 +21,9 @@ function createHeaderRow(opts) {
 function createSortableHeaderRow() {
 	return html`
 		<tr>
-			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
-			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
-			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+			<th class="d2l-sortable-cell"><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
+			<th class="d2l-sortable-cell"><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th class="d2l-sortable-cell"><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
 	`;
 }
@@ -369,7 +369,7 @@ describe('table', () => {
 							${createRows([1], { selected: true })}
 							${createRows([2])}
 							${createRows([3], { selected: true })}
-						</tbody>		
+						</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -377,7 +377,7 @@ describe('table', () => {
 				it('selected-all', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>	
+						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -393,7 +393,7 @@ describe('table', () => {
 				it('no-column-border', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { noColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
@@ -401,7 +401,7 @@ describe('table', () => {
 				it('no-column-border-legacy', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { legacyNoColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
