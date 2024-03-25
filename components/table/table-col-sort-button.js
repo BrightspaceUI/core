@@ -49,6 +49,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin: 0;
 				padding-inline-start: 1rem;
 				text-decoration: none;
+				text-wrap: nowrap;
 				width: 100%;
 			}
 			button::-moz-focus-inner {
