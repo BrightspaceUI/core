@@ -252,7 +252,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
 				--d2l-sortable-button-border-radius: 0;
 				--d2l-sortable-button-vertical-padding: 1rem;
-				--d2l-sortable-button-height: 6px;
+				--d2l-sortable-button-height: 50px;
+				--d2l-sortable-button-focus-height: 44px;
 				--d2l-sortable-button-focus-margin: 0.2;
 				--d2l-sortable-button-focus-width: 95%;
 				display: block;
@@ -271,7 +272,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
 				--d2l-sortable-button-vertical-padding: 0.6rem;
-				--d2l-sortable-button-height: 4px;
+				--d2l-sortable-button-height: 48px;
+				--d2l-sortable-button-focus-height: 40px;
 				--d2l-sortable-button-focus-margin: 0.35;
 				--d2l-sortable-button-focus-width: 92%;
 			}
