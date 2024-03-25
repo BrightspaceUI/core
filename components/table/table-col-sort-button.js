@@ -44,12 +44,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				font-family: inherit;
 				font-size: inherit;
 				gap: 12px;
-				height: calc(var(--d2l-table-cell-height) + var(--d2l-sortable-button-height));
+				height: calc(40px + var(--d2l-sortable-button-height));
 				letter-spacing: inherit;
 				margin: 0;
-				padding-inline-start: var(--d2l-sortable-button-padding);
+				padding-inline-start: var(--d2l-sortable-button-vertical-padding);
 				text-decoration: none;
-				text-wrap: nowrap;
 				width: 100%;
 			}
 			button::-moz-focus-inner {
@@ -62,10 +61,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-radius);
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				height: var(--d2l-sortable-button-focus-height);
-				margin-inline-start: calc(var(--d2l-sortable-button-padding) * var(--d2l-sortable-button-focus-margin));
+				height: 40px;
+				margin-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * var(--d2l-sortable-button-focus-margin));
 				outline-style: none;
-				padding-inline-start: calc(var(--d2l-sortable-button-padding) * (1 - var(--d2l-sortable-button-focus-margin)));
+				padding-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * (1 - var(--d2l-sortable-button-focus-margin)));
 				width: var(--d2l-sortable-button-focus-width);
 			}
 			button:hover {

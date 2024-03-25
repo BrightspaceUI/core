@@ -32,6 +32,9 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
+	.d2l-table-header-col-sortable {
+		--d2l-table-cell-padding: 0;
+	}
 
 	/* default cells */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > *,
@@ -59,7 +62,6 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
 		height: 27px; /* min-height to be 48px including border */
 	}
-
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last {
@@ -243,15 +245,14 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
 				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.5rem 1rem;
+				--d2l-table-cell-padding: 0.5rem 15px;
 				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
 				--d2l-sortable-button-border-radius: 0;
-				--d2l-sortable-button-padding: 1rem;
-				--d2l-sortable-button-height: calc(var(--d2l-table-cell-height) * 0.15);
-				--d2l-sortable-button-focus-height: var(--d2l-table-cell-height);
+				--d2l-sortable-button-vertical-padding: 1rem;
+				--d2l-sortable-button-height: 6px;
 				--d2l-sortable-button-focus-margin: 0.2;
 				--d2l-sortable-button-focus-width: 95%;
 				display: block;
@@ -269,9 +270,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
-				--d2l-sortable-button-padding: 0.6rem;
-				--d2l-sortable-button-height: calc(var(--d2l-table-cell-height) * 0.9);
-				--d2l-sortable-button-focus-height: calc(var(--d2l-table-cell-height) * 1.55);
+				--d2l-sortable-button-vertical-padding: 0.6rem;
+				--d2l-sortable-button-height: 4px;
 				--d2l-sortable-button-focus-margin: 0.35;
 				--d2l-sortable-button-focus-width: 92%;
 			}
@@ -380,9 +380,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
-				const isSortableCell = Array.from(c.childNodes).find((element) => element.localName === 'd2l-table-col-sort-button');
-				if (isSortableCell) {
-					c.style.padding = 0;
+				if (isHeader) {
+					const isSortableCell = Array.from(c.childNodes).some((element) => element.localName === 'd2l-table-col-sort-button');
+					c.classList.toggle('d2l-table-header-col-sortable', isSortableCell);
 				}
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
