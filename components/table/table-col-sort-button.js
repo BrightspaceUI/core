@@ -49,7 +49,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin: 0;
 				padding-inline-start: var(--d2l-sortable-button-vertical-padding);
 				text-decoration: none;
-				width: 100%;
+				width: var(--d2l-sortable-button-width);
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -60,12 +60,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-radius);
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				height: var(--d2l-sortable-button-focus-height);
-				margin-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * var(--d2l-sortable-button-focus-margin));
+				border: solid var(--d2l-color-celestine) 2px;
+				padding-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * var(--d2l-sortable-button-focus-padding));
 				outline-style: none;
-				padding-inline-start: calc(var(--d2l-sortable-button-vertical-padding) * (1 - var(--d2l-sortable-button-focus-margin)));
-				width: var(--d2l-sortable-button-focus-width);
 			}
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
