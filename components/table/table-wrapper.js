@@ -380,7 +380,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
-				const isSortableCell = Array.from(c.childNodes).find((element) => element.localName === 'd2l-table-col-sort-button')
+				const isSortableCell = Array.from(c.childNodes).find((element) => element.localName === 'd2l-table-col-sort-button');
 				if (isSortableCell) {
 					c.style.padding = 0;
 				}
