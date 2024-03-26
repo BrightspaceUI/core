@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "{month} 표시",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "이 대화 상자 닫기",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "중요!",
 	"components.dropdown.close": "닫기",
 	"components.filter.activeFilters": "활성 필터:",
 	"components.filter.clear": "지우기",

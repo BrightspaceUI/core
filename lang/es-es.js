@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "Mostrar {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Cerrar este cuadro de diálogo",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "¡Crítico!",
 	"components.dropdown.close": "Cerrar",
 	"components.filter.activeFilters": "Filtros activos:",
 	"components.filter.clear": "Borrar",
@@ -101,8 +101,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
 	"components.table-controls.label": "Acciones para la tabla",

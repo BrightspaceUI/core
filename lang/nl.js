@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "{month} weergeven",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "Kritiek!",
 	"components.dropdown.close": "Sluiten",
 	"components.filter.activeFilters": "Actieve filters:",
 	"components.filter.clear": "Wissen",
@@ -20,7 +20,7 @@ export default {
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
-	"components.filter.filters": "Filters", // mfv-translated
+	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Geselecteerde filters verschijnen als eerste.",
