@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "顯示{month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "關閉此對話方塊",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "重大！",
 	"components.dropdown.close": "關閉",
 	"components.filter.activeFilters": "啟用中的篩選器：",
 	"components.filter.clear": "清除",
