@@ -43,9 +43,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
-				gap: 12px;
 				height: var(--d2l-sortable-button-height);
 				letter-spacing: inherit;
+				line-height: 0.9rem;
 				margin: 0;
 				padding: 0.75rem;
 				text-decoration: none;
@@ -74,6 +74,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+   			d2l-icon {
+				margin-inline-start: 12px;
+				margin-inline-end: -12px;
 			}
 		`;
 	}
