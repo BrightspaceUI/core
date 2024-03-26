@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "Mostrar {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Cerrar este cuadro de diálogo",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "¡Crítico!",
 	"components.dropdown.close": "Cerrar",
 	"components.filter.activeFilters": "Filtros activos:",
 	"components.filter.clear": "Borrar",

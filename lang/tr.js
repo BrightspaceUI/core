@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "{month} Göster",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "Kritik!",
 	"components.dropdown.close": "Kapat",
 	"components.filter.activeFilters": "Etkin Filtreler:",
 	"components.filter.clear": "Temizle",
