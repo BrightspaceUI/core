@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "إظهار {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "مهم!",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.activeFilters": "عوامل تصفية نشطة:",
 	"components.filter.clear": "مسح",

@@ -7,7 +7,7 @@ export default {
 	"components.calendar.show": "Dangos {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Cau'r dialog hwn",
-	"components.dialog.critical": "Critical!",
+	"components.dialog.critical": "Critigol!",
 	"components.dropdown.close": "Cau",
 	"components.filter.activeFilters": "Dim Hidlwyr Gweithredol:",
 	"components.filter.clear": "Clirio",
