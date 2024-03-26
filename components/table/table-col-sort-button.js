@@ -60,7 +60,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
-				box-shadow: 0 0 0 0.1rem #ffffff, 0 0 0 0.2rem var(--d2l-color-celestine);
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				height: calc(100% - 0.4rem);
 				margin-inline-start: 0.2rem;
 				outline-style: none;
