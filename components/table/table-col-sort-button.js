@@ -75,9 +75,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
-   			d2l-icon {
-				margin-inline-start: 12px;
+			d2l-icon {
 				margin-inline-end: -12px;
+				margin-inline-start: 12px;
 			}
 		`;
 	}
