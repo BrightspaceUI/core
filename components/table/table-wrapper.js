@@ -267,10 +267,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
-				--d2l-sortable-button-border-radius: 4px;
-				--d2l-sortable-button-border-focus-radius: 6px;
-				--d2l-sortable-button-height: calc(100% - 8px);
-				--d2l-sortable-button-width: calc(100% - 8px);
+				--d2l-sortable-button-border-radius: 0.2rem;
+				--d2l-sortable-button-border-focus-radius: 0.3rem;
+				--d2l-sortable-button-height: calc(100% - 0.4rem);
+				--d2l-sortable-button-width: calc(100% - 0.4rem);
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
