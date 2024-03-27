@@ -99,7 +99,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<tbody>
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
-							${thText.map(text => html`<th scope="col">${text}</th>`)}
+							${this._renderSortButton('Avocado')}
+							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
