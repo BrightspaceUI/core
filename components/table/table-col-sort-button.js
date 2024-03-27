@@ -47,7 +47,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				letter-spacing: inherit;
 				line-height: 0.9rem;
 				margin: 0;
-				padding: 0.75rem;
+				padding: var(--d2l-table-cell-padding);
 				text-decoration: none;
 				width: var(--d2l-sortable-button-width);
 			}
@@ -64,7 +64,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				height: calc(100% - 8px);
 				margin-inline-start: 4px; /* Used to offset the outer box shadow */
 				outline-style: none;
-				padding-inline-start: calc(0.75rem - 4px);
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
 				width: calc(100% - 8px);
 			}
 			button:focus-visible:hover,

@@ -32,8 +32,8 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
-	.d2l-table-header-col-sortable {
-		--d2l-table-cell-padding: 0;
+	th.d2l-table-header-col-sortable {
+		padding: 0;
 	}
 
 	/* default cells */
