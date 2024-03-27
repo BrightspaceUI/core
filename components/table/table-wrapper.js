@@ -60,7 +60,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: 27px; /* min-height to be 48px including border */
+		height: 17px; /* min-height to be 48px including border */
 	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
@@ -244,7 +244,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
+				--d2l-table-cell-height: 31px; /* min-height to be 62px including border */
 				--d2l-table-cell-padding: 0.75rem;
 				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
@@ -263,7 +263,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([type="light"]) {
 				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
+				--d2l-table-cell-height: 17px; /* min-height to be 48px including border */
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
