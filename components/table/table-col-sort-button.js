@@ -47,6 +47,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				letter-spacing: inherit;
 				line-height: 0.9rem;
 				margin: 0;
+				max-height: 48px;
 				padding: var(--d2l-table-cell-padding);
 				text-decoration: none;
 				width: var(--d2l-sortable-button-width);
