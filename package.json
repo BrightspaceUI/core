@@ -12,7 +12,8 @@
     "build:icons": "node ./cli/icon-generator.js",
     "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
-    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass",
+    "build:wca": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
+    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
     "build-static": "rollup -c ./rollup/rollup.config.js",
     "lint": "npm run lint:eslint && npm run lint:style",
     "lint:eslint": "eslint . --ext .js,.html --ignore-path .gitignore",
@@ -22,7 +23,8 @@
     "test:axe": "d2l-test-runner axe --chrome",
     "test:unit": "d2l-test-runner",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
-    "test:vdiff": "d2l-test-runner vdiff --timeout 10000"
+    "test:vdiff": "d2l-test-runner vdiff --timeout 10000",
+    "test:wca": "node ./cli/validate-wca.js"
   },
   "files": [
     "custom-elements.json",
@@ -61,7 +63,8 @@
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
     "sinon": "^17",
-    "stylelint": "^16"
+    "stylelint": "^16",
+    "web-component-analyzer": "^2"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
