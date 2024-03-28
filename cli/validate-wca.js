@@ -23,7 +23,7 @@ function validateTag(tag) {
 	});
 
 	tag.events?.forEach(e => {
-		if (e.name !== 'Internal event' && !e.description) {
+		if (!e.description) {
 			console.log(`Event "${e.name}" on tag "${tag.name}" is missing a description.`);
 			errors++;
 		}
