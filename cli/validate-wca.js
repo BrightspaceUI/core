@@ -29,6 +29,13 @@ function validateTag(tag) {
 		}
 	});
 
+	tag.slots?.forEach(s => {
+		if (!s.description) {
+			console.log(`Slot "${s.name}" on tag "${tag.name}" is missing a description.`);
+			errors++;
+		}
+	});
+
 	return errors;
 
 }
