@@ -54,6 +54,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding: 0;
 				text-decoration: none;
 			}
+			button:disabled {
+				opacity: 0.5;
+			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.2rem;
@@ -62,9 +65,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button::-moz-focus-inner {
 				border: 0;
-			}
-			button:disabled {
-				opacity: 0.5;
 			}
 			:host([hasSibling]) button:hover {
 				text-decoration: underline;
@@ -103,7 +103,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		super();
 		this.nosort = false;
 		this.desc = false;
-		this.hasSiblings = false;
+		this.hasSibling = false;
 	}
 
 	static get focusElementSelector() {

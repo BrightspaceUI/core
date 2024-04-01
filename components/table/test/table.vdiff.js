@@ -41,13 +41,13 @@ function createSortableHeaderRowWithDoubleButton() {
 	`;
 }
 
-function createSortableHeaderRowWithDoubleElement(before=false) {
+function createSortableHeaderRowWithDoubleElement(before = false) {
 	return html`
 		<tr>
 			<th>
-				${before ? `<div>Dummy text</div>` : ''}
+				${before ? '<div>Dummy text</div>' : ''}
 				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
-				${!before ? `<div>Dummy text</div>` : ''}
+				${!before ? '<div>Dummy text</div>' : ''}
 			</th>
 			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
@@ -453,8 +453,8 @@ describe('table', () => {
 					});
 
 					it('another-element-before', async() => {
-							const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithDoubleElement(before=true)}</thead>
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithDoubleElement(true)}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await expect(elem).to.be.golden();
@@ -462,11 +462,11 @@ describe('table', () => {
 
 					it('another-element-after', async() => {
 						const elem = await createTableFixture(html`
-						<thead>${createSortableHeaderRowWithDoubleElement(before=false)}</thead>
-						<tbody>${createRows([1])}</tbody>
-					`);
-					await expect(elem).to.be.golden();
-				});
+							<thead>${createSortableHeaderRowWithDoubleElement()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
 				});
 
 				it('col-sort-button-focus', async() => {
