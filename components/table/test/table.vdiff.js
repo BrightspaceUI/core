@@ -27,6 +27,19 @@ function createSortableHeaderRow() {
 		</tr>
 	`;
 }
+
+function createSortableHeaderRowWithDoubleButton() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button>Double 2</d2l-table-col-sort-button>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
 function createFruitHeaderRows(opts) {
 	const { selectable, headerAttribute, stickyAttribute, stickyClass, trClass } = { selectable: false, headerAttribute: false, stickyAttribute: false, ...opts };
 	return html`
@@ -410,6 +423,14 @@ describe('table', () => {
 				it('col-sort-button', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-double', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRowWithDoubleButton()}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();

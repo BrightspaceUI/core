@@ -57,9 +57,11 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: 27px; /* min-height to be 48px including border */
+		height: 17px; /* min-height to be 48px including border */
 	}
-
+	th.d2l-table-header-col-sortable {
+		padding: 0;
+	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last {
@@ -242,12 +244,16 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.5rem 1rem;
-				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
+				--d2l-table-cell-height: 31px; /* min-height to be 62px including border */
+				--d2l-table-cell-padding: 0.75rem;
+				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
+				--d2l-sortable-button-border-radius: 0;
+				--d2l-sortable-button-border-focus-radius: 0;
+				--d2l-sortable-button-height: 100%;
+				--d2l-sortable-button-width: 100%;
 				display: block;
 				width: 100%;
 			}
@@ -257,16 +263,17 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([type="light"]) {
 				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
-				--d2l-table-cell-padding: 0.6rem;
-				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
+				--d2l-table-cell-height: 17px; /* min-height to be 48px including border */
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
+				--d2l-sortable-button-border-radius: 0.2rem;
+				--d2l-sortable-button-border-focus-radius: 0.3rem;
+				--d2l-sortable-button-height: calc(100% - 8px);
+				--d2l-sortable-button-width: calc(100% - 8px);
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
 			}
-
 			.d2l-sticky-headers-backdrop {
 				position: sticky;
 				top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
@@ -369,6 +376,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
+				if (isHeader) {
+					this._checkSiblingSortableCells(c);
+				}
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));
@@ -379,6 +389,25 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
 		});
+	}
+
+	_checkSiblingSortableCells(c) {
+		const nodes = Array.from(c.childNodes);
+		const isSortableCell =  nodes.some((element) => element.localName === 'd2l-table-col-sort-button');
+
+		if (isSortableCell) {
+			let siblings = 0;
+			nodes.forEach((element) => {
+				if (element.localName) siblings++;
+			});
+
+			c.classList.toggle('d2l-table-header-col-sortable', siblings === 1);
+			if (siblings > 1) {
+				nodes.forEach((element) => {
+					element.hasSiblings = element.localName === 'd2l-table-col-sort-button';
+				});
+			}
+		}
 	}
 
 	_getItemByIndex(index) {

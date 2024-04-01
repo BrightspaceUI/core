@@ -27,13 +27,21 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * Check to see if the button has siblings.
+			 * @type {boolean}
+			 */
+			hasSiblings: {
+				reflect: true,
+				type: Boolean
 			}
 		};
 	}
 
 	static get styles() {
 		return css`
-			button {
+			:host([hasSiblings]) button {
 				align-items: center;
 				background-color: transparent;
 				border: none;
@@ -47,20 +55,60 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding: 0;
 				text-decoration: none;
 			}
+			:host([hasSiblings]) button:hover {
+				text-decoration: underline;
+			}
+			:host([hasSiblings]) button:focus-visible,
+			:host([hasSiblings]) button:${unsafeCSS(getFocusPseudoClass())} {
+				border-radius: 0.2rem;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				outline-style: none;
+			}
+			:host(:not([hasSiblings])) button {
+				align-items: center;
+				background-color: transparent;
+				border: none;
+				box-sizing: border-box;
+				color: inherit;
+				cursor: pointer;
+				display: inline-flex;
+				font-family: inherit;
+				font-size: inherit;
+				height: var(--d2l-sortable-button-height);
+				letter-spacing: inherit;
+				line-height: 0.9rem;
+				margin: 0;
+				padding: var(--d2l-table-cell-padding);
+				text-decoration: none;
+				width: var(--d2l-sortable-button-width);
+			}
+			:host(:not([hasSiblings])) button:focus-visible,
+			:host(:not([hasSiblings])) button:${unsafeCSS(getFocusPseudoClass())} {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				height: calc(100% - 8px);
+				margin-inline-start: 4px; /* Used to offset the outer box shadow */
+				outline-style: none;
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
+				width: calc(100% - 8px);
+			}
+			:host(:not([hasSiblings])) button:focus-visible:hover,
+			:host(:not([hasSiblings])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+			}
+			:host(:not([hasSiblings])) button:hover {
+				background-color: var(--d2l-color-gypsum);
+				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+			:host(:not([hasSiblings])) d2l-icon {
+				margin-inline-end: -12px;
+				margin-inline-start: 12px;
+			}
 			button::-moz-focus-inner {
 				border: 0;
 			}
 			button:disabled {
 				opacity: 0.5;
-			}
-			button:hover {
-				text-decoration: underline;
-			}
-			button:focus-visible,
-			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				outline-style: none;
 			}
 		`;
 	}
@@ -69,6 +117,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		super();
 		this.nosort = false;
 		this.desc = false;
+		this.hasSiblings = false;
 	}
 
 	static get focusElementSelector() {
@@ -79,7 +128,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
-		return html`<button type="button"><slot></slot>${iconView}</button>`;
+
+		return html`<button class="d2l-sortable-button" type="button"><slot></slot>${iconView}</button>`;
 	}
 
 }
