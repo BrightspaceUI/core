@@ -129,7 +129,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return html`<button class="d2l-sortable-button" type="button"><slot></slot>${iconView}</button>`;
+		return html`<button type="button"><slot></slot>${iconView}</button>`;
 	}
 
 }
