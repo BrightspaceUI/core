@@ -40,6 +40,20 @@ function createSortableHeaderRowWithDoubleButton() {
 		</tr>
 	`;
 }
+
+function createSortableHeaderRowWithDoubleElement() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
+				<div>Dummy text</div>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
 function createFruitHeaderRows(opts) {
 	const { selectable, headerAttribute, stickyAttribute, stickyClass, trClass } = { selectable: false, headerAttribute: false, stickyAttribute: false, ...opts };
 	return html`
@@ -428,12 +442,22 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
-				it('col-sort-button-double', async() => {
-					const elem = await createTableFixture(html`
-						<thead>${createSortableHeaderRowWithDoubleButton()}</thead>
-						<tbody>${createRows([1])}</tbody>
-					`);
-					await expect(elem).to.be.golden();
+				describe('col-sort-button-double', () => {
+					it('another-button', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithDoubleButton()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element', async() => {
+							const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithDoubleElement()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
 				});
 
 				it('col-sort-button-focus', async() => {

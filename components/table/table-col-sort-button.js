@@ -29,10 +29,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * Check to see if the button has siblings.
-			 * @type {boolean}
+			 * @ignore
 			 */
-			hasSiblings: {
+			hasSibling: {
 				reflect: true,
 				type: Boolean
 			}
@@ -41,7 +40,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get styles() {
 		return css`
-			:host([hasSiblings]) button {
+			button {
 				align-items: center;
 				background-color: transparent;
 				border: none;
@@ -55,60 +54,47 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding: 0;
 				text-decoration: none;
 			}
-			:host([hasSiblings]) button:hover {
-				text-decoration: underline;
-			}
-			:host([hasSiblings]) button:focus-visible,
-			:host([hasSiblings]) button:${unsafeCSS(getFocusPseudoClass())} {
+			button:focus-visible,
+			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.2rem;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
-			}
-			:host(:not([hasSiblings])) button {
-				align-items: center;
-				background-color: transparent;
-				border: none;
-				box-sizing: border-box;
-				color: inherit;
-				cursor: pointer;
-				display: inline-flex;
-				font-family: inherit;
-				font-size: inherit;
-				height: var(--d2l-sortable-button-height);
-				letter-spacing: inherit;
-				line-height: 0.9rem;
-				margin: 0;
-				padding: var(--d2l-table-cell-padding);
-				text-decoration: none;
-				width: var(--d2l-sortable-button-width);
-			}
-			:host(:not([hasSiblings])) button:focus-visible,
-			:host(:not([hasSiblings])) button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: var(--d2l-sortable-button-border-focus-radius);
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				height: calc(100% - 8px);
-				margin-inline-start: 4px; /* Used to offset the outer box shadow */
-				outline-style: none;
-				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
-				width: calc(100% - 8px);
-			}
-			:host(:not([hasSiblings])) button:focus-visible:hover,
-			:host(:not([hasSiblings])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
-				border-radius: var(--d2l-sortable-button-border-focus-radius);
-			}
-			:host(:not([hasSiblings])) button:hover {
-				background-color: var(--d2l-color-gypsum);
-				border-radius: var(--d2l-sortable-button-border-radius);
-			}
-			:host(:not([hasSiblings])) d2l-icon {
-				margin-inline-end: -12px;
-				margin-inline-start: 12px;
 			}
 			button::-moz-focus-inner {
 				border: 0;
 			}
 			button:disabled {
 				opacity: 0.5;
+			}
+			:host([hasSibling]) button:hover {
+				text-decoration: underline;
+			}
+			:host(:not([hasSibling])) button {
+				box-sizing: border-box;
+				height: var(--d2l-sortable-button-height);
+				line-height: 0.9rem;
+				padding: var(--d2l-table-cell-padding);
+				width: var(--d2l-sortable-button-width);
+			}
+			:host(:not([hasSibling])) button:focus-visible,
+			:host(:not([hasSibling])) button:${unsafeCSS(getFocusPseudoClass())} {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+				height: calc(100% - 8px);
+				margin-inline-start: 4px; /* Used to offset the outer box shadow */
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
+				width: calc(100% - 8px);
+			}
+			:host(:not([hasSibling])) button:focus-visible:hover,
+			:host(:not([hasSibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+			}
+			:host(:not([hasSibling])) button:hover {
+				background-color: var(--d2l-color-gypsum);
+				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+			:host(:not([hasSibling])) d2l-icon {
+				margin-inline-end: -12px;
+				margin-inline-start: 12px;
 			}
 		`;
 	}

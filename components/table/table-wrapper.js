@@ -393,20 +393,17 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 	_checkSiblingSortableCells(c) {
 		const nodes = Array.from(c.childNodes);
-		const isSortableCell = nodes.some((element) => element.localName === 'd2l-table-col-sort-button');
+		const isSortButton = (element) => element.localName === 'd2l-table-col-sort-button';
+		const isSortableCell = nodes.some((element) => isSortButton(element));
+		if (!isSortableCell) return;
 
-		if (isSortableCell) {
-			let siblings = 0;
+		const sortButton = nodes.find((element) => isSortButton(element));
+		if (sortButton.nextElementSibling) {
 			nodes.forEach((element) => {
-				if (element.localName) siblings++;
+				if (isSortButton(element)) element.hasSibling = true;
 			});
-
-			c.classList.toggle('d2l-table-header-col-sortable', siblings === 1);
-			if (siblings > 1) {
-				nodes.forEach((element) => {
-					element.hasSiblings = element.localName === 'd2l-table-col-sort-button';
-				});
-			}
+		} else {
+			c.classList.toggle('d2l-table-header-col-sortable', true);
 		}
 	}
 
