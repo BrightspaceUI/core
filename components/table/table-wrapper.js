@@ -394,10 +394,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	_checkSiblingSortableCells(c) {
 		const nodes = Array.from(c.childNodes);
 		const isSortButton = (element) => element.localName === 'd2l-table-col-sort-button';
-		const isSortableCell = nodes.some((element) => isSortButton(element));
-		if (!isSortableCell) return;
-
 		const sortButton = nodes.find((element) => isSortButton(element));
+		if (!sortButton) return;
+
 		if (sortButton.previousElementSibling || sortButton.nextElementSibling) {
 			nodes.forEach((element) => {
 				if (isSortButton(element)) element.hasSibling = true;

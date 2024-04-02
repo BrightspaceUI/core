@@ -28,7 +28,7 @@ function createSortableHeaderRow() {
 	`;
 }
 
-function createSortableHeaderRowWithDoubleButton() {
+function createSortableHeaderRowWithTwoButtons() {
 	return html`
 		<tr>
 			<th>
@@ -41,13 +41,29 @@ function createSortableHeaderRowWithDoubleButton() {
 	`;
 }
 
-function createSortableHeaderRowWithDoubleElement(before = false) {
+function createSortableHeaderRowWithTwoElements() {
 	return html`
 		<tr>
 			<th>
-				${before ? '<div>Dummy text</div>' : ''}
 				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
-				${!before ? '<div>Dummy text</div>' : ''}
+				<div>Dummy text</div>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
+function createSortableHeaderRowWithMultipleElements() {
+	return html`
+		<tr>
+			<th>
+				<div>Dummy text</div>
+				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
+				<div>Dummy text</div>
+				<div>Dummy text</div>
+				<d2l-table-col-sort-button>Double 2</d2l-table-col-sort-button>
+				<div>Dummy text</div>
 			</th>
 			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
@@ -446,23 +462,41 @@ describe('table', () => {
 				describe('col-sort-button-double', () => {
 					it('another-button', async() => {
 						const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithDoubleButton()}</thead>
+							<thead>${createSortableHeaderRowWithTwoButtons()}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await expect(elem).to.be.golden();
 					});
 
-					it('another-element-before', async() => {
+					it('another-button-focus', async() => {
 						const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithDoubleElement(true)}</thead>
+							<thead>${createSortableHeaderRowWithTwoButtons()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await expect(elem).to.be.golden();
 					});
 
-					it('another-element-after', async() => {
+					it('another-element-focus', async() => {
 						const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithDoubleElement()}</thead>
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element-multiple', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithMultipleElements()}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await expect(elem).to.be.golden();
