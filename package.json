@@ -24,6 +24,7 @@
     "test:unit": "d2l-test-runner",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
     "test:vdiff": "d2l-test-runner vdiff --timeout 10000",
+    "test:vdiff_report": "d2l-test-runner vdiff report",
     "test:wca": "node ./cli/validate-wca.js"
   },
   "files": [

@@ -54,6 +54,21 @@ function createSortableHeaderRowWithTwoElements() {
 	`;
 }
 
+function createSortableHeaderRowWithIconElement() {
+	return html`
+		<tr>
+			<th scope="col" class="d_hch d_gl d2l-table-cell-last">
+				<d2l-table-col-sort-button>
+					Status
+				</d2l-table-col-sort-button>
+				<d2l-button-icon icon="tier1:help" type="button"></d2l-button-icon>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
 function createFruitHeaderRows(opts) {
 	const { selectable, headerAttribute, stickyAttribute, stickyClass, trClass } = { selectable: false, headerAttribute: false, stickyAttribute: false, ...opts };
 	return html`
@@ -461,20 +476,21 @@ describe('table', () => {
 						await expect(elem).to.be.golden();
 					});
 
-					it('another-button-focus', async() => {
-						const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithTwoButtons()}</thead>
-							<tbody>${createRows([1])}</tbody>
-						`);
-						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
-						await expect(elem).to.be.golden();
-					});
-
 					it('another-element', async() => {
 						const elem = await createTableFixture(html`
 							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element-hover', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+
+						await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
 						await expect(elem).to.be.golden();
 					});
 
@@ -484,6 +500,14 @@ describe('table', () => {
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-button-icon', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithIconElement()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
 						await expect(elem).to.be.golden();
 					});
 				});
