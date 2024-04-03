@@ -1,8 +1,9 @@
+import '../../button-icon.js';
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
-import { defineCE, expect, fixture, focusElem, html, nextFrame } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -27,6 +28,48 @@ function createSortableHeaderRow() {
 		</tr>
 	`;
 }
+
+function createSortableHeaderRowWithTwoButtons() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button>Double 2</d2l-table-col-sort-button>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
+function createSortableHeaderRowWithTwoElements() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
+				<div style="display: inline-flex;">Dummy Text</div>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
+function createSortableHeaderRowWithIconElement() {
+	return html`
+		<tr>
+			<th scope="col">
+				<d2l-table-col-sort-button>
+					Status
+				</d2l-table-col-sort-button>
+				<d2l-button-icon icon="tier1:help" type="button"></d2l-button-icon>
+			</th>
+			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+
 function createFruitHeaderRows(opts) {
 	const { selectable, headerAttribute, stickyAttribute, stickyClass, trClass } = { selectable: false, headerAttribute: false, stickyAttribute: false, ...opts };
 	return html`
@@ -413,6 +456,61 @@ describe('table', () => {
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				describe('col-sort-button-double', () => {
+					it('another-button', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoButtons()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element-hover', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+
+						await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-element-focus', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithTwoElements()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-button-icon', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithIconElement()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await expect(elem).to.be.golden();
+					});
 				});
 
 				it('col-sort-button-focus', async() => {
