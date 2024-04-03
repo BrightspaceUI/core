@@ -7,6 +7,13 @@ import { nothing } from 'lit';
 import { resetHasDisplayedKeyboardTooltip } from '../tag-list-item-mixin.js';
 
 const viewport = { width: 1500 };
+const tagListFirstItemLong = html`
+	<d2l-tag-list description="A bunch of example tags">
+			<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
+			<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
+			<d2l-tag-list-item text="Example Tag" class="vdiff-include"></d2l-tag-list-item>
+	</d2l-tag-list>
+`;
 
 function createTagList(opts) {
 	const { clearable, shorter, style } = { clearable: false, shorter: false, ...opts };
@@ -72,26 +79,14 @@ describe('tag-list', () => {
 		});
 
 		it('hover first elem long', async() => {
-			const elem = await fixture(html`
-					<d2l-tag-list description="A bunch of example tags">
-							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
-							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
-							<d2l-tag-list-item text="Example Tag" class="vdiff-include"></d2l-tag-list-item>
-					</d2l-tag-list>
-				`, { viewport });
+			const elem = await fixture(tagListFirstItemLong, { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});
 
 		it('hover then focus first elem long', async() => {
-			const elem = await fixture(html`
-					<d2l-tag-list description="A bunch of example tags">
-							<d2l-tag-list-item text="Longer Example Tag - much much much much much much much much longer" class="vdiff-include"></d2l-tag-list-item>
-							<d2l-tag-list-item text="Another Example Tag"></d2l-tag-list-item>
-							<d2l-tag-list-item text="Example Tag" class="vdiff-include"></d2l-tag-list-item>
-					</d2l-tag-list>
-				`, { viewport });
+			const elem = await fixture(tagListFirstItemLong, { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 			sendKeys('press', 'Tab');
@@ -108,6 +103,13 @@ describe('tag-list', () => {
 					</d2l-tag-list>
 				`, { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus first elem long', async() => {
+			const elem = await fixture(tagListFirstItemLong, { viewport });
+			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
 		});

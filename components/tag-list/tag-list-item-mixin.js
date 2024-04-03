@@ -191,11 +191,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 
 				announce(message);
 			}
+			this._onFocusIn();
 
 			await this.updateComplete;
 			// delay the focus to allow focusin to fire
 			setTimeout(() => {
-				this._onFocusIn();
 				container.focus();
 			});
 		});
