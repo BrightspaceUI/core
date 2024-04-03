@@ -32,6 +32,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			 * @ignore
 			 */
 			hasSibling: {
+				attribute: 'has-sibling',
 				reflect: true,
 				type: Boolean
 			}
@@ -66,33 +67,33 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button::-moz-focus-inner {
 				border: 0;
 			}
-			:host([hasSibling]) button:hover {
+			:host([has-sibling]) button:hover {
 				text-decoration: underline;
 			}
-			:host(:not([hasSibling])) button {
+			:host(:not([has-sibling])) button {
 				box-sizing: border-box;
 				height: var(--d2l-sortable-button-height);
 				line-height: 0.9rem;
 				padding: var(--d2l-table-cell-padding);
 				width: var(--d2l-sortable-button-width);
 			}
-			:host(:not([hasSibling])) button:focus-visible,
-			:host(:not([hasSibling])) button:${unsafeCSS(getFocusPseudoClass())} {
+			:host(:not([has-sibling])) button:focus-visible,
+			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
 				height: calc(100% - 8px);
 				margin-inline-start: 4px; /* Used to offset the outer box shadow */
 				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
 				width: calc(100% - 8px);
 			}
-			:host(:not([hasSibling])) button:focus-visible:hover,
-			:host(:not([hasSibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
+			:host(:not([has-sibling])) button:focus-visible:hover,
+			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
 			}
-			:host(:not([hasSibling])) button:hover {
+			:host(:not([has-sibling])) button:hover {
 				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
-			:host(:not([hasSibling])) d2l-icon {
+			:host(:not([has-sibling])) d2l-icon {
 				margin-inline-end: -12px;
 				margin-inline-start: 12px;
 			}

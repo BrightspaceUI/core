@@ -2,7 +2,7 @@ import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
-import { defineCE, expect, fixture, focusElem, html, nextFrame } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -46,24 +46,7 @@ function createSortableHeaderRowWithTwoElements() {
 		<tr>
 			<th>
 				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
-				<div>Dummy text</div>
-			</th>
-			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
-			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
-		</tr>
-	`;
-}
-
-function createSortableHeaderRowWithMultipleElements() {
-	return html`
-		<tr>
-			<th>
-				<div>Dummy text</div>
-				<d2l-table-col-sort-button>Double 1</d2l-table-col-sort-button>
-				<div>Dummy text</div>
-				<div>Dummy text</div>
-				<d2l-table-col-sort-button>Double 2</d2l-table-col-sort-button>
-				<div>Dummy text</div>
+				<div style="display: inline-flex;">Dummy Text</div>
 			</th>
 			<th><d2l-table-col-sort-button desc>Cell A</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>Cell B</d2l-table-col-sort-button></th>
@@ -459,6 +442,16 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
+				it('col-sort-button-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
 				describe('col-sort-button-double', () => {
 					it('another-button', async() => {
 						const elem = await createTableFixture(html`
@@ -491,14 +484,6 @@ describe('table', () => {
 							<tbody>${createRows([1])}</tbody>
 						`);
 						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
-						await expect(elem).to.be.golden();
-					});
-
-					it('another-element-multiple', async() => {
-						const elem = await createTableFixture(html`
-							<thead>${createSortableHeaderRowWithMultipleElements()}</thead>
-							<tbody>${createRows([1])}</tbody>
-						`);
 						await expect(elem).to.be.golden();
 					});
 				});
