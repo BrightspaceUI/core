@@ -1,3 +1,3 @@
 export default {
-	pattern: type => `**/test/table.${type}.js`
+	pattern: type => `**/test/*.${type}.js`
 };
