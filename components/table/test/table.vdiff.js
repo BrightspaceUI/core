@@ -57,7 +57,7 @@ function createSortableHeaderRowWithTwoElements() {
 function createSortableHeaderRowWithIconElement() {
 	return html`
 		<tr>
-			<th scope="col" class="d_hch d_gl">
+			<th scope="col">
 				<d2l-table-col-sort-button>
 					Status
 				</d2l-table-col-sort-button>
