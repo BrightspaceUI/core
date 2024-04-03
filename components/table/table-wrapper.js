@@ -274,6 +274,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
 			}
+
 			.d2l-sticky-headers-backdrop {
 				position: sticky;
 				top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
