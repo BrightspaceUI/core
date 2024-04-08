@@ -19,6 +19,9 @@ export const tableStyles = css`
 	.d2l-table > tfoot {
 		background-color: #ffffff;
 	}
+	.d2l-table > * > tr > .d2l-table-cell-first {
+		--d2l-table-cell-padding: 0.55rem 0.75rem 0.55rem 0.75rem;
+	}
 
 	/* all cells */
 	.d2l-table > * > tr > * {
