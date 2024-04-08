@@ -54,7 +54,7 @@
     "@rollup/plugin-replace": "^5",
     "@web/dev-server": "^0.2",
     "chalk": "^5",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-config-brightspace": "^1",
     "glob-all": "^3",
     "messageformat-validator": "^2",
