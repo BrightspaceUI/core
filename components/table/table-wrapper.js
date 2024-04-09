@@ -19,7 +19,7 @@ export const tableStyles = css`
 	.d2l-table > tfoot {
 		background-color: #ffffff;
 	}
-	.d2l-table > * > tr > .d2l-table-cell-first {
+	.d2l-table > * > .d2l-table-select-icon {
 		--d2l-table-cell-padding: 0.55rem 0.75rem 0.55rem 0.75rem;
 	}
 
@@ -375,6 +375,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				prevRow.classList.toggle('d2l-table-selected-previous', isSelected && !isPrevRowHeader);
 			}
 
+			this._checkSelectIconButton(r);
 			r.classList.toggle('d2l-table-row-first', r === firstRow);
 			r.classList.toggle('d2l-table-row-last', r === lastRow);
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
@@ -393,6 +394,12 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
 		});
+	}
+
+	_checkSelectIconButton(r) {
+		const header = Array.from(r.childNodes).find((element) => element.localName === 'th');
+		const selectAllButton = Array.from(header.childNodes).find((element) => element.localName === 'd2l-selection-select-all');
+		r.classList.toggle('d2l-table-select-icon', selectAllButton);
 	}
 
 	_checkSiblingSortableCells(c) {
