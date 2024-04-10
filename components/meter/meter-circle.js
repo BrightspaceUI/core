@@ -81,8 +81,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 
 		return html`
 			<div
-				class="${(this.text && !this.textHidden) ? 'fit-content ' : ''}d2l-meter-circle"
-				role="img"
+				class="d2l-meter-circle"
 				aria-label="${this._ariaLabel(primary, secondary)}">
 				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img">
 					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
