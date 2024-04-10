@@ -74,7 +74,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin-inline-end: 0.3rem;
 				margin-inline-start: -0.3rem;
 				padding: 0.3rem;
-				--d2l-table-cell-padding: 0;
 			}
 			:host([has-sibling]) button:hover {
 				border-radius: 0.2rem;
