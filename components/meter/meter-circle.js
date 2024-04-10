@@ -15,9 +15,6 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			display: inline-block;
 			width: 2.4rem;
 		}
-		:host([text]:not([text-hidden])) {
-			width: fit-content;
-		}
 		.d2l-meter-circle {
 			display: flex;
 			flex-direction: column;
@@ -82,8 +79,9 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		return html`
 			<div
 				class="d2l-meter-circle"
-				aria-label="${this._ariaLabel(primary, secondary)}">
-				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img">
+				aria-label="${this._ariaLabel(primary, secondary)}"
+				role="img">
+				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
 					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
 					<circle
 						class="d2l-meter-circle-progress-bar"

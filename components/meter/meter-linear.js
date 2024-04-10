@@ -121,7 +121,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			'd2l-meter-linear-primary-ltr': !this.percent,
 			'd2l-meter-linear-primary': true
 		};
-		const secondaryTextElement = secondary ? html`<div class="d2l-meter-linear-secondary">${secondary}</div>` : nothing;
+		const secondaryTextElement = (secondary && !this.textHidden) ? html`<div class="d2l-meter-linear-secondary">${secondary}</div>` : nothing;
 
 		return html `
 			<div
