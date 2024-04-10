@@ -946,7 +946,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
-					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
+					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.',
+					this._target
 				);
 				logAccessibilityWarning = false;
 			}
