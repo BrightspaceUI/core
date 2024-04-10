@@ -1,7 +1,6 @@
 import '../colors/colors.js';
-import { bodySmallStyles } from '../typography/styles.js';
+import { bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { bodyStandardStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
