@@ -61,7 +61,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		const progressFill = percent * lengthOfLine;
 		const primary = this._primary(this.value, this.max);
 		const secondary = this._secondary(this.value, this.max, this.text);
-		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : nothing;
+		const secondaryTextElement = (this.text && !this.textHidden) ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : nothing;
 		const textClasses = {
 			'd2l-meter-radial-text-ltr': !this.percent,
 			'd2l-heading-4': true,
