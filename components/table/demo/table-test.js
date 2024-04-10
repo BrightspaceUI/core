@@ -99,7 +99,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<tbody>
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
-							${this._renderSortButton('Avocado')}
+							${this._renderDoubleSortButton('Avocado', 'Prune')}
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 						<tr header>
@@ -155,6 +155,26 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${fruit}</d2l-table-col-sort-button>
+			</th>
+		`;
+	}
+
+	_renderDoubleSortButton(fruit1, fruit2) {
+		const noSort = this._sortField !== fruit.toLowerCase();
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">
+					${fruit1}
+				</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">
+					${fruit2}
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
