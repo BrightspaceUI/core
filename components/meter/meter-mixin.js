@@ -22,10 +22,10 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 */
 			text: { type: String },
 			/**
-			 * Displays the text as a label beneath the meter
+			 * Hides the text from being displayed beneath the meter
 			 * @type {boolean}
 			 */
-			textHidden: { type: Boolean, attribute: 'text-hidden' },
+			textHidden: { type: Boolean, attribute: 'text-hidden', reflect: true },
 			/**
 			 * REQUIRED: Current number of completed units.
 			 * Valid values: A number between 0 and max

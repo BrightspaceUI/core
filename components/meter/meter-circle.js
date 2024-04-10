@@ -51,7 +51,6 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		}
 		.d2l-meter-circle-text-secondary {
 			color: var(--d2l-color-ferrite);
-			font-size: 0.6rem;
 			text-align: center;
 		}
 		:host([foreground-light]) .d2l-meter-circle-text-secondary {
