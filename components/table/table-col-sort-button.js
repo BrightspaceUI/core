@@ -27,6 +27,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * @ignore
+			 */
+			hasSibling: {
+				attribute: 'has-sibling',
+				reflect: true,
+				type: Boolean
 			}
 		};
 	}
@@ -47,20 +55,47 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				padding: 0;
 				text-decoration: none;
 			}
-			button::-moz-focus-inner {
-				border: 0;
-			}
 			button:disabled {
 				opacity: 0.5;
-			}
-			button:hover {
-				text-decoration: underline;
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: 0.2rem;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
+			}
+			button::-moz-focus-inner {
+				border: 0;
+			}
+			:host([has-sibling]) button:hover {
+				text-decoration: underline;
+			}
+			:host(:not([has-sibling])) button {
+				box-sizing: border-box;
+				height: var(--d2l-sortable-button-height);
+				line-height: 0.9rem;
+				padding: var(--d2l-table-cell-padding);
+				width: var(--d2l-sortable-button-width);
+			}
+			:host(:not([has-sibling])) button:focus-visible,
+			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+				height: calc(100% - 8px);
+				margin-inline-start: 4px; /* Used to offset the outer box shadow */
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
+				width: calc(100% - 8px);
+			}
+			:host(:not([has-sibling])) button:focus-visible:hover,
+			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+			}
+			:host(:not([has-sibling])) button:hover {
+				background-color: var(--d2l-color-gypsum);
+				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+			:host(:not([has-sibling])) d2l-icon {
+				margin-inline-end: -12px;
+				margin-inline-start: 12px;
 			}
 		`;
 	}
@@ -69,6 +104,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		super();
 		this.nosort = false;
 		this.desc = false;
+		this.hasSibling = false;
 	}
 
 	static get focusElementSelector() {
@@ -79,6 +115,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
+
 		return html`<button type="button"><slot></slot>${iconView}</button>`;
 	}
 
