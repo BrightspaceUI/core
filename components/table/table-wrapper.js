@@ -52,7 +52,7 @@ export const tableStyles = css`
 	.d2l-table > * > tr[header] > th {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
-		line-height: 0.9rem;
+		line-height: 0.85rem;
 	}
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
@@ -245,8 +245,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
 				--d2l-table-cell-height: 31px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.725rem;
-				--d2l-table-cell-padding-alt: calc(0.725rem - 1px) 0.725rem 0.725rem 0.725rem;
+				--d2l-table-cell-padding: 0.75rem;
+				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
