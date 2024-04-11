@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
 	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
 	"components.tag-list-item.tooltip-title": "Keyboard Controls",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

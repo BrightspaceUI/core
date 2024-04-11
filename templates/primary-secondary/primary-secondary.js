@@ -4,9 +4,8 @@ import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { formatPercent } from '@brightspace-ui/intl';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -591,7 +590,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			_isCollapsed: { type: Boolean, attribute: false },
 			_isExpanded: { type: Boolean, attribute: false },
 			_isMobile: { type: Boolean, attribute: false },
-			_size: { type: Number, attribute: false }
+			_size: { type: Number, attribute: false },
+			_sizeAsPercent: { state: true }
 		};
 	}
 
@@ -992,8 +992,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		this._isCollapsed = false;
 		this._isExpanded = false;
 		this._isMobile = isMobile();
-
 		this._hasConnectedResizers = false;
+		this._sizeAsPercent = 0;
 	}
 
 	disconnectedCallback() {
@@ -1030,7 +1030,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		const secondarySection = html`
 			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 				<div class="d2l-template-primary-secondary-divider-shadow"></div>
-				<aside class="${classMap(scrollClasses)}">
+				<aside class="${classMap(scrollClasses)}" aria-label="${this.localize('templates.primary-secondary.secondary-panel')}">
 					<slot name="secondary"></slot>
 				</aside>
 			</div>`;
@@ -1101,6 +1101,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		for (const resizer of this._resizers) {
 			resizer.panelSize = val;
 		}
+		this._sizeAsPercent = Math.round((val / (this._isMobile ? this._contentBounds?.height : this._contentBounds?.width)) * 100) || 0;
 		this.requestUpdate('_size', oldSize);
 	}
 
@@ -1112,10 +1113,12 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		const desktopDividerSize = divider.offsetWidth;
 		const mobileDividerSize = divider.offsetHeight;
 		return {
+			height: contentRect.height,
 			minWidth: desktopMinSize,
 			maxWidth: contentRect.width - desktopMinSize - desktopDividerSize,
 			minHeight: (contentRect.height - mobileDividerSize) * (1 / 3),
-			maxHeight: (contentRect.height - mobileDividerSize) * (2 / 3)
+			maxHeight: (contentRect.height - mobileDividerSize) * (2 / 3),
+			width: contentRect.width
 		};
 	}
 
@@ -1232,13 +1235,24 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 	_renderDivider() {
 
 		const size = this._size ?? 0;
-		const keyboardHelpText = this._isMobile ? this.localize('templates.primary-secondary.keyboardVertical') : this.localize('templates.primary-secondary.keyboardHorizontal');
-		const separatorVal = size && Math.round(size);
-		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
+		const separatorMax = Math.round(
+			this._isMobile ?
+				(this._contentBounds?.maxHeight / this._contentBounds?.height) * 100 :
+				(this._contentBounds?.maxWidth / this._contentBounds?.width) * 100
+		) || 100;
 
 		return html`
 			<div class="d2l-template-primary-secondary-divider-not-resizable" ?hidden="${this._isResizable()}"></div>
-			<div tabindex="0" class="d2l-template-primary-secondary-divider" role=separator aria-label="${keyboardHelpText}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}" ?hidden="${!this._isResizable()}">
+			<div class="d2l-template-primary-secondary-divider"
+				tabindex="0"
+				role="slider"
+				aria-label="${this.localize('templates.primary-secondary.divider')}"
+				aria-orientation="${this._isMobile ? 'vertical' : 'horizontal'}"
+				aria-valuemax="${separatorMax}"
+				aria-valuenow="${this._sizeAsPercent}"
+				aria-valuemin="0"
+				aria-valuetext="${formatPercent(this._sizeAsPercent / 100)}"
+				?hidden="${!this._isResizable()}">
 				<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 					<div class="d2l-template-primary-secondary-divider-handle-desktop">
 						<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">

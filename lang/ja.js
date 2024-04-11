@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace キー／Delete キー",
 	"components.tag-list-item.tooltip-delete-key-desc": "フォーカスされたタグを削除します",
 	"components.tag-list-item.tooltip-title": "キーボードコントロール",
-	"templates.primary-secondary.keyboardHorizontal": "左矢印または右矢印を使用して、ビューパネルのサイズを調整します",
-	"templates.primary-secondary.keyboardVertical": "上矢印または下矢印を使用して、ビューパネルのサイズを調整します"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

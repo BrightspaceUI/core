@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Ausgewählten Tag löschen",
 	"components.tag-list-item.tooltip-title": "Tastatursteuerung",
-	"templates.primary-secondary.keyboardHorizontal": "Pfeil nach links oder rechts, um die Größe der Ansichtsbereiche anzupassen",
-	"templates.primary-secondary.keyboardVertical": "Pfeil nach oben oder unten, um die Größe der Ansichtsbereiche anzupassen"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

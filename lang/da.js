@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Tilbage/Slet",
 	"components.tag-list-item.tooltip-delete-key-desc": "Slet det fokuserede tag",
 	"components.tag-list-item.tooltip-title": "Kontrolelementer på tastaturet",
-	"templates.primary-secondary.keyboardHorizontal": "Pil til venstre eller højre for at justere størrelsen på visningspaneler",
-	"templates.primary-secondary.keyboardVertical": "Pil op eller ned for at justere størrelsen på visningspaneler"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

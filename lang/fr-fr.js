@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/Supprimer",
 	"components.tag-list-item.tooltip-delete-key-desc": "Supprimez l’étiquette ciblée",
 	"components.tag-list-item.tooltip-title": "Commandes du clavier",
-	"templates.primary-secondary.keyboardHorizontal": "Flèche vers la gauche ou vers la droite pour régler la taille des panneaux d’affichage",
-	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des panneaux d’affichage"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };
