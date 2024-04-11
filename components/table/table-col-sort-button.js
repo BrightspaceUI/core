@@ -91,10 +91,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host(:not([has-sibling])) button:focus-visible,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
-				height: calc(100% - 8px);
+				height: var(--d2l-sortable-button-focus-height);
+				margin-top: 4px;
 				margin-inline-start: 4px; /* Used to offset the outer box shadow */
 				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
-				width: calc(100% - 8px);
+				width: var(--d2l-sortable-button-focus-width);
 			}
 			:host(:not([has-sibling])) button:focus-visible:hover,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
@@ -107,10 +108,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host(:not([has-sibling])) d2l-dropdown {
 				height: 100%;
 				width: 100%;
-			}
-			:host(:not([has-sibling])) d2l-dropdown:focus-visible,
-			:host(:not([has-sibling])) d2l-dropdown:${unsafeCSS(getFocusPseudoClass())} {
-				height: auto;
 			}
 		`;
 	}
