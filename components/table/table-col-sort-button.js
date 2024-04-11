@@ -83,19 +83,19 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host(:not([has-sibling])) button {
 				border-radius: var(--d2l-sortable-button-border-radius);
 				box-sizing: border-box;
-				height: var(--d2l-sortable-button-height);
+				height: 100%;
 				line-height: 0.85rem;
 				padding: var(--d2l-table-cell-padding);
-				width: var(--d2l-sortable-button-width);
+				width: 100%;
 			}
 			:host(:not([has-sibling])) button:focus-visible,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
-				height: var(--d2l-sortable-button-focus-height);
+				height: calc(100% - 8px);
 				margin-top: 4px;
 				margin-inline-start: 4px; /* Used to offset the outer box shadow */
 				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
-				width: var(--d2l-sortable-button-focus-width);
+				width: calc(100% - 8px);
 			}
 			:host(:not([has-sibling])) button:focus-visible:hover,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
@@ -106,8 +106,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin-inline-start: 12px;
 			}
 			:host(:not([has-sibling])) d2l-dropdown {
-				height: 100%;
-				width: 100%;
+				height: var(--d2l-sortable-button-height);
+				width: var(--d2l-sortable-button-width);
 			}
 		`;
 	}

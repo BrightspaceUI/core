@@ -254,8 +254,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-sortable-button-border-focus-radius: 0;
 				--d2l-sortable-button-height: 100%;
 				--d2l-sortable-button-width: 100%;
-				--d2l-sortable-button-focus-height: calc(100% - 8px);
-				--d2l-sortable-button-focus-width: calc(100% - 8px);
 				display: block;
 				width: 100%;
 			}
@@ -272,8 +270,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-sortable-button-border-focus-radius: 0.3rem;
 				--d2l-sortable-button-height: calc(100% - 8px);
 				--d2l-sortable-button-width: calc(100% - 8px);
-				--d2l-sortable-button-focus-height: 70%;
-				--d2l-sortable-button-focus-width: 90%;
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
