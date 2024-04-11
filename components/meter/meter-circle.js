@@ -13,12 +13,15 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		return [ bodySmallStyles, bodyStandardStyles, css`
 		:host {
 			display: inline-block;
-			width: 2.4rem;
+			width: auto;
 		}
 		.d2l-meter-circle {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
+		}
+		:host(:not([style*=width])) .base-width {
+			width: 2.4rem;
 		}
 		.d2l-meter-circle-full-bar,
 		.d2l-meter-circle-progress-bar {
@@ -76,12 +79,18 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			'd2l-meter-circle-text': true
 		};
 
+		// For circle meters that will not have text displayed we need to add a basic width to the svg meter (2.4rem)
+		// In the css, if the host level has has the width declared for the meter then we will stop the 2.4rem width from being applied to the svg
+		const svgClasses = {
+			'base-width': (!this.text || !!this.textHidden)
+		}
+
 		return html`
 			<div
 				class="d2l-meter-circle"
 				aria-label="${this._ariaLabel(primary, secondary)}"
 				role="img">
-				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" class="${classMap(svgClasses)}">
 					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
 					<circle
 						class="d2l-meter-circle-progress-bar"
