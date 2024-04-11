@@ -245,8 +245,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
 				--d2l-table-cell-height: 31px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.72rem;
-				--d2l-table-cell-padding-alt: calc(0.72rem - 1px) 0.72rem 0.72rem 0.72rem;
+				--d2l-table-cell-padding: 0.725rem;
+				--d2l-table-cell-padding-alt: calc(0.725rem - 1px) 0.725rem 0.725rem 0.725rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
