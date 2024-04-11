@@ -81,6 +81,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: 0.2rem;
 			}
 			:host(:not([has-sibling])) button {
+				border-radius: var(--d2l-sortable-button-border-radius);
 				box-sizing: border-box;
 				height: var(--d2l-sortable-button-height);
 				line-height: 0.9rem;
