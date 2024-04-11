@@ -103,6 +103,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin-inline-end: -12px;
 				margin-inline-start: 12px;
 			}
+			:host(:not([has-sibling])) d2l-dropdown {
+				height: 100%;
+				width: 100%;
+			}
+			:host(:not([has-sibling])) d2l-dropdown:focus-visible,
+			:host(:not([has-sibling])) d2l-dropdown:${unsafeCSS(getFocusPseudoClass())} {
+				height: auto;
+			}
 		`;
 	}
 
@@ -121,8 +129,19 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
+		const sortButton = html`<button class="d2l-dropdown-opener" type="button"><slot></slot>${iconView}</button>`;
+		const sortButonDropdown = html`
+			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
+				${sortButton}
+				<d2l-dropdown-menu id="dropdown">
+					<d2l-menu>
+						<slot name="items"></slot>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
+		`;
 
-		return html`<button type="button"><slot></slot>${iconView}</button>`;
+		return this.hasSibling ? sortButton : sortButonDropdown;
 	}
 
 }

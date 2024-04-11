@@ -167,7 +167,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit}</d2l-table-col-sort-button>
+					?nosort="${noSort}">
+					${fruit}
+					<d2l-menu-item slot="items" text="A to Z" @click="${this._handleAtoZ}"></d2l-menu-item>
+					<d2l-menu-item slot="items" text="Z to A" @click="${this._handleZtoA}"></d2l-menu-item>
+					<d2l-menu-item slot="items" text="Country, A to Z" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
+					<d2l-menu-item slot="items" text="Country, Z to A" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
