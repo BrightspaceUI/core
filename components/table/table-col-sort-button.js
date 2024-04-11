@@ -71,8 +71,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				background-color: var(--d2l-color-gypsum);
 			}
 			:host([has-sibling]) button {
-				--d2l-table-cell-padding: 0;
-
 				margin-block: -0.3rem -0.3rem;
 				margin-inline: -0.3rem 0.3rem;
 				padding: 0.3rem;
