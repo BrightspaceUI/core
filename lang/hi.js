@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "बैकस्पेस/हटाएँ",
 	"components.tag-list-item.tooltip-delete-key-desc": "फ़ोकिस किए हुए टैग को हटाएँ",
 	"components.tag-list-item.tooltip-title": "कीबोर्ड कंट्रोल",
-	"templates.primary-secondary.adjustableSplitView": "समायोजन योग्य विभाजन दृश्य",
 	"templates.primary-secondary.keyboardHorizontal": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर बाएँ या दाएँ करें",
 	"templates.primary-secondary.keyboardVertical": "दृश्य पैनल्स का आकार समायोजित करने के लिए तीर ऊपर या नीचे करें"
 };

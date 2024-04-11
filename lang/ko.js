@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "백스페이스/삭제",
 	"components.tag-list-item.tooltip-delete-key-desc": "포커스된 태그를 삭제합니다",
 	"components.tag-list-item.tooltip-title": "키보드 컨트롤",
-	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",
 	"templates.primary-secondary.keyboardHorizontal": "왼쪽 또는 오른쪽 화살표로 보기 패널의 크기 조정",
 	"templates.primary-secondary.keyboardVertical": "위 또는 아래 화살표로 보기 패널의 크기 조정"
 };

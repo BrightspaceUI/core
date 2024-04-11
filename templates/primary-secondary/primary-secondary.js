@@ -681,7 +681,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			:host([resizable]:not([dir="rtl"])[secondary-first]) aside {
 				float: right;
 			}
-			.d2l-template-primary-secondary-divider {
+			.d2l-template-primary-secondary-divider,
+			.d2l-template-primary-secondary-divider-not-resizable {
 				background-color: var(--d2l-color-mica);
 				flex: none;
 				outline: none;
@@ -992,7 +993,6 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		this._isExpanded = false;
 		this._isMobile = isMobile();
 
-		this._keyboardDescId = getUniqueId();
 		this._hasConnectedResizers = false;
 	}
 
@@ -1018,19 +1018,14 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 	}
 
 	render() {
-		let tabindex;
 		const size = this._size ?? 0;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
 			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${size}px`;
-			tabindex = 0;
 		}
-		const separatorVal = size && Math.round(size);
-		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
 		};
-		const keyboardHelpText = this._isMobile ? this.localize('templates.primary-secondary.keyboardVertical') : this.localize('templates.primary-secondary.keyboardHorizontal');
 		const primarySection = html`<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>`;
 		const secondarySection = html`
 			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
@@ -1044,27 +1039,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					${this.secondaryFirst && !this._isMobile ? secondarySection : primarySection}
-					<d2l-offscreen id="${this._keyboardDescId}">${keyboardHelpText}</d2l-offscreen>
-					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator aria-label="${this.localize('templates.primary-secondary.adjustableSplitView')}" aria-describedby="${this._keyboardDescId}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
-						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
-							<div class="d2l-template-primary-secondary-divider-handle-desktop">
-								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
-									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-										<path transform="rotate(90 9.004714965820312,9.000227928161623)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
-									</svg>
-								</d2l-icon-custom>
-								<div class="d2l-template-primary-secondary-divider-handle-line"></div>
-								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-right">
-									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-										<path transform="rotate(-90 9.004714965820314,9.000227928161621)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
-									</svg>
-								</d2l-icon-custom>
-							</div>
-							<div class="d2l-template-primary-secondary-divider-handle-mobile">
-								<d2l-icon icon=${size === 0 ? 'tier1:chevron-up' : 'tier1:chevron-down'}></d2l-icon>
-							</div>
-						</div>
-					</div>
+					${this._renderDivider()}
 					${this.secondaryFirst && !this._isMobile ? primarySection : secondarySection}
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
@@ -1131,7 +1106,9 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 
 	_computeContentBounds(contentRect) {
 		if (!this.shadowRoot) return;
-		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+		const divider = this._isResizable() ?
+			this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider') :
+			this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-not-resizable');
 		const desktopDividerSize = divider.offsetWidth;
 		const mobileDividerSize = divider.offsetHeight;
 		return {
@@ -1175,7 +1152,9 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				if (this._isMobile) {
 					this._size = this._contentBounds.minHeight;
 				} else if (this.shadowRoot) {
-					const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+					const divider = this._isResizable() ?
+						this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider') :
+						this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-not-resizable');
 					const desktopDividerSize = contentRect.width - divider.offsetWidth;
 					this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
 				}
@@ -1248,6 +1227,39 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			this._isCollapsed = true;
 		}
 		this._animateResize = false;
+	}
+
+	_renderDivider() {
+
+		const size = this._size ?? 0;
+		const keyboardHelpText = this._isMobile ? this.localize('templates.primary-secondary.keyboardVertical') : this.localize('templates.primary-secondary.keyboardHorizontal');
+		const separatorVal = size && Math.round(size);
+		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
+
+		return html`
+			<div class="d2l-template-primary-secondary-divider-not-resizable" ?hidden="${this._isResizable()}"></div>
+			<div tabindex="0" class="d2l-template-primary-secondary-divider" role=separator aria-label="${keyboardHelpText}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}" ?hidden="${!this._isResizable()}">
+				<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
+					<div class="d2l-template-primary-secondary-divider-handle-desktop">
+						<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
+							<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+								<path transform="rotate(90 9.004714965820312,9.000227928161623)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
+							</svg>
+						</d2l-icon-custom>
+						<div class="d2l-template-primary-secondary-divider-handle-line"></div>
+						<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-right">
+							<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+								<path transform="rotate(-90 9.004714965820314,9.000227928161621)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
+							</svg>
+						</d2l-icon-custom>
+					</div>
+					<div class="d2l-template-primary-secondary-divider-handle-mobile">
+						<d2l-icon icon=${size === 0 ? 'tier1:chevron-up' : 'tier1:chevron-down'}></d2l-icon>
+					</div>
+				</div>
+			</div>
+		`;
+
 	}
 }
 
