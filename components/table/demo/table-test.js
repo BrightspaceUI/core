@@ -206,10 +206,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	}
 
 	_renderDoubleSortButton(fruit1, fruit2) {
+		const noSort = this._sortField !== fruit1.toLowerCase();
 		return html`
 			<th scope="col">
-				<d2l-table-col-sort-button nosort>
-					${fruit1}
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">${fruit1}
 				</d2l-table-col-sort-button>
 				<d2l-table-col-sort-button nosort>
 					${fruit2}

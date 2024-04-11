@@ -86,12 +86,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: 0.2rem;
 			}
 			:host(:not([has-sibling])) button {
-				border-radius: var(--d2l-sortable-button-border-radius);
 				box-sizing: border-box;
 				height: 100%;
 				line-height: 0.85rem;
 				padding: var(--d2l-table-cell-padding);
 				width: 100%;
+			}
+			:host(:not([has-sibling])) button:hover {
+				border-radius: var(--d2l-sortable-button-border-radius);
 			}
 			:host(:not([has-sibling])) button:focus-visible,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
