@@ -18,6 +18,7 @@ import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const fruits = ['Apples', 'Oranges', 'Bananas'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
+const thTextShort = ['Additional', 'Placeholder', 'Header'];
 
 const data = () => [
 	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
@@ -69,9 +70,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return b.fruit[this._sortField] - a.fruit[this._sortField];
+				return ifDefined(this._compositeField) ?
+					b.fruit[this._sortField] - a.fruit[this._sortField] || b.name - a.name :
+					b.fruit[this._sortField] - a.fruit[this._sortField];
 			}
-			return a.fruit[this._sortField] - b.fruit[this._sortField];
+			return ifDefined(this._compositeField) ?
+				a.fruit[this._sortField] - b.fruit[this._sortField] || a.name - b.name :
+				a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
@@ -100,7 +105,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
 							${this._renderDoubleSortButton('Avocado', 'Prune')}
-							${fruits.map(fruit => this._renderSortButton(fruit))}
+							${thTextShort.map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
@@ -131,6 +136,42 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
+	_handleAtoZ(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = false;
+			this._sortField = field;
+			this._compositeField = undefined;
+			this._sortDesc = !desc;
+		}
+	}
+
+	_handleCompositeAtoZ(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = false;
+			this._sortField = field;
+			this._compositeField = false;
+			this._sortDesc = !desc;
+		}
+	}
+
+	_handleCompositeZtoA(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = true;
+			this._sortField = field;
+			this._compositeField = true;
+			this._sortDesc = !desc;
+		}
+	}
+
 	_handlePagerLoadMore(e) {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < e.target.pageSize; i++) {
@@ -140,11 +181,28 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		e.detail.complete();
 	}
 
+	_handleSortDropdown(e) {
+		const field = e.target.innerText.toLowerCase();
+		this._sortField = field;
+	}
+
 	_handleSort(e) {
 		const field = e.target.innerText.toLowerCase();
 		const desc = e.target.hasAttribute('desc');
 		this._sortField = field;
 		this._sortDesc = !desc;
+	}
+
+	_handleZtoA(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+
+		if (sortButtonComponent) {
+			const field = sortButtonComponent.innerText.toLowerCase();
+			const desc = true;
+			this._sortField = field;
+			this._compositeField = undefined;
+			this._sortDesc = !desc;
+		}
 	}
 
 	_renderDoubleSortButton(fruit1, fruit2) {
@@ -162,17 +220,28 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(fruit) {
 		const noSort = this._sortField !== fruit.toLowerCase();
+		if (fruit === 'Oranges') {
+			return html`
+				<th class="sortableCell" scope="col">
+					<d2l-table-col-sort-button
+						@click="${this._handleSortDropdown}"
+						?desc="${this._sortDesc}"
+						?nosort="${noSort}">
+						${fruit}
+						<d2l-menu-item slot="items" text="A to Z" @click="${this._handleAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="Z to A" @click="${this._handleZtoA}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="Country, A to Z" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="Country, Z to A" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+					</d2l-table-col-sort-button>
+				</th>
+			`;
+		}
 		return html`
-			<th scope="col">
+			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">
-					${fruit}
-					<d2l-menu-item slot="items" text="A to Z" @click="${this._handleAtoZ}"></d2l-menu-item>
-					<d2l-menu-item slot="items" text="Z to A" @click="${this._handleZtoA}"></d2l-menu-item>
-					<d2l-menu-item slot="items" text="Country, A to Z" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
-					<d2l-menu-item slot="items" text="Country, Z to A" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+					?nosort="${noSort}">${fruit}
 				</d2l-table-col-sort-button>
 			</th>
 		`;

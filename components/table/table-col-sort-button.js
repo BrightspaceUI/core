@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 
@@ -35,7 +36,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				attribute: 'has-sibling',
 				reflect: true,
 				type: Boolean
-			}
+			},
+			_hasDropdownItems: { state: true }
 		};
 	}
 
@@ -69,6 +71,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
+			}
+			.d2l-dropdown-no-content {
+				display: none;
 			}
 			:host([has-sibling]) button {
 				--d2l-table-cell-padding: 0;
@@ -117,6 +122,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this.nosort = false;
 		this.desc = false;
 		this.hasSibling = false;
+		this._hasDropdownItems = false;
 	}
 
 	static get focusElementSelector() {
@@ -124,6 +130,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 	}
 
 	render() {
+		const dropdownClasses = {
+			'd2l-dropdown-no-content': !this._hasDropdownItems
+		};
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
@@ -131,15 +140,20 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const sortButonDropdown = html`
 			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
 				${sortButton}
-				<d2l-dropdown-menu id="dropdown">
+				<d2l-dropdown-menu class="${classMap(dropdownClasses)}" id="dropdown">
 					<d2l-menu>
-						<slot name="items"></slot>
+						<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
 
 		return this.hasSibling ? sortButton : sortButonDropdown;
+	}
+
+	_handleSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+		this._hasDropdownItems = (content && content.length > 0);
 	}
 
 }
