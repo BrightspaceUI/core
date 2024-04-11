@@ -83,7 +83,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		// In the css, if the host level has has the width declared for the meter then we will stop the 2.4rem width from being applied to the svg
 		const svgClasses = {
 			'base-width': (!this.text || !!this.textHidden)
-		}
+		};
 
 		return html`
 			<div
