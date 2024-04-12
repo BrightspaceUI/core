@@ -339,17 +339,20 @@ describe('d2l-form', () => {
 				const nestedElem = defineCE(class extends LitElement {
 					render() {
 						return html`
-							<d2l-form>
+							<d2l-form id="nested1">
 								<input type="text" aria-label="Input 1" name="input1" required>
+							</d2l-form>
+							<d2l-form id="nested2">
+								<input type="text" aria-label="Input 2" name="input2" required>
 							</d2l-form>
 						`;
 					}
 				});
 
 				const elem = await fixture(`
-					<d2l-form>
+					<d2l-form id="root">
 						<${nestedElem}></${nestedElem}>
-						<input type="text" aria-label="Input 2" name="input2" required>
+						<input type="text" aria-label="Input 3" name="input3" required>
 					</d2l-form>
 				`);
 
@@ -357,15 +360,17 @@ describe('d2l-form', () => {
 
 				expect([...errors.entries()]).to.deep.equal([
 					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
-					[elem.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
 				]);
 
-				elem.querySelector(nestedElem).shadowRoot.querySelector('d2l-form').remove();
+				elem.querySelector(nestedElem).shadowRoot.querySelector('#nested1').remove();
 
 				errors = await elem.validate();
 
 				expect([...errors.entries()]).to.deep.equal([
-					[elem.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
 				]);
 
 			});

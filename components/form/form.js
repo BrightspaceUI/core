@@ -51,7 +51,7 @@ class Form extends FormMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-form-disconnected'));
+		this.dispatchEvent(new CustomEvent('d2l-form-disconnect'));
 		this._isSubForm = false;
 	}
 
@@ -85,11 +85,15 @@ class Form extends FormMixin(LitElement) {
 		const errorMap = new Map();
 		const formElements = this._findFormElements();
 		for (const ele of formElements) {
-			if (this._hasSubForm(ele)) {
-				const form = this._getSubForm(ele);
-				if (!form.noNesting) {
-					const formErrors = await form.validate();
-					errorMap.set(ele, formErrors);
+			if (this._hasSubForms(ele)) {
+				const forms = this._getSubForms(ele);
+				for (const form of forms) {
+					if (!form.noNesting) {
+						const formErrors = await form.validate();
+						for (const [key, val] of formErrors) {
+							errorMap.set(key, val);
+						}
+					}
 				}
 			} else {
 				const eleErrors = await this._validateFormElement(ele, true);
@@ -112,16 +116,16 @@ class Form extends FormMixin(LitElement) {
 	}
 
 	_findFormElements() {
-		const isFormElementPredicate = ele => this._hasSubForm(ele);
-		const visitChildrenPredicate = ele => !this._hasSubForm(ele);
+		const isFormElementPredicate = ele => this._hasSubForms(ele);
+		const visitChildrenPredicate = ele => !this._hasSubForms(ele);
 		return findFormElements(this, isFormElementPredicate, visitChildrenPredicate);
 	}
 
-	_getSubForm(ele) {
+	_getSubForms(ele) {
 		return this._nestedForms.get(ele);
 	}
 
-	_hasSubForm(ele) {
+	_hasSubForms(ele) {
 		return this._nestedForms.has(ele);
 	}
 
@@ -136,17 +140,27 @@ class Form extends FormMixin(LitElement) {
 		e.stopPropagation();
 		e.preventDefault();
 		const form = e.composedPath()[0];
-		this._nestedForms.set(e.target, form);
+
+		if (!this._nestedForms.has(e.target)) {
+			this._nestedForms.set(e.target, []);
+		}
+		this._nestedForms.get(e.target).push(form);
 
 		const onFormDisconnect = () => {
-			this._nestedForms.forEach((value, key) => {
-				if (value === form) {
-					form.removeEventListener('d2l-form-disconnected', onFormDisconnect);
-					this._nestedForms.delete(key);
+			form.removeEventListener('d2l-form-disconnect', onFormDisconnect);
+			if (this._nestedForms.has(e.target)) {
+				const forms = this._nestedForms.get(e.target);
+				const index = forms.indexOf(form);
+				if (index > -1) {
+					forms.splice(index, 1);
 				}
-			});
+				if (forms.length === 0) {
+					this._nestedForms.delete(e.target);
+				}
+			}
 		};
-		form.addEventListener('d2l-form-disconnected', onFormDisconnect);
+		form.addEventListener('d2l-form-disconnect', onFormDisconnect);
+
 	}
 
 	async _submitData(submitter) {
@@ -158,11 +172,13 @@ class Form extends FormMixin(LitElement) {
 			const eleData = getFormElementData(ele, submitter);
 			if (isCustomFormElement(ele) || isNativeFormElement(ele)) {
 				formData = { ...formData, ...eleData };
-			} else if (this._hasSubForm(ele)) {
-				const form = this._getSubForm(ele);
-				if (!form.noNesting) {
-					form._submitData(submitter);
-				}
+			} else if (this._hasSubForms(ele)) {
+				const forms = this._getSubForms(ele);
+				forms.forEach(form => {
+					if (!form.noNesting) {
+						form._submitData(submitter);
+					}
+				});
 			}
 		}
 		/** Dispatched when the form is submitted. The form data can be obtained from the `detail`'s `formData` property. */
