@@ -139,10 +139,14 @@ class Form extends FormMixin(LitElement) {
 		this._nestedForms.set(e.target, form);
 
 		const onFormDisconnect = () => {
-			form.removeEventListener('d2l-form-disconnect', onFormDisconnect);
-			this._nestedForms.delete(e.target);
+			this._nestedForms.forEach((value, key) => {
+				if (value === form) {
+					form.removeEventListener('d2l-form-disconnected', onFormDisconnect);
+					this._nestedForms.delete(key);
+				}
+			});
 		};
-		form.addEventListener('d2l-form-disconnect', onFormDisconnect);
+		form.addEventListener('d2l-form-disconnected', onFormDisconnect);
 	}
 
 	async _submitData(submitter) {
