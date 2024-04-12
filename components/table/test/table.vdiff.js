@@ -1,4 +1,4 @@
-import '../../button-icon.js';
+import '../../button/button-icon.js';
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../demo/table-test.js';
