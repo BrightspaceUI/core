@@ -62,8 +62,9 @@ export const tableStyles = css`
 	th.d2l-table-header-col-sortable {
 		padding: 0;
 	}
-	d2l-selection-select-all {
-		margin-block: -0.2rem;
+	d2l-selection-select-all,
+	d2l-input-checkbox {
+		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.2);
 	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
