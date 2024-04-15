@@ -1,4 +1,4 @@
-import '../../button-icon.js';
+import '../../button/button-icon.js';
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../demo/table-test.js';
@@ -509,6 +509,16 @@ describe('table', () => {
 							<thead>${createSortableHeaderRowWithIconElement()}</thead>
 							<tbody>${createRows([1])}</tbody>
 						`);
+						await expect(elem).to.be.golden();
+					});
+
+					it('another-button-icon-focus-hover', async() => {
+						const elem = await createTableFixture(html`
+							<thead>${createSortableHeaderRowWithIconElement()}</thead>
+							<tbody>${createRows([1])}</tbody>
+						`);
+						await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await hoverElem(elem.shadowRoot.querySelector('d2l-button-icon'));
 						await expect(elem).to.be.golden();
 					});
 				});
