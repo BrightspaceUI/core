@@ -2,8 +2,8 @@ import '../../validation/validation-custom.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { expect, fixture } from '@brightspace-ui/testing';
-import { html } from 'lit';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import { html, LitElement } from 'lit';
 
 describe('d2l-form', () => {
 
@@ -331,6 +331,52 @@ describe('d2l-form', () => {
 			});
 
 		});
+
+		describe('connect/disconnect', () => {
+
+			it('should not validate nested forms which have been disconnected', async() => {
+
+				const nestedElem = defineCE(class extends LitElement {
+					render() {
+						return html`
+							<d2l-form id="nested1">
+								<input type="text" aria-label="Input 1" name="input1" required>
+							</d2l-form>
+							<d2l-form id="nested2">
+								<input type="text" aria-label="Input 2" name="input2" required>
+							</d2l-form>
+						`;
+					}
+				});
+
+				const elem = await fixture(`
+					<d2l-form id="root">
+						<${nestedElem}></${nestedElem}>
+						<input type="text" aria-label="Input 3" name="input3" required>
+					</d2l-form>
+				`);
+
+				let errors = await elem.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
+					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+				elem.querySelector(nestedElem).shadowRoot.querySelector('#nested1').remove();
+
+				errors = await elem.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[elem.querySelector(nestedElem).shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+			});
+
+		});
+
 	});
 
 });
