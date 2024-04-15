@@ -93,6 +93,9 @@ class FilterTags extends LocalizeCoreElement(LitElement) {
 		const filterValue = this._allActiveFilters.get(filterId)[filterValueIndex];
 		const filter = this._filters.registries.find(filter => filter.id === filterId);
 		filter.requestFilterValueClear(filterValue.keyObject);
+		if (this._allActiveFilters.get(filterId).length === 1) {
+			this._allActiveFilters.delete(filterId);
+		}
 	}
 
 }
