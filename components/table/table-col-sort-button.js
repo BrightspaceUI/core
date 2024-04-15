@@ -67,13 +67,21 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button::-moz-focus-inner {
 				border: 0;
 			}
+			button:hover {
+				background-color: var(--d2l-color-gypsum);
+			}
+			:host([has-sibling]) button {
+				margin-block: -0.3rem -0.3rem;
+				margin-inline: -0.3rem 0.3rem;
+				padding: 0.3rem;
+			}
 			:host([has-sibling]) button:hover {
-				text-decoration: underline;
+				border-radius: 0.2rem;
 			}
 			:host(:not([has-sibling])) button {
 				box-sizing: border-box;
 				height: var(--d2l-sortable-button-height);
-				line-height: 0.9rem;
+				line-height: 0.85rem;
 				padding: var(--d2l-table-cell-padding);
 				width: var(--d2l-sortable-button-width);
 			}
@@ -90,7 +98,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
 			}
 			:host(:not([has-sibling])) button:hover {
-				background-color: var(--d2l-color-gypsum);
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
 			:host(:not([has-sibling])) d2l-icon {
