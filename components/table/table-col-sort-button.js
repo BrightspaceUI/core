@@ -37,7 +37,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				reflect: true,
 				type: Boolean
 			},
-			_hasDropdownItems: { state: true }
+			_hasDropdownItems: {
+				attribute: 'has-dropdown',
+				reflect: true,
+				type: Boolean
+			}
 		};
 	}
 
@@ -82,21 +86,23 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host([has-sibling]) button:hover {
 				border-radius: 0.2rem;
 			}
-			:host(:not([has-sibling])) button {
-				box-sizing: border-box;
+			:host([has-dropdown]) button:focus-visible,
+			:host([has-dropdown]) button:${unsafeCSS(getFocusPseudoClass())} {
 				height: 100%;
-				line-height: 0.85rem;
-				padding: var(--d2l-table-cell-padding);
+				margin-top: 4px;
 				width: 100%;
 			}
-			:host(:not([has-sibling])) button:hover {
-				border-radius: var(--d2l-sortable-button-border-radius);
+			:host(:not([has-sibling])) button {
+				box-sizing: border-box;
+				height: var(--d2l-sortable-button-height);
+				line-height: 0.85rem;
+				padding: var(--d2l-table-cell-padding);
+				width: var(--d2l-sortable-button-width);
 			}
 			:host(:not([has-sibling])) button:focus-visible,
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
 				height: calc(100% - 8px);
-				margin-top: 4px;
 				margin-inline-start: 4px; /* Used to offset the outer box shadow */
 				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
 				width: calc(100% - 8px);
