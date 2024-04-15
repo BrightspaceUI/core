@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Geri Al/Sil",
 	"components.tag-list-item.tooltip-delete-key-desc": "Odaklanılan etiketi sil",
 	"components.tag-list-item.tooltip-title": "Klavye Kontrolleri",
-	"templates.primary-secondary.adjustableSplitView": "Ayarlanabilir Bölünmüş Görüntü",
-	"templates.primary-secondary.keyboardHorizontal": "Görüntü panellerinin boyutunu ayarlamak için sol veya sağ okları kullanın",
-	"templates.primary-secondary.keyboardVertical": "Görüntü panellerinin boyutunu ayarlamak için yukarı veya aşağı okları kullanın"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

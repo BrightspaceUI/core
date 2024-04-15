@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceso/Eliminar",
 	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar la etiqueta seleccionada",
 	"components.tag-list-item.tooltip-title": "Controles del teclado",
-	"templates.primary-secondary.adjustableSplitView": "Vista dividida ajustable",
-	"templates.primary-secondary.keyboardHorizontal": "Flecha hacia la izquierda o la derecha para ajustar el tamaño de los paneles de visualización",
-	"templates.primary-secondary.keyboardVertical": "Flecha hacia arriba o abajo para ajustar el tamaño de los paneles de visualización"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

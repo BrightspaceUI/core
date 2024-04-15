@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Verwijderen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Verwijder de gerichte tag",
 	"components.tag-list-item.tooltip-title": "Bedieningselementen op het toetsenbord",
-	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
-	"templates.primary-secondary.keyboardHorizontal": "Pijl naar links of rechts om de grootte van de weergavevensters aan te passen",
-	"templates.primary-secondary.keyboardVertical": "Pijl omhoog of omlaag om de grootte van de weergavevensters aan te passen"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

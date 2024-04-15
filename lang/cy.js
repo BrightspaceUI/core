@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",
 	"components.tag-list-item.tooltip-delete-key-desc": "Dileu’r tag â ffocws",
 	"components.tag-list-item.tooltip-title": "Rheolyddion Bysellfwrdd",
-	"templates.primary-secondary.adjustableSplitView": "Gwedd Hollt Addasadwy",
-	"templates.primary-secondary.keyboardHorizontal": "Saeth i'r chwith neu'r dde i addasu maint y paneli gweld",
-	"templates.primary-secondary.keyboardVertical": "Saeth i fyny neu i lawr i addasu maint y paneli gweld"
+	"templates.primary-secondary.divider": "Secondary panel divider",
+	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };
