@@ -47,6 +47,7 @@ class HtmlBlockMathRenderer {
 
 		const mathJaxConfig = {
 			deferTypeset: true,
+			enableMML3Support: context.enableMML3Support,
 			renderLatex: context.renderLatex,
 			outputScale: context.outputScale || 1,
 			window: window
@@ -102,7 +103,15 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: ['ui/menu'] },
+		loader: {
+			load: mathJaxConfig && mathJaxConfig.enableMML3Support
+				? [
+					'[mml]/mml3',
+					'ui/menu'
+				] : [
+					'ui/menu'
+				]
+		},
 		startup: {
 			ready: () => {
 
