@@ -72,16 +72,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
 			}
-<<<<<<< HEAD
 			.d2l-dropdown-no-content {
 				display: none;
 			}
 			:host([has-sibling]) button {
 				--d2l-table-cell-padding: 0;
 
-=======
-			:host([has-sibling]) button {
->>>>>>> saif/tableHeaderMain
 				margin-block: -0.3rem -0.3rem;
 				margin-inline: -0.3rem 0.3rem;
 				padding: 0.3rem;
@@ -91,11 +87,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			:host(:not([has-sibling])) button {
 				box-sizing: border-box;
-<<<<<<< HEAD
 				height: 100%;
-=======
-				height: var(--d2l-sortable-button-height);
->>>>>>> saif/tableHeaderMain
 				line-height: 0.85rem;
 				padding: var(--d2l-table-cell-padding);
 				width: 100%;
@@ -116,12 +108,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host(:not([has-sibling])) button:${unsafeCSS(getFocusPseudoClass())}:hover {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
 			}
-<<<<<<< HEAD
-=======
 			:host(:not([has-sibling])) button:hover {
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
->>>>>>> saif/tableHeaderMain
 			:host(:not([has-sibling])) d2l-icon {
 				margin-inline-end: -12px;
 				margin-inline-start: 12px;
