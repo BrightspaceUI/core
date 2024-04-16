@@ -1009,7 +1009,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// if no resize has happened since truncation was previously calculated the result will not have changed
 		if (!this._resizeRunSinceTruncationCheck || !this.showTruncatedOnly) return;
 
-		const target = this._target;
+		const target = this.#targetDelegated ? this._target.getRootNode().host : this._target;
 		const cloneContainer = document.createElement('div');
 		cloneContainer.style.position = 'absolute';
 		cloneContainer.style.overflow = 'hidden';
