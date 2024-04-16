@@ -10,8 +10,6 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-let logAccessibilityWarning = true;
-
 /* only one tooltip is to be shown at once - track the active tooltip so it can be hidden if necessary */
 let activeTooltip = null;
 
@@ -96,7 +94,7 @@ const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
 /**
  * A component used to display additional information when users focus or hover on a point of interest.
- * @slot - Default content placed inside of the tooltip
+ * @slot - Default content placed inside of the tooltip. This content is also used as the description for the target element, and may override existing descriptors.
  * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
  * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
  */
@@ -422,6 +420,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		`];
 	}
 
+	#targetDelegated = false;
+
 	constructor() {
 		super();
 
@@ -487,6 +487,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			elemIdListRemove(this._target, 'aria-labelledby', this.id);
 			elemIdListRemove(this._target, 'aria-describedby', this.id);
+			if (this.#targetDelegated) {
+				this._target.removeAttribute('aria-label');
+				this._target.removeAttribute('aria-description');
+			}
 		}
 	}
 
@@ -525,7 +529,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
 					<div class="${classMap(contentClasses)}">
 						<div role="text">
-							<slot></slot>
+							<slot @slotchange="${this._handleSlotChange}"></slot>
 						</div>
 					</div>
 				</div>
@@ -721,14 +725,19 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaceAround;
 	}
 
-	_findTarget() {
+	async _findTarget() {
 		const ownerRoot = this.getRootNode();
 
 		let target;
 		if (this.for) {
 			const targetSelector = `#${cssEscape(this.for)}`;
-			target = ownerRoot.querySelector(targetSelector);
-			target = target || ownerRoot?.host?.querySelector(targetSelector);
+			target = ownerRoot.querySelector(targetSelector) || ownerRoot?.host?.querySelector(targetSelector);
+			if (target?.constructor.focusElementSelector) {
+				this.#targetDelegated = true;
+				await customElements.whenDefined(target.localName);
+				await target.updateComplete;
+				target = target?.shadowRoot?.querySelector(target?.constructor.focusElementSelector) ?? target;
+			}
 		} else {
 			console.warn('<d2l-tooltip>: missing required attribute "for"');
 			const parentNode = this.parentNode;
@@ -788,6 +797,12 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_getContent() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-tooltip-content');
+	}
+
+	_handleSlotChange() {
+		if (this.#targetDelegated) {
+			this._updateTarget();
+		}
 	}
 
 	_isAboveOrBelow() {
@@ -931,25 +946,49 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.showing = this._isFocusing || this._isHovering || this.forceShow;
 	}
 
-	_updateTarget() {
+	async _updateTarget() {
 		this._removeListeners();
-		this._target = this._findTarget();
+
+		if (this._target && this.id) {
+			elemIdListRemove(this._target, 'aria-labelledby', this.id);
+			elemIdListRemove(this._target, 'aria-describedby', this.id);
+			if (this.#targetDelegated) {
+				this._target.removeAttribute('aria-label');
+				this._target.removeAttribute('aria-description');
+			}
+		}
+
+		this._target = await this._findTarget();
 		if (this._target) {
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
-			if (this.forType === 'label') {
-				elemIdListAdd(this._target, 'aria-labelledby', this.id);
-			} else if (!this.announced || isInteractive) {
-				elemIdListAdd(this._target, 'aria-describedby', this.id);
+
+			if (this.#targetDelegated) {
+				if (this.forType === 'label') {
+					this.removeAttribute('aria-labelledby');
+					this._target.ariaLabel = this.shadowRoot.querySelector('slot').assignedNodes().map(n => n.textContent).join('\n');
+				} else if (!this.announced || isInteractive) {
+					this.removeAttribute('aria-describedby');
+					this._target.ariaDescription = this.shadowRoot.querySelector('slot').assignedNodes().map(n => n.textContent).join('\n');
+				}
 			}
-			if (logAccessibilityWarning && !isInteractive && !this.announced) {
-				console.warn(
-					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
-					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.',
+			else {
+				if (this.forType === 'label') {
+					this._target.removeAttribute('aria-label');
+					elemIdListAdd(this._target, 'aria-labelledby', this.id);
+				} else if (!this.announced || isInteractive) {
+					this._target.removeAttribute('aria-description');
+					elemIdListAdd(this._target, 'aria-describedby', this.id);
+				}
+			}
+
+			if (!isInteractive && !this.announced) {
+				console.error(
+					"d2l-tooltip is being used in a non-accessible manner; it must be attached to interactive elements like 'a', 'button',",
+					"'input', 'select', 'textarea' or static / custom elements that use the FocusMixin, or are focusable and have a role.",
 					this._target
 				);
-				logAccessibilityWarning = false;
 			}
 			if (this.showing) {
 				this.updatePosition();

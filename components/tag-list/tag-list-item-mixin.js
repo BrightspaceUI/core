@@ -264,7 +264,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		} else if (options.hasTruncationTooltip || hasDescription) {
 			const tooltipHeader = hasDescription ? html`<div class="d2l-heading-4">${tagContent}</div>` : tagContent;
 			tooltip = html`
-				<d2l-tooltip class="vdiff-target" for="${this._id}" ?show-truncated-only="${!hasDescription}">
+				<d2l-tooltip class="vdiff-target" for="${this._id}" ?show-truncated-only="${!hasDescription}" for-type="${hasDescription ? 'descriptor' : 'label'}">
 					${tooltipHeader}
 					${hasDescription ? options.description : nothing}
 				</d2l-tooltip>`;
