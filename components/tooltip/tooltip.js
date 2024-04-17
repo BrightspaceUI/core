@@ -909,24 +909,25 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async _showingChanged(newValue, dispatch) {
+		if (!this.isConnected) return;
+
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
+
 		if (newValue) {
 			if (!this.forceShow) {
-				if (activeTooltip) activeTooltip.hide();
+				activeTooltip?.hide();
 				activeTooltip = this;
 			}
-
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
 			await this.updateComplete;
-			await this.updatePosition();
-			if (dispatch) {
-				//requestAnimationFrame(() => {
+
+			if (this._showing && dispatch) {
+				await this.updatePosition();
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tooltip-show', { bubbles: true, composed: true }
 				));
-				//});
 			}
 
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
