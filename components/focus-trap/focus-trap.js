@@ -34,6 +34,15 @@ class FocusTrap extends FocusMixin(LitElement) {
 		`;
 	}
 
+	static #exemptSelectors = [
+		'.equatio-toolbar-wrapper',
+		'.equatio-toolbar-shadow-root-container'
+	].join(', ');
+
+	static #isExempt(target) {
+		return !!target.closest(this.#exemptSelectors);
+	}
+
 	constructor() {
 		super();
 		this.trap = false;
@@ -97,13 +106,13 @@ class FocusTrap extends FocusMixin(LitElement) {
 		if (!this.trap || this._legacyPromptIds.size > 0 || lastTrap !== this) return;
 		const container = this._getContainer();
 		const target = e.composedPath()[0];
-		if (isComposedAncestor(container, target)) return;
+		if (isComposedAncestor(container, target) || FocusTrap.#isExempt(target)) return;
 		this._focusFirst();
 	}
 
 	_handleEndFocusIn(e) {
 		const container = this._getContainer();
-		if (this.shadowRoot && isComposedAncestor(container, e.relatedTarget)) {
+		if (this.shadowRoot && (isComposedAncestor(container, e.relatedTarget) || FocusTrap.#isExempt(e.relatedTarget))) {
 			// user is exiting trap via forward tabbing...
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
@@ -127,7 +136,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 
 	_handleStartFocusIn(e) {
 		const container = this._getContainer();
-		if (this.shadowRoot && isComposedAncestor(container, e.relatedTarget)) {
+		if (this.shadowRoot && (isComposedAncestor(container, e.relatedTarget) || FocusTrap.#isExempt(e.relatedTarget))) {
 			// user is exiting trap via back tabbing...
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {
