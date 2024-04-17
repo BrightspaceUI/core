@@ -27,24 +27,14 @@ describe('meter-circle', () => {
 				<d2l-meter-circle value="16" max="47" foreground-light></d2l-meter-circle>
 			</div>
 		` },
-		{ name: 'scaled-larger', wrapped: true, template: html`
-			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" style="width: 300%;"></d2l-meter-circle>
-			</div>
-		` },
-		{ name: 'scaled-smaller', wrapped: true, template: html`
-			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" style="width: 30%;"></d2l-meter-circle>
-			</div>
-		` },
 		{ name: 'scaled-larger-diameter', wrapped: true, template: html`
 			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" diameter=300 diameter-units="%"></d2l-meter-circle>
+				<d2l-meter-circle value="16" max="47" diameter="300%"></d2l-meter-circle>
 			</div>
 		` },
 		{ name: 'scaled-smaller-diameter', wrapped: true, template: html`
 			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" diameter=30 diameter-units="%"></d2l-meter-circle>
+				<d2l-meter-circle value="16" max="47" diameter="30%"></d2l-meter-circle>
 			</div>
 		` }
 	].forEach(({ name, template, wrapped }) => {
