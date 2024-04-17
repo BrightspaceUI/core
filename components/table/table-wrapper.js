@@ -64,7 +64,7 @@ export const tableStyles = css`
 	}
 	d2l-selection-select-all,
 	d2l-input-checkbox,
-	input.d2l-checkbox {
+	.d2l-checkbox {
 		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.2);
 	}
 	/* border radiuses */
