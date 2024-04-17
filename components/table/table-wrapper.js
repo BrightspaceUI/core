@@ -63,7 +63,8 @@ export const tableStyles = css`
 		padding: 0;
 	}
 	d2l-selection-select-all,
-	d2l-input-checkbox {
+	d2l-input-checkbox,
+	.d2l-checkbox {
 		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.2);
 	}
 	/* border radiuses */
