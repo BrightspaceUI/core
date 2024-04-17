@@ -922,11 +922,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			await this.updatePosition();
 			if (dispatch) {
-				requestAnimationFrame(() => {
-					this.dispatchEvent(new CustomEvent(
-						'd2l-tooltip-show', { bubbles: true, composed: true }
-					));
-				});
+				//requestAnimationFrame(() => {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tooltip-show', { bubbles: true, composed: true }
+				));
+				//});
 			}
 
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);

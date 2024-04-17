@@ -328,12 +328,14 @@ describe('d2l-input-date-range', () => {
 					it('focus start', async() => {
 						focusElem(elem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(elem, 'd2l-tooltip-show');
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
 					it('focus end', async() => {
 						focusElem(elem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(elem, 'd2l-tooltip-show');
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 				});
