@@ -737,6 +737,8 @@ class Tooltip extends RtlMixin(LitElement) {
 				await customElements.whenDefined(target.localName);
 				await target.updateComplete;
 				target = target?.shadowRoot?.querySelector(target?.constructor.focusElementSelector) ?? target;
+			} else {
+				this.#targetDelegated = false;
 			}
 		} else {
 			console.warn('<d2l-tooltip>: missing required attribute "for"');
@@ -920,9 +922,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			await this.updatePosition();
 			if (dispatch) {
-				this.dispatchEvent(new CustomEvent(
-					'd2l-tooltip-show', { bubbles: true, composed: true }
-				));
+				requestAnimationFrame(() => {
+					this.dispatchEvent(new CustomEvent(
+						'd2l-tooltip-show', { bubbles: true, composed: true }
+					));
+				});
 			}
 
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
@@ -966,10 +970,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			if (this.#targetDelegated) {
 				if (this.forType === 'label') {
-					this.removeAttribute('aria-labelledby');
+					this._target.removeAttribute('aria-labelledby');
 					this._target.ariaLabel = this.shadowRoot.querySelector('slot').assignedNodes().map(n => n.textContent).join('\n');
 				} else if (!this.announced || isInteractive) {
-					this.removeAttribute('aria-describedby');
+					this._target.removeAttribute('aria-describedby');
 					this._target.ariaDescription = this.shadowRoot.querySelector('slot').assignedNodes().map(n => n.textContent).join('\n');
 				}
 			}
