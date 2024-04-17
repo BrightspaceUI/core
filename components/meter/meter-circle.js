@@ -13,7 +13,10 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		return [ bodySmallStyles, bodyStandardStyles, css`
 		:host {
 			display: inline-block;
-			width: 2.4rem;
+			width: auto;
+		}
+		svg {
+			margin: 0 auto;
 		}
 		.d2l-meter-circle {
 			display: flex;
@@ -59,10 +62,19 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 	` ];
 	}
 
+	static get properties() {
+		return {
+			/**
+			 * Width styling of the meter
+			 * Valid values: A string repersenting the numerical and unit value
+			 * ex. "25%", "185px", "20rem"
+			 * @type {string}
+			 */
+			diameter: { type: String },
+		};
+	}
+
 	render() {
-		if (this.diameter) {
-			this.style.setProperty('width', `${this.diameter}${this.diameterUnits}`);
-		}
 		const lengthOfLine = 21 * Math.PI * 2; // approximation perimeter of circle
 		const percent = this.max > 0 ? (this.value / this.max) : 0;
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
@@ -84,7 +96,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 				class="d2l-meter-circle"
 				aria-label="${this._ariaLabel(primary, secondary)}"
 				role="img">
-				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" style="width: ${this.diameter || '2.4rem'};">
 					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
 					<circle
 						class="d2l-meter-circle-progress-bar"
