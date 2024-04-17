@@ -40,7 +40,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 	].join(', ');
 
 	static #isExempt(target) {
-		return !!target.closest(this.#exemptSelectors);
+		return !!target?.closest(this.#exemptSelectors);
 	}
 
 	constructor() {
