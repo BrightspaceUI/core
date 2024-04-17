@@ -91,7 +91,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th scope="col" sticky><input class="d2l-checkbox" type="checkbox"></th>
+							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
 							<th scope="col">Country</th>
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
