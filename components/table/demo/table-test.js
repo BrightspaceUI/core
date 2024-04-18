@@ -99,7 +99,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<tbody>
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
-							${this._renderSortButton('Avocado')}
+							${this._renderDoubleSortButton('Param1', 'Param2')}
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
 						<tr header>
@@ -158,6 +158,23 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			</th>
 		`;
 	}
+
+	_renderDoubleSortButton(data1, data2) {
+		const noSort = this._sortField !== data1.toLowerCase();
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">${data1}
+				</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button nosort>
+					${data2}
+				</d2l-table-col-sort-button>
+			</th>
+		`;
+	}
+
 
 	_selectRow(e) {
 		const country = e.target.parentNode.parentNode.dataset.name;
