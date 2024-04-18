@@ -16,18 +16,18 @@ import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
-const fruits = ['Apples', 'Oranges', 'Bananas'];
+const dataColumns = ['Population', 'Size', 'Elevation'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 const thTextShort = ['Additional', 'Placeholder', 'Header'];
 
 const data = () => [
-	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
-	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
-	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
-	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
-	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
-	{ name: 'Hawaii', fruit: { 'apples': 129875, 'oranges': 856765, 'bananas': 123 }, selected: false },
-	{ name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
+	{ name: 'Ottawa, Canada', data: { 'population': 356863, 'size': 567233, 'elevation': 789 }, selected: true },
+	{ name: 'Sydney, Australia', data: { 'population': 308298, 'size': 398610, 'elevation': 351 }, selected: true },
+	{ name: 'Cairo, Egypt', data: { 'population': 716931, 'size': 4603253, 'elevation': 238 }, selected: false },
+	{ name: 'Moscow, Russia', data: { 'population': 1300000, 'size': 50000, 'elevation': 649 }, selected: false },
+	{ name: 'London, England', data: { 'population': 345782, 'size': 589763, 'elevation': 129 }, selected: false },
+	{ name: 'Seattle, USA', data: { 'population': 129875, 'size': 1459, 'elevation': 123 }, selected: false },
+	{ name: 'Tokyo, Japan', data: { 'population': 857834, 'size': 146788, 'elevation': 783 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -71,12 +71,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
 				return ifDefined(this._compositeField) ?
-					b.fruit[this._sortField] - a.fruit[this._sortField] || b.name - a.name :
-					b.fruit[this._sortField] - a.fruit[this._sortField];
+					b.data[this._sortField] - a.data[this._sortField] || b.name - a.name :
+					b.data[this._sortField] - a.data[this._sortField];
 			}
 			return ifDefined(this._compositeField) ?
-				a.fruit[this._sortField] - b.fruit[this._sortField] || a.name - b.name :
-				a.fruit[this._sortField] - b.fruit[this._sortField];
+				a.data[this._sortField] - b.data[this._sortField] || a.name - b.name :
+				a.data[this._sortField] - b.data[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
@@ -97,19 +97,15 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							<th scope="col">Country</th>
-							${fruits.map(fruit => this._renderSortButton(fruit))}
+							<th scope="col">City, Country</th>
+							${dataColumns.map(data => this._renderSortButton(data))}
 						</tr>
 					</thead>
 					<tbody>
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
-							${this._renderDoubleSortButton('Avocado', 'Prune')}
+							${this._renderDoubleSortButton('City', 'Country')}
 							${thTextShort.map(text => html`<th scope="col">${text}</th>`)}
-						</tr>
-						<tr header>
-							<th scope="col" sticky></th>
-							${thText.map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
@@ -122,7 +118,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
+								${dataColumns.map(data => html`<td>${formatter.format(row.data[data.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
 					</tbody>
@@ -175,7 +171,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_handlePagerLoadMore(e) {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < e.target.pageSize; i++) {
-			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+			this._data.push({ name: `City, Country ${startIndex + i}`, data: { 'population': 8534, 'size': 1325, 'elevation': 78382756 }, selected: false });
 		}
 		this.requestUpdate();
 		e.detail.complete();
@@ -205,36 +201,36 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		}
 	}
 
-	_renderDoubleSortButton(fruit1, fruit2) {
-		const noSort = this._sortField !== fruit1.toLowerCase();
+	_renderDoubleSortButton(data1, data2) {
+		const noSort = this._sortField !== data1.toLowerCase();
 		return html`
 			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit1}
+					?nosort="${noSort}">${data1}
 				</d2l-table-col-sort-button>
 				<d2l-table-col-sort-button nosort>
-					${fruit2}
+					${data2}
 				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
 
-	_renderSortButton(fruit) {
-		const noSort = this._sortField !== fruit.toLowerCase();
-		if (fruit === 'Oranges') {
+	_renderSortButton(data) {
+		const noSort = this._sortField !== data.toLowerCase();
+		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
 						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
-						${fruit}
-						<d2l-menu-item slot="items" text="A to Z" @click="${this._handleAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="Z to A" @click="${this._handleZtoA}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="Country, A to Z" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="Country, Z to A" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+						${data}
+						<d2l-menu-item slot="items" text="Lowest to Highest" @click="${this._handleAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="Highest to Lowest" @click="${this._handleZtoA}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="City, Country, Lowest to Highest" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text="City, Country, Highest to Lowest" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
 					</d2l-table-col-sort-button>
 				</th>
 			`;
@@ -244,7 +240,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit}
+					?nosort="${noSort}">${data}
 				</d2l-table-col-sort-button>
 			</th>
 		`;
