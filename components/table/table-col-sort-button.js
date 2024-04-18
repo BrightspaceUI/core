@@ -166,7 +166,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 
-		return !this._hasDropdownItems ? sortButton : sortButonDropdown;
+		return !this._hasDropdownItems || this.hasSibling ? sortButton : sortButonDropdown;
 	}
 
 	_handleSlotChange(e) {
