@@ -35,6 +35,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 	}
 
 	static #exemptSelectors = [
+		'.d2l-focus-trap-exempt',
 		'.equatio-toolbar-wrapper',
 		'.equatio-toolbar-shadow-root-container'
 	].join(', ');

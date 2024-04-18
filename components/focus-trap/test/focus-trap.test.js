@@ -13,6 +13,7 @@ const normalFixture = html`
 			<a id="last" href="http://www.d2l.com">Last</a>
 		</d2l-focus-trap>
 		<a id="after" href="http://www.d2l.com">After</a>
+		<a class="d2l-focus-trap-exempt" href="http://www.d2l.com">Exempt</a>
 	</div>
 `;
 
@@ -75,6 +76,11 @@ describe('d2l-focus-trap', () => {
 			it('redirects body focus', () => {
 				elem.querySelector('#before').focus();
 				expect(document.activeElement).to.equal(elem.querySelector('#first'));
+			});
+
+			it('does not redirect from exempt elements', () => {
+				elem.querySelector('.d2l-focus-trap-exempt').focus();
+				expect(document.activeElement).to.equal(elem.querySelector('.d2l-focus-trap-exempt'));
 			});
 
 			it('does not redirect from children', () => {
