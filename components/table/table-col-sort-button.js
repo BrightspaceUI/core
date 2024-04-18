@@ -158,7 +158,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const sortButonDropdown = html`
 			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
 				${sortButton}
-				<d2l-dropdown-menu id="dropdown">
+				<d2l-dropdown-menu id="dropdown" no-pointer>
 					<d2l-menu>
 						<slot name="items"></slot>
 					</d2l-menu>
