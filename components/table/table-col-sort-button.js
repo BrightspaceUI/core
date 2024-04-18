@@ -129,7 +129,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host(:not([has-sibling]):not([has-dropdown])) button:focus-visible,
 			:host(:not([has-sibling]):not([has-dropdown])) button:${unsafeCSS(getFocusPseudoClass())} {
 				height: var(--d2l-sortable-button-border-focus-height);
-				width: calc(100% - 8px);
+				width: var(--d2l-sortable-button-border-focus-width);
 			}
 		`;
 	}
