@@ -166,12 +166,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 
-		return !this._hasDropdownItems || this.hasSibling ? sortButton : sortButonDropdown;
+		return !this._hasDropdownItems ? sortButton : sortButonDropdown;
 	}
 
 	_handleSlotChange(e) {
 		const content = e.target.assignedNodes({ flatten: true });
-		this._hasDropdownItems = content && content.some(element => element.nextSibling === 'd2l-menu-item');
+		this._hasDropdownItems = content && content.some(element => {
+			const nextSibling = element.nextSibling;
+			return nextSibling && nextSibling.localName && nextSibling.localName === 'd2l-menu-item'
+		});
 	}
 
 }
