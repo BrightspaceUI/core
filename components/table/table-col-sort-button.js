@@ -171,7 +171,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	_handleSlotChange(e) {
 		const content = e.target.assignedNodes({ flatten: true });
-		this._hasDropdownItems = content && content.length > 2;
+		this._hasDropdownItems = content && content.some(element => element.nextSibling === 'd2l-menu-item');
 	}
 
 }
