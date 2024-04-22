@@ -219,18 +219,64 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(data) {
 		const noSort = this._sortField !== data.toLowerCase();
+		const ariaButtonLabel = "Data";
+		const ariaScreenReaderSyntax = "menu pop-up button";
+		const ariaScreenReaderSyntaxMainButton = "button";
+		const ariaLabelDescriptionMainButton = "click to add sort order";
+		const ariaDescriptionLabel = "click to change sort order";
+		const sortLabels = [
+			"Lowest to Highest",
+			"Highest to Lowest",
+			"City, Country, Lowest to Highest",
+			"City, Country, Highest to Lowest"
+		];
+		const ariaLabels = {
+			multFaceted: [
+				`${ariaButtonLabel} ${ariaScreenReaderSyntax} ${ariaLabelDescriptionMainButton}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[1]} ${ariaDescriptionLabel}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[2]} ${ariaDescriptionLabel}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[3]} ${ariaDescriptionLabel}`
+			],
+			singleFaceted: [
+				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} ${ariaLabelDescriptionMainButton}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
+				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
+			]
+		}
 		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
+						ariaLabel="${ariaLabels.multFaceted[0]}"
 						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
 						${data}
-						<d2l-menu-item slot="items" text="Lowest to Highest" @click="${this._handleAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="Highest to Lowest" @click="${this._handleZtoA}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="City, Country, Lowest to Highest" @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text="City, Country, Highest to Lowest" @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+						<d2l-menu-item
+							aria-label="${ariaLabels.multFaceted[1]}"
+							slot="items"
+							text=${sortLabels[0]}
+							@click="${this._handleAtoZ}">
+						</d2l-menu-item>
+						<d2l-menu-item
+							aria-label="${ariaLabels.multFaceted[2]}"
+							slot="items"
+							text=${sortLabels[1]}
+							@click="${this._handleZtoA}">
+						</d2l-menu-item>
+						<d2l-menu-item
+							aria-label="${ariaLabels.multFaceted[3]}"
+							slot="items"
+							text=${sortLabels[2]}
+							@click="${this._handleCompositeAtoZ}">
+						</d2l-menu-item>
+						<d2l-menu-item
+							aria-label="${ariaLabels.multFaceted[4]}"
+							slot="items"
+							text=${sortLabels[3]}
+							@click="${this._handleCompositeZtoA}">
+						</d2l-menu-item>
 					</d2l-table-col-sort-button>
 				</th>
 			`;
@@ -238,6 +284,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return html`
 			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
+					aria-label="${`${ariaLabels.singleFaceted[0]} ${ariaLabels.singleFaceted[1]} ${ariaLabels.singleFaceted[2]}`}"
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${data}

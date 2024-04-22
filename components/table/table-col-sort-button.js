@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
@@ -28,6 +28,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * ARIA label for the sort button with the aria-label described by the consumer.
+			 * @type {String}
+			 */
+			ariaLabel: {
+				attribute: 'aria-label',
+				reflect: true,
+				type: String
 			},
 			/**
 			 * @ignore
@@ -151,12 +160,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const sortButton = html`
-			<button class="d2l-dropdown-opener" type="button">
+			<button aria-labelledby=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
 				<slot @slotchange="${this._handleSlotChange}"></slot>${iconView}
 			</button>
 		`;
 		const sortButonDropdown = html`
-			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
+			<d2l-dropdown aria-hidden="true" class="d2l-sortable-button-dropdown" noAutoFocus>
 				${sortButton}
 				<d2l-dropdown-menu id="dropdown" no-pointer>
 					<d2l-menu>
