@@ -249,7 +249,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		}
 		if (data === 'Size') {
 			return html`
-				<th aria-hidden="true" class="sortableCell" scope="col">
+				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
 						ariaLabel="${ariaLabels.multFaceted.toString()}"
 						@click="${this._handleSortDropdown}"
@@ -267,7 +267,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return html`
 			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
-					aria-label="${ariaLabels.singleFaceted.toString()}"
+					ariaLabel="${ariaLabels.singleFaceted.toString()}"
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${data}

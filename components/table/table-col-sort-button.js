@@ -31,10 +31,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			},
 			/**
 			 * ARIA label for the sort button with the aria-label described by the consumer.
-			 * @type {String}
+			 * @type {string}
 			 */
 			ariaLabel: {
-				attribute: 'aria-label',
 				reflect: true,
 				type: String
 			},
