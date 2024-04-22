@@ -117,12 +117,12 @@ export default {
 	"components.tag-list.role-description": "Rhestr o Dagiau",
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Byselli Saeth",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Symud rhwng tagiau",
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",
 	"components.tag-list-item.tooltip-delete-key-desc": "Dileu’r tag â ffocws",
 	"components.tag-list-item.tooltip-title": "Rheolyddion Bysellfwrdd",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Rhannwr panel eilaidd",
+	"templates.primary-secondary.secondary-panel": "Panel eilaidd"
 };

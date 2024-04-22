@@ -101,8 +101,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.table-controls.label": "Acciones de la tabla",
@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceso/Suprimir",
 	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar la etiqueta enfocada",
 	"components.tag-list-item.tooltip-title": "Controles del teclado",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Divisor de panel secundario",
+	"templates.primary-secondary.secondary-panel": "Panel secundario"
 };

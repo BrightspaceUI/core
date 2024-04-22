@@ -117,12 +117,12 @@ export default {
 	"components.tag-list.role-description": "Tag-Liste",
 	"components.tag-list.show-less": "Weniger anzeigen",
 	"components.tag-list.show-more-description": "Wählen Sie diese Option, um ausgeblendete Elemente der Tag-Liste anzuzeigen",
-	"components.tag-list-item.role-description": "Tag", // mfv-translated
+	"components.tag-list-item.role-description": "Tag",
 	"components.tag-list-item.tooltip-arrow-keys": "Pfeiltasten",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Zwischen Tags wechseln",
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Ausgewählten Tag löschen",
 	"components.tag-list-item.tooltip-title": "Tastatursteuerung",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Sekundäre Bereichstrennung",
+	"templates.primary-secondary.secondary-panel": "Sekundärer Bereich"
 };
