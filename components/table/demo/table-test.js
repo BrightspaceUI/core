@@ -136,7 +136,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.name.toLowerCase();
+			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
 			this._sortField = field;
 			this._compositeField = undefined;
@@ -148,7 +148,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.name.toLowerCase();
+			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
 			this._sortField = field;
 			this._compositeField = false;
@@ -160,7 +160,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.name.toLowerCase();
+			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = true;
 			this._sortField = field;
 			this._compositeField = true;
@@ -179,23 +179,24 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_handleSortDropdown(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-		const field = sortButtonComponent.name.toLowerCase();
+		const field = sortButtonComponent.innerText.toLowerCase();
 		this._sortField = field;
 	}
 
 	_handleSort(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-		const field = sortButtonComponent.name.toLowerCase();
+		const field = sortButtonComponent.innerText.toLowerCase();
 		const desc = e.target.hasAttribute('desc');
 		this._sortField = field;
 		this._sortDesc = !desc;
+		console.log(sortButtonComponent)
 	}
 
 	_handleZtoA(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.name.toLowerCase();
+			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = true;
 			this._sortField = field;
 			this._compositeField = undefined;

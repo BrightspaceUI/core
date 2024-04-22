@@ -38,10 +38,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				reflect: true,
 				type: String
 			},
-			name: {
-				reflect: true,
-				type: String
-			},
 			/**
 			 * @ignore
 			 */
@@ -168,37 +164,29 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 		const sortButton = html`
 			<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
-				${ifDefined(this.name)}${iconView}
+				<slot></slot>${iconView}
 			</button>
+			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButonDropdown = html`
 			<d2l-dropdown>
-				${sortButton}
+				<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
+					<slot></slot>${iconView}
+				</button>
 				<d2l-dropdown-menu id="dropdown" no-pointer>
 					<d2l-menu>
-						<slot name="items"></slot>
+						<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
 
-		return html`<slot class="no-display" @slotchange="${this._handleSlotChange}"></slot>${!this._hasDropdownItems ? sortButton : sortButonDropdown}`;
+		return !this._hasDropdownItems ? sortButton : sortButonDropdown;
 	}
 
-	_handleSlotChange(e) {
-		const content = e.target.assignedNodes({ flatten: true });
-		this._hasDropdownItems = content && content.some(element => {
-			const nextSibling = element.nextSibling;
-			return nextSibling && nextSibling.localName && nextSibling.localName === 'd2l-menu-item'
-		});
-
-		content.forEach(element => {
-			if (element.data.replace(/\s/g, "").length > 0) {
-				this.name = element.data;
-			}
-		});
+	_handleSlotChange(_) {
+		this._hasDropdownItems = true;
 	}
-
 }
 
 customElements.define('d2l-table-col-sort-button', TableColSortButton);
