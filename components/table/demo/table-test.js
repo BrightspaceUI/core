@@ -136,7 +136,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
+			const field = sortButtonComponent.name.toLowerCase();
 			const desc = false;
 			this._sortField = field;
 			this._compositeField = undefined;
@@ -148,7 +148,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
+			const field = sortButtonComponent.name.toLowerCase();
 			const desc = false;
 			this._sortField = field;
 			this._compositeField = false;
@@ -160,7 +160,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
+			const field = sortButtonComponent.name.toLowerCase();
 			const desc = true;
 			this._sortField = field;
 			this._compositeField = true;
@@ -178,12 +178,14 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	}
 
 	_handleSortDropdown(e) {
-		const field = e.target.innerText.toLowerCase();
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+		const field = sortButtonComponent.name.toLowerCase();
 		this._sortField = field;
 	}
 
 	_handleSort(e) {
-		const field = e.target.innerText.toLowerCase();
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+		const field = sortButtonComponent.name.toLowerCase();
 		const desc = e.target.hasAttribute('desc');
 		this._sortField = field;
 		this._sortDesc = !desc;
@@ -193,7 +195,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
-			const field = sortButtonComponent.innerText.toLowerCase();
+			const field = sortButtonComponent.name.toLowerCase();
 			const desc = true;
 			this._sortField = field;
 			this._compositeField = undefined;
@@ -248,35 +250,15 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			return html`
 				<th aria-hidden="true" class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
-						ariaLabel="${ariaLabels.multFaceted[0]}"
+						ariaLabel="${ariaLabels.multFaceted.toString()}"
 						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
 						${data}
-						<d2l-menu-item
-							aria-label="${ariaLabels.multFaceted[1]}"
-							slot="items"
-							text=${sortLabels[0]}
-							@click="${this._handleAtoZ}">
-						</d2l-menu-item>
-						<d2l-menu-item
-							aria-label="${ariaLabels.multFaceted[2]}"
-							slot="items"
-							text=${sortLabels[1]}
-							@click="${this._handleZtoA}">
-						</d2l-menu-item>
-						<d2l-menu-item
-							aria-label="${ariaLabels.multFaceted[3]}"
-							slot="items"
-							text=${sortLabels[2]}
-							@click="${this._handleCompositeAtoZ}">
-						</d2l-menu-item>
-						<d2l-menu-item
-							aria-label="${ariaLabels.multFaceted[4]}"
-							slot="items"
-							text=${sortLabels[3]}
-							@click="${this._handleCompositeZtoA}">
-						</d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[2]} @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[3]} @click="${this._handleCompositeZtoA}"></d2l-menu-item>
 					</d2l-table-col-sort-button>
 				</th>
 			`;
@@ -284,7 +266,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return html`
 			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
-					aria-label="${`${ariaLabels.singleFaceted[0]} ${ariaLabels.singleFaceted[1]} ${ariaLabels.singleFaceted[2]}`}"
+					aria-label="${ariaLabels.singleFaceted.toString()}"
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${data}

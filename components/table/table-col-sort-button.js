@@ -38,6 +38,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				reflect: true,
 				type: String
 			},
+			name: {
+				reflect: true,
+				type: String
+			},
 			/**
 			 * @ignore
 			 */
@@ -140,6 +144,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				height: var(--d2l-sortable-button-border-focus-height);
 				width: var(--d2l-sortable-button-border-focus-width);
 			}
+			.no-display {
+				display: none;
+			}
 		`;
 	}
 
@@ -161,11 +168,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			null;
 		const sortButton = html`
 			<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
-				<slot @slotchange="${this._handleSlotChange}"></slot>${iconView}
+				${ifDefined(this.name)}${iconView}
 			</button>
 		`;
 		const sortButonDropdown = html`
-			<d2l-dropdown class="d2l-sortable-button-dropdown" noAutoFocus>
+			<d2l-dropdown>
 				${sortButton}
 				<d2l-dropdown-menu id="dropdown" no-pointer>
 					<d2l-menu>
@@ -175,7 +182,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 
-		return !this._hasDropdownItems ? sortButton : sortButonDropdown;
+		return html`<slot class="no-display" @slotchange="${this._handleSlotChange}"></slot>${!this._hasDropdownItems ? sortButton : sortButonDropdown}`;
 	}
 
 	_handleSlotChange(e) {
@@ -183,6 +190,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this._hasDropdownItems = content && content.some(element => {
 			const nextSibling = element.nextSibling;
 			return nextSibling && nextSibling.localName && nextSibling.localName === 'd2l-menu-item'
+		});
+
+		content.forEach(element => {
+			if (element.data.replace(/\s/g, "").length > 0) {
+				this.name = element.data;
+			}
 		});
 	}
 
