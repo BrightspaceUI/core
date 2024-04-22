@@ -167,7 +167,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
-		const sortButonDropdown = html`
+		const sortButtonDropdown = html`
 			<d2l-dropdown>
 				<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
 					<slot></slot>${iconView}
@@ -180,7 +180,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 
-		return !this._hasDropdownItems ? sortButton : sortButonDropdown;
+		return !this._hasDropdownItems ? sortButton : sortButtonDropdown;
 	}
 
 	_handleSlotChange(_) {
