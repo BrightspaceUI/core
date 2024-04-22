@@ -160,7 +160,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const sortButton = html`
-			<button aria-labelledby=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
+			<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
 				<slot @slotchange="${this._handleSlotChange}"></slot>${iconView}
 			</button>
 		`;

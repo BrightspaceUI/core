@@ -246,7 +246,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		}
 		if (data === 'Size') {
 			return html`
-				<th class="sortableCell" scope="col">
+				<th aria-hidden="true" class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
 						ariaLabel="${ariaLabels.multFaceted[0]}"
 						@click="${this._handleSortDropdown}"
