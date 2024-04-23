@@ -64,9 +64,11 @@ export const tableStyles = css`
 	}
 	d2l-selection-select-all,
 	d2l-input-checkbox,
-	.d2l-checkbox,
-	d2l-button-icon {
+	.d2l-checkbox {
 		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.2);
+	}
+	d2l-button-icon {
+		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.5);
 	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
