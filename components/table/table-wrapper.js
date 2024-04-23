@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { cssSizes } from '../inputs/input-checkbox.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -62,13 +63,14 @@ export const tableStyles = css`
 	th.d2l-table-header-col-sortable {
 		padding: 0;
 	}
-	d2l-selection-select-all,
+	.d2l-checkbox,
 	d2l-input-checkbox,
-	.d2l-checkbox {
-		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.2);
+	d2l-selection-select-all,
+	input[type='checkbox'] {
+		margin-block: calc(-1 * ${cssSizes.inputBoxSize}rem); /* The height of an input checkbox */
 	}
 	d2l-button-icon {
-		margin-block: calc(-1 * var(--d2l-table-cell-height) * 0.5);
+		margin-block: calc(-1 * var(--d2l-button-icon-min-height));
 	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
