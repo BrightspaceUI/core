@@ -66,7 +66,7 @@ export const tableStyles = css`
 	.d2l-checkbox,
 	d2l-input-checkbox,
 	d2l-selection-select-all,
-	input[type='checkbox'] {
+	input[type="checkbox"] {
 		margin-block: calc(-0.5 * (${cssSizes.inputBoxSize}rem - var(--d2l-table-cell-padding)));
 	}
 	d2l-button-icon {
