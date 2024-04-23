@@ -67,10 +67,11 @@ export const tableStyles = css`
 	d2l-input-checkbox,
 	d2l-selection-select-all,
 	input[type="checkbox"] {
-		margin-block: calc(-0.5 * (${cssSizes.inputBoxSize}rem - var(--d2l-table-cell-padding)));
+		/* Get the margin required to make the height 48px based on the checkbox height */
+		margin-block: calc(0.5 * (48px - ${cssSizes.inputBoxSize}rem - 2 * var(--d2l-table-cell-padding)) - 1px);
 	}
 	d2l-button-icon {
-		margin-block: calc(-0.5 * (var(--d2l-button-icon-min-height) - var(--d2l-table-cell-padding)));
+		margin-block: calc(0.5 * (48px - var(--d2l-button-icon-min-height) - 2 * var(--d2l-table-cell-padding)) - 1px);
 	}
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
