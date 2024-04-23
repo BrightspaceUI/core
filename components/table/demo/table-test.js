@@ -244,7 +244,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
 				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
 			]
-		}
+		};
+
 		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
