@@ -17,7 +17,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const dataColumns = ['Population', 'Size', 'Elevation'];
-const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 const thTextShort = ['Additional', 'Placeholder', 'Header'];
 
 const data = () => [
@@ -177,19 +176,18 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		e.detail.complete();
 	}
 
-	_handleSortDropdown(e) {
-		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-		const field = sortButtonComponent.innerText.toLowerCase();
-		this._sortField = field;
-	}
-
 	_handleSort(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 		const field = sortButtonComponent.innerText.toLowerCase();
 		const desc = e.target.hasAttribute('desc');
 		this._sortField = field;
 		this._sortDesc = !desc;
-		console.log(sortButtonComponent)
+	}
+
+	_handleSortDropdown(e) {
+		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
+		const field = sortButtonComponent.innerText.toLowerCase();
+		this._sortField = field;
 	}
 
 	_handleZtoA(e) {
@@ -222,16 +220,16 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(data) {
 		const noSort = this._sortField !== data.toLowerCase();
-		const ariaButtonLabel = "Data";
-		const ariaScreenReaderSyntax = "menu pop-up button";
-		const ariaScreenReaderSyntaxMainButton = "button";
-		const ariaLabelDescriptionMainButton = "click to add sort order";
-		const ariaDescriptionLabel = "click to change sort order";
+		const ariaButtonLabel = 'Data';
+		const ariaScreenReaderSyntax = 'menu pop-up button';
+		const ariaScreenReaderSyntaxMainButton = 'button';
+		const ariaLabelDescriptionMainButton = 'click to add sort order';
+		const ariaDescriptionLabel = 'click to change sort order';
 		const sortLabels = [
-			"Lowest to Highest",
-			"Highest to Lowest",
-			"City, Country, Lowest to Highest",
-			"City, Country, Highest to Lowest"
+			'Lowest to Highest',
+			'Highest to Lowest',
+			'City, Country, Lowest to Highest',
+			'City, Country, Highest to Lowest'
 		];
 		const ariaLabels = {
 			multFaceted: [
