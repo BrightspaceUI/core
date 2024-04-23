@@ -1,5 +1,6 @@
 import '../table-col-sort-button.js';
 import '../table-controls.js';
+import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
@@ -98,7 +99,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					</thead>
 					<tbody>
 						<tr class="d2l-table-header">
-							<th scope="col" sticky></th>
+							<th scope="col" sticky><d2l-button-icon icon="tier1:gear"></d2l-button-icon></th>
 							${this._renderDoubleSortButton('Avocado', 'Prune')}
 							${fruits.map(fruit => this._renderSortButton(fruit))}
 						</tr>
