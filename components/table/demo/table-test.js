@@ -70,11 +70,11 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return ifDefined(this._compositeField) ?
+				return ifDefined(this._multifacetedField) ?
 					b.data[this._sortField] - a.data[this._sortField] || b.name - a.name :
 					b.data[this._sortField] - a.data[this._sortField];
 			}
-			return ifDefined(this._compositeField) ?
+			return ifDefined(this._multifacetedField) ?
 				a.data[this._sortField] - b.data[this._sortField] || a.name - b.name :
 				a.data[this._sortField] - b.data[this._sortField];
 		});
@@ -139,31 +139,31 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
 			this._sortField = field;
-			this._compositeField = undefined;
+			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
 		}
 	}
 
-	_handleCompositeAtoZ(e) {
+	_handleMultifacetedAtoZ(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = false;
 			this._sortField = field;
-			this._compositeField = false;
+			this._multifacetedField = false;
 			this._sortDesc = !desc;
 		}
 	}
 
-	_handleCompositeZtoA(e) {
+	_handleMultifacetedZtoA(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
 		if (sortButtonComponent) {
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = true;
 			this._sortField = field;
-			this._compositeField = true;
+			this._multifacetedField = true;
 			this._sortDesc = !desc;
 		}
 	}
@@ -199,7 +199,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			const field = sortButtonComponent.innerText.toLowerCase();
 			const desc = true;
 			this._sortField = field;
-			this._compositeField = undefined;
+			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
 		}
 	}
@@ -258,8 +258,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						${data}
 						<d2l-menu-item slot="items" text=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item>
 						<d2l-menu-item slot="items" text=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[2]} @click="${this._handleCompositeAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[3]} @click="${this._handleCompositeZtoA}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[2]} @click="${this._handleMultifacetedAtoZ}"></d2l-menu-item>
+						<d2l-menu-item slot="items" text=${sortLabels[3]} @click="${this._handleMultifacetedZtoA}"></d2l-menu-item>
 					</d2l-table-col-sort-button>
 				</th>
 			`;
