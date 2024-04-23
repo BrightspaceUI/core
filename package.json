@@ -45,7 +45,6 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^1",
     "@brightspace-ui/testing": "^1",
     "@open-wc/semantic-dom-diff": "^0.20",
