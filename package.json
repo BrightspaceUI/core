@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "2.185.0",
+  "version": "2.186.4",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -45,7 +45,6 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^1",
     "@brightspace-ui/testing": "^1",
     "@open-wc/semantic-dom-diff": "^0.20",

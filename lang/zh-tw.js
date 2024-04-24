@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "退格/刪除",
 	"components.tag-list-item.tooltip-delete-key-desc": "刪除對焦標記",
 	"components.tag-list-item.tooltip-title": "鍵盤控制項",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "次要面板分隔線",
+	"templates.primary-secondary.secondary-panel": "次要面板"
 };

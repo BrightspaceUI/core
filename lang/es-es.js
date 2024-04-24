@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceso/Eliminar",
 	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar la etiqueta seleccionada",
 	"components.tag-list-item.tooltip-title": "Controles del teclado",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Divisor de panel secundario",
+	"templates.primary-secondary.secondary-panel": "Panel secundario"
 };

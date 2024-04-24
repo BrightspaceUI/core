@@ -139,23 +139,25 @@ class Form extends FormMixin(LitElement) {
 		}
 		e.stopPropagation();
 		e.preventDefault();
-		const form = e.composedPath()[0];
 
-		if (!this._nestedForms.has(e.target)) {
-			this._nestedForms.set(e.target, []);
+		const form = e.composedPath()[0];
+		const target = e.target;
+
+		if (!this._nestedForms.has(target)) {
+			this._nestedForms.set(target, []);
 		}
-		this._nestedForms.get(e.target).push(form);
+		this._nestedForms.get(target).push(form);
 
 		const onFormDisconnect = () => {
 			form.removeEventListener('d2l-form-disconnect', onFormDisconnect);
-			if (this._nestedForms.has(e.target)) {
-				const forms = this._nestedForms.get(e.target);
+			if (this._nestedForms.has(target)) {
+				const forms = this._nestedForms.get(target);
 				const index = forms.indexOf(form);
 				if (index > -1) {
 					forms.splice(index, 1);
 				}
 				if (forms.length === 0) {
-					this._nestedForms.delete(e.target);
+					this._nestedForms.delete(target);
 				}
 			}
 		};

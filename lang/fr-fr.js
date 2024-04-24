@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/Supprimer",
 	"components.tag-list-item.tooltip-delete-key-desc": "Supprimez l’étiquette ciblée",
 	"components.tag-list-item.tooltip-title": "Commandes du clavier",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Séparateur de panneau secondaire",
+	"templates.primary-secondary.secondary-panel": "Panneau secondaire"
 };
