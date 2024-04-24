@@ -346,20 +346,10 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 	_handleItemDeleted(e) {
 		const rootTarget = e.composedPath()[0];
-		const itemBeforeTargetIndex = this._items.indexOf(rootTarget) - 1;
+		const itemIndex = this._items.slice().indexOf(rootTarget);
 
 		setTimeout(() => {
-			const children = this._getVisibleEffectiveChildren(this._items);
-			const itemIndex = children.indexOf(rootTarget);
-
-			if (children.length <= 1) return;
-
-			let element = children[itemIndex - 1];
-			if (itemIndex < 0) {
-				if (itemBeforeTargetIndex < 0) element = children[0];
-				else element = children[itemBeforeTargetIndex];
-			}
-			const focusableElem = element || (children[itemIndex] === e.target ? children[itemIndex + 1] : children[itemIndex]);
+			const focusableElem = this._items[itemIndex - 1] || this._items[0];
 			focusableElem.focus();
 		}, this.clearFocusTimeout);
 	}
