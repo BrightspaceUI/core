@@ -227,7 +227,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this._getVisibleEffectiveChildren(this._items);
+		return this._getVisibleEffectiveChildren();
 	}
 
 	_chomp() {
@@ -321,14 +321,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return results;
 	}
 
-	_getVisibleEffectiveChildren(currentItems) {
+	_getVisibleEffectiveChildren() {
 		if (!this.shadowRoot) {
 			return [];
 		}
 
 		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
 		const clearButton = !this.clearable ? [] : (this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || []);
-		const items = this._showHiddenTags ? currentItems : currentItems.slice(0, this._chompIndex);
+		const items = this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
 		return items.concat(showMoreButton).concat(clearButton);
 	}
 
