@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "बैकस्पेस/हटाएँ",
 	"components.tag-list-item.tooltip-delete-key-desc": "फ़ोकिस किए हुए टैग को हटाएँ",
 	"components.tag-list-item.tooltip-title": "कीबोर्ड कंट्रोल",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "सेकेंडरी पैनल डिवाइडर",
+	"templates.primary-secondary.secondary-panel": "सेकेंडरी पैनल"
 };
