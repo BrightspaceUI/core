@@ -349,7 +349,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		const itemIndex = this._items.slice().indexOf(rootTarget);
 
 		setTimeout(() => {
-			const focusableElem = this._items[itemIndex - 1] || this._items[0];
+			const focusableElem = this._items[itemIndex - 1] || this._items[0] || (this._items[itemIndex] === e.target ? this._items[itemIndex + 1] : this._items[itemIndex]);
 			focusableElem.focus();
 		}, this.clearFocusTimeout);
 	}
