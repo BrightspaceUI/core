@@ -227,7 +227,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this._getVisibleEffectiveChildren();
+		return this._getVisibleEffectiveChildren(this._items);
 	}
 
 	_chomp() {
@@ -321,14 +321,14 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		return results;
 	}
 
-	_getVisibleEffectiveChildren() {
+	_getVisibleEffectiveChildren(currentItems) {
 		if (!this.shadowRoot) {
 			return [];
 		}
 
 		const showMoreButton = this.shadowRoot.querySelector('.d2l-tag-list-button') || [];
 		const clearButton = !this.clearable ? [] : (this.shadowRoot.querySelector('.d2l-tag-list-clear-button') || []);
-		const items = this._showHiddenTags ? this._items : this._items.slice(0, this._chompIndex);
+		const items = this._showHiddenTags ? currentItems : currentItems.slice(0, this._chompIndex);
 		return items.concat(showMoreButton).concat(clearButton);
 	}
 
@@ -346,13 +346,15 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 
 	_handleItemDeleted(e) {
 		const rootTarget = e.composedPath()[0];
-		const children = this._getVisibleEffectiveChildren();
-		const itemIndex = children.indexOf(rootTarget);
-
-		if (children.length <= 1) return;
 
 		setTimeout(() => {
-			const focusableElem = children[itemIndex - 1] || (children[itemIndex] === e.target ? children[itemIndex + 1] : children[itemIndex]);
+			const children = this._getVisibleEffectiveChildren(this._items);
+			const itemIndex = children.indexOf(rootTarget);
+
+			if (children.length <= 1) return;
+
+			const element = itemIndex === -1 ? children[0] : children[itemIndex - 1];
+			const focusableElem = element || (children[itemIndex] === e.target ? children[itemIndex + 1] : children[itemIndex]);
 			focusableElem.focus();
 		}, this.clearFocusTimeout);
 	}
