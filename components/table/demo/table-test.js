@@ -204,6 +204,20 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		}
 	}
 
+	_renderButtonIconSortButton(item) {
+		const noSort = this._sortField !== item.toLowerCase();
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">${item}
+				</d2l-table-col-sort-button>
+				<d2l-button-icon icon="tier1:help" type="button"></d2l-button-icon>
+			</th>
+		`;
+	}
+
 	_renderDoubleSortButton(data1, data2) {
 		const noSort = this._sortField !== data1.toLowerCase();
 		return html`
@@ -216,20 +230,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button nosort>
 					${data2}
 				</d2l-table-col-sort-button>
-			</th>
-		`;
-	}
-
-_renderButtonIconSortButton(item) {
-		const noSort = this._sortField !== item.toLowerCase();
-		return html`
-			<th scope="col">
-				<d2l-table-col-sort-button
-					@click="${this._handleSort}"
-					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${item}
-				</d2l-table-col-sort-button>
-				<d2l-button-icon icon="tier1:help" type="button"></d2l-button-icon>
 			</th>
 		`;
 	}
