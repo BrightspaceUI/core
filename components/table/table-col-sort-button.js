@@ -3,7 +3,6 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
