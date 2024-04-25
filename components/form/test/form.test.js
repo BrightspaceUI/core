@@ -2,14 +2,31 @@ import '../../validation/validation-custom.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { expect, fixture } from '@brightspace-ui/testing';
-import { html } from 'lit';
+import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import { html, LitElement } from 'lit';
+
+class TestTwoForms extends LitElement {
+	render() {
+		return html`
+			<d2l-form id="nested-form-1">
+				<input type="text" aria-label="Input 1" name="input1" required>
+			</d2l-form>
+			<d2l-form id="nested-form-2">
+				<input type="text" aria-label="Input 2" name="input2" required>
+			</d2l-form>
+		`;
+	}
+}
 
 describe('d2l-form', () => {
 
 	const _validateCheckbox = e => {
 		e.detail.resolve(e.detail.forElement.checked);
 	};
+
+	before(() => {
+		customElements.define('d2l-test-two-forms', TestTwoForms);
+	});
 
 	describe('single form', () => {
 
@@ -331,6 +348,79 @@ describe('d2l-form', () => {
 			});
 
 		});
+
+		describe('connect/disconnect', () => {
+
+			it('should not validate nested forms which have been disconnected', async() => {
+
+				const elem = await fixture(html`
+					<d2l-form>
+						<d2l-test-two-forms></d2l-test-two-forms>
+						<input type="text" aria-label="Input 3" name="input3" required>
+					</d2l-form>
+				`);
+
+				let errors = await elem.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+				elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('#nested-form-1').remove();
+
+				errors = await elem.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+			});
+
+			it('should not validate nested forms inside custom elements which have been disconnected', async() => {
+
+				const parentElem = defineCE(class extends LitElement {
+					render() {
+						return html`
+							<d2l-form>
+								<d2l-test-two-forms id="nested-elem-1"></d2l-test-two-forms>
+								<d2l-test-two-forms id="nested-elem-2"></d2l-test-two-forms>
+								<input type="text" aria-label="Input 3" name="input3" required>
+							</d2l-form>
+						`;
+					}
+				});
+
+				const elem = await fixture(`<${parentElem}></${parentElem}>`);
+				const form = elem.shadowRoot.querySelector('d2l-form');
+
+				let errors = await form.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[form.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+				form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('#nested-form-1').remove();
+
+				errors = await form.validate();
+
+				expect([...errors.entries()]).to.deep.equal([
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
+					[form.querySelector('[name="input3"]'), ['Input 3 is required.']],
+				]);
+
+			});
+
+		});
+
 	});
 
 });

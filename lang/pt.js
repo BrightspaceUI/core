@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceder/Excluir",
 	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a marca de foco",
 	"components.tag-list-item.tooltip-title": "Controles do teclado",
-	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",
-	"templates.primary-secondary.keyboardHorizontal": "Use a seta para a esquerda ou para a direita para ajustar o tamanho dos painéis de exibição",
-	"templates.primary-secondary.keyboardVertical": "Use a seta para cima ou para baixo para ajustar o tamanho dos painéis de exibição"
+	"templates.primary-secondary.divider": "Divisor do painel secundário",
+	"templates.primary-secondary.secondary-panel": "Painel secundário"
 };

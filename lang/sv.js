@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backstegstangenten/Delete-tangenten",
 	"components.tag-list-item.tooltip-delete-key-desc": "Ta bort den fokuserade taggen",
 	"components.tag-list-item.tooltip-title": "Tangentbordskontroller",
-	"templates.primary-secondary.adjustableSplitView": "Justerbar delad vy",
-	"templates.primary-secondary.keyboardHorizontal": "Pil vänster eller höger för att justera storleken på vypaneler",
-	"templates.primary-secondary.keyboardVertical": "Pil upp eller ned för att justera storleken på vypaneler"
+	"templates.primary-secondary.divider": "Avgränsare för sekundär panel",
+	"templates.primary-secondary.secondary-panel": "Sekundär panel"
 };

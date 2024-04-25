@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/suppression",
 	"components.tag-list-item.tooltip-delete-key-desc": "Supprimer la balise ciblée",
 	"components.tag-list-item.tooltip-title": "Commandes du clavier",
-	"templates.primary-secondary.adjustableSplitView": "Vue partagée réglable",
-	"templates.primary-secondary.keyboardHorizontal": "Utiliser la flèche vers la gauche ou vers la droite pour régler la taille des volets d'affichage",
-	"templates.primary-secondary.keyboardVertical": "Flèche vers le haut ou vers le bas pour régler la taille des volets d'affichage"
+	"templates.primary-secondary.divider": "Séparateur de panneau secondaire",
+	"templates.primary-secondary.secondary-panel": "Panneau secondaire"
 };
