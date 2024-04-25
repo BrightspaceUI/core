@@ -105,8 +105,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
 							${this._renderDoubleSortButton('City', 'Country')}
-              ${this._renderButtonIconSortButton('Population')}
-              ${thTextShort.slice(1).map(text => html`<th scope="col">${text}</th>`)}
+							${this._renderButtonIconSortButton('Test')}
+							${thTextShort.slice(1).map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
@@ -236,37 +236,17 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(data) {
 		const noSort = this._sortField !== data.toLowerCase();
-		const ariaButtonLabel = 'Data';
-		const ariaScreenReaderSyntax = 'menu pop-up button';
-		const ariaScreenReaderSyntaxMainButton = 'button';
-		const ariaLabelDescriptionMainButton = 'click to add sort order';
-		const ariaDescriptionLabel = 'click to change sort order';
 		const sortLabels = [
 			'Lowest to Highest',
 			'Highest to Lowest',
 			'City, Country, Lowest to Highest',
 			'City, Country, Highest to Lowest'
 		];
-		const ariaLabels = {
-			multFaceted: [
-				`${ariaButtonLabel} ${ariaScreenReaderSyntax} ${ariaLabelDescriptionMainButton}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[1]} ${ariaDescriptionLabel}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[2]} ${ariaDescriptionLabel}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntax} Sorted ${sortLabels[3]} ${ariaDescriptionLabel}`
-			],
-			singleFaceted: [
-				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} ${ariaLabelDescriptionMainButton}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
-				`${ariaButtonLabel} ${ariaScreenReaderSyntaxMainButton} Sorted ${sortLabels[0]} ${ariaDescriptionLabel}`,
-			]
-		};
 
 		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
-						ariaLabel="${ariaLabels.multFaceted.toString()}"
 						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
@@ -282,7 +262,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		return html`
 			<th class="sortableCell" scope="col">
 				<d2l-table-col-sort-button
-					ariaLabel="${ariaLabels.singleFaceted.toString()}"
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${data}

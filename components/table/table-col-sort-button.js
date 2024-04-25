@@ -30,10 +30,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * ARIA label for the sort button with the aria-label described by the consumer.
-			 * @type {string}
+			 * The type of data in the column.
+			 *  @type {'words'|'numbers'|'dates'}
 			 */
-			ariaLabel: {
+			columnDataType: {
 				reflect: true,
 				type: String
 			},
@@ -96,8 +96,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			:host([has-dropdown]) button:focus-visible,
 			:host([has-dropdown]) button:${unsafeCSS(getFocusPseudoClass())} {
-				height: 100%;
-				margin-top: 4px;
+				padding: var(--d2l-sortable-button-dropdown-padding);
 				width: 100%;
 			}
 			:host(:not([has-sibling])) button {
@@ -127,7 +126,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				margin-inline-start: 12px;
 			}
 			:host(:not([has-sibling])) d2l-dropdown {
-				height: var(--d2l-sortable-button-height);
 				width: var(--d2l-sortable-button-width);
 			}
 			:host(:not([has-sibling]):not([has-dropdown])) button {
@@ -139,9 +137,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				height: var(--d2l-sortable-button-border-focus-height);
 				width: var(--d2l-sortable-button-border-focus-width);
 			}
-			.no-display {
-				display: none;
-			}
 		`;
 	}
 
@@ -151,6 +146,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this.desc = false;
 		this.hasSibling = false;
 		this._hasDropdownItems = false;
+		this.columnDataType = 'words';
 	}
 
 	static get focusElementSelector() {
@@ -161,15 +157,17 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
+		const buttonTitle = this._getSortButtonTitle();
+		const buttonAriaDescribedBy = !this.nosort ? 'click to change sort order' : 'click to add sort order';
 		const sortButton = html`
-			<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
+			<button aria-describedby="${buttonAriaDescribedBy}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
 				<slot></slot>${iconView}
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButtonDropdown = html`
 			<d2l-dropdown>
-				<button aria-label=${ifDefined(this.ariaLabel)} class="d2l-dropdown-opener" type="button">
+				<button aria-describedby="${buttonAriaDescribedBy}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
 					<slot></slot>${iconView}
 				</button>
 				<d2l-dropdown-menu id="dropdown" no-pointer>
@@ -181,6 +179,24 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		`;
 
 		return !this._hasDropdownItems ? sortButton : sortButtonDropdown;
+	}
+
+	_getSortButtonTitle() {
+		const columnDataTypeWords = {
+			'words': ['A to Z', 'Z to A'],
+			'numbers': ['low to high', 'high to low'],
+			'dates': ['old to new', 'new to old']
+		};
+
+		if (this._hasDropdownItems) {
+			return 'Hello world';
+		}
+
+		if (!this.nosort) {
+			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
+		}
+
+		return '';
 	}
 
 	_handleSlotChange() {
