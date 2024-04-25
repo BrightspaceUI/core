@@ -29,14 +29,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * The type of data in the column.
-			 *  @type {'words'|'numbers'|'dates'}
-			 */
-			columnDataType: {
-				reflect: true,
-				type: String
-			},
-			/**
 			 * @ignore
 			 */
 			hasSibling: {
@@ -156,17 +148,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
-		const buttonTitle = this._getSortButtonTitle();
-		const buttonDescription = !this.nosort ? 'click to change sort order' : 'click to add sort order';
 		const sortButton = html`
-			<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
+			<button class="d2l-dropdown-opener" type="button">
 				<slot></slot>${iconView}
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButtonDropdown = html`
 			<d2l-dropdown>
-				<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
+				<button class="d2l-dropdown-opener" type="button">
 					<slot></slot>${iconView}
 				</button>
 				<d2l-dropdown-menu id="dropdown" no-pointer>
@@ -178,23 +168,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		`;
 
 		return !this._hasDropdownItems ? sortButton : sortButtonDropdown;
-	}
-
-	_getSortButtonTitle() {
-		const columnDataTypeWords = {
-			'words': ['A to Z', 'Z to A'],
-			'numbers': ['low to high', 'high to low'],
-			'dates': ['old to new', 'new to old']
-		};
-
-		if (this._hasDropdownItems) {
-			// Will handle after
-			return '';
-		} else if (!this.nosort) {
-			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
-		}
-
-		return '';
 	}
 
 	_handleSlotChange() {
