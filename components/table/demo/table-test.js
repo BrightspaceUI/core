@@ -1,5 +1,6 @@
 import '../table-col-sort-button.js';
 import '../table-controls.js';
+import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
@@ -104,7 +105,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
 							${this._renderDoubleSortButton('City', 'Country')}
-							${thTextShort.map(text => html`<th scope="col">${text}</th>`)}
+              ${this._renderButtonIconSortButton('Population')}
+              ${thTextShort.slice(1).map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
 						${sorted.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
@@ -214,6 +216,20 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button nosort>
 					${data2}
 				</d2l-table-col-sort-button>
+			</th>
+		`;
+	}
+
+_renderButtonIconSortButton(item) {
+		const noSort = this._sortField !== item.toLowerCase();
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">${item}
+				</d2l-table-col-sort-button>
+				<d2l-button-icon icon="tier1:help" type="button"></d2l-button-icon>
 			</th>
 		`;
 	}
