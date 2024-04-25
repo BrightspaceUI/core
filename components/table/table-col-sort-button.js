@@ -3,12 +3,14 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
  * @slot - Text of the sort button
  */
-export class TableColSortButton extends FocusMixin(LitElement) {
+export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -132,20 +134,20 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const buttonTitle = this._getSortButtonTitle();
-		const buttonDescription = !this.nosort ? 'click to change sort order' : 'click to add sort order';
+		const buttonDescription = !this.nosort ? this.localize("components.table-col-sort.change-sort-order") : this.localize("components.table-col-sort.add-sort-order");
 
 		return html`<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
 	}
 
 	_getSortButtonTitle() {
 		const columnDataTypeWords = {
-			'words': ['A to Z', 'Z to A'],
-			'numbers': ['low to high', 'high to low'],
-			'dates': ['old to new', 'new to old']
+			'words': [this.localize("components.table-col-sort.a-to-z"), this.localize("components.table-col-sort.z-to-a")],
+			'numbers': [this.localize("components.table-col-sort.low-to-high"), this.localize("components.table-col-sort.high-to-low")],
+			'dates': [this.localize("components.table-col-sort.old-to-new"), this.localize("components.table-col-sort.new-to-old")]
 		};
 
 		if (!this.nosort) {
-			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
+			return `${this.localize("components.table-col-sort.sorted")} ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
 		}
 
 		return '';
