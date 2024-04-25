@@ -136,6 +136,15 @@ describe('filter-tags', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('clear-one-filter-set', async() => {
+			const elem = await fixture(tagsTwoFiltersMoreSelected, { viewport: { width: 1700 } });
+
+			await sendKeysElem(elem.querySelector('d2l-filter-tags'), 'press', 'Tab');
+			sendKeys('press', 'Delete');
+			await oneEvent(elem, 'd2l-filter-change');
+			await expect(elem).to.be.golden();
+		});
+
 		[
 			{ name: 'clicking clear all', template: tagsSingleFilter },
 			{ name: 'clicking clear all with two filters', template: tagsTwoFiltersMoreSelected }
