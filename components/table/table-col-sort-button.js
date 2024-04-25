@@ -29,6 +29,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				type: Boolean
 			},
 			/**
+			 * The type of data in the column.
+			 *  @type {'words'|'numbers'|'dates'}
+			 */
+			columnDataType: {
+				reflect: true,
+				type: String
+			},
+			/**
 			 * @ignore
 			 */
 			hasSibling: {
@@ -112,6 +120,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this.nosort = false;
 		this.desc = false;
 		this.hasSibling = false;
+		this.columnDataType = 'words';
 	}
 
 	static get focusElementSelector() {
@@ -122,8 +131,24 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
+		const buttonTitle = this._getSortButtonTitle();
+		const buttonDescription = !this.nosort ? 'click to change sort order' : 'click to add sort order';
 
-		return html`<button type="button"><slot></slot>${iconView}</button>`;
+		return html`<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
+	}
+
+	_getSortButtonTitle() {
+		const columnDataTypeWords = {
+			'words': ['A to Z', 'Z to A'],
+			'numbers': ['low to high', 'high to low'],
+			'dates': ['old to new', 'new to old']
+		};
+
+		if (!this.nosort) {
+			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
+		}
+
+		return '';
 	}
 
 }
