@@ -190,9 +190,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 		if (this._hasDropdownItems) {
 			return 'Hello world';
-		}
-
-		if (!this.nosort) {
+		} else if (!this.nosort) {
 			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
 		}
 
