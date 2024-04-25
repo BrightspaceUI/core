@@ -139,12 +139,8 @@ describe('filter-tags', () => {
 		it('clear-one-filter-set', async() => {
 			const elem = await fixture(tagsTwoFiltersMoreSelected, { viewport: { width: 1700 } });
 
-			for (let i = 0; i < 2; i++) {
-				await sendKeysElem(elem.querySelector('d2l-filter-tags'), 'press', 'Tab');
-				await sendKeys('press', 'ArrowRight');
-				sendKeys('press', 'Delete');
-			}
-
+			await sendKeysElem(elem.querySelector('d2l-filter-tags'), 'press', 'Tab');
+			sendKeys('press', 'Delete');
 			await oneEvent(elem, 'd2l-filter-change');
 			await expect(elem).to.be.golden();
 		});
