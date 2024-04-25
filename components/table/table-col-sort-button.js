@@ -137,7 +137,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this.desc = false;
 		this.hasSibling = false;
 		this._hasDropdownItems = false;
-		this.columnDataType = 'words';
 	}
 
 	static get focusElementSelector() {
