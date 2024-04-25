@@ -30,6 +30,13 @@ const data = () => [
 	{ name: 'Tokyo, Japan', data: { 'population': 857834, 'size': 146788, 'elevation': 783 }, selected: false }
 ];
 
+const sortLabels = [
+	'Lowest to Highest',
+	'Highest to Lowest',
+	'City, Country, Lowest to Highest',
+	'City, Country, Highest to Lowest'
+];
+
 const formatter = new Intl.NumberFormat('en-US');
 
 class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper')) {
@@ -41,7 +48,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
 			_sortField: { state: true },
-			_sortDesc: { state: true }
+			_sortDesc: { state: true },
+			_sortingType: { state: true, type: String }
 		};
 	}
 
@@ -142,6 +150,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[0];
 		}
 	}
 
@@ -154,6 +163,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = false;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[2];
 		}
 	}
 
@@ -166,6 +176,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = true;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[3];
 		}
 	}
 
@@ -201,6 +212,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[1];
 		}
 	}
 
@@ -236,17 +248,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(data) {
 		const noSort = this._sortField !== data.toLowerCase();
-		const sortLabels = [
-			'Lowest to Highest',
-			'Highest to Lowest',
-			'City, Country, Lowest to Highest',
-			'City, Country, Highest to Lowest'
-		];
 
 		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
+						sortingType="${ifDefined(this._sortingType)}"
 						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">

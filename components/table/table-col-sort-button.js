@@ -30,9 +30,17 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			},
 			/**
 			 * The type of data in the column.
-			 *  @type {'words'|'numbers'|'dates'}
+			 *  @type {'words'|'numbers'|'dates'|String}
 			 */
 			columnDataType: {
+				reflect: true,
+				type: String
+			},
+			/**
+			 * The type of sorting that's occuring.
+			 * @type {String}
+			 */
+			sortingType: {
 				reflect: true,
 				type: String
 			},
@@ -146,6 +154,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		this.hasSibling = false;
 		this._hasDropdownItems = false;
 		this.columnDataType = 'words';
+		this.sortingType = '';
 	}
 
 	static get focusElementSelector() {
@@ -188,10 +197,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		};
 
 		if (this._hasDropdownItems) {
-			// Will handle after
-			return '';
+			return this.sortingType && this.sortingType.length > 0 ? `Sorted ${this.sortingType}` : '';
 		} else if (!this.nosort) {
-			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
+			this.sortingType = this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1];
+			return `Sorted ${this.sortingType}`;
 		}
 
 		return '';
