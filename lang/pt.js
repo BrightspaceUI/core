@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceder/Excluir",
 	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a marca de foco",
 	"components.tag-list-item.tooltip-title": "Controles do teclado",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Divisor do painel secundário",
+	"templates.primary-secondary.secondary-panel": "Painel secundário"
 };

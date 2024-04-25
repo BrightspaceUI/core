@@ -123,6 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "백스페이스/삭제",
 	"components.tag-list-item.tooltip-delete-key-desc": "포커스된 태그를 삭제합니다",
 	"components.tag-list-item.tooltip-title": "키보드 컨트롤",
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "보조 패널 디바이더",
+	"templates.primary-secondary.secondary-panel": "보조 패널"
 };
