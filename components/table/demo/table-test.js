@@ -5,6 +5,7 @@ import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../menu/menu-item-radio.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
@@ -31,10 +32,10 @@ const data = () => [
 ];
 
 const sortLabels = [
-	'Lowest to Highest',
-	'Highest to Lowest',
-	'City, Country, Lowest to Highest',
-	'City, Country, Highest to Lowest'
+	'A to Z',
+	'Z to A',
+	'City, A to Z',
+	'City, Z to A'
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -197,12 +198,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this._sortDesc = !desc;
 	}
 
-	_handleSortDropdown(e) {
-		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-		const field = sortButtonComponent.innerText.toLowerCase();
-		this._sortField = field;
-	}
-
 	_handleZtoA(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
@@ -254,14 +249,13 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
 						sortingType="${ifDefined(this._sortingType)}"
-						@click="${this._handleSortDropdown}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
 						${data}
-						<d2l-menu-item slot="items" text=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[2]} @click="${this._handleMultifacetedAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[3]} @click="${this._handleMultifacetedZtoA}"></d2l-menu-item>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[0]} value=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[1]} value=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[2]} value=${sortLabels[2]} @click="${this._handleMultifacetedAtoZ}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[3]} value=${sortLabels[3]} @click="${this._handleMultifacetedZtoA}"></d2l-menu-item-radio>
 					</d2l-table-col-sort-button>
 				</th>
 			`;
