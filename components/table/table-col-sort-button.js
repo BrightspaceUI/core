@@ -157,16 +157,16 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const buttonTitle = this._getSortButtonTitle();
-		const buttonAriaDescribedBy = !this.nosort ? 'click to change sort order' : 'click to add sort order';
+		const buttonDescription = !this.nosort ? 'click to change sort order' : 'click to add sort order';
 		const sortButton = html`
-			<button aria-describedby="${buttonAriaDescribedBy}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
+			<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
 				<slot></slot>${iconView}
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButtonDropdown = html`
 			<d2l-dropdown>
-				<button aria-describedby="${buttonAriaDescribedBy}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
+				<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
 					<slot></slot>${iconView}
 				</button>
 				<d2l-dropdown-menu id="dropdown" no-pointer>
@@ -188,7 +188,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		};
 
 		if (this._hasDropdownItems) {
-			return 'Hello world';
+			// Will handle after
+			return '';
 		} else if (!this.nosort) {
 			return `Sorted ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
 		}
