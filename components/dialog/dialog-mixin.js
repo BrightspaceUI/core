@@ -1,6 +1,5 @@
 import '../focus-trap/focus-trap.js';
 import '../../helpers/viewport-size.js';
-import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
@@ -313,8 +312,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
-		allowBodyScroll(this._bodyScrollKey);
-		this._bodyScrollKey = null;
 		if (this._action === undefined) this._action = abortAction;
 		/** Dispatched with the action value when the dialog is closed for any reason */
 		this.dispatchEvent(new CustomEvent(
@@ -415,9 +412,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._parentDialog = findComposedAncestor(this, (node) => {
 			return node.classList && node.classList.contains('d2l-dialog-outer');
 		});
-
-		// native dialog backdrop does not prevent body scrolling
-		this._bodyScrollKey = preventBodyScroll();
 
 		// focus first focusable child prior to auto resize (fixes screen reader hiccups)
 		this._focusInitial();
