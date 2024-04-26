@@ -3,6 +3,7 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -10,7 +11,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  * Button for sorting a table column in ascending/descending order.
  * @slot - Text of the sort button
  */
-export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin(LitElement))) {
+export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -118,19 +119,17 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 	}
 
 	static #dataTypeKeys = {
-		words: { asc: 'components.table.a-to-z', desc: 'components.table.z-to-a' },
-		numbers: { asc: 'components.table.low-to-high', desc: 'components.table.high-to-low' },
-		dates: { asc: 'components.table.old-to-new', desc: 'components.table.new-to-old' }
+		words: { asc: 'components.table.words.asc', desc: 'components.table.words.desc' },
+		numbers: { asc: 'components.table.numbers.asc', desc: 'components.table.numbers.desc' },
+		dates: { asc: 'components.table.dates.asc', desc: 'components.table.dates.desc' }
 	};
-
-	static #buttonDescription = ['components.table.change-sort-order', 'components.table.add-sort-order'];
 
 	constructor() {
 		super();
-		this.nosort = false;
+		this.dataType = 'words';
 		this.desc = false;
 		this.hasSibling = false;
-		this.dataType = 'words';
+		this.nosort = false;
 	}
 
 	static get focusElementSelector() {
@@ -142,18 +141,17 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const buttonTitle = this._getSortButtonTitle();
-		const description = TableColSortButton.#buttonDescription[Number(this.nosort)];
+		const description = this.localize(!this.nosort ? 'components.table.change-sort-order' : 'components.table.add-sort-order');
 
-		return html`<button aria-description="${description}" aria-label="${buttonTitle}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
+		return html`<button aria-description="${description}" aria-label="${ifDefined(buttonTitle)}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
 	}
 
 	_getSortButtonTitle() {
-		if (!this.nosort) {
-			const sortKey = TableColSortButton.#dataTypeKeys[this.dataType][Number(!this.desc)];
-			return this.localize(sortKey);
-		}
+		if (this.nosort) return undefined;
 
-		return '';
+		const sortDirection = this.desc ? 'desc' : 'asc';
+		const sortKey = TableColSortButton.#dataTypeKeys[this.dataType][sortDirection];
+		return this.localize(sortKey);
 	}
 
 }
