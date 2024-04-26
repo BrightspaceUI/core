@@ -121,7 +121,9 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 		words: ['components.table.a-to-z', 'components.table.z-to-a'],
 		numbers: ['components.table.low-to-high', 'components.table.high-to-low'],
 		dates: ['components.table.old-to-new', 'components.table.new-to-old']
-	}
+	};
+
+	static #buttonDescription = ['components.table.change-sort-order', 'components.table.add-sort-order'];
 
 	constructor() {
 		super();
@@ -140,9 +142,9 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 		const buttonTitle = this._getSortButtonTitle();
-		const buttonDescription = !this.nosort ? this.localize("components.table-col-sort.change-sort-order") : this.localize("components.table-col-sort.add-sort-order");
+		const description = TableColSortButton.#buttonDescription[Number(this.nosort)];
 
-		return html`<button aria-description="${buttonDescription}" aria-label="${buttonTitle}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
+		return html`<button aria-description="${description}" aria-label="${buttonTitle}" title="${buttonTitle}" type="button"><slot></slot>${iconView}</button>`;
 	}
 
 	_getSortButtonTitle() {
