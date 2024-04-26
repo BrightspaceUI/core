@@ -41,10 +41,10 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 				type: String
 			},
 			/**
-			 * The type of sorting that's occuring.
+			 * Custom message to define the type of sorting that's occuring.
 			 * @type {String}
 			 */
-			sortingType: {
+			description: {
 				reflect: true,
 				type: String
 			},
@@ -203,7 +203,7 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 		if (this.nosort) return undefined;
 
 		if (this._hasDropdownItems) {
-			return this.sortingType && this.sortingType.length > 0 ? this.sortingType : undefined;
+			return this.description && this.description.length > 0 ? this.description : undefined;
 		}
 
 		const sortDirection = this.desc ? 'desc' : 'asc';
