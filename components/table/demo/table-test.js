@@ -204,6 +204,5 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_toggleStickyHeaders() {
 		this.stickyHeaders = !this.stickyHeaders;
 	}
-
 }
 customElements.define('d2l-test-table', TestTable);
