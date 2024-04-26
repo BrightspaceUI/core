@@ -5,6 +5,7 @@ import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../menu/menu-item-radio.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
@@ -30,6 +31,13 @@ const data = () => [
 	{ name: 'Tokyo, Japan', data: { 'population': 857834, 'size': 146788, 'elevation': 783 }, selected: false }
 ];
 
+const sortLabels = [
+	'A to Z',
+	'Z to A',
+	'City, A to Z',
+	'City, Z to A'
+];
+
 const formatter = new Intl.NumberFormat('en-US');
 
 class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper')) {
@@ -41,7 +49,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
 			_sortField: { state: true },
-			_sortDesc: { state: true }
+			_sortDesc: { state: true },
+			_sortingType: { state: true, type: String }
 		};
 	}
 
@@ -142,6 +151,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[0];
 		}
 	}
 
@@ -154,6 +164,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = false;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[2];
 		}
 	}
 
@@ -166,6 +177,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = true;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[3];
 		}
 	}
 
@@ -186,12 +198,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		this._sortDesc = !desc;
 	}
 
-	_handleSortDropdown(e) {
-		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
-		const field = sortButtonComponent.innerText.toLowerCase();
-		this._sortField = field;
-	}
-
 	_handleZtoA(e) {
 		const sortButtonComponent = e.target.closest('d2l-table-col-sort-button');
 
@@ -201,6 +207,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
+			this._sortingType = sortLabels[1];
 		}
 	}
 
@@ -236,25 +243,19 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderSortButton(data) {
 		const noSort = this._sortField !== data.toLowerCase();
-		const sortLabels = [
-			'Lowest to Highest',
-			'Highest to Lowest',
-			'City, Country, Lowest to Highest',
-			'City, Country, Highest to Lowest'
-		];
 
 		if (data === 'Size') {
 			return html`
 				<th class="sortableCell" scope="col">
 					<d2l-table-col-sort-button
-						@click="${this._handleSortDropdown}"
+						sortingType="${ifDefined(this._sortingType)}"
 						?desc="${this._sortDesc}"
 						?nosort="${noSort}">
 						${data}
-						<d2l-menu-item slot="items" text=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[2]} @click="${this._handleMultifacetedAtoZ}"></d2l-menu-item>
-						<d2l-menu-item slot="items" text=${sortLabels[3]} @click="${this._handleMultifacetedZtoA}"></d2l-menu-item>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[0]} value=${sortLabels[0]} @click="${this._handleAtoZ}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[1]} value=${sortLabels[1]} @click="${this._handleZtoA}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[2]} value=${sortLabels[2]} @click="${this._handleMultifacetedAtoZ}"></d2l-menu-item-radio>
+						<d2l-menu-item-radio slot="items" text=${sortLabels[3]} value=${sortLabels[3]} @click="${this._handleMultifacetedZtoA}"></d2l-menu-item-radio>
 					</d2l-table-col-sort-button>
 				</th>
 			`;

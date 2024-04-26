@@ -158,7 +158,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				<button class="d2l-dropdown-opener" type="button">
 					<slot></slot>${iconView}
 				</button>
-				<d2l-dropdown-menu id="dropdown" no-pointer>
+				<d2l-dropdown-menu align="start" id="dropdown" no-pointer>
 					<d2l-menu>
 						<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 					</d2l-menu>
