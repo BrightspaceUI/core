@@ -271,22 +271,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
-	_renderDoubleSortButton(data1, data2) {
-		const noSort = this._sortField !== data1.toLowerCase();
-		return html`
-			<th scope="col">
-				<d2l-table-col-sort-button
-					@click="${this._handleSort}"
-					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${data1}
-				</d2l-table-col-sort-button>
-				<d2l-table-col-sort-button nosort>
-					${data2}
-				</d2l-table-col-sort-button>
-			</th>
-		`;
-	}
-
 
 	_selectRow(e) {
 		const country = e.target.parentNode.parentNode.dataset.name;
@@ -302,6 +286,5 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_toggleStickyHeaders() {
 		this.stickyHeaders = !this.stickyHeaders;
 	}
-
 }
 customElements.define('d2l-test-table', TestTable);
