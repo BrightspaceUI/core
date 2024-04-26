@@ -110,6 +110,11 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 				padding: var(--d2l-sortable-button-dropdown-padding);
 				width: 100%;
 			}
+			:host([has-dropdown]) button:hover {
+				padding-top: var(--d2l-sortable-button-dropdown-hover-padding);
+				padding-bottom: var(--d2l-sortable-button-dropdown-hover-padding);
+				width: 100%;
+			}
 			:host(:not([has-sibling])) button {
 				box-sizing: border-box;
 				height: 100%;
