@@ -151,7 +151,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
-			this._sortingType = sortLabels[0];
+			this._sortingType = `Sorted by ${sortLabels[0]}.`;
 		}
 	}
 
@@ -164,7 +164,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = false;
 			this._sortDesc = !desc;
-			this._sortingType = sortLabels[2];
+			this._sortingType = `Sorted by ${sortLabels[2]}.`;
 		}
 	}
 
@@ -177,7 +177,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = true;
 			this._sortDesc = !desc;
-			this._sortingType = sortLabels[3];
+			this._sortingType = `Sorted by ${sortLabels[3]}.`;
 		}
 	}
 
@@ -207,7 +207,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			this._sortField = field;
 			this._multifacetedField = undefined;
 			this._sortDesc = !desc;
-			this._sortingType = sortLabels[1];
+			this._sortingType = `Sorted by ${sortLabels[1]}.`;
 		}
 	}
 
