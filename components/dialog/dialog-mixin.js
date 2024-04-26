@@ -1,3 +1,4 @@
+import '../backdrop/backdrop.js';
 import '../focus-trap/focus-trap.js';
 import '../../helpers/viewport-size.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
