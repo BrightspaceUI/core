@@ -194,8 +194,13 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 	_getSortButtonTitle() {
 		if (this.nosort) return undefined;
 
+		if (this._hasDropdownItems) {
+			return this.sortingType && this.sortingType.length > 0 ? this.sortingType : undefined;
+		}
+
 		const sortDirection = this.desc ? 'desc' : 'asc';
 		const sortKey = TableColSortButton.#dataTypeKeys[this.dataType][sortDirection];
+
 		return this.localize(sortKey);
 	}
 
