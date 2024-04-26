@@ -34,7 +34,7 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 			 * The type of data in the column.
 			 *  @type {'words'|'numbers'|'dates'}
 			 */
-			columnDataType: {
+			dataType: {
 				reflect: true,
 				type: String
 			},
@@ -117,10 +117,10 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 		`;
 	}
 
-	static #columnDataTypeKeys = {
-		words: ['components.table.a-to-z', 'components.table.z-to-a'],
-		numbers: ['components.table.low-to-high', 'components.table.high-to-low'],
-		dates: ['components.table.old-to-new', 'components.table.new-to-old']
+	static #dataTypeKeys = {
+		words: { asc: 'components.table.a-to-z', desc: 'components.table.z-to-a' },
+		numbers: { asc: 'components.table.low-to-high', desc: 'components.table.high-to-low' },
+		dates: { asc: 'components.table.old-to-new', desc: 'components.table.new-to-old' }
 	};
 
 	static #buttonDescription = ['components.table.change-sort-order', 'components.table.add-sort-order'];
@@ -130,7 +130,7 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 		this.nosort = false;
 		this.desc = false;
 		this.hasSibling = false;
-		this.columnDataType = 'words';
+		this.dataType = 'words';
 	}
 
 	static get focusElementSelector() {
@@ -149,7 +149,7 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 
 	_getSortButtonTitle() {
 		if (!this.nosort) {
-			const sortKey = TableColSortButton.#columnDataTypeKeys[this.columnDataType][Number(!this.desc)];
+			const sortKey = TableColSortButton.#dataTypeKeys[this.dataType][Number(!this.desc)];
 			return this.localize(sortKey);
 		}
 
