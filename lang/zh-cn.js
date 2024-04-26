@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "退格键/Delete 键",
 	"components.tag-list-item.tooltip-delete-key-desc": "删除具有焦点的标签",
 	"components.tag-list-item.tooltip-title": "键盘控制",
-	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",
-	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭头可调整视图面板的大小",
-	"templates.primary-secondary.keyboardVertical": "向上或向下箭头可调整视图面板的大小"
+	"templates.primary-secondary.divider": "辅助面板分隔条",
+	"templates.primary-secondary.secondary-panel": "辅助面板"
 };

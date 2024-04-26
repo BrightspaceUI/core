@@ -123,7 +123,6 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "مسافة للخلف/حذف",
 	"components.tag-list-item.tooltip-delete-key-desc": "حذف العلامة المركّز عليها",
 	"components.tag-list-item.tooltip-title": "عناصر التحكم في لوحة المفاتيح",
-	"templates.primary-secondary.adjustableSplitView": "تقسيم العرض القابل للضبط",
-	"templates.primary-secondary.keyboardHorizontal": "السهم المتّجه إلى اليسار أو إلى اليمين لضبط حجم لوحات العرض",
-	"templates.primary-secondary.keyboardVertical": "السهم المتّجه إلى الأعلى أو إلى الأسفل لضبط حجم لوحات العرض"
+	"templates.primary-secondary.divider": "فاصل اللوحة الثانوية",
+	"templates.primary-secondary.secondary-panel": "اللوحة الثانوية"
 };

@@ -55,38 +55,31 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			return;
 		}
 
-		let count;
-		if (this._provider && this._provider.selectionCountOverride !== undefined) {
-			count = this._provider.selectionCountOverride;
-			this._summary = this._provider.selectionCountOverride === 0 && this.noSelectionText ?
-				this.noSelectionText : this.localize('components.selection.selected', 'count', count);
-		} else {
-			/* If lazy loading items is supported (ex. d2l-list) then check the keys to determine if the plus sign should be included.
-			 * If lazy loading is not supported (ex. d2l-table-wrapper), then skip this.
-			 */
-			let includePlus = false;
-			if (this._provider && this._provider._getLazyLoadItems) {
-				const lazyLoadListItems = this._provider._getLazyLoadItems();
-				if (lazyLoadListItems.size > 0) {
-					for (const selectedItemKey of this.selectionInfo.keys) {
-						if (lazyLoadListItems.has(selectedItemKey)) {
-							includePlus = true;
-							break;
-						}
+		/* If lazy loading items is supported (ex. d2l-list) then check the keys to determine if the plus sign should be included.
+		 * If lazy loading is not supported (ex. d2l-table-wrapper), then skip this.
+		 */
+		let includePlus = false;
+		if (this._provider && this._provider._getLazyLoadItems) {
+			const lazyLoadListItems = this._provider._getLazyLoadItems();
+			if (lazyLoadListItems.size > 0) {
+				for (const selectedItemKey of this.selectionInfo.keys) {
+					if (lazyLoadListItems.has(selectedItemKey)) {
+						includePlus = true;
+						break;
 					}
 				}
 			}
+		}
 
-			count = (this._provider && this.selectionInfo.state === SelectionInfo.states.allPages) ?
-				this._provider.itemCount : this.selectionInfo.keys.length;
+		const count = (this._provider && this.selectionInfo.state === SelectionInfo.states.allPages) ?
+			this._provider.itemCount : this.selectionInfo.keys.length;
 
-			if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
-				this._summary = this.noSelectionText;
-			} else if (includePlus) {
-				this._summary = this.localize('components.selection.selected-plus', 'count', count);
-			} else {
-				this._summary = this.localize('components.selection.selected', 'count', count);
-			}
+		if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
+			this._summary = this.noSelectionText;
+		} else if (includePlus) {
+			this._summary = this.localize('components.selection.selected-plus', 'count', count);
+		} else {
+			this._summary = this.localize('components.selection.selected', 'count', count);
 		}
 	}
 
