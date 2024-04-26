@@ -41,6 +41,14 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 				type: String
 			},
 			/**
+			 * The type of sorting that's occuring.
+			 * @type {String}
+			 */
+			sortingType: {
+				reflect: true,
+				type: String
+			},
+			/**
 			 * @ignore
 			 */
 			hasSibling: {
