@@ -3,12 +3,15 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
  * @slot - Text of the sort button
  */
-export class TableColSortButton extends FocusMixin(LitElement) {
+export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -27,6 +30,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * The type of data in the column.
+			 *  @type {'words'|'numbers'|'dates'}
+			 */
+			dataType: {
+				attribute: 'data-type',
+				reflect: true,
+				type: String
 			},
 			/**
 			 * @ignore
@@ -131,12 +143,19 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		`;
 	}
 
+	static #dataTypeKeys = {
+		words: { asc: 'components.table.words.asc', desc: 'components.table.words.desc' },
+		numbers: { asc: 'components.table.numbers.asc', desc: 'components.table.numbers.desc' },
+		dates: { asc: 'components.table.dates.asc', desc: 'components.table.dates.desc' }
+	};
+
 	constructor() {
 		super();
-		this.nosort = false;
+		this.dataType = 'words';
 		this.desc = false;
-		this.hasSibling = false;
 		this._hasDropdownItems = false;
+		this.hasSibling = false;
+		this.nosort = false;
 	}
 
 	static get focusElementSelector() {
@@ -147,15 +166,18 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
+		const buttonTitle = this._getSortButtonTitle();
+		const description = this.localize(!this.nosort ? 'components.table.change-sort-order' : 'components.table.add-sort-order');
+
 		const sortButton = html`
-			<button class="d2l-dropdown-opener" type="button">
+			<button  aria-description="${description}" aria-label="${ifDefined(buttonTitle)}" title="${buttonTitle}" type="button">
 				<slot></slot>${iconView}
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButtonDropdown = html`
 			<d2l-dropdown>
-				<button class="d2l-dropdown-opener" type="button">
+				<button aria-description="${description}" aria-label="${ifDefined(buttonTitle)}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
 					<slot></slot>${iconView}
 				</button>
 				<d2l-dropdown-menu align="start" id="dropdown" no-pointer>
@@ -167,6 +189,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		`;
 
 		return !this._hasDropdownItems ? sortButton : sortButtonDropdown;
+	}
+
+	_getSortButtonTitle() {
+		if (this.nosort) return undefined;
+
+		const sortDirection = this.desc ? 'desc' : 'asc';
+		const sortKey = TableColSortButton.#dataTypeKeys[this.dataType][sortDirection];
+		return this.localize(sortKey);
 	}
 
 	_handleSlotChange() {
