@@ -41,14 +41,6 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 				type: String
 			},
 			/**
-			 * Custom message to define the type of sorting that's occuring.
-			 * @type {String}
-			 */
-			description: {
-				reflect: true,
-				type: String
-			},
-			/**
 			 * @ignore
 			 */
 			hasSibling: {
@@ -96,8 +88,6 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 				background-color: var(--d2l-color-gypsum);
 			}
 			:host([has-sibling]) button {
-				--d2l-table-cell-padding: 0;
-
 				margin-block: -0.3rem -0.3rem;
 				margin-inline: -0.3rem 0.3rem;
 				padding: 0.3rem;
@@ -170,9 +160,9 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 		super();
 		this.dataType = 'words';
 		this.desc = false;
-		this._hasDropdownItems = false;
 		this.hasSibling = false;
 		this.nosort = false;
+		this._hasDropdownItems = false;
 	}
 
 	static get focusElementSelector() {
@@ -185,6 +175,9 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 			null;
 		const buttonTitle = this._getSortButtonTitle();
 		const description = this.localize(!this.nosort ? 'components.table.change-sort-order' : 'components.table.add-sort-order');
+
+		const selected = this.nodes ? this.nodes.find(element => element.selected) : undefined;
+		this.description = selected ? selected.value : undefined;
 
 		const sortButton = html`
 			<button  aria-description="${description}" title="${ifDefined(buttonTitle)}" type="button">
@@ -212,7 +205,7 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 		if (this.nosort) return undefined;
 
 		if (this._hasDropdownItems) {
-			return this.description && this.description.length > 0 ? this.description : undefined;
+			return this.description ? this.description : undefined;
 		}
 
 		const sortDirection = this.desc ? 'desc' : 'asc';
@@ -221,8 +214,9 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 		return this.localize(sortKey);
 	}
 
-	_handleSlotChange() {
+	_handleSlotChange(e) {
 		this._hasDropdownItems = true;
+		this.nodes = e.target.assignedNodes({ flatten: true});
 	}
 }
 
