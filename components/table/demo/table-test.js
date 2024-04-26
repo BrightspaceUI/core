@@ -271,7 +271,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
-
 	_selectRow(e) {
 		const country = e.target.parentNode.parentNode.dataset.name;
 		const row = this._data.find(row => row.name === country);
