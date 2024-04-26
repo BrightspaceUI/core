@@ -117,6 +117,12 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 		`;
 	}
 
+	static #columnDataTypeKeys = {
+		words: ['components.table.a-to-z', 'components.table.z-to-a'],
+		numbers: ['components.table.low-to-high', 'components.table.high-to-low'],
+		dates: ['components.table.old-to-new', 'components.table.new-to-old']
+	}
+
 	constructor() {
 		super();
 		this.nosort = false;
@@ -140,14 +146,9 @@ export class TableColSortButton extends  LocalizeCoreElement(RtlMixin(FocusMixin
 	}
 
 	_getSortButtonTitle() {
-		const columnDataTypeWords = {
-			'words': [this.localize("components.table-col-sort.a-to-z"), this.localize("components.table-col-sort.z-to-a")],
-			'numbers': [this.localize("components.table-col-sort.low-to-high"), this.localize("components.table-col-sort.high-to-low")],
-			'dates': [this.localize("components.table-col-sort.old-to-new"), this.localize("components.table-col-sort.new-to-old")]
-		};
-
 		if (!this.nosort) {
-			return `${this.localize("components.table-col-sort.sorted")} ${this.desc ? columnDataTypeWords[this.columnDataType][0] : columnDataTypeWords[this.columnDataType][1]}`;
+			const sortKey = TableColSortButton.#columnDataTypeKeys[this.columnDataType][Number(!this.desc)];
+			return this.localize(sortKey);
 		}
 
 		return '';
