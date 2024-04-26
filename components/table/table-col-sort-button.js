@@ -183,14 +183,14 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 		const description = this.localize(!this.nosort ? 'components.table.change-sort-order' : 'components.table.add-sort-order');
 
 		const sortButton = html`
-			<button  aria-description="${description}" title="${buttonTitle}" type="button">
+			<button  aria-description="${description}" title="${ifDefined(buttonTitle)}" type="button">
 				<slot></slot>${iconView}
 			</button>
 			<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 		`;
 		const sortButtonDropdown = html`
 			<d2l-dropdown>
-				<button aria-description="${description}" class="d2l-dropdown-opener" title="${buttonTitle}" type="button">
+				<button aria-description="${description}" class="d2l-dropdown-opener" title="${ifDefined(buttonTitle)}" type="button">
 					<slot></slot>${iconView}
 				</button>
 				<d2l-dropdown-menu align="start" id="dropdown" no-pointer>
