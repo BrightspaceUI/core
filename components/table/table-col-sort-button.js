@@ -36,6 +36,7 @@ export class TableColSortButton extends LocalizeCoreElement(RtlMixin(FocusMixin(
 			 *  @type {'words'|'numbers'|'dates'}
 			 */
 			dataType: {
+				attribute: 'data-type',
 				reflect: true,
 				type: String
 			},
