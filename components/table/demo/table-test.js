@@ -16,17 +16,23 @@ import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
-const fruits = ['Apples', 'Oranges', 'Bananas'];
+const columns = ['Population', 'Size', 'Elevation'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
-	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: true },
-	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: true },
-	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
-	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
-	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
-	{ name: 'Hawaii', fruit: { 'apples': 129875, 'oranges': 856765, 'bananas': 123 }, selected: false },
-	{ name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
+	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: false },
+	{ name: 'Toronto, Canada', city: 'Toronto', country: 'Canada', data: { 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: false },
+	{ name: 'Sydney, Australia', city: 'Sydney', country: 'Australia', data: { 'population': 5312000, 'size': 12368, 'elevation': 3 }, selected: false },
+	{ name: 'Cairo, Egypt', city: 'Cairo', country: 'Egypt', data: { 'population': 9540000, 'size': 3085, 'elevation': 23 }, selected: false },
+	{ name: 'Moscow, Russia', city: 'Moscow', country: 'Russia', data: { 'population': 12712305, 'size': 2511, 'elevation': 124 }, selected: false },
+	{ name: 'London, England', city: 'London', country: 'England', data: { 'population': 8982000, 'size': 1572, 'elevation': 11 }, selected: false },
+	{ name: 'New York, United States of America', city: 'New York', country: 'United States of America', data: { 'population': 8336000, 'size': 1223, 'elevation': 122 }, selected: false },
+	{ name: 'Seattle, United States of America', city: 'Seattle', country: 'United States of America', data: { 'population': 749256, 'size': 368, 'elevation': 53 }, selected: false },
+	{ name: 'Tokyo, Japan', city: 'Tokyo', country: 'Japan', data: { 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false },
+	{ name: 'Beijing, China', city: 'Beijing', country: 'China', data: { 'population': 21540000, 'size': 16411, 'elevation': 44 }, selected: false },
+	{ name: 'Paris, France', city: 'Paris', country: 'France', data: { 'population': 2161000, 'size': 105, 'elevation': 35 }, selected: false },
+	{ name: 'Mumbai, India', city: 'Mumbai', country: 'India', data: { 'population': 21673000, 'size': 603, 'elevation': 14 }, selected: false },
+	{ name: 'Mexico City, Mexico', city: 'Mexico City', country: 'Mexico', data: { 'population': 8855000, 'size': 1485, 'elevation': 2240 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -69,9 +75,9 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	render() {
 		const sorted = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				return b.fruit[this._sortField] - a.fruit[this._sortField];
+				return b.data[this._sortField] - a.data[this._sortField];
 			}
-			return a.fruit[this._sortField] - b.fruit[this._sortField];
+			return a.data[this._sortField] - b.data[this._sortField];
 		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
@@ -92,16 +98,11 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							<th scope="col">Country</th>
-							${fruits.map(fruit => this._renderSortButton(fruit))}
+							<th scope="col">City, Country</th>
+							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="d2l-table-header">
-							<th scope="col" sticky></th>
-							${this._renderSortButton('Avocado')}
-							${fruits.map(fruit => this._renderSortButton(fruit))}
-						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
 							${thText.map(text => html`<th scope="col">${text}</th>`)}
@@ -117,7 +118,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${fruits.map(fruit => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}
+								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
 					</tbody>
@@ -134,7 +135,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_handlePagerLoadMore(e) {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < e.target.pageSize; i++) {
-			this._data.push({ name: `Country ${startIndex + i}`, fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false });
+			this._data.push({ name: `Country ${startIndex + i}`, data: { 'population': 26320000, 'size': 6340, 'elevation': 4 }, selected: false });
 		}
 		this.requestUpdate();
 		e.detail.complete();

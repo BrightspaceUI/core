@@ -37,15 +37,18 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				align-items: center;
 				background-color: transparent;
 				border: none;
+				box-sizing: border-box;
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
+				height: var(--d2l-sortable-button-height);
 				letter-spacing: inherit;
 				margin: 0;
-				padding: 0;
+				padding: var(--d2l-table-cell-padding);
 				text-decoration: none;
+				width: var(--d2l-sortable-button-width);
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -54,13 +57,31 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				opacity: 0.5;
 			}
 			button:hover {
-				text-decoration: underline;
+				background-color: var(--d2l-color-gypsum);
+			}
+			:host([has-sibling]) button:hover {
+				border-radius: 0.2rem;
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				height: calc(100% - 8px);
+				margin-inline-start: 4px;
 				outline-style: none;
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
+				width: calc(100% - 8px);
+			}
+			button:focus-visible:hover,
+			button:${unsafeCSS(getFocusPseudoClass())}:hover {
+				border-radius: var(--d2l-sortable-button-border-focus-radius);
+			}
+			button:hover {
+				border-radius: var(--d2l-sortable-button-border-radius);
+			}
+			d2l-icon {
+				margin-inline-end: -0.6rem;
+				margin-inline-start: 0.6rem;
 			}
 		`;
 	}
