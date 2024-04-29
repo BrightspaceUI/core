@@ -67,6 +67,10 @@ export const tableStyles = css`
 	th.d2l-table-header-col-sortable {
 		padding: 0;
 	}
+	th.d2l-table-header-col-sortable-siblings {
+		padding: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding));
+		padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding) - 4px);
+	}
 
 	/* border radiuses */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
@@ -259,8 +263,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
 				--d2l-sortable-button-border-radius: 0;
 				--d2l-sortable-button-border-focus-radius: 0;
-				--d2l-sortable-button-height: 100%;
-				--d2l-sortable-button-width: 100%;
+				--d2l-sortable-button-buffer: 0px;
+				--d2l-sortable-button-siblings-padding: 0.3rem;
 				display: block;
 				width: 100%;
 			}
@@ -274,8 +278,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-header-background-color: #ffffff;
 				--d2l-sortable-button-border-radius: 0.2rem;
 				--d2l-sortable-button-border-focus-radius: 0.3rem;
-				--d2l-sortable-button-height: calc(100% - 8px);
-				--d2l-sortable-button-width: calc(100% - 8px);
+				--d2l-sortable-button-buffer: 4px;
 			}
 			:host([sticky-headers]) {
 				--d2l-table-controls-shadow-display: none;
@@ -403,11 +406,13 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (sortButton.previousElementSibling || sortButton.nextElementSibling) {
 			nodes.forEach((element) => {
-				if (isSortButton(element)) element.hasSibling = true;
+				if (isSortButton(element)) {
+					element.hasSibling = true;
+					c.classList.toggle('d2l-table-header-col-sortable-siblings', true);
+				}
 			});
-		} else {
-			c.classList.toggle('d2l-table-header-col-sortable', true);
 		}
+		c.classList.toggle('d2l-table-header-col-sortable', true);
 	}
 
 	_getItemByIndex(index) {

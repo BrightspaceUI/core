@@ -27,28 +27,38 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * @ignore
+			 */
+			hasSibling: {
+				attribute: 'has-sibling',
+				reflect: true,
+				type: Boolean
 			}
 		};
 	}
 
 	static get styles() {
 		return css`
+			:host {
+				--d2l-table-col-sort-button-box-shadow-height: 4px;
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
 				border: none;
-				box-sizing: border-box;
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
-				height: var(--d2l-sortable-button-height);
+				height: calc(100% - 2 * var(--d2l-sortable-button-buffer));
 				letter-spacing: inherit;
 				margin: 0;
 				padding: var(--d2l-table-cell-padding);
 				text-decoration: none;
-				width: var(--d2l-sortable-button-width);
+				width: calc(100% - 2 * var(--d2l-sortable-button-buffer));
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -58,19 +68,18 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
-			}
-			:host([has-sibling]) button:hover {
-				border-radius: 0.2rem;
+				margin-inline-start: var(--d2l-sortable-button-buffer);
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-buffer));
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-radius: var(--d2l-sortable-button-border-focus-radius);
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				height: calc(100% - 8px);
-				margin-inline-start: 4px;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 var(--d2l-table-col-sort-button-box-shadow-height) var(--d2l-color-celestine);
+				height: calc(100% - 2 * var(--d2l-table-col-sort-button-box-shadow-height));
+				margin-inline-start: var(--d2l-table-col-sort-button-box-shadow-height);
 				outline-style: none;
-				padding-inline-start: calc(var(--d2l-table-cell-padding) - 4px);
-				width: calc(100% - 8px);
+				padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-box-shadow-height));
+				width: calc(100% - 2 * var(--d2l-table-col-sort-button-box-shadow-height));
 			}
 			button:focus-visible:hover,
 			button:${unsafeCSS(getFocusPseudoClass())}:hover {
@@ -80,14 +89,30 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
 			d2l-icon {
-				margin-inline-end: -0.6rem;
 				margin-inline-start: 0.6rem;
+				margin-inline-end: -0.6rem;
+			}
+
+			:host([has-sibling]) button {
+				height: unset;
+				margin-inline-start: var(--d2l-table-col-sort-button-box-shadow-height);
+				padding: var(--d2l-sortable-button-siblings-padding);
+				width: unset;
+			}
+			:host([has-sibling]) button:hover,
+			:host([has-sibling]) button:focus-visible,
+			:host([has-sibling]) button:${unsafeCSS(getFocusPseudoClass())}  {
+				border-radius: 0.2rem;
+			}
+			:host([has-sibling]) d2l-icon {
+				margin-inline-end: 0;
 			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this.hasSibling = false;
 		this.nosort = false;
 		this.desc = false;
 	}

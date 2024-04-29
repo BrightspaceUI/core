@@ -67,12 +67,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	}
 
 	render() {
-		const sorted = this._data.sort((a, b) => {
-			if (this._sortDesc) {
-				return b.data[this._sortField] - a.data[this._sortField];
-			}
-			return a.data[this._sortField] - b.data[this._sortField];
-		});
 		return html`
 			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
@@ -92,7 +86,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							<th scope="col">City, Country</th>
+							${this._renderDoubleSortButton('City', 'Country')}
 							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 						</tr>
 					</thead>
@@ -106,7 +100,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<th scope="col" sticky></th>
 							${thText.map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
-						${sorted.map(row => html`
+						${this._data.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
 								<th scope="row" sticky>
 									<d2l-selection-input
@@ -143,8 +137,40 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_handleSort(e) {
 		const field = e.target.innerText.toLowerCase();
 		const desc = e.target.hasAttribute('desc');
+		this._sortDesc = field === this._sortField ? !desc : false; // if sorting on same field then reverse, otherwise sort ascending
 		this._sortField = field;
-		this._sortDesc = !desc;
+
+		this._data = this._data.sort((a, b) => {
+			if (this._sortField === 'city' || this._sortField === 'country') {
+				if (this._sortDesc) {
+					if (a[this._sortField] > b[this._sortField]) return -1;
+					if (a[this._sortField] < b[this._sortField]) return 1;
+				} else {
+					if (a[this._sortField] < b[this._sortField]) return -1;
+					if (a[this._sortField] > b[this._sortField]) return 1;
+				}
+			} else {
+				if (this._sortDesc) {
+					return b.data[this._sortField] - a.data[this._sortField];
+				}
+				return a.data[this._sortField] - b.data[this._sortField];
+			}
+		});
+	}
+
+	_renderDoubleSortButton(item1, item2) {
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${this._sortField !== item1.toLowerCase()}">${item1}</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${this._sortField !== item2.toLowerCase()}">${item2}</d2l-table-col-sort-button>
+			</th>
+		`;
 	}
 
 	_renderSortButton(fruit) {
