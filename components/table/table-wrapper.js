@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { cssSizes } from '../inputs/input-checkbox.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -24,7 +25,7 @@ export const tableStyles = css`
 	.d2l-table > * > tr > * {
 		border-bottom: var(--d2l-table-border);
 		font-weight: inherit;
-		height: calc(var(--d2l-table-cell-height) - 2 * var(--d2l-table-cell-padding));
+		height: var(--d2l-table-cell-height);
 		line-height: 0.9rem;
 		padding: var(--d2l-table-cell-padding);
 		text-align: left;
@@ -33,8 +34,14 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
-	th.d2l-table-header-col-sortable {
-		padding: 0;
+	.d2l-checkbox,
+	d2l-input-checkbox,
+	d2l-selection-select-all,
+	d2l-selection-input {
+		margin-block: calc(0.5 * var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem);
+	}
+	d2l-button-icon {
+		margin-block: calc(0.5 * var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px));
 	}
 
 	/* default cells */
@@ -56,6 +63,9 @@ export const tableStyles = css`
 	.d2l-table > * > tr[header] > th {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
+	}
+	th.d2l-table-header-col-sortable {
+		padding: 0;
 	}
 
 	/* border radiuses */
@@ -240,7 +250,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 48px;
+				--d2l-table-cell-overall-height: 48px;
+				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
 				--d2l-table-cell-padding: 0.75rem;
 				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);

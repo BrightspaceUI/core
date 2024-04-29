@@ -20,19 +20,13 @@ const columns = ['Population', 'Size', 'Elevation'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
-	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: false },
-	{ name: 'Toronto, Canada', city: 'Toronto', country: 'Canada', data: { 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: false },
+	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
+	{ name: 'Toronto, Canada', city: 'Toronto', country: 'Canada', data: { 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: true },
 	{ name: 'Sydney, Australia', city: 'Sydney', country: 'Australia', data: { 'population': 5312000, 'size': 12368, 'elevation': 3 }, selected: false },
 	{ name: 'Cairo, Egypt', city: 'Cairo', country: 'Egypt', data: { 'population': 9540000, 'size': 3085, 'elevation': 23 }, selected: false },
 	{ name: 'Moscow, Russia', city: 'Moscow', country: 'Russia', data: { 'population': 12712305, 'size': 2511, 'elevation': 124 }, selected: false },
 	{ name: 'London, England', city: 'London', country: 'England', data: { 'population': 8982000, 'size': 1572, 'elevation': 11 }, selected: false },
-	{ name: 'New York, United States of America', city: 'New York', country: 'United States of America', data: { 'population': 8336000, 'size': 1223, 'elevation': 122 }, selected: false },
-	{ name: 'Seattle, United States of America', city: 'Seattle', country: 'United States of America', data: { 'population': 749256, 'size': 368, 'elevation': 53 }, selected: false },
-	{ name: 'Tokyo, Japan', city: 'Tokyo', country: 'Japan', data: { 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false },
-	{ name: 'Beijing, China', city: 'Beijing', country: 'China', data: { 'population': 21540000, 'size': 16411, 'elevation': 44 }, selected: false },
-	{ name: 'Paris, France', city: 'Paris', country: 'France', data: { 'population': 2161000, 'size': 105, 'elevation': 35 }, selected: false },
-	{ name: 'Mumbai, India', city: 'Mumbai', country: 'India', data: { 'population': 21673000, 'size': 603, 'elevation': 14 }, selected: false },
-	{ name: 'Mexico City, Mexico', city: 'Mexico City', country: 'Mexico', data: { 'population': 8855000, 'size': 1485, 'elevation': 2240 }, selected: false }
+	{ name: 'Tokyo, Japan', city: 'Tokyo', country: 'Japan', data: { 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -103,6 +97,11 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						</tr>
 					</thead>
 					<tbody>
+						<tr header>
+							<th scope="col" sticky></th>
+							<th scope="col"></th>
+							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
 							${thText.map(text => html`<th scope="col">${text}</th>`)}

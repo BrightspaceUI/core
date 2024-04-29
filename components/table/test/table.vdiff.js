@@ -423,6 +423,11 @@ describe('table', () => {
 					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
 					await expect(elem).to.be.golden();
 				});
+
+				it('wrapper component', async() => {
+					const elem = await fixture(html`<d2l-test-table type="${type}"></d2l-test-table>`, { rtl });
+					await expect(elem).to.be.golden();
+				});
 			});
 
 			// only test the default type to minimize permutations (hasStickyHeadersScrollWrapper isn't expected to have a different impact on the light vs default type)
