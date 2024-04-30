@@ -1,5 +1,6 @@
 import '../table-col-sort-button.js';
 import '../table-controls.js';
+import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../menu/menu.js';
@@ -98,7 +99,11 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
-							${thText.map(text => html`<th scope="col">${text}</th>`)}
+							${thText.map(text => html`
+								<th scope="col">
+									${text}${text === 'Placeholder' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
+								</th>
+							`)}
 						</tr>
 						${this._data.map(row => html`
 							<tr ?selected="${row.selected}" data-name="${row.name}">
@@ -173,14 +178,14 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
-	_renderSortButton(fruit) {
-		const noSort = this._sortField !== fruit.toLowerCase();
+	_renderSortButton(item) {
+		const noSort = this._sortField !== item.toLowerCase();
 		return html`
 			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${fruit}</d2l-table-col-sort-button>
+					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
 			</th>
 		`;
 	}

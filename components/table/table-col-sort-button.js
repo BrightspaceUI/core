@@ -89,8 +89,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				border-radius: var(--d2l-sortable-button-border-radius);
 			}
 			d2l-icon {
+				margin-inline-end: -0.8rem;
 				margin-inline-start: 0.6rem;
-				margin-inline-end: -0.6rem;
+			}
+			:host(:not([nosort]):not([has-sibling])) button {
+				padding-inline-end: calc(var(--d2l-table-cell-padding) + 0.8rem);
 			}
 
 			:host([has-sibling]) button {

@@ -38,10 +38,14 @@ export const tableStyles = css`
 	d2l-input-checkbox,
 	d2l-selection-select-all,
 	d2l-selection-input {
-		margin-block: calc(0.5 * var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem);
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
 	}
 	d2l-button-icon {
-		margin-block: calc(0.5 * var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px));
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+		margin-inline-start: 0.2rem;
+	}
+	.d2l-table-header-col-sortable-siblings d2l-button-icon {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-sortable-button-siblings-external-padding) - var(--d2l-button-icon-min-height, 42px)));
 	}
 
 	/* default cells */
@@ -68,8 +72,8 @@ export const tableStyles = css`
 		padding: 0;
 	}
 	th.d2l-table-header-col-sortable-siblings {
-		padding: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding));
-		padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding) - 4px);
+		padding: var(--d2l-sortable-button-siblings-external-padding);
+		padding-inline-start: calc(var(--d2l-sortable-button-siblings-external-padding) - 4px);
 	}
 
 	/* border radiuses */
@@ -265,6 +269,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-sortable-button-border-focus-radius: 0;
 				--d2l-sortable-button-buffer: 0px;
 				--d2l-sortable-button-siblings-padding: 0.3rem;
+				--d2l-sortable-button-siblings-external-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding));
 				display: block;
 				width: 100%;
 			}
