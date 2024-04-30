@@ -89,7 +89,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							${this._renderDoubleSortButton('City', '2')}
+							${this._renderDoubleSortButton('City', 'Country')}
 							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 						</tr>
 					</thead>
