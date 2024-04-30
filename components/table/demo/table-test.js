@@ -3,6 +3,8 @@ import '../table-controls.js';
 import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
+import '../../inputs/input-checkbox.js';
+import '../../inputs/input-text.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../paging/pager-load-more.js';
@@ -87,15 +89,14 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							${this._renderDoubleSortButton('City', 'Country')}
+							${this._renderDoubleSortButton('City', '2')}
 							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 						</tr>
 					</thead>
 					<tbody>
 						<tr header>
 							<th scope="col" sticky></th>
-							<th scope="col"></th>
-							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+							${thText.map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
 						<tr header>
 							<th scope="col" sticky></th>
@@ -119,6 +120,16 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
+						<tr >
+							<th scope="row" sticky>
+								<d2l-input-checkbox></d2l-input-checkbox>
+							</th>
+							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+						</tr>
+
 					</tbody>
 				</table>
 				${this.paging ? html`<d2l-pager-load-more slot="pager"
@@ -186,6 +197,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
+				${item === 'Size' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
 			</th>
 		`;
 	}

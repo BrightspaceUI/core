@@ -34,18 +34,33 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
-	.d2l-checkbox,
-	d2l-input-checkbox,
-	d2l-selection-select-all,
-	d2l-selection-input {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
-	}
 	d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
 		margin-inline-start: 0.2rem;
+		margin-top: 2px;
 	}
-	.d2l-table-header-col-sortable-siblings d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-sortable-button-siblings-external-padding) - var(--d2l-button-icon-min-height, 42px)));
+
+	.d2l-table > * > tr > :has(d2l-button-icon) {
+		padding-block: 0;
+	}
+	.d2l-table > * > tr > :has(.d2l-checkbox),
+	.d2l-table > * > tr > :has(d2l-selection-select-all),
+	.d2l-table > * > tr > :has(d2l-input-checkbox),
+	.d2l-table > * > tr > :has(d2l-selection-input) {
+		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+	}
+	@supports not selector(:has(a, b)) {
+		.d2l-checkbox,
+		d2l-input-checkbox,
+		d2l-selection-select-all,
+		d2l-selection-input {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+		}
+		d2l-button-icon {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+		}
+		.d2l-table-header-col-sortable-siblings d2l-button-icon {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-sortable-button-siblings-external-padding) - var(--d2l-button-icon-min-height, 42px)));
+		}
 	}
 
 	/* default cells */
@@ -74,6 +89,9 @@ export const tableStyles = css`
 	th.d2l-table-header-col-sortable-siblings {
 		padding: var(--d2l-sortable-button-siblings-external-padding);
 		padding-inline-start: calc(var(--d2l-sortable-button-siblings-external-padding) - 4px);
+	}
+	d2l-table-col-sort-button {
+		vertical-align: middle;
 	}
 
 	/* border radiuses */
@@ -267,7 +285,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
 				--d2l-sortable-button-border-radius: 0;
 				--d2l-sortable-button-border-focus-radius: 0;
-				--d2l-sortable-button-buffer: 0px;
+				--d2l-sortable-button-buffer: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-sortable-button-siblings-padding: 0.3rem;
 				--d2l-sortable-button-siblings-external-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-sortable-button-siblings-padding));
 				display: block;
