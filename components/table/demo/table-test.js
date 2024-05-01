@@ -19,7 +19,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
-const thText = ['Additional', 'Row', 'Placeholder', 'Header'];
+const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
 	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
