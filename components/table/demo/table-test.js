@@ -94,7 +94,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						</tr>
 					</thead>
 					<tbody>
-						<tr header>
+						<tr class="d2l-table-header">
 							<th scope="col" sticky></th>
 							${thText.map(text => html`<th scope="col">${text}</th>`)}
 						</tr>
