@@ -95,13 +95,15 @@ export const tableStyles = css`
 		padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) calc(var(--d2l-table-col-sort-button-siblings-padding) - 2px); /* 4px and 2px account for border height */
 	}
 	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
-		--d2l-table-col-sort-button-height: unset;
-		--d2l-table-col-sort-button-width: unset;
 		--d2l-table-col-sort-button-border: none;
 		--d2l-table-col-sort-button-border-radius: 4px;
 		--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
-		--d2l-table-col-sort-button-padding: 0.3rem;
+
 		--d2l-table-col-sort-button-margin-block: 0;
+		--d2l-table-col-sort-button-padding: 0.3rem;
+
+		--d2l-table-col-sort-button-height: unset;
+		--d2l-table-col-sort-button-width: unset;
 	}
 	@supports selector(:has(a, b)) {
 		.d2l-table th:has(d2l-table-col-sort-button:only-child) {
@@ -112,22 +114,24 @@ export const tableStyles = css`
 			padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) calc(var(--d2l-table-col-sort-button-siblings-padding) - 2px);
 		}
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
-			--d2l-table-col-sort-button-height: unset;
-			--d2l-table-col-sort-button-width: unset;
 			--d2l-table-col-sort-button-border: none;
 			--d2l-table-col-sort-button-border-radius: 4px;
 			--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
-			--d2l-table-col-sort-button-padding: 0.3rem;
+
 			--d2l-table-col-sort-button-margin-block: 0;
+			--d2l-table-col-sort-button-padding: 0.3rem;
+
+			--d2l-table-col-sort-button-height: unset;
+			--d2l-table-col-sort-button-width: unset;
 		}
 	}
 
 	d2l-table-wrapper[type="light"] d2l-table-col-sort-button {
 		--d2l-table-col-sort-button-border: none;
 		--d2l-table-col-sort-button-border-radius: 4px;
-		--d2l-table-col-sort-button-size-offset: 4px;
 		--d2l-table-col-sort-button-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-		--d2l-table-col-sort-button-padding-inline-start-offset: var(--d2l-table-col-sort-button-size-offset);
+		--d2l-table-col-sort-button-size-offset: 4px;
+		--d2l-table-col-sort-button-padding-offset: var(--d2l-table-col-sort-button-size-offset);
 	}
 
 	/* border radiuses */

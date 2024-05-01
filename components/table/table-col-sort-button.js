@@ -27,14 +27,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
-			},
-			/**
-			 * @ignore
-			 */
-			hasSibling: {
-				attribute: 'has-sibling',
-				reflect: true,
-				type: Boolean
 			}
 		};
 	}
@@ -46,13 +38,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				--d2l-table-col-sort-button-border: var(--d2l-table-col-sort-button-border-width) solid transparent;
 				--d2l-table-col-sort-button-border-radius: 0px;
 				--d2l-table-col-sort-button-box-shadow: none;
-				--d2l-table-col-sort-button-margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
-				--d2l-table-col-sort-button-padding-inline-start-offset: var(--d2l-table-col-sort-button-border-width);
 
-				--d2l-table-col-sort-button-size-offset: 0px;
+				--d2l-table-col-sort-button-margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
+				--d2l-table-col-sort-button-padding-offset: var(--d2l-table-col-sort-button-border-width);
+				--d2l-table-col-sort-button-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-offset));
+
+				--d2l-table-col-sort-button-size-offset: 0px; /* when type="light" button bumps in by 4px */
 				--d2l-table-col-sort-button-height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
-				--d2l-table-col-sort-button-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-inline-start-offset));
 			}
 			button {
 				align-items: center;
@@ -95,7 +88,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.hasSibling = false;
 		this.nosort = false;
 		this.desc = false;
 	}
