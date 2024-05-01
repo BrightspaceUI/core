@@ -472,7 +472,7 @@ describe('table', () => {
 
 				it('two-col-sort-button-wrap', async() => {
 					const elem = await createTableFixture(html`
-						<thead>${createDoubleSortableHeaderRow('Ascending')}</thead>
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();

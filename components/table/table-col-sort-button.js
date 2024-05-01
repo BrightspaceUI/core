@@ -44,10 +44,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host {
 				--d2l-table-col-sort-button-border-width: 2px;
 				--d2l-table-col-sort-button-border: var(--d2l-table-col-sort-button-border-width) solid transparent;
-				--d2l-table-col-sort-button-border-radius: 0;
+				--d2l-table-col-sort-button-border-radius: 0px;
 				--d2l-table-col-sort-button-box-shadow: none;
-				--d2l-table-col-sort-button-size-offset: 0px;
+				--d2l-table-col-sort-button-margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
 				--d2l-table-col-sort-button-padding-inline-start-offset: var(--d2l-table-col-sort-button-border-width);
+
+				--d2l-table-col-sort-button-size-offset: 0px;
+				--d2l-table-col-sort-button-height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
+				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
+				--d2l-table-col-sort-button-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-inline-start-offset));
 			}
 			button {
 				align-items: center;
@@ -59,13 +64,13 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
-				height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
+				height: var(--d2l-table-col-sort-button-height);
 				letter-spacing: inherit;
-				margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
+				margin-block: var(--d2l-table-col-sort-button-margin-block);
 				margin-inline-start: var(--d2l-table-col-sort-button-size-offset);
-				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-inline-start-offset));
+				padding: var(--d2l-table-col-sort-button-padding);
 				text-decoration: none;
-				width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
+				width: var(--d2l-table-col-sort-button-width);
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -84,19 +89,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 			d2l-icon {
 				margin-inline-start: 0.6rem;
-			}
-
-			:host([has-sibling]) button {
-				border: none;
-				border-radius: 4px;
-				height: unset;
-				margin-block: unset;
-				padding: 0.3rem;
-				width: unset;
-			}
-			:host([has-sibling]) button:focus-visible,
-			:host([has-sibling]) button:${unsafeCSS(getFocusPseudoClass())}  {
-				box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 			}
 		`;
 	}

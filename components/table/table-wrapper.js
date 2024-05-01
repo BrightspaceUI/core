@@ -87,20 +87,38 @@ export const tableStyles = css`
 		font-size: 0.7rem;
 	}
 
-	.d2l-table th:has(d2l-table-col-sort-button:only-child) {
+	.d2l-table th.d2l-table-header-col-sortable:not(.d2l-table-header-col-sortable-siblings) {
 		height: var(--d2l-table-cell-overall-height);
 		padding: 0;
 	}
-	.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
+	.d2l-table th.d2l-table-header-col-sortable-siblings {
 		padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) calc(var(--d2l-table-col-sort-button-siblings-padding) - 2px); /* 4px and 2px account for border height */
 	}
-	@supports not selector(:has(a, b)) {
-		.d2l-table th.d2l-table-header-col-sortable {
+	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
+		--d2l-table-col-sort-button-height: unset;
+		--d2l-table-col-sort-button-width: unset;
+		--d2l-table-col-sort-button-border: none;
+		--d2l-table-col-sort-button-border-radius: 4px;
+		--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+		--d2l-table-col-sort-button-padding: 0.3rem;
+		--d2l-table-col-sort-button-margin-block: 0;
+	}
+	@supports selector(:has(a, b)) {
+		.d2l-table th:has(d2l-table-col-sort-button:only-child) {
 			height: var(--d2l-table-cell-overall-height);
 			padding: 0;
 		}
-		.d2l-table th.d2l-table-header-col-sortable-siblings {
-			padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) var(--d2l-table-col-sort-button-siblings-padding - 2px); /* 4px and 2px account for border height */
+		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
+			padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) calc(var(--d2l-table-col-sort-button-siblings-padding) - 2px);
+		}
+		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
+			--d2l-table-col-sort-button-height: unset;
+			--d2l-table-col-sort-button-width: unset;
+			--d2l-table-col-sort-button-border: none;
+			--d2l-table-col-sort-button-border-radius: 4px;
+			--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+			--d2l-table-col-sort-button-padding: 0.3rem;
+			--d2l-table-col-sort-button-margin-block: 0;
 		}
 	}
 
@@ -422,7 +440,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
-				if (isHeader) this._checkSiblingSortableCells(c);
+				if (isHeader && !CSS.supports('selector(:has(a, b))')) this._checkSiblingSortableCells(c);
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));
@@ -442,12 +460,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		if (!sortButton) return;
 
 		if (sortButton.previousElementSibling || sortButton.nextElementSibling) {
-			nodes.forEach((element) => {
-				if (isSortButton(element)) {
-					element.hasSibling = true;
-					c.classList.toggle('d2l-table-header-col-sortable-siblings', true);
-				}
-			});
+			c.classList.toggle('d2l-table-header-col-sortable-siblings', true);
 		}
 		c.classList.toggle('d2l-table-header-col-sortable', true);
 	}
