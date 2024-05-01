@@ -2,8 +2,6 @@ import '../table-col-sort-button.js';
 import '../table-controls.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
-import '../../inputs/input-checkbox.js';
-import '../../inputs/input-text.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../paging/pager-load-more.js';
@@ -119,15 +117,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
-						<tr>
-							<th scope="row" sticky>
-								<d2l-input-checkbox></d2l-input-checkbox>
-							</th>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-						</tr>
 
 					</tbody>
 				</table>
