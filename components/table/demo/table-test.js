@@ -1,6 +1,5 @@
 import '../table-col-sort-button.js';
 import '../table-controls.js';
-import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../inputs/input-checkbox.js';
@@ -20,7 +19,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
-const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
+const thText = ['Additional', 'Row', 'Placeholder', 'Header'];
 
 const data = () => [
 	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
@@ -102,7 +101,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<th scope="col" sticky></th>
 							${thText.map(text => html`
 								<th scope="col">
-									${text}${text === 'Placeholder' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
+									${text}
 								</th>
 							`)}
 						</tr>
@@ -120,7 +119,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
-						<tr >
+						<tr>
 							<th scope="row" sticky>
 								<d2l-input-checkbox></d2l-input-checkbox>
 							</th>
@@ -197,7 +196,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
-				${item === 'Size' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
 			</th>
 		`;
 	}
