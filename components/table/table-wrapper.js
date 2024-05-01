@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { cssSizes } from '../inputs/input-checkbox.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -19,18 +20,46 @@ export const tableStyles = css`
 	.d2l-table > tfoot {
 		background-color: #ffffff;
 	}
+	d2l-table-col-sort-button {
+		vertical-align: middle;
+	}
 
 	/* all cells */
 	.d2l-table > * > tr > * {
 		border-bottom: var(--d2l-table-border);
 		font-weight: inherit;
 		height: var(--d2l-table-cell-height);
+		line-height: 0.9rem;
 		padding: var(--d2l-table-cell-padding);
 		text-align: left;
 		vertical-align: middle;
 	}
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
+	}
+	.d2l-table > * > tr > :has(.d2l-checkbox),
+	.d2l-table > * > tr > :has(d2l-selection-select-all),
+	.d2l-table > * > tr > :has(d2l-input-checkbox),
+	.d2l-table > * > tr > :has(d2l-selection-input) {
+		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+	}
+	.d2l-table > * > tr > :has(d2l-button-icon) {
+		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
+	}
+
+	@supports not selector(:has(a, b)) {
+		.d2l-checkbox,
+		d2l-input-checkbox,
+		d2l-selection-select-all,
+		d2l-selection-input {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+		}
+		d2l-button-icon {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+		}
+		.d2l-table-header-col-sortable-siblings d2l-button-icon {
+			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-col-sort-button-siblings-padding) - var(--d2l-button-icon-min-height, 42px)));
+		}
 	}
 
 	/* default cells */
@@ -52,12 +81,21 @@ export const tableStyles = css`
 	.d2l-table > * > tr[header] > th {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
-		line-height: 0.9rem;
 	}
-	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
-	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
-	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: 27px; /* min-height to be 48px including border */
+
+	.d2l-table th:has(d2l-table-col-sort-button:only-child) {
+		padding: 0;
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
+		padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) calc(var(--d2l-table-col-sort-button-siblings-padding) - 2px); /* 4px and 2px account for border height */
+	}
+	@supports not selector(:has(a, b)) {
+		.d2l-table th.d2l-table-header-col-sortable {
+			padding: 0;
+		}
+		.d2l-table th.d2l-table-header-col-sortable-siblings {
+			padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) var(--d2l-table-col-sort-button-siblings-padding - 2px); /* 4px and 2px account for border height */
+		}
 	}
 
 	/* border radiuses */
@@ -242,12 +280,14 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.5rem 1rem;
-				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
+				--d2l-table-cell-overall-height: 48px;
+				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
+				--d2l-table-cell-padding: 0.75rem;
+				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
+				--d2l-table-col-sort-button-siblings-padding: calc(var(--d2l-table-cell-padding) - 0.3rem);
 				display: block;
 				width: 100%;
 			}
@@ -368,6 +408,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
+				if (isHeader) this._checkSiblingSortableCells(c);
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));
@@ -378,6 +419,23 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
 		});
+	}
+
+	_checkSiblingSortableCells(c) {
+		const nodes = Array.from(c.childNodes);
+		const isSortButton = (element) => element.localName === 'd2l-table-col-sort-button';
+		const sortButton = nodes.find((element) => isSortButton(element));
+		if (!sortButton) return;
+
+		if (sortButton.previousElementSibling || sortButton.nextElementSibling) {
+			nodes.forEach((element) => {
+				if (isSortButton(element)) {
+					element.hasSibling = true;
+					c.classList.toggle('d2l-table-header-col-sortable-siblings', true);
+				}
+			});
+		}
+		c.classList.toggle('d2l-table-header-col-sortable', true);
 	}
 
 	_getItemByIndex(index) {

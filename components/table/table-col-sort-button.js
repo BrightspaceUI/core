@@ -27,6 +27,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * @ignore
+			 */
+			hasSibling: {
+				attribute: 'has-sibling',
+				reflect: true,
+				type: Boolean
 			}
 		};
 	}
@@ -36,16 +44,18 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button {
 				align-items: center;
 				background-color: transparent;
-				border: none;
+				border: 2px solid transparent;
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
+				height: 100%;
 				letter-spacing: inherit;
-				margin: 0;
-				padding: 0;
+				margin-block: -2px;
+				padding: calc(var(--d2l-table-cell-padding) - 2px);
 				text-decoration: none;
+				width: 100%;
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -54,19 +64,34 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				opacity: 0.5;
 			}
 			button:hover {
-				text-decoration: underline;
+				background-color: var(--d2l-color-gypsum);
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+				border-color: var(--d2l-color-celestine);
 				outline-style: none;
+			}
+			d2l-icon {
+				margin-inline-start: 0.6rem;
+			}
+
+			:host([has-sibling]) button {
+				height: unset;
+				margin-block: unset;
+				padding: 0.3rem;
+				width: unset;
+			}
+			:host([has-sibling]) button:hover,
+			:host([has-sibling]) button:focus-visible,
+			:host([has-sibling]) button:${unsafeCSS(getFocusPseudoClass())}  {
+				border-radius: 0.3rem;
 			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this.hasSibling = false;
 		this.nosort = false;
 		this.desc = false;
 	}
