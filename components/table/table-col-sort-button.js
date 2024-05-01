@@ -41,21 +41,31 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get styles() {
 		return css`
+			:host {
+				--d2l-table-col-sort-button-border-width: 2px;
+				--d2l-table-col-sort-button-border: var(--d2l-table-col-sort-button-border-width) solid transparent;
+				--d2l-table-col-sort-button-border-radius: 0;
+				--d2l-table-col-sort-button-box-shadow: none;
+				--d2l-table-col-sort-button-size-offset: 0px;
+				--d2l-table-col-sort-button-padding-inline-start-offset: var(--d2l-table-col-sort-button-border-width);
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
-				border: 2px solid transparent;
+				border: var(--d2l-table-col-sort-button-border);
+				border-radius: var(--d2l-table-col-sort-button-border-radius);
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
-				height: 100%;
+				height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 				letter-spacing: inherit;
-				margin-block: -2px;
-				padding: calc(var(--d2l-table-cell-padding) - 2px);
+				margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
+				margin-inline-start: var(--d2l-table-col-sort-button-size-offset);
+				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-inline-start-offset));
 				text-decoration: none;
-				width: 100%;
+				width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -69,6 +79,7 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
 				border-color: var(--d2l-color-celestine);
+				box-shadow: var(--d2l-table-col-sort-button-box-shadow);
 				outline-style: none;
 			}
 			d2l-icon {
@@ -76,15 +87,16 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			}
 
 			:host([has-sibling]) button {
+				border: none;
+				border-radius: 4px;
 				height: unset;
 				margin-block: unset;
 				padding: 0.3rem;
 				width: unset;
 			}
-			:host([has-sibling]) button:hover,
 			:host([has-sibling]) button:focus-visible,
 			:host([has-sibling]) button:${unsafeCSS(getFocusPseudoClass())}  {
-				border-radius: 0.3rem;
+				box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 			}
 		`;
 	}

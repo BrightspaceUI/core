@@ -37,6 +37,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
+
 	.d2l-table > * > tr > :has(.d2l-checkbox),
 	.d2l-table > * > tr > :has(d2l-selection-select-all),
 	.d2l-table > * > tr > :has(d2l-input-checkbox),
@@ -46,7 +47,6 @@ export const tableStyles = css`
 	.d2l-table > * > tr > :has(d2l-button-icon) {
 		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
 	}
-
 	@supports not selector(:has(a, b)) {
 		.d2l-checkbox,
 		d2l-input-checkbox,
@@ -60,6 +60,10 @@ export const tableStyles = css`
 		.d2l-table-header-col-sortable-siblings d2l-button-icon {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-col-sort-button-siblings-padding) - var(--d2l-button-icon-min-height, 42px)));
 		}
+	}
+
+	d2l-table-wrapper[type="light"] d2l-button-icon {
+		margin-top: 1px;
 	}
 
 	/* default cells */
@@ -84,6 +88,7 @@ export const tableStyles = css`
 	}
 
 	.d2l-table th:has(d2l-table-col-sort-button:only-child) {
+		height: var(--d2l-table-cell-overall-height);
 		padding: 0;
 	}
 	.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
@@ -91,11 +96,20 @@ export const tableStyles = css`
 	}
 	@supports not selector(:has(a, b)) {
 		.d2l-table th.d2l-table-header-col-sortable {
+			height: var(--d2l-table-cell-overall-height);
 			padding: 0;
 		}
 		.d2l-table th.d2l-table-header-col-sortable-siblings {
 			padding: calc(var(--d2l-table-col-sort-button-siblings-padding) - 4px) var(--d2l-table-col-sort-button-siblings-padding - 2px); /* 4px and 2px account for border height */
 		}
+	}
+
+	d2l-table-wrapper[type="light"] d2l-table-col-sort-button {
+		--d2l-table-col-sort-button-border: none;
+		--d2l-table-col-sort-button-border-radius: 4px;
+		--d2l-table-col-sort-button-size-offset: 4px;
+		--d2l-table-col-sort-button-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+		--d2l-table-col-sort-button-padding-inline-start-offset: var(--d2l-table-col-sort-button-size-offset);
 	}
 
 	/* border radiuses */
