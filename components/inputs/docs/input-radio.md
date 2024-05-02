@@ -116,7 +116,7 @@ If you'd like to manually link the radio input with a label, or use an ARIA labe
 
 ## Radio Spacer [d2l-input-radio-spacer]
 
-To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used:
+To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used in conjunction with the `d2l-input-radio-label` class:
 
 <!-- docs: demo code display:block -->
 ```html
@@ -133,11 +133,13 @@ To align related content below radio buttons, the `d2l-input-radio-spacer` eleme
 
     render() {
       return html`
-      <input type="radio" class="d2l-input-radio" aria-label="Option 1"> Option 1
-      <d2l-input-radio-spacer>
-      Additional content can go here and will
-      line up nicely with the edge of the radio.
-      </d2l-input-radio-spacer>
+        <label class="d2l-input-radio-label">
+          <input type="radio" value="normal" checked>
+          Option 1
+        </label>
+        <d2l-input-radio-spacer>
+          Additional content can go here and will line up nicely with the edge of the radio.
+        </d2l-input-radio-spacer>
       `;
     }
 
