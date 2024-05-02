@@ -169,6 +169,23 @@ export const tableStyles = css`
 		border-bottom-right-radius: var(--d2l-table-border-radius);
 	}
 
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first d2l-table-col-sort-button:only-child,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last d2l-table-col-sort-button:only-child {
+		--table-col-sort-button-top-left-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-last d2l-table-col-sort-button:only-child,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-first d2l-table-col-sort-button:only-child {
+		--table-col-sort-button-top-right-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-first d2l-table-col-sort-button:only-child,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-last d2l-table-col-sort-button:only-child {
+		--table-col-sort-button-bottom-left-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-last d2l-table-col-sort-button:only-child,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-first d2l-table-col-sort-button:only-child {
+		--table-col-sort-button-bottom-right-radius: var(--d2l-table-border-radius);
+	}
+
 	/* selected rows */
 	.d2l-table > tbody > tr[selected] {
 		background-color: var(--d2l-table-row-background-color-selected);
