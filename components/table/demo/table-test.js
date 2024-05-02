@@ -182,10 +182,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
+					data-type="words"
 					?desc="${this._sortDesc}"
 					?nosort="${this._sortField !== item1.toLowerCase()}">${item1}</d2l-table-col-sort-button>
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
+					data-type="words"
 					?desc="${this._sortDesc}"
 					?nosort="${this._sortField !== item2.toLowerCase()}">${item2}</d2l-table-col-sort-button>
 			</th>
@@ -198,6 +200,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			<th scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
+					data-type="numbers"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
 				${item === 'Size' && this.showButtons ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
