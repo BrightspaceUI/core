@@ -43,20 +43,20 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */ /* when type="light" button bumps in by 4px */
 				--d2l-table-col-sort-button-height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
-				--table-col-sort-button-bottom-left-radius: var(--d2l-table-col-sort-button-border-radius);
-				--table-col-sort-button-bottom-right-radius: var(--d2l-table-col-sort-button-border-radius);
-				--table-col-sort-button-top-left-radius: var(--d2l-table-col-sort-button-border-radius);
-				--table-col-sort-button-top-right-radius: var(--d2l-table-col-sort-button-border-radius);
+				--d2l-table-col-sort-button-bottom-left-radius: var(--d2l-table-col-sort-button-border-radius);
+				--d2l-table-col-sort-button-bottom-right-radius: var(--d2l-table-col-sort-button-border-radius);
+				--d2l-table-col-sort-button-top-left-radius: var(--d2l-table-col-sort-button-border-radius);
+				--d2l-table-col-sort-button-top-right-radius: var(--d2l-table-col-sort-button-border-radius);
 			}
 			button {
 				align-items: center;
 				background-color: transparent;
 				border: var(--d2l-table-col-sort-button-border);
 				border-radius: var(--d2l-table-col-sort-button-border-radius);
-				border-bottom-left-radius: var(--table-col-sort-button-bottom-left-radius);
-				border-bottom-right-radius: var(--table-col-sort-button-bottom-right-radius);
-				border-top-left-radius: var(--table-col-sort-button-top-left-radius);
-				border-top-right-radius: var(--table-col-sort-button-top-right-radius);
+				border-bottom-left-radius: var(--d2l-table-col-sort-button-bottom-left-radius);
+				border-bottom-right-radius: var(--d2l-table-col-sort-button-bottom-right-radius);
+				border-top-left-radius: var(--d2l-table-col-sort-button-top-left-radius);
+				border-top-right-radius: var(--d2l-table-col-sort-button-top-right-radius);
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
