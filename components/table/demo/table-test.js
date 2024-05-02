@@ -39,6 +39,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	static get properties() {
 		return {
 			paging: { type: Boolean, reflect: true },
+			showButtons: { type: Boolean, attribute: true },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
@@ -62,6 +63,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		super();
 
 		this.paging = false;
+		this.showButtons = false;
 		this.stickyControls = false;
 		this.visibleBackground = false;
 		this._data = data();
@@ -102,7 +104,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<th scope="col" sticky></th>
 							${thText.map(text => html`
 								<th scope="col">
-									${text}${text === 'Placeholder' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
+									${text}${text === 'Placeholder' && this.showButtons ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
 								</th>
 							`)}
 						</tr>
@@ -120,16 +122,17 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
-						<tr >
-							<th scope="row" sticky>
-								<d2l-input-checkbox></d2l-input-checkbox>
-							</th>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-						</tr>
-
+						${this.showButtons ? html`
+							<tr>
+								<th scope="row" sticky>
+									<d2l-input-checkbox></d2l-input-checkbox>
+								</th>
+								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
+							</tr>
+						` : nothing}
 					</tbody>
 				</table>
 				${this.paging ? html`<d2l-pager-load-more slot="pager"
@@ -197,7 +200,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
-				${item === 'Size' ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
+				${item === 'Size' && this.showButtons ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
 			</th>
 		`;
 	}
