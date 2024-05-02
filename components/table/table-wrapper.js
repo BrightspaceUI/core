@@ -69,6 +69,10 @@ export const tableStyles = css`
 		d2l-button-icon {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
 		}
+		d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
+			margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+			margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
+		}
 		.d2l-table-header-col-sortable-siblings d2l-button-icon {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
 		}
