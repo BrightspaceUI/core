@@ -36,14 +36,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			:host {
 				--d2l-table-col-sort-button-border-width: 2px;
 				--d2l-table-col-sort-button-border: var(--d2l-table-col-sort-button-border-width) solid transparent;
-				--d2l-table-col-sort-button-border-radius: 0px;
+				--d2l-table-col-sort-button-border-radius: 0;
 				--d2l-table-col-sort-button-box-shadow: none;
-
-				--d2l-table-col-sort-button-margin-block: calc(-1 * var(--d2l-table-col-sort-button-border-width));
 				--d2l-table-col-sort-button-padding-offset: var(--d2l-table-col-sort-button-border-width);
 				--d2l-table-col-sort-button-padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-padding-offset));
-
-				--d2l-table-col-sort-button-size-offset: 0px; /* when type="light" button bumps in by 4px */
+				--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */ /* when type="light" button bumps in by 4px */
 				--d2l-table-col-sort-button-height: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
 			}
@@ -59,7 +56,6 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				font-size: inherit;
 				height: var(--d2l-table-col-sort-button-height);
 				letter-spacing: inherit;
-				margin-block: var(--d2l-table-col-sort-button-margin-block);
 				margin-inline-start: var(--d2l-table-col-sort-button-size-offset);
 				padding: var(--d2l-table-col-sort-button-padding);
 				text-decoration: none;
