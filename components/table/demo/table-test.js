@@ -39,7 +39,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	static get properties() {
 		return {
 			paging: { type: Boolean, reflect: true },
-			showButtons: { type: Boolean, attribute: true },
+			showButtons: { type: Boolean, attribute: 'show-buttons' },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
 			_data: { state: true },
