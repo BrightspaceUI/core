@@ -44,6 +44,12 @@ export const tableStyles = css`
 	.d2l-table > * > tr > :has(d2l-selection-input) {
 		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
 	}
+	.d2l-table > * > tr.d2l-table-selected-first > :has(.d2l-checkbox),
+	.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-input-checkbox),
+	.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
+		padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+		padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+	}
 	.d2l-table > * > tr > :has(d2l-button-icon) {
 		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
 	}
@@ -54,11 +60,22 @@ export const tableStyles = css`
 		d2l-selection-input {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
 		}
+		.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
+		.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
+		.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
+			margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+			margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+		}
 		d2l-button-icon {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
 		}
 		.d2l-table-header-col-sortable-siblings d2l-button-icon {
 			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
+		}
+		d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
+			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
+			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+
 		}
 	}
 
@@ -328,9 +345,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([type="light"]) {
 				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
-				--d2l-table-cell-padding: 0.6rem;
-				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
