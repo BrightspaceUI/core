@@ -120,6 +120,7 @@ export const tableStyles = css`
 		--d2l-table-col-sort-button-border-radius: 4px;
 		--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 		--d2l-table-col-sort-button-padding: var(--d2l-table-cell-col-sort-button-has-siblings-padding);
+		--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */
 		--d2l-table-col-sort-button-height: unset;
 		--d2l-table-col-sort-button-width: unset;
 	}
@@ -136,6 +137,7 @@ export const tableStyles = css`
 			--d2l-table-col-sort-button-border-radius: 4px;
 			--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 			--d2l-table-col-sort-button-padding: var(--d2l-table-cell-col-sort-button-has-siblings-padding);
+			--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */
 			--d2l-table-col-sort-button-height: unset;
 			--d2l-table-col-sort-button-width: unset;
 		}
