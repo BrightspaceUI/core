@@ -123,21 +123,22 @@ To align related content below radio buttons, the `d2l-input-radio-spacer` eleme
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
   import { html, LitElement } from 'lit';
+  import { inlineHelpStyles } from '@brightspace-ui/core/components/inputs/input-inline-help.js';
   import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
 
   class MyRadioElem extends LitElement {
 
     static get styles() {
-      return radioStyles;
+      return [ radioStyles, inlineHelpStyles ];
     }
 
     render() {
       return html`
         <label class="d2l-input-radio-label">
-          <input type="radio" value="normal" checked>
+          <input type="radio" aria-describedby="desc1" value="normal" checked>
           Option 1
         </label>
-        <d2l-input-radio-spacer>
+        <d2l-input-radio-spacer id="desc1" class="d2l-input-inline-help">
           Additional content can go here and will line up nicely with the edge of the radio.
         </d2l-input-radio-spacer>
       `;

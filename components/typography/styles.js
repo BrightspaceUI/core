@@ -79,47 +79,57 @@ export const _generateBodyCompactStyles = (selector) => {
 
 export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact');
 
-export const bodySmallStyles = css`
-	.d2l-body-small {
-		color: var(--d2l-color-tungsten);
-		font-size: 0.7rem;
-		font-weight: 400;
-		line-height: 1rem;
-		margin: auto;
-	}
-	:host([skeleton]) .d2l-body-small.d2l-skeletize::before {
-		bottom: 0.25rem;
-		top: 0.2rem;
-	}
-	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-2 {
-		max-height: 2rem;
-	}
-	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-3 {
-		max-height: 3rem;
-	}
-	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-5 {
-		max-height: 5rem;
-	}
-	@media (max-width: 615px) {
-		.d2l-body-small {
-			font-size: 0.6rem;
-			line-height: 0.9rem;
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateBodySmallStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+			font-weight: 400;
+			line-height: 1rem;
+			margin: auto;
 		}
-		:host([skeleton]) .d2l-body-small.d2l-skeletize::before {
+		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.25rem;
 			top: 0.2rem;
 		}
-		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-2 {
-			max-height: 1.8rem;
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-2 {
+			max-height: 2rem;
 		}
-		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-3 {
-			max-height: 2.7rem;
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-3 {
+			max-height: 3rem;
 		}
-		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-5 {
-			max-height: 4.5rem;
+		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-5 {
+			max-height: 5rem;
 		}
-	}
-`;
+		@media (max-width: 615px) {
+			${selector} {
+				font-size: 0.6rem;
+				line-height: 0.9rem;
+			}
+			:host([skeleton]) ${selector}.d2l-skeletize::before {
+				bottom: 0.25rem;
+				top: 0.2rem;
+			}
+			:host([skeleton]) ${selector}.d2l-skeletize-paragraph-2 {
+				max-height: 1.8rem;
+			}
+			:host([skeleton]) ${selector}.d2l-skeletize-paragraph-3 {
+				max-height: 2.7rem;
+			}
+			:host([skeleton]) ${selector}.d2l-skeletize-paragraph-5 {
+				max-height: 4.5rem;
+			}
+		}
+	`;
+};
+
+export const bodySmallStyles = _generateBodySmallStyles('.d2l-body-small');
 
 export const heading1Styles = css`
 	.d2l-heading-1 {

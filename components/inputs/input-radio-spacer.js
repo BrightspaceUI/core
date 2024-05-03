@@ -19,6 +19,9 @@ class InputRadioSpacer extends RtlMixin(LitElement) {
 					padding-left: 0;
 					padding-right: 1.7rem;
 				}
+				:host(.d2l-input-inline-help) {
+					margin-bottom: 0.9rem !important;
+				}
 			`;
 	}
 

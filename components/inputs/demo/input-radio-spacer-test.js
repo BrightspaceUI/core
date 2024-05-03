@@ -1,41 +1,32 @@
 import '../input-radio-spacer.js';
 import { html, LitElement } from 'lit';
-import { bodySmallStyles } from '../../typography/styles.js';
+import { inlineHelpStyles } from '../input-inline-help.js';
 import { radioStyles } from '../input-radio-styles.js';
 
 class TestInputRadioSpacer extends LitElement {
 
 	static get styles() {
-		return [ radioStyles, bodySmallStyles ];
+		return [ radioStyles, inlineHelpStyles ];
 	}
 
 	render() {
 		return html`
 			<div>
 				<label class="d2l-input-radio-label">
-					<input type="radio" name="myGroup" value="normal" checked>
+					<input type="radio" aria-describedby="desc1" name="myGroup" value="normal">
 					Option 1
 				</label>
-				<d2l-input-radio-spacer>
+				<d2l-input-radio-spacer id="desc1" class="d2l-input-inline-help">
 					Additional content can go here and will line up nicely with the edge of the radio.
 				</d2l-input-radio-spacer>
 			</div>
 			<div>
 				<label class="d2l-input-radio-label">
-					<input type="radio" name="myGroup" value="normal">
-					Option 1 (A really really long label that will wrap to the next line where the indentation will be applied. All the text should align.)
+					<input type="radio" aria-describedby="desc2" name="myGroup" value="normal">
+					Option 1 (Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker.)
 				</label>
-				<d2l-input-radio-spacer>
-					Additional content can go here and will line up nicely with the edge of the radio.
-				</d2l-input-radio-spacer>
-			</div>
-			<div>
-				<label class="d2l-input-radio-label">
-					<input type="radio" name="myGroup" value="normal">
-					Option 1
-				</label>
-				<d2l-input-radio-spacer>
-					<div class="d2l-body-small">Additional content can go here and will line up nicely with the edge of the radio.</div>
+				<d2l-input-radio-spacer id="desc2" class="d2l-input-inline-help">
+					Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.
 				</d2l-input-radio-spacer>
 			</div>
 		`;
