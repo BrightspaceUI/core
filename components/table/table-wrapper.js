@@ -38,48 +38,55 @@ export const tableStyles = css`
 		text-align: right;
 	}
 
-	.d2l-table > * > tr > :has(.d2l-checkbox),
-	.d2l-table > * > tr > :has(d2l-selection-select-all),
-	.d2l-table > * > tr > :has(d2l-input-checkbox),
-	.d2l-table > * > tr > :has(d2l-selection-input) {
-		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+	/* once we only support browsers that support :has the section below can be removed up until @supports */
+	.d2l-checkbox,
+	d2l-input-checkbox,
+	d2l-selection-select-all,
+	d2l-selection-input {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
 	}
-	.d2l-table > * > tr.d2l-table-selected-first > :has(.d2l-checkbox),
-	.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-input-checkbox),
-	.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
-		padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
-		padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+	.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
+	.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
+	.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
 	}
-	.d2l-table > * > tr > :has(d2l-button-icon) {
-		padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
+	d2l-button-icon {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
 	}
-	@supports not selector(:has(a, b)) {
-		.d2l-checkbox,
-		d2l-input-checkbox,
-		d2l-selection-select-all,
-		d2l-selection-input {
-			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
-		}
-		.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
-		.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
-		.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
-			margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
-			margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
-		}
-		d2l-button-icon {
-			margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-		}
-		d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
-			margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-			margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
-		}
-		.d2l-table-header-col-sortable-siblings d2l-button-icon {
-			margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
-		}
-		d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
-			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
-			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+	d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
+	}
+	.d2l-table-header-col-sortable-siblings d2l-button-icon {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
+	}
+	d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
+		margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+	}
 
+	@supports selector(:has(a, b)) {
+		.d2l-table > * > tr > :has(.d2l-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-select-all),
+		.d2l-table > * > tr > :has(d2l-input-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-input) {
+			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+		}
+		.d2l-table > * > tr.d2l-table-selected-first > :has(.d2l-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-input-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
+			padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+		}
+		.d2l-table > * > tr > :has(d2l-button-icon) {
+			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
+		}
+
+		/* this can be removed once we only support browsers that support :has */
+		d2l-table-wrapper[type="light"] :has(d2l-table-col-sort-button:not(:only-child)) d2l-button-icon {
+			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 1px);
+			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
 		}
 	}
 
@@ -108,6 +115,7 @@ export const tableStyles = css`
 		font-size: 0.7rem;
 	}
 
+	/* once we only support browsers that support :has the section below can be removed up until @supports */
 	.d2l-table th.d2l-table-header-col-sortable:not(.d2l-table-header-col-sortable-siblings) {
 		height: var(--d2l-table-cell-overall-height);
 		padding: 0;
