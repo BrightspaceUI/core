@@ -102,7 +102,6 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 
 	constructor() {
 		super();
-		this.dataType = 'numbers';
 		this.desc = false;
 		this.nosort = false;
 	}
@@ -112,18 +111,19 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 	}
 
 	render() {
-		let buttonTitle = undefined,
-			description = this.localize('components.table-col-sort-button.addSortOrder');
-		if (!this.nosort) {
-			buttonTitle = this.localize(`components.table-col-sort-button.${this.dataType}.${this.desc ? 'desc' : 'asc'}`);
-			description = this.localize('components.table-col-sort-button.changeSortOrder');
-		}
+		const buttonDescription = this.nosort ? this.localize('components.table-col-sort-button.addSortOrder') : this.localize('components.table-col-sort-button.changeSortOrder');
+		const buttonTitle = this.nosort
+			? undefined
+			: this.localize('components.table-col-sort-button.title', {
+				dataType: this.dataType,
+				direction: this.desc ? 'desc' : undefined
+			});
 
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return html`<button type="button" title="${ifDefined(buttonTitle)}" aria-description="${description}"><slot></slot>${iconView}</button>`;
+		return html`<button type="button" title="${ifDefined(buttonTitle)}" aria-description="${buttonDescription}"><slot></slot>${iconView}</button>`;
 	}
 
 	updated(changedProperties) {
@@ -131,9 +131,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 
 		if (!changedProperties.has('dataType')) return;
 
-		if (this.dataType !== 'words' && this.dataType !== 'numbers' && this.dataType !== 'dates') {
-			this.dataType = 'numbers';
-			console.warn('d2l-table-col-sort-button: data-type attribute has been set to an invalid value. It has been defaulted to "numbers".');
+		if (this.dataType !== 'words' && this.dataType !== 'numbers' && this.dataType !== 'dates' && this.dataType !== undefined) {
+			console.warn('d2l-table-col-sort-button: data-type attribute has been set to an invalid value.');
 		}
 	}
 }
