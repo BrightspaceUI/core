@@ -107,7 +107,7 @@ export default {
 	"components.switch.conditions": "Conditions must be met",
 	"components.table-col-sort-button.addSortOrder": "Click to add sort order",
 	"components.table-col-sort-button.changeSortOrder": "Click to change sort order",
-	'components.table-col-sort-button.title': "{dataType, select, dates {{direction, select, desc {Sorted new to old} other {Sorted old to new}}} numbers {{direction, select, desc {Sorted high to low} other {Sorted low to high}}} words {{direction, select, desc {Sorted Z to A} other {Sorted A to Z}}} other {Sorted}}",
+	'components.table-col-sort-button.title': "{dataType, select, dates {{direction, select, desc {Sorted new to old} other {Sorted old to new}}} numbers {{direction, select, desc {Sorted high to low} other {Sorted low to high}}} words {{direction, select, desc {Sorted A to Z} other {Sorted Z to A}}} value {Sorted {selectedMenuItemText}} other {Sorted}}",
 	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Scroll Forward",
 	"components.tabs.previous": "Scroll Backward",

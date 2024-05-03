@@ -1,9 +1,10 @@
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../../button/button-icon.js';
+import '../../menu/menu-item-radio.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
-import { defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -41,6 +42,20 @@ function createSortableButtonIconHeaderRow() {
 	return html`
 		<tr>
 			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button><d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon></th>
+			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createSortableButtonDropdownHeaderRow() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Options
+					<d2l-menu-item-radio slot="items" text="Item 1" value="1"></d2l-menu-item-radio>
+					<d2l-menu-item-radio slot="items" text="Item 2" value="2"></d2l-menu-item-radio>
+				</d2l-table-col-sort-button>
+			</th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
@@ -555,6 +570,23 @@ describe('table', () => {
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await focusElem(elem.shadowRoot.querySelector('d2l-button-icon'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-dropdown', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-dropdown-open', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1, 2, 3])}</tbody>
+					`);
+					await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
 					await expect(elem).to.be.golden();
 				});
 

@@ -7,6 +7,7 @@ import '../../inputs/input-checkbox.js';
 import '../../inputs/input-text.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
+import '../../menu/menu-item-radio.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
@@ -91,7 +92,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						<tr>
 							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							${this._renderDoubleSortButton('City', 'Country')}
+							${this._renderDoubleSortButton('City, Country')}
 							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 						</tr>
 					</thead>
@@ -158,38 +159,48 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const desc = e.target.hasAttribute('desc');
 		this._sortDesc = field === this._sortField ? !desc : false; // if sorting on same field then reverse, otherwise sort ascending
 		this._sortField = field;
+		this._complexField = undefined;
 
 		this._data = this._data.sort((a, b) => {
-			if (this._sortField === 'city' || this._sortField === 'country') {
-				if (this._sortDesc) {
-					if (a[this._sortField] > b[this._sortField]) return -1;
-					if (a[this._sortField] < b[this._sortField]) return 1;
-				} else {
-					if (a[this._sortField] < b[this._sortField]) return -1;
-					if (a[this._sortField] > b[this._sortField]) return 1;
-				}
-			} else {
-				if (this._sortDesc) {
-					return b.data[this._sortField] - a.data[this._sortField];
-				}
-				return a.data[this._sortField] - b.data[this._sortField];
+			if (this._sortDesc) {
+				return b.data[this._sortField] - a.data[this._sortField];
 			}
+			return a.data[this._sortField] - b.data[this._sortField];
 		});
 	}
 
-	_renderDoubleSortButton(item1, item2) {
+	_handleSortComplex(e) {
+		const target = e.target;
+		if (!target) return;
+
+		this._sortField = target.parentNode?.innerText;
+		this._complexField = target.getAttribute('data-field');
+		this._sortDesc = target.hasAttribute('data-desc');
+
+		this._data = this._data.sort((a, b) => {
+			if (this._sortDesc) {
+				if (a[this._complexField] > b[this._complexField]) return -1;
+				if (a[this._complexField] < b[this._complexField]) return 1;
+			} else {
+				if (a[this._complexField] < b[this._complexField]) return -1;
+				if (a[this._complexField] > b[this._complexField]) return 1;
+			}
+			return 0;
+		});
+	}
+
+	_renderDoubleSortButton(name) {
+		const noSort = this._sortField?.toLowerCase() !== name.toLowerCase();
 		return html`
 			<th scope="col">
 				<d2l-table-col-sort-button
-					@click="${this._handleSort}"
-					data-type="words"
 					?desc="${this._sortDesc}"
-					?nosort="${this._sortField !== item1.toLowerCase()}">${item1}</d2l-table-col-sort-button>
-				<d2l-table-col-sort-button
-					@click="${this._handleSort}"
-					data-type="words"
-					?desc="${this._sortDesc}"
-					?nosort="${this._sortField !== item2.toLowerCase()}">${item2}</d2l-table-col-sort-button>
+					?nosort="${noSort}">${name}
+					<d2l-menu-item-radio slot="items" text="City, A to Z" data-field="city" @d2l-menu-item-select="${this._handleSortComplex}" value="1"></d2l-menu-item-radio>
+					<d2l-menu-item-radio slot="items" text="City, Z to A" data-field="city" data-desc @d2l-menu-item-select="${this._handleSortComplex}" value="2"></d2l-menu-item-radio>
+					<d2l-menu-item-radio slot="items" text="Country, A to Z" data-field="country" @d2l-menu-item-select="${this._handleSortComplex}" value="3"></d2l-menu-item-radio>
+					<d2l-menu-item-radio slot="items" text="Country, Z to A" data-field="country" data-desc @d2l-menu-item-select="${this._handleSortComplex}" value="4"></d2l-menu-item-radio>
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
