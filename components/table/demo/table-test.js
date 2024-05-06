@@ -24,13 +24,13 @@ const columns = ['Population', 'Size', 'Elevation'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
 
 const data = () => [
-	{ name: 'Ottawa, Canada', city: 'Ottawa', country: 'Canada', data: { 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
-	{ name: 'Toronto, Canada', city: 'Toronto', country: 'Canada', data: { 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: true },
-	{ name: 'Sydney, Australia', city: 'Sydney', country: 'Australia', data: { 'population': 5312000, 'size': 12368, 'elevation': 3 }, selected: false },
-	{ name: 'Cairo, Egypt', city: 'Cairo', country: 'Egypt', data: { 'population': 9540000, 'size': 3085, 'elevation': 23 }, selected: false },
-	{ name: 'Moscow, Russia', city: 'Moscow', country: 'Russia', data: { 'population': 12712305, 'size': 2511, 'elevation': 124 }, selected: false },
-	{ name: 'London, England', city: 'London', country: 'England', data: { 'population': 8982000, 'size': 1572, 'elevation': 11 }, selected: false },
-	{ name: 'Tokyo, Japan', city: 'Tokyo', country: 'Japan', data: { 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false }
+	{ name: 'Ottawa, Canada', data: { 'city': 'Ottawa', 'country': 'Canada', 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
+	{ name: 'Toronto, Canada', data: { 'city': 'Toronto', 'country': 'Canada', 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: true },
+	{ name: 'Sydney, Australia', data: { 'city': 'Sydney', 'country': 'Australia', 'population': 5312000, 'size': 12368, 'elevation': 3 }, selected: false },
+	{ name: 'Cairo, Egypt', data: { 'city': 'Cairo', 'country': 'Egypt', 'population': 9540000, 'size': 3085, 'elevation': 23 }, selected: false },
+	{ name: 'Moscow, Russia', data: { 'city': 'Moscow', 'country': 'Russia', 'population': 12712305, 'size': 2511, 'elevation': 124 }, selected: false },
+	{ name: 'London, England', data: { 'city': 'London', 'country': 'England', 'population': 8982000, 'size': 1572, 'elevation': 11 }, selected: false },
+	{ name: 'Tokyo, Japan', data: { 'city': 'Tokyo', 'country': 'Japan', 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -148,7 +148,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_handlePagerLoadMore(e) {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < e.target.pageSize; i++) {
-			this._data.push({ name: `Country ${startIndex + i}`, data: { 'population': 26320000, 'size': 6340, 'elevation': 4 }, selected: false });
+			this._data.push({ name: `City ${startIndex + i}, Country ${startIndex + i}`, data: { 'city': `City ${startIndex + i}`, 'country': `Country ${startIndex + i}`, 'population': 26320000, 'size': 6340, 'elevation': 4 }, selected: false });
 		}
 		this.requestUpdate();
 		e.detail.complete();
@@ -159,38 +159,30 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		const desc = e.target.hasAttribute('desc');
 		this._sortDesc = field === this._sortField ? !desc : false; // if sorting on same field then reverse, otherwise sort ascending
 		this._sortField = field;
-		this._complexField = undefined;
-
-		this._data = this._data.sort((a, b) => {
-			if (this._sortDesc) {
-				return b.data[this._sortField] - a.data[this._sortField];
-			}
-			return a.data[this._sortField] - b.data[this._sortField];
-		});
+		this._handleSortData();
 	}
 
 	_handleSortComplex(e) {
-		const target = e.target;
-		if (!target) return;
+		this._sortField = e.target?.getAttribute('data-field');
+		this._sortDesc = e.target?.hasAttribute('data-desc');
+		this._handleSortData();
+	}
 
-		this._sortField = target.parentNode?.innerText;
-		this._complexField = target.getAttribute('data-field');
-		this._sortDesc = target.hasAttribute('data-desc');
-
+	_handleSortData() {
 		this._data = this._data.sort((a, b) => {
 			if (this._sortDesc) {
-				if (a[this._complexField] > b[this._complexField]) return -1;
-				if (a[this._complexField] < b[this._complexField]) return 1;
+				if (a.data[this._sortField] > b.data[this._sortField]) return -1;
+				if (a.data[this._sortField] < b.data[this._sortField]) return 1;
 			} else {
-				if (a[this._complexField] < b[this._complexField]) return -1;
-				if (a[this._complexField] > b[this._complexField]) return 1;
+				if (a.data[this._sortField] < b.data[this._sortField]) return -1;
+				if (a.data[this._sortField] > b.data[this._sortField]) return 1;
 			}
 			return 0;
 		});
 	}
 
 	_renderDoubleSortButton(name) {
-		const noSort = this._sortField?.toLowerCase() !== name.toLowerCase();
+		const noSort = this._sortField?.toLowerCase() !== 'city' && this._sortField?.toLowerCase() !== 'country';
 		return html`
 			<th scope="col">
 				<d2l-table-col-sort-button
