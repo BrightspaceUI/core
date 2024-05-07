@@ -717,24 +717,14 @@ describe('table', () => {
 						}
 					].forEach(({ name, template }) => {
 						['top', 'down', 'over'].forEach((position) => {
-							// skip until this is resolved: https://issues.chromium.org/issues/333414300
-							const skip = (
-								type === 'default'
-								&& rtl
-								&& hasStickyHeadersScrollWrapper
-								&& (name === 'fixed-column-attr' || name === 'fixed-column-class')
-								&& position === 'over'
-							);
-							if (!skip) {
-								itWithWarnings(`${name}-${position}`, async() => {
-									const elem = await createTableFixture(
-										template,
-										{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
-									);
-									elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
-									await expect(elem).to.be.golden();
-								});
-							}
+							itWithWarnings(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(
+									template,
+									{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+								);
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
 
@@ -768,21 +758,11 @@ describe('table', () => {
 						}
 					].forEach(({ name, template }) => {
 						['top', 'over'].forEach(position => {
-							// skip until this is resolved: https://issues.chromium.org/issues/333414300
-							const skip = (
-								type === 'default'
-								&& rtl
-								&& hasStickyHeadersScrollWrapper
-								&& name === 'grades-column-header'
-								&& position === 'over'
-							);
-							if (!skip) {
-								itWithWarnings(`${name}-${position}`, async() => {
-									const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
-									elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
-									await expect(elem).to.be.golden();
-								});
-							}
+							itWithWarnings(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
 				});
