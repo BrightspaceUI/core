@@ -174,13 +174,13 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		PRINT_MEDIA_QUERY_LIST?.addEventListener('change', this._handlePrintChange);
+		PRINT_MEDIA_QUERY_LIST.addEventListener?.('change', this._handlePrintChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._disconnectAll();
-		PRINT_MEDIA_QUERY_LIST?.removeEventListener('change', this._handlePrintChange);
+		PRINT_MEDIA_QUERY_LIST.removeEventListener?.('change', this._handlePrintChange);
 	}
 
 	firstUpdated(changedProperties) {

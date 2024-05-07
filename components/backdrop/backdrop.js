@@ -1,14 +1,13 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const scrollKeys = [];
+const modals = new Set();
 let scrollOverflow = null;
 
 /**
@@ -84,10 +83,7 @@ class Backdrop extends LitElement {
 
 	disconnectedCallback() {
 		// allow body scrolling, show hidden elements, if backdrop is removed from the DOM
-		if (this._bodyScrollKey) {
-			allowBodyScroll(this._bodyScrollKey);
-			this._bodyScrollKey = null;
-		}
+		allowBodyScroll(this);
 		if (this._hiddenElements) {
 			showAccessible(this._hiddenElements);
 			this._hiddenElements = null;
@@ -108,7 +104,7 @@ class Backdrop extends LitElement {
 		if (this.shown) {
 
 			if (this._state === null) {
-				this._bodyScrollKey = preventBodyScroll();
+				preventBodyScroll(this);
 				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`));
 			}
 			this._state = 'showing';
@@ -117,8 +113,7 @@ class Backdrop extends LitElement {
 
 			const hide = () => {
 				if (!this.shown) {
-					allowBodyScroll(this._bodyScrollKey);
-					this._bodyScrollKey = null;
+					allowBodyScroll(this);
 					showAccessible(this._hiddenElements);
 					this._hiddenElements = null;
 					this._state = null;
@@ -135,17 +130,23 @@ class Backdrop extends LitElement {
 		}
 
 	}
-
 }
 
-export function allowBodyScroll(key) {
-	const index = scrollKeys.indexOf(key);
-	if (index === -1) return;
-	scrollKeys.splice(index, 1);
-	if (scrollKeys.length === 0) {
+export function allowBodyScroll(modal) {
+	if (!modals.has(modal)) return;
+	modals.delete(modal);
+	if (!modals.size) {
 		document.body.style.overflow = scrollOverflow;
 		scrollOverflow = null;
 	}
+}
+
+export function preventBodyScroll(modal) {
+	if (!modals.size) {
+		scrollOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+	}
+	modals.add(modal);
 }
 
 function hideAccessible(target) {
@@ -182,16 +183,6 @@ function hideAccessible(target) {
 	}
 
 	return hiddenElements;
-}
-
-export function preventBodyScroll() {
-	if (scrollKeys.length === 0) {
-		scrollOverflow = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
-	}
-	const key = getUniqueId();
-	scrollKeys.push(key);
-	return key;
 }
 
 function showAccessible(elems) {

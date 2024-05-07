@@ -138,7 +138,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 |--|--|--|
 | `description` | String | A description to be added to the `button` for accessibility for additional context |
 | `icon` | String, required | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
-| `text` | String, required | Accessible text for the buton |
+| `text` | String, required | Accessible text for the button |
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
 | `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
