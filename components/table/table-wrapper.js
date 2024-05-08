@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { cssSizes } from '../inputs/input-checkbox.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -33,6 +34,56 @@ export const tableStyles = css`
 		text-align: right;
 	}
 
+	/* once we only support browsers that support :has the section below can be removed up until @supports */
+	.d2l-checkbox,
+	d2l-input-checkbox,
+	d2l-selection-select-all,
+	d2l-selection-input {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+	}
+	.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
+	.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
+	.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+	}
+	d2l-button-icon {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+	}
+	d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
+		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
+	}
+	.d2l-table-header-col-sortable-siblings d2l-button-icon {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
+	}
+	d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
+		margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+	}
+	@supports selector(:has(a, b)) {
+		.d2l-table > * > tr > :has(.d2l-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-select-all),
+		.d2l-table > * > tr > :has(d2l-input-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-input) {
+			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+		}
+		.d2l-table > * > tr.d2l-table-selected-first > :has(.d2l-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-input-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
+			padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+		}
+		.d2l-table > * > tr > :has(d2l-button-icon) {
+			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
+		}
+		/* this can be removed once we only support browsers that support :has */
+		d2l-table-wrapper[type="light"] :has(d2l-table-col-sort-button:not(:only-child)) d2l-button-icon {
+			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 1px);
+			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+		}
+	}
+
 	/* default cells */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > *,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-cell-first {
@@ -57,7 +108,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: 27px; /* min-height to be 48px including border */
+		height: var(--d2l-table-height); /* min-height to be 48px including border */
 	}
 
 	/* border radiuses */
@@ -184,6 +235,57 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > tbody {
 		display: block;
 	}
+
+	/* sortable header cells */
+	.d2l-table th:has(d2l-table-col-sort-button:only-of-type):hover {
+		background-color: var(--d2l-color-gypsum);
+		cursor: pointer;
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:only-of-type):has(:not(d2l-table-col-sort-button):hover) {
+		background-color: var(--d2l-table-header-background-color);
+		cursor: unset;
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:only-of-type:focus) {
+		border: 2px solid var(--d2l-color-celestine);
+	}
+
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th:has(d2l-table-col-sort-button:only-of-type:focus),
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th:has(d2l-table-col-sort-button:only-of-type:focus).d2l-table-cell-first {
+		padding-left: calc(var(--d2l-table-cell-padding) - 2px);
+		padding-right: calc(var(--d2l-table-cell-padding) - 1px);
+	}
+	d2l-table-wrapper[type="default"] .d2l-table-row-first > th:has(d2l-table-col-sort-button:only-of-type:focus) {
+		padding-bottom: calc(var(--d2l-table-cell-padding) - 1px);
+		padding-top: calc(var(--d2l-table-cell-padding) - 1px);
+	}
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th:has(d2l-table-col-sort-button:only-of-type:focus),
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th:has(d2l-table-col-sort-button:only-of-type:focus).d2l-table-cell-first {
+		border-left: 2px solid var(--d2l-color-celestine);
+		padding-left: calc(var(--d2l-table-cell-padding) - 1px);
+		padding-right: calc(var(--d2l-table-cell-padding) - 2px);
+	}
+
+	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) {
+		padding-inline: calc(var(--d2l-table-cell-padding) - 0.3rem);
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) d2l-table-col-sort-button {
+		border-radius: 4px;
+		padding: 0.3rem;
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) d2l-table-col-sort-button:hover {
+		background-color: var(--d2l-color-gypsum);
+	}
+	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) d2l-table-col-sort-button:focus {
+		border: 2px solid var(--d2l-color-celestine);
+		border-radius: 6px;
+		margin-inline-start: -2px;
+	}
+	d2l-table-col-sort-button + d2l-table-col-sort-button {
+		padding-inline-start: 2px;
+	}
+	d2l-table-col-sort-button:focus + d2l-table-col-sort-button {
+		margin-inline-start: -2px;
+	}
 `;
 
 /**
@@ -242,9 +344,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.5rem 1rem;
-				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
+				--d2l-table-cell-overall-height: 48px;
+				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
+				--d2l-table-cell-padding: 0.75rem;
+				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
@@ -257,9 +360,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([type="light"]) {
 				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
-				--d2l-table-cell-padding: 0.6rem;
-				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
@@ -337,6 +437,18 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		}
 	}
 
+	_addClickListener(headerCell) {
+		const colSortButtons = headerCell.querySelectorAll('d2l-table-col-sort-button');
+		if (colSortButtons?.length === 1 && !headerCell.hasAttribute('data-addedlistener')) {
+			headerCell.addEventListener('click', (e) => {
+				if (e.target.tagName !== 'TH') return;
+				colSortButtons[0].focus();
+				colSortButtons[0].click();
+			});
+			headerCell.setAttribute('data-addedlistener', 'data-addedlistener');
+		}
+	}
+
 	_applyClassNames() {
 		if (!this._table) return;
 
@@ -368,6 +480,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
+				if (isHeader) this._addClickListener(c);
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));

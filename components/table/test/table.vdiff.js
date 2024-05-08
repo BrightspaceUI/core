@@ -452,6 +452,24 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
+				it('col-sort-button-focus-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-hover-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
 				it('col-sort-button-hover-focus', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableHeaderRow()}</thead>
@@ -472,7 +490,7 @@ describe('table', () => {
 
 				it('two-col-sort-button-wrap', async() => {
 					const elem = await createTableFixture(html`
-						<thead>${createDoubleSortableHeaderRow('Ascending')}</thead>
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();

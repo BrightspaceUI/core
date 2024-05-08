@@ -53,14 +53,12 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			button:disabled {
 				opacity: 0.5;
 			}
-			button:hover {
-				text-decoration: underline;
-			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
+			}
+			d2l-icon {
+				margin-inline-start: 0.6rem;
 			}
 		`;
 	}
