@@ -34,33 +34,6 @@ export const tableStyles = css`
 		text-align: right;
 	}
 
-	/* once we only support browsers that support :has the section below can be removed up until @supports */
-	.d2l-checkbox,
-	d2l-input-checkbox,
-	d2l-selection-select-all,
-	d2l-selection-input {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
-	}
-	.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
-	.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
-	.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
-		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
-		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
-	}
-	d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-	}
-	d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
-		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
-	}
-	.d2l-table-header-col-sortable-siblings d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
-	}
-	d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
-		margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
-		margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
-	}
 	@supports selector(:has(a, b)) {
 		.d2l-table > * > tr > :has(.d2l-checkbox),
 		.d2l-table > * > tr > :has(d2l-selection-select-all),
@@ -75,12 +48,7 @@ export const tableStyles = css`
 			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
 		}
 		.d2l-table > * > tr > :has(d2l-button-icon) {
-			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
-		}
-		/* this can be removed once we only support browsers that support :has */
-		d2l-table-wrapper[type="light"] :has(d2l-table-col-sort-button:not(:only-child)) d2l-button-icon {
-			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 1px);
-			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+			padding-block: 0 !important;
 		}
 	}
 
@@ -108,7 +76,8 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
 	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: var(--d2l-table-height); /* min-height to be 48px including border */
+		/* height: var(--d2l-table-cell-height); */
+		height: 18px;
 	}
 
 	/* border radiuses */
@@ -236,7 +205,7 @@ export const tableStyles = css`
 		display: block;
 	}
 
-	/* sortable header cells */
+	/* sortable header cells - only 1 d2l-table-col-sort-button within a cell */
 	.d2l-table th:has(d2l-table-col-sort-button:only-of-type):hover {
 		background-color: var(--d2l-color-gypsum);
 		cursor: pointer;
@@ -254,8 +223,11 @@ export const tableStyles = css`
 		padding-left: calc(var(--d2l-table-cell-padding) - 2px);
 		padding-right: calc(var(--d2l-table-cell-padding) - 1px);
 	}
-	d2l-table-wrapper[type="default"] .d2l-table-row-first > th:has(d2l-table-col-sort-button:only-of-type:focus) {
+	d2l-table-wrapper[type="default"] th:has(d2l-table-col-sort-button:only-of-type:focus) {
 		padding-bottom: calc(var(--d2l-table-cell-padding) - 1px);
+		padding-top: calc(var(--d2l-table-cell-padding) - 2px);
+	}
+	d2l-table-wrapper[type="default"] .d2l-table-row-first > th:has(d2l-table-col-sort-button:only-of-type:focus) {
 		padding-top: calc(var(--d2l-table-cell-padding) - 1px);
 	}
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th:has(d2l-table-col-sort-button:only-of-type:focus),
@@ -265,6 +237,7 @@ export const tableStyles = css`
 		padding-right: calc(var(--d2l-table-cell-padding) - 2px);
 	}
 
+	/* sortable header cells - multiple d2l-table-col-sort-button within a cell */
 	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) {
 		padding-inline: calc(var(--d2l-table-cell-padding) - 0.3rem);
 	}
@@ -276,15 +249,7 @@ export const tableStyles = css`
 		background-color: var(--d2l-color-gypsum);
 	}
 	.d2l-table th:has(d2l-table-col-sort-button:not(:only-of-type)) d2l-table-col-sort-button:focus {
-		border: 2px solid var(--d2l-color-celestine);
-		border-radius: 6px;
-		margin-inline-start: -2px;
-	}
-	d2l-table-col-sort-button + d2l-table-col-sort-button {
-		padding-inline-start: 2px;
-	}
-	d2l-table-col-sort-button:focus + d2l-table-col-sort-button {
-		margin-inline-start: -2px;
+		box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 	}
 `;
 
