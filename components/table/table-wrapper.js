@@ -29,7 +29,6 @@ export const tableStyles = css`
 		border-bottom: var(--d2l-table-border);
 		font-weight: inherit;
 		height: var(--d2l-table-cell-height);
-		line-height: 0.9rem;
 		padding: var(--d2l-table-cell-padding);
 		text-align: left;
 		vertical-align: middle;
@@ -51,19 +50,8 @@ export const tableStyles = css`
 		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
 		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
 	}
-	d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-	}
-	d2l-table-wrapper[type="light"] .d2l-table d2l-button-icon {
-		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)));
-		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - var(--d2l-button-icon-min-height, 42px)) + 1px);
-	}
-	.d2l-table-header-col-sortable-siblings d2l-button-icon {
-		margin-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)));
-	}
-	d2l-table-wrapper[type="light"] .d2l-table-header-col-sortable-siblings d2l-button-icon {
-		margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 2px);
-		margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
+	.d2l-table > * > tr d2l-button-icon {
+		margin-block: calc(-1 * var(--d2l-table-cell-padding));
 	}
 
 	@supports selector(:has(a, b)) {
@@ -80,18 +68,8 @@ export const tableStyles = css`
 			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
 		}
 		.d2l-table > * > tr > :has(d2l-button-icon) {
-			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2rem - 2px)) !important;
+			padding-block: 0;
 		}
-
-		/* this can be removed once we only support browsers that support :has */
-		d2l-table-wrapper[type="light"] :has(d2l-table-col-sort-button:not(:only-child)) d2l-button-icon {
-			margin-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 1px);
-			margin-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - var(--d2l-button-icon-min-height, 42px)) + 3px);
-		}
-	}
-
-	d2l-table-wrapper[type="light"] d2l-button-icon {
-		margin-top: 1px;
 	}
 
 	/* default cells */
@@ -113,50 +91,29 @@ export const tableStyles = css`
 	.d2l-table > * > tr[header] > th {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
+		line-height: 0.9rem;
+	}
+
+	.d2l-table th:has(d2l-table-col-sort-button:first-child) {
+		padding-inline-start: 0;
 	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
-	.d2l-table th.d2l-table-header-col-sortable:not(.d2l-table-header-col-sortable-siblings) {
+	.d2l-table th.d2l-table-header-col-sortable {
 		height: var(--d2l-table-cell-overall-height);
 		padding: 0;
 	}
-	.d2l-table th.d2l-table-header-col-sortable-siblings {
-		padding: calc(var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - 2px);
-	}
 	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
-		--d2l-table-col-sort-button-border: none;
-		--d2l-table-col-sort-button-border-radius: 4px;
-		--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
-		--d2l-table-col-sort-button-padding: var(--d2l-table-cell-col-sort-button-has-siblings-padding);
-		--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */
-		--d2l-table-col-sort-button-height: unset;
 		--d2l-table-col-sort-button-width: unset;
 	}
 	@supports selector(:has(a, b)) {
-		.d2l-table th:has(d2l-table-col-sort-button:only-child) {
+		.d2l-table th:has(d2l-table-col-sort-button) {
 			height: var(--d2l-table-cell-overall-height);
 			padding: 0;
 		}
-		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
-			padding: calc(var(--d2l-table-cell-col-sort-button-has-siblings-cell-padding) - 2px); /* 2px accounts for border */
-		}
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
-			--d2l-table-col-sort-button-border: none;
-			--d2l-table-col-sort-button-border-radius: 4px;
-			--d2l-table-col-sort-button-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
-			--d2l-table-col-sort-button-padding: var(--d2l-table-cell-col-sort-button-has-siblings-padding);
-			--d2l-table-col-sort-button-size-offset: 0px; /* stylelint-disable-line length-zero-no-unit */
-			--d2l-table-col-sort-button-height: unset;
 			--d2l-table-col-sort-button-width: unset;
 		}
-	}
-
-	d2l-table-wrapper[type="light"] d2l-table-col-sort-button {
-		--d2l-table-col-sort-button-border: none;
-		--d2l-table-col-sort-button-border-radius: 4px;
-		--d2l-table-col-sort-button-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-		--d2l-table-col-sort-button-size-offset: 4px;
-		--d2l-table-col-sort-button-padding-offset: var(--d2l-table-col-sort-button-size-offset);
 	}
 
 	/* border radiuses */
@@ -175,23 +132,6 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-last,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-first {
 		border-bottom-right-radius: var(--d2l-table-border-radius);
-	}
-
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first d2l-table-col-sort-button:only-child,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last d2l-table-col-sort-button:only-child {
-		--d2l-table-col-sort-button-top-left-radius: var(--d2l-table-border-radius);
-	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-last d2l-table-col-sort-button:only-child,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-first d2l-table-col-sort-button:only-child {
-		--d2l-table-col-sort-button-top-right-radius: var(--d2l-table-border-radius);
-	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-first d2l-table-col-sort-button:only-child,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-last d2l-table-col-sort-button:only-child {
-		--d2l-table-col-sort-button-bottom-left-radius: var(--d2l-table-border-radius);
-	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-last d2l-table-col-sort-button:only-child,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-first d2l-table-col-sort-button:only-child {
-		--d2l-table-col-sort-button-bottom-right-radius: var(--d2l-table-border-radius);
 	}
 
 	/* selected rows */
