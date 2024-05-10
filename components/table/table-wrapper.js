@@ -16,33 +16,6 @@ export const tableStyles = css`
 		width: 100%;
 	}
 
-	.d2l-table > tbody,
-	.d2l-table > tfoot {
-		background-color: #ffffff;
-	}
-	d2l-table-col-sort-button {
-		vertical-align: middle;
-	}
-	d2l-table-col-sort-button:not(:only-child) {
-		--d2l-table-col-sort-button-margin-inline-end: 1px;
-	}
-	d2l-table-col-sort-button[nosort]:only-child {
-		--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
-	}
-	/* once we only support browsers that support :has the rule below can be removed */
-	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
-		padding-inline-end: calc(0.6rem + 18px);
-	}
-	@supports selector(:has(a, b)) {
-		d2l-table-col-sort-button:has(+ d2l-table-col-sort-button) {
-			--d2l-table-col-sort-button-margin-inline-end: -3px !important;
-		}
-		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
-		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
-			padding-inline-end: calc(0.6rem + 18px);
-		}
-	}
-
 	/* all cells */
 	.d2l-table > * > tr > * {
 		border-bottom: var(--d2l-table-border);
@@ -56,8 +29,8 @@ export const tableStyles = css`
 		text-align: right;
 	}
 	d2l-button-icon {
-		--d2l-button-icon-min-height: calc(0.9rem + var(--d2l-table-cell-padding) + 2 * 4px);
-		--d2l-button-icon-min-width: calc(0.9rem + var(--d2l-table-cell-padding) + 2 * 4px);
+		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * 4px);
+		--d2l-button-icon-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * 4px);
 	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
@@ -76,7 +49,6 @@ export const tableStyles = css`
 	.d2l-table > * > tr d2l-button-icon {
 		margin-block: calc(-1 * var(--d2l-table-cell-padding));
 	}
-
 	@supports selector(:has(a, b)) {
 		.d2l-table > * > tr > :has(.d2l-checkbox),
 		.d2l-table > * > tr > :has(d2l-selection-select-all),
@@ -115,6 +87,33 @@ export const tableStyles = css`
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
 		line-height: 0.9rem;
+	}
+
+	.d2l-table > tbody,
+	.d2l-table > tfoot {
+		background-color: #ffffff;
+	}
+	d2l-table-col-sort-button {
+		vertical-align: middle;
+	}
+	d2l-table-col-sort-button:not(:only-child) {
+		--d2l-table-col-sort-button-margin-inline-end: 1px;
+	}
+	d2l-table-col-sort-button[nosort]:only-child {
+		--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+	}
+	/* once we only support browsers that support :has the rule below can be removed */
+	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
+		padding-inline-end: calc(0.6rem + 18px);
+	}
+	@supports selector(:has(a, b)) {
+		d2l-table-col-sort-button:has(+ d2l-table-col-sort-button) {
+			--d2l-table-col-sort-button-margin-inline-end: -3px !important;
+		}
+		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
+			padding-inline-end: calc(0.6rem + 18px);
+		}
 	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
@@ -317,10 +316,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-overall-height: 48px;
+				--d2l-table-cell-overall-height: 46px;
 				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
-				--d2l-table-cell-padding: 0.75rem;
-				--d2l-table-cell-padding-alt: calc(0.75rem - 1px) 0.75rem 0.75rem 0.75rem;
+				--d2l-table-cell-padding: 0.7rem;
+				--d2l-table-cell-padding-alt: calc(0.7rem - 1px) 0.7rem 0.7rem 0.7rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
