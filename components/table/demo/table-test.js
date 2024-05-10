@@ -122,17 +122,6 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
 							</tr>
 						`)}
-						${this.showButtons ? html`
-							<tr>
-								<th scope="row" sticky>
-									<d2l-input-checkbox></d2l-input-checkbox>
-								</th>
-								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-								<td><d2l-input-text label="Enter data" label-hidden></d2l-input-text></td>
-							</tr>
-						` : nothing}
 					</tbody>
 				</table>
 				${this.paging ? html`<d2l-pager-load-more slot="pager"

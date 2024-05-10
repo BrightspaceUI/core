@@ -31,7 +31,7 @@ function createSortableHeaderRow() {
 function createDoubleSortableHeaderRow(text) {
 	return html`
 		<tr>
-			<th><d2l-table-col-sort-button>Asc 1</d2l-table-col-sort-button><d2l-table-col-sort-button>${text ?? 'Asc 2'}</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button>Asc 1</d2l-table-col-sort-button><d2l-table-col-sort-button nosort>${text ?? 'Asc 2'}</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>

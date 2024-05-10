@@ -23,6 +23,25 @@ export const tableStyles = css`
 	d2l-table-col-sort-button {
 		vertical-align: middle;
 	}
+	d2l-table-col-sort-button:not(:only-child) {
+		--d2l-table-col-sort-button-margin-inline-end: 1px;
+	}
+	d2l-table-col-sort-button[nosort]:only-child {
+		--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+	}
+	/* once we only support browsers that support :has the rule below can be removed */
+	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
+		padding-inline-end: calc(0.6rem + 18px);
+	}
+	@supports selector(:has(a, b)) {
+		d2l-table-col-sort-button:has(+ d2l-table-col-sort-button) {
+			--d2l-table-col-sort-button-margin-inline-end: -3px !important;
+		}
+		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
+			padding-inline-end: calc(0.6rem + 18px);
+		}
+	}
 
 	/* all cells */
 	.d2l-table > * > tr > * {
@@ -35,6 +54,10 @@ export const tableStyles = css`
 	}
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
+	}
+	d2l-button-icon {
+		--d2l-button-icon-min-height: calc(0.9rem + var(--d2l-table-cell-padding) + 2 * 4px);
+		--d2l-button-icon-min-width: calc(0.9rem + var(--d2l-table-cell-padding) + 2 * 4px);
 	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
@@ -436,6 +459,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		if (!hasColSortButton) return;
 		c.classList.toggle('d2l-table-header-col-sortable', true);
 		c.classList.toggle('d2l-table-header-col-sortable-siblings', c.childElementCount > 1);
+
+		const hasSorted = c.querySelector('d2l-table-col-sort-button:not([nosort])');
+		c.classList.toggle('d2l-table-header-col-sortable-no-sorted', !hasSorted);
 	}
 
 	_getItemByIndex(index) {
