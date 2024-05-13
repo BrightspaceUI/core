@@ -35,9 +35,8 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 		return css`
 			:host {
 				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-col-sort-button-margin-inline-end: var(--d2l-table-col-sort-button-size-offset);
-				--d2l-table-col-sort-button-size-offset: 4px;
-				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-col-sort-button-size-offset));
+				--d2l-table-col-sort-button-margin-inline-end: var(--d2l-table-cell-col-sort-button-size-offset);
+				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
 			}
 			button {
 				align-items: center;
@@ -51,10 +50,10 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				font-size: inherit;
 				letter-spacing: inherit;
 				line-height: 0.9rem;
-				margin: var(--d2l-table-col-sort-button-size-offset);
+				margin: var(--d2l-table-cell-col-sort-button-size-offset);
 				margin-inline-end: var(--d2l-table-col-sort-button-margin-inline-end);
-				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-size-offset));
-				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-col-sort-button-size-offset) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
+				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset));
+				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
 				text-decoration: none;
 				width: var(--d2l-table-col-sort-button-width);
 			}

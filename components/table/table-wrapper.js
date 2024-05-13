@@ -29,8 +29,8 @@ export const tableStyles = css`
 		text-align: right;
 	}
 	d2l-button-icon {
-		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * 4px);
-		--d2l-button-icon-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * 4px);
+		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+		--d2l-button-icon-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
 	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
@@ -99,6 +99,9 @@ export const tableStyles = css`
 	d2l-table-col-sort-button:not(:only-child) {
 		--d2l-table-col-sort-button-margin-inline-end: 1px;
 	}
+	d2l-table-col-sort-button:not(:only-child):first-child {
+		--d2l-table-col-sort-button-margin-inline-end: -3px;
+	}
 	d2l-table-col-sort-button[nosort]:only-child {
 		--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
 	}
@@ -107,12 +110,12 @@ export const tableStyles = css`
 		padding-inline-end: calc(0.6rem + 18px);
 	}
 	@supports selector(:has(a, b)) {
-		d2l-table-col-sort-button:has(+ d2l-table-col-sort-button) {
-			--d2l-table-col-sort-button-margin-inline-end: -3px !important;
-		}
 		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
 		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
 			padding-inline-end: calc(0.6rem + 18px);
+		}
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button) :not(d2l-table-col-sort-button) {
+			margin: var(--d2l-table-cell-col-sort-button-size-offset);
 		}
 	}
 
@@ -320,6 +323,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
 				--d2l-table-cell-padding: 0.7rem;
 				--d2l-table-cell-padding-alt: calc(0.7rem - 1px) 0.7rem 0.7rem 0.7rem;
+				--d2l-table-cell-col-sort-button-size-offset: 4px;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
