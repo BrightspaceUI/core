@@ -16,6 +16,11 @@ export const tableStyles = css`
 		width: 100%;
 	}
 
+	.d2l-table > tbody,
+	.d2l-table > tfoot {
+		background-color: #ffffff;
+	}
+
 	/* all cells */
 	.d2l-table > * > tr > * {
 		border-bottom: var(--d2l-table-border);
@@ -46,9 +51,6 @@ export const tableStyles = css`
 		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
 		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
 	}
-	.d2l-table > * > tr d2l-button-icon {
-		margin-block: calc(-1 * var(--d2l-table-cell-padding));
-	}
 	@supports selector(:has(a, b)) {
 		.d2l-table > * > tr > :has(.d2l-checkbox),
 		.d2l-table > * > tr > :has(d2l-selection-select-all),
@@ -61,9 +63,6 @@ export const tableStyles = css`
 		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
 			padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
 			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
-		}
-		.d2l-table > * > tr > :has(d2l-button-icon) {
-			padding-block: 0;
 		}
 	}
 
@@ -89,21 +88,14 @@ export const tableStyles = css`
 		line-height: 0.9rem;
 	}
 
-	.d2l-table > tbody,
-	.d2l-table > tfoot {
-		background-color: #ffffff;
-	}
 	d2l-table-col-sort-button {
 		vertical-align: middle;
 	}
 	d2l-table-col-sort-button:not(:only-child) {
-		--d2l-table-col-sort-button-margin-inline-end: 1px;
+		--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
 	}
 	d2l-table-col-sort-button:not(:only-child):first-child {
-		--d2l-table-col-sort-button-margin-inline-end: -3px;
-	}
-	d2l-table-col-sort-button[nosort]:only-child {
-		--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+		--d2l-table-col-sort-button-margin-inline-end: 1px;
 	}
 	/* once we only support browsers that support :has the rule below can be removed */
 	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {

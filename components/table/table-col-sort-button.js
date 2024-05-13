@@ -38,6 +38,9 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				--d2l-table-col-sort-button-margin-inline-end: var(--d2l-table-cell-col-sort-button-size-offset);
 				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
 			}
+			:host([nosort]) {
+				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
