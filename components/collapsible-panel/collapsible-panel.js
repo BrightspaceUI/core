@@ -390,7 +390,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_handleExpandCollapse(e) {
 		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
-		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
+		const event = this.expanded ? 'd2l-collapsible-panel-expand' : 'd2l-collapsible-panel-collapse';
 
 		this.dispatchEvent(new CustomEvent(
 			event, { bubbles: false, composed: false, detail: { complete: eventPromise } }
