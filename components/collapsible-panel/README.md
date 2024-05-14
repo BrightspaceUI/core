@@ -138,6 +138,12 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `type` | String | The type of collapsible panel |
 <!-- docs: end hidden content -->
 
+### Events
+| Event | Description |
+|--|--|
+| `d2l-collapsible-panel-expand` | Dispatched when the panel is expanded |
+| `d2l-collapsible-panel-collapse` | Dispatched when the panel is collapsed |
+
 ### Panel Types
 
 #### Default
