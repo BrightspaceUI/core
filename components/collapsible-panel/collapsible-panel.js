@@ -171,7 +171,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
 				flex: 1;
-				-webkit-line-clamp: 2;
 				margin: 0.3rem;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
 				overflow-wrap: anywhere;
