@@ -116,11 +116,6 @@ export const tableStyles = css`
 	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
 		padding-inline-end: calc(0.6rem + 18px);
 	}
-	.d2l-table-header-col-sortable :not(d2l-table-col-sort-button) {
-		margin: var(--d2l-table-cell-col-sort-button-size-offset);
-		margin-top: 0;
-		vertical-align: top;
-	}
 	@supports selector(:has(a, b)) {
 		.d2l-table th:has(d2l-table-col-sort-button) {
 			height: var(--d2l-table-cell-overall-height);
@@ -136,11 +131,6 @@ export const tableStyles = css`
 		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
 		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
 			padding-inline-end: calc(0.6rem + 18px);
-		}
-		.d2l-table > * > tr > :has(d2l-table-col-sort-button) :not(d2l-table-col-sort-button) {
-			margin: var(--d2l-table-cell-col-sort-button-size-offset);
-			margin-top: 0;
-			vertical-align: top;
 		}
 	}
 
