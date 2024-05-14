@@ -496,6 +496,26 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
+				it('two-col-sort-button-wrap-focus-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap-focus-hover-reverse', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
 				it('two-col-sort-button-focus-first', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createDoubleSortableHeaderRow()}</thead>

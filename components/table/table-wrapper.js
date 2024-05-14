@@ -94,15 +94,21 @@ export const tableStyles = css`
 	}
 	d2l-table-col-sort-button:not(:only-child) {
 		--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+		display: inline-flex;
+		margin-top: calc(-1 * var(--d2l-table-cell-col-sort-button-size-offset));
 	}
 	d2l-table-col-sort-button:not(:last-child) {
-		--d2l-table-col-sort-button-margin-inline-end: 1px;
+		--d2l-table-col-sort-button-margin-inline-end: 0;
 	}
 
 	/* TODO: once we only support browsers that support :has the section below can be removed up until @supports */
 	.d2l-table th.d2l-table-header-col-sortable {
 		height: var(--d2l-table-cell-overall-height);
 		padding: 0;
+	}
+	.d2l-table th.d2l-table-header-col-sortable.d2l-table-header-col-sortable-siblings {
+		height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
+		padding-top: var(--d2l-table-cell-col-sort-button-size-offset);
 	}
 	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
 		--d2l-table-col-sort-button-width: unset;
@@ -112,11 +118,17 @@ export const tableStyles = css`
 	}
 	.d2l-table-header-col-sortable :not(d2l-table-col-sort-button) {
 		margin: var(--d2l-table-cell-col-sort-button-size-offset);
+		margin-top: 0;
+		vertical-align: top;
 	}
 	@supports selector(:has(a, b)) {
 		.d2l-table th:has(d2l-table-col-sort-button) {
 			height: var(--d2l-table-cell-overall-height);
 			padding: 0;
+		}
+		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
+			height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
+			padding-top: var(--d2l-table-cell-col-sort-button-size-offset);
 		}
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
 			--d2l-table-col-sort-button-width: unset;
@@ -127,6 +139,8 @@ export const tableStyles = css`
 		}
 		.d2l-table > * > tr > :has(d2l-table-col-sort-button) :not(d2l-table-col-sort-button) {
 			margin: var(--d2l-table-cell-col-sort-button-size-offset);
+			margin-top: 0;
+			vertical-align: top;
 		}
 	}
 
