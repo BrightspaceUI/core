@@ -168,14 +168,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				top: 2px;
 			}
 			.d2l-collapsible-panel-title {
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
 				flex: 1;
 				margin: 0.3rem;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
 				overflow-wrap: anywhere;
-				overflow-x: hidden;
-				overflow-y: hidden;
 				user-select: none;
 			}
 			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
