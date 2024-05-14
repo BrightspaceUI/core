@@ -136,13 +136,13 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `panel-title` | String | The title of the panel |
 | `skeleton` | Boolean | Renders the panel title and the expand/collapse icon as skeleton loaders |
 | `type` | String | The type of collapsible panel |
-<!-- docs: end hidden content -->
 
 ### Events
 | Event | Description |
 |--|--|
 | `d2l-collapsible-panel-expand` | Dispatched when the panel is expanded |
 | `d2l-collapsible-panel-collapse` | Dispatched when the panel is collapsed |
+<!-- docs: end hidden content -->
 
 ### Panel Types
 
