@@ -95,6 +95,7 @@ export const tableStyles = css`
 	d2l-table-col-sort-button:not(:only-child) {
 		--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
 		display: inline-flex;
+		margin-inline-start: calc(-1 * var(--d2l-table-cell-col-sort-button-size-offset));
 		margin-top: calc(-1 * var(--d2l-table-cell-col-sort-button-size-offset));
 	}
 	d2l-table-col-sort-button:not(:last-child) {
@@ -123,6 +124,7 @@ export const tableStyles = css`
 		}
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
 			height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
+			padding-inline-start: var(--d2l-table-cell-col-sort-button-size-offset);
 			padding-top: var(--d2l-table-cell-col-sort-button-size-offset);
 		}
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
@@ -582,11 +584,15 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		for (let i = 0; i < firstRowHead.cells.length; i++) {
 			const headCell = firstRowHead.cells[i];
 			const bodyCell = firstRowBody.cells[i];
+			const bodyStyle = getComputedStyle(bodyCell);
+			const headStyle = getComputedStyle(headCell);
 
 			if (headCell.clientWidth > bodyCell.clientWidth) {
-				bodyCell.style.minWidth = getComputedStyle(headCell).width;
+				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
+				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
-				headCell.style.minWidth = getComputedStyle(bodyCell).width;
+				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
+				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
 			}
 		}
 	}

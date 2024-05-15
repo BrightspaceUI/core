@@ -59,10 +59,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			.d2l-table > * > tr > :has(d2l-button-icon) {
 				padding-block: 0;
 			}
-			d2l-button-icon {
-				margin-inline-start: 4px;
-			}
 			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-button-icon {
+				margin-bottom: 4px;
 				vertical-align: top;
 			}
 		`];
