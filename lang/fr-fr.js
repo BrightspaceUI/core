@@ -45,7 +45,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-date-time-range.startDate": "Date de début",
-	"components.input-date-time.date": "Date", // mfv-translated
+	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "La date doit être antérieure ou égale au {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La date doit être égale ou postérieure au {minDate}",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -101,8 +101,8 @@ export default {
 	"components.selection.selected": "{count} sélectionnés",
 	"components.selection.selected-plus": "{count}+ sélectionné(e)(s)",
 	"components.selection-controls.label": "Actions pour la sélection",
-	"components.switch.visible": "Visible", // mfv-translated
-	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
+	"components.switch.visible": "Visible",
+	"components.switch.visibleWithPeriod": "Visible.",
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-controls.label": "Actions du tableau",
