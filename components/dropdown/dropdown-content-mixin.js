@@ -320,6 +320,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
+	async getUpdateComplete() {
+		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+		await super.getUpdateComplete();
+		/* wait for the fonts to load because browsers have a font block period
+		where they will render an invisible fallback font face that may result in
+		improper width calculations before the real font is loaded */
+		await fontsPromise;
+	}
+
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'verticalOffset') {
@@ -682,8 +691,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired);
 			}
 
-			const centerDelta = contentRect.width - targetRect.width;
-			const position = this._getPosition(spaceAround, centerDelta);
+			const position = this._getPosition(spaceAround, targetRect.width, contentRect.width);
 			if (position !== null) {
 				this._position = position;
 			}
@@ -973,13 +981,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return false;
 	}
 
-	_getPosition(spaceAround, centerDelta) {
-
+	_getPosition(spaceAround, targetWidth, contentWidth) {
+		const centerDelta = contentWidth - targetWidth;
 		const contentXAdjustment = centerDelta / 2;
-		if (centerDelta <= 0) {
+		if (!this.align && centerDelta <= 0) {
 			return contentXAdjustment * -1;
 		}
-		if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+		if (!this.align && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
 			// center with target
 			return contentXAdjustment * -1;
 		}
@@ -999,6 +1007,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
 				return spaceAround.right * -1;
+			}
+		}
+		if (this.align === 'start' || this.align === 'end') {
+			const shift = Math.min((targetWidth / 2) - (20 + 16 / 2), 0);
+			if (this.align === 'start') {
+				return shift;
+			} else {
+				return targetWidth - contentWidth - shift;
 			}
 		}
 		return null;
