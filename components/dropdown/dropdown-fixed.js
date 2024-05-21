@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
-import { DropdownOpenerMixin } from './dropdown-opener-mixin2.js';
-import { dropdownOpenerStyles } from './dropdown-opener-styles2.js';
+import { DropdownOpenerMixin } from './dropdown-opener-mixin-fixed.js';
+import { dropdownOpenerStyles } from './dropdown-opener-styles-fixed.js';
 
 /**
  * A generic opener for dropdown content, enabling alternate opener implementation using existing elements/components. Provide and indicate your own opener element with the class attribute value "d2l-dropdown-opener".  Wire-up is automatic.
@@ -34,4 +34,4 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	}
 
 }
-customElements.define('d2l-dropdown-2', Dropdown);
+customElements.define('d2l-dropdown-fixed', Dropdown);

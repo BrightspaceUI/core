@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
-import { DropdownContentMixin } from './dropdown-content-mixin2.js';
-import { dropdownContentStyles } from './dropdown-content-styles2.js';
+import { DropdownContentMixin } from './dropdown-content-mixin-fixed.js';
+import { dropdownContentStyles } from './dropdown-content-styles-fixed.js';
 
 /**
  * A generic container for dropdown content.  It provides behavior such as sizing,  positioning, and managing focus gain/loss.
@@ -22,4 +22,4 @@ class DropdownContent extends DropdownContentMixin(LitElement) {
 	}
 
 }
-customElements.define('d2l-dropdown-content-2', DropdownContent);
+customElements.define('d2l-dropdown-content-fixed', DropdownContent);

@@ -10,8 +10,8 @@
 		import '../../button/button.js';
 		import '../../button/button-subtle.js';
 		import '../../dialog/dialog.js';
-		import '../dropdown2.js';
-		import '../dropdown-content2.js';
+		import '../dropdown-fixed.js';
+		import '../dropdown-content-fixed.js';
 		import { css, html, LitElement } from 'lit';
 
 		class MutationDemo extends LitElement {
@@ -70,6 +70,8 @@
 
 <body unresolved>
 
+	<div popover>this is popover content</div>
+
 	<d2l-demo-page page-title="d2l-dropdown (fixed position)">
 
 		<!--
@@ -113,17 +115,17 @@
 				<div style="border: 1px solid var(--d2l-color-tungsten); border-radius: 6px; height: 600px; overflow: scroll;">
 					<d2l-demo-mutation count="1"></d2l-demo-mutation>
 					<div style="padding: 25px; position: relative;">
-						<d2l-dropdown-2>
+						<d2l-dropdown-fixed>
 							<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-							<d2l-dropdown-content-2 max-width="400">
+							<d2l-dropdown-content-fixed max-width="400">
 								<d2l-button-subtle id="add-content1">Add to Light</d2l-button-subtle>
 								<d2l-button-subtle id="add-content2">Add to Shadow</d2l-button-subtle>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 									magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
 									commodo consequat. </p>
 								<a href="http://www.desire2learn.com">D2L</a>
-							</d2l-dropdown-content-2>
-						</d2l-dropdown-2>
+							</d2l-dropdown-content-fixed>
+						</d2l-dropdown-fixed>
 						<br><br><br><br><br><br>
 					</div>
 				</div>
@@ -148,9 +150,9 @@
 			<template>
 
 				<div style="padding: 25px; transform: translate(0);">
-					<d2l-dropdown-2>
+					<d2l-dropdown-fixed>
 						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-						<d2l-dropdown-content-2 max-width="400">
+						<d2l-dropdown-content-fixed max-width="400">
 							<a href="https://youtu.be/9ze87zQFSak">Google</a>
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 								magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -158,8 +160,8 @@
 								nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
 								anim id est laborum.</p>
 							<a href="http://www.desire2learn.com">D2L</a>
-						</d2l-dropdown-content-2>
-					</d2l-dropdown-2>
+						</d2l-dropdown-content-fixed>
+					</d2l-dropdown-fixed>
 				</div>
 
 			</template>
@@ -173,9 +175,9 @@
 				<d2l-dialog id="dialog1" title-text="Dialog Title">
 					<div>
 						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
-						<d2l-dropdown-2>
+						<d2l-dropdown-fixed>
 							<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-							<d2l-dropdown-content-2 max-width="400">
+							<d2l-dropdown-content-fixed max-width="400">
 								<a href="https://youtu.be/9ze87zQFSak">Google</a>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 									magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -183,8 +185,8 @@
 									nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
 									anim id est laborum.</p>
 								<a href="http://www.desire2learn.com">D2L</a>
-							</d2l-dropdown-content-2>
-						</d2l-dropdown-2>
+							</d2l-dropdown-content-fixed>
+						</d2l-dropdown-fixed>
 					</div>
 					<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
 					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
