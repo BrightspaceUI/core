@@ -1,12 +1,13 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
-
+import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
+import { until } from 'lit/directives/until.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -231,7 +232,9 @@ class HtmlBlock extends LitElement {
 		};
 
 		return html`
-			<div class="${classMap(renderContainerClasses)}"></div>
+			<div class="${classMap(renderContainerClasses)}">
+				${(this._embedsFeatureEnabled() && !this.noDeferredRendering) ? until(this._processEmbeds(), nothing) : nothing}
+			</div>
 			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
 		`;
 	}
@@ -270,9 +273,19 @@ class HtmlBlock extends LitElement {
 		return false;
 	}
 
+	_embedsFeatureEnabled() {
+		return window.D2L?.LP?.Web?.UI?.Flags.Flag('shield-7574-enable-embed-rendering-framework', true);
+	}
+
 	async _handleSlotChange(e) {
 		if (!e.target || !this.shadowRoot || !this.noDeferredRendering) return;
 		await this._renderInline(e.target);
+	}
+
+	async _processEmbeds() {
+		const htmlFragment = document.createRange().createContextualFragment(this.html);
+		await renderEmbeds(htmlFragment);
+		return htmlFragment;
 	}
 
 	async _processRenderers(elem) {
@@ -324,7 +337,7 @@ class HtmlBlock extends LitElement {
 
 	async _updateRenderContainer() {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		renderContainer.innerHTML = this.html;
+		if (!this._embedsFeatureEnabled()) renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
 	}
 

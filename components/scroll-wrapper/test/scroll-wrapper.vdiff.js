@@ -34,18 +34,15 @@ describe('scroll-wrapper', () => {
 			});
 		});
 
-		// skip until this is resolved: https://issues.chromium.org/issues/333414300
-		if (!rtl) {
-			it(`split-scrollers-secondary-focus-scroll${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(wrapScrollWrapper(html`<d2l-test-scroll-wrapper width="400" split-scrollers class="vdiff-include"></d2l-test-scroll-wrapper>`), { rtl });
-				const scrollWrapper = elem.querySelector('d2l-test-scroll-wrapper');
-				const innerScrollWrapper = scrollWrapper.shadowRoot.querySelector('d2l-scroll-wrapper');
-				await waitUntil(() => !innerScrollWrapper._syncDriver); // Wait until scrollbars synced before causing additional scroll
+		it(`split-scrollers-secondary-focus-scroll${rtl ? '-rtl' : ''}`, async() => {
+			const elem = await fixture(wrapScrollWrapper(html`<d2l-test-scroll-wrapper width="400" split-scrollers class="vdiff-include"></d2l-test-scroll-wrapper>`), { rtl });
+			const scrollWrapper = elem.querySelector('d2l-test-scroll-wrapper');
+			const innerScrollWrapper = scrollWrapper.shadowRoot.querySelector('d2l-scroll-wrapper');
+			await waitUntil(() => !innerScrollWrapper._syncDriver); // Wait until scrollbars synced before causing additional scroll
 
-				await focusElem(scrollWrapper.shadowRoot.querySelector('button'));
-				await expect(elem).to.be.golden();
-			});
-		}
+			await focusElem(scrollWrapper.shadowRoot.querySelector('button'));
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('focus', () => {

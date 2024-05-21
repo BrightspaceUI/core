@@ -111,6 +111,16 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			:host(:focus-within:hover) .tag-list-item-container {
 				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
 			}
+			@supports selector(:has(a, b)) {
+				:host(:focus-within) .tag-list-item-container,
+				:host(:focus-within:hover) .tag-list-item-container {
+					box-shadow: inset 0 0 0 1px var(--d2l-color-gypsum), 0 2px 4px rgba(0, 0, 0, 0.03);
+				}
+				:host(:hover) .tag-list-item-container:has(:focus-visible),
+				.tag-list-item-container:has(:focus-visible) {
+					box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03) !important;
+				}
+			}
 			:host(:hover) .tag-list-item-container,
 			:host(:focus-within) .tag-list-item-container {
 				background-color: var(--d2l-color-sylvite);

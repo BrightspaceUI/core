@@ -1,6 +1,16 @@
 import { css, html } from 'lit';
-import { bodySmallStyles } from '../typography/styles.js';
+import { _generateBodySmallStyles } from '../typography/styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+
+export const inlineHelpStyles = [
+	_generateBodySmallStyles('.d2l-input-inline-help'),
+	css`
+		.d2l-input-inline-help {
+			margin-top: 0.3rem !important;
+			overflow-wrap: anywhere;
+		}
+	`
+];
 
 export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(superclass) {
 
@@ -11,14 +21,12 @@ export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(su
 	}
 
 	static get styles() {
-		const styles = [ bodySmallStyles, css`
+		const styles = [ inlineHelpStyles, css`
 			:host([_has-inline-help]) .d2l-input-inline-help {
 				display: block;
 			}
 			.d2l-input-inline-help {
 				display: none;
-				margin-top: 0.3rem !important;
-				overflow-wrap: anywhere;
 			}
 		`];
 
@@ -38,7 +46,7 @@ export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(su
 
 	_renderInlineHelp(id) {
 		return html`
-			<div id="${id}" class="d2l-body-small d2l-input-inline-help d2l-skeletize">
+			<div id="${id}" class="d2l-input-inline-help d2l-skeletize">
 				<slot name="inline-help" @slotchange="${this._handleInlineHelpSlotChange}"></slot>
 			</div>
 		`;
