@@ -3,6 +3,7 @@
 	"ignoreFiles": [
     "components/demo/code-dark-plus-styles.js",
     "components/demo/code-tomorrow-styles.js",
-    "components/skeleton/skeleton-mixin.js"
+    "components/skeleton/skeleton-mixin.js",
+    "components/count-badge/demo/count-badge.html"
   ]
 }
