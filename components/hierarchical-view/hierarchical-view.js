@@ -1,6 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
 
+/**
+ * @fires d2l-hierarchical-view-hide-start
+ * @fires d2l-hierarchical-view-show-complete
+ * @fires d2l-hierarchical-view-show-start
+ */
 class HierarchicalView extends HierarchicalViewMixin(LitElement) {
 
 	static get styles() {
