@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
+import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
@@ -208,7 +209,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	static get focusElementSelector() {
-		return 'd2l-dropdown-button-subtle';
+		return 'd2l-dropdown';
 	}
 
 	firstUpdated(changedProperties) {
@@ -229,8 +230,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimensions = this._buildDimensions(singleDimension);
 
 		const filterCount = this._formatFilterCount(this._totalAppliedCount);
-		let buttonText = singleDimension ? this._dimensions[0].text : (this.text || this.localize('components.filter.filters'));
-		if (filterCount) buttonText = `${buttonText} (${filterCount})`;
+		const buttonText = singleDimension ? this._dimensions[0].text : (this.text || this.localize('components.filter.filters'));
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
@@ -267,16 +267,26 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			`;
 
 		return html`
-			<d2l-dropdown-button-subtle
-				class="vdiff-target"
+			<d2l-dropdown
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
-				text="${buttonText}"
-				description="${description}"
+				class="vdiff-target"
 				?disabled="${this.disabled}">
+				<d2l-button-subtle
+					class="d2l-dropdown-opener"
+					description="${description}"
+					text="${buttonText}"
+					icon="tier1:chevron-down"
+					icon-right
+					?disabled="${this.disabled}">
+					<d2l-count-badge
+						type="count"
+						number="${ifDefined(filterCount)}">
+					</d2l-count-badge>
+				</d2l-button-subtle>
 				${dropdownContent}
-			</d2l-dropdown-button-subtle>
+			</d2l-dropdown>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
 	}
