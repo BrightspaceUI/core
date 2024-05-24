@@ -60,8 +60,11 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 		return [ labelStyles, buttonStyles,
 			css`
 				:host {
+					--d2l-count-badge-background-color: var(--d2l-color-celestine);
+					--d2l-count-badge-foreground-color: #ffffff;
 					display: inline-block;
 				}
+
 				:host([hidden]) {
 					display: none;
 				}
@@ -69,8 +72,6 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				button {
 					--d2l-button-subtle-padding-inline-start: 0.6rem;
 					--d2l-button-subtle-padding-inline-end: 0.6rem;
-					--d2l-count-badge-background-color: var(--d2l-color-celestine);
-					--d2l-count-badge-foreground-color: #ffffff;
 					background-color: transparent;
 					border-color: transparent;
 					font-family: inherit;
@@ -105,11 +106,13 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				button::-moz-focus-inner {
 					border: 0;
 				}
+
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
 					background-color: transparent;
 				}
+
 				button:hover,
 				button:focus,
 				:host([active]) button {
@@ -119,14 +122,24 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				.d2l-button-subtle-content {
 					color: var(--d2l-color-celestine);
 				}
+
 				button:hover:not([disabled]) .d2l-button-subtle-content,
 				button:focus:not([disabled]) .d2l-button-subtle-content,
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
 					color: var(--d2l-color-celestine-minus-1);
 				}
+
+				button:hover:not([disabled]),
+				button:focus:not([disabled]),
+				:host([active]:not([disabled])) {
+					--d2l-count-badge-background-color: var(--d2l-color-celestine-minus-1);
+				}
+
+
 				.d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
 					padding-inline: 1.2rem 0;
 				}
+
 				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
 					padding-inline: 0 1.2rem;
 				}
