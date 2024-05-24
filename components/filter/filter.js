@@ -269,6 +269,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const countBadgeTemplate = filterCount ? html`
 				<d2l-count-badge
 					type="count"
+					max-digits=5
 					number="${filterCount}">
 				</d2l-count-badge>`
 			: nothing;
