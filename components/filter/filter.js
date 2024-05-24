@@ -266,6 +266,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-dropdown-menu>
 			`;
 
+		const countBadgeTemplate = filterCount ? html`
+				<d2l-count-badge
+					type="count"
+					number="${filterCount}">
+				</d2l-count-badge>`
+			: nothing;
+
 		return html`
 			<d2l-dropdown
 				@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -280,10 +287,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					icon="tier1:chevron-down"
 					icon-right
 					?disabled="${this.disabled}">
-					<d2l-count-badge
-						type="count"
-						number="${ifDefined(filterCount)}">
-					</d2l-count-badge>
+					${countBadgeTemplate}
 				</d2l-button-subtle>
 				${dropdownContent}
 			</d2l-dropdown>
