@@ -69,6 +69,8 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				button {
 					--d2l-button-subtle-padding-inline-start: 0.6rem;
 					--d2l-button-subtle-padding-inline-end: 0.6rem;
+					--d2l-count-badge-background-color: var(--d2l-color-celestine);
+					--d2l-count-badge-foreground-color: #ffffff;
 					background-color: transparent;
 					border-color: transparent;
 					font-family: inherit;
