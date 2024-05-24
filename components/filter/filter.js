@@ -209,7 +209,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	static get focusElementSelector() {
-		return 'd2l-dropdown';
+		return 'd2l-button-subtle';
 	}
 
 	firstUpdated(changedProperties) {
