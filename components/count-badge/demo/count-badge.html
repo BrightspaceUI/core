@@ -44,7 +44,7 @@
 			<h2>Override Colorway of Count Badge</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-count-badge style="--d2l-count-badge-foreground-color: #ffffff; --d2l-count-badge-background-color: purple;" size="large" text="1 new notification." type="count" number="1"></d2l-count-badge>
+					<d2l-count-badge id="colorway-override" size="large" text="1 new notification." type="count" number="1"></d2l-count-badge>
 				</template>
 			</d2l-demo-snippet>
 
@@ -61,6 +61,9 @@
 				document.getElementById('badge-announce-changes').number += 1;
 				document.getElementById('badge-announce-changes').text = `${document.getElementById('badge-announce-changes').number} new notifications.`;
 			});
+
+			document.getElementById('colorway-override').style.setProperty('--d2l-count-badge-background-color', 'purple');
+			document.getElementById('colorway-override').style.setProperty('--d2l-count-badge-foreground-color', '#ffffff');
 		</script>
 	</body>
 </html>
