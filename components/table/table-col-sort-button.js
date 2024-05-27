@@ -33,19 +33,32 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	static get styles() {
 		return css`
+			:host {
+				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+				--d2l-table-col-sort-button-margin-inline-end: var(--d2l-table-cell-col-sort-button-size-offset, 4px);
+				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+			}
+			:host([nosort]) {
+				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+			}
 			button {
 				align-items: center;
 				background-color: transparent;
 				border: none;
+				border-radius: 4px;
 				color: inherit;
 				cursor: pointer;
 				display: inline-flex;
 				font-family: inherit;
 				font-size: inherit;
 				letter-spacing: inherit;
-				margin: 0;
-				padding: 0;
+				line-height: 0.9rem;
+				margin: var(--d2l-table-cell-col-sort-button-size-offset, 4px);
+				margin-inline-end: var(--d2l-table-col-sort-button-margin-inline-end);
+				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
 				text-decoration: none;
+				width: var(--d2l-table-col-sort-button-width);
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -54,13 +67,15 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 				opacity: 0.5;
 			}
 			button:hover {
-				text-decoration: underline;
+				background-color: var(--d2l-color-gypsum);
 			}
 			button:focus-visible,
 			button:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.2rem;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				outline-style: none;
+			}
+			d2l-icon {
+				margin-inline-start: 0.6rem;
 			}
 		`;
 	}

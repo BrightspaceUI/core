@@ -31,7 +31,7 @@ function createSortableHeaderRow() {
 function createDoubleSortableHeaderRow(text) {
 	return html`
 		<tr>
-			<th><d2l-table-col-sort-button>Asc 1</d2l-table-col-sort-button><d2l-table-col-sort-button>${text ?? 'Asc 2'}</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button>Asc 1</d2l-table-col-sort-button><d2l-table-col-sort-button nosort>${text ?? 'Asc 2'}</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
@@ -452,6 +452,24 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
+				it('col-sort-button-focus-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-hover-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
 				it('col-sort-button-hover-focus', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableHeaderRow()}</thead>
@@ -472,9 +490,29 @@ describe('table', () => {
 
 				it('two-col-sort-button-wrap', async() => {
 					const elem = await createTableFixture(html`
-						<thead>${createDoubleSortableHeaderRow('Ascending')}</thead>
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap-focus-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap-focus-hover-reverse', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
 					await expect(elem).to.be.golden();
 				});
 

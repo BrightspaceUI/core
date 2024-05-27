@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { cssSizes } from '../inputs/input-checkbox.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -32,6 +33,38 @@ export const tableStyles = css`
 	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
+	d2l-table-wrapper d2l-button-icon {
+		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+		--d2l-button-icon-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+	}
+
+	/* once we only support browsers that support :has the section below can be removed up until @supports */
+	.d2l-table .d2l-checkbox,
+	.d2l-table d2l-input-checkbox,
+	.d2l-table d2l-selection-select-all,
+	.d2l-table d2l-selection-input {
+		margin-block: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+	}
+	.d2l-table > * > tr.d2l-table-selected-first d2l-input-checkbox,
+	.d2l-table > * > tr.d2l-table-selected-first d2l-selection-input,
+	.d2l-table > * > tr.d2l-table-selected-first .d2l-checkbox {
+		margin-bottom: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem));
+		margin-top: calc(0.5 * (var(--d2l-table-cell-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+	}
+	@supports selector(:has(a, b)) {
+		.d2l-table > * > tr > :has(.d2l-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-select-all),
+		.d2l-table > * > tr > :has(d2l-input-checkbox),
+		.d2l-table > * > tr > :has(d2l-selection-input) {
+			padding-block: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+		}
+		.d2l-table > * > tr.d2l-table-selected-first > :has(.d2l-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-input-checkbox),
+		.d2l-table > * > tr.d2l-table-selected-first > :has(d2l-selection-input) {
+			padding-bottom: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem));
+			padding-top: calc(0.5 * (var(--d2l-table-cell-overall-height) - ${cssSizes.inputBoxSize}rem) - 1px);
+		}
+	}
 
 	/* default cells */
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > *,
@@ -54,10 +87,53 @@ export const tableStyles = css`
 		font-size: 0.7rem;
 		line-height: 0.9rem;
 	}
-	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
-	d2l-table-wrapper[type="default"] .d2l-table > * > tr.d2l-table-header > th,
-	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
-		height: 27px; /* min-height to be 48px including border */
+
+	/* sortable header cells */
+	d2l-table-col-sort-button {
+		vertical-align: middle;
+	}
+	d2l-table-col-sort-button:not(:only-child) {
+		--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+		display: inline-flex;
+		margin-inline-start: calc(-1 * var(--d2l-table-cell-col-sort-button-size-offset));
+		margin-top: calc(-1 * var(--d2l-table-cell-col-sort-button-size-offset));
+	}
+	d2l-table-col-sort-button:not(:last-child) {
+		--d2l-table-col-sort-button-margin-inline-end: 0;
+	}
+
+	/* TODO: once we only support browsers that support :has the section below can be removed up until @supports */
+	.d2l-table th.d2l-table-header-col-sortable {
+		height: var(--d2l-table-cell-overall-height);
+		padding: 0;
+	}
+	.d2l-table th.d2l-table-header-col-sortable.d2l-table-header-col-sortable-siblings {
+		height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
+		padding-top: var(--d2l-table-cell-col-sort-button-size-offset);
+	}
+	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
+		--d2l-table-col-sort-button-width: unset;
+	}
+	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
+		padding-inline-end: calc(0.6rem + 18px);
+	}
+	@supports selector(:has(a, b)) {
+		.d2l-table th:has(d2l-table-col-sort-button) {
+			height: var(--d2l-table-cell-overall-height);
+			padding: 0;
+		}
+		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) {
+			height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
+			padding-inline-start: var(--d2l-table-cell-col-sort-button-size-offset);
+			padding-top: var(--d2l-table-cell-col-sort-button-size-offset);
+		}
+		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
+			--d2l-table-col-sort-button-width: unset;
+		}
+		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
+			padding-inline-end: calc(0.6rem + 18px);
+		}
 	}
 
 	/* border radiuses */
@@ -242,9 +318,11 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
-				--d2l-table-cell-padding: 0.5rem 1rem;
-				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
+				--d2l-table-cell-overall-height: 46px;
+				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
+				--d2l-table-cell-padding: 0.7rem;
+				--d2l-table-cell-padding-alt: calc(0.7rem - 1px) 0.7rem 0.7rem 0.7rem;
+				--d2l-table-cell-col-sort-button-size-offset: 4px;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
@@ -257,9 +335,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			:host([type="light"]) {
 				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
-				--d2l-table-cell-padding: 0.6rem;
-				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
@@ -368,6 +443,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
 
 			Array.from(r.cells).forEach((c, index) => {
+				if (isHeader && !CSS.supports('selector(:has(a, b))')) this._checkSiblingSortableCells(c);
 				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
 				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
 					skipFirst = parseInt(c.getAttribute('rowspan'));
@@ -378,6 +454,16 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			prevRow = r;
 			skipFirst = Math.max(0, --skipFirst);
 		});
+	}
+
+	_checkSiblingSortableCells(c) {
+		const hasColSortButton = c.querySelector('d2l-table-col-sort-button');
+		if (!hasColSortButton) return;
+		c.classList.toggle('d2l-table-header-col-sortable', true);
+		c.classList.toggle('d2l-table-header-col-sortable-siblings', c.childElementCount > 1);
+
+		const hasSorted = c.querySelector('d2l-table-col-sort-button:not([nosort])');
+		c.classList.toggle('d2l-table-header-col-sortable-no-sorted', !hasSorted);
 	}
 
 	_getItemByIndex(index) {
@@ -498,11 +584,15 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		for (let i = 0; i < firstRowHead.cells.length; i++) {
 			const headCell = firstRowHead.cells[i];
 			const bodyCell = firstRowBody.cells[i];
+			const bodyStyle = getComputedStyle(bodyCell);
+			const headStyle = getComputedStyle(headCell);
 
 			if (headCell.clientWidth > bodyCell.clientWidth) {
-				bodyCell.style.minWidth = getComputedStyle(headCell).width;
+				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
+				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
-				headCell.style.minWidth = getComputedStyle(bodyCell).width;
+				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
+				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
 			}
 		}
 	}
