@@ -13,6 +13,7 @@
 		import '../../menu/menu-item-radio.js';
 		import '../dropdown.js';
 		import '../dropdown-menu.js';
+		import '../../tooltip/tooltip.js';
 	</script>
 </head>
 
@@ -27,9 +28,10 @@
 					<button class="d2l-dropdown-opener">Open it!</button>
 					<d2l-dropdown-menu id="dropdown">
 						<d2l-menu label="Astronomy">
-							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item id="m-intro" text="Introduction"></d2l-menu-item>
+							<d2l-tooltip for="m-intro">Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker.</d2l-tooltip>
 							<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-							<d2l-menu-item text="The Solar System">
+							<d2l-menu-item id="m-solar" text="The Solar System">
 								<d2l-menu>
 									<d2l-menu-item text="Formation"></d2l-menu-item>
 									<d2l-menu-item text="Modern Solar System"></d2l-menu-item>
@@ -54,10 +56,12 @@
 									<d2l-menu-item text="Comets"></d2l-menu-item>
 								</d2l-menu>
 							</d2l-menu-item>
+							<d2l-tooltip for="m-solar">Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</d2l-tooltip>
 							<d2l-menu-item text="Stars &amp; Galaxies">
 								<d2l-menu>
 									<d2l-menu-item text="What is a Star?"></d2l-menu-item>
-									<d2l-menu-item text="Lifecycle of a Star"></d2l-menu-item>
+									<d2l-menu-item id="m-lifecycle" text="Lifecycle of a Star"></d2l-menu-item>
+									<d2l-tooltip for="m-lifecycle">Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</d2l-tooltip>
 									<d2l-menu-item text="Binaries &amp; Multiples"></d2l-menu-item>
 									<d2l-menu-item text="Star Clusters"></d2l-menu-item>
 									<d2l-menu-item text="Star Death">
@@ -91,7 +95,8 @@
 								</d2l-menu>
 							</d2l-menu-item>
 							<d2l-menu-item text="Aliens, The Search Extraterrestrial Life, Unidentified Flying Objects, and Other Astronomical Phenomenon"></d2l-menu-item>
-							<d2l-menu-item text="The Universe"></d2l-menu-item>
+							<d2l-menu-item id="m-universe" text="The Universe"></d2l-menu-item>
+							<d2l-tooltip for="m-universe">Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker.</d2l-tooltip>
 						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
