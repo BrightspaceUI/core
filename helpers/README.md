@@ -280,3 +280,17 @@ import '@brightspace-ui/core/helpers/viewport-size.js';
     min-width: calc(var(--d2l-vw, 1vw) * 100);
 }
 ```
+
+## Visual Ready
+
+A helper for determining that the page is visually "ready" (i.e., necessary pieces are loaded) and calculations can be done. Currently it handles waiting for fonts to be ready, but going forward it can have other pieces added as needed. This is useful in places like the tooltip, where the fonts being loaded has an impact on the tooltip position calculation.
+
+Example usage within a component:
+```javascript
+import { visualReady } from '../../helpers/visualReady.js';
+
+async getUpdateComplete() {
+    await super.getUpdateComplete();
+    await visualReady;
+}
+```
