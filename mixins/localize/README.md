@@ -61,9 +61,15 @@ static get localizeConfig() {
 }
 ```
 
+### Lifecycle
+
+The `LocalizeMixin` blocks Lit component updates until the translations are loaded by returning `false` from `shouldUpdate()`. This means that the component is guaranteed to load valid terms [anywhere in the Lit lifecycle from `willUpdate()` onwards](https://lit.dev/docs/components/lifecycle/#reactive-update-cycle).
+
+Two common patterns for using `localize()` are within `render()` to modify the component's rendering, and within `firstUpdated()` to modify a page's `document.title`.
+
 ### `localize()`
 
-The `localize()` method is used to localize a piece of text in the component's `render()` method.
+The `localize()` method is used to localize a piece of text.
 
 If the localized string contains arguments, pass them as a key-value object as the 2nd parameter:
 
