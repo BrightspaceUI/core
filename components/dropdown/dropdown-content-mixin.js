@@ -10,6 +10,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { visualReady } from '../../helpers/visualReady.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
@@ -321,12 +322,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	async getUpdateComplete() {
-		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
 		await super.getUpdateComplete();
-		/* wait for the fonts to load because browsers have a font block period
-		where they will render an invisible fallback font face that may result in
-		improper width calculations before the real font is loaded */
-		await fontsPromise;
+		await visualReady;
 	}
 
 	updated(changedProperties) {
@@ -1010,7 +1007,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 		if (this.align === 'start' || this.align === 'end') {
-			const shift = Math.min((targetWidth / 2) - (20 + 16 / 2), 0);
+			const shift = Math.min((targetWidth / 2) - (20 + 16 / 2), 0); // 20 ~= 1rem, 16 = pointer size
 			if (this.align === 'start') {
 				return shift;
 			} else {
