@@ -241,3 +241,4 @@ class MyComponent extends HierarchicalViewMixin(LitElement) {
 - `d2l-hierarchical-view-show-complete`: dispatched when child view is shown (when animation ends)
 - `d2l-hierarchical-view-hide-start`: dispatched when child view will be hidden (before animation begins)
 - `d2l-hierarchical-view-hide-complete`: dispatched when child view is hidden (when animation ends)
+- `d2l-hierarchical-view-resize`: dispatched when child view is resized
