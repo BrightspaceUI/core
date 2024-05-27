@@ -3,6 +3,7 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
@@ -94,6 +95,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		super();
 		this.nosort = false;
 		this.desc = false;
+
+		this._describedById = getUniqueId();
 	}
 
 	static get focusElementSelector() {
@@ -121,7 +124,15 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return html`<button type="button" title="${ifDefined(buttonTitle)}" aria-description="${buttonDescription}"><slot></slot>${iconView}</button>`;
+		return html`
+			<button
+				aria-describedby="${this._describedById}"
+				title="${ifDefined(buttonTitle)}"
+				type="button">
+				<slot></slot>${iconView}
+			</button>
+			<span id="${this._describedById}" hidden>${buttonDescription}</span>
+		`;
 	}
 
 	updated(changedProperties) {
