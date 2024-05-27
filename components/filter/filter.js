@@ -3,7 +3,6 @@ import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../dropdown/dropdown.js';
-import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
 import '../empty-state/empty-state-action-button.js';
@@ -269,7 +268,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const countBadgeTemplate = filterCount ? html`
 				<d2l-count-badge
 					type="count"
-					max-digits=5
 					number="${filterCount}">
 				</d2l-count-badge>`
 			: nothing;
