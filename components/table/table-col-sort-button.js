@@ -1,6 +1,10 @@
 import '../colors/colors.js';
+import '../dropdown/dropdown.js';
+import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
+import '../menu/menu.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -38,7 +42,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			sourceType: {
 				attribute: 'source-type',
 				type: String
-			}
+			},
+			_hasDropdownItems: { state: true },
+			_selectedMenuItemText: { state: true }
 		};
 	}
 
@@ -50,6 +56,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			}
 			:host([nosort]) {
 				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+			}
+			:host > :first-child {
+				width: var(--d2l-table-col-sort-button-width);
 			}
 			button {
 				align-items: center;
@@ -67,8 +76,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				margin-inline: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
 				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
 				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
+				text-align: start;
 				text-decoration: none;
-				width: var(--d2l-table-col-sort-button-width);
+				width: 100%;
 			}
 			button::-moz-focus-inner {
 				border: 0;
@@ -97,6 +107,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		this.sourceType = 'unknown';
 
 		this._describedById = getUniqueId();
+		this._hasDropdownItems = false;
 	}
 
 	static get focusElementSelector() {
@@ -108,20 +119,57 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		const buttonTitle = this.nosort
 			? undefined
 			: this.localize('components.table-col-sort-button.title', {
-				sourceType: this.sourceType,
-				direction: this.desc ? 'desc' : undefined
+				sourceType: this._hasDropdownItems && this._selectedMenuItemText ? 'value' : this.sourceType,
+				direction: this.desc ? 'desc' : undefined,
+				selectedMenuItemText: this._selectedMenuItemText
 			});
 
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return html`<button
+		const button = html`<button
 				aria-describedby="${this._describedById}"
+				class="${classMap({ 'd2l-dropdown-opener': this._hasDropdownItems })}"
 				title="${ifDefined(buttonTitle)}"
 				type="button">
 				<slot></slot>${iconView}
 			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
+		if (this._hasDropdownItems) {
+			return html`<d2l-dropdown>
+					${button}
+					<d2l-dropdown-menu no-pointer align="start" vertical-offset="0">
+						<d2l-menu @d2l-menu-item-change="${this._handleMenuItemChange}">
+							<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>`;
+		} else {
+			return html`${button}<slot name="items" @slotchange="${this._handleSlotChange}"></slot>`;
+		}
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		// de-select any selected dropdown menu item
+		if (changedProperties.has('nosort') && this.nosort && this._hasDropdownItems) {
+			const selectedItem = this.querySelector('[selected]');
+			if (selectedItem) selectedItem.selected = false;
+		}
+	}
+
+	_handleMenuItemChange(e) {
+		this._selectedMenuItemText = e.target?.text;
+	}
+
+	_handleSlotChange(e) {
+		const items = e.target?.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
+		const filteredItems = items.filter((item) => {
+			const role = item.getAttribute('role');
+			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio');
+		});
+		this._hasDropdownItems = filteredItems.length > 0;
 	}
 
 }
