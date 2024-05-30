@@ -17,10 +17,10 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		return {
 			/**
 			 * The type of data in the column. Used to set the title.
-			 *  @type {'words'|'numbers'|'dates'}
+			 *  @type {'words'|'numbers'|'dates'|'unknown'}
 			 */
-			dataType: {
-				attribute: 'data-type',
+			sourceType: {
+				attribute: 'source-type',
 				type: String
 			},
 			/**
@@ -92,8 +92,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 
 	constructor() {
 		super();
-		this.nosort = false;
 		this.desc = false;
+		this.nosort = false;
+		this.sourceType = 'unknown';
 
 		this._describedById = getUniqueId();
 	}
@@ -105,8 +106,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this.dataType) {
-			console.warn('d2l-table-col-sort-button: data-type attribute does not have a value.');
+		if (!this.sourceType || this.sourceType === 'unknown') {
+			console.warn('d2l-table-col-sort-button: source-type attribute does not have a value specified.');
 		}
 	}
 
@@ -115,7 +116,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		const buttonTitle = this.nosort
 			? undefined
 			: this.localize('components.table-col-sort-button.title', {
-				dataType: this.dataType,
+				sourceType: this.sourceType,
 				direction: this.desc ? 'desc' : undefined
 			});
 
@@ -123,27 +124,21 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
-		return html`
-			<button
+		return html`<button
 				aria-describedby="${this._describedById}"
 				title="${ifDefined(buttonTitle)}"
 				type="button">
 				<slot></slot>${iconView}
-			</button>
-			<span id="${this._describedById}" hidden>${buttonDescription}</span>
-		`;
+			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		if (!changedProperties.has('dataType')) return;
+		if (!changedProperties.has('sourceType')) return;
 
-		if (!this.dataType) {
-			console.warn('d2l-table-col-sort-button: data-type attribute does not have a value.');
-		} else if (this.dataType !== 'words' && this.dataType !== 'numbers' && this.dataType !== 'dates') {
-			this.dataType = undefined;
-			console.warn('d2l-table-col-sort-button: data-type attribute has been set to an invalid value.');
+		if (!this.sourceType || this.sourceType === 'unknown') {
+			console.warn('d2l-table-col-sort-button: source-type attribute does not have a value specified.');
 		}
 	}
 
