@@ -16,14 +16,6 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 	static get properties() {
 		return {
 			/**
-			 * The type of data in the column. Used to set the title.
-			 *  @type {'words'|'numbers'|'dates'|'unknown'}
-			 */
-			sourceType: {
-				attribute: 'source-type',
-				type: String
-			},
-			/**
 			 * Whether sort direction is descending
 			 * @type {boolean}
 			 */
@@ -38,6 +30,14 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * The type of data in the column. Used to set the title.
+			 *  @type {'words'|'numbers'|'dates'|'unknown'}
+			 */
+			sourceType: {
+				attribute: 'source-type',
+				type: String
 			}
 		};
 	}
