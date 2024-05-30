@@ -182,7 +182,8 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
                 <th>
                   <d2l-table-col-sort-button
                     @click="${this._handleSort}"
-                    ?desc="${this._sortDesc}">
+					?desc="${this._sortDesc}"
+					source-type="words">
                     Column A
                   </d2l-table-col-sort-button>
                 </th>
@@ -226,6 +227,7 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 |---|---|---|---|
 | `desc` | boolean | Whether sort direction is descending | false |
 | `nosort` | boolean | Column is not currently sorted. Hides the ascending/descending sort icon. | false |
+| `source-type` | string | The type of data in the column. Used to set the title. Accepted values are 'words', 'numbers', and 'dates'. | 'unknown' |
 
 ## Selection
 

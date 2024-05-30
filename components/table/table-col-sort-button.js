@@ -3,12 +3,15 @@ import '../icons/icon.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
  * @slot - Text of the sort button
  */
-export class TableColSortButton extends FocusMixin(LitElement) {
+export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -27,6 +30,14 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 			nosort: {
 				reflect: true,
 				type: Boolean
+			},
+			/**
+			 * The type of data in the column. Used to set the title.
+			 *  @type {'words'|'numbers'|'dates'|'unknown'}
+			 */
+			sourceType: {
+				attribute: 'source-type',
+				type: String
 			}
 		};
 	}
@@ -81,8 +92,11 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.nosort = false;
 		this.desc = false;
+		this.nosort = false;
+		this.sourceType = 'unknown';
+
+		this._describedById = getUniqueId();
 	}
 
 	static get focusElementSelector() {
@@ -90,10 +104,24 @@ export class TableColSortButton extends FocusMixin(LitElement) {
 	}
 
 	render() {
+		const buttonDescription = this.nosort ? this.localize('components.table-col-sort-button.addSortOrder') : this.localize('components.table-col-sort-button.changeSortOrder');
+		const buttonTitle = this.nosort
+			? undefined
+			: this.localize('components.table-col-sort-button.title', {
+				sourceType: this.sourceType,
+				direction: this.desc ? 'desc' : undefined
+			});
+
 		const iconView = !this.nosort ?
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
-		return html`<button type="button"><slot></slot>${iconView}</button>`;
+
+		return html`<button
+				aria-describedby="${this._describedById}"
+				title="${ifDefined(buttonTitle)}"
+				type="button">
+				<slot></slot>${iconView}
+			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
 	}
 
 }
