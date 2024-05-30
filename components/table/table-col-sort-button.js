@@ -46,8 +46,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		return css`
 			:host {
 				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-col-sort-button-margin-inline-end: var(--d2l-table-cell-col-sort-button-size-offset, 4px);
-				--d2l-table-col-sort-button-width: calc(100% - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+				--d2l-table-col-sort-button-width: calc(100% - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
 			}
 			:host([nosort]) {
 				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
@@ -64,8 +63,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				font-size: inherit;
 				letter-spacing: inherit;
 				line-height: 0.9rem;
-				margin: var(--d2l-table-cell-col-sort-button-size-offset, 4px);
-				margin-inline-end: var(--d2l-table-col-sort-button-margin-inline-end);
+				margin-block: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
+				margin-inline: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
 				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
 				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
 				text-decoration: none;
