@@ -103,14 +103,6 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		return 'button';
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		if (!this.sourceType || this.sourceType === 'unknown') {
-			console.warn('d2l-table-col-sort-button: source-type attribute does not have a value specified.');
-		}
-	}
-
 	render() {
 		const buttonDescription = this.nosort ? this.localize('components.table-col-sort-button.addSortOrder') : this.localize('components.table-col-sort-button.changeSortOrder');
 		const buttonTitle = this.nosort
@@ -130,16 +122,6 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				type="button">
 				<slot></slot>${iconView}
 			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		if (!changedProperties.has('sourceType')) return;
-
-		if (!this.sourceType || this.sourceType === 'unknown') {
-			console.warn('d2l-table-col-sort-button: source-type attribute does not have a value specified.');
-		}
 	}
 
 }
