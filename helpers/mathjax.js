@@ -64,6 +64,16 @@ class HtmlBlockMathRenderer {
 			elm.style.height = '0.5rem';
 		});
 
+		if (context.enableMML3Support) {
+			// There's a bug in the experimental MML3 plugin that causes mi and mo elements containing non-breaking
+			// spaces to break MathJax's math processing. Unfortunately, WIRIS tends to add a lot of these in chemistry
+			// equations. Since they're not really intended in the MathML spec anyways, we'll just remove them.
+			// See https://github.com/mathjax/MathJax/issues/3030 for more details.
+			elem.querySelectorAll('mo, mi').forEach(elm => {
+				if (elm.innerHTML.replace(/&nbsp;/g, '').trim().length === 0) elm.remove();
+			});
+		}
+
 		// If we're using deferred rendering, we need to create a document structure
 		// within the element so MathJax can appropriately process math.
 		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
