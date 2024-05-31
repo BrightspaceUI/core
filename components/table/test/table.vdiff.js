@@ -4,7 +4,7 @@ import '../../button/button-icon.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import { defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
-import { LitElement, nothing } from 'lit';
+import { css, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { tableStyles } from '../table-wrapper.js';
@@ -183,9 +183,36 @@ describe('table', () => {
 		describe(`${rtl ? 'rtl' : 'ltr'}-${type}`, () => {
 			async function createTableFixture(tableContents, opts = {}) {
 				const tableClasses = { 'd2l-table': true, 'vdiff-target': opts.stickyHeaders };
+				const centeredStyles = css`
+					d2l-table-col-sort-button:only-child {
+							--d2l-table-col-sort-button-justify-content: center;
+						}
+					d2l-table-col-sort-button[nosort]:only-child {
+						--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.5 * (0.6rem + 18px) + var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+						--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.5 * (0.6rem + 18px) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+					}
+					td {
+						text-align: center !important;
+					}
+				`;
+				const endStyles = css`
+					d2l-table-col-sort-button:only-child {
+							--d2l-table-col-sort-button-justify-content: end;
+						}
+					d2l-table-col-sort-button[nosort]:only-child {
+						--d2l-table-col-sort-button-additional-padding-inline-end: 0px;
+						--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.6rem + 18px);
+					}
+					td {
+						text-align: end !important;
+					}
+				`;
+				let stylesArr = [tableStyles];
+				if (opts.colSortButtonCentered) stylesArr.push(centeredStyles);
+				else if (opts.colSortButtonEnd) stylesArr.push(endStyles);
 				const tag = defineCE(
 					class extends LitElement {
-						static get styles() { return [tableStyles]; }
+						static get styles() { return stylesArr; }
 						render() {
 							const wrapper = html`
 								<d2l-table-wrapper
@@ -431,6 +458,22 @@ describe('table', () => {
 						<thead>${createSortableHeaderRow()}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-centered', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`, { colSortButtonCentered: true });
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-end', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`, { colSortButtonEnd: true });
 					await expect(elem).to.be.golden();
 				});
 
