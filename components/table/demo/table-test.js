@@ -2,6 +2,7 @@ import '../table-col-sort-button.js';
 import '../table-controls.js';
 import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
+import '../../dropdown/dropdown-context-menu.js';
 import '../../dropdown/dropdown-menu.js';
 import '../../inputs/input-checkbox.js';
 import '../../inputs/input-text.js';
@@ -56,10 +57,12 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 			:host([visible-background]) {
 				--d2l-table-controls-background-color: #dddddd;
 			}
-			.d2l-table > * > tr > :has(d2l-button-icon) {
+			.d2l-table > * > tr > :has(d2l-button-icon),
+			.d2l-table > * > tr > :has(d2l-dropdown-context-menu) {
 				padding-block: 0;
 			}
-			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-button-icon {
+			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-button-icon,
+			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-dropdown-context-menu {
 				vertical-align: top;
 			}
 		`];
@@ -198,7 +201,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					source-type="numbers"
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
-				${item === 'Size' && this.showButtons ? html`<d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon>` : nothing}
+				${item === 'Size' && this.showButtons ? html`<d2l-dropdown-context-menu text="Help"></d2l-dropdown-context-menu>` : nothing}
 			</th>
 		`;
 	}

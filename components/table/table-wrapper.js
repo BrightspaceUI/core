@@ -37,6 +37,10 @@ export const tableStyles = css`
 		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
 		--d2l-button-icon-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
 	}
+	d2l-table-wrapper d2l-dropdown-context-menu {
+		--d2l-dropdown-context-menu-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+		--d2l-dropdown-context-menu-min-width: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
+	}
 
 	/* once we only support browsers that support :has the section below can be removed up until @supports */
 	.d2l-table .d2l-checkbox,
