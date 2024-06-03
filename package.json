@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
