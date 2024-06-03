@@ -227,6 +227,7 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 |---|---|---|---|
 | `desc` | boolean | Whether sort direction is descending | false |
 | `nosort` | boolean | Column is not currently sorted. Hides the ascending/descending sort icon. | false |
+| `position` | string | Position of the button content. Accepted values are 'start', 'center', and 'end'. | 'start' |
 | `source-type` | string | The type of data in the column. Used to set the title. Accepted values are 'words', 'numbers', and 'dates'. | 'unknown' |
 
 ## Selection
