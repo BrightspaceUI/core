@@ -94,6 +94,7 @@ export const tableStyles = css`
 	}
 	d2l-table-col-sort-button:not(:only-child) {
 		--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+		--d2l-table-col-sort-button-additional-padding-inline-start: 0px; /* stylelint-disable-line length-zero-no-unit */
 	}
 
 	/* TODO: once we only support browsers that support :has the section below can be removed up until @supports */
