@@ -149,6 +149,13 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		}
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		const selectedItem = this.querySelector('[selected]');
+		if (selectedItem && !this.nosort) this._selectedMenuItemText = selectedItem.text;
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
