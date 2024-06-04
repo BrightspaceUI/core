@@ -1,4 +1,5 @@
 import '../table-col-sort-button.js';
+import '../table-col-sort-button-item.js';
 import '../table-controls.js';
 import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
@@ -7,7 +8,6 @@ import '../../inputs/input-checkbox.js';
 import '../../inputs/input-text.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
-import '../../menu/menu-item-radio.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
@@ -183,10 +183,10 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 				<d2l-table-col-sort-button
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${name}
-					<d2l-menu-item-radio slot="items" text="City, A to Z" data-field="city" @d2l-menu-item-select="${this._handleSortComplex}" value="1"></d2l-menu-item-radio>
-					<d2l-menu-item-radio slot="items" text="City, Z to A" data-field="city" data-desc @d2l-menu-item-select="${this._handleSortComplex}" value="2"></d2l-menu-item-radio>
-					<d2l-menu-item-radio slot="items" text="Country, A to Z" data-field="country" @d2l-menu-item-select="${this._handleSortComplex}" value="3"></d2l-menu-item-radio>
-					<d2l-menu-item-radio slot="items" text="Country, Z to A" data-field="country" data-desc @d2l-menu-item-select="${this._handleSortComplex}" value="4"></d2l-menu-item-radio>
+					<d2l-table-col-sort-button-item slot="items" text="City, A to Z" data-field="city" @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="1"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="City, Z to A" data-field="city" data-desc @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="2"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="Country, A to Z" data-field="country" @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="3"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="Country, Z to A" data-field="country" data-desc @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="4"></d2l-table-col-sort-button-item>
 				</d2l-table-col-sort-button>
 			</th>
 		`;

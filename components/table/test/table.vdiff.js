@@ -1,9 +1,9 @@
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../../button/button-icon.js';
-import '../../menu/menu-item-radio.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
+import '../table-col-sort-button-item.js';
 import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -43,8 +43,8 @@ function createSortableButtonDropdownHeaderRow() {
 		<tr>
 			<th>
 				<d2l-table-col-sort-button>Options
-					<d2l-menu-item-radio selected slot="items" text="Item 1" value="1"></d2l-menu-item-radio>
-					<d2l-menu-item-radio slot="items" text="Item 2" value="2"></d2l-menu-item-radio>
+					<d2l-table-col-sort-button-item selected slot="items" text="Item 1" value="1"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="Item 2" value="2"></d2l-table-col-sort-button-item>
 				</d2l-table-col-sort-button>
 			</th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>

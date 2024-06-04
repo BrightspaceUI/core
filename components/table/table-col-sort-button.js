@@ -121,6 +121,12 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			d2l-icon {
 				margin-inline-start: 0.6rem;
 			}
+			::slotted(*[slot="items"]) {
+				display: none;
+			}
+			::slotted(d2l-table-col-sort-button-item[slot="items"]) {
+				display: flex;
+			}
 		`;
 	}
 
@@ -137,6 +143,13 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 
 	static get focusElementSelector() {
 		return 'button';
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		const selectedItem = this.querySelector('[selected]');
+		if (selectedItem && !this.nosort) this._selectedMenuItemText = selectedItem.text;
 	}
 
 	render() {
@@ -164,7 +177,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			return html`<d2l-dropdown>
 					${button}
 					<d2l-dropdown-menu no-pointer align="start" vertical-offset="0">
-						<d2l-menu @d2l-menu-item-change="${this._handleMenuItemChange}">
+						<d2l-menu @d2l-table-col-sort-button-item-change="${this._handleTablColSortButtonItemChange}">
 							<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 						</d2l-menu>
 					</d2l-dropdown-menu>
@@ -172,13 +185,6 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		} else {
 			return html`${button}<slot name="items" @slotchange="${this._handleSlotChange}"></slot>`;
 		}
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		const selectedItem = this.querySelector('[selected]');
-		if (selectedItem && !this.nosort) this._selectedMenuItemText = selectedItem.text;
 	}
 
 	updated(changedProperties) {
@@ -191,17 +197,16 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		}
 	}
 
-	_handleMenuItemChange(e) {
-		this._selectedMenuItemText = e.target?.text;
-	}
-
 	_handleSlotChange(e) {
 		const items = e.target?.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 		const filteredItems = items.filter((item) => {
-			const role = item.getAttribute('role');
-			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio');
+			return item.tagName === 'D2L-TABLE-COL-SORT-BUTTON-ITEM';
 		});
 		this._hasDropdownItems = filteredItems.length > 0;
+	}
+
+	_handleTablColSortButtonItemChange(e) {
+		this._selectedMenuItemText = e.target?.text;
 	}
 
 }
