@@ -124,7 +124,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				position: -webkit-sticky;
 				position: sticky;
 				top: var(--d2l-table-sticky-top, 0);
-				z-index: 4;
+				z-index: 5;
 			}
 
 			.d2l-scroll-wrapper-button {
