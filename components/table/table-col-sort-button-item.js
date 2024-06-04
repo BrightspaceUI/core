@@ -6,6 +6,9 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A radio menu item to be used within the d2l-table-col-sort-button component for a multi-faceted sort.
+ * @fires d2l-menu-item-change - Internal event
+ * @fires d2l-menu-item-select - Internal event
+ * @fires d2l-menu-item-visibility-change - Internal event
  */
 class TableColSortButtonItem extends RtlMixin(MenuItemRadioMixin(LitElement)) {
 
