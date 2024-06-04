@@ -26,6 +26,7 @@ class TableColSortButtonItem extends RtlMixin(MenuItemRadioMixin(LitElement)) {
 	}
 
 	_onChangeOption() {
+		/** Dispatched when the selected multi-faceted sort option changes */
 		this.dispatchEvent(new CustomEvent('d2l-table-col-sort-button-item-change', { bubbles: true, composed: true }));
 	}
 }
