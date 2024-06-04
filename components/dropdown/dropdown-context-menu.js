@@ -33,7 +33,13 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 	static get styles() {
 		return [dropdownOpenerStyles, visibleOnAncestorStyles, css`
 			:host {
+				--d2l-dropdown-context-menu-min-height: calc(2rem + 2px);
+				--d2l-dropdown-context-menu-min-width: calc(2rem + 2px);
 				display: inline-block;
+			}
+			d2l-button-icon {
+				--d2l-button-icon-min-height: var(--d2l-dropdown-context-menu-min-height);
+				--d2l-button-icon-min-width: var(--d2l-dropdown-context-menu-min-height);
 			}
 		`];
 	}
