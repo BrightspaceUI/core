@@ -20,12 +20,12 @@ function createHeaderRow(opts) {
 		</tr>
 	`;
 }
-function createSortableHeaderRow() {
+function createSortableHeaderRow(position) {
 	return html`
 		<tr>
-			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
-			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
-			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button position="${ifDefined(position)}">Ascending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button desc position="${ifDefined(position)}">Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort position="${ifDefined(position)}">No Sort</d2l-table-col-sort-button></th>
 		</tr>
 	`;
 }
@@ -444,6 +444,22 @@ describe('table', () => {
 				it('col-sort-button', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-centered', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow('center')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-end', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow('end')}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();
