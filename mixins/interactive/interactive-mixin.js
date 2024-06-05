@@ -110,6 +110,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		if (this._interactive) {
 			if (e.keyCode === keyCodes.ESCAPE) {
 				// TODO: escape closes the dropdown but also exits interactive-mixin. we likely only want it to close the dropdown.
+				e.stopPropagation();
 				this._interactive = false;
 				await this.updateComplete;
 				this.shadowRoot.querySelector('.interactive-toggle').focus();
