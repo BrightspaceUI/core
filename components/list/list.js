@@ -225,6 +225,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (changedProperties.has('add-button') || changedProperties.has('add-button-text')) {
 			this._listChildrenUpdatedSubscribers.updateSubscribers();
 		}
+		if (changedProperties.has('grid') && this.grid) {
+			this.selectionIgnoreKeydown = true;
+		}
 	}
 
 	getItems(slot) {
