@@ -267,6 +267,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const countBadgeTemplate = filterCount ? html`
 				<d2l-count-badge
+					aria-hidden="true"
 					type="count"
 					number="${filterCount}">
 				</d2l-count-badge>`
