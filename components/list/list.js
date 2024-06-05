@@ -226,7 +226,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			this._listChildrenUpdatedSubscribers.updateSubscribers();
 		}
 		if (changedProperties.has('grid') && this.grid) {
-			this.selectionIgnoreKeydown = true;
+			this.selectionNoInputArrowKeyBehaviour = true;
 		}
 	}
 
