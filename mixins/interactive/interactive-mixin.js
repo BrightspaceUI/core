@@ -9,7 +9,8 @@ import { RtlMixin } from '../rtl/rtl-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
-	ESCAPE: 27
+	ESCAPE: 27,
+	TAB: 9
 };
 
 export function isInteractiveDescendant(node) {
@@ -106,10 +107,15 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	async _handleInteractiveKeyDown(e) {
-		if (this._interactive && e.keyCode === keyCodes.ESCAPE) {
-			this._interactive = false;
-			await this.updateComplete;
-			this.shadowRoot.querySelector('.interactive-toggle').focus();
+		if (this._interactive) {
+			if (e.keyCode === keyCodes.ESCAPE) {
+				// TODO: escape closes the dropdown but also exits interactive-mixin. we likely only want it to close the dropdown.
+				this._interactive = false;
+				await this.updateComplete;
+				this.shadowRoot.querySelector('.interactive-toggle').focus();
+			} else if (e.keyCode === keyCodes.TAB) {
+				e.stopPropagation();
+			}
 		}
 	}
 

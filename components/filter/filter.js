@@ -18,6 +18,7 @@ import '../menu/menu-item.js';
 import '../paging/pager-load-more.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
+import '../inputs/input-date-range.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -238,7 +239,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
 					class="vdiff-target"
-					min-width="285"
+					min-width="500"
 					max-width="420"
 					mobile-tray="right"
 					mobile-breakpoint="768"
@@ -561,15 +562,20 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
+				no-primary-action
 				label="${item.text}"
 				selectable
 				?selected="${item.selected}">
-				<div class="d2l-filter-dimension-set-value d2l-body-compact">
-					<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+				<div class="d2l-filter-dimension-set-value d2l-body-compact" style="display: unset;" >
+					${item.selected ? html`<div style="min-height: 500px;"><div style="display: block;">Custom date range</div><d2l-input-date-range style="padding-inline: 0.5rem;" @d2l-dropdown-close="${this._handleDateRangeDropdownClose}" label="Custom Date Range" label-hidden child-labels-hidden></d2l-input-date-range></div>` : html`<div>Custom Date Range</div>`}
 					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
 				</div>
 			</d2l-list-item>
 		`;
+	}
+
+	_handleDateRangeDropdownClose(e) {
+		e.stopPropagation();
 	}
 
 	_dispatchChangeEvent(dimension, change) {
