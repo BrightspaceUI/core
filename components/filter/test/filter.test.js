@@ -962,15 +962,15 @@ describe('d2l-filter', () => {
 		describe('Opener Count Format', () => {
 			[
 				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: undefined, description: 'Filter by: Role. No filters applied.' },
-				{ name: 'Single Dim - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: '1', description: 'Filter by: Role. 1 filter applied.' },
-				{ name: 'Single Dim - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: '5', description: 'Filter by: Role. 5 filters applied.' },
-				{ name: 'Single Dim - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: '99', description: 'Filter by: Role. 99 filters applied.' },
-				{ name: 'Single Dim - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: '99+', description: 'Filter by: Role. 100 filters applied.' },
+				{ name: 'Single Dim - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 1, description: 'Filter by: Role. 1 filter applied.' },
+				{ name: 'Single Dim - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 5, description: 'Filter by: Role. 5 filters applied.' },
+				{ name: 'Single Dim - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 99, description: 'Filter by: Role. 99 filters applied.' },
+				{ name: 'Single Dim - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 100, description: 'Filter by: Role. 100 filters applied.' },
 				{ name: 'Multiple Dims - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: undefined, description: 'Filters. No filters applied.' },
-				{ name: 'Multiple Dims - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: '1', description: 'Filters. 1 filter applied.' },
-				{ name: 'Multiple Dims - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: '5', description: 'Filters. 5 filters applied.' },
-				{ name: 'Multiple Dims - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: '99', description: 'Filters. 99 filters applied.' },
-				{ name: 'Multiple Dims - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: '99+', description: 'Filters. 100 filters applied.' }
+				{ name: 'Multiple Dims - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 1, description: 'Filters. 1 filter applied.' },
+				{ name: 'Multiple Dims - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 5, description: 'Filters. 5 filters applied.' },
+				{ name: 'Multiple Dims - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 99, description: 'Filters. 99 filters applied.' },
+				{ name: 'Multiple Dims - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 100, description: 'Filters. 100 filters applied.' }
 			].forEach((testCase) => {
 				it(`${testCase.name}`, async() => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
@@ -978,11 +978,11 @@ describe('d2l-filter', () => {
 					elem._dimensions = testCase.dimensions;
 					elem._totalAppliedCount = testCase.count;
 					await elem.updateComplete;
-					const countbadge = opener?.children[0]; // aria-invalid impacting querySelector
+					const countbadge = opener?.children[0];
 
 					expect(opener.text).to.equal(testCase.text);
 					expect(opener.description).to.equal(testCase.description);
-					expect(countbadge?.getAttribute('number')).to.equal(testCase.badge);
+					expect(countbadge?.number).to.equal(testCase.badge);
 				});
 			});
 		});

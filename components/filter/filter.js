@@ -265,11 +265,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-dropdown-menu>
 			`;
 
-		const countBadgeTemplate = filterCount ? html`
+		const countBadgeTemplate = this._totalAppliedCount ?
+			html`
 				<d2l-count-badge
 					aria-hidden="true"
+					max-digits="2"
 					type="count"
-					number="${filterCount}">
+					number="${this._totalAppliedCount}">
 				</d2l-count-badge>`
 			: nothing;
 
