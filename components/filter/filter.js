@@ -31,6 +31,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 
 const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
@@ -567,11 +568,45 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				selectable
 				?selected="${item.selected}">
 				<div class="d2l-filter-dimension-set-value d2l-body-compact" style="display: unset;" >
-					${item.selected ? html`<div style="min-height: 500px;"><div style="display: block;">Custom date range</div><d2l-input-date-range style="padding-inline: 0.5rem;" @d2l-dropdown-close="${this._handleDateRangeDropdownClose}" label="Custom Date Range" label-hidden child-labels-hidden></d2l-input-date-range></div>` : html`<div>Custom Date Range</div>`}
+					${item.selected ? html`
+						<div style="min-height: 500px;">
+							<div style="display: block;">Custom date range</div>
+							<d2l-input-date-range
+								@change="${this._handleDateChange}"
+								data-dimensionvaluekey="${item.key}"
+								data-selected="${item.selected}"
+								style="padding-inline: 0.5rem;"
+								@d2l-dropdown-close="${this._handleDateRangeDropdownClose}"
+								label="Custom Date Range"
+								label-hidden
+								child-labels-hidden></d2l-input-date-range>
+							</div>` : html`<div>Custom Date Range</div>`}
 					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
 				</div>
 			</d2l-list-item>
 		`;
+	}
+
+	async _handleDateChange(e) {
+		const parentList = findComposedAncestor(e.target, elem => elem.tagName === 'D2L-LIST');
+		const dimensionKey = parentList.id.slice(SET_DIMENSION_ID_PREFIX.length);
+		const dimension = this._getDimensionByKey(dimensionKey);
+		const valueKey = e.target.getAttribute('data-dimensionvaluekey');
+		const selected = e.target.getAttribute('data-selected');
+		const startValue = e.target.startValue; // when date-range these need to be UTC
+		const endValue = e.target.endValue;
+		// put these back onto the dimension-value so the state is saved for when a user clicks to a different option then back
+
+		this._performChangeSetDimensionDate(dimension, valueKey, selected, startValue, endValue);
+	}
+
+	_performChangeSetDimensionDate(dimension, valueKey, selected, startValue, endValue) {
+		const value = dimension.values.find(value => value.key === valueKey);
+		if (value.startValue === startValue && value.endValue === endValue) return;
+		value.startValue = startValue;
+		value.endValue = endValue;
+
+		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected, startValue: startValue, endValue: endValue });
 	}
 
 	_handleDateRangeDropdownClose(e) {
