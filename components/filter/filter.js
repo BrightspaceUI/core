@@ -228,7 +228,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const header = this._buildHeader(singleDimension);
 		const dimensions = this._buildDimensions(singleDimension);
 
-		const filterCount = this._formatFilterCount(this._totalAppliedCount);
 		const buttonText = singleDimension ? this._dimensions[0].text : (this.text || this.localize('components.filter.filters'));
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
@@ -622,12 +621,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 			this._openedDimensions.push(dimension.key);
 		}
-	}
-
-	_formatFilterCount(count) {
-		if (count === 0) return;
-		else if (count >= 100) return '99+';
-		else return `${count}`;
 	}
 
 	_getActiveDimension() {

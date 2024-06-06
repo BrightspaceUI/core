@@ -942,23 +942,6 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[2].appliedCount).to.equal(1);
 		});
 
-		describe('_formatFilterCount', () => {
-			[
-				{ name: 'None Selected', appliedCount: 0, result: undefined },
-				{ name: '1 Selected', appliedCount: 1, result: '1' },
-				{ name: '2 Selected', appliedCount: 2, result: '2' },
-				{ name: '99 Selected', appliedCount: 99, result: '99' },
-				{ name: '100 Selected', appliedCount: 100, result: '99+' },
-				{ name: '150 Selected', appliedCount: 150, result: '99+' },
-			].forEach((testCase) => {
-				it(`${testCase.name}`, async() => {
-					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
-					const result = elem._formatFilterCount(testCase.appliedCount);
-					expect(result).to.equal(testCase.result);
-				});
-			});
-		});
-
 		describe('Opener Count Format', () => {
 			[
 				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: undefined, description: 'Filter by: Role. No filters applied.' },
