@@ -132,7 +132,7 @@ For long tables, the header row can be made to "stick" in place as the user scro
 
 ## Sortable Column Buttons [d2l-table-col-sort-button]
 
-When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction.
+When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction. This is meant to be used within a `d2l-table-wrapper`.
 
 Note that the example below hides much of the implementation. See the code in [Multi-Faceted Sort Button](#multi-faceted-sort-button) for a more detailed implementation example.
 
@@ -250,7 +250,14 @@ This is a radio menu item to be used within the `d2l-table-col-sort-button` comp
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
   import '@brightspace-ui/core/components/table/table-col-sort-button-item.js';
 </script>
-<d2l-table-col-sort-button style="--d2l-table-cell-padding: 15px;" desc>
+<!-- docs: start hidden content -->
+<style>
+  d2l-table-col-sort-button {
+    --d2l-table-cell-padding: 10px;
+  }
+</style>
+<!-- docs: end hidden content -->
+<d2l-table-col-sort-button desc>
   Items
   <d2l-table-col-sort-button-item text="Item 1" slot="items" value="item1"></d2l-table-col-sort-button-item>
   <d2l-table-col-sort-button-item text="Item 2" slot="items" value="item2"></d2l-table-col-sort-button-item>
