@@ -300,11 +300,13 @@ describe('selection-mixin', () => {
 		{ name: 'single-left-arrow-rtl', rtl: true, action: elem => sendKeysElem(elem, 'press', 'ArrowLeft') },
 		{ name: 'single-down-arrow', action: elem => sendKeysElem(elem, 'press', 'ArrowDown') },
 		{ name: 'single-up-arrow', action: elem => sendKeysElem(elem, 'press', 'ArrowUp') },
+		{ name: 'single-down-arrow-no-keyup-behavior', action: elem => sendKeysElem(elem, 'press', 'ArrowDown'), noKeyUpBehavior: true },
+		{ name: 'single-up-arrow-no-keyup-behavior', action: elem => sendKeysElem(elem, 'press', 'ArrowUp'), noKeyUpBehavior: true },
 		{ name: 'single-wrap-first', selected: [false, false, true], action: elem => sendKeysElem(elem, 'press', 'ArrowDown') },
 		{ name: 'single-wrap-last', selected: [true, false, false], action: elem => sendKeysElem(elem, 'press', 'ArrowUp') }
-	].forEach(({ name, rtl, selected, action }) => {
+	].forEach(({ name, rtl, selected, action, noKeyUpBehavior }) => {
 		it(name, async() => {
-			const elem = await fixture(html`<d2l-test-selection selection-single>${createInputList(3, selected || [false, true, false])}</d2l-test-selection>`, { rtl, viewport });
+			const elem = await fixture(html`<d2l-test-selection selection-single ?selection-no-input-arrow-key-behavior="${noKeyUpBehavior}">${createInputList(3, selected || [false, true, false])}</d2l-test-selection>`, { rtl, viewport });
 			const input = elem.querySelector('d2l-selection-input[selected]');
 			if (action) await action(input);
 			await expect(elem).to.be.golden();
