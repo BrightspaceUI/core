@@ -46,6 +46,7 @@ describe('d2l-filter-dimension-set-date-text-value', () => {
 	describe('_handleRange', () => {
 		[
 			{ range: 'today', expected: { text: 'Today', startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z' } },
+			{ range: 'lastHour', expected: { text: 'Last Hour', startValue: '2018-02-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
 			{ range: '24hours', expected: { text: '24 Hours', startValue: '2018-02-11T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
 			{ range: '7days', expected: { text: '7 Days', startValue: '2018-02-05T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
 			{ range: '6months', expected: { text: '6 Months', startValue: '2017-08-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } }

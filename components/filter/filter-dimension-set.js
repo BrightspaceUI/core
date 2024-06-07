@@ -180,7 +180,10 @@ class FilterDimensionSet extends LitElement {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
 
 			const hasDateFilter = node.tagName.toLowerCase() === 'd2l-filter-dimension-set-date-text-value';
-			if (hasDateFilter) this.selectionSingle = true;
+			if (hasDateFilter) {
+				this.searchType = 'none';
+				this.selectionSingle = true;
+			}
 			return hasDateFilter || node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value';
 		});
 	}
