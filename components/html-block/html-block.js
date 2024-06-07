@@ -231,12 +231,19 @@ class HtmlBlock extends LitElement {
 			'd2l-html-block-compact': this.compact
 		};
 
-		return html`
-			<div class="${classMap(renderContainerClasses)}">
-				${(this._embedsFeatureEnabled() && !this.noDeferredRendering) ? until(this._processEmbeds(), nothing) : nothing}
-			</div>
-			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-		`;
+		if (this._embedsFeatureEnabled()) {
+			return html`
+				<div class="${classMap(renderContainerClasses)}">
+					${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
+				</div>
+				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
+			`;
+		} else {
+			return html`
+				<div class="${classMap(renderContainerClasses)}"></div>
+				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
+			`;
+		}
 	}
 
 	async updated(changedProperties) {

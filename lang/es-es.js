@@ -105,6 +105,9 @@ export default {
 	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Deben cumplirse las condiciones",
+	"components.table-col-sort-button.addSortOrder": "Select to add sort order",
+	"components.table-col-sort-button.changeSortOrder": "Select to change sort order",
+	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Sorted new to old} other {Sorted old to new}}} numbers {{direction, select, desc {Sorted high to low} other {Sorted low to high}}} words {{direction, select, desc {Sorted Z to A} other {Sorted A to Z}}} other {{direction, select, desc {Sorted descending} other {Sorted ascending}}}}",
 	"components.table-controls.label": "Acciones para la tabla",
 	"components.tabs.next": "Desplazarse hacia delante",
 	"components.tabs.previous": "Desplazarse hacia atrás",

@@ -20,7 +20,7 @@ class TableControls extends SelectionControls {
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-table-controls-background-color);
 				--d2l-selection-controls-shadow-display: var(--d2l-table-controls-shadow-display);
-				z-index: 5; /* Must be greater than d2l-table-wrapper and d2l-scroll-wrapper */
+				z-index: 6; /* Must be greater than d2l-table-wrapper and d2l-scroll-wrapper */
 			}
 			:host([no-sticky]) {
 				z-index: auto;

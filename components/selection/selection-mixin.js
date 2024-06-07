@@ -43,6 +43,10 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			selectionNoInputArrowKeyBehaviour: { type: Boolean, attribute: 'selection-no-input-arrow-key-behavior' },
+			/**
 			 * Whether to render with single selection behaviour. If `selection-single` is specified, the nested `d2l-selection-input` elements will render radios instead of checkboxes, and the selection component will maintain a single selected item.
 			 * @type {boolean}
 			 */
@@ -52,6 +56,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	constructor() {
 		super();
+		this.selectionNoInputArrowKeyBehaviour = false;
 		this.selectionSingle = false;
 		this._selectAllPages = false;
 		this._selectionObservers = new Map();
@@ -153,7 +158,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		const target = e.composedPath()[0];
 
 		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
-		if (!target.classList.contains('d2l-selection-input-radio')) return;
+		if (!target.classList.contains('d2l-selection-input-radio') || this.selectionNoInputArrowKeyBehaviour) return;
 		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
 
 		const getSelectionInput = (focusable, forward) => {

@@ -81,6 +81,7 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
 
 /**
  * This component allows for inputting a HEX color value.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed by the user.
  */
 class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {

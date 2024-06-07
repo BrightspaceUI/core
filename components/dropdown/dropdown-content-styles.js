@@ -1,6 +1,9 @@
 import '../colors/colors.js';
 import { css } from 'lit';
 
+const pointerLength = 16;
+const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
+
 export const dropdownContentStyles = css`
 
 	:host {
@@ -61,16 +64,26 @@ export const dropdownContentStyles = css`
 		top: -7px;
 		z-index: 1;
 	}
+	:host([align="start"]) .d2l-dropdown-content-pointer,
+	:host([align="end"][dir="rtl"]) .d2l-dropdown-content-pointer {
+		left: min(calc(1rem + ${(pointerRotatedLength - pointerLength) / 2}px), calc(50% - ${pointerLength / 2}px)); /* 1rem corresponds to .d2l-dropdown-content-container padding */
+		right: auto;
+	}
+	:host([align="end"]) .d2l-dropdown-content-pointer,
+	:host([align="start"][dir="rtl"]) .d2l-dropdown-content-pointer {
+		left: auto;
+		right: min(calc(1rem + ${(pointerRotatedLength - pointerLength) / 2}px), calc(50% - ${pointerLength / 2}px)); /* 1rem corresponds to .d2l-dropdown-content-container padding */
+	}
 
 	.d2l-dropdown-content-pointer > div {
 		background-color: var(--d2l-dropdown-background-color);
 		border: 1px solid var(--d2l-dropdown-border-color);
 		border-radius: 0.1rem;
 		box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
-		height: 16px;
+		height: ${pointerLength}px;
 		-webkit-transform: rotate(45deg);
 		transform: rotate(45deg);
-		width: 16px;
+		width: ${pointerLength}px;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer {

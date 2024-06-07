@@ -48,6 +48,10 @@ input.addEventListener('change', (e) => {
   console.log(input.value);
 });
 ```
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties

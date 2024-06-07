@@ -88,10 +88,14 @@ describe('dropdown-content', () => {
 			{ name: 'bottom-right', dropdownStyles: { bottom: '30px', right: '30px' }, content: html`<d2l-dropdown-content opened>${withLink}</d2l-dropdown-content>` },
 			{ name: 'align-start', dropdownStyles: { left: '50%', top: '30px' }, content: html`<d2l-dropdown-content align="start" opened>${basicText}</d2l-dropdown-content>` },
 			{ name: 'align-end', dropdownStyles: { left: '50%', top: '30px' }, content: html`<d2l-dropdown-content align="end" opened>${basicText}</d2l-dropdown-content>` },
-			{ name: 'align-start-edge', dropdownStyles: { insetInlineEnd: '30px', top: '30px' }, content: html`<d2l-dropdown-content align="start" opened>${withHeaderFooter}</d2l-dropdown-content>` }
-		].forEach(({ name, content, dropdownStyles = {} }) => {
+			{ name: 'align-start-edge', dropdownStyles: { insetInlineEnd: '30px', top: '30px' }, content: html`<d2l-dropdown-content align="start" opened>${withHeaderFooter}</d2l-dropdown-content>` },
+			{ name: 'align-end-edge', dropdownStyles: { insetInlineStart: '30px', top: '30px' }, content: html`<d2l-dropdown-content align="end" opened>${withHeaderFooter}</d2l-dropdown-content>` },
+			{ name: 'align-start-wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content align="start" opened>Content</d2l-dropdown-content>` },
+			{ name: 'align-end-wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content align="end" opened>Content</d2l-dropdown-content>` },
+			{ name: 'align-start-edge-wide-opener', dropdownStyles: { insetInlineEnd: '30px', top: '30px', left: '30px', right: '30px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content align="start" opened>Content</d2l-dropdown-content>` }
+		].forEach(({ name, content, dropdownStyles = {}, openerStyles = {} }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				await fixture(createDropdown(content, dropdownStyles), { rtl, viewport: { height: 400 }, pagePadding: false });
+				await fixture(createDropdown(content, dropdownStyles, openerStyles), { rtl, viewport: { height: 400 }, pagePadding: false });
 				await expect(document).to.be.golden();
 			});
 		});
