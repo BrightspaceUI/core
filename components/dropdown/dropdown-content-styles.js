@@ -23,6 +23,10 @@ export const dropdownContentStyles = css`
 		width: 100%;
 		z-index: 998; /* position on top of floating buttons */
 	}
+	:host([_fixed-positioning]) {
+		position: fixed;
+		top: 0;
+	}
 
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
@@ -44,6 +48,9 @@ export const dropdownContentStyles = css`
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
 	}
+	:host([_fixed-positioning][opened-above]) {
+		bottom: 0;
+	}
 
 	:host([data-mobile][opened]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-animation-name) 300ms ease;
@@ -59,9 +66,9 @@ export const dropdownContentStyles = css`
 	.d2l-dropdown-content-pointer {
 		clip: rect(-5px, 21px, 8px, -7px);
 		display: inline-block;
-		left: calc(50% - 7px);
+		left: calc(50% - 7px); /* TODO: maybe remove */
 		position: absolute;
-		top: -7px;
+		top: -7px; /* TODO: maybe remove */
 		z-index: 1;
 	}
 	:host([align="start"]) .d2l-dropdown-content-pointer,
@@ -90,6 +97,9 @@ export const dropdownContentStyles = css`
 		bottom: -8px;
 		clip: rect(9px, 21px, 22px, -3px);
 		top: auto;
+	}
+	:host([_fixed-positioning][opened-above]) .d2l-dropdown-content-pointer {
+		bottom: auto;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer > div {

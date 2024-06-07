@@ -7,6 +7,9 @@ export const dropdownOpenerStyles = css`
 		overflow: visible;
 		position: relative;
 	}
+	:host([_fixed-positioning]) {
+		position: static;
+	}
 	:host([hidden]) {
 		display: none;
 	}
