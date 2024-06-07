@@ -16,9 +16,7 @@ class DropdownContent extends DropdownContentMixin(LitElement) {
 	}
 
 	render() {
-		return html`
-			${this._renderContent()}
-		`;
+		return this._renderContent();
 	}
 
 }

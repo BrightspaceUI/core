@@ -91,9 +91,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	render() {
-		return html`
-			${this._renderContent()}
-		`;
+		return this._renderContent();
 	}
 
 	__getMenuElement() {
