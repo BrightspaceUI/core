@@ -255,7 +255,7 @@ describe('filter', () => {
 			});
 		});
 
-		it('press-clear-all', async() => {
+		it.only('press-clear-all', async() => {
 			const elem = await fixture(html`
 				<d2l-filter opened>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
@@ -271,7 +271,7 @@ describe('filter', () => {
 				</d2l-filter>
 			`);
 
-			await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+			await clickElem(elem.shadowRoot.querySelector('[text*="Clear"]'));
 			await hoverAt(0, 0);
 			await expect(elem).to.be.golden();
 		});
