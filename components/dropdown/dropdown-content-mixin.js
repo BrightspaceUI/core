@@ -238,7 +238,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				state: true
 			},
 			_position: {
-				type: Number
+				state: true
 			},
 			_showBackdrop: {
 				type: Boolean
