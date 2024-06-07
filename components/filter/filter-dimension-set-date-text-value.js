@@ -1,5 +1,5 @@
-import { LitElement } from 'lit';
 import { formatDateInISO, getToday, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
+import { LitElement } from 'lit';
 
 /**
  * A component to represent a possible date value that can be selected for a dimension set (the main filter dimension type) for predefined date ranges.
@@ -25,7 +25,7 @@ class FilterDimensionSetDateTextValue extends LitElement {
 			 */
 			key: { type: String },
 			/**
-			 * @type {'today'|'24Hours'|'48Hours'|'7Days'|'14Days'|'30Days'|'6Months'}
+			 * @type {'today'|'24hours'|'48hours'|'7days'|'14days'|'30days'|'6months'}
 			 */
 			range: { stype: String },
 			/**
@@ -67,6 +67,7 @@ class FilterDimensionSetDateTextValue extends LitElement {
 
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
+			if (prop === 'range') this._handleRange();
 			if (oldValue === undefined) return;
 
 			if (prop === 'count' || prop === 'disabled' || prop === 'selected' || prop === 'text' || prop === 'startValue' || prop === 'endValue') {
@@ -84,8 +85,8 @@ class FilterDimensionSetDateTextValue extends LitElement {
 	}
 
 	_handleRange() {
-		switch(this.range) {
-			case 'today':
+		switch (this.range) {
+			case 'today': {
 				this.text = 'Today';
 				/**
 				 * gets today in user's locale
@@ -96,7 +97,7 @@ class FilterDimensionSetDateTextValue extends LitElement {
 				this.startValue = getUTCDateTimeFromLocalDateTime(today, '0:0:0');
 				this.endValue = getUTCDateTimeFromLocalDateTime(today, '23:59:59');
 				break;
-			case '24hours':
+			} case '24hours':
 				this.text = '24 Hours';
 				this._setDateValues(1);
 				break;
@@ -116,7 +117,7 @@ class FilterDimensionSetDateTextValue extends LitElement {
 				this.text = '30 Days';
 				this._setDateValues(30);
 				break;
-			case '6months':
+			case '6months': {
 				this.text = '6 Months';
 
 				const startingVal = new Date();
@@ -127,7 +128,7 @@ class FilterDimensionSetDateTextValue extends LitElement {
 
 				this.startValue = startingVal.toISOString();
 				break;
-			default:
+			} default:
 				console.warn('d2l-filter-dimension-set-date-text-value: Invalid range value');
 		}
 	}
