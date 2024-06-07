@@ -255,7 +255,7 @@ describe('filter', () => {
 			});
 		});
 
-		it.only('press-clear-all', async() => {
+		it('press-clear-all', async() => {
 			const elem = await fixture(html`
 				<d2l-filter opened>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
