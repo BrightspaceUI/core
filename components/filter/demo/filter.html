@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-timezone='{"name":"Canada - Toronto", "identifier":"America/Toronto"}'>
 
 <head>
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
@@ -10,6 +10,7 @@
 		import '../../filter/filter-dimension-set.js';
 		import '../../filter/filter-dimension-set-empty-state.js';
 		import '../../filter/filter-dimension-set-value.js';
+		import '../../filter/filter-dimension-set-date-text-value.js';
 		import './filter-search-demo.js';
 		import './filter-load-more-demo.js';
 	</script>
@@ -153,6 +154,19 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-filter-search-demo></d2l-filter-search-demo>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Date Filter</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter id="filter-single">
+					<d2l-filter-dimension-set key="dates" text="Dates">
+						<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="24Hours" range="24hours" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48Hours" range="6months"></d2l-filter-dimension-set-date-text-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>

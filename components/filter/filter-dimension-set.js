@@ -142,7 +142,10 @@ class FilterDimensionSet extends LitElement {
 				disabled: value.disabled,
 				key: value.key,
 				selected: value.selected,
-				text: value.text
+				text: value.text,
+				type: value.type,
+				startValue: value.startValue,
+				endValue: value.endValue
 			};
 		});
 		return values;
@@ -173,7 +176,13 @@ class FilterDimensionSet extends LitElement {
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
-		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value');
+		return nodes.filter((node) => {
+			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+
+			const hasDateFilter = node.tagName.toLowerCase() === 'd2l-filter-dimension-set-date-text-value';
+			if (hasDateFilter) this.selectionSingle = true;
+			return hasDateFilter || node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value';
+		});
 	}
 
 	_handleDimensionSetValueDataChange(e) {

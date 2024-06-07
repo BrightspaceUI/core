@@ -860,7 +860,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
+		const details = { valueKey: valueKey, selected: selected };
+
+		if (value.type === 'date') {
+			details.startValue = value.startValue;
+			details.endValue = value.endValue;
+		}
+
+		this._dispatchChangeEvent(dimension, details);
 	}
 
 	_performDimensionClear(dimension) {
