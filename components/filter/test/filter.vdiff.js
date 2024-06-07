@@ -45,7 +45,7 @@ function createSingleDimWithCounts(opts) {
 					<d2l-filter-dimension-set-value key="art" text="Art" count="0"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="biology" text="Biology" count="23" disabled></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
-					<d2l-filter-dimension-set-value key="english" text="English" count="1012"></d2l-filter-dimension-set-value>	
+					<d2l-filter-dimension-set-value key="english" text="English" count="1012"></d2l-filter-dimension-set-value>
 				` : html`
 					<d2l-filter-dimension-set-value key="art" text="Art" count="0" ?selected="${selectedFirst && headerText}"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" count="1" ?selected="${selectedFirst && !headerText}"></d2l-filter-dimension-set-value>
@@ -172,7 +172,7 @@ describe('filter', () => {
 		});
 
 		[
-			{ name: 'press-clear', allSelected: true, selector: 'd2l-button-subtle' },
+			{ name: 'press-clear', allSelected: true, selector: '[text="Clear"]' },
 			{ name: 'press-unselect-all', allSelected: true, selector: 'd2l-selection-select-all' },
 			{ name: 'press-select-all', allSelected: false, selector: 'd2l-selection-select-all' }
 		].forEach(({ name, allSelected, selector }) => {
@@ -271,7 +271,7 @@ describe('filter', () => {
 				</d2l-filter>
 			`);
 
-			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
+			await clickElem(elem.shadowRoot.querySelector('[text*="Clear"]'));
 			await hoverAt(0, 0);
 			await expect(elem).to.be.golden();
 		});

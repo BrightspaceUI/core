@@ -49,7 +49,7 @@ describe('d2l-filter', () => {
 
 		it(`${test.name} opened`, async() => {
 			const elem = await fixture(test.fixture);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -59,7 +59,7 @@ describe('d2l-filter', () => {
 
 	it('Multiple dimensions drilling in', async() => {
 		const elem = await fixture(multiDimensionFixture);
-		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
 
 		elem.opened = true;
