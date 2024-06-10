@@ -4,9 +4,9 @@ import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { HtmlAttributeObserverController } from '../../controllers/attributeObserver/htmlAttributeObserverController.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
+import { tryGet } from '@brightspace-ui/lms-context-provider/client.js';
 import { until } from 'lit/directives/until.js';
 
 export const htmlBlockContentStyles = css`
@@ -166,7 +166,8 @@ class HtmlBlock extends LitElement {
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
 			 */
-			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' }
+			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' },
+			_context: { type: Object, state: true }
 		};
 	}
 
@@ -201,26 +202,28 @@ class HtmlBlock extends LitElement {
 		this.inline = false;
 		this.noDeferredRendering = false;
 
-		this._contextObserverControllerResolve = undefined;
-		this._contextObserverControllerInitialized = new Promise(resolve => {
-			this._contextObserverControllerResolve = resolve;
-		});
+		this._context = new Map();
+		this._initialContextResolve = undefined;
+		this._initialContextPromise = new Promise(resolve => this._initialContextResolve = resolve);
 
 		this._renderersProcessedResolve = undefined;
 		this._renderersProcessedPromise = new Promise(resolve => this._renderersProcessedResolve = resolve);
 
-		getRenderers().then(renderers => renderers.reduce((attrs, currentRenderer) => {
-			if (currentRenderer.contextAttributes) currentRenderer.contextAttributes.forEach(attr => attrs.push(attr));
-			return attrs;
-		}, [])).then(rendererContextAttributes => {
-			this._contextObserverController = new HtmlAttributeObserverController(this, ...rendererContextAttributes);
-			this._contextObserverControllerResolve();
-		});
-	}
+		const contextKeysPromise = getRenderers().then(renderers => renderers.reduce((keys, currentRenderer) => {
+			if (currentRenderer.contextKeys) currentRenderer.contextKeys.forEach(key => keys.push(key));
+			return keys;
+		}, []));
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._updateContextKeys();
+		const contextValsPromise = contextKeysPromise.then(contextKeys => {
+			return Promise.allSettled(contextKeys.map(key => {
+				return tryGet(key, undefined, ctx => this._context.set(key, ctx));
+			}));
+		});
+
+		Promise.all([contextKeysPromise, contextValsPromise]).then(([contextKeys, contextResults]) => {
+			contextKeys.forEach((key, index) => this._context.set(key, contextResults[index].value));
+			this._initialContextResolve();
+		});
 	}
 
 	render() {
@@ -248,36 +251,13 @@ class HtmlBlock extends LitElement {
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('html') && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
-		}
-		if (await this._contextChanged()) {
-			if (this.noDeferredRendering) this._renderInline();
-			else if (this.html !== undefined && this.html !== null) {
-				await this._updateRenderContainer();
-			}
-
-			this._updateContextKeys();
 		}
 	}
 
 	async getLoadingComplete() {
 		return this._renderersProcessedPromise;
-	}
-
-	async _contextChanged() {
-		await this._contextObserverControllerInitialized;
-		if (!this._contextKeys) {
-			this._updateContextKeys();
-			return true;
-		}
-
-		if (this._contextKeys.size !== this._contextObserverController.values.size) return true;
-		for (const [attr, val] of this._contextKeys) {
-			if (!this._contextObserverController.values.has(attr)) return true;
-			if (this._contextObserverController.values.get(attr) !== val) return true;
-		}
-		return false;
 	}
 
 	_embedsFeatureEnabled() {
@@ -296,13 +276,13 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _processRenderers(elem) {
-		await this._contextObserverControllerInitialized;
+		await this._initialContextPromise;
 		const renderers = await getRenderers();
 		const loadingCompletePromises = [];
 		for (const renderer of renderers) {
-			if (renderer.contextAttributes) {
+			if (renderer.contextKeys) {
 				const contextValues = new Map();
-				renderer.contextAttributes.forEach(attr => contextValues.set(attr, this._contextObserverController.values.get(attr)));
+				renderer.contextKeys.forEach(key => contextValues.set(key, this._context.get(key)));
 				await renderer.render(elem, {
 					contextValues: contextValues,
 					noDeferredRendering: this.noDeferredRendering
@@ -331,15 +311,6 @@ class HtmlBlock extends LitElement {
 			return;
 		}
 		await this._processRenderers(noDeferredRenderingContainer);
-	}
-
-	_updateContextKeys() {
-		if (!this._contextObserverController) return;
-		if (!this._contextKeys) this._contextKeys = new Map();
-
-		this._contextObserverController.values.forEach((val, attr) => {
-			this._contextKeys.set(attr, val);
-		});
 	}
 
 	async _updateRenderContainer() {
