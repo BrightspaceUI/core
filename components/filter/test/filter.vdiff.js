@@ -78,7 +78,7 @@ function createSingleDimDate() {
 	return html`
 		<d2l-filter>
 			<d2l-filter-dimension-set key="dates" text="Dates">
-				<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
 				<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
 				<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
 				<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
@@ -212,7 +212,7 @@ describe('filter', () => {
 			const elem = await fixture(html`
 				<d2l-filter opened>
 					<d2l-filter-dimension-set key="dates" text="Dates">
-						<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
@@ -272,7 +272,7 @@ describe('filter', () => {
 					<d2l-filter-dimension-set-value key="math" text="Math" selected></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="dates" text="Dates">
-					<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
 					<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
 					<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
@@ -328,7 +328,7 @@ describe('filter', () => {
 						<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
 					<d2l-filter-dimension-set key="dates" text="Dates">
-						<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>

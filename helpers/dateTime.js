@@ -165,39 +165,36 @@ export function getUTCDateTimeRange(type, diff) {
 	if (!type || (!diff && diff !== 0)) return {};
 	if (type !== 'hours' && type !== 'days' && type !== 'weeks' && type !== 'months') return {};
 
+	if (type === 'days' && diff === 0) {
+		// assume "today" (midnight in user's time to 23:59:59 in user's time)
+		const today = formatDateInISO(getToday());
+		const startValue = getUTCDateTimeFromLocalDateTime(today, '0:0:0');
+		const endValue = getUTCDateTimeFromLocalDateTime(today, '23:59:59');
+		return { startValue, endValue };
+	}
+
 	/**
-	 * endValue = now in UTC string (other than today)
-	 * startValue = now minus number of dates in dateDiff then converted to UTC string
-	 * locale would not impact this
+	 * endValue = now in UTC string
+	 * startValue = now minus number of hours/days/weeks/months in diff then converted to UTC string
 	 */
 	const startingVal = new Date();
-	let endValue = startingVal.toISOString();
-	let startValue;
+	const endValue = startingVal.toISOString();
 
 	if (type === 'hours') {
 		const newHours = startingVal.getHours() - diff;
 		startingVal.setHours(newHours);
-		startValue = startingVal.toISOString();
 	} else if (type === 'days') {
-		if (diff === 0) {
-			// assume today
-			const today = formatDateInISO(getToday());
-			startValue = getUTCDateTimeFromLocalDateTime(today, '0:0:0');
-			endValue = getUTCDateTimeFromLocalDateTime(today, '23:59:59');
-		} else {
-			const newDate = startingVal.getDate() - diff;
-			startingVal.setDate(newDate);
-			startValue = startingVal.toISOString();
-		}
+		const newDate = startingVal.getDate() - diff;
+		startingVal.setDate(newDate);
 	} else if (type === 'weeks') {
 		const newHours = startingVal.getWeeks() - diff;
 		startingVal.getWeeks(newHours);
-		startValue = startingVal.toISOString();
 	} else if (type === 'months') {
 		const newMonth = startingVal.getMonth() - diff;
 		startingVal.setMonth(newMonth);
-		startValue = startingVal.toISOString();
 	}
+
+	const startValue = startingVal.toISOString();
 
 	return { startValue, endValue };
 }

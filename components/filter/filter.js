@@ -863,16 +863,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const details = { valueKey: valueKey, selected: selected };
 
-		if (value.type === 'date') {
-			if (selected) {
-				// update the dateTime values
-				const dateTimeRange = getUTCDateTimeRange(value.rangeType, value.rangeNum);
-				details.startValue = dateTimeRange.startValue;
-				details.endValue = dateTimeRange.endValue;
-			} else {
-				value.startValue = undefined;
-				value.endValue = undefined;
-			}
+		if (value.type === 'date' && selected) {
+			const dateTimeRange = getUTCDateTimeRange(value.rangeType, value.rangeNum);
+			details.startValue = dateTimeRange.startValue;
+			details.endValue = dateTimeRange.endValue;
 		}
 
 		this._dispatchChangeEvent(dimension, details);

@@ -47,8 +47,7 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 			 */
 			startValue: { type: String },
 			/**
-			 * REQUIRED: The text that is displayed for the value
-			 * @type {string}
+			 * @ignore
 			 */
 			text: { type: String, reflect: true }
 		};
