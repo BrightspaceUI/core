@@ -1,4 +1,4 @@
-import { formatDateInISO, getToday, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
+import { getUTCDateTimeRange } from '../../helpers/dateTime.js';
 import { LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
@@ -28,7 +28,15 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 			/**
 			 * @type {'today'|'lastHour'|'24hours'|'48hours'|'7days'|'14days'|'30days'|'6months'}
 			 */
-			range: { stype: String },
+			range: { type: String },
+			/**
+			 * @ignore
+			 */
+			rangeNum: { type: Number, reflect: true },
+			/**
+			 * @ignore
+			 */
+			rangeType: { type: String, reflect: true },
 			/**
 			 * Whether this value in the filter is selected or not
 			 * @type {boolean}
@@ -61,17 +69,31 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 		if (!this.range) return;
 
 		this._handleRange();
+
+		if (this.selected) {
+			// if the value is initially selected, startValue and endValue should be set in case used by consumer
+			const dateTimeRange = getUTCDateTimeRange(this.rangeType, this.rangeNum);
+			this.startValue = dateTimeRange.startValue;
+			this.endValue = dateTimeRange.endValue;
+		}
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
+		if (changedProperties.has('range')) {
+			this._handleRange();
+		}
+
+		if (changedProperties.has('rangeType') || changedProperties.has('rangeNum')) {
+			this.text = this.localize('components.filter-dimension-set-date-text-value.text', { type: this.rangeType, num: this.rangeNum });
+		}
+
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
-			if (prop === 'range') this._handleRange();
-			if (oldValue === undefined) return;
+			if (oldValue === undefined && prop !== 'rangeType' && prop !== 'rangeNum') return;
 
-			if (prop === 'count' || prop === 'disabled' || prop === 'selected' || prop === 'text' || prop === 'startValue' || prop === 'endValue') {
+			if (prop === 'disabled' || prop === 'selected' || prop === 'text' || prop === 'rangeType' || prop === 'rangeNum') {
 				changes.set(prop, this[prop]);
 			}
 		});
@@ -86,88 +108,42 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 	}
 
 	_handleRange() {
-		// these actually would need to update on selection?
-		let type = '', num = 0;
 		switch (this.range) {
 			case 'today': {
-				type = 'today';
-				/**
-				 * gets today in user's locale
-				 * gets start value as midnight and end value as 23:59:59 on that day
-				 * sets startValue and endValue to UTC strings of those values
-				 */
-				const today = formatDateInISO(getToday());
-				this.startValue = getUTCDateTimeFromLocalDateTime(today, '0:0:0');
-				this.endValue = getUTCDateTimeFromLocalDateTime(today, '23:59:59');
+				this.rangeType = 'days';
+				this.rangeNum = 0;
 				break;
 			} case 'lastHour': {
-				type = 'lastHour';
-
-				const startingVal = new Date();
-				this.endValue = startingVal.toISOString();
-
-				const newDate = startingVal.getHours() - 1;
-				startingVal.setHours(newDate);
-
-				this.startValue = startingVal.toISOString();
+				this.rangeType = 'hours';
+				this.rangeNum = 1;
 				break;
 			} case '24hours':
-				type = 'hours';
-				num = 24
-				this._setDateValues(1);
+				this.rangeType = 'hours';
+				this.rangeNum = 24;
 				break;
 			case '48hours':
-				type = 'hours';
-				num = 48;
-				this._setDateValues(2);
+				this.rangeType = 'hours';
+				this.rangeNum = 48;
 				break;
 			case '7days':
-				type = 'days';
-				num = 7;
-				this._setDateValues(7);
+				this.rangeType = 'days';
+				this.rangeNum = 7;
 				break;
 			case '14days':
-				type = 'days';
-				num = 14;
-				this._setDateValues(14);
+				this.rangeType = 'days';
+				this.rangeNum = 14;
 				break;
 			case '30days':
-				type = 'days';
-				num = 30;
-				this._setDateValues(30);
+				this.rangeType = 'days';
+				this.rangeNum = 30;
 				break;
 			case '6months': {
-				type = 'months';
-				num = 6;
-
-				const startingVal = new Date();
-				this.endValue = startingVal.toISOString();
-
-				const newDate = startingVal.getMonth() - 6;
-				startingVal.setMonth(newDate);
-
-				this.startValue = startingVal.toISOString();
+				this.rangeType = 'months';
+				this.rangeNum = 6;
 				break;
 			} default:
 				console.warn('d2l-filter-dimension-set-date-text-value: Invalid range value');
 		}
-		this.text = this.localize("components.filter-dimension-set-date-text-value.text", { type, num });
-	}
-
-	_setDateValues(dateDiff) {
-		/**
-		 * endValue = now in UTC string
-		 * startValue = now minus number of dates in dateDiff then converted to UTC string
-		 * locale would not impact this
-		 */
-		const startingVal = new Date();
-
-		this.endValue = startingVal.toISOString();
-
-		const newDate = startingVal.getDate() - dateDiff;
-		startingVal.setDate(newDate);
-
-		this.startValue = startingVal.toISOString();
 	}
 }
 

@@ -161,6 +161,47 @@ export function getUTCDateTimeFromLocalDateTime(date, time) {
 	return formatDateTimeInISO(utcDateTime);
 }
 
+export function getUTCDateTimeRange(type, diff) {
+	if (!type || (!diff && diff !== 0)) return {};
+	if (type !== 'hours' && type !== 'days' && type !== 'weeks' && type !== 'months') return {};
+
+	/**
+	 * endValue = now in UTC string (other than today)
+	 * startValue = now minus number of dates in dateDiff then converted to UTC string
+	 * locale would not impact this
+	 */
+	const startingVal = new Date();
+	let endValue = startingVal.toISOString();
+	let startValue;
+
+	if (type === 'hours') {
+		const newHours = startingVal.getHours() - diff;
+		startingVal.setHours(newHours);
+		startValue = startingVal.toISOString();
+	} else if (type === 'days') {
+		if (diff === 0) {
+			// assume today
+			const today = formatDateInISO(getToday());
+			startValue = getUTCDateTimeFromLocalDateTime(today, '0:0:0');
+			endValue = getUTCDateTimeFromLocalDateTime(today, '23:59:59');
+		} else {
+			const newDate = startingVal.getDate() - diff;
+			startingVal.setDate(newDate);
+			startValue = startingVal.toISOString();
+		}
+	} else if (type === 'weeks') {
+		const newHours = startingVal.getWeeks() - diff;
+		startingVal.getWeeks(newHours);
+		startValue = startingVal.toISOString();
+	} else if (type === 'months') {
+		const newMonth = startingVal.getMonth() - diff;
+		startingVal.setMonth(newMonth);
+		startValue = startingVal.toISOString();
+	}
+
+	return { startValue, endValue };
+}
+
 export function isDateInRange(date, min, max) {
 	if (!date) return false;
 	const afterMin = !min || (min && date.getTime() >= min.getTime());

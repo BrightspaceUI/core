@@ -144,8 +144,8 @@ class FilterDimensionSet extends LitElement {
 				selected: value.selected,
 				text: value.text,
 				type: value.type,
-				startValue: value.startValue,
-				endValue: value.endValue
+				rangeNum: value.rangeNum,
+				rangeType: value.rangeType
 			};
 		});
 		return values;
