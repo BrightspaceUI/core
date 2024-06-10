@@ -1025,9 +1025,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (this.align === 'start' || this.align === 'end') {
 			const pointerXAdjustment = Math.min(20 + ((pointerRotatedLength - pointerLength) / 2), (targetRect.width - pointerLength) / 2);
 			if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
-					position.left = targetRect.left + pointerXAdjustment;
+				position.left = targetRect.left + pointerXAdjustment;
 			} else {
-					position.right = window.innerWidth - targetRect.right + pointerXAdjustment;
+				position.right = window.innerWidth - targetRect.right + pointerXAdjustment;
 			}
 		} else {
 			if (!isRTL) {
