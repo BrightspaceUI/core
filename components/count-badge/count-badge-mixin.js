@@ -106,26 +106,26 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			:host([hidden]) {
 				display: none;
 			}
-			
+
 			:host {
 				display: inline-block;
 				min-width: 0.9rem;
 			}
-			
+
 			.d2l-count-badge-number {
 				font-weight: bold;
 			}
-			
+
 			:host([type="notification"]) .d2l-count-badge-number {
 				background-color: var(--d2l-color-carnelian-minus-1);
 				color: white;
 			}
-			
+
 			:host([type="count"]) .d2l-count-badge-number {
-				background-color: var(--d2l-color-gypsum);
-				color: var(--d2l-color-ferrite);
+				background-color: var(--d2l-count-badge-background-color, var(--d2l-color-gypsum));
+				color: var(--d2l-count-badge-foreground-color, var(--d2l-color-ferrite));
 			}
-			
+
 			:host([size="small"]) .d2l-count-badge-number {
 				border-radius: 0.55rem;
 				font-size: 0.6rem;
@@ -133,7 +133,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				padding-left: 0.3rem;
 				padding-right: 0.3rem;
 			}
-			
+
 			:host([size="large"]) .d2l-count-badge-number {
 				border-radius: 0.7rem;
 				font-size: 0.8rem;
@@ -203,7 +203,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		}
 		return html`
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
-					<div aria-hidden="true">${this.getNumberString()}</div>		
+					<div aria-hidden="true">${this.getNumberString()}</div>
 			</div>
 		`;
 	}

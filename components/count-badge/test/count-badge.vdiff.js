@@ -12,6 +12,7 @@ describe('count-badge', () => {
 		{ name: 'large-count-focused', template: html`<d2l-count-badge tab-stop size="large" type="count" number="1"></d2l-count-badge>`, action: elem => focusElem(elem) },
 		{ name: 'large-count-large-number', template: html`<d2l-count-badge size="large" type="count" number="100000"></d2l-count-badge>` },
 		{ name: 'large-count-large-number-rtl', rtl: true, template: html`<d2l-count-badge size="large" type="count" number="100000"></d2l-count-badge>` },
+		{ name: 'large-count-colorway-override', template: html`<d2l-count-badge style="--d2l-count-badge-foreground-color: #ffffff; --d2l-count-badge-background-color: purple;" size="large" type="count" number="10"></d2l-count-badge>` },
 		{ name: 'hide-zero-nonzero-shown', template: html`<d2l-count-badge number="10" hide-zero></d2l-count-badge>` },
 		{ name: 'hide-zero-hidden', template: html`<d2l-count-badge number="0" hide-zero></d2l-count-badge>` },
 		{ name: 'skeleton', template: html`<d2l-count-badge has-tooltip number="10" text="10 new notifications" skeleton></d2l-count-badge>` }
