@@ -1103,7 +1103,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 		if (this.align === 'start' || this.align === 'end') {
-			const shift = Math.min((targetRect.width / 2) - (20 + 16 / 2), 0); // 20 ~= 1rem, 16 = pointer size
+			const shift = Math.min((targetRect.width / 2) - (20 + pointerLength / 2), 0); // 20 ~= 1rem
 			if (this.align === 'start') {
 				return shift;
 			} else {
