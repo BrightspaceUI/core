@@ -18,6 +18,8 @@ const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 const outerMarginTopBottom = 18;
 const defaultVerticalOffset = 16;
+const pointerLength = 16;
+const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -1020,10 +1022,19 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const pointerRect = pointer.getBoundingClientRect();
 		const isRTL = this.getAttribute('dir') === 'rtl';
-		if (!isRTL) {
-			position.left = targetRect.left + ((targetRect.width - pointerRect.width) / 2);
+		if (this.align === 'start' || this.align === 'end') {
+			const pointerXAdjustment = Math.min(20 + ((pointerRotatedLength - pointerLength) / 2), (targetRect.width - pointerLength) / 2);
+			if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
+					position.left = targetRect.left + pointerXAdjustment;
+			} else {
+					position.right = window.innerWidth - targetRect.right + pointerXAdjustment;
+			}
 		} else {
-			position.right = window.innerWidth - targetRect.left - ((targetRect.width - pointerRect.width) / 2);
+			if (!isRTL) {
+				position.left = targetRect.left + ((targetRect.width - pointerRect.width) / 2);
+			} else {
+				position.right = window.innerWidth - targetRect.left - ((targetRect.width + pointerRect.width) / 2);
+			}
 		}
 		if (this.openedAbove) {
 			position.bottom = window.innerHeight - targetRect.top + 8;
