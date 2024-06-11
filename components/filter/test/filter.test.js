@@ -127,7 +127,7 @@ describe('d2l-filter', () => {
 	describe('selected-first', () => {
 		it('should not update shouldBubble after dimension is opened', async() => {
 			const elem = await fixture(selectedFirstFixture);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -156,7 +156,7 @@ describe('d2l-filter', () => {
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 			`);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 			const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 			elem.opened = true;
@@ -185,7 +185,7 @@ describe('d2l-filter', () => {
 
 		it('should update shouldBubble when dimension is searched', async() => {
 			const elem = await fixture(selectedFirstFixture);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -278,7 +278,7 @@ describe('d2l-filter', () => {
 
 		it('sets introductory text on a dimension in a multi-dimensional filter', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set><d2l-filter-dimension-set introductory-text="intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
 			elem.opened = true;
@@ -729,7 +729,7 @@ describe('d2l-filter', () => {
 			it('single set dimension fires dimension first open event', async() => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 				elem.opened = true;
 				const e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
@@ -748,7 +748,7 @@ describe('d2l-filter', () => {
 			it('multiple dimensions fire dimension first open events', async() => {
 				const elem = await fixture(multiDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 				elem.opened = true;
@@ -1003,45 +1003,30 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[2].appliedCount).to.equal(1);
 		});
 
-		describe('_formatFilterCount', () => {
-			[
-				{ name: 'None Selected', appliedCount: 0, result: undefined },
-				{ name: '1 Selected', appliedCount: 1, result: '1' },
-				{ name: '2 Selected', appliedCount: 2, result: '2' },
-				{ name: '99 Selected', appliedCount: 99, result: '99' },
-				{ name: '100 Selected', appliedCount: 100, result: '99+' },
-				{ name: '150 Selected', appliedCount: 150, result: '99+' },
-			].forEach((testCase) => {
-				it(`${testCase.name}`, async() => {
-					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
-					const result = elem._formatFilterCount(testCase.appliedCount);
-					expect(result).to.equal(testCase.result);
-				});
-			});
-		});
-
 		describe('Opener Count Format', () => {
 			[
-				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', description: 'Filter by: Role. No filters applied.' },
-				{ name: 'Single Dim - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (1)', description: 'Filter by: Role. 1 filter applied.' },
-				{ name: 'Single Dim - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (5)', description: 'Filter by: Role. 5 filters applied.' },
-				{ name: 'Single Dim - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (99)', description: 'Filter by: Role. 99 filters applied.' },
-				{ name: 'Single Dim - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }], text: 'Role (99+)', description: 'Filter by: Role. 100 filters applied.' },
-				{ name: 'Multiple Dims - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', description: 'Filters. No filters applied.' },
-				{ name: 'Multiple Dims - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (1)', description: 'Filters. 1 filter applied.' },
-				{ name: 'Multiple Dims - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (5)', description: 'Filters. 5 filters applied.' },
-				{ name: 'Multiple Dims - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (99)', description: 'Filters. 99 filters applied.' },
-				{ name: 'Multiple Dims - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters (99+)', description: 'Filters. 100 filters applied.' }
+				{ name: 'Single Dim - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: undefined, description: 'Filter by: Role. No filters applied.' },
+				{ name: 'Single Dim - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 1, description: 'Filter by: Role. 1 filter applied.' },
+				{ name: 'Single Dim - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 5, description: 'Filter by: Role. 5 filters applied.' },
+				{ name: 'Single Dim - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 99, description: 'Filter by: Role. 99 filters applied.' },
+				{ name: 'Single Dim - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }], text: 'Role', badge: 100, description: 'Filter by: Role. 100 filters applied.' },
+				{ name: 'Multiple Dims - None Selected', count: 0, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: undefined, description: 'Filters. No filters applied.' },
+				{ name: 'Multiple Dims - 1 Selected', count: 1, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 1, description: 'Filters. 1 filter applied.' },
+				{ name: 'Multiple Dims - 5 Selected', count: 5, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 5, description: 'Filters. 5 filters applied.' },
+				{ name: 'Multiple Dims - 99 Selected', count: 99, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 99, description: 'Filters. 99 filters applied.' },
+				{ name: 'Multiple Dims - 100 Selected', count: 100, dimensions: [{ key: 1, text: 'Role' }, { key: 2, text: 'Course' }], text: 'Filters', badge: 100, description: 'Filters. 100 filters applied.' }
 			].forEach((testCase) => {
 				it(`${testCase.name}`, async() => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
-					const opener = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+					const opener = elem.shadowRoot.querySelector('d2l-button-subtle');
 					elem._dimensions = testCase.dimensions;
 					elem._totalAppliedCount = testCase.count;
 					await elem.updateComplete;
+					const countbadge = opener?.children[0];
 
 					expect(opener.text).to.equal(testCase.text);
 					expect(opener.description).to.equal(testCase.description);
+					expect(countbadge?.number).to.equal(testCase.badge);
 				});
 			});
 		});
@@ -1295,7 +1280,7 @@ describe('d2l-filter', () => {
 		it('if there is no active dimension, do not change esc close behaviour', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
 			const hideStub = stub(elem, '_handleDimensionHide');
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
 
 			elem.opened = true;
@@ -1322,7 +1307,7 @@ describe('d2l-filter', () => {
 		[{ key: 'Escape', keyCode: 27 }, { key: 'ArrowLeft', keyCode: 37 }].forEach(testCase => {
 			it(`clicking ${testCase.key} in the header goes back to the dimension list`, async() => {
 				const elem = await fixture(multiDimensionFixture);
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
@@ -1354,7 +1339,7 @@ describe('d2l-filter', () => {
 
 			it(`set dimension - clicking ${testCase.key} in the content goes back to the dimension list`, async() => {
 				const elem = await fixture(multiDimensionFixture);
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 

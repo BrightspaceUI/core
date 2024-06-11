@@ -187,7 +187,7 @@ describe('filter', () => {
 		});
 
 		[
-			{ name: 'press-clear', allSelected: true, selector: 'd2l-button-subtle' },
+			{ name: 'press-clear', allSelected: true, selector: '[text="Clear"]' },
 			{ name: 'press-unselect-all', allSelected: true, selector: 'd2l-selection-select-all' },
 			{ name: 'press-select-all', allSelected: false, selector: 'd2l-selection-select-all' }
 		].forEach(({ name, allSelected, selector }) => {
@@ -337,7 +337,7 @@ describe('filter', () => {
 				</d2l-filter>
 			`);
 
-			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
+			await clickElem(elem.shadowRoot.querySelector('[text*="Clear"]'));
 			await hoverAt(0, 0);
 			await expect(elem).to.be.golden();
 		});

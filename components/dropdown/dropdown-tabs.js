@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, LitElement } from 'lit';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 
@@ -28,12 +28,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 	}
 
 	render() {
-		return html`
-			${this._renderContent()}
-			<div class="d2l-dropdown-content-pointer">
-				<div></div>
-			</div>
-		`;
+		return this._renderContent();
 	}
 
 	_getTabsElement() {

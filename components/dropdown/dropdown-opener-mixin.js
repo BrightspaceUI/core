@@ -44,6 +44,19 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				type: Boolean,
 				attribute: 'open-on-hover'
 			},
+			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: {
+				type: Boolean,
+				attribute: 'prefer-fixed-positioning'
+			},
+			_fixedPositioning: {
+				type: Boolean,
+				attribute: '_fixed-positioning',
+				reflect: true,
+			},
 			_isHovering: { type: Boolean },
 			_isOpenedViaClick: { type: Boolean },
 			_isFading: { type: Boolean }
@@ -120,6 +133,12 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			element.classList.add('d2l-dropdown-content-fading');
 		} else {
 			element.classList.remove('d2l-dropdown-content-fading');
+		}
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('preferFixedPositioning')) {
+			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
 		}
 	}
 
