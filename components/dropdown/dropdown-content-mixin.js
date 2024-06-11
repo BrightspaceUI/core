@@ -2,7 +2,7 @@ import '../backdrop/backdrop.js';
 import '../button/button.js';
 import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { html } from 'lit';
@@ -284,6 +284,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._showBackdrop = false;
 		this._verticalOffset = defaultVerticalOffset;
 
+		this.__reposition = this.__reposition.bind(this);
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
@@ -316,6 +317,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this._useMobileStyling = this.mediaQueryList.matches;
 		if (this.mediaQueryList.addEventListener) this.mediaQueryList.addEventListener('change', this._handleMobileResize);
+		if (this.opened) this.__addRepositionHandlers();
 	}
 
 	disconnectedCallback() {
@@ -330,6 +332,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__dismissibleId = null;
 
 		if (this.__resizeObserver) this.__resizeObserver.disconnect();
+		this.__removeRepositionHandlers();
 	}
 
 	firstUpdated(changedProperties) {
@@ -445,6 +448,33 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			this.open(!this.noAutoFocus && applyFocus);
 		}
+	}
+
+	__addRepositionHandlers() {
+		if (!this._fixedPositioning) return;
+
+		const isScrollable = (node, prop) => {
+			const value = window.getComputedStyle(node, null).getPropertyValue(prop);
+			return (value === 'scroll' || value === 'auto');
+		};
+
+		let node = this;
+		this.__removeRepositionHandlers();
+		this._scrollablesObserved = [];
+		while (node) {
+			let observeScrollable = false;
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				observeScrollable = isScrollable(node, 'overflow-y') || isScrollable(node, 'overflow-x');
+			} else if (node.nodeType === Node.DOCUMENT_NODE) {
+				observeScrollable = true;
+			}
+			if (observeScrollable) {
+				this._scrollablesObserved.push(node);
+				node.addEventListener('scroll', this.__reposition);
+			}
+			node = getComposedParent(node);
+		}
+
 	}
 
 	__disconnectResizeObserver(entries) {
@@ -617,7 +647,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			await doOpen();
 
+			this.__addRepositionHandlers();
+
 		} else {
+
+			this.__removeRepositionHandlers();
 
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
@@ -753,6 +787,27 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await this.updateComplete;
 
 		await adjustPosition();
+	}
+
+	__removeRepositionHandlers() {
+		if (!this._fixedPositioning) return;
+		if (!this._scrollablesObserved) return;
+
+		this._scrollablesObserved.forEach(node => {
+			node.removeEventListener('scroll', this.__reposition);
+		});
+		this._scrollablesObserved = null;
+	}
+
+	__reposition() {
+		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
+		if (!this.__repositioning) {
+			requestAnimationFrame(() => {
+				this.__position();
+				this.__repositioning = false;
+			});
+		}
+		this.__repositioning = true;
 	}
 
 	__toggleScrollStyles() {
