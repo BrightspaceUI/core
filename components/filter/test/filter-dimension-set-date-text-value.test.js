@@ -35,7 +35,11 @@ describe('d2l-filter-dimension-set-date-text-value', () => {
 
 				const e = await oneEvent(elem, 'd2l-filter-dimension-set-value-data-change');
 				expect(e.detail.valueKey).to.equal('value');
-				expect(e.detail.changes.size).to.equal(1);
+				if (condition.property === 'rangeType' || condition.property === 'rangeNum') {
+					expect(e.detail.changes.size).to.equal(2); // text changes at the same time
+				} else {
+					expect(e.detail.changes.size).to.equal(1);
+				}
 				expect(e.detail.changes.get(condition.property)).to.equal(condition.value);
 				expect(eventSpy).to.be.calledOnce;
 			});
@@ -73,7 +77,7 @@ describe('d2l-filter-dimension-set-date-text-value', () => {
 		});
 	});
 
-	describe('_handleRange', () => {
+	describe('updates when range changes', () => {
 		[
 			{ range: 'today', expected: { text: 'Today', startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z' } },
 			{ range: 'lastHour', expected: { text: 'Last hour', startValue: '2018-02-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },

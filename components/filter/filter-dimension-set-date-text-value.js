@@ -58,8 +58,6 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 		this.disabled = false;
 		this.selected = false;
 		this.text = '';
-		/** @ignore */
-		this.type = 'date';
 	}
 
 	firstUpdated(changedProperties) {
@@ -67,7 +65,7 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 
 		if (!this.range) return;
 
-		this._handleRange();
+		this._handleRangeUpdated();
 
 		if (this.selected) {
 			// if the value is initially selected, startValue and endValue should be set in case used by consumer
@@ -80,17 +78,9 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		if (changedProperties.has('range')) {
-			this._handleRange();
-		}
-
-		if (changedProperties.has('rangeType') || changedProperties.has('rangeNum')) {
-			this.text = this.localize('components.filter-dimension-set-date-text-value.text', { type: this.rangeType, num: this.rangeNum });
-		}
-
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
-			if (oldValue === undefined && prop !== 'rangeType' && prop !== 'rangeNum') return;
+			if (oldValue === undefined && (prop === 'disabled' || prop === 'selected')) return;
 
 			if (prop === 'disabled' || prop === 'selected' || prop === 'text' || prop === 'rangeType' || prop === 'rangeNum') {
 				changes.set(prop, this[prop]);
@@ -106,7 +96,31 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	_handleRange() {
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+
+		if (changedProperties.has('range')) {
+			this._handleRangeUpdated();
+		}
+
+		if (changedProperties.has('rangeType') || changedProperties.has('rangeNum')) {
+			this.text = this.localize('components.filter-dimension-set-date-text-value.text', { type: this.rangeType, num: Math.abs(this.rangeNum) });
+		}
+	}
+
+	getValueDetails() {
+		return {
+			disabled: this.disabled,
+			key: this.key,
+			selected: this.selected,
+			text: this.text,
+			type: 'date',
+			rangeNum: this.rangeNum,
+			rangeType: this.rangeType
+		};
+	}
+
+	_handleRangeUpdated() {
 		switch (this.range) {
 			case 'today': {
 				this.rangeType = 'days';
@@ -114,31 +128,31 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 				break;
 			} case 'lastHour': {
 				this.rangeType = 'hours';
-				this.rangeNum = 1;
+				this.rangeNum = -1;
 				break;
 			} case '24hours':
 				this.rangeType = 'hours';
-				this.rangeNum = 24;
+				this.rangeNum = -24;
 				break;
 			case '48hours':
 				this.rangeType = 'hours';
-				this.rangeNum = 48;
+				this.rangeNum = -48;
 				break;
 			case '7days':
 				this.rangeType = 'days';
-				this.rangeNum = 7;
+				this.rangeNum = -7;
 				break;
 			case '14days':
 				this.rangeType = 'days';
-				this.rangeNum = 14;
+				this.rangeNum = -14;
 				break;
 			case '30days':
 				this.rangeType = 'days';
-				this.rangeNum = 30;
+				this.rangeNum = -30;
 				break;
 			case '6months': {
 				this.rangeType = 'months';
-				this.rangeNum = 6;
+				this.rangeNum = -6;
 				break;
 			} default:
 				console.warn('d2l-filter-dimension-set-date-text-value: Invalid range value');

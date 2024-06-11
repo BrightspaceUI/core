@@ -270,10 +270,20 @@ describe('date-time', () => {
 			});
 
 			[
-				{ type: 'hours', num: 1, expected: { startValue: '2018-02-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
-				{ type: 'hours', num: 24, expected: { startValue: '2018-02-11T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
-				{ type: 'days', num: 7, expected: { startValue: '2018-02-05T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
-				{ type: 'months', num: 6, expected: { startValue: '2017-08-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } }
+				{ type: 'hours', num: -1, expected: { startValue: '2018-02-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'hours', num: -24, expected: { startValue: '2018-02-11T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'days', num: -80, expected: { startValue: '2017-11-24T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'months', num: -6, expected: { startValue: '2017-08-12T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'years', num: -3, expected: { startValue: '2015-02-12T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'minutes', num: -15, expected: { startValue: '2018-02-12T19:45:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'seconds', num: -30, expected: { startValue: '2018-02-12T19:59:30.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'hours', num: 1, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T21:00:00.000Z' } },
+				{ type: 'hours', num: 24, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-13T20:00:00.000Z' } },
+				{ type: 'days', num: 80, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-05-03T20:00:00.000Z' } },
+				{ type: 'months', num: 6, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-08-12T20:00:00.000Z' } },
+				{ type: 'years', num: 3, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2021-02-12T20:00:00.000Z' } },
+				{ type: 'minutes', num: 15, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T20:15:00.000Z' } },
+				{ type: 'seconds', num: 30, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T20:00:30.000Z' } }
 			].forEach(range => {
 				it(`returns expected startValue and endValue for type ${range.type} and diff ${range.num}`, async() => {
 					const res = getUTCDateTimeRange(range.type, range.num);

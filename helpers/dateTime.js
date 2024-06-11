@@ -162,8 +162,8 @@ export function getUTCDateTimeFromLocalDateTime(date, time) {
 }
 
 export function getUTCDateTimeRange(type, diff) {
-	if (!type || (!diff && diff !== 0)) return {};
-	if (type !== 'hours' && type !== 'days' && type !== 'weeks' && type !== 'months') return {};
+	if (!type || (!diff && diff !== 0) || (diff === 0 && type !== 'days')) return {};
+	if (type !== 'seconds' && type !== 'minutes' && type !== 'hours' && type !== 'days' && type !== 'months' && type !== 'years') return {};
 
 	if (type === 'days' && diff === 0) {
 		// assume "today" (midnight in user's time to 23:59:59 in user's time)
@@ -174,29 +174,38 @@ export function getUTCDateTimeRange(type, diff) {
 	}
 
 	/**
-	 * endValue = now in UTC string
-	 * startValue = now minus number of hours/days/weeks/months in diff then converted to UTC string
+	 * If diff is positive, range is in the future. Start date is now and end date is in the future.
+	 * If diff is negative, range is in the past. End date is now and start date is in the past.
 	 */
-	const startingVal = new Date();
-	const endValue = startingVal.toISOString();
 
-	if (type === 'hours') {
-		const newHours = startingVal.getHours() - diff;
-		startingVal.setHours(newHours);
+	const rangeDate = new Date();
+	const nowUTCString = rangeDate.toISOString();
+
+	if (type === 'seconds') {
+		const newSeconds = rangeDate.getUTCSeconds() + diff;
+		rangeDate.setUTCSeconds(newSeconds);
+	} else if (type === 'minutes') {
+		const newMinutes = rangeDate.getUTCMinutes() + diff;
+		rangeDate.setUTCMinutes(newMinutes);
+	} else if (type === 'hours') {
+		const newHours = rangeDate.getUTCHours() + diff;
+		rangeDate.setUTCHours(newHours);
 	} else if (type === 'days') {
-		const newDate = startingVal.getDate() - diff;
-		startingVal.setDate(newDate);
-	} else if (type === 'weeks') {
-		const newHours = startingVal.getWeeks() - diff;
-		startingVal.getWeeks(newHours);
+		const newDate = rangeDate.getUTCDate() + diff;
+		rangeDate.setUTCDate(newDate);
 	} else if (type === 'months') {
-		const newMonth = startingVal.getMonth() - diff;
-		startingVal.setMonth(newMonth);
+		const newMonth = rangeDate.getUTCMonth() + diff;
+		rangeDate.setUTCMonth(newMonth);
+	} else if (type === 'years') {
+		const newYear = rangeDate.getUTCFullYear() + diff;
+		rangeDate.setUTCFullYear(newYear);
 	}
 
-	const startValue = startingVal.toISOString();
-
-	return { startValue, endValue };
+	if (diff > 0) {
+		return { startValue: nowUTCString, endValue: rangeDate.toISOString() };
+	} else {
+		return { startValue: rangeDate.toISOString(), endValue: nowUTCString };
+	}
 }
 
 export function isDateInRange(date, min, max) {

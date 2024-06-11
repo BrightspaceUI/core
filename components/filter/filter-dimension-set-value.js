@@ -78,6 +78,16 @@ class FilterDimensionSetValue extends LitElement {
 			}));
 		}
 	}
+
+	getValueDetails() {
+		return {
+			count: this.count,
+			disabled: this.disabled,
+			key: this.key,
+			selected: this.selected,
+			text: this.text
+		};
+	}
 }
 
 customElements.define('d2l-filter-dimension-set-value', FilterDimensionSetValue);
