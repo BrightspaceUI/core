@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {No hay resultados de búsqueda} one {{number} resultado de búsqueda} other {{number} resultados de búsqueda}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Los filtros seleccionados aparecen primero.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} no es válido.",
 	"components.form-element.defaultFieldLabel": "Campo",
 	"components.form-element.input.email.typeMismatch": "El correo electrónico no es válido",

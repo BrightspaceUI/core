@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {ما من نتائج بحث} one {{number} نتيجة بحث}‏ other {{number} من نتائج البحث}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. تظهر عوامل التصفية المحددة أولاً.",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} غير صالحة.",
 	"components.form-element.defaultFieldLabel": "الحقل",
 	"components.form-element.input.email.typeMismatch": "البريد الإلكتروني غير صالح",

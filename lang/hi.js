@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {कोई खोज परिणाम नहीं} one {{number} खोज परिणाम} other {{number} खोज परिणाम}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. चुने गए फ़िल्टर सबसे पहले दिखाई देते हैं।",
 	"components.filter.singleDimensionDescription": "इसके अनुसार फ़िल्टर करें: {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} अमान्य है।",
 	"components.form-element.defaultFieldLabel": "फ़ील्ड",
 	"components.form-element.input.email.typeMismatch": "ईमेल मान्य नहीं है",

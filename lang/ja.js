@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {検索結果なし} other {{number} 件の検索結果}}",
 	"components.filter.selectedFirstListLabel": "{headerText}。選択したフィルタが最初に表示されます。",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",
 	"components.form-element.input.email.typeMismatch": "電子メールが無効です",

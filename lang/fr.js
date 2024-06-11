@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Les filtres sélectionnés s’affichent en premier.",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} n'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
 	"components.form-element.input.email.typeMismatch": "L'adresse courriel n'est pas valide",

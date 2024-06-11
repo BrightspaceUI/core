@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Inga sökresultat} one {{number} sökresultat} other {{number} sökresultat}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Valda filter visas först.",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} är ogiltig.",
 	"components.form-element.defaultFieldLabel": "Fält",
 	"components.form-element.input.email.typeMismatch": "E-postadressen är ogiltig",

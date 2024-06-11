@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {無搜尋結果} other {{number} 個搜尋結果}}",
 	"components.filter.selectedFirstListLabel": "{headerText}。所選篩選器會先顯示。",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",
+	"components.filter-dimension-set-date-text-value.text": "{type, select, hours {{num, selectordinal, =1 {Last hour} one {Last hour} two {Last {num} hours} few {Last {num} hours} other {Last {num} hours}}} days {{num, selectordinal, =0 {Today} one {Last day} two {Last {num} days} few {Last {num} days} other {Last {num} days}}} months {Last {num} months} other {Other}}",
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",
 	"components.form-element.input.email.typeMismatch": "電子郵件無效",
