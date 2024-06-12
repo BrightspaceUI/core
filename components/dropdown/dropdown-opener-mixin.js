@@ -137,7 +137,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('preferFixedPositioning')) {
+		if (this._fixedPositioning === undefined || changedProperties.has('preferFixedPositioning')) {
 			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
 		}
 	}
