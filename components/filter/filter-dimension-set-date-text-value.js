@@ -30,14 +30,6 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 			 */
 			range: { type: String },
 			/**
-			 * @ignore
-			 */
-			rangeNum: { type: Number, reflect: true },
-			/**
-			 * @ignore
-			 */
-			rangeType: { type: String, reflect: true },
-			/**
 			 * Whether this value in the filter is selected or not
 			 * @type {boolean}
 			 */
@@ -63,15 +55,11 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this.range) return;
-
-		this._handleRangeUpdated();
-
-		if (this.selected) {
+		if (this.selected && this.range) {
 			// if the value is initially selected, startValue and endValue should be set in case used by consumer
-			const dateTimeRange = getUTCDateTimeRange(this.rangeType, this.rangeNum);
-			this.startValue = dateTimeRange.startValue;
-			this.endValue = dateTimeRange.endValue;
+			const dateTimeRange = getUTCDateTimeRange(this._rangeDetails?.rangeType, this._rangeDetails?.rangeNum);
+			this.startValue = dateTimeRange?.startValue;
+			this.endValue = dateTimeRange?.endValue;
 		}
 	}
 
@@ -80,10 +68,13 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
-			if (oldValue === undefined && (prop === 'disabled' || prop === 'selected')) return;
+			if (oldValue === undefined && prop !== 'text') return;
 
-			if (prop === 'disabled' || prop === 'selected' || prop === 'text' || prop === 'rangeType' || prop === 'rangeNum') {
+			if (prop === 'disabled' || prop === 'selected' || prop === 'text') {
 				changes.set(prop, this[prop]);
+			} else if (prop === 'range') {
+				changes.set('rangeType', this._rangeDetails?.rangeType);
+				changes.set('rangeNum', this._rangeDetails?.rangeNum);
 			}
 		});
 		if (changes.size > 0) {
@@ -99,64 +90,58 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 
-		if (changedProperties.has('range')) {
-			this._handleRangeUpdated();
-		}
-
-		if (changedProperties.has('rangeType') || changedProperties.has('rangeNum')) {
-			this.text = this.localize('components.filter-dimension-set-date-text-value.text', { type: this.rangeType, num: Math.abs(this.rangeNum) });
-		}
+		if (changedProperties.has('range')) this._handleRangeUpdated();
 	}
 
 	getValueDetails() {
+		this._handleRangeUpdated();
+
 		return {
 			disabled: this.disabled,
 			key: this.key,
 			selected: this.selected,
 			text: this.text,
 			type: 'date',
-			rangeNum: this.rangeNum,
-			rangeType: this.rangeType
+			rangeNum: this._rangeDetails.rangeNum,
+			rangeType: this._rangeDetails.rangeType
 		};
 	}
 
 	_handleRangeUpdated() {
 		switch (this.range) {
-			case 'today': {
-				this.rangeType = 'days';
-				this.rangeNum = 0;
+			case 'today':
+				this._rangeDetails = { rangeType: 'days', rangeNum: 0 };
 				break;
-			} case 'lastHour': {
-				this.rangeType = 'hours';
-				this.rangeNum = -1;
+			case 'lastHour':
+				this._rangeDetails = { rangeType: 'hours', rangeNum: -1 };
 				break;
-			} case '24hours':
-				this.rangeType = 'hours';
-				this.rangeNum = -24;
+			case '24hours':
+				this._rangeDetails = { rangeType: 'hours', rangeNum: -24 };
 				break;
 			case '48hours':
-				this.rangeType = 'hours';
-				this.rangeNum = -48;
+				this._rangeDetails = { rangeType: 'hours', rangeNum: -48 };
 				break;
 			case '7days':
-				this.rangeType = 'days';
-				this.rangeNum = -7;
+				this._rangeDetails = { rangeType: 'days', rangeNum: -7 };
 				break;
 			case '14days':
-				this.rangeType = 'days';
-				this.rangeNum = -14;
+				this._rangeDetails = { rangeType: 'days', rangeNum: -14 };
 				break;
 			case '30days':
-				this.rangeType = 'days';
-				this.rangeNum = -30;
+				this._rangeDetails = { rangeType: 'days', rangeNum: -30 };
 				break;
-			case '6months': {
-				this.rangeType = 'months';
-				this.rangeNum = -6;
+			case '6months':
+				this._rangeDetails = { rangeType: 'months', rangeNum: -6 };
 				break;
-			} default:
+			default:
 				console.warn('d2l-filter-dimension-set-date-text-value: Invalid range value');
+				this._rangeDetails = {};
+				break;
 		}
+
+		if (this._rangeDetails.rangeType === 'hours') this.text = this.localize('components.filter-dimension-set-date-text-value.textHours', { num: Math.abs(this._rangeDetails.rangeNum) });
+		else if (this._rangeDetails.rangeType === 'days') this.text = this.localize('components.filter-dimension-set-date-text-value.textDays', { num: Math.abs(this._rangeDetails.rangeNum) });
+		else if (this._rangeDetails.rangeType === 'months') this.text = this.localize('components.filter-dimension-set-date-text-value.textMonths', { num: Math.abs(this._rangeDetails.rangeNum) });
 	}
 }
 
