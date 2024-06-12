@@ -1,15 +1,24 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
+import '../filter-dimension-set-date-text-value.js';
 import '../filter-dimension-set-value.js';
 import { expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
-import { spy, stub } from 'sinon';
+import { spy, stub, useFakeTimers } from 'sinon';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
 			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
 			<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
+const singleSetDimensionDateFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set key="dim" text="Dim">
+			<d2l-filter-dimension-set-date-text-value key="1" selected range="today"></d2l-filter-dimension-set-date-text-value>
+			<d2l-filter-dimension-set-date-text-value key="2" range="7days"></d2l-filter-dimension-set-date-text-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 const singleSetDimensionSingleSelectionFixture = html`
@@ -476,6 +485,58 @@ describe('d2l-filter', () => {
 				expect(changes[0].valueKey).to.equal('2');
 				expect(changes[0].selected).to.be.false;
 				expect(elem._dimensions[0].values[1].selected).to.be.false;
+			});
+
+			it('single set date dimension fires change events', async() => {
+				const documentLocaleSettings = getDocumentLocaleSettings();
+				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+				const elem = await fixture(singleSetDimensionDateFixture);
+				const selectedElem = elem.querySelector('d2l-filter-dimension-set-date-text-value[selected]'); // today
+				expect(selectedElem.startValue).to.equal('2018-02-12T05:00:00.000Z');
+				expect(selectedElem.endValue).to.equal('2018-02-13T04:59:59.000Z');
+				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+
+				clock.tick(10000);
+
+				setTimeout(() => value.setSelected(true));
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.allCleared).to.be.false;
+				let dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				let changes = dimensions[0].changes;
+				expect(changes.length).to.equal(2);
+				expect(changes[0].valueKey).to.equal('2');
+				expect(changes[0].selected).to.be.true;
+				expect(changes[0].startValue).to.equal('2018-02-05T20:00:10.000Z'); // 14 days
+				expect(changes[0].endValue).to.equal('2018-02-12T20:00:10.000Z');
+				expect(elem._dimensions[0].values[1].selected).to.be.true;
+				expect(changes[1].valueKey).to.equal('1');
+				expect(changes[1].selected).to.be.false;
+				expect(changes[1].startValue).to.be.undefined;
+				expect(changes[1].endValue).to.be.undefined;
+				expect(elem._dimensions[0].values[0].selected).to.be.false;
+
+				setTimeout(() => value.setSelected(false));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.allCleared).to.be.false;
+				dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				changes = dimensions[0].changes;
+				expect(changes[0].valueKey).to.equal('2');
+				expect(changes[0].selected).to.be.false;
+				expect(changes[0].startValue).to.be.undefined;
+				expect(changes[0].endValue).to.be.undefined;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+
+				clock.restore();
 			});
 
 			it('single set dimension with selection-single on fires change events', async() => {

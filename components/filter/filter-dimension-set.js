@@ -136,15 +136,16 @@ class FilterDimensionSet extends LitElement {
 
 	getValues() {
 		const valueNodes = this._getSlottedNodes();
+		let noSearchSupport = false;
+		let enforceSingleSelection = false;
 		const values = valueNodes.map(value => {
-			return {
-				count: value.count,
-				disabled: value.disabled,
-				key: value.key,
-				selected: value.selected,
-				text: value.text
-			};
+			if (value._noSearchSupport) noSearchSupport = true;
+			if (value._enforceSingleSelection) enforceSingleSelection = true;
+
+			return value.getValueDetails();
 		});
+		if (noSearchSupport) this.searchType = 'none';
+		if (enforceSingleSelection) this.selectionSingle = true;
 		return values;
 	}
 
@@ -173,7 +174,10 @@ class FilterDimensionSet extends LitElement {
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
-		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value');
+		return nodes.filter((node) => {
+			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+			return node._filterSetValue;
+		});
 	}
 
 	_handleDimensionSetValueDataChange(e) {

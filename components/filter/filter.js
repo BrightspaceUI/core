@@ -686,7 +686,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleDimensionDataChange(e) {
 		const changes = e.detail.changes;
 		const dimension = this._getDimensionByKey(e.detail.dimensionKey);
-		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
+		const value = e.detail.valueKey && dimension?.values.find(value => value.key === e.detail.valueKey);
 		const toUpdate = e.detail.valueKey ? value : dimension;
 
 		if (!toUpdate) return;
@@ -869,7 +869,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
+		const details = { valueKey: valueKey, selected: selected };
+
+		if (value.getAdditionalEventDetails) Object.assign(details, value.getAdditionalEventDetails(selected));
+
+		this._dispatchChangeEvent(dimension, details);
 	}
 
 	_performDimensionClear(dimension) {

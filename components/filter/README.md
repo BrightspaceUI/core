@@ -204,7 +204,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 ## Dimension Set Value [d2l-filter-dimension-set-value]
 
-This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable list of filter values.
 
 <!-- docs: demo code properties name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
 ```html
@@ -233,11 +233,41 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
 
+## Dimension Set Value: Preset Date Range [d2l-filter-dimension-set-date-text-value]
+
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value based on the `range` defined on the component, which is to be one of a set of pre-defined range options. Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
+
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-text-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-text-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates">
+    <d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `key` | String, required | Unique identifier within a dimension for the value |
+| `range` | String, required | The preset date/time range that the list item represents. Value is to be one of 'today', 'lastHour', '24hours', '48hours', '7days', '14days', '30days', or '6months'. |
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
+| `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+<!-- docs: end hidden content -->
+
 ## Search and Paging
 
 Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
 
-`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded. 
+`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded.
 
 `manual` search dispatches a `d2l-filter-dimension-search` event delegating the search to the component's consumer. The event's detail will contain the key of the dimension from where the event was dispatched (`key`), the text value used for the search (`value`) and a callback (`searchCompleteCallback`). This callback gives the consumer control of which keys to display, either by setting `displayAllKeys` to `true` or passing a list of the keys to display as `keysToDisplay` (all other keys will be hidden). The dimension will be in a loading state until the callback is called.
 ```js

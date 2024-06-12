@@ -1,6 +1,7 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
+import '../filter-dimension-set-date-text-value.js';
 import '../filter-dimension-set-value.js';
 import { clickElem, expect, fixture, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -73,6 +74,19 @@ function createSingleDimSingleSelection(opts) {
 		</d2l-filter>
 	`;
 }
+function createSingleDimDate() {
+	return html`
+		<d2l-filter>
+			<d2l-filter-dimension-set key="dates" text="Dates">
+				<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+			</d2l-filter-dimension-set>
+		</d2l-filter>
+	`;
+}
 
 function createEmptyMultipleDims(opts) {
 	const { long, text } = { long: false, ...opts };
@@ -122,7 +136,8 @@ describe('filter', () => {
 				{ name: 'multi-selection-no-search', template: createSingleDim({ searchType: 'none' }) },
 				{ name: 'multi-selection-no-search-select-all', template: createSingleDim({ searchType: 'none', selectAll: true }) },
 				{ name: 'multi-selection-all-selected', template: createSingleDim({ selected: true, selectAll: true }) },
-				{ name: 'multi-selection-clamping', template: createSingleDim({ selected: true, selectAll: true, clampingValues: true }) }
+				{ name: 'multi-selection-clamping', template: createSingleDim({ selected: true, selectAll: true, clampingValues: true }) },
+				{ name: 'dates', template: createSingleDimDate() },
 			].forEach(({ name, template }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
@@ -192,6 +207,24 @@ describe('filter', () => {
 				await expect(elem).to.be.golden();
 			});
 		});
+
+		it('press-clear-dates', async() => {
+			const elem = await fixture(html`
+				<d2l-filter opened>
+					<d2l-filter-dimension-set key="dates" text="Dates">
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`);
+
+			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
+			await hoverAt(0, 0);
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('multiple', () => {
@@ -227,9 +260,35 @@ describe('filter', () => {
 			</d2l-filter>
 		`;
 
+		const multipleDimsDate = html`
+			<d2l-filter>
+				<d2l-filter-dimension-set key="course" header-text="Related Courses at Your Company" text="Course" select-all selected-first>
+					<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="biology" text="Biology" disabled></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="chemistry" text="Chemistry" selected></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="english" text="English" selected></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="math" text="Math" selected></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="dates" text="Dates">
+					<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="long" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." select-all search-type="none">
+					<d2l-filter-dimension-set-value key="long" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." selected></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
+			</d2l-filter>
+		`;
+
 		[true, false].forEach(rtl => {
 			[
 				{ name: 'empty', template: createEmptyMultipleDims({ long: true }) },
+				{ name: 'dates', template: multipleDimsDate },
+				{ name: 'nested-dates', template: multipleDimsDate, dim: 2 },
 				{ name: 'selected', template: multipleDims },
 				...[{ dim: 1, height: 439 }, { dim: 2, height: 151 }, { dim: 3, height: 79 }].map(({ dim, height }) =>
 					({ name: `nested-dim-${dim}`, dim, height, template: multipleDims })
@@ -267,6 +326,13 @@ describe('filter', () => {
 						<d2l-filter-dimension-set-value key="admin" text="Admin" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="dates" text="Dates">
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 			`);
