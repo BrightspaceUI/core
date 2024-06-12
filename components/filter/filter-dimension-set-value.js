@@ -41,6 +41,9 @@ class FilterDimensionSetValue extends LitElement {
 		this.disabled = false;
 		this.selected = false;
 		this.text = '';
+		this._enforceSingleSelection = false;
+		this._filterSetValue = true;
+		this._noSearchSupport = false;
 	}
 
 	get count() {

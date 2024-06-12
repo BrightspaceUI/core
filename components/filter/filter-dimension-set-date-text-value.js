@@ -51,6 +51,9 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 		this.disabled = false;
 		this.selected = false;
 		this.text = '';
+		this._enforceSingleSelection = true;
+		this._filterSetValue = true;
+		this._noSearchSupport = true;
 	}
 
 	firstUpdated(changedProperties) {
@@ -102,10 +105,14 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 			key: this.key,
 			selected: this.selected,
 			text: this.text,
-			type: 'date',
-			rangeNum: this._rangeDetails.rangeNum,
-			rangeType: this._rangeDetails.rangeType
+			getAdditionalEventDetails: this._getAdditionalEventDetails.bind(this)
 		};
+	}
+
+	_getAdditionalEventDetails(selected) {
+		if (!selected) return {};
+		const dateTimeRange = getUTCDateTimeRange(this._rangeDetails?.rangeType, this._rangeDetails?.rangeNum);
+		return { startValue: dateTimeRange.startValue, endValue: dateTimeRange.endValue };
 	}
 
 	_handleRangeUpdated() {

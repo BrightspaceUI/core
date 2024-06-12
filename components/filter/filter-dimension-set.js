@@ -136,9 +136,16 @@ class FilterDimensionSet extends LitElement {
 
 	getValues() {
 		const valueNodes = this._getSlottedNodes();
+		let noSearchSupport = false;
+		let enforceSingleSelection = false;
 		const values = valueNodes.map(value => {
+			if (value._noSearchSupport) noSearchSupport = true;
+			if (value._enforceSingleSelection) enforceSingleSelection = true;
+
 			return value.getValueDetails();
 		});
+		if (noSearchSupport) this.searchType = 'none';
+		if (enforceSingleSelection) this.selectionSingle = true;
 		return values;
 	}
 
@@ -169,13 +176,7 @@ class FilterDimensionSet extends LitElement {
 		const nodes = this._slot.assignedNodes({ flatten: true });
 		return nodes.filter((node) => {
 			if (node.nodeType !== Node.ELEMENT_NODE) return false;
-
-			const hasDateFilter = node.tagName.toLowerCase() === 'd2l-filter-dimension-set-date-text-value';
-			if (hasDateFilter) {
-				this.searchType = 'none';
-				this.selectionSingle = true;
-			}
-			return hasDateFilter || node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value';
+			return node._filterSetValue;
 		});
 	}
 

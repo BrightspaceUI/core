@@ -25,7 +25,6 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
-import { getUTCDateTimeRange } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -872,11 +871,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const details = { valueKey: valueKey, selected: selected };
 
-		if (value.type === 'date' && selected) {
-			const dateTimeRange = getUTCDateTimeRange(value.rangeType, value.rangeNum);
-			details.startValue = dateTimeRange.startValue;
-			details.endValue = dateTimeRange.endValue;
-		}
+		if (value.getAdditionalEventDetails) Object.assign(details, value.getAdditionalEventDetails(selected));
 
 		this._dispatchChangeEvent(dimension, details);
 	}
