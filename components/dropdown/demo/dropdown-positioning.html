@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => (urlParams.get('position') === 'fixed') } } } } };
+	</script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../button/button.js';
+		import '../../button/button-subtle.js';
+		import '../../dialog/dialog.js';
+		import '../dropdown.js';
+		import '../dropdown-content.js';
+		import '../../table/demo/table-test.js';
+	</script>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-dropdown">
+
+		<h2>Dropdown (in a scrollable container)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div style="height: 250px; overflow: scroll;">
+					<p>Gabion warp American Main gunwalls cutlass gally cable gibbet jib keel. Trysail chantey swing the lead hempen halter hang the jib chase Jack Tar furl galleon scurvy. Brig splice the main brace provost pink rutters tender heave to Shiver me timbers belaying pin Brethren of the Coast.</p>
+					<d2l-dropdown prefer-fixed-positioning>
+						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+						<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+							<a href="https://youtu.be/9ze87zQFSak">Google</a>
+							<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
+							<a href="http://www.desire2learn.com">D2L</a>
+						</d2l-dropdown-content>
+					</d2l-dropdown>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<p>Hardtack hang the jib haul wind booty pillage spike hearties Pirate Round tack yard. Piracy fire ship trysail stern scurvy blow the man down skysail salmagundi lee grog blossom. Hands gabion ho schooner lad ballast keel mutiny square-rigged haul wind.</p>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Dropdown (in a table with sticky headers)</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-test-table type="default" sticky-headers sticky-controls></d2l-test-table>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Dropdown (in another dropdown)</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown prefer-fixed-positioning>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+						<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign.</p>
+						<d2l-dropdown prefer-fixed-positioning>
+							<d2l-button-subtle class="d2l-dropdown-opener">Open Nested!</d2l-button-subtle>
+							<d2l-dropdown-content max-width="600" align="start" prefer-fixed-positioning>
+								<a href="https://youtu.be/9ze87zQFSak">Google</a>
+								<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
+								<a href="http://www.desire2learn.com">D2L</a>
+							</d2l-dropdown-content>
+						</d2l-dropdown>
+						<p>Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Dropdown (in a dialog)</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button id="openDialog1">Show Dialog</d2l-button>
+				<d2l-dialog id="dialog1" title-text="Dialog Title">
+					<div>
+						<p>Bilge tack furl dance the hempen jig fathom weigh anchor mizzen Blimey Jack Ketch flogging. Lee galleon avast schooner long clothes scuppers pinnace bucko deadlights gibbet. Nipper brigantine Buccaneer Gold Road matey gangway booty tender killick Brethren of the Coast.</p>
+						<d2l-dropdown prefer-fixed-positioning>
+							<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+							<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+								<a href="https://youtu.be/9ze87zQFSak">Google</a>
+								<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
+								<a href="http://www.desire2learn.com">D2L</a>
+							</d2l-dropdown-content>
+						</d2l-dropdown>
+						<p>Piracy bowsprit Arr shrouds salmagundi scuttle heave down doubloon trysail Jack Ketch. Killick boom Jolly Roger Pieces of Eight crack Jennys tea cup Cat o'nine tails league Privateer topgallant lanyard. Cat o'nine tails coxswain scurvy spirits keelhaul quarterdeck matey nipper scallywag Jolly Roger.</p>
+						<p>Clap of thunder aye Corsair Barbary Coast prow shrouds schooner keel topmast code of conduct. Matey case shot spirits Davy Jones' Locker draft schooner Brethren of the Coast barkadeer jury mast measured fer yer chains. Bilge rat run a rig gaff warp loot clipper belaying pin main sheet lanyard avast.</p>
+						<p>Pieces of Eight lookout Letter of Marque mutiny tender spanker Jack Ketch long clothes crow's nest line. Lass draught six pounders spirits skysail jib American Main chase hulk coxswain. Run a shot across the bow galleon Cat o'nine tails brigantine reef Admiral of the Black wherry quarterdeck keelhaul coffer.</p>
+					</div>
+					<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+				<script>
+					document.querySelector('#openDialog1').addEventListener('click', () => {
+						document.querySelector('#dialog1').opened = true;
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Dropdown (with DOM mutation)</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<div>
+					<div id="mutations-above"></div>
+					<d2l-dropdown prefer-fixed-positioning>
+						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+						<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+							<d2l-button-subtle id="mutations-add-above">Add to Above</d2l-button-subtle>
+						</d2l-dropdown-content>
+					</d2l-dropdown>
+				</div>
+				<script>
+					document.querySelector('#mutations-add-above').addEventListener('click', e => {
+						const mutationsContainer = e.target.parentNode.parentNode.parentNode.querySelector('#mutations-above');
+						const newContent = document.createElement('p');
+						newContent.innerText = 'Blimey brigantine gangplank booty rope\'s end lugger heave down run a rig Yellow Jack dead men tell no tales. Pirate Round scuppers spanker hogshead Davy Jone\'s Locker heave down wench fluke marooned boom. Lanyard salmagundi careen doubloon swing the lead shrouds crow\'s nest parrel gun pressgang.';
+						mutationsContainer.appendChild(newContent);
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<script>
+			document.querySelector('d2l-demo-page').pageTitle = `d2l-dropdown (${ window.D2L.LP.Web.UI.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) ? 'fixed' : 'relative' })`;
+		</script>
+</body>
+
+</html>
