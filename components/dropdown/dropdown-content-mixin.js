@@ -803,7 +803,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
 		if (!this.__repositioning) {
 			requestAnimationFrame(() => {
-				this.__position();
+				this.__position(true);
 				this.__repositioning = false;
 			});
 		}
