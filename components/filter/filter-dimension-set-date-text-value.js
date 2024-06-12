@@ -26,6 +26,7 @@ class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 			 */
 			key: { type: String },
 			/**
+			 * REQUIRED: The preset date/time range that the list item represents
 			 * @type {'today'|'lastHour'|'24hours'|'48hours'|'7days'|'14days'|'30days'|'6months'}
 			 */
 			range: { type: String },
