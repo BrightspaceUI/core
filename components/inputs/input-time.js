@@ -339,7 +339,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
+			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}" prefer-fixed-positioning>
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
@@ -362,6 +362,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
+					prefer-fixed-positioning
 					min-width="195"
 					?opened="${opened}">
 					<d2l-menu

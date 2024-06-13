@@ -256,6 +256,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				trap-focus
 				no-auto-focus
 				mobile-tray="bottom"
+				prefer-fixed-positioning
 				no-padding>
 				<d2l-calendar
 					@d2l-calendar-selected="${this._handleDateSelected}"
@@ -277,7 +278,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<div>${this.emptyText}</div>
 			</div>
 			${errorTooltip}
-			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open>
+			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open prefer-fixed-positioning>
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"

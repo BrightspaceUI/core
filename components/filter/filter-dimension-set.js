@@ -182,7 +182,7 @@ class FilterDimensionSet extends LitElement {
 
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
-		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes, dispatchChangeEvent: e.detail.dispatchChangeEvent });
 	}
 
 	_handleSearchEmptyStateSlotChange(e) {

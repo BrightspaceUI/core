@@ -8,6 +8,7 @@ import '../dropdown/dropdown-menu.js';
 import '../empty-state/empty-state-action-button.js';
 import '../empty-state/empty-state-action-link.js';
 import '../empty-state/empty-state-simple.js';
+import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
@@ -139,6 +140,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				overflow: hidden;
 			}
 
+			.d2l-filter-dimension-set-value-nested-content {
+				display: block;
+			}
+
+			d2l-expand-collapse-content[expanded] {
+				padding-block: 0.5rem;
+				padding-inline: 0.2rem;
+			}
+
 			.d2l-filter-dimension-set-value-text {
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
@@ -237,9 +247,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				<d2l-dropdown-content
 					class="vdiff-target"
 					min-width="285"
-					max-width="420"
+					max-width="450"
 					mobile-tray="right"
 					mobile-breakpoint="768"
+					prefer-fixed-positioning
 					no-padding-header
 					no-padding
 					?opened="${this.opened}"
@@ -280,6 +291,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
 				class="vdiff-target"
+				prefer-fixed-positioning
 				?disabled="${this.disabled}">
 				<d2l-button-subtle
 					class="d2l-dropdown-opener"
@@ -571,16 +583,27 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_createSetDimensionItem(item) {
+		const valueClasses = {
+			'd2l-filter-dimension-set-value': true,
+			'd2l-body-compact': true,
+			'd2l-filter-dimension-set-value-nested-content': item.customSelectionContent
+		};
 		return html`
 			<d2l-list-item
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
 				label="${item.text}"
+				?no-primary-action="${item.customSelectionContent}"
 				selectable
 				?selected="${item.selected}">
-				<div class="d2l-filter-dimension-set-value d2l-body-compact">
+				<div class="${classMap(valueClasses)}">
 					<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+					${item.customSelectionContent ? html`
+						<d2l-expand-collapse-content ?expanded="${item.selected}">
+						${item.customSelectionContent}
+						</d2l-expand-collapse-content>
+					` : nothing}
 					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
 				</div>
 			</d2l-list-item>
@@ -688,6 +711,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dimension = this._getDimensionByKey(e.detail.dimensionKey);
 		const value = e.detail.valueKey && dimension?.values.find(value => value.key === e.detail.valueKey);
 		const toUpdate = e.detail.valueKey ? value : dimension;
+		const shouldDispatchEvent = e.detail.dispatchChangeEvent;
+		let updateOtherThanSelected = true;
 
 		if (!toUpdate) return;
 
@@ -702,6 +727,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			shouldUpdate = true;
 
 			if (prop === 'selected') {
+				updateOtherThanSelected = false;
 				if (newValue) {
 					dimension.appliedCount++;
 					this._totalAppliedCount++;
@@ -726,6 +752,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldResizeDropdown) {
 			this._requestDropdownResize();
 		}
+		if (shouldDispatchEvent) this._performChangeSetDimension(dimension, e.detail.valueKey, value.selected, updateOtherThanSelected);
 	}
 
 	_handleDimensionHide() {
@@ -856,17 +883,20 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return false;
 	}
 
-	_performChangeSetDimension(dimension, valueKey, selected) {
+	_performChangeSetDimension(dimension, valueKey, selected, updateOtherThanSelected) {
 		const value = dimension.values.find(value => value.key === valueKey);
-		if (value.selected === selected) return;
-		value.selected = selected;
+		if (value.selected === selected && !updateOtherThanSelected) return;
 
-		if (selected) {
-			dimension.appliedCount++;
-			this._totalAppliedCount++;
-		} else {
-			dimension.appliedCount--;
-			this._totalAppliedCount--;
+		if (value.selected !== selected) {
+			value.selected = selected;
+
+			if (selected) {
+				dimension.appliedCount++;
+				this._totalAppliedCount++;
+			} else {
+				dimension.appliedCount--;
+				this._totalAppliedCount--;
+			}
 		}
 
 		const details = { valueKey: valueKey, selected: selected };
@@ -887,6 +917,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						value.selected = false;
 						this._setDimensionChangeEvent(dimension, { valueKey: value.key, selected: false }, true);
 					}
+					if (value.clearProperties) value.clearProperties();
 				});
 				break;
 			}
