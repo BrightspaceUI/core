@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css } from 'lit';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
+import { css } from 'lit';
 
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
