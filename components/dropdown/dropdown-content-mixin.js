@@ -285,6 +285,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._verticalOffset = defaultVerticalOffset;
 
 		this.__reposition = this.__reposition.bind(this);
+		this.__onAncestorMutation = this.__onAncestorMutation.bind(this);
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
@@ -458,10 +459,16 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			return (value === 'scroll' || value === 'auto');
 		};
 
-		let node = this;
 		this.__removeRepositionHandlers();
+
+		this._ancestorMutationObserver ??= new MutationObserver(this.__onAncestorMutation);
+		const mutationConfig = { attributes: true, childList: true, subtree: true };
+
+		let node = this;
 		this._scrollablesObserved = [];
 		while (node) {
+
+			// observe scrollables
 			let observeScrollable = false;
 			if (node.nodeType === Node.ELEMENT_NODE) {
 				observeScrollable = isScrollable(node, 'overflow-y') || isScrollable(node, 'overflow-x');
@@ -472,6 +479,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				this._scrollablesObserved.push(node);
 				node.addEventListener('scroll', this.__reposition);
 			}
+
+			// observe mutations on each DOM scope (excludes sibling scopes... can only do so much)
+			if (node.nodeType === Node.DOCUMENT_NODE || (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && node.host)) {
+				this._ancestorMutationObserver.observe(node, mutationConfig);
+			}
+
 			node = getComposedParent(node);
 		}
 
@@ -526,6 +539,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	__handleHeaderSlotChange(e) {
 		this._hasHeader = e.target.assignedNodes().length !== 0;
+	}
+
+	__onAncestorMutation(mutations) {
+		const opener = this.__getOpener();
+		// ignore mutations that are within this dropdown
+		const reposition = !!mutations.find(mutation => !isComposedAncestor(opener, mutation.target));
+		if (reposition) this.__reposition();
 	}
 
 	__onAutoCloseClick(e) {
@@ -791,12 +811,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	__removeRepositionHandlers() {
 		if (!this._fixedPositioning) return;
-		if (!this._scrollablesObserved) return;
 
-		this._scrollablesObserved.forEach(node => {
+		this._scrollablesObserved?.forEach(node => {
 			node.removeEventListener('scroll', this.__reposition);
 		});
 		this._scrollablesObserved = null;
+
+		this._ancestorMutationObserver?.disconnect();
 	}
 
 	__reposition() {
