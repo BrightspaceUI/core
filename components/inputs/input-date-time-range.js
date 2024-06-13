@@ -282,7 +282,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-fieldset>
 		`,
-		'Accessible Label',
+		this.localize('components.input-date-time-range.interactive-label'),
 		() => {
 			this.shadowRoot.querySelector('d2l-input-date-time').focus();
 		});
