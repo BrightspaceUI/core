@@ -1,6 +1,12 @@
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
+const intersectionObserver = new IntersectionObserver(entries => {
+	entries.forEach(entry => {
+		entry.target.__updateContentVisibility(entry.isIntersecting);
+	});
+}, { threshold: 0 });
+
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -91,6 +97,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
 
+		if (this.dropdownOpened) {
+			intersectionObserver.observe(this);
+		}
 		if (this.openOnHover) {
 			document.body.addEventListener('mouseup', this._onOutsideClick);
 		}
@@ -103,6 +112,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseup', this.__onMouseUp);
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
+
+		intersectionObserver.unobserve(this);
 
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
@@ -207,6 +218,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onClosed() {
+		intersectionObserver.unobserve(this);
+
 		const opener = this.getOpenerElement();
 		if (!opener) {
 			return;
@@ -280,6 +293,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.setAttribute('aria-expanded', 'true');
 		opener.setAttribute('active', 'true');
 		this._isFading = false;
+
+		intersectionObserver.observe(this);
 	}
 
 	__onOpenerMouseUp(e) {
@@ -299,6 +314,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				this.openDropdown(false);
 			}
 		} else this.toggleOpen(true);
+	}
+
+	__updateContentVisibility(visible) {
+		this.__getContentElement().offscreen = !visible;
 	}
 
 	/* used by open-on-hover option */
