@@ -609,7 +609,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					</div>
 					${item.customSelectionContent ? html`
 						<d2l-expand-collapse-content ?expanded="${item.selected}">
-							${item.customSelectionContent}
+							${item.customSelectionContent()}
 						</d2l-expand-collapse-content>
 					` : nothing}
 					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
