@@ -97,7 +97,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
 
-		if (this.dropdownOpened) {
+		if (this._fixedPositioning && this.dropdownOpened) {
 			intersectionObserver.observe(this);
 		}
 		if (this.openOnHover) {
@@ -113,8 +113,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
 
-		intersectionObserver.unobserve(this);
-
+		if (this._fixedPositioning) {
+			intersectionObserver.unobserve(this);
+		}
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
 		}
@@ -218,7 +219,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onClosed() {
-		intersectionObserver.unobserve(this);
+		if (this._fixedPositioning) {
+			intersectionObserver.unobserve(this);
+		}
 
 		const opener = this.getOpenerElement();
 		if (!opener) {
@@ -294,7 +297,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.setAttribute('active', 'true');
 		this._isFading = false;
 
-		intersectionObserver.observe(this);
+		if (this._fixedPositioning) {
+			intersectionObserver.observe(this);
+		}
 	}
 
 	__onOpenerMouseUp(e) {
