@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css } from 'lit';
-import { offscreenStyleDeclarations } from '../offscreen/offscreen.js';
+import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
@@ -351,6 +351,6 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([offscreen]) {
-		${offscreenStyleDeclarations}
+		${_offscreenStyleDeclarations}
 	}
 `;

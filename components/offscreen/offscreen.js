@@ -4,7 +4,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * A private helper declarations that should not be used by general consumers
  */
-export const offscreenStyleDeclarations = css`
+export const _offscreenStyleDeclarations = css`
 		direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`}); /* stylelint-disable-line @stylistic/string-quotes */
 		height: 1px;
 		inset-inline-start: -10000px;
@@ -17,7 +17,7 @@ export const offscreenStyleDeclarations = css`
 
 export const offscreenStyles = css`
 	.d2l-offscreen {
-		${offscreenStyleDeclarations}
+		${_offscreenStyleDeclarations}
 	}
 `;
 
@@ -29,7 +29,7 @@ class Offscreen extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				${offscreenStyleDeclarations}
+				${_offscreenStyleDeclarations}
 			}
 		`;
 	}
