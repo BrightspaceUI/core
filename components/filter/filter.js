@@ -67,6 +67,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			text: { type: String },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
+			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};
 	}
@@ -212,6 +213,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
+		this._maxWidthDefault = 420;
+		this._minWidth = 285;
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
 
@@ -247,12 +250,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
+		const maxWidth = this._minWidth > this._maxWidthDefault ? this._minWidth : this._maxWidthDefault;
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
 					class="vdiff-target"
-					min-width="285"
-					max-width="450"
+					min-width="${this._minWidth}"
+					max-width="${maxWidth}"
 					mobile-tray="right"
 					mobile-breakpoint="768"
 					prefer-fixed-positioning
@@ -266,8 +270,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			: html`
 				<d2l-dropdown-menu
 					class="vdiff-target"
-					min-width="285"
-					max-width="420"
+					min-width="${this._minWidth}"
+					max-width="${maxWidth}"
 					mobile-tray="right"
 					mobile-breakpoint="768"
 					no-padding-header
@@ -503,6 +507,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				<p class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</p>
 			`;
 		}
+		if (dimension.minWidth) this._minWidth = dimension.minWidth;
 
 		if (this._isDimensionEmpty(dimension)) {
 			const emptyState = dimension.setEmptyState
@@ -604,8 +609,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?selected="${item.selected}">
 				<div class="${classMap(valueClasses)}">
 					<div class="d2l-filter-dimension-set-value-text">${item.text}${item.customSelectionContent
-						? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
-						: nothing}
+	? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
+	: nothing}
 					</div>
 					${item.customSelectionContent ? html`
 						<d2l-expand-collapse-content ?expanded="${item.selected}">
@@ -861,6 +866,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
 					info.hasMore = dimension.hasMore;
+					info.minWidth = dimension.minWidth;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
 					info.selectedFirst = dimension.selectedFirst;

@@ -37,6 +37,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * @ignore
+			 */
+			minWidth: { type: Number },
+			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -138,14 +142,17 @@ class FilterDimensionSet extends LitElement {
 		const valueNodes = this._getSlottedNodes();
 		let noSearchSupport = false;
 		let enforceSingleSelection = false;
+		let minWidth = undefined;
 		const values = valueNodes.map(value => {
 			if (value._noSearchSupport) noSearchSupport = true;
 			if (value._enforceSingleSelection) enforceSingleSelection = true;
+			if (value._minWidth) minWidth = value._minWidth;
 
 			return value.getValueDetails();
 		});
 		if (noSearchSupport) this.searchType = 'none';
 		if (enforceSingleSelection) this.selectionSingle = true;
+		if (minWidth) this.minWidth = minWidth;
 		return values;
 	}
 
