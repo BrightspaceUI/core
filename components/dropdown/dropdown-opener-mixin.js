@@ -5,7 +5,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
 	entries.forEach(entry => {
 		entry.target.__updateContentVisibility(entry.isIntersecting);
 	});
-}, { threshold: 0 });
+}, { threshold: 0 }); // 0-1 (0 -> intersection requires any pixel visible, 1 -> intersection requires all pixels visible)
 
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
