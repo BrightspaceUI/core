@@ -165,6 +165,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-pointer'
 			},
 			/**
+			 * Private, set by the opener depending on whether it's intersecting
+			 * @ignore
+			 */
+			offscreen: {
+				type: Boolean,
+				reflect: true
+			},
+			/**
 			 * Whether the dropdown is open or not
 			 * @type {boolean}
 			 */

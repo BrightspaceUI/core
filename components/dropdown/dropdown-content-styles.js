@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { css } from 'lit';
 
 const pointerLength = 16;
@@ -349,4 +350,7 @@ export const dropdownContentStyles = css`
 		}
 	}
 
+	:host([offscreen]) {
+		${_offscreenStyleDeclarations}
+	}
 `;
