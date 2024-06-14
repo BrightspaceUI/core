@@ -142,15 +142,22 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-filter-dimension-set-value-nested-content {
-				display: block;
+				flex-direction: column;
+				gap: 0;
+			}
+
+			.d2l-filter-dimension-set-value-nested-content > div {
+				align-items: center;
+				column-gap: 0.3rem;
+				display: flex;
 			}
 
 			.d2l-filter-dimension-set-value-nested-content d2l-icon {
-				padding-bottom: 0.2rem;
-				padding-inline-start: 0.5rem;
+				flex-shrink: 0;
 			}
 
 			d2l-expand-collapse-content[expanded] {
+				flex: 0 0 100%;
 				padding-block: 0.5rem;
 				padding-inline: 0.2rem;
 			}
@@ -250,7 +257,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
-		const maxWidth = this._minWidth > this._maxWidthDefault ? this._minWidth : this._maxWidthDefault;
+		const maxWidth = this._minWidth > this._maxWidthDefault ? (this._minWidth + 10) : this._maxWidthDefault;
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
@@ -608,9 +615,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				selectable
 				?selected="${item.selected}">
 				<div class="${classMap(valueClasses)}">
-					<div class="d2l-filter-dimension-set-value-text">${item.text}${item.customSelectionContent
-	? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
-	: nothing}
+					<div>
+						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+						${item.customSelectionContent
+		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
+		: nothing}
 					</div>
 					${item.customSelectionContent ? html`
 						<d2l-expand-collapse-content ?expanded="${item.selected}">

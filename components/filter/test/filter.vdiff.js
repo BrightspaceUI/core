@@ -2,6 +2,7 @@ import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-date-text-value.js';
+import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-dimension-set-value.js';
 import { clickElem, expect, fixture, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -87,6 +88,23 @@ function createSingleDimDate() {
 		</d2l-filter>
 	`;
 }
+function createSingleDimDateCustom(opts) {
+	const { long, customSelected, longCustomSelected, opened, startValue } = { long: false, customSelected: false, longCustomSelected: false, opened: false, ...opts };
+	return html`
+		<d2l-filter ?opened="${opened}">
+			<d2l-filter-dimension-set key="dates" text="Dates">
+				<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" ?selected="${!customSelected && !longCustomSelected}"></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+				<d2l-filter-dimension-set-date-time-range-value key="custom" ?selected="${customSelected && !longCustomSelected}" start-value="${ifDefined(startValue)}"></d2l-filter-dimension-set-date-time-range-value>
+				<d2l-filter-dimension-set-date-time-range-value key="custom2" text="Other text" ></d2l-filter-dimension-set-date-time-range-value>
+				${ long ? html`<d2l-filter-dimension-set-date-time-range-value key="custom3" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." ?selected="${longCustomSelected}"></d2l-filter-dimension-set-date-time-range-value>` : nothing }
+			</d2l-filter-dimension-set>
+		</d2l-filter>
+	`;
+}
 
 function createEmptyMultipleDims(opts) {
 	const { long, text } = { long: false, ...opts };
@@ -138,6 +156,10 @@ describe('filter', () => {
 				{ name: 'multi-selection-all-selected', template: createSingleDim({ selected: true, selectAll: true }) },
 				{ name: 'multi-selection-clamping', template: createSingleDim({ selected: true, selectAll: true, clampingValues: true }) },
 				{ name: 'dates', template: createSingleDimDate() },
+				{ name: 'dates-long', template: createSingleDimDateCustom({ long: true }) },
+				{ name: 'dates-custom-selected', template: createSingleDimDateCustom({ customSelected: true }) },
+				{ name: 'dates-custom-selected-start-value', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z' }) },
+				{ name: 'dates-long-custom-selected', template: createSingleDimDateCustom({ long: true, longCustomSelected: true }) },
 			].forEach(({ name, template }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
@@ -208,22 +230,46 @@ describe('filter', () => {
 			});
 		});
 
-		it('press-clear-dates', async() => {
-			const elem = await fixture(html`
-				<d2l-filter opened>
-					<d2l-filter-dimension-set key="dates" text="Dates">
-						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
-						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
-						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
-						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
-					</d2l-filter-dimension-set>
-				</d2l-filter>
-			`);
+		describe('dates', () => {
+			it('press-clear-dates', async() => {
+				const elem = await fixture(html`
+					<d2l-filter opened>
+						<d2l-filter-dimension-set key="dates" text="Dates">
+							<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+							<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+							<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+							<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+						</d2l-filter-dimension-set>
+					</d2l-filter>
+				`);
 
-			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle'));
-			await hoverAt(0, 0);
-			await expect(elem).to.be.golden();
+				await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+				await hoverAt(0, 0);
+				await expect(elem).to.be.golden();
+			});
+
+			it('press-clear-dates-custom-date-selected', async() => {
+				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
+
+				await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+				await hoverAt(0, 0);
+				await expect(elem).to.be.golden();
+			});
+
+			it('select-other-option-then-custom-again', async() => {
+				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
+				await clickElem(elem.shadowRoot.querySelector('d2l-list-item'));
+				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]'));
+				await hoverAt(0, 0);
+				await expect(elem).to.be.golden();
+			});
+
+			it('open custom date input', async() => {
+				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
+				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]').querySelector('d2l-input-date-time-range').setAttribute('start-opened', 'start-opened');
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
@@ -278,8 +324,15 @@ describe('filter', () => {
 					<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
 					<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="long" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." select-all search-type="none">
-					<d2l-filter-dimension-set-value key="long" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." selected></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set key="datesCustom" text="Dates with Custom">
+					<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="long" text="Very very very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." select-all search-type="none">
+					<d2l-filter-dimension-set-value key="long" text="Very very very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." selected></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
 			</d2l-filter>
 		`;
@@ -289,6 +342,7 @@ describe('filter', () => {
 				{ name: 'empty', template: createEmptyMultipleDims({ long: true }) },
 				{ name: 'dates', template: multipleDimsDate },
 				{ name: 'nested-dates', template: multipleDimsDate, dim: 2 },
+				{ name: 'nested-dates-custom', template: multipleDimsDate, dim: 3 },
 				{ name: 'selected', template: multipleDims },
 				...[{ dim: 1, height: 439 }, { dim: 2, height: 151 }, { dim: 3, height: 79 }].map(({ dim, height }) =>
 					({ name: `nested-dim-${dim}`, dim, height, template: multipleDims })
