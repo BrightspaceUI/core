@@ -9,6 +9,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -65,7 +66,7 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
-class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {
+class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))))) {
 
 	static get properties() {
 		return {
@@ -220,7 +221,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 
 		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
-		return html`
+		return this.renderInteractiveContainer(html`
 			${tooltipStart}
 			${tooltipEnd}
 			<d2l-input-fieldset
@@ -280,7 +281,9 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 				</d2l-input-date-time-range-to>
 				<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-fieldset>
-		`;
+		`,
+		this.localize('components.input-date-time-range.interactive-label'),
+		() => { this.shadowRoot.querySelector('d2l-input-date-time').focus(); });
 	}
 
 	updated(changedProperties) {
