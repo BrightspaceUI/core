@@ -263,6 +263,40 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
 
+### Dimension Set Value: Custom Preset Date Range
+
+In order to create a selectable filter list item that is a text item representing a range that is NOT one of the presets available in the `d2l-filter-dimension-set-date-text-value` component (for example, 60 days), use the regular "Dimension Set Value" component (`d2l-filter-dimension-set-value`) with the localized text of the range in the `text` field, and handle its selection as is appropriate for the consuming application.
+
+The `getUTCDateTimeRange(rangeType, diff)` helper function can be used in order to get the start and end date values for the range in UTC, if required, where a negative `diff` represents a range in the past and positive represents a range in the future, and `rangeType` is one of `seconds`, `minutes`, `hours`, `days`, `months`, or `years`.
+
+<!-- docs: demo code align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+  import { getUTCDateTimeRange } from '@brightspace-ui/core/helpers/dateTime.js';
+
+  document.querySelector('d2l-filter').addEventListener('d2l-filter-change', e => {
+    const changes = e.detail.dimensions[0].changes;
+    if (!changes || changes.length === 0) return;
+    let dateTimeRange;
+    if (changes[0].valueKey === '60days' && changes[0].selected) {
+      dateTimeRange = getUTCDateTimeRange('days', -60);
+    } else if (changes[0].valueKey === '8months' && changes[0].selected) {
+      dateTimeRange = getUTCDateTimeRange('months', -8);
+    }
+    if (dateTimeRange) console.log('start date', dateTimeRange.startValue, 'end date', dateTimeRange.endValue);
+  });
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates" selection-single>
+    <d2l-filter-dimension-set-value key="60days" text="60 days"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="8months" text="8 months"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+
 ## Search and Paging
 
 Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
