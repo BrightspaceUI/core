@@ -77,6 +77,11 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			opened: { type: Boolean },
 			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
+			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -248,6 +253,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				label-hidden
 				.labelRequired="${false}"
 				max-height="430"
+				?prefer-fixed-positioning="${this.preferFixedPositioning}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				.value="${parsedValue}">
@@ -277,6 +283,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 						max-value="${ifDefined(this._maxValueLocalized)}"
 						min-value="${ifDefined(this._minValueLocalized)}"
 						?opened="${dateOpened}"
+						?prefer-fixed-positioning="${this.preferFixedPositioning}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						style="${styleMap(dateStyle)}"

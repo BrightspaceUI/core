@@ -131,6 +131,11 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
+			/**
 			 * Indicates that values are required
 			 * @type {boolean}
 			 */
@@ -248,6 +253,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
 							?opened="${this.startOpened}"
+							?prefer-fixed-positioning="${this.preferFixedPositioning}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="startOfDay"
@@ -270,6 +276,7 @@ class InputDateTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMi
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
 							?opened="${this.endOpened}"
+							?prefer-fixed-positioning="${this.preferFixedPositioning}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="endOfDay"
