@@ -8,6 +8,7 @@ import '../dropdown/dropdown-menu.js';
 import '../empty-state/empty-state-action-button.js';
 import '../empty-state/empty-state-action-link.js';
 import '../empty-state/empty-state-simple.js';
+import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
@@ -132,11 +133,19 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-filter-dimension-set-value {
+				align-items: center;
 				color: var(--d2l-color-ferrite);
 				display: flex;
 				gap: 0.45rem;
 				line-height: unset;
 				overflow: hidden;
+			}
+			.d2l-filter-dimension-set-value d2l-icon {
+				flex-shrink: 0;
+			}
+			d2l-expand-collapse-content[expanded] {
+				padding-block: 0.5rem;
+				padding-inline: 0.2rem;
 			}
 
 			.d2l-filter-dimension-set-value-text {
@@ -577,11 +586,22 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?hidden="${item.hidden}"
 				key="${item.key}"
 				label="${item.text}"
+				?no-primary-action="${item.additionalContent && item.selected}"
 				selectable
 				?selected="${item.selected}">
-				<div class="d2l-filter-dimension-set-value d2l-body-compact">
-					<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
-					${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+				<div>
+					<div class="d2l-filter-dimension-set-value d2l-body-compact">
+						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+						${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
+						${item.additionalContent
+		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
+		: nothing}
+					</div>
+					${item.additionalContent ? html`
+						<d2l-expand-collapse-content ?expanded="${item.selected}">
+							${item.additionalContent()}
+						</d2l-expand-collapse-content>
+					` : nothing}
 				</div>
 			</d2l-list-item>
 		`;
