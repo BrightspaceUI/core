@@ -108,6 +108,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	}
 
 	_getCustomContent() {
+		const dateTimeRangeInputHeight = 515 + 153; // height of date picker and date-time range inputs when wrapped and font-size: 24px
 		return html`
 			<d2l-input-date-time-range
 				@change="${this._handleDateChange}"
@@ -117,7 +118,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				end-value="${ifDefined(this.endValue)}"
 				label="Custom Range"
 				label-hidden
-				start-value="${ifDefined(this.startValue)}"
+				start-value="2018-02-02T20:00:00.000Z"
+				style="min-height: calc(${dateTimeRangeInputHeight}px + 0.5rem); min-width: ${this._minWidth}px"
 			></d2l-input-date-time-range>
 		`;
 	}

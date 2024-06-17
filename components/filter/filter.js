@@ -614,7 +614,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?no-primary-action="${item.customSelectionContent && item.selected}"
 				selectable
 				?selected="${item.selected}">
-				<div class="${classMap(valueClasses)}">
+				<div class="${classMap(valueClasses)}" style="overflow-y: scroll;">
 					<div>
 						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
 						${item.customSelectionContent
