@@ -96,6 +96,11 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
+			/**
 			 * Indicates that values are required
 			 * @type {boolean}
 			 */
@@ -248,6 +253,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 						label="${startLabel}"
 						?label-hidden="${this.childLabelsHidden}"
 						?opened="${this.startOpened}"
+						?prefer-fixed-positioning="${this.preferFixedPositioning}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="left"
@@ -266,6 +272,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 						label="${endLabel}"
 						?label-hidden="${this.childLabelsHidden}"
 						?opened="${this.endOpened}"
+						?prefer-fixed-positioning="${this.preferFixedPositioning}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="right"
