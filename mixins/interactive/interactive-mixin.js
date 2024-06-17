@@ -1,3 +1,4 @@
+import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -42,6 +43,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 	constructor() {
 		super();
+		this._dismissibleId = null;
 		this._focusingToggle = false;
 		this._hasInteractiveAncestor = false;
 		this._interactive = false;
@@ -54,6 +56,13 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 			return (node.nodeType === Node.ELEMENT_NODE && (node.hasAttribute('grid') || node.getAttribute('role') === 'grid'));
 		});
 		this._hasInteractiveAncestor = (parentGrid !== null);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+
+		clearDismissible(this._dismissibleId);
+		this._dismissibleId = null;
 	}
 
 	focus() {
@@ -96,27 +105,31 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		`;
 	}
 
+	async _handleFocusExit() {
+		this._interactive = false;
+		await this.updateComplete;
+		this.shadowRoot.querySelector('.interactive-toggle').focus();
+	}
+
 	_handleInteractiveContentFocusIn() {
 		this._interactive = true;
+		this.__dismissibleId = setDismissible(async() => {
+			await this._handleFocusExit();
+		});
 	}
 
 	_handleInteractiveContentFocusOut(e) {
 		if (isComposedAncestor(this.shadowRoot.querySelector('.interactive-container-content'), e.relatedTarget)) return;
 		// focus moved out of the interactive content
 		this._interactive = false;
+		if (this.__dismissibleId) {
+			clearDismissible(this.__dismissibleId);
+			this.__dismissibleId = null;
+		}
 	}
 
 	async _handleInteractiveKeyDown(e) {
-		if (this._interactive) {
-			if (e.keyCode === keyCodes.ESCAPE && !e.target?.opened) {
-				e.stopPropagation();
-				this._interactive = false;
-				await this.updateComplete;
-				this.shadowRoot.querySelector('.interactive-toggle').focus();
-			} else if (e.keyCode === keyCodes.TAB) {
-				e.stopPropagation();
-			}
-		}
+		if (e.keyCode === keyCodes.TAB && this._interactive) e.stopPropagation();
 	}
 
 	_handleInteractiveToggleBlur() {
@@ -135,9 +148,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 
 	async _handleInteractiveTrapEndFocus() {
 		// focus moved to trap-end either forwards from contents or backwards from outside - focus interactive toggle
-		this._interactive = false;
-		await this.updateComplete;
-		this.shadowRoot.querySelector('.interactive-toggle').focus();
+		await this._handleFocusExit();
 	}
 
 	async _handleInteractiveTrapStartFocus(e) {
@@ -147,9 +158,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 			if (nextFocusable) nextFocusable.focus();
 		} else {
 			// focus moved to trap-start backwards from within contents - toggle to non-interactive and apply focus
-			this._interactive = false;
-			await this.updateComplete;
-			this.shadowRoot.querySelector('.interactive-toggle').focus();
+			await this._handleFocusExit();
 		}
 	}
 
