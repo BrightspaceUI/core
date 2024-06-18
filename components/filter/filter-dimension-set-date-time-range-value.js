@@ -49,8 +49,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		this.selected = false;
 		this._dispatchFilterChangeEvent = false;
 		this._enforceSingleSelection = true;
-		this._minWidth = 375;
 		this._filterSetValue = true;
+		this._minWidth = 375;
 		this._noSearchSupport = true;
 
 		this._handleDateChange = this._handleDateChange.bind(this);
@@ -107,7 +107,6 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		return html`
 			<d2l-input-date-time-range
 				@change="${this._handleDateChange}"
-				@d2l-dropdown-close="${this._handleDateRangeDropdownClose}"
 				child-labels-hidden
 				data-dimensionvaluekey="${this.key}"
 				end-value="${ifDefined(this.endValue)}"
@@ -129,10 +128,6 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		this.endValue = e.target.endValue;
 
 		this._dispatchFilterChangeEvent = true;
-	}
-
-	_handleDateRangeDropdownClose(e) {
-		e.stopPropagation();
 	}
 }
 

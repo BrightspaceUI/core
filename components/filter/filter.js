@@ -34,6 +34,7 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
 
 const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
+const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
 
 /**
@@ -246,7 +247,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
-					class="vdiff-target"
+					class="vdiff-target ${FILTER_CONTENT_CLASS}"
 					min-width="${this._minWidth}"
 					max-width="420"
 					mobile-tray="right"
@@ -261,7 +262,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</d2l-dropdown-content>`
 			: html`
 				<d2l-dropdown-menu
-					class="vdiff-target"
+					class="vdiff-target ${FILTER_CONTENT_CLASS}"
 					min-width="${this._minWidth}"
 					max-width="420"
 					mobile-tray="right"
@@ -811,12 +812,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleDropdownClose(e) {
+		if (!e.target.classList?.contains(FILTER_CONTENT_CLASS)) return;
+
 		this.opened = false;
 		this._activeDimensionKey = null;
 		this._stopPropagation(e);
 	}
 
 	_handleDropdownOpen(e) {
+		if (!e.target.classList?.contains(FILTER_CONTENT_CLASS)) return;
+
 		this.opened = true;
 		if (this._dimensions.length === 1) {
 			const dimension = this._dimensions[0];
