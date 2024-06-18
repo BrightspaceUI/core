@@ -46,7 +46,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 			height: e.detail.height + tabListRect.height + 52,
 			width: e.detail.width
 		};
-		this.__position(!this._initializingHeight, rect);
+		this.__position(rect, { updateAboveBelow: this._initializingHeight });
 		this._initializingHeight = false;
 	}
 
@@ -56,7 +56,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 	}
 
 	_onTabSelected() {
-		this.__position(false);
+		this.__position();
 	}
 
 }
