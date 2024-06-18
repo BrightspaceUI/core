@@ -67,6 +67,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			text: { type: String },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
+			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};
 	}
@@ -144,8 +145,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-shrink: 0;
 			}
 			d2l-expand-collapse-content[expanded] {
+				margin-inline-start: -2rem;
 				padding-block: 0.5rem;
-				padding-inline: 0.2rem;
 			}
 
 			.d2l-filter-dimension-set-value-text {
@@ -206,6 +207,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
+		this._minWidth = 285;
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
 
@@ -245,13 +247,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content
 					class="vdiff-target"
-					min-width="285"
+					min-width="${this._minWidth}"
 					max-width="420"
 					mobile-tray="right"
 					mobile-breakpoint="768"
 					no-padding-header
 					no-padding
 					?opened="${this.opened}"
+					prefer-fixed-positioning
 					?trap-focus="${!this._isDimensionEmpty(this._dimensions[0])}">
 					${header}
 					${dimensions}
@@ -259,12 +262,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			: html`
 				<d2l-dropdown-menu
 					class="vdiff-target"
-					min-width="285"
+					min-width="${this._minWidth}"
 					max-width="420"
 					mobile-tray="right"
 					mobile-breakpoint="768"
 					no-padding-header
 					?opened="${this.opened}"
+					prefer-fixed-positioning
 					trap-focus>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
@@ -289,7 +293,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
 				class="vdiff-target"
-				?disabled="${this.disabled}">
+				?disabled="${this.disabled}"
+				prefer-fixed-positioning>
 				<d2l-button-subtle
 					class="d2l-dropdown-opener"
 					description="${description}"
@@ -496,6 +501,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			`;
 		}
 
+		if (dimension.minWidth) this._minWidth = dimension.minWidth;
 		if (this._isDimensionEmpty(dimension)) {
 			const emptyState = dimension.setEmptyState
 				? this._createEmptyState(dimension.setEmptyState, dimension.key)
@@ -633,6 +639,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
+	_dispatchChangeEventValueDataChange(dimension, value, valueKey) {
+		const details = { valueKey: valueKey, selected: value.selected };
+		if (value.getAdditionalEventDetails) Object.assign(details, value.getAdditionalEventDetails(value.selected));
+		this._dispatchChangeEvent(dimension, details);
+	}
+
 	_dispatchDimensionFirstOpenEvent(dimension) {
 		if (!this._openedDimensions.includes(dimension.key)) {
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
@@ -746,6 +758,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		if (shouldResizeDropdown) {
 			this._requestDropdownResize();
 		}
+		if (e.detail.dispatchChangeEvent) this._dispatchChangeEventValueDataChange(dimension, value, e.detail.valueKey);
 	}
 
 	_handleDimensionHide() {
@@ -846,6 +859,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					info.headerText = dimension.headerText;
 					info.introductoryText = dimension.introductoryText;
 					info.hasMore = dimension.hasMore;
+					info.minWidth = dimension.minWidth;
 					info.searchType = dimension.searchType;
 					info.searchValue = '';
 					info.selectedFirst = dimension.selectedFirst;
