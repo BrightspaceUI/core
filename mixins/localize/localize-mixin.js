@@ -6,95 +6,37 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import IntlMessageFormat from 'intl-messageformat';
 
-export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends superclass {
-
-	static get properties() {
-		return {
-			__resources: { type: Object, attribute: false }
-		};
-	}
+const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends superclass {
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
+	#pristine = true;
+	#resolveResourcesLoaded;
 
-	constructor() {
-		super();
-		this.__resourcesLoadedPromise = new Promise((resolve) => {
-			let first = true;
-			this.__languageChangeCallback = () => {
-				if (!this._hasResources()) return;
-				const localizeResources = this.constructor._getAllLocalizeResources();
-				const resourcesLoadedPromise = Promise.all(localizeResources);
-				resourcesLoadedPromise
-					.then((results) => {
-						if (results.length === 0) {
-							return;
-						}
-						const resources = {};
-						for (const res of results) {
-							const language = res.language;
-							for (const [key, value] of Object.entries(res.resources)) {
-								resources[key] = { language, value };
-							}
-						}
-						this.__resources = resources;
-						this._onResourcesChange();
-						if (first) {
-							resolve();
-							first = false;
-						}
-					});
-			};
-		});
-
-		this.__updatedProperties = new Map();
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this.constructor.documentLocaleSettings.addChangeListener(this.__languageChangeCallback);
-		this.__languageChangeCallback();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.constructor.documentLocaleSettings.removeChangeListener(this.__languageChangeCallback);
-		this.__updatedProperties.clear();
-	}
-
-	async getUpdateComplete() {
-		await super.getUpdateComplete();
-		const hasResources = this._hasResources();
-		const resourcesLoaded = this.__resources !== undefined;
-		if (!hasResources || resourcesLoaded) {
-			return;
-		}
-		await this.__resourcesLoadedPromise;
-	}
-
-	shouldUpdate(changedProperties) {
-
-		const hasResources = this._hasResources();
-		if (!hasResources) {
-			return super.shouldUpdate(changedProperties);
-		}
-
-		const ready = this.__resources !== undefined;
-		if (!ready) {
-			changedProperties.forEach((oldValue, propName) => {
-				this.__updatedProperties.set(propName, oldValue);
+	#languageChangeCallback() {
+		debugger;
+		if (!this._hasResources()) return;
+		const localizeResources = this.constructor._getAllLocalizeResources();
+		const resourcesLoadedPromise = Promise.all(localizeResources);
+		resourcesLoadedPromise
+			.then((results) => {
+				if (results.length === 0) {
+					return;
+				}
+				const resources = {};
+				for (const res of results) {
+					const language = res.language;
+					for (const [key, value] of Object.entries(res.resources)) {
+						resources[key] = { language, value };
+					}
+				}
+				this.__resources = resources;
+				this._onResourcesChange();
+				if (this.#pristine) {
+					console.log('resourcesLoadedPromise resolved');
+					this.#resolveResourcesLoaded();
+					this.#pristine = false;
+				}
 			});
-			return false;
-		}
-
-		this.__updatedProperties.forEach((oldValue, propName) => {
-			if (!changedProperties.has(propName)) {
-				changedProperties.set(propName, oldValue);
-			}
-		});
-		this.__updatedProperties.clear();
-
-		return super.shouldUpdate(changedProperties);
-
 	}
 
 	localize(key) {
@@ -151,6 +93,17 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		return formattedMessage;
 	}
 
+	onConnected() {
+		LocalizeClass.documentLocaleSettings.addChangeListener(() => this.#languageChangeCallback());
+		this.#languageChangeCallback();
+	}
+
+	onDisconnected() {
+		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#languageChangeCallback);
+	}
+
+	__resourcesLoadedPromise = new Promise(r => this.#resolveResourcesLoaded = r);
+
 	static _generatePossibleLanguages(config) {
 
 		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase()).concat('en');
@@ -181,14 +134,119 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 	}
 
 	_hasResources() {
-		return this.constructor['getLocalizeResources'] !== undefined;
+		return this.constructor.localizeConfig ? Boolean(this.constructor.localizeConfig.importFunc) : this.constructor.getLocalizeResources !== undefined;
 	}
 
 	_onResourcesChange() {
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-localize-resources-change'));
+		this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
+		this.onResourcesChange?.();
 	}
 
+};
+
+export const Localize = class extends getLocalizeClass() {
+	static async getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
+
+		// in dev, don't request unsupported langpacks
+		if (!importFunc.toString().includes('switch') && !useBrowserLangs) {
+			langs = langs.filter(lang => supportedLangpacks.includes(lang));
+		}
+
+		for (const lang of [...langs, fallbackLang]) {
+
+			const resources = await Promise.resolve(importFunc(lang)).catch(() => {});
+
+			if (resources) {
+
+				if (osloCollection) {
+					return await getLocalizeOverrideResources(
+						lang,
+						resources,
+						() => osloCollection
+					);
+				}
+
+				return {
+					language: lang,
+					resources
+				};
+			}
+		}
+	}
+
+	connect() {
+		this.onConnected();
+	}
+
+	disconnect() {
+		this.onDisconnected();
+	}
+
+};
+
+window.LocalizeClass = Localize;
+window.localizeMarkup = localizeMarkup;
+
+export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends getLocalizeClass(superclass) {
+
+	static get properties() {
+		return {
+			__resources: { type: Object, attribute: false }
+		};
+	}
+
+	#updatedProperties = new Map();
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.onConnected();
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.onDisconnected();
+		this.#updatedProperties.clear();
+	}
+
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		const hasResources = this._hasResources();
+		const resourcesLoaded = this.__resources !== undefined;
+		if (!hasResources || resourcesLoaded) {
+			return;
+		}
+		await this.__resourcesLoadedPromise;
+	}
+
+	shouldUpdate(changedProperties) {
+
+		const hasResources = this._hasResources();
+		if (!hasResources) {
+			return super.shouldUpdate(changedProperties);
+		}
+
+		const ready = this.__resources !== undefined;
+
+		/* is this necessary? > */
+		if (!ready) {
+			changedProperties.forEach((oldValue, propName) => {
+				this.#updatedProperties.set(propName, oldValue);
+			});
+			return false;
+		}
+
+		this.#updatedProperties.forEach((oldValue, propName) => {
+			if (!changedProperties.has(propName)) {
+				changedProperties.set(propName, oldValue);
+			}
+		});
+		this.#updatedProperties.clear();
+		/* < is this necessary? */
+
+		return super.shouldUpdate(changedProperties);
+
+	}
 });
 
 export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(superclass) {
@@ -237,12 +295,16 @@ const disallowedTagsRegex = new RegExp(`<(?!${allowedAfterTriangleBracket})`);
 
 function validateMarkup(content, applyRegex) {
 	if (content) {
-		if (content.map) return content.forEach(item => validateMarkup(item));
+		if (content.forEach) { content.forEach(item => validateMarkup(item)); return; }
 		if (content._localizeMarkup) return;
 		if (Object.hasOwn(content, '_$litType$')) throw markupError;
 		if (applyRegex && content.constructor === String && disallowedTagsRegex.test(content)) throw markupError;
+		//console.log('made it through with content:', content);
 	}
+	//console.log('made it through');
 }
+
+//export const validateMarkup = validateMarkupLit;
 
 export function localizeMarkup(strings, ...expressions) {
 	strings.forEach(str => validateMarkup(str, true));
