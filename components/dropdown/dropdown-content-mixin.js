@@ -698,7 +698,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
-	async __position(ignoreVertical, contentRect) {
+	async __position(contentRect, options) {
+
+		options = Object.assign({ updateAboveBelow: true, updateHeight: true }, options);
 
 		const opener = this.__getOpener();
 		if (!opener) {
@@ -713,7 +715,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const header = this.__getContentTop(); // todo: rename
 		const footer = this.__getContentBottom(); // todo: rename
 
-		if (!this.noAutoFit) {
+		if (!this.noAutoFit && options.updateHeight) {
 			this._contentHeight = null;
 		}
 
@@ -783,25 +785,27 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			}
 
-			if (!ignoreVertical) {
+			if (options.updateAboveBelow) {
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired);
 			}
 
 			this._position = this._getPosition(spaceAround, targetRect, contentRect);
 			this._pointerPosition = this._getPointerPosition(targetRect);
 
-			//Calculate height available to the dropdown contents for overflow because that is the only area capable of scrolling
-			const availableHeight = this.openedAbove ? spaceAround.above : spaceAround.below;
-			if (!this.noAutoFit && availableHeight && availableHeight > 0) {
-				//Only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
-				this._contentHeight = this.maxHeight !== null
-					&& availableHeight > this.maxHeight
-					&& headerFooterHeight < this.maxHeight
-					? this.maxHeight - headerFooterHeight - 2
-					: availableHeight - headerFooterHeight;
+			if (options.updateHeight) {
+				// calculate height available to the dropdown contents for overflow because that is the only area capable of scrolling
+				const availableHeight = this.openedAbove ? spaceAround.above : spaceAround.below;
+				if (!this.noAutoFit && availableHeight && availableHeight > 0) {
+					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
+					this._contentHeight = this.maxHeight !== null
+						&& availableHeight > this.maxHeight
+						&& headerFooterHeight < this.maxHeight
+						? this.maxHeight - headerFooterHeight - 2
+						: availableHeight - headerFooterHeight;
 
-				// ensure the content height has updated when the __toggleScrollStyles event handler runs
-				await this.updateComplete;
+					// ensure the content height has updated when the __toggleScrollStyles event handler runs
+					await this.updateComplete;
+				}
 			}
 
 			/** Dispatched when the dropdown position finishes adjusting */
@@ -832,7 +836,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
 		if (!this.__repositioning) {
 			requestAnimationFrame(() => {
-				this.__position(true);
+				this.__position(undefined, { updateAboveBelow: false, updateHeight: false });
 				this.__repositioning = false;
 			});
 		}

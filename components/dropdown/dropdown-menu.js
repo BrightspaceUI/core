@@ -148,7 +148,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 			this.maxHeight = this._maxHeightNonTray;
 		}
 
-		this.__position(!this._initializingHeight, e.detail);
+		this.__position(e.detail, { updateAboveBelow: this._initializingHeight });
 		this._initializingHeight = false;
 
 		const menu = this.__getMenuElement();
