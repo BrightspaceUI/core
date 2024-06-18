@@ -267,7 +267,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 
 In order to create a selectable filter list item that is a text item representing a range that is NOT one of the presets available in the `d2l-filter-dimension-set-date-text-value` component (for example, 60 days), use the regular "Dimension Set Value" component (`d2l-filter-dimension-set-value`) with the localized text of the range in the `text` field, and handle its selection as is appropriate for the consuming application.
 
-The `getUTCDateTimeRange(rangeType, diff)` helper function can be used in order to get the start and end date values for the range in UTC, if required, where a negative `diff` represents a range in the past and positive represents a range in the future, and `rangeType` is one of `seconds`, `minutes`, `hours`, `days`, `months`, or `years`.
+The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get the `startValue` and `endValue` for the range in ISO strings in UTC, if required. As arguments it takes a `rangeType` (one of `seconds`, `minutes`, `hours`, `days`, `months`, or `years`) and a `diff` (positive or negative number where negative is a range in the past and positive is a range in the future). Either the `startValue` or `endValue` is the current date/time depending on whether the range is in the past or future.
 
 <!-- docs: demo code align:start autoOpen:true autoSize:false size:large -->
 ```html
