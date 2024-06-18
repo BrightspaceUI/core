@@ -547,7 +547,7 @@ describe('d2l-filter', () => {
 				clock.restore();
 			});
 
-			it.only('single set date-time range dimension fires change events', async() => {
+			it('single set date-time range dimension fires change events', async() => {
 				const elem = await fixture(singleSetDimensionDateTimeRangeFixture);
 				const selectedElem = elem.querySelector('d2l-filter-dimension-set-date-time-range-value[selected]');
 				expect(selectedElem.startValue).to.equal(undefined);
