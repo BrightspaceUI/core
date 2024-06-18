@@ -603,8 +603,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
 		: nothing}
 					</div>
-					${item.additionalContent ? html`
-						<d2l-expand-collapse-content ?expanded="${item.selected}">
+					${item.additionalContent && item.selected ? html`
+						<d2l-expand-collapse-content ?expanded="${item.selected}" style="min-width: 375px">
 							${item.additionalContent()}
 						</d2l-expand-collapse-content>
 					` : nothing}
@@ -688,6 +688,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const selected = e.detail.selected;
 
 		this._performChangeSetDimension(dimension, valueKey, selected);
+		this._requestDropdownResize();
 	}
 
 	_handleClear() {
@@ -921,6 +922,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						value.selected = false;
 						this._setDimensionChangeEvent(dimension, { valueKey: value.key, selected: false }, true);
 					}
+					if (value.clearProperties) value.clearProperties();
 				});
 				break;
 			}

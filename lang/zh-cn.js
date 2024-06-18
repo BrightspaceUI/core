@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, other {Last {num} hours}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
+	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",
 	"components.form-element.input.email.typeMismatch": "电子邮件无效",
