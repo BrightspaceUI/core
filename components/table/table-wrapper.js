@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
+import { getComposedParent } from '../../helpers/dom.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -252,6 +253,10 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > tbody {
 		display: block;
 	}
+
+	[data-popover-count] {
+		z-index: 6 !important;
+	}
 `;
 
 /**
@@ -370,8 +375,18 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._tableScrollers = {};
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+
+		this.addEventListener('d2l-dropdown-open', this._handlePopoverOpen);
+		this.addEventListener('d2l-dropdown-close', this._handlePopoverClose);
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
+
+		this.removeEventListener('d2l-dropdown-open', this._handlePopoverOpen);
+		this.removeEventListener('d2l-dropdown-close', this._handlePopoverClose);
 
 		this._controlsMutationObserver?.disconnect();
 		this._controlsScrolledMutationObserver?.disconnect();
@@ -499,6 +514,14 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._handleControlsChange();
 	}
 
+	_handlePopoverClose(e) {
+		this._updateStickyAncestor(e.target, false);
+	}
+
+	_handlePopoverOpen(e) {
+		this._updateStickyAncestor(e.target, true);
+	}
+
 	_handleSlotChange(e) {
 		this._table = e.target.assignedNodes({ flatten: true }).find(
 			node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TABLE' && node.classList.contains('d2l-table'))
@@ -586,6 +609,30 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
 				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
 			}
+		}
+	}
+
+	_updateStickyAncestor(node, popoverOpened) {
+		if (!this.stickyHeaders) return;
+
+		node = getComposedParent(node);
+		while (node) {
+			if (node === this) break;
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				const style = window.getComputedStyle(node, null);
+				if (style.getPropertyValue('position') === 'sticky') {
+
+					let popoverCount = Number.parseInt(node.getAttribute('data-popover-count'));
+					if (Number.isNaN(popoverCount)) popoverCount = 0;
+					popoverOpened ? popoverCount++ : popoverCount--;
+
+					if (popoverCount > 0) node.setAttribute('data-popover-count', popoverCount);
+					else node.removeAttribute('data-popover-count');
+
+					return;
+				}
+			}
+			node = getComposedParent(node);
 		}
 	}
 
