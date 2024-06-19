@@ -255,7 +255,7 @@ export const tableStyles = css`
 	}
 
 	[data-popover-count] {
-		z-index: 6 !important;
+		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
 `;
 
