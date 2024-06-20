@@ -3,7 +3,7 @@
  * match what's present in the MathJax-src repo.
  */
 
-const mathjaxContextAttribute = 'data-mathjax-context';
+const mathjaxContextKey = 'd2l-mathjax';
 const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.2.2';
 
 const mathjaxFontMappings = new Map([
@@ -32,16 +32,14 @@ const mathjaxFontMappings = new Map([
 
 class HtmlBlockMathRenderer {
 
-	get contextAttributes() {
-		return [mathjaxContextAttribute];
+	get contextKeys() {
+		return [mathjaxContextKey];
 	}
 
 	async render(elem, options) {
 		if (!options.contextValues) return elem;
-		const contextVal = options.contextValues.get(mathjaxContextAttribute);
-		if (contextVal === undefined) return elem;
-
-		const context = JSON.parse(contextVal) || {};
+		const context = options.contextValues.get(mathjaxContextKey);
+		if (context === undefined) return elem;
 
 		if (!elem.querySelector('math') && !(context.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
