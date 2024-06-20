@@ -317,6 +317,8 @@ describe('list', () => {
 			{ name: 'selected focus', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'selected hover', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'selected add-button', template: createSelectableList({ selected: true, addButton: true }), margin: 24 },
+			{ name: 'selected focus sibling', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="2"]')), margin: 24 },
+			{ name: 'selected hover sibling', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')), margin: 24 },
 			{ name: 'item-content', template: createSelectableContentList() },
 			{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
 			{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
