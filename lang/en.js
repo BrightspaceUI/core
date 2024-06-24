@@ -26,7 +26,7 @@ export default {
 	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Last hour} other {Last {num} hours}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} days} other {Last {num} days}}",
+	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} day} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
 	"components.form-element.defaultError": "{label} is invalid.",
