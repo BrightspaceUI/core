@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {कोई खोज परिणाम नहीं} one {{number} खोज परिणाम} other {{number} खोज परिणाम}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. चुने गए फ़िल्टर सबसे पहले दिखाई देते हैं।",
 	"components.filter.singleDimensionDescription": "इसके अनुसार फ़िल्टर करें: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {अंतिम घंटा} other {अंतिम {num} घंटे}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {अंतिम घंटा} other {अंतिम {num} घंटे}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {आज} one {अंतिम {num} दिन} other {अंतिम {num} दिन}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "अंतिम {num} महीने",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",

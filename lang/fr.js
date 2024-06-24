@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Les filtres sélectionnés s’affichent en premier.",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Dernière heure} other {{num} dernières heures}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Dernière heure} other {{num} dernières heures}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Aujourd'hui} one {{num} derniers jours} other {{num} derniers jours}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} derniers mois",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
@@ -50,7 +50,7 @@ export default {
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
 	"components.input-date-time-range.startDate": "Date du début",
-	"components.input-date-time.date": "Date",
+	"components.input-date-time.date": "Date", // mfv-translated
 	"components.input-date-time.errorMaxDateOnly": "La date doit être {maxDate} ou une date antérieure",
 	"components.input-date-time.errorMinDateOnly": "La date doit être {minDate} ou une date ultérieure",
 	"components.input-date-time.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
@@ -107,8 +107,8 @@ export default {
 	"components.selection.selected": "{count} sélectionné(s)",
 	"components.selection.selected-plus": "{count}+ sélectionné",
 	"components.selection-controls.label": "Actions à sélectionner",
-	"components.switch.visible": "Visible",
-	"components.switch.visibleWithPeriod": "Visible.",
+	"components.switch.visible": "Visible", // mfv-translated
+	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-col-sort-button.addSortOrder": "Sélectionner pour ajouter un ordre de tri",

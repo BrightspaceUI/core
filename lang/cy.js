@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Dim canlyniadau chwilio} one {{number} canlyniad chwilio} other {{number} canlyniadau chwilio}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Mae'r hidlyddion a ddewiswyd yn ymddangos gyntaf.",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{hours, plural, one {Awr ddiwethaf} other {{num} awr ddiwethaf}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Awr ddiwethaf} other {{num} awr ddiwethaf}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Heddiw} one {{num} diwrnod diwethaf} other {{num} o ddiwrnodau diwethaf}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} o fisoedd diwethaf",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
@@ -126,7 +126,7 @@ export default {
 	"components.tag-list.role-description": "Rhestr o Dagiau",
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
-	"components.tag-list-item.role-description": "Tag",
+	"components.tag-list-item.role-description": "Tag", // mfv-translated
 	"components.tag-list-item.tooltip-arrow-keys": "Byselli Saeth",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Symud rhwng tagiau",
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",

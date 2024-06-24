@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Arama sonucu yok} one {{number} arama sonucu} other {{number} arama sonucu}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Seçilen filtreler önce görünür.",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Son 1 saat} other {Son {num} saat}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Son 1 saat} other {Son {num} saat}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Bugün} one {Son {num} gün} other {Son {num} gün}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Son {num} ay",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",

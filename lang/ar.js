@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {ما من نتائج بحث} one {{number} نتيجة بحث}‏ other {{number} من نتائج البحث}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. تظهر عوامل التصفية المحددة أولاً.",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {آخر ساعة} other {آخر {num} من الساعات}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {آخر ساعة} other {آخر {num} من الساعات}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {آخر {num} من الأيام} other {آخر {num} من الأيام}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "آخر {num} من الأشهر",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",

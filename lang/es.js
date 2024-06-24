@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {No se encontraron resultados de búsqueda} one {{number} resultado de búsqueda} other {{number} resultados de búsqueda}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Los filtros seleccionados aparecen primero.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Última hora} other {Últimas {num} horas}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Última hora} other {Últimas {num} horas}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Hoy} one {Últimos {num} días} other {Últimos {num} días}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Últimos {num} meses",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
@@ -107,8 +107,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
-	"components.switch.visible": "Visible",
-	"components.switch.visibleWithPeriod": "Visible.",
+	"components.switch.visible": "Visible", // mfv-translated
+	"components.switch.visibleWithPeriod": "Visible.", // mfv-translated
 	"components.switch.hidden": "Oculto",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.table-col-sort-button.addSortOrder": "Seleccione para agregar el orden de clasificación",

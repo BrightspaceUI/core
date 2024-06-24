@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Kein Suchergebnis} one {{number} Suchergebnis} other {{number} Suchergebnisse}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Ausgewählte Filter werden zuerst angezeigt.",
 	"components.filter.singleDimensionDescription": "Filtern nach: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Letzte Stunde} other {Letzte {num} Stunden}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Letzte Stunde} other {Letzte {num} Stunden}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Heute} one {Letzte {num} Tage} other {Letzte {num} Tage}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Letzte {num} Monate",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
@@ -126,7 +126,7 @@ export default {
 	"components.tag-list.role-description": "Tag-Liste",
 	"components.tag-list.show-less": "Weniger anzeigen",
 	"components.tag-list.show-more-description": "Wählen Sie diese Option, um ausgeblendete Elemente der Tag-Liste anzuzeigen",
-	"components.tag-list-item.role-description": "Tag",
+	"components.tag-list-item.role-description": "Tag", // mfv-translated
 	"components.tag-list-item.tooltip-arrow-keys": "Pfeiltasten",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Zwischen Tags wechseln",
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",

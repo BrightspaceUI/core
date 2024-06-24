@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Sem resultados para a pesquisa} one {{number} resultado para a pesquisa} other {{number} resultados para a pesquisa}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Os filtros selecionados aparecem primeiro.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Última hora} other {Últimas {num} horas}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Última hora} other {Últimas {num} horas}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Hoje} one {Último {num} dia} other {Últimos {num} dias}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Últimos {num} meses",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",

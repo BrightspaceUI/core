@@ -25,7 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Inga sökresultat} one {{number} sökresultat} other {{number} sökresultat}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Valda filter visas först.",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Senaste timmen} other {Senaste {num} timmarna}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Senaste timmen} other {Senaste {num} timmarna}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Idag} one {Senaste {num} dagarna} other {Senaste {num} dagarna}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Senaste {num} månaderna",
 	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
