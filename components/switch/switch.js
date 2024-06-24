@@ -6,7 +6,7 @@ import { SwitchMixin } from './switch-mixin.js';
 
 /**
  * A generic switch with on/off semantics.
- * @attr {string} text - REQUIRED: The text that is displayed for the switch label.
+ * @attr {string} text - ACCESSIBILITY: REQUIRED: Acts as a  [primary label](https://www.w3.org/WAI/tutorials/forms/labels/) on the switch. Visible unless text-position is `hidden`.
  */
 class Switch extends SwitchMixin(LitElement) {
 
