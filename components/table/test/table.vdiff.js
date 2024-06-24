@@ -802,6 +802,21 @@ describe('table', () => {
 						});
 					});
 
+					it('multi-row-col-sort-button-dropdown-open', async() => {
+						const elem = await createTableFixture(
+							html`
+								<thead>
+									${createSortableButtonDropdownHeaderRow()}
+									${createSortableButtonDropdownHeaderRow()}
+								</thead>
+								<tbody>${createRows([1, 2, 3])}</tbody>
+							`,
+							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+						);
+						await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
 					[
 						{
 							name: 'fixed-column-class',
