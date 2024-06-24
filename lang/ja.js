@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, other {Last {num} hours}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
+	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",
 	"components.form-element.input.email.typeMismatch": "電子メールが無効です",
