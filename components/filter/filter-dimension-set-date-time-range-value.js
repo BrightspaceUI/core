@@ -108,7 +108,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	}
 
 	_getCustomContent() {
-		const dateTimeRangeInputHeight = 515 + 153; // height of date picker and date-time range inputs when wrapped and font-size: 24px
+		const dateTimeRangeInputHeight = 440 + 128; // height of date picker and date-time range inputs when wrapped and font-size: 20px
 		return html`
 			<d2l-input-date-time-range
 				@change="${this._handleDateChange}"
