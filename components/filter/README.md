@@ -297,6 +297,40 @@ The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get th
 </d2l-filter>
 ```
 
+## Dimension Set Value: Date-Time Range
+
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value based which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
+
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-text-value.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-time-range-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates">
+    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `key` | String, required | Unique identifier within a dimension for the value |
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
+| `end-value` | String | Value of the end date or date-time input. Expected to be in UTC. |
+| `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+| `start-value` | String | Value of the start date or date-time input. Expected to be in UTC. |
+| `text` | String, default: `"Custom Date Range"` (localized) | Text for the value in the list. This would override the default value. |
+| `type` | String, default: `"date-time"` | Type of range input. Can be either `date-time` or `date`. |
+<!-- docs: end hidden content -->
+
 ## Search and Paging
 
 Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
