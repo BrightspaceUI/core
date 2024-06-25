@@ -299,7 +299,7 @@ The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get th
 
 ## Dimension Set Value: Date-Time Range
 
-This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value based which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
 
 <!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value align:start autoOpen:true autoSize:false size:large -->
 ```html
