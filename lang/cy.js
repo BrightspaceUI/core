@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Last hour} other {Last {num} hours}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} days} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
+	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",
 	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",

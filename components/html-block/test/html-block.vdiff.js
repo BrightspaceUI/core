@@ -1,4 +1,5 @@
 import '../html-block.js';
+import { addContext, clear } from '@brightspace-ui/lms-context-provider/test-helpers/test-host.js';
 import { expect, fixture, html, waitUntil } from '@brightspace-ui/testing';
 
 const content = `
@@ -123,6 +124,9 @@ describe('d2l-html-block', () => {
 
 	const viewport = { width: 376 };
 
+	beforeEach(() => addContext('d2l-mathjax', { renderLatex: true }));
+	afterEach(() => clear());
+
 	it('empty', async() => {
 		const elem = await fixture(html`<d2l-html-block style="height: 1px;"></d2l-html-block>`, { viewport });
 		await expect(elem).to.be.golden();
@@ -193,8 +197,7 @@ describe('d2l-html-block', () => {
 
 	it('math (block)', async() => {
 		const elem = await fixture(
-			html`<d2l-html-block style="width: 650px;" html="${mathBlock}"></d2l-html-block>`,
-			{ mathjax: { renderLatex: true } }
+			html`<d2l-html-block style="width: 650px;" html="${mathBlock}"></d2l-html-block>`
 		);
 		await waitUntil(() => elem.clientHeight === 144);
 		await expect(elem).to.be.golden();
@@ -277,8 +280,7 @@ describe('d2l-html-block', () => {
 	</math>
 `;
 		const elem = await fixture(
-			html`<d2l-html-block style="width: 650px;" html="An equation...${mathInline} embedded inline with text, and showing placement of indicies for summations."></d2l-html-block>`,
-			{ mathjax: { renderLatex: true } }
+			html`<d2l-html-block style="width: 650px;" html="An equation...${mathInline} embedded inline with text, and showing placement of indicies for summations."></d2l-html-block>`
 		);
 		await waitUntil(() => elem.clientHeight === 61);
 		await expect(elem).to.be.golden();
@@ -301,8 +303,7 @@ describe('d2l-html-block', () => {
 	it('math (block) and code (block)', async() => {
 		const elem = await fixture(
 			html`<d2l-html-block style="width: 650px;" html="${code}
-			${mathBlock}"></d2l-html-block>`,
-			{ mathjax: { renderLatex: true } }
+			${mathBlock}"></d2l-html-block>`
 		);
 		await waitUntil(() => elem.clientHeight === 263);
 		await expect(elem).to.be.golden();

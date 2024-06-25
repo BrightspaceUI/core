@@ -11,8 +11,12 @@
 		import '../../filter/filter-dimension-set-empty-state.js';
 		import '../../filter/filter-dimension-set-value.js';
 		import '../../filter/filter-dimension-set-date-text-value.js';
+		import '../../filter/filter-dimension-set-date-time-range-value.js';
 		import './filter-search-demo.js';
 		import './filter-load-more-demo.js';
+	</script>
+	<script>
+		window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
 	</script>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -162,11 +166,12 @@
 			<template>
 				<d2l-filter id="filter-single">
 					<d2l-filter-dimension-set key="dates" text="Dates">
-						<d2l-filter-dimension-set-value key="lastweek" text="Last Week"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-value key="lastweek" text="Last 7 days"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" ></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
-						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="today" range="today"></d2l-filter-dimension-set-date-text-value>
 						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom" ></d2l-filter-dimension-set-date-time-range-value>
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 			</template>
