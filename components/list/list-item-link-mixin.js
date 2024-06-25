@@ -28,7 +28,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				width: 100%;
 			}
 			:host([action-href]:not([action-href=""])) [slot="content"],
-			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
+			:host(:not([no-primary-action]):not([allow-click])) [slot="control-action"] ~ [slot="content"],
 			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
 				pointer-events: none;
 			}

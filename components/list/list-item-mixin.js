@@ -55,6 +55,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	static get properties() {
 		return {
+			allowClick: { type: Boolean, attribute: 'allow-click', reflect: true },
 			/**
 			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
 			 * @type {string}

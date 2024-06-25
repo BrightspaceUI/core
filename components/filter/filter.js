@@ -589,11 +589,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_createSetDimensionItem(item) {
 		return html`
 			<d2l-list-item
+				?allow-click="${item.additionalContent}"
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
 				label="${item.text}"
-				?no-primary-action="${item.additionalContent && item.selected}"
 				selectable
 				?selected="${item.selected}">
 				<div>
