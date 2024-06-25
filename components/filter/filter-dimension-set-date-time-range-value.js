@@ -20,7 +20,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * @ignore
+			 * Value of the end date or date-time input. Expected to be in UTC.
+			 * @type {string}
 			 */
 			endValue: { type: String, attribute: 'end-value' },
 			/**
@@ -34,7 +35,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * @ignore
+			 * Value of the start date or date-time input. Expected to be in UTC.
+			 * @type {string}
 			 */
 			startValue: { type: String, attribute: 'start-value' },
 			/**
