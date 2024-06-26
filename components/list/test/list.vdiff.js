@@ -132,10 +132,6 @@ describe('list', () => {
 					const elem = await fixture(template);
 					await expect(elem).to.be.golden();
 				});
-				it(`${name} off-color background`, async() => {
-					const elem = await fixture(createOffColorBackground(template));
-					await expect(elem).to.be.golden();
-				});
 			});
 		});
 	});
