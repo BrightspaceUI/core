@@ -46,6 +46,7 @@ class FilterTags extends LocalizeCoreElement(LitElement) {
 		let numActiveFilters = 0;
 		const allActiveFilters = Array.from(this._allActiveFilters);
 		const tagListItems = allActiveFilters.map(filter => filter[1].map((value, index) => {
+			if (!value.text) return;
 			numActiveFilters++;
 			return html`
 				<d2l-tag-list-item

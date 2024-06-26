@@ -1,6 +1,7 @@
 import '../inputs/input-date-range.js';
 import '../inputs/input-date-time-range.js';
-import { getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
+import { formatDate, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
 import { html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -25,6 +26,10 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 */
 			endValue: { type: String, attribute: 'end-value' },
 			/**
+			 * @ignore
+			 */
+			inactive: { type: Boolean },
+			/**
 			 * REQUIRED: Unique key to represent this value in the dimension
 			 * @type {string}
 			 */
@@ -39,6 +44,10 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 * @type {string}
 			 */
 			startValue: { type: String, attribute: 'start-value' },
+			/**
+			 * @ignore
+			 */
+			descriptiveText: { type: String },
 			/**
 			 * Defaults to "Custom Date Range" (localized). Can be overridden if desired.
 			 * @type {string}
@@ -55,6 +64,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	constructor() {
 		super();
 		this.disabled = false;
+		this.inactive = false;
 		this.selected = false;
 		this.type = 'date-time';
 		this._dispatchFilterChangeEvent = false;
@@ -70,6 +80,9 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		super.firstUpdated(changedProperties);
 
 		this.text = this.text || this.localize('components.filter-dimension-set-date-time-range-value.text');
+
+		if (this.startValue || this.endValue) this._updateDescriptiveText();
+		if (!this.startValue && !this.endValue) this.inactive = true;
 	}
 
 	updated(changedProperties) {
@@ -81,7 +94,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			if (oldValue === undefined && (prop === 'selected' || prop === 'disabled')) return;
 			if (this._dispatchFilterChangeEvent && (prop === 'startValue' || prop === 'endValue')) shouldDispatchChangeEvent = true;
 
-			if (prop === 'disabled' || prop === 'selected' || prop === 'startValue' || prop === 'endValue' || prop === 'text') {
+			if (prop === 'disabled' || prop === 'selected' || prop === 'startValue' || prop === 'endValue' || prop === 'text' || prop === 'descriptiveText' || prop === 'inactive') {
 				changes.set(prop, this[prop]);
 			}
 		});
@@ -99,9 +112,11 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	getValueDetails() {
 		return {
 			disabled: this.disabled,
+			inactive: this.inactive,
 			key: this.key,
 			selected: this.selected,
 			text: this.text,
+			descriptiveText: this.descriptiveText,
 			additionalContent: this._getAdditionalContent.bind(this),
 			getAdditionalEventDetails: this._getAdditionalEventDetails.bind(this),
 			clearProperties: this._clearProperties.bind(this)
@@ -111,6 +126,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	_clearProperties() {
 		this.startValue = undefined;
 		this.endValue = undefined;
+		this.inactive = true;
+		this._updateDescriptiveText();
 	}
 
 	_getAdditionalContent() {
@@ -144,13 +161,45 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	async _handleDateChange(e) {
 		if (this.type === 'date') {
 			this.startValue = e.target.startValue ? getUTCDateTimeFromLocalDateTime(e.target.startValue, '0:0') : undefined;
-			this.endValue = e.target.endValue ? getUTCDateTimeFromLocalDateTime(e.target.endValue, '0:0') : undefined;
+			this.endValue = e.target.endValue ? getUTCDateTimeFromLocalDateTime(e.target.endValue, '23:59:59') : undefined;
 		} else {
 			this.startValue = e.target.startValue;
 			this.endValue = e.target.endValue;
 		}
-
+		this._updateDescriptiveText();
+		if (!this.startValue && !this.endValue) this.inactive = true;
+		else this.inactive = false;
 		this._dispatchFilterChangeEvent = true;
+	}
+
+	_updateDescriptiveText() {
+		if (!this.startValue && !this.endValue) {
+			this.descriptiveText = undefined;
+			return;
+		}
+
+		let startString, endString;
+		if (this.startValue) {
+			startString = this.type === 'date' ? formatDate(getDateFromISODateTime(this.startValue)) : formatDateTime(getDateFromISODateTime(this.startValue));
+		}
+		if (this.endValue) {
+			endString = this.type === 'date' ? formatDate(getDateFromISODateTime(this.endValue)) : formatDateTime(getDateFromISODateTime(this.endValue));
+		}
+
+		if (startString && endString) {
+			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRange', {
+				startValue: startString,
+				endValue: endString
+			});
+		} else if (startString) {
+			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRangeStartOnly', {
+				startValue: startString
+			});
+		} else if (endString) {
+			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRangeEndOnly', {
+				endValue: endString
+			});
+		} else this.descriptiveText = undefined;
 	}
 }
 

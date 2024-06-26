@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-timezone='{"name":"Canada - Toronto", "identifier":"Australia/Eucla"}'>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
@@ -9,6 +9,8 @@
 			import '../filter.js';
 			import '../filter-dimension-set.js';
 			import '../filter-dimension-set-value.js';
+			import '../../filter/filter-dimension-set-date-text-value.js';
+			import '../../filter/filter-dimension-set-date-time-range-value.js';
 			import '../filter-tags.js';
 		</script>
 		<style>
@@ -52,6 +54,18 @@
 					<d2l-filter-dimension-set-value text="Option 2 - 3" key="3"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
 			</d2l-filter>
+
+			<d2l-filter id="dates-filter">
+				<d2l-filter-dimension-set key="dates" text="Dates" value-only-active-filter-text>
+					<d2l-filter-dimension-set-value key="lastweek" text="Last 60 days"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="today" range="today"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-time-range-value key="custom" type="date" selected start-value="2022-02-04T12:00:00Z"></d2l-filter-dimension-set-date-time-range-value>
+					<d2l-filter-dimension-set-date-time-range-value key="custom2" text="Custom Date Range with Time"></d2l-filter-dimension-set-date-time-range-value>
+				</d2l-filter-dimension-set>
+			</d2l-filter>
 			<script>
 				const coreFilter = document.querySelector('#core-filter');
 				coreFilter.addEventListener('d2l-filter-dimension-first-open', (e) => {
@@ -83,6 +97,18 @@
 
 			<d2l-demo-snippet>
 				<d2l-filter-tags filter-ids="core-filter"></d2l-filter-tags>
+			</d2l-demo-snippet>
+
+			<h2>Registered to first filter and dates filter</h2>
+
+			<d2l-demo-snippet>
+				<d2l-filter-tags filter-ids="core-filter dates-filter"></d2l-filter-tags>
+			</d2l-demo-snippet>
+
+			<h2>Registered to dates filter</h2>
+
+			<d2l-demo-snippet>
+				<d2l-filter-tags filter-ids="dates-filter"></d2l-filter-tags>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

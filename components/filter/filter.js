@@ -750,6 +750,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				this._activeFiltersSubscribers.updateSubscribers();
 			} else if (prop === 'loading') {
 				shouldResizeDropdown = true;
+			} else if (prop === 'text') {
+				this._activeFiltersSubscribers.updateSubscribers();
 			}
 		});
 
@@ -1026,9 +1028,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			switch (dimension.type) {
 				case 'd2l-filter-dimension-set': {
 					dimension.values.forEach(value => {
-						if (value.selected) {
+						if (value.selected && !value.inactive) {
 							const keyObject = { dimension: dimension.key, value: value.key };
-							const text = dimension.valueOnlyActiveFilterText ? value.text : `${dimension.text}: ${value.text}`;
+							let text;
+							if (value.descriptiveText) {
+								text = dimension.valueOnlyActiveFilterText ? value.descriptiveText : `${dimension.text}: ${value.descriptiveText}`;
+							} else {
+								text = dimension.valueOnlyActiveFilterText ? value.text : `${dimension.text}: ${value.text}`;
+							}
 							activeFilters.push({ keyObject: keyObject, text: text });
 						}
 					});
