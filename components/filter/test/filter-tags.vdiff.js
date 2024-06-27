@@ -1,8 +1,11 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
+import '../filter-dimension-set-date-text-value.js';
+import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-tags.js';
 import { clickElem, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const singleFilter = html`
 	<d2l-filter id="filter">
@@ -60,6 +63,38 @@ const tagsTwoFilters = html`
 	</div>
 `;
 
+function createDateFilter(startValue, endValue, selectedType) {
+	return html`
+		<div style="display: flex; justify-content: space-between;">
+			<d2l-filter-tags filter-ids="filter-1" style="align-self: center; position: relative; width: 100%;"></d2l-filter-tags>
+			<d2l-filter id="filter-1">
+				<d2l-filter-dimension-set key="dates" text="Dates" value-only-active-filter-text>
+					<d2l-filter-dimension-set-value key="60days" text="Last 60 days" ?selected="${selectedType === 'custom'}"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" ?selected="${selectedType === 'text'}"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="today" range="today"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+					<d2l-filter-dimension-set-date-time-range-value 
+						key="custom" 
+						type="date" 
+						?selected="${selectedType === 'date'}"
+						start-value="${ifDefined(startValue ? '2022-02-04T12:00:00Z' : undefined)}"
+						end-value="${ifDefined(endValue ? '2022-05-04T23:00:00Z' : undefined)}"
+					></d2l-filter-dimension-set-date-time-range-value>
+					<d2l-filter-dimension-set-date-time-range-value 
+						key="custom2" 
+						text="Custom Date Range with Time" 
+						?selected="${selectedType === 'date-time'}"
+						start-value="${ifDefined(startValue ? '2022-02-04T12:00:00Z' : undefined)}"
+						end-value="${ifDefined(endValue ? '2022-05-04T23:00:00Z' : undefined)}"
+					></d2l-filter-dimension-set-date-time-range-value>
+				</d2l-filter-dimension-set>
+			</d2l-filter>
+		</div>
+	`;
+
+}
+
 const tagsTwoFiltersMoreSelected = html`
 	<div style="display: flex; justify-content: space-between;">
 		<d2l-filter-tags filter-ids="filter-1 filter-2" style="align-self: center; position: relative; width: 100%;"></d2l-filter-tags>
@@ -72,12 +107,32 @@ describe('filter-tags', () => {
 		{ name: 'two-filters', template: tagsTwoFilters },
 		{ name: 'flex-end', template: tagsFlexEndSingleFilter, selector: '#capture' },
 		{ name: 'basic-rtl', rtl: true, template: tagsSingleFilter },
-		{ name: 'two-filters-rtl', rtl: true, template: tagsTwoFilters }
+		{ name: 'two-filters-rtl', rtl: true, template: tagsTwoFilters },
 	].forEach(({ name, template, rtl, selector }) => {
 		it(name, async() => {
 			let elem = await fixture(template, { rtl, viewport: { width: 1700 } });
 			if (selector) elem = elem.querySelector(selector);
 			await expect(elem).to.be.golden();
+		});
+	});
+
+	describe('date-time-filters', () => {
+		[
+			{ name: 'date-type-no-dates', template: createDateFilter(false, false, 'date') },
+			{ name: 'date-type-start-date', template: createDateFilter(true, false, 'date') },
+			{ name: 'date-type-end-date', template: createDateFilter(false, true, 'date') },
+			{ name: 'date-type-start-end-dates', template: createDateFilter(true, true, 'date') },
+			{ name: 'date-time-type-no-dates', template: createDateFilter(false, false, 'date-time') },
+			{ name: 'date-time-type-start-date', template: createDateFilter(true, false, 'date-time') },
+			{ name: 'date-time-type-end-date', template: createDateFilter(false, true, 'date-time') },
+			{ name: 'date-time-type-start-end-dates', template: createDateFilter(true, true, 'date-time') },
+			{ name: 'custom-type-selected', template: createDateFilter(true, true, 'custom') },
+			{ name: 'text-type-selected', template: createDateFilter(true, true, 'text') },
+		].forEach(({ name, template }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { viewport: { width: 1700 } });
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
