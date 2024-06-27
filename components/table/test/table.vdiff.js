@@ -1,9 +1,11 @@
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../../button/button-icon.js';
+import '../../tooltip/tooltip.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
+
 import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -48,6 +50,18 @@ function createSortableButtonDropdownHeaderRow() {
 				</d2l-table-col-sort-button>
 			</th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createSortableButtonTooltipHeaderRow() {
+	return html`
+		<tr>
+			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
+			<th>
+				<button id="tooltip-button">Tooltip Button</button>
+				<d2l-tooltip for="tooltip-button">This is the tooltip content.<br>Line 2<br>Line 3<br>Line 4<br>Line 5<br>Line 6</d2l-tooltip>
+			</th>
 			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
 	`;
@@ -814,6 +828,21 @@ describe('table', () => {
 							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
 						);
 						await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('multi-row-col-sort-button-tooltip-open', async() => {
+						const elem = await createTableFixture(
+							html`
+								<thead>
+									${createSortableButtonTooltipHeaderRow()}
+									${createSortableButtonTooltipHeaderRow()}
+								</thead>
+								<tbody>${createRows([1, 2, 3])}</tbody>
+							`,
+							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+						);
+						await clickElem(elem.shadowRoot.querySelector('#tooltip-button'));
 						await expect(elem).to.be.golden();
 					});
 
