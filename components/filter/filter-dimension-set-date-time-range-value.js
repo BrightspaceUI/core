@@ -45,10 +45,6 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 */
 			startValue: { type: String, attribute: 'start-value' },
 			/**
-			 * @ignore
-			 */
-			descriptiveText: { type: String },
-			/**
 			 * Defaults to "Custom Date Range" (localized). Can be overridden if desired.
 			 * @type {string}
 			 */
@@ -57,7 +53,11 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			 * Date/time range input type
 			 * @type {'date'|'date-time'}
 			 */
-			type: { type: String }
+			type: { type: String },
+			/**
+			 * @ignore
+			 */
+			valueText: { type: String }
 		};
 	}
 
@@ -81,7 +81,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 
 		this.text = this.text || this.localize('components.filter-dimension-set-date-time-range-value.text');
 
-		if (this.startValue || this.endValue) this._updateDescriptiveText();
+		if (this.startValue || this.endValue) this._updateValueText();
 		if (!this.startValue && !this.endValue) this.inactive = true;
 	}
 
@@ -94,7 +94,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			if (oldValue === undefined && (prop === 'selected' || prop === 'disabled')) return;
 			if (this._dispatchFilterChangeEvent && (prop === 'startValue' || prop === 'endValue')) shouldDispatchChangeEvent = true;
 
-			if (prop === 'disabled' || prop === 'selected' || prop === 'startValue' || prop === 'endValue' || prop === 'text' || prop === 'descriptiveText' || prop === 'inactive') {
+			if (prop === 'disabled' || prop === 'selected' || prop === 'startValue' || prop === 'endValue' || prop === 'text' || prop === 'valueText' || prop === 'inactive') {
 				changes.set(prop, this[prop]);
 			}
 		});
@@ -116,7 +116,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			key: this.key,
 			selected: this.selected,
 			text: this.text,
-			descriptiveText: this.descriptiveText,
+			valueText: this.valueText,
 			additionalContent: this._getAdditionalContent.bind(this),
 			getAdditionalEventDetails: this._getAdditionalEventDetails.bind(this),
 			clearProperties: this._clearProperties.bind(this)
@@ -127,7 +127,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		this.startValue = undefined;
 		this.endValue = undefined;
 		this.inactive = true;
-		this._updateDescriptiveText();
+		this._updateValueText();
 	}
 
 	_getAdditionalContent() {
@@ -166,15 +166,15 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			this.startValue = e.target.startValue;
 			this.endValue = e.target.endValue;
 		}
-		this._updateDescriptiveText();
+		this._updateValueText();
 		if (!this.startValue && !this.endValue) this.inactive = true;
 		else this.inactive = false;
 		this._dispatchFilterChangeEvent = true;
 	}
 
-	_updateDescriptiveText() {
+	_updateValueText() {
 		if (!this.startValue && !this.endValue) {
-			this.descriptiveText = undefined;
+			this.valueText = undefined;
 			return;
 		}
 
@@ -187,19 +187,19 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		}
 
 		if (startString && endString) {
-			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRange', {
+			this.valueText = this.localize('components.filter-dimension-set-date-time-range-value.valueTextRange', {
 				startValue: startString,
 				endValue: endString
 			});
 		} else if (startString) {
-			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRangeStartOnly', {
+			this.valueText = this.localize('components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly', {
 				startValue: startString
 			});
 		} else if (endString) {
-			this.descriptiveText = this.localize('components.filter-dimension-set-date-time-range-value.descriptiveTextRangeEndOnly', {
+			this.valueText = this.localize('components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly', {
 				endValue: endString
 			});
-		} else this.descriptiveText = undefined;
+		} else this.valueText = undefined;
 	}
 }
 

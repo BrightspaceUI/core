@@ -107,7 +107,7 @@ describe('filter-tags', () => {
 		{ name: 'two-filters', template: tagsTwoFilters },
 		{ name: 'flex-end', template: tagsFlexEndSingleFilter, selector: '#capture' },
 		{ name: 'basic-rtl', rtl: true, template: tagsSingleFilter },
-		{ name: 'two-filters-rtl', rtl: true, template: tagsTwoFilters },
+		{ name: 'two-filters-rtl', rtl: true, template: tagsTwoFilters }
 	].forEach(({ name, template, rtl, selector }) => {
 		it(name, async() => {
 			let elem = await fixture(template, { rtl, viewport: { width: 1700 } });
@@ -127,7 +127,7 @@ describe('filter-tags', () => {
 			{ name: 'date-time-type-end-date', template: createDateFilter(false, true, 'date-time') },
 			{ name: 'date-time-type-start-end-dates', template: createDateFilter(true, true, 'date-time') },
 			{ name: 'custom-type-selected', template: createDateFilter(true, true, 'custom') },
-			{ name: 'text-type-selected', template: createDateFilter(true, true, 'text') },
+			{ name: 'text-type-selected', template: createDateFilter(true, true, 'text') }
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { viewport: { width: 1700 } });

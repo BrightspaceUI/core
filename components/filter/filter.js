@@ -1031,8 +1031,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						if (value.selected && !value.inactive) {
 							const keyObject = { dimension: dimension.key, value: value.key };
 							let text;
-							if (value.descriptiveText) {
-								text = dimension.valueOnlyActiveFilterText ? value.descriptiveText : `${dimension.text}: ${value.descriptiveText}`;
+							if (value.valueText) {
+								text = dimension.valueOnlyActiveFilterText ? value.valueText : `${dimension.text}: ${value.valueText}`;
 							} else {
 								text = dimension.valueOnlyActiveFilterText ? value.text : `${dimension.text}: ${value.text}`;
 							}
