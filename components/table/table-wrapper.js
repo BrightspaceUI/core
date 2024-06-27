@@ -380,6 +380,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		this.addEventListener('d2l-dropdown-open', this._handlePopoverOpen);
 		this.addEventListener('d2l-dropdown-close', this._handlePopoverClose);
+		this.addEventListener('d2l-tooltip-show', this._handlePopoverOpen);
+		this.addEventListener('d2l-tooltip-hide', this._handlePopoverClose);
+
 	}
 
 	disconnectedCallback() {
@@ -387,6 +390,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		this.removeEventListener('d2l-dropdown-open', this._handlePopoverOpen);
 		this.removeEventListener('d2l-dropdown-close', this._handlePopoverClose);
+		this.removeEventListener('d2l-tooltip-show', this._handlePopoverOpen);
+		this.removeEventListener('d2l-tooltip-hide', this._handlePopoverClose);
 
 		this._controlsMutationObserver?.disconnect();
 		this._controlsScrolledMutationObserver?.disconnect();
