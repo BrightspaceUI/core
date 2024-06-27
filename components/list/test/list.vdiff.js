@@ -1,4 +1,5 @@
 import '../../button/button-icon.js';
+import '../../colors/colors.js';
 import '../../dropdown/dropdown.js';
 import '../../dropdown/dropdown-content.js';
 import '../../link/link.js';
@@ -21,6 +22,16 @@ const simpleListItemContent = html`
 		<div slot="supporting-info">Secondary info for item 1</div>
 	</d2l-list-item-content>
 `;
+
+function createOffColorBackground(template, { colorVar = null, colorHex = '#FFBBCC' } = {}) {
+	const backgroundColor = colorVar ? `var(--d2l-color-${colorVar})` : colorHex;
+	const style = `background-color: ${backgroundColor}; padding: 1rem; box-sizing: border-box; width: fit-content;`;
+	return html`
+        <div style=${style}>
+            ${template}
+        </div>
+	`;
+}
 
 function createSimpleList(opts) {
 	const { color1, color2, extendSeparators, separatorType, addButton, addButtonText } = { extendSeparators: false, addButton: false, ...opts };
@@ -333,24 +344,34 @@ describe('list', () => {
 				if (action) await action(elem);
 				await expect(elem).to.be.golden({ margin });
 			});
+			it(`${name} off-color background`, async() => {
+				const elem = await fixture(createOffColorBackground(template));
+				if (action) await action(elem);
+				await expect(elem).to.be.golden({ margin });
+			});
 		});
 	});
 
 	describe('selectable-href', () => {
+		const selectableHrefList = html`
+			<d2l-list style="width: 400px;">
+				<d2l-list-item href="http://www.d2l.com" selectable key="href" label="Introductory Earth Sciences">
+					<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+					<div slot="actions"><d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon></div>
+				</d2l-list-item>
+			</d2l-list>`;
 		[
-			{ name: 'hover href', action: hoverElem, margin: 24 },
-			{ name: 'hover selection', action: elem => hoverElem(elem.shadowRoot.querySelector('[slot="control"]')), margin: 24 },
-			{ name: 'hover secondary action', action: elem => hoverElem(elem.querySelector('d2l-button-icon')) },
-		].forEach(({ name, action, margin }) => {
+			{ name: 'hover href', template: selectableHrefList, action: hoverElem, margin: 24 },
+			{ name: 'hover selection', template: selectableHrefList, action: elem => hoverElem(elem.shadowRoot.querySelector('[slot="control"]')), margin: 24 },
+			{ name: 'hover secondary action', template: selectableHrefList, action: elem => hoverElem(elem.querySelector('d2l-button-icon')) },
+		].forEach(({ name, template, action, margin }) => {
 			it(name, async() => {
-				const elem = await fixture(html`
-					<d2l-list style="width: 400px;">
-						<d2l-list-item href="http://www.d2l.com" selectable key="href" label="Introductory Earth Sciences">
-							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
-							<div slot="actions"><d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon></div>
-						</d2l-list-item>
-					</d2l-list>
-				`);
+				const elem = await fixture(template);
+				if (action) await action(elem.querySelector('[key="href"]'));
+				await expect(elem).to.be.golden({ margin });
+			});
+			it(`${name} off-color background`, async() => {
+				const elem = await fixture(createOffColorBackground(template));
 				if (action) await action(elem.querySelector('[key="href"]'));
 				await expect(elem).to.be.golden({ margin });
 			});
@@ -516,10 +537,15 @@ describe('list', () => {
 			{ name: 'drag-target-handle-only hover list item', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'drag-target-handle-only hover outside control', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
 			{ name: 'selectable', template: createDraggableList({ selectable: true }) },
+			{ name: 'selectable off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })) },
 			{ name: 'selectable focus', template: createDraggableList({ selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
+			{ name: 'selectable focus off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
 			{ name: 'selectable hover', template: createDraggableList({ selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'selectable hover off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'color selectable focus', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
+			{ name: 'color selectable focus off-color background', template: createOffColorBackground(createDraggableList({ color1: '#ff0000aa', selectable: true })), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
 			{ name: 'color selectable hover', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'color selectable hover off-color background', template: createOffColorBackground(createDraggableList({ color1: '#ff0000aa', selectable: true })), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'extended separators', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }) },
 			{ name: 'extended separators hover', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
 			{ name: 'extended separators add-button', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true, addButton: true }) },

@@ -29,6 +29,13 @@ const singleSetDimensionDateTimeRangeFixture = html`
 			<d2l-filter-dimension-set-date-text-value key="2" range="7days"></d2l-filter-dimension-set-date-text-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
+const singleSetDimensionDateTimeRangeDateFixture = html`
+<d2l-filter>
+	<d2l-filter-dimension-set key="dim" text="Dim">
+		<d2l-filter-dimension-set-date-time-range-value key="1" selected type="date"></d2l-filter-dimension-set-date-time-range-value>
+		<d2l-filter-dimension-set-date-text-value key="2" range="7days"></d2l-filter-dimension-set-date-text-value>
+	</d2l-filter-dimension-set>
+</d2l-filter>`;
 const singleSetDimensionSingleSelectionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="dim" text="Dim" selection-single>
@@ -610,6 +617,77 @@ describe('d2l-filter', () => {
 				expect(changes[0].valueKey).to.equal('1');
 				expect(changes[0].selected).to.be.true;
 				expect(changes[0].startValue).to.equal('2019-02-12T20:00:00.000Z');
+				expect(elem._dimensions[0].values[0].selected).to.be.true;
+				expect(changes[1].valueKey).to.equal('2');
+				expect(changes[1].selected).to.be.false;
+				expect(changes[1].startValue).to.be.undefined;
+				expect(changes[1].endValue).to.be.undefined;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+			});
+
+			it('single set date-time range where type is "date" dimension fires change events', async() => {
+				const elem = await fixture(singleSetDimensionDateTimeRangeDateFixture);
+				const selectedElem = elem.querySelector('d2l-filter-dimension-set-date-time-range-value[selected]');
+				expect(selectedElem.startValue).to.equal(undefined);
+				expect(selectedElem.endValue).to.equal(undefined);
+				expect(elem._dimensions[0].values[0].selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+
+				// set startValue and wait for event
+				const dateRange = elem.shadowRoot.querySelector('d2l-input-date-range');
+				dateRange.startValue = '2019-02-12T20:00:00.000Z';
+				dateRange.dispatchEvent(new CustomEvent(
+					'change', {
+						bubbles: true,
+						composed: false
+					}
+				));
+
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				let dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				let changes = dimensions[0].changes;
+				expect(changes.length).to.equal(1);
+				expect(changes[0].valueKey).to.equal('1');
+				expect(changes[0].selected).to.be.true;
+				expect(changes[0].startValue).to.equal('2019-02-12T05:00:00.000Z');
+
+				// select other item
+				const secondElem = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+				setTimeout(() => secondElem.setSelected(true));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.allCleared).to.be.false;
+				dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				changes = dimensions[0].changes;
+				expect(changes.length).to.equal(2);
+				expect(changes[0].valueKey).to.equal('2');
+				expect(changes[0].selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.true;
+				expect(changes[1].valueKey).to.equal('1');
+				expect(changes[1].selected).to.be.false;
+				expect(changes[1].startValue).to.be.undefined;
+				expect(changes[1].endValue).to.be.undefined;
+				expect(elem._dimensions[0].values[0].selected).to.be.false;
+
+				// re-select first item, make sure start-value is maintained
+				const firstElem = elem.shadowRoot.querySelector('d2l-list-item[key="1"]');
+				setTimeout(() => firstElem.setSelected(true));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.allCleared).to.be.false;
+				dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				changes = dimensions[0].changes;
+				expect(changes.length).to.equal(2);
+				expect(changes[0].valueKey).to.equal('1');
+				expect(changes[0].selected).to.be.true;
+				expect(changes[0].startValue).to.equal('2019-02-12T05:00:00.000Z');
 				expect(elem._dimensions[0].values[0].selected).to.be.true;
 				expect(changes[1].valueKey).to.equal('2');
 				expect(changes[1].selected).to.be.false;
