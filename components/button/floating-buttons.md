@@ -63,4 +63,4 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 Despite visually floating or sticking to the bottom of the viewport, floating buttons maintain their position in the document's structure, typically at the bottom of the content. This means the tab order is unaffected when the buttons float and the effect is invisible to screen reader users.
 
-Be cautious if using `always-float`.   since screen magnifier users may find it difficult to locate the buttons at the bottom of a large viewport, especially when the content is short enough to expect to find the buttons inline.
+Be cautious if using `always-float`, since screen magnifier users may find it difficult to locate the buttons at the bottom of a large viewport, especially when the content is short enough to expect to find the buttons inline.
