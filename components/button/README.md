@@ -166,7 +166,7 @@ The `d2l-button-add` is for quickly adding new items at a specific location, suc
 
 ## Floating Buttons [d2l-floating-buttons]
 
-See [floating buttons](../../components/floating-buttons).
+See [floating buttons](../floating-buttons).
 
 ## Accessibility
 
@@ -175,7 +175,7 @@ Daylight buttons rely on standard button semantics to ensure a smooth experience
 * If the button's context is implied by visual layout, then `description` can be used to add missing context
   * Example: if multiple page sections have an Edit button relying on visual layout to indicate which section it edits, there could be extra information in the `description` to help differentiate the Edit buttons for non-sighted users
 
-* For icon buttons where there is no visible, `text` will be displayed in tooltip
+* For icon buttons where there is no visible label, `text` will be displayed in a tooltip
   * If both `text` and `aria-label` are used, then `aria-label` will be used as the primary label while `text` will be used in a [tooltip](../../components/tooltip)
 
 * When buttons are used to expand more content or to display a menu or dropdown, [aria-expanded](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [aria-haspopup](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes should be used in accordance with best practices — follow the links to learn more
