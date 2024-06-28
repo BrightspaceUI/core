@@ -8,18 +8,7 @@
 	<script type="module">
 		import '../../button/button-subtle.js';
 		import '../../demo/demo-page.js';
-		import { LitElement } from 'lit';
-		import { PopoverMixin } from '../popover-mixin.js';
-
-		class Popover extends PopoverMixin(LitElement) {
-			static get styles() {
-				return super.styles;
-			}
-			render() {
-				return this._renderPopover();
-			}
-		}
-		customElements.define('d2l-popover', Popover);
+		import '../test/popover.js';
 	</script>
 </head>
 
@@ -31,10 +20,10 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-button-subtle id="open1" text="Open"></d2l-button-subtle>
-				<d2l-popover id="popover1" style="max-width: 400px;">
+				<d2l-test-popover id="popover1" style="max-width: 400px;">
 					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
 					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
-				</d2l-popover>
+				</d2l-test-popover>
 				<script>
 					const popover = document.querySelector('#popover1');
 					document.querySelector('#open1').addEventListener('click', () => popover.opened = true);
