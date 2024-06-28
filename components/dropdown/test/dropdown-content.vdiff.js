@@ -118,7 +118,7 @@ describe('dropdown-content', () => {
 			await expect(document).to.be.golden();
 		});
 	});
-	
+
 	[
 		{ name: 'mobile-right-tray-max-width-large', content: html`<d2l-dropdown-content mobile-tray="right" max-width="375" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-left-tray-max-width-large', content: html`<d2l-dropdown-content mobile-tray="left" max-width="375" opened>${basicText}</d2l-dropdown-content>` }
