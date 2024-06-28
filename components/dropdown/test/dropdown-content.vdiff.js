@@ -118,6 +118,16 @@ describe('dropdown-content', () => {
 			await expect(document).to.be.golden();
 		});
 	});
+	
+	[
+		{ name: 'mobile-right-tray-max-width-large', content: html`<d2l-dropdown-content mobile-tray="right" max-width="375" opened>${basicText}</d2l-dropdown-content>` },
+		{ name: 'mobile-left-tray-max-width-large', content: html`<d2l-dropdown-content mobile-tray="left" max-width="375" opened>${basicText}</d2l-dropdown-content>` }
+	].forEach(({ name, content }) => {
+		it(name, async() => {
+			await fixture(createDropdown(content), { viewport: { width: 300, height: 500 }, pagePadding: false });
+			await expect(document).to.be.golden();
+		});
+	});
 
 	it('scroll-top-shadow', async() => {
 		const elem = await fixture(createDropdown(html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>`), { viewport: { height: 400 }, pagePadding: false });
