@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import { css, html } from 'lit';
 
 const isSupported = ('popover' in HTMLElement.prototype);
-//const isSupported = false;
 
 // eslint-disable-next-line no-console
 console.log('Popover', isSupported);
@@ -58,12 +57,6 @@ export const PopoverMixin = superclass => class extends superclass {
 				box-shadow: var(--d2l-popover-shadow, var(--d2l-popover-default-shadow));
 				box-sizing: border-box;
 			}
-
-			/*
-			:host::backdrop {
-				background-color: orange;
-			}
-			*/
 		`;
 	}
 
