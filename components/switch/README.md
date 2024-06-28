@@ -43,7 +43,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 
 | Property | Type | Description |
 |---|---|---|
-| `text` | String, required | Acts as a  [primary label](https://www.w3.org/WAI/tutorials/forms/labels/) on the switch. Visible unless text-position is `hidden`. |
+| `text` | String, required | Acts as the [primary label](https://www.w3.org/WAI/tutorials/forms/labels/) for the switch. Visible unless text-position is `hidden`. |
 | `disabled` | Boolean | Disables the switch |
 | `on` | Boolean | Whether the switch is "on" or "off" |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
@@ -105,4 +105,4 @@ If an activity is set to `Visible` but also has other conditions affecting its v
 
 ## Accessbility
 
-- When `text-position` is set to `hidden`, the switch will still make use of the `text` property as it is used to set the [`aria-label`](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) of the component, so that screen readers can still pick up what the text of the component is.
+- When `text-position` is set to `hidden`, the required `text` will be used for the switch's hidden label so that it is accessible to non-sighted users.
