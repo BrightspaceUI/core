@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script type="module">
+		import '../../button/button-subtle.js';
+		import '../../demo/demo-page.js';
+		import { LitElement } from 'lit';
+		import { PopoverMixin } from '../popover-mixin.js';
+
+		class Popover extends PopoverMixin(LitElement) {
+			static get styles() {
+				return super.styles;
+			}
+			render() {
+				return this._renderPopover();
+			}
+		}
+		customElements.define('d2l-popover', Popover);
+	</script>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-popover">
+
+		<h2>Popover</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle id="open1" text="Open"></d2l-button-subtle>
+				<d2l-popover id="popover1" style="max-width: 400px;">
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
+				</d2l-popover>
+				<script>
+					const popover = document.querySelector('#popover1');
+					document.querySelector('#open1').addEventListener('click', () => popover.opened = true);
+					document.querySelector('#close1').addEventListener('click', () => popover.opened = false);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<script>
+			document.addEventListener('d2l-popover-open', e => console.log(e.type, e));
+			document.addEventListener('d2l-popover-close', e => console.log(e.type, e));
+		</script>
+</body>
+
+</html>
