@@ -40,7 +40,7 @@ If the tooltip's target is an interactive element then it will automatically be 
 
 **Static / Custom Target Elements:**
 
-If the tooltip's target is a static or custom element then the target must be both focusable and given an interactive ARIA role. Note, a role should only be added to an element if the role semantically aligns with what the element represents. [A list of interactive roles can be found here.](https://github.com/BrightspaceUI/core/blob/main/components/tooltip/tooltip.js#L52)
+If the tooltip's target is a static or custom element then the target must either use the [FocusMixin](https://github.com/BrightspaceUI/core/blob/main/mixins/focus/README.md), or be both focusable and given an interactive ARIA role. Note, a role should only be added to an element if the role semantically aligns with what the element represents. [A list of interactive roles can be found here.](https://github.com/BrightspaceUI/core/blob/main/components/tooltip/tooltip.js#L52)
 
 Adding roles to custom elements that contain internal interactive elements should be avoided to prevent the element type being announced twice. In situations like these, the tooltip should be moved inside the custom element so that it can be attached directly as shown below:
 ```html
