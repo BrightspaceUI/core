@@ -180,7 +180,7 @@ Daylight buttons rely on standard button semantics to ensure a smooth experience
 
 * When buttons are used to expand more content or to display a menu or dropdown, [aria-expanded](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [aria-haspopup](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes should be used in accordance with best practices — follow the links to learn more
 
-* Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../../components/tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
+* Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
 
 <!-- docs: start hidden content -->
 ## Future Improvements
