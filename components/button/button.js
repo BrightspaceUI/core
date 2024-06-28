@@ -16,7 +16,7 @@ class Button extends ButtonMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
 			 * @type {string}
 			 */
 			description: { type: String },

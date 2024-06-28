@@ -28,7 +28,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			 */
 			mode: { type: String, reflect: true },
 			/**
-			 * The text associated with the button. When mode is `icon-and-text` this text is displayed next to the icon, otherwise this text is in a tooltip.
+			 * ACCESSIBILITY: The text associated with the button. When mode is `icon-and-text` this text is displayed next to the icon, otherwise this text is in a tooltip.
 			 * @type {string}
 			 */
 			text: { type: String, required: true }

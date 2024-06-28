@@ -44,7 +44,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean, reflect: true },
 			/**
-			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
 			 * @type {string}
 			 */
 			description: { type: String },
@@ -79,7 +79,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			disabledUp: { type: Boolean, attribute: 'disabled-up', reflect: true },
 			/**
-			 * REQUIRED: Accessible text for the button
+			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true }
