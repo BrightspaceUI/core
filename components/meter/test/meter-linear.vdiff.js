@@ -47,6 +47,7 @@ describe('meter-linear', () => {
 
 	[
 		{ name: 'normal-text', template: html`<d2l-meter-linear id="normal-text" value="4" max="10" text="You're doing great!"></d2l-meter-linear>` },
+		{ name: 'text-hidden', template: html`<d2l-meter-linear id="text-hidden" value="4" max="10" text="You're doing great!" text-hidden></d2l-meter-linear>` },
 		{ name: 'normal-max-zero-value-zero', template: html`<d2l-meter-linear value="0" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-round-to-zero', template: html`<d2l-meter-linear value="0.004" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-over-100', template: html`<d2l-meter-linear value="15" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },

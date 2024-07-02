@@ -6,6 +6,19 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 	static get properties() {
 		return {
 			/**
+			 * To be used by the circle-meter only.
+			 * Width styling of the meter
+			 * Valid values: A number > 0
+			 * @type {number}
+			 */
+			diameter: { type: Number },
+			/**
+			 * To be used by the circle-meter only.
+			 * Units for the width styling, default `px`
+			 * @type { string }
+			 */
+			diameterUnits: { type: String, attribute: 'diameter-units' },
+			/**
 			 * Max number of units that are being measured by this meter.
 			 * Valid values: A number > 0
 			 * @type {number}
@@ -22,6 +35,11 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 */
 			text: { type: String },
 			/**
+			 * Hides the text from being displayed beneath the meter
+			 * @type {boolean}
+			 */
+			textHidden: { type: Boolean, attribute: 'text-hidden', reflect: true },
+			/**
 			 * REQUIRED: Current number of completed units.
 			 * Valid values: A number between 0 and max
 			 * @type {number}
@@ -34,7 +52,9 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		super();
 		this.max = 100;
 		this.percent = false;
+		this.textHidden = false;
 		this.value = 0;
+		this.diameterUnits = 'px';
 
 		this._namespace = 'components.meter-mixin';
 	}
