@@ -19,6 +19,23 @@ describe('popover-mixin', () => {
 			await oneEvent(elem, 'd2l-popover-open');
 		});
 
+		it('should fire the open event when initialized in opened state', async() => {
+			const elem = await fixture('<div></div>');
+			let fired = false;
+			elem.addEventListener('d2l-popover-open', () => fired = true);
+			const popover = document.createElement('d2l-test-popover');
+			popover.opened = true;
+			elem.appendChild(popover);
+			await popover.updateComplete;
+			expect(fired).to.be.true;
+		});
+
+		it('should fire the close event when the opened attribute is set to false', async() => {
+			const elem = await fixture('<d2l-test-popover opened></d2l-test-popover>');
+			elem.opened = false;
+			await oneEvent(elem, 'd2l-popover-close');
+		});
+
 		it('should not fire the close event when initialized in closed state', async() => {
 			const elem = await fixture('<div></div>');
 			let fired = false;
@@ -27,12 +44,6 @@ describe('popover-mixin', () => {
 			elem.appendChild(popover);
 			await popover.updateComplete;
 			expect(fired).to.be.false;
-		});
-
-		it('should fire the close event when the opened attribute is set to false', async() => {
-			const elem = await fixture('<d2l-test-popover opened></d2l-test-popover>');
-			elem.opened = false;
-			await oneEvent(elem, 'd2l-popover-close');
 		});
 
 	});
