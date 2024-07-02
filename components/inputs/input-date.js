@@ -469,6 +469,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this._openedOnKeydown = true;
 			this.opened = true;
 			e.preventDefault();
+			e.stopPropagation();
 		}
 	}
 
