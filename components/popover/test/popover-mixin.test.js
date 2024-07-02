@@ -19,7 +19,7 @@ describe('popover-mixin', () => {
 			await oneEvent(elem, 'd2l-popover-open');
 		});
 
-		it('should fire the close event when the opened attribute is set to true', async() => {
+		it('should fire the close event when the opened attribute is set to false', async() => {
 			const elem = await fixture('<d2l-test-popover opened></d2l-test-popover>');
 			elem.opened = false;
 			await oneEvent(elem, 'd2l-popover-close');
