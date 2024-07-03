@@ -138,7 +138,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	_handleAutoCloseFocus() {
 
-		// timeout needed to work around lack of support for relatedTarget
+		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
 		setTimeout(() => {
 			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
 			if (!this.opened
