@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
-import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getComposedActiveElement, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
 const isSupported = ('popover' in HTMLElement.prototype);
@@ -95,10 +95,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				else this.hidePopover();
 			}
 
-			//this._previousFocusableAncestor =
-			//	newValue === true
-			//		? getPreviousFocusableAncestor(this, false, false)
-			//		: null;
+			this._previousFocusableAncestor = this.opened ? getPreviousFocusableAncestor(this, false, false) : null;
 
 			if (this.opened) {
 				this._opener = getComposedActiveElement();
@@ -143,6 +140,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		// timeout needed to work around lack of support for relatedTarget
 		setTimeout(() => {
+			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
 			if (!this.opened
 				|| this.noAutoClose
 				|| !document.activeElement
