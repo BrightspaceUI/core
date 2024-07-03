@@ -151,14 +151,16 @@ describe('selection-components', () => {
 		[
 			{ name: 'default', template: defaultTemplate },
 			{ name: 'focus', template: defaultTemplate, action: focusElem },
-			{ name: 'click', template: defaultRadioToggleTemplate, action: clickElem },
-			{ name: 'click-radio-toggle', template: defaultTemplate, action: clickElem },
+			{ name: 'click', template: defaultTemplate, action: clickElem },
+			{ name: 'click-radio-toggle', template: defaultRadioToggleTemplate, action: clickElem },
 			{ name: 'space', template: defaultTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
+			{ name: 'space-radio-toggle', template: defaultRadioToggleTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
 			{ name: 'selected', template: selectedTemplate },
 			{ name: 'skeleton', template: html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" skeleton></d2l-selection-input></d2l-test-selection>` },
 			{ name: 'selected-focus', template: selectedTemplate, action: focusElem },
 			{ name: 'selected-click', template: selectedTemplate, action: clickElem },
-			{ name: 'selected-click-radio-toggle', template: selectedRadioToggleTemplate, action: clickElem }
+			{ name: 'selected-click-radio-toggle', template: selectedRadioToggleTemplate, action: clickElem },
+			{ name: 'selected-space-radio-toggle', template: selectedRadioToggleTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
