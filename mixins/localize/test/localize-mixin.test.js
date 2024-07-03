@@ -289,6 +289,8 @@ describe('LocalizeMixin', () => {
 			});
 
 			it('should localize text without replacement arguments', () => {
+				console.log('asdasd');
+				console.log(elem.resources);
 				const val = elem.localize('hello');
 				expect(val).to.equal('Hello {name}');
 			});

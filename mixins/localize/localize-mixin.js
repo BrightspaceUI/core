@@ -11,37 +11,43 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 	#pristine = true;
 	#resolveResourcesLoaded;
+	resources;
+	resolvedLocale;
 
-	#languageChangeCallback() {
-		debugger;
+	async #languageChangeCallback() {
 		if (!this._hasResources()) return;
-		const localizeResources = this.constructor._getAllLocalizeResources();
-		const resourcesLoadedPromise = Promise.all(localizeResources);
-		resourcesLoadedPromise
-			.then((results) => {
-				if (results.length === 0) {
-					return;
-				}
-				const resources = {};
-				for (const res of results) {
-					const language = res.language;
-					for (const [key, value] of Object.entries(res.resources)) {
-						resources[key] = { language, value };
-					}
-				}
-				this.__resources = resources;
-				this._onResourcesChange();
-				if (this.#pristine) {
-					console.log('resourcesLoadedPromise resolved');
-					this.#resolveResourcesLoaded();
-					this.#pristine = false;
-				}
-			});
+
+		const localizeResources = (await this.constructor._getAllLocalizeResources(this.config)).flat(Infinity);
+		if (!localizeResources.length) return;
+
+		const allResources = {};
+		for (const { language, resources } of localizeResources) {
+			for (const [key, value] of Object.entries(resources)) {
+				allResources[key] = { language, value };
+			}
+		}
+		console.log('setting all resources');
+		this.resources = allResources;
+		this._onResourcesChange();
+		if (this.#pristine) {
+			//console.log('resourcesLoadedPromise resolved');
+			this.#resolveResourcesLoaded();
+			this.#pristine = false;
+		}
+	}
+
+	connect(cb = () => this.#languageChangeCallback()) {
+		LocalizeClass.documentLocaleSettings.addChangeListener(cb);
+		this.#languageChangeCallback();
+	}
+
+	disconnect() {
+		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#languageChangeCallback);
 	}
 
 	localize(key) {
 
-		const { language, value } = this.__resources?.[key] ?? {};
+		const { language, value } = this.resources?.[key] ?? {};
 		if (!value) return '';
 
 		let params = {};
@@ -69,7 +75,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 	localizeHTML(key, params = {}) {
 
-		const { language, value } = this.__resources?.[key] ?? {};
+		const { language, value } = this.resources?.[key] ?? {};
 		if (!value) return '';
 
 		const translatedMessage = new IntlMessageFormat(value, language);
@@ -93,15 +99,6 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 		return formattedMessage;
 	}
 
-	onConnected() {
-		LocalizeClass.documentLocaleSettings.addChangeListener(() => this.#languageChangeCallback());
-		this.#languageChangeCallback();
-	}
-
-	onDisconnected() {
-		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#languageChangeCallback);
-	}
-
 	__resourcesLoadedPromise = new Promise(r => this.#resolveResourcesLoaded = r);
 
 	static _generatePossibleLanguages(config) {
@@ -118,34 +115,37 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 	}
 
 	static _getAllLocalizeResources(config = this.localizeConfig) {
-		let resourcesLoadedPromises = [];
+		const resourcesLoadedPromises = [];
 		const superCtor = Object.getPrototypeOf(this);
 		// get imported terms for each config, head up the chain to get them all
 		if ('_getAllLocalizeResources' in superCtor) {
 			const superConfig = Object.prototype.hasOwnProperty.call(superCtor, 'localizeConfig') && superCtor.localizeConfig.importFunc ? superCtor.localizeConfig : config;
-			resourcesLoadedPromises = superCtor._getAllLocalizeResources(superConfig);
+			resourcesLoadedPromises.push(superCtor._getAllLocalizeResources(superConfig));
 		}
 		if (Object.prototype.hasOwnProperty.call(this, 'getLocalizeResources') || Object.prototype.hasOwnProperty.call(this, 'resources')) {
 			const possibleLanguages = this._generatePossibleLanguages(config);
 			const res = this.getLocalizeResources(possibleLanguages, config);
 			resourcesLoadedPromises.push(res);
 		}
-		return resourcesLoadedPromises;
+		return Promise.all(resourcesLoadedPromises);
 	}
 
 	_hasResources() {
 		return this.constructor.localizeConfig ? Boolean(this.constructor.localizeConfig.importFunc) : this.constructor.getLocalizeResources !== undefined;
 	}
 
+	// no _
 	_onResourcesChange() {
 		/** @ignore */
 		this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
-		this.onResourcesChange?.();
+		this.config?.onResourcesChange?.();
+		this.onLocalizeResourcesChange?.();
 	}
 
 };
 
 export const Localize = class extends getLocalizeClass() {
+
 	static async getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
 
 		// in dev, don't request unsupported langpacks
@@ -175,48 +175,61 @@ export const Localize = class extends getLocalizeClass() {
 		}
 	}
 
+	constructor(config) {
+		super();
+		this.config = config;
+		this.connect(() => this.requestUpdate);
+	}
+
+	get connected() {
+		return this.__resourcesLoadedPromise;
+	}
+
 	connect() {
-		this.onConnected();
+		super.connect();
+		return this.__resourcesLoadedPromise;
 	}
 
 	disconnect() {
-		this.onDisconnected();
+		// how should this work? Can we detect garbage collection?
+		super.disconnect();
 	}
 
 };
 
-window.LocalizeClass = Localize;
+window.Localize = Localize;
 window.localizeMarkup = localizeMarkup;
 
 export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends getLocalizeClass(superclass) {
 
 	static get properties() {
 		return {
-			__resources: { type: Object, attribute: false }
+			__localize: { state: true }
 		};
 	}
 
 	#updatedProperties = new Map();
+	//#localizer = new LocalizeClass();
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.onConnected();
+		this.connect();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.onDisconnected();
+		this.disconnect();
 		this.#updatedProperties.clear();
 	}
 
 	async getUpdateComplete() {
 		await super.getUpdateComplete();
 		const hasResources = this._hasResources();
-		const resourcesLoaded = this.__resources !== undefined;
+		const resourcesLoaded = this.resources !== undefined;
 		if (!hasResources || resourcesLoaded) {
 			return;
 		}
-		await this.__resourcesLoadedPromise;
+		await super.__resourcesLoadedPromise;
 	}
 
 	shouldUpdate(changedProperties) {
@@ -226,7 +239,7 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 			return super.shouldUpdate(changedProperties);
 		}
 
-		const ready = this.__resources !== undefined;
+		const ready = this.resources !== undefined;
 
 		/* is this necessary? > */
 		if (!ready) {
@@ -247,6 +260,13 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 		return super.shouldUpdate(changedProperties);
 
 	}
+
+	onLocalizeResourcesChange() {
+		//super.onResourcesChange();
+		debugger;
+		this.requestUpdate();
+	}
+
 });
 
 export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(superclass) {
@@ -296,8 +316,10 @@ const disallowedTagsRegex = new RegExp(`<(?!${allowedAfterTriangleBracket})`);
 function validateMarkup(content, applyRegex) {
 	if (content) {
 		if (content.forEach) { content.forEach(item => validateMarkup(item)); return; }
+
 		if (content._localizeMarkup) return;
 		if (Object.hasOwn(content, '_$litType$')) throw markupError;
+
 		if (applyRegex && content.constructor === String && disallowedTagsRegex.test(content)) throw markupError;
 		//console.log('made it through with content:', content);
 	}
@@ -307,6 +329,12 @@ function validateMarkup(content, applyRegex) {
 //export const validateMarkup = validateMarkupLit;
 
 export function localizeMarkup(strings, ...expressions) {
+	strings.forEach(str => validateMarkup(str, true));
+	expressions.forEach(exp => validateMarkup(exp, true));
+	return { ...html(strings, ...expressions), _localizeMarkup: true };
+}
+
+export function localizeMarkup2(strings, ...expressions) {
 	strings.forEach(str => validateMarkup(str, true));
 	expressions.forEach(exp => validateMarkup(exp, true));
 	return { ...html(strings, ...expressions), _localizeMarkup: true };
