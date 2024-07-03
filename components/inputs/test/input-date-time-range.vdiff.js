@@ -208,6 +208,8 @@ describe('d2l-input-date-time-range', () => {
 			const elem = await fixture(create({ inclusiveDateRange: true }));
 			await changeInnerInputTextDate(elem, startDateSelector, dateInRange);
 			await changeInnerInputTextDate(elem, endDateSelector, dateInRange, true);
+			await nextFrame();
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 
@@ -281,18 +283,24 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 				});
@@ -315,18 +323,24 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 				});
@@ -371,12 +385,16 @@ describe('d2l-input-date-time-range', () => {
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(actualElem).to.be.golden();
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
+						await nextFrame();
+						await nextFrame();
 						await expect(actualElem).to.be.golden();
 					});
 				});
