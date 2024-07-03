@@ -160,10 +160,6 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	}
 
-	async _open() {
-		this.opened = true;
-	}
-
 	_removeAutoCloseHandlers() {
 		this.removeEventListener('blur', this._handleAutoCloseFocus, { capture: true });
 		document.body?.removeEventListener('focus', this._handleAutoCloseFocus, { capture: true }); // DE41322: document.body can be null in some scenarios
