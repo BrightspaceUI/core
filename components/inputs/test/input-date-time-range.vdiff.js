@@ -204,13 +204,17 @@ describe('d2l-input-date-time-range', () => {
 			}
 		}
 
+		async function nextFrameGolden(elem) {
+			await nextFrame();
+			await nextFrame();
+			await expect(elem).to.be.golden();
+		}
+
 		it('start equals end when inclusive', async() => {
 			const elem = await fixture(create({ inclusiveDateRange: true }));
 			await changeInnerInputTextDate(elem, startDateSelector, dateInRange);
 			await changeInnerInputTextDate(elem, endDateSelector, dateInRange, true);
-			await nextFrame();
-			await nextFrame();
-			await expect(elem).to.be.golden();
+			await nextFrameGolden(elem);
 		});
 
 		describe('auto-shift-dates', () => {
@@ -283,25 +287,19 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});
@@ -323,25 +321,19 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});
@@ -385,17 +377,13 @@ describe('d2l-input-date-time-range', () => {
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(actualElem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await nextFrame();
-						await nextFrame();
-						await expect(actualElem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});

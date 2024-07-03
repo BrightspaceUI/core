@@ -80,7 +80,6 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-to-to {
 				display: inline-block;
 				margin-bottom: 0.6rem;
-				margin-inline-end: 0.9rem;
 				margin-top: auto;
 				vertical-align: top;
 			}
