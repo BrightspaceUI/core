@@ -129,7 +129,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const rootTarget = e.composedPath()[0];
 		if (isComposedAncestor(this.shadowRoot.querySelector('.content'), rootTarget)
-			|| isComposedAncestor(this._opener, rootTarget)) {
+			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
 			return;
 		}
 
