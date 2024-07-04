@@ -135,6 +135,20 @@ describe('popover-mixin', () => {
 			expect(popover.opened).to.be.true;
 		});
 
+		it('should close when ESC key is pressed', async() => {
+			popover.opened = true;
+			await oneEvent(popover, 'd2l-popover-open');
+
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keydown', true, true);
+			eventObj.keyCode = 27;
+
+			setTimeout(() => document.dispatchEvent(eventObj));
+			await oneEvent(popover, 'd2l-popover-close');
+
+			expect(popover.opened).to.be.false;
+		});
+
 	});
 
 });
