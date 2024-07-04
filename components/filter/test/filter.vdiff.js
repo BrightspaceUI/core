@@ -184,6 +184,7 @@ describe('filter', () => {
 				sendKeysElem(elem, 'press', 'Enter');
 				await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				await nextFrame();
+				await nextFrame();
 				await expect(document).to.be.golden();
 			});
 		});
