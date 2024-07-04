@@ -180,6 +180,14 @@ describe('filter', () => {
 			});
 		});
 
+		it('dates-custom-selected-small-mobile', async() => {
+			const elem = await fixture(createSingleDimDateCustom({ customSelected: true }), { viewport: { width: 320, height: 500 } });
+			sendKeysElem(elem, 'press', 'Enter');
+			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await nextFrame();
+			await expect(document).to.be.golden();
+		});
+
 		it('custom-empty', async() => {
 			const elem = await fixture(createEmptySingleDim({ customEmptyState: true }));
 			elem.opened = true;

@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "이전 메뉴로 돌아갑니다. {menuTitle}을(를) 보고 있습니다.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "진도 표시기",
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",

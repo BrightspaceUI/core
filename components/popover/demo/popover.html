@@ -25,9 +25,9 @@
 					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
 				</d2l-test-popover>
 				<script>
-					const popover = document.querySelector('#popover1');
-					document.querySelector('#open1').addEventListener('click', () => popover.opened = true);
-					document.querySelector('#close1').addEventListener('click', () => popover.opened = false);
+					const popover1 = document.querySelector('#popover1');
+					document.querySelector('#open1').addEventListener('click', () => popover1.opened = !popover1.opened);
+					document.querySelector('#close1').addEventListener('click', () => popover1.opened = false);
 				</script>
 			</template>
 		</d2l-demo-snippet>

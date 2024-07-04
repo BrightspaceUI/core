@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "Önceki menüye dönün. {menuTitle} başlığını görüntülüyorsunuz.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "Gelişim Göstergesi",
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",

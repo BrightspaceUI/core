@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "पिछले मेनू पर वापस जाएँ। आप {menuTitle} देख रहे हैं।",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "प्रगति संकेतक",
 	"components.more-less.less": "कम",
 	"components.more-less.more": "अधिक",
