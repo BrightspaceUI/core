@@ -40,26 +40,31 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 	}
 
 	_ariaLabel(primary, secondary) {
-		const mainLabel = this.localize(`${this._namespace}.commaSeperatedAria`, 'term1', primary, 'term2', this.localize(`${this._namespace}.progressIndicator`));
-		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, 'term1', secondary, 'term2', mainLabel) : mainLabel;
+		// todo: these should be using CLDR data/patterns instead of translated message fragments
+		// example: https://www.unicode.org/cldr/cldr-aux/charts/37/summary/en.html#4480e9e541ba33de
+		const mainLabel = this.localize(`${this._namespace}.commaSeperatedAria`, { term1: primary, term2: this.localize(`${this._namespace}.progressIndicator`) });
+		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, { term1: secondary, term2: mainLabel }) : mainLabel;
 	}
 
-	_primary(value, max) {
+	_primary(value, max, aria = false) {
 		const percentage = max > 0 ? value / max : 0;
+		const key = aria ? 'fractionAria' : 'fraction';
 
 		return this.percent
 			? formatPercent(percentage, { maximumFractionDigits: 0 })
-			: this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max);
+			: this.localize(`${this._namespace}.${key}`, { x: value, y: max });
 	}
 
-	_secondary(value, max, context) {
+	_secondary(value, max, context, aria = false) {
 		if (!context) {
 			return '';
 		}
 
+		const key = aria ? 'fractionAria' : 'fraction';
+
 		const percentage = this.max > 0 ? value / max : 0;
 		context = context.replace('{%}', formatPercent(percentage, { maximumFractionDigits: 0 }));
-		context = context.replace('{x/y}', this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max));
+		context = context.replace('{x/y}', this.localize(`${this._namespace}.${key}`, { x: value, y: max }));
 		context = context.replace('{x}', value);
 		context = context.replace('{y}', max);
 

@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "العودة إلى القائمة السابقة. يتم عرض {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}، ‏{term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "مؤشر التقدم",
 	"components.more-less.less": "أقل",
 	"components.more-less.more": "المزيد",

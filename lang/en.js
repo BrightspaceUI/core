@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "Return to previous menu. You are viewing {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "Progress Indicator",
 	"components.more-less.less": "less",
 	"components.more-less.more": "more",

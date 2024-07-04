@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "前のメニューに戻ります。{menuTitle} を表示しています。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}、{term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "進捗状況インジケータ",
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
