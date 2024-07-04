@@ -178,15 +178,14 @@ describe('filter', () => {
 					await expect(document).to.be.golden();
 				});
 			});
+		});
 
-			it('dates-custom-selected-small-mobile', async() => {
-				const elem = await fixture(createSingleDimDateCustom({ customSelected: true }), { rtl, viewport: { width: 320, height: 500 } });
-				sendKeysElem(elem, 'press', 'Enter');
-				await oneEvent(elem, 'd2l-filter-dimension-first-open');
-				await nextFrame();
-				await nextFrame();
-				await expect(document).to.be.golden();
-			});
+		it('dates-custom-selected-small-mobile', async() => {
+			const elem = await fixture(createSingleDimDateCustom({ customSelected: true }), { viewport: { width: 320, height: 500 } });
+			sendKeysElem(elem, 'press', 'Enter');
+			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await nextFrame();
+			await expect(document).to.be.golden();
 		});
 
 		it('custom-empty', async() => {
