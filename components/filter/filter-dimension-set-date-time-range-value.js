@@ -70,7 +70,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		this._dispatchFilterChangeEvent = false;
 		this._enforceSingleSelection = true;
 		this._filterSetValue = true;
-		this._minWidth = 375;
+		this._minWidth = 390;
 		this._noSearchSupport = true;
 
 		this._handleDateChange = this._handleDateChange.bind(this);

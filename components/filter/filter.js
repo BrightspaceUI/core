@@ -149,6 +149,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				margin-inline-start: -2rem;
 				padding-block: 0.5rem;
 			}
+			d2l-list-item.expanding-content {
+				overflow-y: hidden;
+			}
 
 			.d2l-filter-dimension-set-value-text {
 				-webkit-box-orient: vertical;
@@ -605,7 +608,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		: nothing}
 					</div>
 					${item.additionalContent ? html`
-						<d2l-expand-collapse-content ?expanded="${item.selected}">
+						<d2l-expand-collapse-content 
+							?expanded="${item.selected}" 
+							@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
+							@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
 							${item.additionalContent()}
 						</d2l-expand-collapse-content>
 					` : nothing}
@@ -839,6 +845,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				detail: { key: e.target.getAttribute('data-dimension-key'), type: e.target.getAttribute('data-type') }
 			}
 		));
+	}
+
+	async _handleExpandCollapse(e) {
+		const eventPromise = e.target.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
+		const parentListItem = e.target.closest('d2l-list-item');
+		parentListItem.classList.add('expanding-content');
+
+		await eventPromise;
+		parentListItem.classList.remove('expanding-content');
 	}
 
 	_handleSearch(e) {
