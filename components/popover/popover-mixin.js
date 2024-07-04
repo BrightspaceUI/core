@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html } from 'lit';
 import { getComposedActiveElement, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
@@ -84,6 +85,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._removeAutoCloseHandlers();
+		this._clearDismissible();
 	}
 
 	updated(changedProperties) {
@@ -100,9 +102,11 @@ export const PopoverMixin = superclass => class extends superclass {
 			if (this.opened) {
 				this._opener = getComposedActiveElement();
 				this._addAutoCloseHandlers();
+				this._dismissibleId = setDismissible(() => this._close());
 				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 			} else if (changedProperties.get('opened') !== undefined) {
 				this._removeAutoCloseHandlers();
+				this._clearDismissible();
 				this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 			}
 
@@ -113,6 +117,12 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.addEventListener('blur', this._handleAutoCloseFocus, { capture: true });
 		document.body.addEventListener('focus', this._handleAutoCloseFocus, { capture: true });
 		document.addEventListener('click', this._handleAutoCloseClick, { capture: true });
+	}
+
+	_clearDismissible() {
+		if (!this._dismissibleId) return;
+		clearDismissible(this._dismissibleId);
+		this._dismissibleId = null;
 	}
 
 	_close() {
