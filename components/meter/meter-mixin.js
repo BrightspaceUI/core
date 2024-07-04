@@ -42,8 +42,8 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 	_ariaLabel(primary, secondary) {
 		// todo: these should be using CLDR data/patterns instead of translated message fragments
 		// example: https://www.unicode.org/cldr/cldr-aux/charts/37/summary/en.html#4480e9e541ba33de
-		const mainLabel = this.localize(`${this._namespace}.commaSeperatedAria`, 'term1', primary, 'term2', this.localize(`${this._namespace}.progressIndicator`));
-		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, 'term1', secondary, 'term2', mainLabel) : mainLabel;
+		const mainLabel = this.localize(`${this._namespace}.commaSeperatedAria`, { term1: primary, term2: this.localize(`${this._namespace}.progressIndicator`) });
+		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, { term1: secondary, term2: mainLabel }) : mainLabel;
 	}
 
 	_primary(value, max, aria = false) {
@@ -52,7 +52,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 
 		return this.percent
 			? formatPercent(percentage, { maximumFractionDigits: 0 })
-			: this.localize(`${this._namespace}.${key}`, 'x', value, 'y', max);
+			: this.localize(`${this._namespace}.${key}`, { x: value, y: max });
 	}
 
 	_secondary(value, max, context, aria = false) {
