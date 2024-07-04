@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "返回上一個功能表。您正在檢視 {menuTitle}。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}，{term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "進度指示器",
 	"components.more-less.less": "較少",
 	"components.more-less.more": "較多",

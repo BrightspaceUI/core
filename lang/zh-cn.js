@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "返回至上级菜单。您正在浏览 {menuTitle}。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}、{term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "进度指示符",
 	"components.more-less.less": "更少",
 	"components.more-less.more": "更多",

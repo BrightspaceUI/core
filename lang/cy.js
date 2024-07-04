@@ -94,6 +94,7 @@ export default {
 	"components.menu-item-return.returnCurrentlyShowing": "Dychwelyd i'r ddewislen flaenorol. Rydych chi'n edrych ar {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
+	"components.meter-mixin.fractionAria": "{x} out of {y}",
 	"components.meter-mixin.progressIndicator": "Dangosydd Cynnydd",
 	"components.more-less.less": "llai",
 	"components.more-less.more": "mwy",
