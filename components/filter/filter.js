@@ -37,7 +37,12 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
-let hasDisplayedFilterExpandKeyboardTooltip = false;
+
+let hasDisplayedKeyboardTooltip = false;
+
+export function resetHasDisplayedKeyboardTooltip() {
+	hasDisplayedKeyboardTooltip = false;
+}
 
 /**
  * A filter component that contains one or more dimensions a user can filter by.
@@ -594,6 +599,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_createSetDimensionItem(item) {
+		if (item.selected && !hasDisplayedKeyboardTooltip && item.additionalContent) {
+			this._displayKeyboardTooltip = true;
+		}
 		const itemId = `list-item-${item.key}`;
 		return html`
 			<d2l-list-item
@@ -625,7 +633,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				</div>
 			</d2l-list-item>
 			${item.additionalContent && item.selected && this._displayKeyboardTooltip
-		? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.tooltip')}</d2l-tooltip>`
+		? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.additionalContentTooltip')}</d2l-tooltip>`
 		: nothing}
 		`;
 	}
@@ -867,9 +875,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleListItemSelelcted() {
-		if (hasDisplayedFilterExpandKeyboardTooltip) return;
+		if (hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;
-		hasDisplayedFilterExpandKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_handleSearch(e) {
@@ -921,6 +929,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_handleTooltipHide() {
 		this._displayKeyboardTooltip = false;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_isDimensionEmpty(dimension) {

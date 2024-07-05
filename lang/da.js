@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "Kritisk!",
 	"components.dropdown.close": "Luk",
 	"components.filter.activeFilters": "Aktive filtre:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "Ryd",
 	"components.filter.clearAll": "Ryd alle",
 	"components.filter.clearAllAnnounce": "Rydder alle filtre",

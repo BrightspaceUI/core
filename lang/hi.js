@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "महत्वपूर्ण!",
 	"components.dropdown.close": "बंद करें",
 	"components.filter.activeFilters": "सक्रिय फ़िल्टर्स:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "साफ़ करें",
 	"components.filter.clearAll": "सभी साफ़ करें",
 	"components.filter.clearAllAnnounce": "सभी फिल्टर साफ़ किए जा रहे हैं",
