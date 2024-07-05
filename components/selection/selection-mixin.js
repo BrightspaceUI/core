@@ -12,11 +12,16 @@ const keyCodes = {
 
 export class SelectionInfo {
 
-	constructor(keys, state) {
+	constructor(keys, state, allPages) {
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
 		this._keys = keys;
 		this._state = state;
+		this._allPages = allPages;
+	}
+
+	get allPages() {
+		return this._allPages;
 	}
 
 	get keys() {
@@ -31,8 +36,7 @@ export class SelectionInfo {
 		return {
 			none: 'none',
 			some: 'some',
-			all: 'all',
-			allPages: 'all-pages'
+			all: 'all'
 		};
 	}
 
@@ -58,6 +62,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		super();
 		this.selectionNoInputArrowKeyBehaviour = false;
 		this.selectionSingle = false;
+		this._deselectAllPages = false;
 		this._selectAllPages = false;
 		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
@@ -90,27 +95,24 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		let state = SelectionInfo.states.none;
 		const keys = [];
 
-		if (this._selectAllPages) {
-			state = SelectionInfo.states.allPages;
-		} else {
-			this._selectionSelectables.forEach(selectable => {
-				if (selectable.selected) keys.push(selectable.key);
-				if (selectable._indeterminate) state = SelectionInfo.states.some;
-			});
+		this._selectionSelectables.forEach(selectable => {
+			if (selectable.selected) keys.push(selectable.key);
+			if (selectable._indeterminate) state = SelectionInfo.states.some;
+		});
 
-			if (keys.length > 0) {
-				if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
-				else state = SelectionInfo.states.some;
-			}
+		if (keys.length > 0) {
+			if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
+			else state = SelectionInfo.states.some;
 		}
 
-		return new SelectionInfo(keys, state);
+		return new SelectionInfo(keys, state, this._selectAllPages || this._deselectAllPages);
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
 		if (this.selectionSingle && selected) return;
 
 		this._selectAllPages = (selected && selectAllPages);
+		this._deselectAllPages = !selected;
 
 		this._selectionSelectables.forEach(selectable => {
 			if (!selectable.disabled && !!selectable.selected !== selected) {
@@ -195,6 +197,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	_handleSelectionChange(e) {
 		if (!e.detail.selected) this._selectAllPages = false;
+		if (e.detail.selected) this._deselectAllPages = false;
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
 			this._selectionSelectables.forEach(selectable => {

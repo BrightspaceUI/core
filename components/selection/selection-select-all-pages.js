@@ -40,6 +40,8 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 	}
 
 	_handleClick() {
+		this.dispatchEvent(new CustomEvent('d2l-selection-select-all-pages-click', { bubbles: true, composed: true }));
+
 		if (!this._provider) return;
 
 		this._provider.setSelectionForAll(true, true);
