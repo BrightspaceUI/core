@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "重大です！",
 	"components.dropdown.close": "閉じる",
 	"components.filter.activeFilters": "アクティブフィルタ:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "クリア",
 	"components.filter.clearAll": "すべてをクリア",
 	"components.filter.clearAllAnnounce": "すべてのフィルタのクリア",

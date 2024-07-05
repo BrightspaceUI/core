@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "مهم!",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.activeFilters": "عوامل تصفية نشطة:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "مسح",
 	"components.filter.clearAll": "مسح الكل",
 	"components.filter.clearAllAnnounce": "جارٍ مسح كل عوامل التصفية",

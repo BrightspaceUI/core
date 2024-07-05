@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "Crítico!",
 	"components.dropdown.close": "Fechar",
 	"components.filter.activeFilters": "Filtros ativos:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "Limpar",
 	"components.filter.clearAll": "Limpar tudo",
 	"components.filter.clearAllAnnounce": "Limpando todos os filtros",
