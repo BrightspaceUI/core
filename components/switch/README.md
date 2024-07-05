@@ -105,4 +105,4 @@ If an activity is set to `Visible` but also has other conditions affecting its v
 
 ## Accessbility
 
-- When `text-position` is set to `hidden`, the required `text` will be used for the switch's hidden label so that it is [accessible](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA14) to non-sighted users.
+- When `text-position` is set to `hidden`, the required `text` will be used for the switch's hidden label so that it is [accessible](https://www.w3.org/WAI/WCAG22/quickref/#name-role-value) to non-sighted users.
