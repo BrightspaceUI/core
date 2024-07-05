@@ -209,6 +209,7 @@ describe('filter', () => {
 		it('dates-custom-tooltip', async() => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple());
+			focusElem(elem.shadowRoot.querySelector('d2l-list-item'));
 			sendKeysElem(elem, 'press', 'Tab+Space');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await nextFrame();
