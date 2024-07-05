@@ -7,6 +7,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A subtle button that selects all items for all pages.
+ * @fires d2l-selection-select-all-pages-click - Dispatched when the user clicks the "Select All <x> Items" button
  * @fires d2l-selection-observer-subscribe - Internal event
  */
 class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(LitElement))) {
