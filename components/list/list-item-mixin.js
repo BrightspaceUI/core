@@ -302,7 +302,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
-				background-color: white;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 				margin-bottom: -1px;
 			}
@@ -434,6 +433,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.first = false;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
+		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
@@ -667,7 +667,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
-		const tooltipForId = (primaryAction ? this._primaryActionId : (this.selectable ? this._checkboxId : null));
+		let tooltipForId = null;
+		if (this._showAddButton) {
+			tooltipForId = this._addButtonTopId;
+		} else if (primaryAction) {
+			tooltipForId = this._primaryActionId;
+		} else if (this.selectable) {
+			tooltipForId = this._checkboxId;
+		}
 		const addButtonText = this._addButtonText || this.localize('components.list-item.addItem');
 		const innerView = html`
 			<d2l-list-item-generic-layout
@@ -680,7 +687,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">
-					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}" data-is-first></d2l-button-add>
+					<d2l-button-add
+						text="${addButtonText}"
+						mode="icon-when-interacted"
+						@click="${this._handleButtonAddClick}"
+						data-is-first
+						id="${this._addButtonTopId}">
+					</d2l-button-add>
 				</div>
 				` : nothing}
 				<div slot="outside-control-container" class="${classMap(bottomBorderClasses)}"></div>

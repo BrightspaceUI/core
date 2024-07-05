@@ -11,7 +11,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
+import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
@@ -117,6 +117,7 @@ function initIntervals(size, enforceTimeIntervals) {
 
 /**
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`).
  */
 class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(RtlMixin(LitElement)))))) {
@@ -153,6 +154,11 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 * @type {boolean}
 			 */
 			opened: { type: Boolean },
+			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
 			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
@@ -338,7 +344,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
+			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}" ?prefer-fixed-positioning="${this.preferFixedPositioning}">
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
@@ -362,7 +368,8 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
-					?opened="${opened}">
+					?opened="${opened}"
+					?prefer-fixed-positioning="${this.preferFixedPositioning}">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"

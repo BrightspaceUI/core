@@ -168,15 +168,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				top: 2px;
 			}
 			.d2l-collapsible-panel-title {
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
 				flex: 1;
-				-webkit-line-clamp: 2;
 				margin: 0.3rem;
 				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
 				overflow-wrap: anywhere;
-				overflow-x: hidden;
-				overflow-y: hidden;
 				user-select: none;
 			}
 			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
@@ -390,7 +385,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_handleExpandCollapse(e) {
 		const eventPromise = this.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
-		const event = `d2l-collapsible-panel-${this.expanded ? 'expand' : 'collapse' }`;
+		const event = this.expanded ? 'd2l-collapsible-panel-expand' : 'd2l-collapsible-panel-collapse';
 
 		this.dispatchEvent(new CustomEvent(
 			event, { bubbles: false, composed: false, detail: { complete: eventPromise } }

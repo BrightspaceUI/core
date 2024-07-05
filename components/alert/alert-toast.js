@@ -387,14 +387,19 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	_onStateClosed() {
+		this._state = states.CLOSED;
+		this._totalSiblingHeightBelow = 0;
+		this._numAlertsBelow = 0;
+		this._closeClicked = false;
+		this.removeAttribute('role');
+	}
+
 	_onTransitionEnd() {
 		if (this._state === states.OPENING || this._state === states.SLIDING) {
 			this._state = states.OPEN;
 		} else if (this._state === states.CLOSING) {
-			this._state = states.CLOSED;
-			this._totalSiblingHeightBelow = 0;
-			this._closeClicked = false;
-			this._numAlertsBelow = 0;
+			this._onStateClosed();
 		}
 	}
 
@@ -433,10 +438,7 @@ class AlertToast extends LitElement {
 				const bottom = this._innerContainer.getBoundingClientRect().bottom;
 
 				if (activeReduceMotion || this._state === states.PREOPENING) {
-					this._state = states.CLOSED;
-					this._totalSiblingHeightBelow = 0;
-					this._numAlertsBelow = 0;
-					this._closeClicked = false;
+					this._onStateClosed();
 				}
 
 				this.dispatchEvent(new CustomEvent(

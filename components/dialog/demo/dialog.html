@@ -184,6 +184,51 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Dialog (critical)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openCritical">Show Dialog</d2l-button>
+					<d2l-dialog id="dialogCritical" title-text="Dialog Title" critical>
+						<div>
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						</div>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog>
+					<script>
+						document.querySelector('#openCritical').addEventListener('click', () => {
+							document.querySelector('#dialogCritical').opened = true;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Dialog (native)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openNative">Show Dialog</d2l-button>
+					<d2l-dialog id="dialogNative" title-text="Dialog Title">
+						<div>
+							<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+							<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+							<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+						</div>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog>
+					<script>
+						document.querySelector('#dialogNative')._useNative = true;
+						document.querySelector('#openNative').addEventListener('click', () => {
+							document.querySelector('#dialogNative').opened = true;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>

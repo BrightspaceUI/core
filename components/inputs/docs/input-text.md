@@ -120,6 +120,7 @@ input.addEventListener('input', (e) => {
 
 * `left`: Slot within the input on the left side. Useful for an `icon` or `button-icon`.
 * `right`: Slot within the input on the right side. Useful for an `icon` or `button-icon`.
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties

@@ -59,6 +59,10 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ### Events
 
 * `change`: dispatched when a date is selected or typed. `value` reflects the selected value and is in ISO 8601 calendar date format (`YYYY-MM-DD`).
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -110,6 +114,10 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 ### Events
 
 * `change`: dispatched when a start or end date is selected or typed. `start-value` reflects the value of the first input, `end-value` reflects the value of the second input, and both are in ISO 8601 calendar date format (`YYYY-MM-DD`).
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -157,6 +165,10 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 ### Events
 
 * `change`: dispatched when a time is selected or typed. `value` reflects the selected value and is in ISO 8601 time format (`hh:mm:ss`).
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -204,6 +216,10 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `start-opened` | Boolean | Indicates if the start dropdown is open |
 | `start-value` | String, default `''` | Value of the first time input |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -252,6 +268,10 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ### Events
 
 * `change`: dispatched when there is a change in selected date or selected time (when date is already selected). `value` reflects the selected value and is in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
@@ -301,6 +321,10 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 ### Events
 
 * `change`: dispatched when a start or end date is selected or typed. `start-value` reflects the value of the first input, `end-value` reflects the value of the second input, and both are in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time.
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties

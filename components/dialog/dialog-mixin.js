@@ -313,8 +313,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
-		allowBodyScroll(this._bodyScrollKey);
-		this._bodyScrollKey = null;
+		if (this._useNative) allowBodyScroll(this);
 		if (this._action === undefined) this._action = abortAction;
 		/** Dispatched with the action value when the dialog is closed for any reason */
 		this.dispatchEvent(new CustomEvent(
@@ -416,8 +415,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			return node.classList && node.classList.contains('d2l-dialog-outer');
 		});
 
-		// native dialog backdrop does not prevent body scrolling
-		this._bodyScrollKey = preventBodyScroll();
+		if (this._useNative) preventBodyScroll(this);
 
 		// focus first focusable child prior to auto resize (fixes screen reader hiccups)
 		this._focusInitial();
@@ -563,6 +561,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			await this.updateComplete;
 			this._height = this._getHeight();
 			await this.updateComplete;
+		} else {
+			this._width = 0;
 		}
 		await new Promise(resolve => {
 			requestAnimationFrame(async() => {

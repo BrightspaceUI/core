@@ -41,6 +41,19 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Override Colorway of Count Badge</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge id="colorway-override" size="large" text="1 new notification." type="count" number="1"></d2l-count-badge>
+					<style>
+						#colorway-override {
+							--d2l-count-badge-background-color: purple;
+							--d2l-count-badge-foreground-color: #ffffff;
+						}
+					</style>
+				</template>
+			</d2l-demo-snippet>
+
 			<h2>Small Notification Badge with Tooltip</h2>
 			<d2l-demo-snippet>
 				<template>

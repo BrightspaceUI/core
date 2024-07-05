@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "2.178.3",
+  "version": "3.21.4",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -12,7 +12,8 @@
     "build:icons": "node ./cli/icon-generator.js",
     "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
-    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass",
+    "build:wca": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
+    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
     "build-static": "rollup -c ./rollup/rollup.config.js",
     "lint": "npm run lint:eslint && npm run lint:style",
     "lint:eslint": "eslint . --ext .js,.html --ignore-path .gitignore",
@@ -22,7 +23,8 @@
     "test:axe": "d2l-test-runner axe --chrome",
     "test:unit": "d2l-test-runner",
     "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
-    "test:vdiff": "d2l-test-runner vdiff --timeout 10000"
+    "test:vdiff": "d2l-test-runner vdiff --timeout 10000",
+    "test:wca": "node ./cli/validate-wca.js"
   },
   "files": [
     "custom-elements.json",
@@ -43,14 +45,12 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/eslint-parser": "^7",
     "@brightspace-ui/stylelint-config": "^1",
     "@brightspace-ui/testing": "^1",
-    "@open-wc/semantic-dom-diff": "^0.20",
     "@rollup/plugin-dynamic-import-vars": "^2",
     "@rollup/plugin-node-resolve": "^15",
     "@rollup/plugin-replace": "^5",
-    "@web/dev-server": "^0.2",
+    "@web/dev-server": "^0.4",
     "chalk": "^5",
     "eslint": "^8",
     "eslint-config-brightspace": "^1",
@@ -60,16 +60,18 @@
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
-    "sinon": "^17",
-    "stylelint": "^16"
+    "sinon": "^18",
+    "stylelint": "^16",
+    "web-component-analyzer": "^2"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
+    "@brightspace-ui/lms-context-provider": "^1",
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
     "ifrau": "^0.41",
     "intl-messageformat": "^10",
-    "lit": "^2",
+    "lit": "^3",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }

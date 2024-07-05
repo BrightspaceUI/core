@@ -1,18 +1,24 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
  * @slot footer - Slot for footer content such as workflow buttons
  */
-class DialogConfirm extends DialogMixin(LitElement) {
+class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the dialog should indicate that its message is important to the user
+			 */
+			critical: { type: Boolean },
+
 			/**
 			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
 			 * @type {string}
@@ -66,11 +72,17 @@ class DialogConfirm extends DialogMixin(LitElement) {
 		`];
 	}
 
-	render() {
-		if (!this._titleId) this._titleId = getUniqueId();
-		if (!this._textId) this._textId = getUniqueId();
+	constructor() {
+		super();
+		this.critical = false;
+		this._criticalLabelId = getUniqueId();
+		this._textId = getUniqueId();
+		this._titleId = getUniqueId();
+	}
 
+	render() {
 		const inner = html`
+			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
@@ -85,13 +97,14 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			</div>`;
 
 		const labelId = (this.titleText && this.text) ? this._titleId : this._textId;
+		const fullLabelId = this.critical ? `${this._criticalLabelId} ${labelId}` : labelId;
 		const descId = (this.titleText && this.text) ? this._textId : undefined;
 		return this._render(
 			inner,
 			{
 				descId: descId,
 				fullscreenMobile: false,
-				labelId: labelId,
+				labelId: fullLabelId,
 				role: 'alertdialog'
 			}
 		);

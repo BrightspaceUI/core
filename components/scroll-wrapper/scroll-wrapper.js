@@ -124,7 +124,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				position: -webkit-sticky;
 				position: sticky;
 				top: var(--d2l-table-sticky-top, 0);
-				z-index: 4;
+				z-index: 5;
 			}
 
 			.d2l-scroll-wrapper-button {
@@ -174,13 +174,13 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		PRINT_MEDIA_QUERY_LIST?.addEventListener('change', this._handlePrintChange);
+		PRINT_MEDIA_QUERY_LIST.addEventListener?.('change', this._handlePrintChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._disconnectAll();
-		PRINT_MEDIA_QUERY_LIST?.removeEventListener('change', this._handlePrintChange);
+		PRINT_MEDIA_QUERY_LIST.removeEventListener?.('change', this._handlePrintChange);
 	}
 
 	firstUpdated(changedProperties) {

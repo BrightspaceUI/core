@@ -1,11 +1,13 @@
 import { getComposedParent } from './dom.js';
 
+const numParentLevels = 10;
+
 function getComposedPath(elem, opts) {
 
 	if (!opts?.composedPath) return '';
 
 	const composedParents = [];
-	let parent = elem;
+	let parent = getComposedParent(elem);
 	while (parent !== null && parent?.tagName?.toLowerCase() !== 'body') {
 		if (parent?.tagName) {
 			composedParents.push(parent.tagName.toLowerCase());
@@ -15,8 +17,8 @@ function getComposedPath(elem, opts) {
 
 	if (composedParents.length === 0) return '';
 
-	composedParents.reverse();
-	const path = ` Path: "${composedParents.join(' > ')}".`;
+	const slicedParents = composedParents.slice(0, numParentLevels);
+	const path = ` ${slicedParents.length} parent nodes: "${slicedParents.join(', ')}".`;
 	return path;
 
 }

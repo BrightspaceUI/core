@@ -355,22 +355,22 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 
-			:host([_open-dir="bottom"]) .d2l-tooltip-container {
+			:host([_open-dir="bottom"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-bottom-animation 200ms ease;
 				animation: d2l-tooltip-bottom-animation 200ms ease;
 			}
 
-			:host([_open-dir="top"]) .d2l-tooltip-container {
+			:host([_open-dir="top"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-top-animation 200ms ease;
 				animation: d2l-tooltip-top-animation 200ms ease;
 			}
 
-			:host([_open-dir="left"]) .d2l-tooltip-container {
+			:host([_open-dir="left"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-left-animation 200ms ease;
 				animation: d2l-tooltip-left-animation 200ms ease;
 			}
 
-			:host([_open-dir="right"]) .d2l-tooltip-container {
+			:host([_open-dir="right"][showing]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
@@ -387,10 +387,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				:host([_open-dir="bottom"]) .d2l-tooltip-container,
-				:host([_open-dir="top"]) .d2l-tooltip-container,
-				:host([_open-dir="left"]) .d2l-tooltip-container,
-				:host([_open-dir="right"]) .d2l-tooltip-container {
+				:host([_open-dir="bottom"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="top"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="left"][showing]) .d2l-tooltip-container,
+				:host([_open-dir="right"][showing]) .d2l-tooltip-container {
 					-webkit-animation: none;
 					animation: none;
 				}
@@ -582,18 +582,17 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._openDir = space.dir;
 
 		// Compute the x and y position of the tooltip relative to its target
-		let parentTop;
-		let parentLeft;
+		let offsetTop, offsetLeft;
 		if (offsetParent && offsetParent.tagName !== 'BODY') {
-			const parentRect = offsetParent.getBoundingClientRect();
-			parentTop = parentRect.top + offsetParent.clientTop;
-			parentLeft = parentRect.left + offsetParent.clientLeft;
+			const offsetRect = offsetParent.getBoundingClientRect();
+			offsetTop = offsetRect.top + offsetParent.clientTop - offsetParent.scrollTop;
+			offsetLeft = offsetRect.left + offsetParent.clientLeft - offsetParent.scrollLeft;
 		} else {
-			parentTop = -document.documentElement.scrollTop;
-			parentLeft = -document.documentElement.scrollLeft;
+			offsetTop = -document.documentElement.scrollTop;
+			offsetLeft = -document.documentElement.scrollLeft;
 		}
-		const top = targetRect.top - parentTop;
-		const left = targetRect.left - parentLeft;
+		const top = targetRect.top - offsetTop;
+		const left = targetRect.left - offsetLeft;
 
 		let positionRect;
 		if (this._isAboveOrBelow()) {
@@ -699,18 +698,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		});
 
 		if (this.boundary && offsetParent) {
-			const parentRect = offsetParent.getBoundingClientRect();
+			const offsetRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {
-				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
+				spaceAround.left = Math.min(targetRect.left - offsetRect.left - this.boundary.left, spaceAround.left);
 			}
 			if (!isNaN(this.boundary.right)) {
-				spaceAround.right = Math.min(parentRect.right - targetRect.right - this.boundary.right, spaceAround.right);
+				spaceAround.right = Math.min(offsetRect.right - targetRect.right - this.boundary.right, spaceAround.right);
 			}
 			if (!isNaN(this.boundary.top)) {
-				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
+				spaceAround.above = Math.min(targetRect.top - offsetRect.top - this.boundary.top, spaceAround.above);
 			}
 			if (!isNaN(this.boundary.bottom)) {
-				spaceAround.below = Math.min(parentRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
+				spaceAround.below = Math.min(offsetRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
 			}
 		}
 		const isRTL = this.getAttribute('dir') === 'rtl';
@@ -729,8 +728,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this.for) {
 			const targetSelector = `#${cssEscape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
-			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
+			target = target || ownerRoot?.host?.querySelector(targetSelector);
 		} else {
+			console.warn('<d2l-tooltip>: missing required attribute "for"');
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
@@ -946,7 +946,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
-					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
+					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.',
+					this._target
 				);
 				logAccessibilityWarning = false;
 			}
@@ -998,7 +999,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			await clone.updateComplete;
 		}
 
-		this._truncating = clone.scrollWidth > target.offsetWidth;
+		this._truncating = (clone.scrollWidth - target.offsetWidth) > 2; // Safari adds 1px to scrollWidth necessitating a subtraction comparison.
 		this._resizeRunSinceTruncationCheck = false;
 		target.removeChild(cloneContainer);
 	}

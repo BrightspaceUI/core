@@ -14,6 +14,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 /**
  * Controls for selection components (e.g. list, table-wrapper) containing select-all, etc.
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
+ * @fires d2l-selection-observer-subscribe - Internal event
  */
 export class SelectionControls extends PageableSubscriberMixin(SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 

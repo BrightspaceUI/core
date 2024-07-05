@@ -2,20 +2,24 @@ import '../backdrop/backdrop.js';
 import '../button/button.js';
 import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { visualReady } from '../../helpers/visualReady.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 const outerMarginTopBottom = 18;
 const defaultVerticalOffset = 16;
+const pointerLength = 16;
+const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -161,6 +165,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-pointer'
 			},
 			/**
+			 * Private, set by the opener depending on whether it's intersecting
+			 * @ignore
+			 */
+			offscreen: {
+				type: Boolean,
+				reflect: true
+			},
+			/**
 			 * Whether the dropdown is open or not
 			 * @type {boolean}
 			 */
@@ -176,6 +188,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				type: Boolean,
 				reflect: true,
 				attribute: 'opened-above'
+			},
+			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: {
+				type: Boolean,
+				attribute: 'prefer-fixed-positioning'
 			},
 			/**
  			* Optionally render a d2l-focus-trap around the dropdown content
@@ -205,6 +225,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'dropdown-content',
 				reflect: true
 			},
+			_fixedPositioning: {
+				type: Boolean,
+				attribute: '_fixed-positioning',
+				reflect: true
+			},
 			_useMobileStyling: {
 				type: Boolean,
 				attribute: 'data-mobile',
@@ -219,8 +244,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			_contentHeight: {
 				type: Number
 			},
+			_pointerPosition: {
+				state: true
+			},
 			_position: {
-				type: Number
+				state: true
 			},
 			_showBackdrop: {
 				type: Boolean
@@ -264,6 +292,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._showBackdrop = false;
 		this._verticalOffset = defaultVerticalOffset;
 
+		this.__reposition = this.__reposition.bind(this);
+		this.__onAncestorMutation = this.__onAncestorMutation.bind(this);
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
@@ -296,6 +326,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this._useMobileStyling = this.mediaQueryList.matches;
 		if (this.mediaQueryList.addEventListener) this.mediaQueryList.addEventListener('change', this._handleMobileResize);
+		if (this.opened) this.__addRepositionHandlers();
 	}
 
 	disconnectedCallback() {
@@ -310,6 +341,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__dismissibleId = null;
 
 		if (this.__resizeObserver) this.__resizeObserver.disconnect();
+		this.__removeRepositionHandlers();
 	}
 
 	firstUpdated(changedProperties) {
@@ -318,6 +350,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__content = this.getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
+	}
+
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		await visualReady;
 	}
 
 	updated(changedProperties) {
@@ -331,6 +368,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				this._verticalOffset = newVerticalOffset;
 			}
 		});
+	}
+
+	willUpdate(changedProperties) {
+		if (this._fixedPositioning === undefined || changedProperties.has('preferFixedPositioning')) {
+			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
+		}
 	}
 
 	close() {
@@ -416,6 +459,45 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
+	__addRepositionHandlers() {
+		if (!this._fixedPositioning) return;
+
+		const isScrollable = (node, prop) => {
+			const value = window.getComputedStyle(node, null).getPropertyValue(prop);
+			return (value === 'scroll' || value === 'auto');
+		};
+
+		this.__removeRepositionHandlers();
+
+		this._ancestorMutationObserver ??= new MutationObserver(this.__onAncestorMutation);
+		const mutationConfig = { attributes: true, childList: true, subtree: true };
+
+		let node = this;
+		this._scrollablesObserved = [];
+		while (node) {
+
+			// observe scrollables
+			let observeScrollable = false;
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				observeScrollable = isScrollable(node, 'overflow-y') || isScrollable(node, 'overflow-x');
+			} else if (node.nodeType === Node.DOCUMENT_NODE) {
+				observeScrollable = true;
+			}
+			if (observeScrollable) {
+				this._scrollablesObserved.push(node);
+				node.addEventListener('scroll', this.__reposition);
+			}
+
+			// observe mutations on each DOM scope (excludes sibling scopes... can only do so much)
+			if (node.nodeType === Node.DOCUMENT_NODE || (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && node.host)) {
+				this._ancestorMutationObserver.observe(node, mutationConfig);
+			}
+
+			node = getComposedParent(node);
+		}
+
+	}
+
 	__disconnectResizeObserver(entries) {
 		for (let i = 0; i < entries.length; i++) {
 			const entry = entries[i];
@@ -447,6 +529,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return opener;
 	}
 
+	__getPointer() {
+		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-pointer');
+	}
+
 	__getPositionContainer() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-dropdown-content-position');
 	}
@@ -461,6 +547,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	__handleHeaderSlotChange(e) {
 		this._hasHeader = e.target.assignedNodes().length !== 0;
+	}
+
+	__onAncestorMutation(mutations) {
+		const opener = this.__getOpener();
+		// ignore mutations that are within this dropdown
+		const reposition = !!mutations.find(mutation => !isComposedAncestor(opener, mutation.target));
+		if (reposition) this.__reposition();
 	}
 
 	__onAutoCloseClick(e) {
@@ -582,7 +675,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			await doOpen();
 
+			this.__addRepositionHandlers();
+
 		} else {
+
+			this.__removeRepositionHandlers();
 
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
@@ -601,7 +698,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
-	async __position(ignoreVertical, contentRect) {
+	async __position(contentRect, options) {
+
+		options = Object.assign({ updateAboveBelow: true, updateHeight: true }, options);
 
 		const opener = this.__getOpener();
 		if (!opener) {
@@ -613,25 +712,25 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 
 		const content = this.getContentContainer();
-		const header = this.__getContentTop();
-		const footer = this.__getContentBottom();
+		const header = this.__getContentTop(); // todo: rename
+		const footer = this.__getContentBottom(); // todo: rename
 
-		if (!this.noAutoFit) {
+		if (!this.noAutoFit && options.updateHeight) {
 			this._contentHeight = null;
 		}
 
 		/* don't let dropdown content horizontally overflow viewport */
 		this._width = null;
 
-		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position');
+		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position'); // todo: cleanup when switched to fixed positioning
 		const boundingContainer = getBoundingAncestor(target.parentNode);
-		const boundingContainerRect = boundingContainer.getBoundingClientRect();
+		const boundingContainerRect = boundingContainer.getBoundingClientRect(); // todo: cleanup when switched to fixed positioning
 		const scrollHeight = boundingContainer.scrollHeight;
 
 		await this.updateComplete;
 
 		// position check in case consuming app (LMS) has overriden position to make content absolute wrt document
-		const bounded = (openerPosition === 'relative' && boundingContainer !== document.documentElement);
+		const bounded = (!this._fixedPositioning && openerPosition === 'relative' && boundingContainer !== document.documentElement);
 
 		const adjustPosition = async() => {
 
@@ -640,13 +739,16 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
 			const height = this.minHeight ? this.minHeight : Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight);
+
 			const spaceRequired = {
 				height: height + 10,
 				width: contentRect.width
 			};
+
 			let spaceAround;
 			let spaceAroundScroll;
 			if (bounded) {
+
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
 					above: targetRect.top - boundingContainerRect.top - this._verticalOffset - outerMarginTopBottom,
@@ -657,11 +759,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					// allow for outer margin
 					right: boundingContainerRect.right - targetRect.right - 20
 				}, spaceRequired, targetRect);
+
 				spaceAroundScroll = this._constrainSpaceAround({
 					above: targetRect.top - boundingContainerRect.top + boundingContainer.scrollTop,
 					below: scrollHeight - targetRect.bottom + boundingContainerRect.top - boundingContainer.scrollTop
 				}, spaceRequired, targetRect);
+
 			} else {
+
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
 					above: targetRect.top - this._verticalOffset - outerMarginTopBottom,
@@ -672,34 +777,35 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					// allow for outer margin
 					right: document.documentElement.clientWidth - targetRect.right - 15
 				}, spaceRequired, targetRect);
+
 				spaceAroundScroll = this._constrainSpaceAround({
 					above: targetRect.top + document.documentElement.scrollTop,
 					below: scrollHeight - targetRect.bottom - document.documentElement.scrollTop
 				}, spaceRequired, targetRect);
+
 			}
 
-			if (!ignoreVertical) {
+			if (options.updateAboveBelow) {
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired);
 			}
 
-			const centerDelta = contentRect.width - targetRect.width;
-			const position = this._getPosition(spaceAround, centerDelta);
-			if (position !== null) {
-				this._position = position;
-			}
+			this._position = this._getPosition(spaceAround, targetRect, contentRect);
+			this._pointerPosition = this._getPointerPosition(targetRect);
 
-			//Calculate height available to the dropdown contents for overflow because that is the only area capable of scrolling
-			const availableHeight = this.openedAbove ? spaceAround.above : spaceAround.below;
-			if (!this.noAutoFit && availableHeight && availableHeight > 0) {
-				//Only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
-				this._contentHeight = this.maxHeight !== null
-					&& availableHeight > this.maxHeight
-					&& headerFooterHeight < this.maxHeight
-					? this.maxHeight - headerFooterHeight - 2
-					: availableHeight - headerFooterHeight;
+			if (options.updateHeight) {
+				// calculate height available to the dropdown contents for overflow because that is the only area capable of scrolling
+				const availableHeight = this.openedAbove ? spaceAround.above : spaceAround.below;
+				if (!this.noAutoFit && availableHeight && availableHeight > 0) {
+					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
+					this._contentHeight = this.maxHeight !== null
+						&& availableHeight > this.maxHeight
+						&& headerFooterHeight < this.maxHeight
+						? this.maxHeight - headerFooterHeight - 2
+						: availableHeight - headerFooterHeight;
 
-				// ensure the content height has updated when the __toggleScrollStyles event handler runs
-				await this.updateComplete;
+					// ensure the content height has updated when the __toggleScrollStyles event handler runs
+					await this.updateComplete;
+				}
 			}
 
 			/** Dispatched when the dropdown position finishes adjusting */
@@ -713,6 +819,28 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		await this.updateComplete;
 
 		await adjustPosition();
+	}
+
+	__removeRepositionHandlers() {
+		if (!this._fixedPositioning) return;
+
+		this._scrollablesObserved?.forEach(node => {
+			node.removeEventListener('scroll', this.__reposition);
+		});
+		this._scrollablesObserved = null;
+
+		this._ancestorMutationObserver?.disconnect();
+	}
+
+	__reposition() {
+		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
+		if (!this.__repositioning) {
+			requestAnimationFrame(() => {
+				this.__position(undefined, { updateAboveBelow: false, updateHeight: false });
+				this.__repositioning = false;
+			});
+		}
+		this.__repositioning = true;
 	}
 
 	__toggleScrollStyles() {
@@ -902,6 +1030,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
 		}
 
+		if (minWidthOverride > maxWidthOverride) {
+			minWidthOverride = maxWidthOverride;
+		}
 		const widthStyle = {
 			maxWidth: maxWidthOverride,
 			minWidth: minWidthOverride,
@@ -973,13 +1104,74 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return false;
 	}
 
-	_getPosition(spaceAround, centerDelta) {
+	_getPointerPosition(targetRect) {
+		const position = {};
+		if (!this._fixedPositioning) return position;
 
+		const pointer = this.__getPointer();
+		if (!pointer) return position;
+
+		const pointerRect = pointer.getBoundingClientRect();
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if (this.align === 'start' || this.align === 'end') {
+			const pointerXAdjustment = Math.min(20 + ((pointerRotatedLength - pointerLength) / 2), (targetRect.width - pointerLength) / 2);
+			if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
+				position.left = targetRect.left + pointerXAdjustment;
+			} else {
+				position.right = window.innerWidth - targetRect.right + pointerXAdjustment;
+			}
+		} else {
+			if (!isRTL) {
+				position.left = targetRect.left + ((targetRect.width - pointerRect.width) / 2);
+			} else {
+				position.right = window.innerWidth - targetRect.left - ((targetRect.width + pointerRect.width) / 2);
+			}
+		}
+		if (this.openedAbove) {
+			position.bottom = window.innerHeight - targetRect.top + 8;
+		} else {
+			position.top = targetRect.top + targetRect.height + this._verticalOffset - 7;
+		}
+
+		return position;
+	}
+
+	_getPosition(spaceAround, targetRect, contentRect) {
+		const position = {};
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		const positionXAdjustment = this._getPositionXAdjustment(spaceAround, targetRect, contentRect);
+		if (this._fixedPositioning) {
+			if (positionXAdjustment !== null) {
+				if (!isRTL) {
+					position.left = targetRect.left + positionXAdjustment;
+				} else {
+					position.right = window.innerWidth - targetRect.left - targetRect.width + positionXAdjustment;
+				}
+			}
+			if (this.openedAbove) {
+				position.bottom = window.innerHeight - targetRect.top + this._verticalOffset;
+			} else {
+				position.top = targetRect.top + targetRect.height + this._verticalOffset;
+			}
+		} else {
+			if (positionXAdjustment !== null) {
+				if (!isRTL) {
+					position.left = positionXAdjustment;
+				} else {
+					position.right = positionXAdjustment;
+				}
+			}
+		}
+		return position;
+	}
+
+	_getPositionXAdjustment(spaceAround, targetRect, contentRect) {
+		const centerDelta = contentRect.width - targetRect.width;
 		const contentXAdjustment = centerDelta / 2;
-		if (centerDelta <= 0) {
+		if (!this.align && centerDelta <= 0) {
 			return contentXAdjustment * -1;
 		}
-		if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+		if (!this.align && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
 			// center with target
 			return contentXAdjustment * -1;
 		}
@@ -999,6 +1191,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
 				return spaceAround.right * -1;
+			}
+		}
+		if (this.align === 'start' || this.align === 'end') {
+			const shift = Math.min((targetRect.width / 2) - (20 + pointerLength / 2), 0); // 20 ~= 1rem
+			if (this.align === 'start') {
+				return shift;
+			} else {
+				return targetRect.width - contentRect.width - shift;
 			}
 		}
 		return null;
@@ -1051,15 +1251,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	_renderContent() {
-		const positionStyle = {};
-		const isRTL = this.getAttribute('dir') === 'rtl';
-		if (this._position) {
-			if (!isRTL) {
-				positionStyle.left = `${this._position}px`;
-			} else {
-				positionStyle.right = `${this._position}px`;
-			}
-		}
 
 		const mobileTrayRightLeft = this._useMobileStyling && (this.mobileTray === 'right' || this.mobileTray === 'left');
 		const mobileTrayBottom = this._useMobileStyling && (this.mobileTray === 'bottom');
@@ -1118,16 +1309,34 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		if (this.trapFocus) {
 			dropdownContentSlots = html`
-			<d2l-focus-trap
-			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
-			?trap="${this.opened}">
-			${dropdownContentSlots}
+			<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this.opened}">
+				${dropdownContentSlots}
 			</d2l-focus-trap>`;
+		}
+
+		const positionStyle = {};
+		if (this._position) {
+			for (const prop in this._position) {
+				positionStyle[prop] = `${this._position[prop]}px`;
+			}
 		}
 
 		const dropdown = html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-					 ${dropdownContentSlots}
+				${dropdownContentSlots}
+			</div>
+		`;
+
+		const pointerPositionStyle = {};
+		if (this._pointerPosition) {
+			for (const prop in this._pointerPosition) {
+				pointerPositionStyle[prop] = `${this._pointerPosition[prop]}px`;
+			}
+		}
+
+		const pointer = html`
+			<div class="d2l-dropdown-content-pointer" style="${styleMap(pointerPositionStyle)}">
+				<div></div>
 			</div>
 		`;
 
@@ -1136,8 +1345,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			<d2l-backdrop
 				for-target="d2l-dropdown-wrapper"
 				?shown="${this._showBackdrop}" >
-			</d2l-backdrop>`
-			: html`${dropdown}`;
+			</d2l-backdrop>
+			${pointer}`
+			: html`${dropdown}${pointer}`;
 	}
 
 };

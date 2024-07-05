@@ -10,7 +10,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
+import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -81,6 +81,7 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
 
 /**
  * This component allows for inputting a HEX color value.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed by the user.
  */
 class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {

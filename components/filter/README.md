@@ -204,7 +204,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 ## Dimension Set Value [d2l-filter-dimension-set-value]
 
-This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component, this will give you a selectable list of filter values.
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable list of filter values.
 
 <!-- docs: demo code properties name:d2l-filter-dimension-set-value align:start autoOpen:true autoSize:false size:large -->
 ```html
@@ -233,11 +233,109 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
 
+## Dimension Set Value: Preset Date Range [d2l-filter-dimension-set-date-text-value]
+
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value based on the `range` defined on the component, which is to be one of a set of pre-defined range options. Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
+
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-text-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-text-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates">
+    <d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `key` | String, required | Unique identifier within a dimension for the value |
+| `range` | String, required | The preset date/time range that the list item represents. Value is to be one of 'today', 'lastHour', '24hours', '48hours', '7days', '14days', '30days', or '6months'. |
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
+| `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+<!-- docs: end hidden content -->
+
+### Dimension Set Value: Custom Preset Date Range
+
+In order to create a selectable filter list item that is a text item representing a range that is NOT one of the presets available in the `d2l-filter-dimension-set-date-text-value` component (for example, 60 days), use the regular "Dimension Set Value" component (`d2l-filter-dimension-set-value`) with the localized text of the range in the `text` field, and handle its selection as is appropriate for the consuming application.
+
+The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get the `startValue` and `endValue` for the range in ISO strings in UTC, if required. As arguments it takes a `rangeType` (one of `seconds`, `minutes`, `hours`, `days`, `months`, or `years`) and a `diff` (positive or negative number where negative is a range in the past and positive is a range in the future). Either the `startValue` or `endValue` is the current date/time depending on whether the range is in the past or future.
+
+<!-- docs: demo code align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
+  import { getUTCDateTimeRange } from '@brightspace-ui/core/helpers/dateTime.js';
+
+  document.querySelector('d2l-filter').addEventListener('d2l-filter-change', e => {
+    const changes = e.detail.dimensions[0].changes;
+    if (!changes || changes.length === 0) return;
+    let dateTimeRange;
+    if (changes[0].valueKey === '60days' && changes[0].selected) {
+      dateTimeRange = getUTCDateTimeRange('days', -60);
+    } else if (changes[0].valueKey === '8months' && changes[0].selected) {
+      dateTimeRange = getUTCDateTimeRange('months', -8);
+    }
+    if (dateTimeRange) console.log('start date', dateTimeRange.startValue, 'end date', dateTimeRange.endValue);
+  });
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates" selection-single>
+    <d2l-filter-dimension-set-value key="60days" text="60 days"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="8months" text="8 months"></d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+
+## Dimension Set Value: Date-Time Range
+
+This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
+
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value align:start autoOpen:true autoSize:false size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/filter/filter.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-text-value.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-date-time-range-value.js';
+</script>
+<d2l-filter>
+  <d2l-filter-dimension-set key="dates" text="Dates">
+    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+  </d2l-filter-dimension-set>
+</d2l-filter>
+```
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `key` | String, required | Unique identifier within a dimension for the value |
+| `disabled` | Boolean, default: `false` | Whether the value in the filter is disabled or not |
+| `end-value` | String | Value of the end date or date-time input. Expected to be in UTC. |
+| `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
+| `start-value` | String | Value of the start date or date-time input. Expected to be in UTC. |
+| `text` | String, default: `"Custom Date Range"` (localized) | Text for the value in the list. This would override the default value. |
+| `type` | String, default: `"date-time"` | Type of range input. Can be either `date-time` or `date`. |
+<!-- docs: end hidden content -->
+
 ## Search and Paging
 
 Most filters will not need search or paging features since filter value lists are generally short. For longer lists of filter values when Search is necessary, it can be enabled by setting search-type to `automatic` or `manual`.
 
-`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded. 
+`automatic` search runs a basic case-insensitive text comparison on the dimension values that are loaded in the browser, having no awareness of server-side values that are not yet loaded.
 
 `manual` search dispatches a `d2l-filter-dimension-search` event delegating the search to the component's consumer. The event's detail will contain the key of the dimension from where the event was dispatched (`key`), the text value used for the search (`value`) and a callback (`searchCompleteCallback`). This callback gives the consumer control of which keys to display, either by setting `displayAllKeys` to `true` or passing a list of the keys to display as `keysToDisplay` (all other keys will be hidden). The dimension will be in a loading state until the callback is called.
 ```js

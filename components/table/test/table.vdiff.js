@@ -1,8 +1,12 @@
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
+import '../../button/button-icon.js';
+import '../../tooltip/tooltip.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
-import { defineCE, expect, fixture, focusElem, html, nextFrame } from '@brightspace-ui/testing';
+import '../table-col-sort-button-item.js';
+
+import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -18,10 +22,54 @@ function createHeaderRow(opts) {
 		</tr>
 	`;
 }
-function createSortableHeaderRow() {
+function createSortableHeaderRow(position) {
+	return html`
+		<tr>
+			<th><d2l-table-col-sort-button position="${ifDefined(position)}">Ascending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button desc position="${ifDefined(position)}">Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort position="${ifDefined(position)}">No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createDoubleSortableHeaderRow(text) {
+	return html`
+		<tr>
+			<th><d2l-table-col-sort-button>Asc 1</d2l-table-col-sort-button><d2l-table-col-sort-button nosort>${text ?? 'Asc 2'}</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createSortableButtonDropdownHeaderRow() {
+	return html`
+		<tr>
+			<th>
+				<d2l-table-col-sort-button>Options
+					<d2l-table-col-sort-button-item selected slot="items" text="Item 1" value="1"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="Item 2" value="2"></d2l-table-col-sort-button-item>
+				</d2l-table-col-sort-button>
+			</th>
+			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createSortableButtonTooltipHeaderRow() {
 	return html`
 		<tr>
 			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
+			<th>
+				<button id="tooltip-button">Tooltip Button</button>
+				<d2l-tooltip for="tooltip-button">This is the tooltip content.<br>Line 2<br>Line 3<br>Line 4<br>Line 5<br>Line 6</d2l-tooltip>
+			</th>
+			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+		</tr>
+	`;
+}
+function createSortableButtonIconHeaderRow() {
+	return html`
+		<tr>
+			<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button><d2l-button-icon text="Help" icon="tier1:help"></d2l-button-icon></th>
 			<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
 			<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
 		</tr>
@@ -172,6 +220,7 @@ describe('table', () => {
 								<d2l-table-wrapper
 									?no-column-border="${opts.noColumnBorder}"
 									?sticky-headers="${opts.stickyHeaders}"
+									?sticky-headers-scroll-wrapper="${opts.stickyHeadersScrollWrapper}"
 									style="--d2l-input-position: static;"
 									type="${type}">
 									${ opts.noTable ? tableContents : html`
@@ -369,7 +418,7 @@ describe('table', () => {
 							${createRows([1], { selected: true })}
 							${createRows([2])}
 							${createRows([3], { selected: true })}
-						</tbody>		
+						</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -377,7 +426,7 @@ describe('table', () => {
 				it('selected-all', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>	
+						<tbody>${createRows([1, 2, 3], { selected: true })}</tbody>
 					`);
 					await expect(elem).to.be.golden();
 				});
@@ -393,7 +442,7 @@ describe('table', () => {
 				it('no-column-border', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { noColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
@@ -401,7 +450,7 @@ describe('table', () => {
 				it('no-column-border-legacy', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createHeaderRow()}</thead>
-						<tbody>${createRows([1, 2, 3])}</tbody>	
+						<tbody>${createRows([1, 2, 3])}</tbody>
 					`, { legacyNoColumnBorder: true });
 					await expect(elem).to.be.golden();
 				});
@@ -409,6 +458,22 @@ describe('table', () => {
 				it('col-sort-button', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-centered', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow('center')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-end', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow('end')}</thead>
 						<tbody>${createRows([1])}</tbody>
 					`);
 					await expect(elem).to.be.golden();
@@ -422,183 +487,432 @@ describe('table', () => {
 					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
 					await expect(elem).to.be.golden();
 				});
+
+				it('col-sort-button-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-focus-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-hover-middle', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-hover-focus', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap-focus-hover-long', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-wrap-focus-hover-reverse', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow('AscendingLong')}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-focus-first', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-hover-first', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-focus-second', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-hover-second', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-focus-hover', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await hoverElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('two-col-sort-button-focus-hover-reverse', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createDoubleSortableHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await hoverElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await focusElem(elem.shadowRoot.querySelectorAll('d2l-table-col-sort-button')[1]);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-icon-button', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonIconHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-icon-button-focus-first', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonIconHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-icon-button-focus-second', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonIconHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await focusElem(elem.shadowRoot.querySelector('d2l-button-icon'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-dropdown', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-dropdown-open', async() => {
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1, 2, 3])}</tbody>
+					`);
+					await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('wrapper component', async() => {
+					const elem = await fixture(html`<d2l-test-table type="${type}"></d2l-test-table>`, { rtl });
+					await expect(elem).to.be.golden();
+				});
 			});
 
-			describe('sticky', () => {
-				const inputRow = html`
-					<tr class="down">
-						<td>Cell 2-A</td>
-						<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
-						<td>Cell 2-C</td>
-					</tr>
-				`;
-				[
-					{
-						name: 'one-row-thead',
-						template: html`
-								<thead>${createHeaderRow({ trClass: 'top' })}</thead>
+			// only test the default type to minimize permutations (hasStickyHeadersScrollWrapper isn't expected to have a different impact on the light vs default type)
+			(type === 'default' ? [true, false] : [false]).forEach((hasStickyHeadersScrollWrapper) => {
+				describe(`sticky${hasStickyHeadersScrollWrapper ? '-scroll-wrapper' : ''}`, () => {
+
+					// Currently some of the scenarios with 'hasStickyHeadersScrollWrapper' setting enabled have unexpected outputs
+					// This is used to call those out by wrapping a warning grouping around them
+					function itWithWarnings(testName, testFunc) {
+						let warningGrouping = null;
+
+						if (hasStickyHeadersScrollWrapper) {
+							switch (testName) {
+								case 'multi-row-no-thead-attr-down':
+								case 'multi-row-no-thead-class-down':
+								case 'one-row-no-thead-attr-down':
+								case 'one-row-no-thead-class-down':
+								case 'selected-all-down':
+								case 'selected-one-row-down':
+								case 'selected-top-bottom-down':
+									warningGrouping = 'WARNING-headings-are-missing';
+									break;
+
+								case 'grades-column-header-over':
+								case 'grades-column-header-top':
+								case 'grades-row-header-over':
+								case 'grades-row-header-top':
+									warningGrouping = 'WARNING-dropdown-is-cutoff';
+									break;
+
+								case 'one-column':
+									warningGrouping = 'WARNING-columns-not-expanding-to-fill-available-space';
+									break;
+								default:
+							}
+						}
+
+						if (warningGrouping) {
+							describe(`${warningGrouping}`, () => { it(testName, testFunc); });
+						} else {
+							it(testName, testFunc);
+						}
+					}
+
+					const inputRow = html`
+						<tr class="down">
+							<td>Cell 2-A</td>
+							<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
+							<td>Cell 2-C</td>
+						</tr>
+					`;
+					[
+						{
+							name: 'one-row-thead',
+							template: html`
+									<thead>${createHeaderRow({ trClass: 'top' })}</thead>
+									<tbody>
+										${createRows([1])}
+										${inputRow}
+										${createRows([3])}
+									</tbody>
+								</table>
+							`
+						},
+						{
+							name: 'one-row-no-thead-class',
+							template: html`
 								<tbody>
+									${createHeaderRow({ trClass: 'd2l-table-header top' })}
 									${createRows([1])}
 									${inputRow}
 									${createRows([3])}
 								</tbody>
-							</table>
-						`
-					},
-					{
-						name: 'one-row-no-thead-class',
-						template: html`
-							<tbody>
-								${createHeaderRow({ trClass: 'd2l-table-header top' })}
-								${createRows([1])}
-								${inputRow}
-								${createRows([3])}
-							</tbody>
-						`
-					},
-					{
-						name: 'one-row-no-thead-attr',
-						template: html`
-							<tbody>
-								${createHeaderRow({ headerAttribute: true, trClass: 'top' })}
-								${createRows([1])}
-								${inputRow}
-								${createRows([3])}
-							</tbody>
-						`
-					},
-					{
-						name: 'multi-row-thead',
-						template: html`
-							<thead>${createFruitHeaderRows()}</thead>
-							<tbody>${createFruitRows()}</tbody>
-						`
-					},
-					{
-						name: 'multi-row-no-thead-class',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ trClass: 'd2l-table-header' })}
-								${createFruitRows()}
-							</tbody>
-						`
-					},
-					{
-						name: 'multi-row-no-thead-attr',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true })}
-								${createFruitRows()}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-one-row',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [false, true, false] })}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-top-bottom',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [true, false, true] })}
-							</tbody>
-						`
-					},
-					{
-						name: 'selected-all',
-						template: html`
-							<tbody>
-								${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
-								${createFruitRows({ selectable: true, selected : [true, true, true] })}
-							</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'down'].forEach((position) => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(
-								template,
-								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
-							);
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
-							await nextFrame();
-							await expect(elem).to.be.golden();
+							`
+						},
+						{
+							name: 'one-row-no-thead-attr',
+							template: html`
+								<tbody>
+									${createHeaderRow({ headerAttribute: true, trClass: 'top' })}
+									${createRows([1])}
+									${inputRow}
+									${createRows([3])}
+								</tbody>
+							`
+						},
+						{
+							name: 'multi-row-thead',
+							template: html`
+								<thead>${createFruitHeaderRows()}</thead>
+								<tbody>${createFruitRows()}</tbody>
+							`
+						},
+						{
+							name: 'multi-row-no-thead-class',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ trClass: 'd2l-table-header' })}
+									${createFruitRows()}
+								</tbody>
+							`
+						},
+						{
+							name: 'multi-row-no-thead-attr',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true })}
+									${createFruitRows()}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-one-row',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [false, true, false] })}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-top-bottom',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [true, false, true] })}
+								</tbody>
+							`
+						},
+						{
+							name: 'selected-all',
+							template: html`
+								<tbody>
+									${createFruitHeaderRows({ headerAttribute: true, selectable: true })}
+									${createFruitRows({ selectable: true, selected : [true, true, true] })}
+								</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'down'].forEach((position) => {
+							itWithWarnings(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(
+									template,
+									{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+								);
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+								await nextFrame();
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
-				});
 
-				[
-					{
-						name: 'fixed-column-class',
-						template: html`
-							<thead>${createFruitHeaderRows({ selectable: true, stickyClass: 'd2l-table-sticky-cell' })}</thead>
-							<tbody>
-								${createFruitRows({ selectable: true, selected : [false, true, false], stickyClass: 'd2l-table-sticky-cell', inputNumber: false })}
-							</tbody>
-						`
-					},
-					{
-						name: 'fixed-column-attr',
-						template: html`
-							<thead>${createFruitHeaderRows({ selectable: true, stickyAttribute: true })}</thead>
-							<tbody>
-								${createFruitRows({ selectable: true, selected : [false, true, false], stickyAttribute: true, inputNumber: false })}
-							</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'down', 'over'].forEach((position) => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(
-								template,
-								{ bottomMargin: true, stickyHeaders: true, viewport: { height: 300, width: 500 } }
-							);
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
-							await expect(elem).to.be.golden();
+					it('multi-row-col-sort-button-dropdown-open', async() => {
+						const elem = await createTableFixture(
+							html`
+								<thead>
+									${createSortableButtonDropdownHeaderRow()}
+									${createSortableButtonDropdownHeaderRow()}
+								</thead>
+								<tbody>${createRows([1, 2, 3])}</tbody>
+							`,
+							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+						);
+						await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					it('multi-row-col-sort-button-tooltip-open', async() => {
+						const elem = await createTableFixture(
+							html`
+								<thead>
+									${createSortableButtonTooltipHeaderRow()}
+									${createSortableButtonTooltipHeaderRow()}
+								</thead>
+								<tbody>${createRows([1, 2, 3])}</tbody>
+							`,
+							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+						);
+						await clickElem(elem.shadowRoot.querySelector('#tooltip-button'));
+						await expect(elem).to.be.golden();
+					});
+
+					[
+						{
+							name: 'fixed-column-class',
+							template: html`
+								<thead>${createFruitHeaderRows({ selectable: true, stickyClass: 'd2l-table-sticky-cell' })}</thead>
+								<tbody>
+									${createFruitRows({ selectable: true, selected : [false, true, false], stickyClass: 'd2l-table-sticky-cell', inputNumber: false })}
+								</tbody>
+							`
+						},
+						{
+							name: 'fixed-column-attr',
+							template: html`
+								<thead>${createFruitHeaderRows({ selectable: true, stickyAttribute: true })}</thead>
+								<tbody>
+									${createFruitRows({ selectable: true, selected : [false, true, false], stickyAttribute: true, inputNumber: false })}
+								</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'down', 'over'].forEach((position) => {
+							itWithWarnings(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(
+									template,
+									{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
+								);
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView();
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
-				});
 
-				it('one-column', async() => {
-					const elem = await createTableFixture(html`
-						<thead>
-							<tr><th class="top">Header A</th></tr>
-						</thead>
-						<tbody>
-							<tr><td>Cell 1-A</td></tr>
-						</tbody>
-					`, { bottomMargin: true, stickyHeaders: true });
-					elem.shadowRoot.querySelector('.top').scrollIntoView();
-					await expect(elem).to.be.golden();
-				});
+					itWithWarnings('one-column', async() => {
+						const elem = await createTableFixture(html`
+							<thead>
+								<tr><th class="top">Header A</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>Cell 1-A</td></tr>
+							</tbody>
+						`, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
+						elem.shadowRoot.querySelector('.top').scrollIntoView();
+						await expect(elem).to.be.golden();
+					});
 
-				[
-					{
-						name: 'grades-row-header',
-						template: html`
-							<thead>${createGradesHeaderRow({ withDropdown: true })}</thead>
-							<tbody>${createGradesRows()}</tbody>
-						`
-					},
-					{
-						name: 'grades-column-header',
-						template: html`
-							<thead>${createGradesHeaderRow()}</thead>
-							<tbody>${createGradesRows({ withDropdown: true })}</tbody>
-						`
-					}
-				].forEach(({ name, template }) => {
-					['top', 'over'].forEach(position => {
-						it(`${name}-${position}`, async() => {
-							const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true });
-							elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
-							await expect(elem).to.be.golden();
+					[
+						{
+							name: 'grades-row-header',
+							template: html`
+								<thead>${createGradesHeaderRow({ withDropdown: true })}</thead>
+								<tbody>${createGradesRows()}</tbody>
+							`
+						},
+						{
+							name: 'grades-column-header',
+							template: html`
+								<thead>${createGradesHeaderRow()}</thead>
+								<tbody>${createGradesRows({ withDropdown: true })}</tbody>
+							`
+						}
+					].forEach(({ name, template }) => {
+						['top', 'over'].forEach(position => {
+							itWithWarnings(`${name}-${position}`, async() => {
+								const elem = await createTableFixture(template, { bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper });
+								elem.shadowRoot.querySelector(`.${position}`).scrollIntoView(true);
+								await expect(elem).to.be.golden();
+							});
 						});
 					});
 				});

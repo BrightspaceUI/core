@@ -3,7 +3,7 @@
  * match what's present in the MathJax-src repo.
  */
 
-const mathjaxContextAttribute = 'data-mathjax-context';
+const mathjaxContextKey = 'd2l-mathjax';
 const mathjaxBaseUrl = 'https://s.brightspace.com/lib/mathjax/3.2.2';
 
 const mathjaxFontMappings = new Map([
@@ -32,21 +32,20 @@ const mathjaxFontMappings = new Map([
 
 class HtmlBlockMathRenderer {
 
-	get contextAttributes() {
-		return [mathjaxContextAttribute];
+	get contextKeys() {
+		return [mathjaxContextKey];
 	}
 
 	async render(elem, options) {
 		if (!options.contextValues) return elem;
-		const contextVal = options.contextValues.get(mathjaxContextAttribute);
-		if (contextVal === undefined) return elem;
-
-		const context = JSON.parse(contextVal) || {};
+		const context = options.contextValues.get(mathjaxContextKey);
+		if (context === undefined) return elem;
 
 		if (!elem.querySelector('math') && !(context.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
 		const mathJaxConfig = {
 			deferTypeset: true,
+			enableMML3Support: context.enableMML3Support,
 			renderLatex: context.renderLatex,
 			outputScale: context.outputScale || 1,
 			window: window
@@ -62,6 +61,24 @@ class HtmlBlockMathRenderer {
 			elm.style.display = 'block';
 			elm.style.height = '0.5rem';
 		});
+
+		if (context.enableMML3Support) {
+			// There's a bug in the experimental MML3 plugin that causes mi and mo elements containing non-breaking
+			// spaces to break MathJax's math processing (e.g. <mo>&nbsp;</mo>, <mi>Some&nbsp;Identifier</mi>).
+			// Unfortunately, WIRIS tends to add a lot of these in chemistry equations, so they break math processing.
+			//
+			// In order to address this, we can just remove any non-breaking spaces entirely, replacing them with
+			// empty strings. MathJax will ignore any empty elements as a result, and while this may mean intended
+			// whitespace is occasionally removed, it's necessary for MathJax to render anything at all.
+			//
+			// NOTE: MathJax evidently has a fix for this in MathJax 4, so we should consider trying to remove this when
+			// the update comes out of beta and we decide to take it on.
+			//
+			// See https://github.com/mathjax/MathJax/issues/3030 for some related discussion.
+			elem.querySelectorAll('mo, mi').forEach(elm => {
+				elm.innerHTML = elm.innerHTML.replace(/&nbsp;/g, '');
+			});
+		}
 
 		// If we're using deferred rendering, we need to create a document structure
 		// within the element so MathJax can appropriately process math.
@@ -102,7 +119,15 @@ export function loadMathJax(mathJaxConfig) {
 				settings: { zoom: 'None' }
 			}
 		},
-		loader: { load: ['ui/menu'] },
+		loader: {
+			load: mathJaxConfig && mathJaxConfig.enableMML3Support
+				? [
+					'[mml]/mml3',
+					'ui/menu'
+				] : [
+					'ui/menu'
+				]
+		},
 		startup: {
 			ready: () => {
 

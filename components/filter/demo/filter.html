@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-timezone='{"name":"Canada - Toronto", "identifier":"America/Toronto"}'>
 
 <head>
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
@@ -10,8 +10,13 @@
 		import '../../filter/filter-dimension-set.js';
 		import '../../filter/filter-dimension-set-empty-state.js';
 		import '../../filter/filter-dimension-set-value.js';
+		import '../../filter/filter-dimension-set-date-text-value.js';
+		import '../../filter/filter-dimension-set-date-time-range-value.js';
 		import './filter-search-demo.js';
 		import './filter-load-more-demo.js';
+	</script>
+	<script>
+		window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
 	</script>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -127,7 +132,7 @@
 						<d2l-filter-dimension-set-value key="stats" text="Statistics"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
-					
+
 				</d2l-filter>
 				<d2l-filter text="More Filters">
 					<d2l-filter-dimension-set key="course" text="Course" loading select-all></d2l-filter-dimension-set>
@@ -153,6 +158,23 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-filter-search-demo></d2l-filter-search-demo>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Date Filter</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter id="filter-single">
+					<d2l-filter-dimension-set key="dates" text="Dates">
+						<d2l-filter-dimension-set-value key="60days" text="Last 60 days"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" ></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="today" range="today"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom" type="date"></d2l-filter-dimension-set-date-time-range-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom2" text="Custom Date Range with Time"></d2l-filter-dimension-set-date-time-range-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>

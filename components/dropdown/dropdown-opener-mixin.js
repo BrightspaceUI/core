@@ -1,6 +1,12 @@
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
+const intersectionObserver = new IntersectionObserver(entries => {
+	entries.forEach(entry => {
+		entry.target.__updateContentVisibility(entry.isIntersecting);
+	});
+}, { threshold: 0 }); // 0-1 (0 -> intersection requires any pixel visible, 1 -> intersection requires all pixels visible)
+
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -44,6 +50,19 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				type: Boolean,
 				attribute: 'open-on-hover'
 			},
+			/**
+			 * Temporary.
+			 * @ignore
+			 */
+			preferFixedPositioning: {
+				type: Boolean,
+				attribute: 'prefer-fixed-positioning'
+			},
+			_fixedPositioning: {
+				type: Boolean,
+				attribute: '_fixed-positioning',
+				reflect: true,
+			},
 			_isHovering: { type: Boolean },
 			_isOpenedViaClick: { type: Boolean },
 			_isFading: { type: Boolean }
@@ -78,6 +97,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
 
+		if (this._fixedPositioning && this.dropdownOpened) {
+			intersectionObserver.observe(this);
+		}
 		if (this.openOnHover) {
 			document.body.addEventListener('mouseup', this._onOutsideClick);
 		}
@@ -91,6 +113,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
 
+		if (this._fixedPositioning) {
+			intersectionObserver.unobserve(this);
+		}
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
 		}
@@ -120,6 +145,12 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			element.classList.add('d2l-dropdown-content-fading');
 		} else {
 			element.classList.remove('d2l-dropdown-content-fading');
+		}
+	}
+
+	willUpdate(changedProperties) {
+		if (this._fixedPositioning === undefined || changedProperties.has('preferFixedPositioning')) {
+			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
 		}
 	}
 
@@ -188,6 +219,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onClosed() {
+		if (this._fixedPositioning) {
+			intersectionObserver.unobserve(this);
+		}
+
 		const opener = this.getOpenerElement();
 		if (!opener) {
 			return;
@@ -261,6 +296,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.setAttribute('aria-expanded', 'true');
 		opener.setAttribute('active', 'true');
 		this._isFading = false;
+
+		if (this._fixedPositioning) {
+			intersectionObserver.observe(this);
+		}
 	}
 
 	__onOpenerMouseUp(e) {
@@ -280,6 +319,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				this.openDropdown(false);
 			}
 		} else this.toggleOpen(true);
+	}
+
+	__updateContentVisibility(visible) {
+		this.__getContentElement().offscreen = !visible;
 	}
 
 	/* used by open-on-hover option */

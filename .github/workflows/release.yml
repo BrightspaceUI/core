@@ -21,21 +21,19 @@ jobs:
           node-version-file: .nvmrc
           cache: 'npm'
       - name: Install dependencies
-        run: |
-          npm ci
-          npm install web-component-analyzer --no-save
+        run: npm ci
       - name: Build
         run: npm run build
-      - name: Create custom-elements.json
-        run: npx wca analyze "{components,templates}/**/*.js" --format json --outFile custom-elements.json
       - name: Semantic Release
         uses: BrightspaceUI/actions/semantic-release@main
         with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.D2L_RELEASE_TOKEN }}
           MINOR_RELEASE_WITH_LMS: true
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          RALLY_API_KEY: ${{ secrets.RALLY_API_KEY }}
       - name: Get new git HEAD
         id: git
         run: echo "head=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT

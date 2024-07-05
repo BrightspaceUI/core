@@ -7,7 +7,7 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
+import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
@@ -23,6 +23,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */

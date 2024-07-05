@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputInlineHelpMixin } from './input-inline-help-mixin.js';
+import { InputInlineHelpMixin } from './input-inline-help.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -61,6 +61,7 @@ export const checkboxStyles = css`
 /**
  * A component that can be used to show a checkbox and optional visible label.
  * @slot - Checkbox information (e.g., text)
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when the checkbox's state changes
  */
 class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMixin(LitElement)))) {

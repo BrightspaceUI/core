@@ -41,6 +41,9 @@ class FilterDimensionSetValue extends LitElement {
 		this.disabled = false;
 		this.selected = false;
 		this.text = '';
+		this._enforceSingleSelection = false;
+		this._filterSetValue = true;
+		this._noSearchSupport = false;
 	}
 
 	get count() {
@@ -77,6 +80,16 @@ class FilterDimensionSetValue extends LitElement {
 				composed: false
 			}));
 		}
+	}
+
+	getValueDetails() {
+		return {
+			count: this.count,
+			disabled: this.disabled,
+			key: this.key,
+			selected: this.selected,
+			text: this.text
+		};
 	}
 }
 

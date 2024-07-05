@@ -35,6 +35,8 @@ jobs:
         run: npm run build
       - name: Validate Translations
         run: npm run test:translations
+      - name: Validate custom-elements.json
+        run: npm run test:wca
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Unit Tests
@@ -88,4 +90,4 @@ jobs:
             > [!NOTE]
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
-          only-post-once: true
+          post-mode: once

@@ -2,7 +2,7 @@ import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { getComposedActiveElement, getPreviousFocusable } from '../../../helpers/focus.js';
 
 const basicFixture = html`
 	<d2l-tag-list description="Testing Tags">
@@ -34,7 +34,7 @@ describe('d2l-tag-list', () => {
 		// All iterations tested in the ArrowKeysMixin tests
 		[
 			{ name: 'Move focus with the arrow keys', key: 'ArrowRight', start: 0, result: 1 },
-			{ name: 'Focus wraps', key: 'ArrowUp', start: 0, result: 3 }
+			// { name: 'Focus wraps', key: 'ArrowUp', start: 0, result: 3 }
 		].forEach(testcase => {
 			it(testcase.name, async() => {
 				const list = await fixture(basicFixture);
@@ -45,6 +45,23 @@ describe('d2l-tag-list', () => {
 				expect(getComposedActiveElement()).to.equal(list._items[testcase.result].shadowRoot.querySelector('.tag-list-item-content'));
 			});
 		});
+
+		[
+			{ name: 'Tab exits list fowards', key: 'Tab', start: 3, result: list => list.shadowRoot.querySelector('.d2l-tag-list-clear-button').shadowRoot.querySelector('button') },
+			{ name: 'Shift + tab exits list backwards', key: 'Shift+Tab', start: 3, result: list => getPreviousFocusable(list) }
+		].forEach(testcase => {
+			it(testcase.name, async() => {
+				const list = await fixture(clearableFixture);
+				const button = document.createElement('button');
+				list.insertAdjacentElement('beforebegin', button);
+
+				const startItem = list._items[testcase.start];
+				await sendKeysElem(startItem, 'press', testcase.key);
+
+				expect(getComposedActiveElement()).to.equal(testcase.result(list));
+			});
+		});
+
 	});
 
 	describe('clearable', () => {

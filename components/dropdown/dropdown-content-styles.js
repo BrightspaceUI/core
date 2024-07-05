@@ -1,5 +1,9 @@
 import '../colors/colors.js';
+import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { css } from 'lit';
+
+const pointerLength = 16;
+const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 
 export const dropdownContentStyles = css`
 
@@ -19,6 +23,10 @@ export const dropdownContentStyles = css`
 		top: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		width: 100%;
 		z-index: 998; /* position on top of floating buttons */
+	}
+	:host([_fixed-positioning]) {
+		position: fixed;
+		top: 0;
 	}
 
 	:host([theme="dark"]) {
@@ -41,6 +49,9 @@ export const dropdownContentStyles = css`
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
 	}
+	:host([_fixed-positioning][opened-above]) {
+		bottom: 0;
+	}
 
 	:host([data-mobile][opened]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-animation-name) 300ms ease;
@@ -56,10 +67,26 @@ export const dropdownContentStyles = css`
 	.d2l-dropdown-content-pointer {
 		clip: rect(-5px, 21px, 8px, -7px);
 		display: inline-block;
-		left: calc(50% - 7px);
+		left: calc(50% - 7px); /* todo: cleanup when switched to fixed positioning */
 		position: absolute;
-		top: -7px;
+		top: -7px; /* todo: cleanup when switched to fixed positioning */
 		z-index: 1;
+	}
+	:host([_fixed-positioning][dir="rtl"]) .d2l-dropdown-content-pointer {
+		left: auto;
+	}
+
+	:host([align="start"]) .d2l-dropdown-content-pointer,
+	:host([align="end"][dir="rtl"]) .d2l-dropdown-content-pointer {
+		/* todo: cleanup when switched to fixed positioning */
+		left: min(calc(1rem + ${(pointerRotatedLength - pointerLength) / 2}px), calc(50% - ${pointerLength / 2}px)); /* 1rem corresponds to .d2l-dropdown-content-container padding */
+		right: auto;
+	}
+	:host([align="end"]) .d2l-dropdown-content-pointer,
+	:host([align="start"][dir="rtl"]) .d2l-dropdown-content-pointer {
+		/* todo: cleanup when switched to fixed positioning */
+		left: auto;
+		right: min(calc(1rem + ${(pointerRotatedLength - pointerLength) / 2}px), calc(50% - ${pointerLength / 2}px)); /* 1rem corresponds to .d2l-dropdown-content-container padding */
 	}
 
 	.d2l-dropdown-content-pointer > div {
@@ -67,16 +94,19 @@ export const dropdownContentStyles = css`
 		border: 1px solid var(--d2l-dropdown-border-color);
 		border-radius: 0.1rem;
 		box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
-		height: 16px;
+		height: ${pointerLength}px;
 		-webkit-transform: rotate(45deg);
 		transform: rotate(45deg);
-		width: 16px;
+		width: ${pointerLength}px;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer {
 		bottom: -8px;
 		clip: rect(9px, 21px, 22px, -3px);
 		top: auto;
+	}
+	:host([_fixed-positioning][opened-above]) .d2l-dropdown-content-pointer {
+		bottom: auto;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer > div {
@@ -320,4 +350,7 @@ export const dropdownContentStyles = css`
 		}
 	}
 
+	:host([offscreen]) {
+		${_offscreenStyleDeclarations}
+	}
 `;

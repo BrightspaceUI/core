@@ -76,6 +76,10 @@ search.addEventListener('d2l-input-search-searched', (e) => {
 ```
 
 When the input is cleared, the same event will be fired with an empty value.
+
+### Slots
+
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties

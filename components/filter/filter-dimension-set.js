@@ -37,6 +37,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * @ignore
+			 */
+			minWidth: { type: Number },
+			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -136,15 +140,19 @@ class FilterDimensionSet extends LitElement {
 
 	getValues() {
 		const valueNodes = this._getSlottedNodes();
+		let noSearchSupport = false;
+		let enforceSingleSelection = false;
+		let minWidth = undefined;
 		const values = valueNodes.map(value => {
-			return {
-				count: value.count,
-				disabled: value.disabled,
-				key: value.key,
-				selected: value.selected,
-				text: value.text
-			};
+			if (value._noSearchSupport) noSearchSupport = true;
+			if (value._enforceSingleSelection) enforceSingleSelection = true;
+			if (value._minWidth) minWidth = value._minWidth;
+
+			return value.getValueDetails();
 		});
+		if (noSearchSupport) this.searchType = 'none';
+		if (enforceSingleSelection) this.selectionSingle = true;
+		if (minWidth) this.minWidth = minWidth;
 		return values;
 	}
 
@@ -173,12 +181,15 @@ class FilterDimensionSet extends LitElement {
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
-		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value');
+		return nodes.filter((node) => {
+			if (node.nodeType !== Node.ELEMENT_NODE) return false;
+			return node._filterSetValue;
+		});
 	}
 
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
-		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes, dispatchChangeEvent: e.detail.dispatchChangeEvent });
 	}
 
 	_handleSearchEmptyStateSlotChange(e) {

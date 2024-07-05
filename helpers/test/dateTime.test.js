@@ -9,6 +9,7 @@ import { formatDateInISO,
 	getLocalDateTimeFromUTCDateTime,
 	getToday,
 	getUTCDateTimeFromLocalDateTime,
+	getUTCDateTimeRange,
 	isDateInRange,
 	parseISODate,
 	parseISODateTime,
@@ -251,6 +252,55 @@ describe('date-time', () => {
 				it('returns today when between min and max', () => {
 					expect(getClosestValidDate('2015-07-10', '2021-01-01', false)).to.equal(todayDate);
 				});
+			});
+		});
+
+		describe(`getUTCDateTimeRange in ${timezone}`, () => {
+			let clock;
+
+			before(() => {
+				documentLocaleSettings.timezone.identifier = timezone;
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			});
+
+			after(() => {
+				clock.restore();
+				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+			});
+
+			[
+				{ type: 'hours', num: -1, expected: { startValue: '2018-02-12T19:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'hours', num: -24, expected: { startValue: '2018-02-11T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'days', num: -80, expected: { startValue: '2017-11-24T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'months', num: -6, expected: { startValue: '2017-08-12T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'years', num: -3, expected: { startValue: '2015-02-12T20:00:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'minutes', num: -15, expected: { startValue: '2018-02-12T19:45:00.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'seconds', num: -30, expected: { startValue: '2018-02-12T19:59:30.000Z', endValue: '2018-02-12T20:00:00.000Z' } },
+				{ type: 'hours', num: 1, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T21:00:00.000Z' } },
+				{ type: 'hours', num: 24, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-13T20:00:00.000Z' } },
+				{ type: 'days', num: 80, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-05-03T20:00:00.000Z' } },
+				{ type: 'months', num: 6, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-08-12T20:00:00.000Z' } },
+				{ type: 'years', num: 3, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2021-02-12T20:00:00.000Z' } },
+				{ type: 'minutes', num: 15, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T20:15:00.000Z' } },
+				{ type: 'seconds', num: 30, expected: { startValue: '2018-02-12T20:00:00.000Z', endValue: '2018-02-12T20:00:30.000Z' } }
+			].forEach(range => {
+				it(`returns expected startValue and endValue for type ${range.type} and diff ${range.num}`, async() => {
+					const res = getUTCDateTimeRange(range.type, range.num);
+					expect(res.startValue).to.equal(range.expected.startValue);
+					expect(res.endValue).to.equal(range.expected.endValue);
+				});
+			});
+
+			it('returns expected startValue and endValue for today when type is days and diff is 0', async() => {
+				const res = getUTCDateTimeRange('days', 0);
+				if (timezone === 'America/Toronto') {
+					expect(res.startValue).to.equal('2018-02-12T05:00:00.000Z');
+					expect(res.endValue).to.equal('2018-02-13T04:59:59.000Z');
+				} else if (timezone === 'Australia/Eucla') {
+					expect(res.startValue).to.equal('2018-02-12T15:15:00.000Z');
+					expect(res.endValue).to.equal('2018-02-13T15:14:59.000Z');
+				}
 			});
 		});
 	});
