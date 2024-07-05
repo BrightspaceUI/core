@@ -19,6 +19,7 @@ import '../menu/menu-item.js';
 import '../paging/pager-load-more.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
+import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -36,6 +37,7 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
+let hasDisplayedFilterExpandKeyboardTooltip = false;
 
 /**
  * A filter component that contains one or more dimensions a user can filter by.
@@ -68,6 +70,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			text: { type: String },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
+			_displayKeyboardTooltip: { type: Boolean },
 			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};
@@ -211,6 +214,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
+		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -590,8 +594,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_createSetDimensionItem(item) {
+		const itemId = `list-item-${item.key}`;
 		return html`
 			<d2l-list-item
+				id="${itemId}"
+				@d2l-list-item-selected="${this._handleListItemSelelcted}"
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
@@ -617,6 +624,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					` : nothing}
 				</div>
 			</d2l-list-item>
+			${item.additionalContent && item.selected && this._displayKeyboardTooltip
+		? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.tooltip')}</d2l-tooltip>`
+		: nothing}
 		`;
 	}
 
@@ -856,6 +866,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		parentListItem.classList.remove('expanding-content');
 	}
 
+	_handleListItemSelelcted() {
+		if (hasDisplayedFilterExpandKeyboardTooltip) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedFilterExpandKeyboardTooltip = true;
+	}
+
 	_handleSearch(e) {
 		const dimension = this._getActiveDimension();
 		const searchValue = e.detail.value.trim();
@@ -901,6 +917,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		this._setFilterCounts();
 		this._activeFiltersSubscribers.updateSubscribers();
+	}
+
+	_handleTooltipHide() {
+		this._displayKeyboardTooltip = false;
 	}
 
 	_isDimensionEmpty(dimension) {

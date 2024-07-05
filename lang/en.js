@@ -25,6 +25,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {No search results} one {{number} search result} other {{number} search results}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
+	"components.filter.tooltip": "Use <b>Left/right arrow keys</b> to move focus inside this list item",
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Last hour} other {Last {num} hours}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} day} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
