@@ -273,7 +273,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				margin: 0 -12px;
 			}
-			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+			[slot="outside-content"] {
+				border-bottom: 1px solid transparent;
+				border-radius: 6px;
+			}
+			.d2l-list-item-content-extend-separators [slot="outside-control-container"],
+			.d2l-list-item-content-extend-separators [slot="outside-content"] {
 				border-left: none !important;
 				border-radius: 0 !important;
 				border-right: none !important;
@@ -332,7 +337,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-selection]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			}
-			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-content"] {
 				background-color: #f3fbff;
 				border-color: #b6cbe8; /* celestine alpha 0.3 */
 				margin-bottom: -1px;
@@ -343,7 +349,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
-			:host([_highlight]) [slot="outside-control-container"] {
+			:host([_highlight]) [slot="outside-control-container"],
+			:host([_highlight]) [slot="outside-content"], {
 				transition: background-color 400ms linear, border-color 400ms linear;
 			}
 			:host([_highlight]:first-of-type) [slot="control-container"]::before,
@@ -351,9 +358,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				transition: border-color 400ms linear;
 			}
 			:host([_highlighting]) [slot="outside-control-container"],
+			:host([_highlighting]) [slot="outside-content"],
 			:host([_hovering-selection][_highlighting]) [slot="outside-control-container"],
+			:host([_hovering-selection][_highlighting]) [slot="outside-content"],
 			:host(:not([selection-disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-control-container"],
+			:host(:not([selection-disabled]):not([skeleton])[_focusing][_highlighting]) [slot="outside-content"],
+			:host(:not([selection-disabled]):not([skeleton])[selected][_highlighting]) [slot="outside-content"]  {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border-color: var(--d2l-color-celestine);
 			}
@@ -739,6 +750,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					class="d2l-list-item-actions-container">
 					<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 				</div>
+				<div slot="outside-content"><slot name="outside-content"></slot></div>
 				${this._renderNested(nested)}
 				${this._showAddButton && (!this._hasNestedListAddButton || (this.expandable && !this.expanded)) ? html`
 				<div slot="add">

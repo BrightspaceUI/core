@@ -72,6 +72,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-template-rows:
 					[start add-top-start] minmax(0, min-content)
 					[add-top-end main-start] minmax(0, min-content)
+					[outside] minmax(0, min-content)
 					[main-end nested-start] minmax(0, min-content)
 					[nested-end add-start] minmax(0, min-content)
 					[add-end end];
@@ -99,6 +100,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="control-container"]),
 			::slotted([slot="drop-target"]) {
 				grid-row: 2 / 3;
+			}
+
+			::slotted([slot="outside-content"]) {
+				grid-row: outside;
+				grid-column: start / end;
 			}
 
 			::slotted([slot="outside-control"]) {
@@ -234,6 +240,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="outside-content" class="d2l-cell" data-cell-num="9"></slot>
 			<slot name="color-indicator"></slot>
 			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
@@ -243,7 +250,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			<slot name="drop-target"></slot>
 			<slot name="nested"></slot>
-			<slot name="add" class="d2l-cell" data-cell-num="9"></slot>
+			<slot name="add" class="d2l-cell" data-cell-num="10"></slot>
 		`;
 	}
 

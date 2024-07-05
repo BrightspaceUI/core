@@ -146,8 +146,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-shrink: 0;
 			}
 			d2l-expand-collapse-content[expanded] {
-				margin-inline-start: -2rem;
-				padding-block: 0.5rem;
+				padding-bottom: 0.5rem;
+				padding-inline-start: 1rem;
 			}
 			d2l-list-item.expanding-content {
 				overflow-y: hidden;
@@ -596,7 +596,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?hidden="${item.hidden}"
 				key="${item.key}"
 				label="${item.text}"
-				?no-primary-action="${item.additionalContent && item.selected}"
 				selectable
 				?selected="${item.selected}">
 				<div>
@@ -607,15 +606,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
 		: nothing}
 					</div>
-					${item.additionalContent ? html`
-						<d2l-expand-collapse-content 
-							?expanded="${item.selected}" 
-							@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
-							@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
-							${item.additionalContent()}
-						</d2l-expand-collapse-content>
-					` : nothing}
 				</div>
+				${item.additionalContent ? html`
+					<d2l-expand-collapse-content 
+						slot="outside-content"
+						?expanded="${item.selected}" 
+						@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
+						@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
+						${item.additionalContent()}
+					</d2l-expand-collapse-content>
+				` : nothing}
 			</d2l-list-item>
 		`;
 	}
