@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Last hour} other {Last {num} hours}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} days} other {Last {num} days}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

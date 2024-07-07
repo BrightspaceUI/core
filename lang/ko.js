@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, other {지난 {num}시간}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {오늘} other {지난 {num}일}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "지난 {num}개월",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

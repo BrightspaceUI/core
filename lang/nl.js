@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Afgelopen uur} other {Afgelopen {num} uur}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Vandaag} one {Afgelopen {num} dag} other {Afgelopen {num} dagen}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Afgelopen {num} maanden",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

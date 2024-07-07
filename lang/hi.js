@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {अंतिम घंटा} other {अंतिम {num} घंटे}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {आज} one {अंतिम {num} दिन} other {अंतिम {num} दिन}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "अंतिम {num} महीने",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

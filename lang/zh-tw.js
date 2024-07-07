@@ -28,6 +28,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, other {過去 {num} 小時}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今天} other {過去 {num} 天}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "過去 {num} 個月",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",
