@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "严重问题！",
 	"components.dropdown.close": "关闭",
 	"components.filter.activeFilters": "活动筛选器：",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "清除",
 	"components.filter.clearAll": "全部清除",
 	"components.filter.clearAllAnnounce": "清除所有筛选器",

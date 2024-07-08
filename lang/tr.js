@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "Kritik!",
 	"components.dropdown.close": "Kapat",
 	"components.filter.activeFilters": "Etkin Filtreler:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "Temizle",
 	"components.filter.clearAll": "Tümünü Temizle",
 	"components.filter.clearAllAnnounce": "Tüm filtreler temizleniyor",

@@ -19,6 +19,7 @@ import '../menu/menu-item.js';
 import '../paging/pager-load-more.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
+import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -36,6 +37,26 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
+
+let hasDisplayedKeyboardTooltip = false;
+
+export function resetHasDisplayedKeyboardTooltip() {
+	hasDisplayedKeyboardTooltip = false;
+}
+let spacePressed = false;
+let spaceListenerAdded = false;
+function addSpaceListener() {
+	if (spaceListenerAdded) return;
+	spaceListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 32) return;
+		spacePressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 32) return;
+		spacePressed = false;
+	});
+}
 
 /**
  * A filter component that contains one or more dimensions a user can filter by.
@@ -68,6 +89,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			text: { type: String },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
+			_displayKeyboardTooltip: { state: true },
 			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};
@@ -211,6 +233,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
+		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -224,6 +247,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		addSpaceListener();
 	}
 
 	firstUpdated(changedProperties) {
@@ -591,8 +619,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	_createSetDimensionItem(item) {
 		const label = item.label || item.text;
+		const itemId = `list-item-${item.key}`;
 		return html`
 			<d2l-list-item
+				id="${itemId}"
+				@d2l-list-item-selected="${ifDefined(item.additionalContent ? this._handleListItemSelelcted : undefined)}"
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
@@ -618,6 +649,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					` : nothing}
 				</div>
 			</d2l-list-item>
+			${item.additionalContent && item.selected && this._displayKeyboardTooltip
+		? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.additionalContentTooltip')}</d2l-tooltip>`
+		: nothing}
 		`;
 	}
 
@@ -857,6 +891,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		parentListItem.classList.remove('expanding-content');
 	}
 
+	_handleListItemSelelcted() {
+		if (hasDisplayedKeyboardTooltip || !spacePressed) return;
+		this._displayKeyboardTooltip = true;
+		hasDisplayedKeyboardTooltip = true;
+	}
+
 	_handleSearch(e) {
 		const dimension = this._getActiveDimension();
 		const searchValue = e.detail.value.trim();
@@ -902,6 +942,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 		this._setFilterCounts();
 		this._activeFiltersSubscribers.updateSubscribers();
+	}
+
+	_handleTooltipHide() {
+		this._displayKeyboardTooltip = false;
+		hasDisplayedKeyboardTooltip = true;
 	}
 
 	_isDimensionEmpty(dimension) {

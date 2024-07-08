@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "Critigol!",
 	"components.dropdown.close": "Cau",
 	"components.filter.activeFilters": "Dim Hidlwyr Gweithredol:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "Clirio",
 	"components.filter.clearAll": "Clirio’r Cyfan",
 	"components.filter.clearAllAnnounce": "Wrthi’n clirio’r holl hidlwyr",

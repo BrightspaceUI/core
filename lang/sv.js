@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "Viktigt!",
 	"components.dropdown.close": "Stäng",
 	"components.filter.activeFilters": "Aktiva filter:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "Rensa",
 	"components.filter.clearAll": "Rensa alla",
 	"components.filter.clearAllAnnounce": "Rensar alla filter",
