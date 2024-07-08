@@ -133,7 +133,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
-		this.radioToggle = true;
 		this._listItemChanges = [];
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;

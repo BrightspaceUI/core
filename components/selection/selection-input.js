@@ -156,8 +156,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		e.stopPropagation();
 		if (this.disabled) return;
 
-		if (this._provider?.radioToggle) this.selected = !this.selected;
-		else this.selected = true;
+		this.selected = !this.selected;
 	}
 
 	_handleRadioKeyDown(e) {
@@ -167,8 +166,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	_handleRadioKeyUp(e) {
 		if (e.keyCode !== keyCodes.SPACE) return;
 
-		if (this._provider?.radioToggle) this.selected = !this.selected;
-		else this.selected = true;
+		this.selected = !this.selected;
 	}
 
 }
