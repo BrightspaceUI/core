@@ -124,7 +124,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	async _handleInteractiveKeyDown(e) {
-		if (this._interactive && e.keyCode === 9) e.stopPropagation(); // tab
+		if (this._interactive && e.keyCode !== 27) e.stopPropagation(); // stop propagation for any key other than escape
 	}
 
 	_handleInteractiveToggleBlur() {

@@ -41,64 +41,47 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 			:host([top-margin]) {
 				margin-top: calc(0.9rem - 7px);
 			}
-
-			.d2l-input-date-time-range-to-container {
-				display: flex;
-				flex-wrap: wrap;
-				margin-bottom: -1.2rem;
-			}
-			.d2l-input-date-time-range-to-container-block.d2l-input-date-time-range-to-container {
-				display: block;
-			}
-
-			.d2l-input-date-time-range-start-container {
-				margin-bottom: 1.2rem;
-				margin-right: 1.5rem;
-			}
-			:host([dir="rtl"]) .d2l-input-date-time-range-start-container {
-				margin-left: 1.5rem;
-				margin-right: 0;
-			}
-			:host([display-to]) .d2l-input-date-time-range-start-container {
-				margin-bottom: 0.6rem;
-			}
-			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block) > .d2l-input-date-time-range-start-container {
-				margin-right: 0.9rem;
-			}
-			:host([display-to][dir="rtl"]) div:not(.d2l-input-date-time-range-to-container-block) > .d2l-input-date-time-range-start-container {
-				margin-left: 0.9rem;
-				margin-right: 0;
-			}
-			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container,
-			:host([dir="rtl"]) .d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
-				margin-left: 0;
-				margin-right: 0;
-			}
-
 			:host(:not([display-to])) .d2l-input-date-time-range-to-to {
 				display: none;
 			}
-			.d2l-input-date-time-range-to-to {
-				display: inline-block;
-				margin-bottom: 0.6rem;
-				margin-right: 0.9rem;
-				margin-top: auto;
-				vertical-align: top;
-			}
-			:host([dir="rtl"]) .d2l-input-date-time-range-to-to {
-				margin-left: 0.9rem;
-				margin-right: 0;
-			}
 
+			/* flex case (not wrapped) */
+			.d2l-input-date-time-range-to-container {
+				column-gap: 1.5rem;
+				display: flex;
+				flex-wrap: wrap;
+			}
+			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container {
+				column-gap: 0.9rem;
+			}
 			.d2l-input-date-time-range-end-container {
 				display: flex;
-				margin-bottom: 1.2rem;
-			}
-			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-end-container {
-				display: block;
 			}
 			.d2l-input-date-time-range-end-container ::slotted(*) {
 				align-self: flex-end;
+			}
+
+			/* block case (wrapped) */
+			.d2l-input-date-time-range-to-container-block.d2l-input-date-time-range-to-container {
+				display: block;
+				margin-bottom: -1.2rem;
+			}
+			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
+				margin-bottom: 1.2rem;
+				margin-inline: 0;
+			}
+			:host([display-to]) .d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
+				margin-bottom: 0.6rem;
+			}
+			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-end-container {
+				display: block;
+				margin-bottom: 1.2rem;
+			}
+			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-to-to {
+				display: inline-block;
+				margin-bottom: 0.6rem;
+				margin-top: auto;
+				vertical-align: top;
 			}
 		`];
 	}
@@ -131,10 +114,10 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 				<div class="d2l-input-date-time-range-start-container">
 					<slot name="left"></slot>
 				</div>
-				<div class="d2l-input-date-time-range-end-container">
 					<div class="d2l-body-small d2l-skeletize d2l-input-date-time-range-to-to">
 						${this.localize('components.input-date-time-range-to.to')}
 					</div>
+				<div class="d2l-input-date-time-range-end-container">
 					<slot name="right"></slot>
 				</div>
 			</div>

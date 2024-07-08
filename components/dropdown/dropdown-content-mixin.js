@@ -1030,6 +1030,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
 		}
 
+		if (minWidthOverride > maxWidthOverride) {
+			minWidthOverride = maxWidthOverride;
+		}
 		const widthStyle = {
 			maxWidth: maxWidthOverride,
 			minWidth: minWidthOverride,
