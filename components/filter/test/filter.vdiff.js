@@ -269,20 +269,20 @@ describe('filter', () => {
 			it('select-other-option-then-custom-again', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
 				await clickElem(elem.shadowRoot.querySelector('d2l-list-item'));
-				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]'));
+				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]'));
 				await hoverAt(0, 0);
 				await expect(elem).to.be.golden();
 			});
 
 			it('open custom date input', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
-				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]').querySelector('d2l-input-date-time-range').setAttribute('start-opened', 'start-opened');
+				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]').querySelector('d2l-input-date-time-range').setAttribute('start-opened', 'start-opened');
 				await expect(elem).to.be.golden();
 			});
 
 			it('open custom date input type date', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true, type: 'date' }));
-				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]').querySelector('d2l-input-date-range').setAttribute('start-opened', 'start-opened');
+				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]').querySelector('d2l-input-date-range').setAttribute('start-opened', 'start-opened');
 				await expect(elem).to.be.golden();
 			});
 		});
