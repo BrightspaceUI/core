@@ -29,6 +29,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Awr ddiwethaf} other {{num} awr ddiwethaf}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Heddiw} one {{num} diwrnod diwethaf} other {{num} o ddiwrnodau diwethaf}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} o fisoedd diwethaf",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

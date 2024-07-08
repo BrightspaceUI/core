@@ -29,6 +29,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Senaste timmen} other {Senaste {num} timmarna}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Idag} one {Senaste {num} dagarna} other {Senaste {num} dagarna}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Senaste {num} månaderna",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

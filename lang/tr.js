@@ -29,6 +29,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Son 1 saat} other {Son {num} saat}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Bugün} one {Son {num} gün} other {Son {num} gün}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Son {num} ay",
+	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Start: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "End: {endValue}",

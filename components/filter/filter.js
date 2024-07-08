@@ -168,8 +168,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-shrink: 0;
 			}
 			d2l-expand-collapse-content[expanded] {
-				margin-inline-start: -2rem;
-				padding-block: 0.5rem;
+				margin-inline-start: -2.1rem;
+				padding-block: 0.8rem 0.4rem;
 			}
 			d2l-list-item.expanding-content {
 				overflow-y: hidden;
@@ -618,6 +618,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_createSetDimensionItem(item) {
+		const label = item.label || item.text;
 		const itemId = `list-item-${item.key}`;
 		return html`
 			<d2l-list-item
@@ -626,7 +627,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
-				label="${item.text}"
+				label="${label}"
 				?no-primary-action="${item.additionalContent && item.selected}"
 				selectable
 				?selected="${item.selected}">
@@ -635,7 +636,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
 						${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
 						${item.additionalContent
-		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}"></d2l-icon>`
+		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}" aria-hidden="true"></d2l-icon>`
 		: nothing}
 					</div>
 					${item.additionalContent ? html`
