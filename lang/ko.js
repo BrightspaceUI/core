@@ -10,6 +10,7 @@ export default {
 	"components.dialog.critical": "중요!",
 	"components.dropdown.close": "닫기",
 	"components.filter.activeFilters": "활성 필터:",
+	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
 	"components.filter.clear": "지우기",
 	"components.filter.clearAll": "모두 지우기",
 	"components.filter.clearAllAnnounce": "모든 필터 지우기",
