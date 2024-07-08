@@ -154,7 +154,8 @@ describe('selection-components', () => {
 			{ name: 'selected', template: selectedTemplate },
 			{ name: 'skeleton', template: html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" skeleton></d2l-selection-input></d2l-test-selection>` },
 			{ name: 'selected-focus', template: selectedTemplate, action: focusElem },
-			{ name: 'selected-click', template: selectedTemplate, action: clickElem }
+			{ name: 'selected-click', template: selectedTemplate, action: clickElem },
+			{ name: 'selected-space', template: selectedTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);

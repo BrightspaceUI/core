@@ -1052,7 +1052,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			this._changeEventsToDispatch.set(dimension.key, { dimensionKey: dimension.key, cleared: false, changes: new Map() });
 		}
 		const dimensionChanges = this._changeEventsToDispatch.get(dimension.key);
-		dimensionChanges.cleared = dimensionCleared;
+		dimensionChanges.cleared = dimensionCleared || (dimension.selectionSingle && !change.selected && !dimension.appliedCount);
 
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':

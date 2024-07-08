@@ -372,7 +372,7 @@ describe('d2l-filter', () => {
 			expect(elem._changeEventsToDispatch.size).to.equal(1);
 			const changeEventDim = elem._changeEventsToDispatch.get('3');
 			expect(changeEventDim.dimensionKey).to.equal('3');
-			expect(changeEventDim.cleared).to.be.false;
+			expect(changeEventDim.cleared).to.be.true;
 			expect(changeEventDim.changes.size).to.equal(1);
 			const changeEvent = changeEventDim.changes.get('2');
 			expect(changeEvent.valueKey).to.equal('2');
@@ -543,7 +543,7 @@ describe('d2l-filter', () => {
 				dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
-				expect(dimensions[0].cleared).to.be.false;
+				expect(dimensions[0].cleared).to.be.true;
 				changes = dimensions[0].changes;
 				expect(changes[0].valueKey).to.equal('2');
 				expect(changes[0].selected).to.be.false;
@@ -724,7 +724,7 @@ describe('d2l-filter', () => {
 				dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
-				expect(dimensions[0].cleared).to.be.false;
+				expect(dimensions[0].cleared).to.be.true;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('2');
 				expect(dimensions[0].changes[0].selected).to.be.false;
