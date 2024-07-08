@@ -43,6 +43,20 @@ let hasDisplayedKeyboardTooltip = false;
 export function resetHasDisplayedKeyboardTooltip() {
 	hasDisplayedKeyboardTooltip = false;
 }
+let spacePressed = false;
+let spaceListenerAdded = false;
+function addSpaceListener() {
+	if (spaceListenerAdded) return;
+	spaceListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 32) return;
+		spacePressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 32) return;
+		spacePressed = false;
+	});
+}
 
 /**
  * A filter component that contains one or more dimensions a user can filter by.
@@ -233,6 +247,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		addSpaceListener();
 	}
 
 	firstUpdated(changedProperties) {
@@ -599,9 +618,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_createSetDimensionItem(item) {
-		if (item.selected && !hasDisplayedKeyboardTooltip && item.additionalContent) {
-			this._displayKeyboardTooltip = true;
-		}
 		const itemId = `list-item-${item.key}`;
 		return html`
 			<d2l-list-item
@@ -875,7 +891,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleListItemSelelcted() {
-		if (hasDisplayedKeyboardTooltip) return;
+		if (hasDisplayedKeyboardTooltip || !spacePressed) return;
 		this._displayKeyboardTooltip = true;
 		hasDisplayedKeyboardTooltip = true;
 	}

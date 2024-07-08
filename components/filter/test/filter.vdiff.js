@@ -216,27 +216,25 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
-		it('dates-custom-tooltip-selected', async() => {
+		it('dates-custom-tooltip-selected-default', async() => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple(true));
 			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
 			focusElem(listItem);
 			sendKeysElem(listItem, 'press', 'ArrowDown');
-			await oneEvent(elem, 'd2l-tooltip-show');
-			await nextFrame();
+			await aTimeout(200); // make sure tooltip does not appear
 			await expect(document).to.be.golden();
 		});
 
-		it('dates-custom-tooltip-selected-deselected-selected', async() => {
+		it('dates-custom-tooltip-selected-default-deselected-selected', async() => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple(true));
 			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
 			focusElem(listItem);
 			sendKeysElem(listItem, 'press', 'ArrowDown');
+			sendKeysElem(listItem, 'press', 'ArrowUp+Space');
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await nextFrame();
-			sendKeysElem(listItem, 'press', 'ArrowUp+Space');
-			await aTimeout(200); // make sure tooltip does not appear
 			await expect(document).to.be.golden();
 		});
 
