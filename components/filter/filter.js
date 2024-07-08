@@ -622,7 +622,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return html`
 			<d2l-list-item
 				id="${itemId}"
-				@d2l-list-item-selected="${this._handleListItemSelelcted}"
+				@d2l-list-item-selected="${ifDefined(item.additionalContent ? this._handleListItemSelelcted : undefined)}"
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
