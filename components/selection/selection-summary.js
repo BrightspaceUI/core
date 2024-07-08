@@ -71,7 +71,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			}
 		}
 
-		const count = (this._provider && this.selectionInfo.state === SelectionInfo.states.allPages) ?
+		const count = (this._provider && this.selectionInfo.state === SelectionInfo.states.all && this.selectionInfo.allPages) ?
 			this._provider.itemCount : this.selectionInfo.keys.length;
 
 		if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {

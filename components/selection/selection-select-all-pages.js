@@ -32,6 +32,7 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 		if (!this._provider.itemCount) return;
 		if (this._provider.selectionSingle) return;
 		if (this.selectionInfo.state !== SelectionInfo.states.all) return;
+		if (this.selectionInfo.state === SelectionInfo.states.all && this.selectionInfo.allPages) return;
 
 		return html`
 			<d2l-button-subtle
