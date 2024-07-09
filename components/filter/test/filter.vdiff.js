@@ -1,12 +1,12 @@
-import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-date-text-value.js';
 import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-dimension-set-value.js';
-import { clickElem, expect, fixture, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, focusElem, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
+import { resetHasDisplayedKeyboardTooltip } from '../filter.js';
 
 function createEmptySingleDim(opts) {
 	const { customEmptyState } = { customEmptyState: false, ...opts };
@@ -105,6 +105,16 @@ function createSingleDimDateCustom(opts) {
 		</d2l-filter>
 	`;
 }
+function createSingleDimDateCustomSimple(customSelected) {
+	return html`
+		<d2l-filter opened>
+			<d2l-filter-dimension-set key="dates" text="Dates">
+				<d2l-filter-dimension-set-date-time-range-value key="custom"></d2l-filter-dimension-set-date-time-range-value>
+				<d2l-filter-dimension-set-date-time-range-value key="custom2" ?selected="${customSelected}"></d2l-filter-dimension-set-date-time-range-value>
+			</d2l-filter-dimension-set>
+		</d2l-filter>
+	`;
+}
 
 function createEmptyMultipleDims(opts) {
 	const { long, text } = { long: false, ...opts };
@@ -196,6 +206,38 @@ describe('filter', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('dates-custom-tooltip', async() => {
+			resetHasDisplayedKeyboardTooltip();
+			const elem = await fixture(createSingleDimDateCustomSimple());
+			focusElem(elem.shadowRoot.querySelector('d2l-list-item'));
+			sendKeysElem(elem, 'press', 'Tab+Space');
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await nextFrame();
+			await expect(document).to.be.golden();
+		});
+
+		it('dates-custom-tooltip-selected-default', async() => {
+			resetHasDisplayedKeyboardTooltip();
+			const elem = await fixture(createSingleDimDateCustomSimple(true));
+			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
+			focusElem(listItem);
+			sendKeysElem(listItem, 'press', 'ArrowDown');
+			await aTimeout(200); // make sure tooltip does not appear
+			await expect(document).to.be.golden();
+		});
+
+		it('dates-custom-tooltip-selected-default-deselected-selected', async() => {
+			resetHasDisplayedKeyboardTooltip();
+			const elem = await fixture(createSingleDimDateCustomSimple(true));
+			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
+			focusElem(listItem);
+			sendKeysElem(listItem, 'press', 'ArrowDown');
+			sendKeysElem(listItem, 'press', 'ArrowUp+Space');
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await nextFrame();
+			await expect(document).to.be.golden();
+		});
+
 		describe('searched', () => {
 			[
 				{ name: 'single-selection', search: 'empty', template: createSingleDimSingleSelection() },
@@ -269,20 +311,20 @@ describe('filter', () => {
 			it('select-other-option-then-custom-again', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
 				await clickElem(elem.shadowRoot.querySelector('d2l-list-item'));
-				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]'));
+				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]'));
 				await hoverAt(0, 0);
 				await expect(elem).to.be.golden();
 			});
 
 			it('open custom date input', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
-				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]').querySelector('d2l-input-date-time-range').setAttribute('start-opened', 'start-opened');
+				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]').querySelector('d2l-input-date-time-range').setAttribute('start-opened', 'start-opened');
 				await expect(elem).to.be.golden();
 			});
 
 			it('open custom date input type date', async() => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true, type: 'date' }));
-				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range"]').querySelector('d2l-input-date-range').setAttribute('start-opened', 'start-opened');
+				elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]').querySelector('d2l-input-date-range').setAttribute('start-opened', 'start-opened');
 				await expect(elem).to.be.golden();
 			});
 		});

@@ -94,6 +94,10 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			if (oldValue === undefined && (prop === 'selected' || prop === 'disabled')) return;
 			if (this._dispatchFilterChangeEvent && (prop === 'startValue' || prop === 'endValue')) shouldDispatchChangeEvent = true;
 
+			if (prop === 'text') {
+				changes.set('label', this._getLabel());
+			}
+
 			if (prop === 'disabled' || prop === 'selected' || prop === 'startValue' || prop === 'endValue' || prop === 'text' || prop === 'valueText' || prop === 'inactive') {
 				changes.set(prop, this[prop]);
 			}
@@ -114,6 +118,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			disabled: this.disabled,
 			inactive: this.inactive,
 			key: this.key,
+			label: this._getLabel(),
 			selected: this.selected,
 			text: this.text,
 			valueText: this.valueText,
@@ -156,6 +161,10 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	_getAdditionalEventDetails(selected) {
 		if (!selected) return {};
 		return { startValue: this.startValue, endValue: this.endValue };
+	}
+
+	_getLabel() {
+		return this.localize('components.filter-dimension-set-date-time-range-value.label', { text: this.text });
 	}
 
 	async _handleDateChange(e) {
