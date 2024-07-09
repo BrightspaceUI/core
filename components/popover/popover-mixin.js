@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html } from 'lit';
-import { getComposedActiveElement, getPreviousFocusableAncestor } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
 const isSupported = ('popover' in HTMLElement.prototype);
@@ -23,6 +23,11 @@ export const PopoverMixin = superclass => class extends superclass {
 			 * @type {boolean}
 			 */
 			noAutoClose: { type: Boolean, reflect: true, attribute: 'no-auto-close' },
+			/**
+			 * Whether to disable auto-focus on the first focusable element when opened
+			 * @type {boolean}
+			 */
+			noAutoFocus: { type: Boolean, reflect: true, attribute: 'no-auto-focus' },
 			_useNativePopover: { type: String, reflect: true, attribute: 'popover' }
 		};
 	}
@@ -71,6 +76,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.noAutoClose = false;
+		this.noAutoFocus = false;
 		this.opened = false;
 		this._useNativePopover = isSupported ? 'manual' : undefined;
 		this._handleAutoCloseClick = this._handleAutoCloseClick.bind(this);
@@ -100,17 +106,39 @@ export const PopoverMixin = superclass => class extends superclass {
 			this._previousFocusableAncestor = this.opened ? getPreviousFocusableAncestor(this, false, false) : null;
 
 			if (this.opened) {
+
 				this._opener = getComposedActiveElement();
 				this._addAutoCloseHandlers();
-				this._dismissibleId = setDismissible(() => this._close());
+				this._dismissibleId = setDismissible(() => this.close());
+				this._focusContent(this);
 				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
+
 			} else if (changedProperties.get('opened') !== undefined) {
+
 				this._removeAutoCloseHandlers();
 				this._clearDismissible();
+				this._focusOpener();
 				this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
+
 			}
 
 		}
+	}
+
+	close() {
+		this.opened = false;
+		return this.updateComplete;
+	}
+
+	open(applyFocus = true) {
+		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
+		this.opened = true;
+		return this.updateComplete;
+	}
+
+	toggleOpen(applyFocus = true) {
+		if (this.opened) return this.close();
+		else return this.open(!this.noAutoFocus && applyFocus);
 	}
 
 	_addAutoCloseHandlers() {
@@ -125,12 +153,29 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._dismissibleId = null;
 	}
 
-	_close() {
-		const hide = () => {
-			this.opened = false;
-		};
+	_focusContent(container) {
+		if (this.noAutoFocus || !this._applyFocus) return;
 
-		hide();
+		const focusable = getFirstFocusableDescendant(container);
+		if (focusable) {
+			// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
+			requestAnimationFrame(() => focusable.focus());
+		} else {
+			const content = this._getContentContainer();
+			content.setAttribute('tabindex', '-1');
+			content.focus();
+		}
+	}
+
+	_focusOpener() {
+		if (!document.activeElement) return;
+		if (!isComposedAncestor(this, getComposedActiveElement())) return;
+
+		this?._opener.focus();
+	}
+
+	_getContentContainer() {
+		return this.shadowRoot.querySelector('.content');
 	}
 
 	_handleAutoCloseClick(e) {
@@ -138,12 +183,12 @@ export const PopoverMixin = superclass => class extends superclass {
 		if (!this.opened || this.noAutoClose) return;
 
 		const rootTarget = e.composedPath()[0];
-		if (isComposedAncestor(this.shadowRoot.querySelector('.content'), rootTarget)
+		if (isComposedAncestor(this._getContentContainer(), rootTarget)
 			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
 			return;
 		}
 
-		this._close();
+		this.close();
 	}
 
 	_handleAutoCloseFocus() {
@@ -160,12 +205,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 
 			const activeElement = getComposedActiveElement();
-			if (isComposedAncestor(this.shadowRoot.querySelector('.content'), activeElement)
+			if (isComposedAncestor(this._getContentContainer(), activeElement)
 				|| activeElement === this._opener) {
 				return;
 			}
 
-			this._close();
+			this.close();
 		}, 0);
 
 	}
