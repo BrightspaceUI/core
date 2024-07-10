@@ -301,7 +301,7 @@ The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get th
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
 
-<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value align:start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -311,9 +311,12 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 </script>
 <d2l-filter>
   <d2l-filter-dimension-set key="dates" text="Dates">
-    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours"></d2l-filter-dimension-set-date-text-value>
-    <d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
-    <d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+    <d2l-filter-dimension-set-value key="60days" text="Last 60 days"></d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="today" range="today"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+    <d2l-filter-dimension-set-date-time-range-value key="custom" type="date"></d2l-filter-dimension-set-date-time-range-value>
   </d2l-filter-dimension-set>
 </d2l-filter>
 ```
