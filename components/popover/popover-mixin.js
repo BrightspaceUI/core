@@ -78,7 +78,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host([opened]) {
-					animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 6000ms ease;
+					animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 300ms ease;
 				}
 			}
 		`;
