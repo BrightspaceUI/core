@@ -35,6 +35,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	static get styles() {
 		return css`
 			:host {
+				--d2l-popover-default-animation-name: d2l-popover-animation;
 				--d2l-popover-default-background-color: #ffffff;
 				--d2l-popover-default-border-color: var(--d2l-color-mica);
 				--d2l-popover-default-border-radius: 0.3rem;
@@ -69,6 +70,16 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				box-shadow: var(--d2l-popover-shadow, var(--d2l-popover-default-shadow));
 				box-sizing: border-box;
+			}
+
+			@keyframes d2l-popover-animation {
+				0% { opacity: 0; transform: translate(0, -10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				:host([opened]) {
+					animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 6000ms ease;
+				}
 			}
 		`;
 	}
