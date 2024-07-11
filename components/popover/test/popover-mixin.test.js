@@ -1,7 +1,17 @@
 import './popover.js';
-import { aTimeout, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('popover-mixin', () => {
+
+	const open = (method, popover, applyFocus) => {
+		if (method !== 'toggleOpen') return popover.open(applyFocus);
+		else return popover.toggleOpen(applyFocus);
+	};
+
+	const close = (method, popover) => {
+		if (method !== 'toggleOpen') return popover.close();
+		else return popover.toggleOpen();
+	};
 
 	describe('constructor', () => {
 
@@ -147,6 +157,73 @@ describe('popover-mixin', () => {
 			await oneEvent(popover, 'd2l-popover-close');
 
 			expect(popover.opened).to.be.false;
+		});
+
+	});
+
+	describe('auto-focus', () => {
+
+		['open', 'toggleOpen'].forEach(method => {
+
+			it(`should focus on descendant when opened with ${method}`, async() => {
+				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
+				await open(method, elem);
+				await nextFrame();
+				expect(document.activeElement).to.equal(elem.querySelector('button'));
+			});
+
+			it(`should focus on descendant when opened with ${method} and applyFocus is true`, async() => {
+				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
+				await open(method, elem, true);
+				await nextFrame();
+				expect(document.activeElement).to.equal(elem.querySelector('button'));
+			});
+
+			it(`should not focus on descendant when opened with ${method} and applyFocus is false`, async() => {
+				const activeElement = document.activeElement;
+				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
+				await open(method, elem, false);
+				await nextFrame();
+				expect(document.activeElement).to.equal(activeElement);
+			});
+
+			it(`should focus on popover when opened with ${method} and no focusable descendant`, async() => {
+				const elem = await fixture(html`<d2l-test-popover><span>shiny</span></d2l-test-popover>`);
+				await open(method, elem);
+				await nextFrame();
+				expect(document.activeElement).to.equal(elem);
+			});
+
+			it(`should not focus on descendant when opened with ${method} and no-auto-focus is true`, async() => {
+				const activeElement = document.activeElement;
+				const elem = await fixture(html`<d2l-test-popover no-auto-focus><button>shiny</button></d2l-test-popover>`);
+				await open(method, elem);
+				await nextFrame();
+				expect(document.activeElement).to.equal(activeElement);
+			});
+
+		});
+
+		['close', 'toggleOpen'].forEach(method => {
+
+			it(`should focus on opener when closed with ${method}`, async() => {
+				const elem = await fixture(html`
+					<div>
+						<button id="opener"></button>
+						<d2l-test-popover><button>shiny</button></d2l-test-popover>
+					</div>
+				`);
+				const popover = elem.querySelector('d2l-test-popover');
+				const opener = elem.querySelector('#opener');
+				opener.focus();
+				await open(method, popover);
+				await nextFrame();
+				await close(method, popover);
+				await popover.close();
+				await nextFrame();
+				expect(document.activeElement).to.equal(opener);
+			});
+
 		});
 
 	});
