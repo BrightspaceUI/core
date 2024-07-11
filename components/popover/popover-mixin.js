@@ -58,6 +58,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				box-shadow: var(--d2l-popover-shadow, var(--d2l-popover-default-shadow));
 				box-sizing: border-box;
+				outline: none;
 			}
 
 			@keyframes d2l-popover-animation {
