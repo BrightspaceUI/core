@@ -100,10 +100,6 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 	d2l-collapsible-panel {
 		width: 800px;
 	}
-	/* TODO: remove this when daylight demo resizing is fixed */
-	d2l-collapsible-panel:not([expanded]) {
-		margin-bottom: 14rem;
-	}
 </style>
 
 <d2l-collapsible-panel panel-title="Collapsible Panel">
@@ -237,10 +233,6 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 		return [labelStyles, selectStyles, css`
 			d2l-collapsible-panel {
 				width: 500px;
-			}
-			/* TODO: remove this when daylight demo resizing is fixed */
-			d2l-collapsible-panel:not([expanded]) {
-				margin-bottom: 12rem;
 			}
 		`];
 	}
