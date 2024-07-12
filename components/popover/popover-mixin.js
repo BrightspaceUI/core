@@ -13,21 +13,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			/**
-			 * Whether the popover is open or not
-			 * @type {boolean}
-			 */
-			opened: { type: Boolean, reflect: true },
-			/**
-			 * Whether to disable auto-close/light-dismiss
-			 * @type {boolean}
-			 */
-			noAutoClose: { type: Boolean, reflect: true, attribute: 'no-auto-close' },
-			/**
-			 * Whether to disable auto-focus on the first focusable element when opened
-			 * @type {boolean}
-			 */
-			noAutoFocus: { type: Boolean, reflect: true, attribute: 'no-auto-focus' },
+			_noAutoClose: { state: true },
+			_noAutoFocus: { state: true },
+			_opened: { type: Boolean, reflect: true, attribute: '_opened' },
 			_useNativePopover: { type: String, reflect: true, attribute: 'popover' }
 		};
 	}
@@ -60,7 +48,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			:host(:not([popover])) {
 				z-index: 998; /* position on top of floating buttons */
 			}
-			:host([opened]) {
+			:host([_opened]) {
 				display: inline-block;
 			}
 
@@ -70,6 +58,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				box-shadow: var(--d2l-popover-shadow, var(--d2l-popover-default-shadow));
 				box-sizing: border-box;
+				outline: none;
 			}
 
 			@keyframes d2l-popover-animation {
@@ -77,7 +66,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@media (prefers-reduced-motion: no-preference) {
-				:host([opened]) {
+				:host([_opened]) {
 					animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 300ms ease;
 				}
 			}
@@ -86,9 +75,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.noAutoClose = false;
-		this.noAutoFocus = false;
-		this.opened = false;
+		this.configure();
 		this._useNativePopover = isSupported ? 'manual' : undefined;
 		this._handleAutoCloseClick = this._handleAutoCloseClick.bind(this);
 		this._handleAutoCloseFocus = this._handleAutoCloseFocus.bind(this);
@@ -96,7 +83,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this.opened) this._addAutoCloseHandlers();
+		if (this._opened) this._addAutoCloseHandlers();
 	}
 
 	disconnectedCallback() {
@@ -107,16 +94,16 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('opened')) {
+		if (changedProperties.has('_opened')) {
 
 			if (this._useNativePopover) {
-				if (this.opened) this.showPopover();
+				if (this._opened) this.showPopover();
 				else this.hidePopover();
 			}
 
-			this._previousFocusableAncestor = this.opened ? getPreviousFocusableAncestor(this, false, false) : null;
+			this._previousFocusableAncestor = this._opened ? getPreviousFocusableAncestor(this, false, false) : null;
 
-			if (this.opened) {
+			if (this._opened) {
 
 				this._opener = getComposedActiveElement();
 				this._addAutoCloseHandlers();
@@ -124,7 +111,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				this._focusContent(this);
 				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 
-			} else if (changedProperties.get('opened') !== undefined) {
+			} else if (changedProperties.get('_opened') !== undefined) {
 
 				this._removeAutoCloseHandlers();
 				this._clearDismissible();
@@ -137,19 +124,25 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	close() {
-		this.opened = false;
+		this._opened = false;
 		return this.updateComplete;
+	}
+
+	configure(properties) {
+		this._noAutoClose = properties?.noAutoClose ?? false;
+		this._noAutoFocus = properties?.noAutoFocus ?? false;
+		this._opened = properties?.opened ?? false;
 	}
 
 	open(applyFocus = true) {
 		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
-		this.opened = true;
+		this._opened = true;
 		return this.updateComplete;
 	}
 
 	toggleOpen(applyFocus = true) {
-		if (this.opened) return this.close();
-		else return this.open(!this.noAutoFocus && applyFocus);
+		if (this._opened) return this.close();
+		else return this.open(!this._noAutoFocus && applyFocus);
 	}
 
 	_addAutoCloseHandlers() {
@@ -165,7 +158,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	_focusContent(container) {
-		if (this.noAutoFocus || !this._applyFocus) return;
+		if (this._noAutoFocus || this._applyFocus === false) return;
 
 		const focusable = getFirstFocusableDescendant(container);
 		if (focusable) {
@@ -191,7 +184,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	_handleAutoCloseClick(e) {
 
-		if (!this.opened || this.noAutoClose) return;
+		if (!this._opened || this._noAutoClose) return;
 
 		const rootTarget = e.composedPath()[0];
 		if (isComposedAncestor(this._getContentContainer(), rootTarget)
@@ -207,8 +200,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
 		setTimeout(() => {
 			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
-			if (!this.opened
-				|| this.noAutoClose
+			if (!this._opened
+				|| this._noAutoClose
 				|| !document.activeElement
 				|| document.activeElement === this._previousFocusableAncestor
 				|| document.activeElement === document.body) {
