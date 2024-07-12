@@ -94,44 +94,19 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._clearDismissible();
 	}
 
-	async updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('_opened')) {
+	async close() {
+		if (!this._opened) return;
 
-			if (this._useNativePopover) {
-				if (this._opened) this.showPopover();
-				else this.hidePopover();
-			}
+		this._opened = false;
 
-			this._previousFocusableAncestor = this._opened ? getPreviousFocusableAncestor(this, false, false) : null;
+		if (this._useNativePopover) this.hidePopover();
 
-			if (this._opened) {
-
-				this._opener = getComposedActiveElement();
-				this._addAutoCloseHandlers();
-				this._dismissibleId = setDismissible(() => this.close());
-				await this.updateComplete; // required for d2l-focus-trap to detect enter
-				this._focusContent(this);
-				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
-
-			} else if (changedProperties.get('_opened') !== undefined) {
-
-				this._removeAutoCloseHandlers();
-				this._clearDismissible();
-				this._focusOpener();
-				this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
-
-			}
-
-		}
-	}
-
-	close() {
-		if (!this._opened) return Promise.resolve();
-		return new Promise(resolve => {
-			this.addEventListener('d2l-popover-close', resolve, { once: true });
-			this._opened = false;
-		});
+		this._previousFocusableAncestor = null;
+		this._removeAutoCloseHandlers();
+		this._clearDismissible();
+		await this.updateComplete; // wait before applying focus to opener
+		this._focusOpener();
+		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 	}
 
 	configure(properties) {
@@ -140,13 +115,22 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._trapFocus = properties?.trapFocus ?? false;
 	}
 
-	open(applyFocus = true) {
-		if (this._opened) return Promise.resolve();
-		return new Promise(resolve => {
-			this.addEventListener('d2l-popover-open', resolve, { once: true });
-			this._applyFocus = applyFocus !== undefined ? applyFocus : true;
-			this._opened = true;
-		});
+	async open(applyFocus = true) {
+		if (this._opened) return;
+
+		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
+		this._opened = true;
+
+		await this.updateComplete; // wait for popover attribute before managing top-layer
+		if (this._useNativePopover) this.showPopover();
+
+		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
+
+		this._opener = getComposedActiveElement();
+		this._addAutoCloseHandlers();
+		this._dismissibleId = setDismissible(() => this.close());
+		this._focusContent(this);
+		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 	}
 
 	toggleOpen(applyFocus = true) {

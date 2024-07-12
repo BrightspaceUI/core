@@ -256,6 +256,16 @@ describe('popover-mixin', () => {
 			expect(focusTrap.trap).to.be.false;
 		});
 
+		['open', 'toggleOpen'].forEach(method => {
+
+			it(`should fire the focus-enter event when opened with ${method}`, async() => {
+				const elem = await fixture('<d2l-test-popover trap-focus><button>shiny</button></d2l-test-popover>');
+				setTimeout(() => elem[method]());
+				await oneEvent(elem, 'd2l-popover-focus-enter');
+			});
+
+		});
+
 	});
 
 });
