@@ -51,7 +51,8 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 				display: flex;
 				flex-wrap: wrap;
 			}
-			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container {
+			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container,
+			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container .d2l-input-date-time-range-end-container {
 				column-gap: 0.9rem;
 			}
 			.d2l-input-date-time-range-end-container {
@@ -114,10 +115,10 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 				<div class="d2l-input-date-time-range-start-container">
 					<slot name="left"></slot>
 				</div>
+				<div class="d2l-input-date-time-range-end-container">
 					<div class="d2l-body-small d2l-skeletize d2l-input-date-time-range-to-to">
 						${this.localize('components.input-date-time-range-to.to')}
 					</div>
-				<div class="d2l-input-date-time-range-end-container">
 					<slot name="right"></slot>
 				</div>
 			</div>
