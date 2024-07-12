@@ -129,6 +129,15 @@ describe('d2l-input-date-time-range', () => {
 		});
 	});
 
+	it('is correct when wrapped in a grid', async() => {
+		const elem = await fixture(`
+			<div style="display: grid; grid-template-columns: 1fr 6fr;">
+				<span>My text</span>
+				<d2l-input-date-time-range label="Assignment Dates" child-labels-hidden></d2l-input-date-time-range>
+			</div>`);
+		await expect(elem).to.be.golden();
+	});
+
 	[
 		{
 			name: 'inline-help',
