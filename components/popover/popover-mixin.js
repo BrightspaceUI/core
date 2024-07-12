@@ -231,7 +231,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	_handleFocusTrapEnter() {
 		this._focusContent(this._getContentContainer());
 
-		/** Dispatched when user focus enters the dropdown content (trap-focus option only) */
+		/** Dispatched when user focus enters the popover (trap-focus option only) */
 		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
 	}
 
