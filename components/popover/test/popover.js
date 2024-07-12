@@ -19,7 +19,12 @@ class Popover extends PopoverMixin(LitElement) {
 			 * Whether the popover is open or not
 			 * @type {boolean}
 			 */
-			opened: { type: Boolean, reflect: true }
+			opened: { type: Boolean, reflect: true },
+			/**
+			 * Whether to render a d2l-focus-trap around the content
+			 * @type {boolean}
+			*/
+			trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' }
 		};
 	}
 
@@ -32,6 +37,7 @@ class Popover extends PopoverMixin(LitElement) {
 		this.noAutoClose = false;
 		this.noAutoFocus = false;
 		this.opened = false;
+		this.trapFocus = false;
 	}
 
 	connectedCallback() {
@@ -45,10 +51,11 @@ class Popover extends PopoverMixin(LitElement) {
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus')) {
+		if (changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('trapFocus')) {
 			super.configure({
 				noAutoClose: this.noAutoClose,
-				noAutoFocus: this.noAutoFocus
+				noAutoFocus: this.noAutoFocus,
+				trapFocus: this.trapFocus
 			});
 		}
 		if (changedProperties.has('opened')) {

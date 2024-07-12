@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
@@ -16,6 +17,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			_noAutoClose: { state: true },
 			_noAutoFocus: { state: true },
 			_opened: { type: Boolean, reflect: true, attribute: '_opened' },
+			_trapFocus: { state: true },
 			_useNativePopover: { type: String, reflect: true, attribute: 'popover' }
 		};
 	}
@@ -92,52 +94,43 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._clearDismissible();
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('_opened')) {
+	async close() {
+		if (!this._opened) return;
 
-			if (this._useNativePopover) {
-				if (this._opened) this.showPopover();
-				else this.hidePopover();
-			}
-
-			this._previousFocusableAncestor = this._opened ? getPreviousFocusableAncestor(this, false, false) : null;
-
-			if (this._opened) {
-
-				this._opener = getComposedActiveElement();
-				this._addAutoCloseHandlers();
-				this._dismissibleId = setDismissible(() => this.close());
-				this._focusContent(this);
-				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
-
-			} else if (changedProperties.get('_opened') !== undefined) {
-
-				this._removeAutoCloseHandlers();
-				this._clearDismissible();
-				this._focusOpener();
-				this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
-
-			}
-
-		}
-	}
-
-	close() {
 		this._opened = false;
-		return this.updateComplete;
+
+		if (this._useNativePopover) this.hidePopover();
+
+		this._previousFocusableAncestor = null;
+		this._removeAutoCloseHandlers();
+		this._clearDismissible();
+		await this.updateComplete; // wait before applying focus to opener
+		this._focusOpener();
+		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 	}
 
 	configure(properties) {
 		this._noAutoClose = properties?.noAutoClose ?? false;
 		this._noAutoFocus = properties?.noAutoFocus ?? false;
-		this._opened = properties?.opened ?? false;
+		this._trapFocus = properties?.trapFocus ?? false;
 	}
 
-	open(applyFocus = true) {
+	async open(applyFocus = true) {
+		if (this._opened) return;
+
 		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this._opened = true;
-		return this.updateComplete;
+
+		await this.updateComplete; // wait for popover attribute before managing top-layer
+		if (this._useNativePopover) this.showPopover();
+
+		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
+
+		this._opener = getComposedActiveElement();
+		this._addAutoCloseHandlers();
+		this._dismissibleId = setDismissible(() => this.close());
+		this._focusContent(this);
+		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 	}
 
 	toggleOpen(applyFocus = true) {
@@ -209,7 +202,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 
 			const activeElement = getComposedActiveElement();
-			if (isComposedAncestor(this._getContentContainer(), activeElement)
+			if (isComposedAncestor(this, activeElement)
 				|| activeElement === this._opener) {
 				return;
 			}
@@ -219,6 +212,13 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	}
 
+	_handleFocusTrapEnter() {
+		this._focusContent(this._getContentContainer());
+
+		/** Dispatched when user focus enters the popover (trap-focus option only) */
+		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
+	}
+
 	_removeAutoCloseHandlers() {
 		this.removeEventListener('blur', this._handleAutoCloseFocus, { capture: true });
 		document.body?.removeEventListener('focus', this._handleAutoCloseFocus, { capture: true }); // DE41322: document.body can be null in some scenarios
@@ -226,7 +226,13 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	_renderPopover() {
-		return html`<div class="content"><slot></slot></div>`;
+		const content = html`<div class="content"><slot></slot></div>`;
+
+		if (this._trapFocus) return html`<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._opened}">
+			${content}
+		</d2l-focus-trap>`;
+
+		return content;
 	}
 
 };
