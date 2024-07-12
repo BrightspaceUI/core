@@ -216,9 +216,13 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel-opener {
 				align-self: self-start;
+				background-color: transparent;
+				border: none;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				order: 1;
 				outline: none;
+				padding-block: 0;
+				padding-inline: 0;
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom {
 				height: 0.9rem;
@@ -427,12 +431,11 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
 				<div class="d2l-collapsible-panel-header-primary">
-
-					<div
+					<button
 						class="d2l-collapsible-panel-opener"
 						aria-expanded="${this.expanded}"
 						tabindex="0"
-						role="button"
+						type="button"
 						@click="${this._handleHeaderClick}"
 						@focus="${this._onFocus}"
 						@blur="${this._onBlur}"
@@ -443,7 +446,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
 						</d2l-icon-custom>
-					</div>
+					</button>
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions"></slot>
