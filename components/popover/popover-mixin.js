@@ -110,7 +110,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				this._opener = getComposedActiveElement();
 				this._addAutoCloseHandlers();
 				this._dismissibleId = setDismissible(() => this.close());
-				await this.updateComplete;
+				await this.updateComplete; // required for d2l-focus-trap to detect enter
 				this._focusContent(this);
 				this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 
