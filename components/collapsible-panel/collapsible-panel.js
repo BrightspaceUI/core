@@ -434,7 +434,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 					<button
 						class="d2l-collapsible-panel-opener"
 						aria-expanded="${this.expanded}"
-						tabindex="0"
 						type="button"
 						@click="${this._handleHeaderClick}"
 						@focus="${this._onFocus}"
