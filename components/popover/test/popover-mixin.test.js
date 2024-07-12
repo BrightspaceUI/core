@@ -3,16 +3,6 @@ import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent, runCon
 
 describe('popover-mixin', () => {
 
-	const open = (method, popover, applyFocus) => {
-		if (method !== 'toggleOpen') return popover.open(applyFocus);
-		else return popover.toggleOpen(applyFocus);
-	};
-
-	const close = (method, popover) => {
-		if (method !== 'toggleOpen') return popover.close();
-		else return popover.toggleOpen();
-	};
-
 	describe('constructor', () => {
 
 		it('should construct', () => {
@@ -23,10 +13,14 @@ describe('popover-mixin', () => {
 
 	describe('events', () => {
 
-		it('should fire the open event when the opened attribute is set to true', async() => {
-			const elem = await fixture('<d2l-test-popover></d2l-test-popover>');
-			elem.opened = true;
-			await oneEvent(elem, 'd2l-popover-open');
+		['open', 'toggleOpen'].forEach(method => {
+
+			it(`should fire the open event when opened with ${method}`, async() => {
+				const elem = await fixture('<d2l-test-popover></d2l-test-popover>');
+				setTimeout(() => elem[method]());
+				await oneEvent(elem, 'd2l-popover-open');
+			});
+
 		});
 
 		it('should fire the open event when initialized in opened state', async() => {
@@ -34,16 +28,20 @@ describe('popover-mixin', () => {
 			let fired = false;
 			elem.addEventListener('d2l-popover-open', () => fired = true);
 			const popover = document.createElement('d2l-test-popover');
-			popover.opened = true;
+			popover.open();
 			elem.appendChild(popover);
-			await popover.updateComplete;
+			await nextFrame();
 			expect(fired).to.be.true;
 		});
 
-		it('should fire the close event when the opened attribute is set to false', async() => {
-			const elem = await fixture('<d2l-test-popover opened></d2l-test-popover>');
-			elem.opened = false;
-			await oneEvent(elem, 'd2l-popover-close');
+		['close', 'toggleOpen'].forEach(method => {
+
+			it(`should fire the close event when closed with ${method}`, async() => {
+				const elem = await fixture('<d2l-test-popover opened></d2l-test-popover>');
+				setTimeout(() => elem[method]());
+				await oneEvent(elem, 'd2l-popover-close');
+			});
+
 		});
 
 		it('should not fire the close event when initialized in closed state', async() => {
@@ -52,7 +50,7 @@ describe('popover-mixin', () => {
 			elem.addEventListener('d2l-popover-close', () => fired = true);
 			const popover = document.createElement('d2l-test-popover');
 			elem.appendChild(popover);
-			await popover.updateComplete;
+			await nextFrame();
 			expect(fired).to.be.false;
 		});
 
@@ -77,7 +75,7 @@ describe('popover-mixin', () => {
 		});
 
 		it('should close when element outside receives focus', async() => {
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => focusElem(elem.querySelector('#focusable-outside')));
 			await oneEvent(popover, 'd2l-popover-close');
@@ -85,7 +83,7 @@ describe('popover-mixin', () => {
 		});
 
 		it('should close when element outside is clicked', async() => {
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => elem.querySelector('#non-focusable-outside').click());
 			await oneEvent(popover, 'd2l-popover-close');
@@ -94,7 +92,7 @@ describe('popover-mixin', () => {
 
 		it('should not close when no-auto-close and element outside receives focus', async() => {
 			popover.noAutoClose = true;
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => focusElem(elem.querySelector('#focusable-outside')));
 			await aTimeout(100);
@@ -103,7 +101,7 @@ describe('popover-mixin', () => {
 
 		it('should not close when no-auto-close and element outside is clicked', async() => {
 			popover.noAutoClose = true;
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => elem.querySelector('#non-focusable-outside').click());
 			await aTimeout(100);
@@ -112,7 +110,7 @@ describe('popover-mixin', () => {
 
 		it('should not close when ancestor element receives focus', async() => {
 			elem.setAttribute('tabindex', '0');
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => focusElem(elem));
 			await aTimeout(100);
@@ -120,7 +118,7 @@ describe('popover-mixin', () => {
 		});
 
 		it('should not close when element inside popover receives focus', async() => {
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => focusElem(popover.querySelector('button')));
 			await aTimeout(100);
@@ -128,7 +126,7 @@ describe('popover-mixin', () => {
 		});
 
 		it('should not close when non-interactive element inside popover is clicked', async() => {
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			setTimeout(() => popover.querySelector('span').click());
 			await aTimeout(100);
@@ -137,7 +135,7 @@ describe('popover-mixin', () => {
 
 		it('should not close when opener receives focus', async() => {
 			await focusElem(elem.querySelector('#focusable-outside')); // focus as if this is opener
-			popover.opened = true;
+			setTimeout(() => popover.open());
 			await oneEvent(popover, 'd2l-popover-open');
 			await focusElem(popover.querySelector('button'));
 			setTimeout(() => focusElem(elem.querySelector('#focusable-outside')));
@@ -145,18 +143,23 @@ describe('popover-mixin', () => {
 			expect(popover.opened).to.be.true;
 		});
 
-		it('should close when ESC key is pressed', async() => {
-			popover.opened = true;
-			await oneEvent(popover, 'd2l-popover-open');
+		[false, true].forEach(noAutoClose => {
 
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keydown', true, true);
-			eventObj.keyCode = 27;
+			it(`should close when ${noAutoClose ? 'no-auto-close and' : ''} ESC key is pressed`, async() => {
+				popover.noAutoClose = noAutoClose;
+				setTimeout(() => popover.open());
+				await oneEvent(popover, 'd2l-popover-open');
 
-			setTimeout(() => document.dispatchEvent(eventObj));
-			await oneEvent(popover, 'd2l-popover-close');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 27;
 
-			expect(popover.opened).to.be.false;
+				setTimeout(() => document.dispatchEvent(eventObj));
+				await oneEvent(popover, 'd2l-popover-close');
+
+				expect(popover.opened).to.be.false;
+			});
+
 		});
 
 	});
@@ -167,14 +170,14 @@ describe('popover-mixin', () => {
 
 			it(`should focus on descendant when opened with ${method}`, async() => {
 				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
-				await open(method, elem);
+				await elem[method]();
 				await nextFrame();
 				expect(document.activeElement).to.equal(elem.querySelector('button'));
 			});
 
 			it(`should focus on descendant when opened with ${method} and applyFocus is true`, async() => {
 				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
-				await open(method, elem, true);
+				await elem[method](true);
 				await nextFrame();
 				expect(document.activeElement).to.equal(elem.querySelector('button'));
 			});
@@ -182,14 +185,14 @@ describe('popover-mixin', () => {
 			it(`should not focus on descendant when opened with ${method} and applyFocus is false`, async() => {
 				const activeElement = document.activeElement;
 				const elem = await fixture(html`<d2l-test-popover><button>shiny</button></d2l-test-popover>`);
-				await open(method, elem, false);
+				await elem[method](false);
 				await nextFrame();
 				expect(document.activeElement).to.equal(activeElement);
 			});
 
 			it(`should focus on popover when opened with ${method} and no focusable descendant`, async() => {
 				const elem = await fixture(html`<d2l-test-popover><span>shiny</span></d2l-test-popover>`);
-				await open(method, elem);
+				await elem[method]();
 				await nextFrame();
 				expect(document.activeElement).to.equal(elem);
 			});
@@ -197,7 +200,7 @@ describe('popover-mixin', () => {
 			it(`should not focus on descendant when opened with ${method} and no-auto-focus is true`, async() => {
 				const activeElement = document.activeElement;
 				const elem = await fixture(html`<d2l-test-popover no-auto-focus><button>shiny</button></d2l-test-popover>`);
-				await open(method, elem);
+				await elem[method]();
 				await nextFrame();
 				expect(document.activeElement).to.equal(activeElement);
 			});
@@ -216,14 +219,41 @@ describe('popover-mixin', () => {
 				const popover = elem.querySelector('d2l-test-popover');
 				const opener = elem.querySelector('#opener');
 				opener.focus();
-				await open(method, popover);
+				await popover.open();
 				await nextFrame();
-				await close(method, popover);
-				await popover.close();
+				await popover[method]();
 				await nextFrame();
 				expect(document.activeElement).to.equal(opener);
 			});
 
+		});
+
+	});
+
+	describe('trap-focus', () => {
+
+		it('should not render d2l-focus-trap when trap-focus is false', async() => {
+			const elem = await fixture('<d2l-test-popover></d2l-test-popover>');
+			await elem.open();
+			const focusTrap = elem.shadowRoot.querySelector('d2l-focus-trap');
+			expect(focusTrap).to.be.null;
+		});
+
+		it('should set trap to true when popover open', async() => {
+			const elem = await fixture('<d2l-test-popover trap-focus></d2l-test-popover>');
+			await elem.open();
+			const focusTrap = elem.shadowRoot.querySelector('d2l-focus-trap');
+			await focusTrap.updateComplete;
+			expect(focusTrap.trap).to.be.true;
+		});
+
+		it('should set trap to false when popover closed', async() => {
+			const elem = await fixture('<d2l-test-popover trap-focus></d2l-test-popover>');
+			await elem.toggleOpen();
+			await elem.toggleOpen();
+			const focusTrap = elem.shadowRoot.querySelector('d2l-focus-trap');
+			await focusTrap.updateComplete;
+			expect(focusTrap.trap).to.be.false;
 		});
 
 	});
