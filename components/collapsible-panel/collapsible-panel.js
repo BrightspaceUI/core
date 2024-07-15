@@ -216,7 +216,13 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel-opener {
 				align-self: self-start;
+				background-color: transparent;
+				border: none;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
+				order: 1;
+				outline: none;
+				padding-block: 0;
+				padding-inline: 0;
 			}
 			.d2l-collapsible-panel-opener > d2l-icon-custom {
 				height: 0.9rem;
@@ -307,7 +313,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	static get focusElementSelector() {
-		return 'button.d2l-offscreen';
+		return '.d2l-collapsible-panel-opener';
 	}
 
 	disconnectedCallback() {
@@ -324,17 +330,8 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			'scrolled': this._scrolled,
 			'no-bottom-border': this._noBottomBorder,
 		};
-		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 
 		return html`
-			<button
-				aria-expanded="${this.expanded}"
-				class="d2l-offscreen"
-				type="button"
-				@click="${this._toggleExpand}"
-				@focus="${this._onFocus}"
-				@blur="${this._onBlur}"
-			>${expandCollapseLabel}</button>
 			<div class="${classMap(classes)}" @click="${this._handlePanelClick}">
 				<div class="d2l-collapsible-panel-top-sentinel"></div>
 				${this._renderHeader()}
@@ -427,22 +424,31 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderHeader() {
+		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-before">
 					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
 				<div class="d2l-collapsible-panel-header-primary">
-					${this._renderPanelTitle()}
-					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
-						<slot name="actions"></slot>
-					</div>
-					<div class="d2l-collapsible-panel-opener">
+					<button
+						class="d2l-collapsible-panel-opener"
+						aria-expanded="${this.expanded}"
+						type="button"
+						@click="${this._handleHeaderClick}"
+						@focus="${this._onFocus}"
+						@blur="${this._onBlur}"
+						aria-label="${expandCollapseLabel}"
+						>
 						<d2l-icon-custom size="tier1" class="d2l-skeletize">
 							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
 								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 							</svg>
 						</d2l-icon-custom>
+					</button>
+					${this._renderPanelTitle()}
+					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
+						<slot name="actions"></slot>
 					</div>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
