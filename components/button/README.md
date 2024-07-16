@@ -34,7 +34,7 @@ A Button is used to communicate and perform an action.
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
-<!-- docs: demo code properties name:d2l-button -->
+<!-- docs: demo code properties name:d2l-button sandboxTitle:'Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
@@ -69,7 +69,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 **Note:** It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
 
-<!-- docs: demo code properties name:d2l-button-subtle -->
+<!-- docs: demo code properties name:d2l-button-subtle sandboxTitle:'Subtle Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-subtle.js';
@@ -123,7 +123,7 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
 
-<!-- docs: demo code properties name:d2l-button-icon -->
+<!-- docs: demo code properties name:d2l-button-icon sandboxTitle:'Icon Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
@@ -179,7 +179,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 
 The `d2l-button-add` element is for quickly adding new items inline (for example in a list).
 
-<!-- docs: demo code properties name:d2l-button-add display:block autoSize:false size:xsmall -->
+<!-- docs: demo code properties name:d2l-button-add sandboxTitle:'Add Button' display:block autoSize:false size:xsmall -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-add.js';

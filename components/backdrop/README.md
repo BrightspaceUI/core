@@ -4,7 +4,7 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 
 ## Backdrop [d2l-backdrop]
 
-<!-- docs: demo code properties name:d2l-backdrop size:small -->
+<!-- docs: demo code properties name:d2l-backdrop sandboxTitle:'Backdrop' size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';

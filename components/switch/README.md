@@ -30,7 +30,7 @@ A switch is used to toggle between two states, on and off, just like a light swi
 ## Switch [d2l-switch]
 The `d2l-switch` element is a generic switch with on/off semantics.
 
-<!-- docs: demo code properties name:d2l-switch autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-switch sandboxTitle:'Switch' autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
@@ -66,7 +66,7 @@ The d2l-switch-visibility component is a special variant for toggling the visibi
 
 See also [Visibility Switch with Conditions](https://daylight.d2l.dev/components/switch/#visibility-switch-with-conditions).
 
-<!-- docs: demo code properties name:d2l-switch-visibility autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-switch-visibility sandboxTitle:'Visibility Switch' autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';

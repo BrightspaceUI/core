@@ -30,7 +30,7 @@ The `d2l-tag-list` element can take a combination of any type of `d2l-tag-list-i
 
 The corresponding `*-clear` event must be listened to for whatever component (`d2l-tag-list` or `d2l-tag-list-item`) has `clearable` on it and that listener must handle individual `d2l-tag-list-item` deletion as well as potentially focus behavior (see individual event descriptions).
 
-<!-- docs: demo code properties name:d2l-tag-list autoSize:false display:block size:small -->
+<!-- docs: demo code properties name:d2l-tag-list sandboxTitle:'Tag List' autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
@@ -60,7 +60,7 @@ The corresponding `*-clear` event must be listened to for whatever component (`d
 ## Tag List Item [d2l-tag-list-item]
 The `d2l-tag-list-item` provides the appropriate semantics and styling for children within a tag list. Tag List items do not work outside of a Tag List and should not be used on their own.
 
-<!-- docs: demo code properties name:d2l-tag-list-item autoSize:false display:block size:small -->
+<!-- docs: demo code properties name:d2l-tag-list-item sandboxTitle:'Tag List Item' autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tag-list/tag-list.js';
