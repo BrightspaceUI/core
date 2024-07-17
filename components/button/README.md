@@ -166,7 +166,45 @@ The `d2l-button-add` is for quickly adding new items at a specific location, suc
 
 ## Floating Buttons [d2l-floating-buttons]
 
-See [floating buttons](../floating-buttons).
+Floating workflow buttons `<d2l-floating-buttons>` cause buttons to float or 'dock' to the bottom of the viewport when they would otherwise be below the bottom of the viewport. When their normal position becomes visible, they will undock.
+
+The best time to use floating workflow buttons is when users need immediate access to the buttons without scrolling. An example is a long or complex form page where it's common for users to make frequent isolated edits rather than sequentially completing the form.
+
+<!-- docs: demo code properties name:d2l-floating-buttons autoSize:false display:block size:xlarge -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/floating-buttons.js';
+  import '@brightspace-ui/core/components/button/button.js';
+</script>
+<!-- docs: start hidden content -->
+<style>
+  .d2l-typography p {
+    margin: 0.5rem;
+  }
+  .content-placeholder {
+    align-items: center;
+    background-color: var(--d2l-color-regolith);
+    border: 2px dashed lightgrey;
+    border-radius: 8px;
+    display: flex;
+    height: 600px;
+    justify-content: center;
+    width: 100%;
+  }
+  .empty-space {
+    height: 5rem;
+  }
+</style>
+<!-- docs: end hidden content -->
+<div class="content-placeholder d2l-body-compact">
+  Scroll to unstick
+</div>
+<d2l-floating-buttons>
+  <d2l-button primary>Primary</d2l-button>
+  <d2l-button>Secondary</d2l-button>
+</d2l-floating-buttons>
+<div class="empty-space"></div>
+```
 
 ## Accessibility
 
@@ -175,12 +213,15 @@ Daylight buttons rely on standard button semantics to ensure a smooth experience
 * If the button's context is implied by visual layout, then `description` can be used to add missing context
   * Example: if multiple page sections have an Edit button relying on visual layout to indicate which section it edits, there could be extra information in the `description` to help differentiate the Edit buttons for non-sighted users
 
-* For icon buttons where there is no visible label, `text` will be displayed in a tooltip
+* If expanding other content in a dropdown, use the [Dropdown](../../components/dropdown) component; if building custom expand/collapse behaviour, be sure to use [`aria-expanded`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [`aria-haspopup`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes in accordance with best practices.
+
+* Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../../components/tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
+
+* For [Icon Buttons](#d2l-button-icon) where there is no visible label, `text` will be displayed in a tooltip
   * If both `text` and `aria-label` are used, then `aria-label` will be used as the primary label while `text` will be used in a [tooltip](../../components/tooltip)
 
-* When buttons are used to expand more content or to display a menu or dropdown, [aria-expanded](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [aria-haspopup](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes should be used in accordance with best practices — follow the links to learn more
-
-* Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
+* [Floating Buttons](#d2l-floating-buttons) maintain their position in the document's structure, despite sticking to the bottom of the viewport, so the tab order is unaffected and the effect is imperceptible to screen reader users
+  * Be cautious when using `always-float`, since screen magnifier users may find it difficult to locate the buttons at the bottom of a large viewport
 
 <!-- docs: start hidden content -->
 ## Future Improvements
