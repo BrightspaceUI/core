@@ -237,7 +237,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#d2l
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value based on the `range` defined on the component, which is to be one of a set of pre-defined range options. Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
 
-<!-- docs: demo code properties name:d2l-filter-dimension-set-date-text-value sandboxTitle:'Dimension Set Value - Preset Date Range' align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-text-value sandboxTitle:'Filter Dimension Set Value - Preset Date Range' align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -301,7 +301,7 @@ The `getUTCDateTimeRange(rangeType, diff)` helper function can be used to get th
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable filter value which expands to allow the user to select a date range using either the `d2l-input-date-time-range` or `d2l-input-date-range` component (depending on the `type` of the component). Selection triggers the `d2l-filter-change` event, with `start-value` and `end-value` (in UTC) being included in the changes for the `selected` item.
 
-<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value sandboxTitle:'Dimension Set Value - Date-Time Range' align:start autoOpen:true autoSize:false size:xlarge -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-date-time-range-value sandboxTitle:'Filter Dimension Set Value - Date-Time Range' align:start autoOpen:true autoSize:false size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -398,7 +398,7 @@ Note that when using multiple filter dimensions, the counts should be updated wh
 
 The `d2l-filter-dimension-set-empty-state` component allows you to customize the empty state components that are rendered in [d2l-filter-dimension-set](#d2l-filter-dimension-set). When placed in the `d2l-filter-dimension-set` empty state slots, it will replace the component's default empty state. This component can be placed in either the `set-empty-state` or the `search-empty-state` slots.
 
-<!-- docs: demo code properties name:d2l-filter-dimension-set-empty-state sandboxTitle:'Dimension Set Empty State' align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-empty-state sandboxTitle:'Filter Dimension Set Empty State' align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
