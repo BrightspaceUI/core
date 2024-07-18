@@ -16,7 +16,7 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
-<!-- docs: demo code properties name:d2l-template-primary-secondary sandboxTitle:'Primary-Secondary' autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-template-primary-secondary sandboxTitle:'Templates - Primary-Secondary' autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/templates/primary-secondary/primary-secondary.js';

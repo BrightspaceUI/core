@@ -206,7 +206,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 This component is built to be used alongside the [d2l-filter-dimension-set](#d2l-filter-dimension-set) component. It will give you a selectable list of filter values.
 
-<!-- docs: demo code properties name:d2l-filter-dimension-set-value sandboxTitle:'Dimension Set Value' align:start autoOpen:true autoSize:false size:large -->
+<!-- docs: demo code properties name:d2l-filter-dimension-set-value sandboxTitle:'Filter Dimension Set Value' align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';

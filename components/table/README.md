@@ -244,7 +244,7 @@ Note that the example below hides much of the implementation. See the code in [M
 
 This is a radio menu item to be used within the `d2l-table-col-sort-button` component for a [multi-faceted sort](#multi-faceted-sort-button).
 
-<!-- docs: demo code properties autoSize:false align:start name:d2l-table-col-sort-button-item sandboxTitle:'Slotted Item' -->
+<!-- docs: demo code properties autoSize:false align:start name:d2l-table-col-sort-button-item sandboxTitle:'Table  Sortable Column Button - Slotted Item' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
