@@ -4,15 +4,15 @@
   "overrides": [
     {
       "pattern": "**/test/*.test.js",
-      "type": "unit"
+      "type": "UI Unit"
     },
     {
       "pattern": "**/test/*.axe.js",
-      "type": "accessibility"
+      "type": "UI Accessibility"
     },
     {
       "pattern": "**/test/*.vdiff.js",
-      "type": "visual diff"
+      "type": "UI Visual Diff"
     }
   ]
 }
