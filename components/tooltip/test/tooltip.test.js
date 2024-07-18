@@ -274,7 +274,7 @@ describe('d2l-tooltip', () => {
 			expect(tooltip.showing).to.be.true;
 		});
 
-		it('should not hide when ESC key is pressed ', async() => {
+		it('should not hide when ESC key is pressed', async() => {
 
 			await sendKeys('press', 'Escape');
 			await aTimeout(100);
