@@ -72,7 +72,7 @@ describe('form-element', () => {
 			{ forceInvalid: false, validationError: null },
 		].forEach(({ forceInvalid, validationError }) => {
 
-			it('should be invalid if force validate is true or there is a validation error ', async() => {
+			it('should be invalid if force validate is true or there is a validation error', async() => {
 				formElement.forceInvalid = forceInvalid;
 				formElement.validationError = validationError;
 				await formElement.updateComplete;
