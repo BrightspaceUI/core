@@ -1,6 +1,6 @@
 {
-  "tool": "n/a",
-  "experience": "n/a",
+  "tool": "UI Platform & Components",
+  "experience": "Software Services",
   "overrides": [
     {
       "pattern": "**/test/*.test.js",
