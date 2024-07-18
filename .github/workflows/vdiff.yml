@@ -22,3 +22,10 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           test-timeout: 10000
+      - name: Upload test report
+        if: failure() || success()
+        uses: Brightspace/test-reporting-action@main
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
