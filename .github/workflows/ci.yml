@@ -40,7 +40,7 @@ jobs:
       - name: Accessibility Tests
         run: npm run test:axe
       - name: Upload test report
-        if: failure() || success()
+        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
@@ -49,7 +49,7 @@ jobs:
       - name: Unit Tests
         run: npm run test:unit
       - name: Upload test report
-        if: failure() || success()
+        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
