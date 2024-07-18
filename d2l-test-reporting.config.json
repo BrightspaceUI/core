@@ -1,0 +1,18 @@
+{
+  "tool": "n/a",
+  "experience": "n/a",
+  "overrides": [
+    {
+      "pattern": "**/test/*.test.js",
+      "type": "unit"
+    },
+    {
+      "pattern": "**/test/*.axe.js",
+      "type": "accessibility"
+    },
+    {
+      "pattern": "**/test/*.vdiff.js",
+      "type": "visual diff"
+    }
+  ]
+}
