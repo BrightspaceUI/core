@@ -106,4 +106,4 @@ If an activity is set to `Visible` but also has other conditions affecting its v
 ## Accessbility
 
 - When `text-position` is set to `hidden`, the required `text` will be used for the switch's hidden label so that it is [accessible](https://www.w3.org/WAI/WCAG22/quickref/#name-role-value) to non-sighted users.
-- `d2l-switch-visibility` is a notable exception to the best practice of having a static term as the label, this was done to provide more clarity in situations where there are external conditions that could influence whether or not the content in question is visible.
+- `d2l-switch-visibility` is a notable exception to the best practice of having a static term as the label; this was done to provide more clarity in situations where there are external conditions that could influence whether or not the content in question is visible.
