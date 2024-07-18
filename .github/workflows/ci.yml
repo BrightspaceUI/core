@@ -38,9 +38,9 @@ jobs:
       - name: Validate custom-elements.json
         run: npm run test:wca
       - name: Accessibility Tests
-        run: npm run test:axe
+        run: npm run test:axe -- --test-reporting
       - name: Unit Tests
-        run: npm run test:unit
+        run: npm run test:unit -- --test-reporting
   publish:
     name: Publish static site
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
