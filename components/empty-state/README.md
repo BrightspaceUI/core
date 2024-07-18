@@ -49,7 +49,7 @@ Empty state components are used to convey that there is no data available to be 
 
 The `d2l-empty-state-simple` component is an empty state component that displays a description. An [empty state action component](#d2l-empty-state-action-button) can be placed inside of the default slot to add an optional action.
 
-<!-- docs: demo code properties name:d2l-empty-state-simple -->
+<!-- docs: demo code properties name:d2l-empty-state-simple sandboxTitle:'Empty State - Simple' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
@@ -64,7 +64,7 @@ The `d2l-empty-state-illustrated` component is an empty state component that dis
 
 The `illustration-name` property can be set to use one of the preset illustrations or a custom SVG illustration can be added in the `illustration` slot. The catalogue of preset empty state illustrations can be found [here](#preset-empty-state-illustrations).
 
-<!-- docs: demo code properties name:d2l-empty-state-illustrated -->
+<!-- docs: demo code properties name:d2l-empty-state-illustrated sandboxTitle:'Empty State - Illustrated' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-illustrated.js';
@@ -90,7 +90,7 @@ To add the button, place a `d2l-empty-state-action-button` component inside of t
 
 The `primary` attribute can be set to render a primary button in place of the default subtle button. Note that the `primary` attribute is only valid when placed within `empty-state-illustrated` components and will have no effect on `empty-state-simple`.
 
-<!-- docs: demo code properties name:d2l-empty-state-action-button -->
+<!-- docs: demo code properties name:d2l-empty-state-action-button sandboxTitle:'Empty State Action - Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-action-button.js';
@@ -123,7 +123,7 @@ Use a `d2l-empty-state-action-link` to add a link that provides users with an ea
 
 To add the link, place a `d2l-empty-state-action-link` component inside of the default slot of `empty-state-simple` or `empty-state-illustrated`. Only a single action can be placed within an empty state component.
 
-<!-- docs: demo code properties name:d2l-empty-state-action-link -->
+<!-- docs: demo code properties name:d2l-empty-state-action-link sandboxTitle:'Empty State Action - Link' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/empty-state/empty-state-action-link.js';

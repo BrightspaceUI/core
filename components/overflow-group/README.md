@@ -30,7 +30,7 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 ## Overflow Group [d2l-overflow-group]
 Items added to this container element will no longer wrap onto a second line when the container becomes too small, but will be added to a dropdown menu with configurable styling.
 
-<!-- docs: demo code properties name:d2l-overflow-group autoSize:false display:block size:medium -->
+<!-- docs: demo code properties name:d2l-overflow-group sandboxTitle:'Overflow Group' autoSize:false display:block size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';

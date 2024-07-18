@@ -45,7 +45,7 @@ If the viewport is very narrow — for example, on a mobile device — it may be
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
-<!-- docs: demo code properties name:d2l-table-wrapper display:block -->
+<!-- docs: demo code properties name:d2l-table-wrapper sandboxTitle:'Table Wrapper' display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -244,7 +244,7 @@ Note that the example below hides much of the implementation. See the code in [M
 
 This is a radio menu item to be used within the `d2l-table-col-sort-button` component for a [multi-faceted sort](#multi-faceted-sort-button).
 
-<!-- docs: demo code properties autoSize:false align:start name:d2l-table-col-sort-button-item -->
+<!-- docs: demo code properties autoSize:false align:start name:d2l-table-col-sort-button-item sandboxTitle:'Table Sortable Column Button - Slotted Item' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
@@ -434,7 +434,7 @@ Load-More paging functionality can be implemented in tables by placing a `d2l-pa
 
 The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `controls` slot to provide a selection summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo code properties name:d2l-table-controls display:block -->
+<!-- docs: demo code properties name:d2l-table-controls sandboxTitle:'Table Controls' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection/selection-action.js';

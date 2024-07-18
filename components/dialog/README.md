@@ -44,7 +44,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo code properties name:d2l-dialog autoSize:false display:block size:large -->
+<!-- docs: demo code properties name:d2l-dialog sandboxTitle:'Dialog' autoSize:false display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
@@ -155,7 +155,7 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo code properties name:d2l-dialog-confirm autoSize:false display:block size:large -->
+<!-- docs: demo code properties name:d2l-dialog-confirm sandboxTitle:'Confirmation Dialog' autoSize:false display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
@@ -208,7 +208,7 @@ document.querySelector('#open').addEventListener('click', () => {
 
 The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-dialog`. It provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
 
-<!-- docs: demo code properties name:d2l-dialog-fullscreen autoSize:false display:block size:large -->
+<!-- docs: demo code properties name:d2l-dialog-fullscreen sandboxTitle:'Fullscreen Dialog' autoSize:false display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';

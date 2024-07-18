@@ -34,7 +34,7 @@ Same size as the standard link, but bolder.
 
 Import and use the `<d2l-link>` web component instead of the native `<a>` element:
 
-<!-- docs: demo code properties name:d2l-link -->
+<!-- docs: demo code properties name:d2l-link sandboxTitle:'Link' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/link/link.js';

@@ -36,7 +36,7 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
 
 An object property list can be defined using `d2l-object-property-list` and a combination of items (e.g., `d2l-object-property-list-item`, `d2l-object-property-list-item-link`).
 
-<!-- docs: demo code properties name:d2l-object-property-list -->
+<!-- docs: demo code properties name:d2l-object-property-list sandboxTitle:'Object Property List' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -79,7 +79,7 @@ The object property list is designed to wrap in an inline manner if the items ar
 
 The `d2l-object-property-list-item` component is the basic type of item for an object property list, displaying text and an optional leading icon.
 
-<!-- docs: demo code properties name:d2l-object-property-list-item -->
+<!-- docs: demo code properties name:d2l-object-property-list-item sandboxTitle:'Object Property List Item' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -105,7 +105,7 @@ The `d2l-object-property-list-item` component is the basic type of item for an o
 
 The `d2l-object-property-list-item-link` component is a link item for the object property list. It displays text as a hyperlink, with an optional leading icon.
 
-<!-- docs: demo code properties name:d2l-object-property-list-item-link -->
+<!-- docs: demo code properties name:d2l-object-property-list-item-link sandboxTitle:'Object Property List Link Item' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -134,7 +134,7 @@ The `d2l-object-property-list-item-link` component is a link item for the object
 
 Object property lists can optionally contain a single `d2l-status-indicator` inserted into the `status` slot.
 
-<!-- docs: demo code properties name:d2l-status-indicator -->
+<!-- docs: demo code properties name:d2l-status-indicator sandboxTitle:'Status Indicator' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
