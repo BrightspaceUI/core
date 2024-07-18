@@ -53,16 +53,6 @@ The `d2l-button` element can be used just like the native button element, but al
 | `primary` | Boolean | Styles the button as a primary button |
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your `d2l-button` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
-| `description` | Use when text on button does not provide enough context. |
-
 ## Subtle Button [d2l-button-subtle]
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
@@ -90,16 +80,6 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 | `icon` | String | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `icon-right` | Boolean | Render the icon on the right of the button |
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your `d2l-button-subtle` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
-| `description` | Use when text on button does not provide enough context. |
 
 ### Subtle Button with Custom Icon
 
@@ -145,18 +125,6 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 | `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your `d2l-button-icon` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `text` | **REQUIRED**. Acts as a primary label and tooltip. |
-| `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
-| `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
-| `description` | Use when text on button does not provide enough context. |
-
 ### Icon Button with Custom Icon
 
 <!-- docs: demo code  -->
@@ -177,7 +145,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 
 ## Add Button [d2l-button-add]
 
-The `d2l-button-add` element is for quickly adding new items inline (for example in a list).
+The `d2l-button-add` is for quickly adding new items at a specific location, such as when adding items to a curated list. Since the Add button is meant to be subtle, it should always be used in combination with more obvious methods to add items (like a menu or primary button).
 
 <!-- docs: demo code properties name:d2l-button-add display:block autoSize:false size:xsmall -->
 ```html
@@ -198,7 +166,62 @@ The `d2l-button-add` element is for quickly adding new items inline (for example
 
 ## Floating Buttons [d2l-floating-buttons]
 
-See [floating buttons](https://github.com/BrightspaceUI/core/tree/main/components/button/floating-buttons.md).
+Floating workflow buttons `<d2l-floating-buttons>` cause buttons to float or 'dock' to the bottom of the viewport when they would otherwise be below the bottom of the viewport. When their normal position becomes visible, they will undock.
+
+The best time to use floating workflow buttons is when users need immediate access to the buttons without scrolling. An example is a long or complex form page where it's common for users to make frequent isolated edits rather than sequentially completing the form.
+
+<!-- docs: demo code properties name:d2l-floating-buttons autoSize:false display:block size:xlarge -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/floating-buttons.js';
+  import '@brightspace-ui/core/components/button/button.js';
+</script>
+<!-- docs: start hidden content -->
+<style>
+  .d2l-typography p {
+    margin: 0.5rem;
+  }
+  .content-placeholder {
+    align-items: center;
+    background-color: var(--d2l-color-regolith);
+    border: 2px dashed lightgrey;
+    border-radius: 8px;
+    display: flex;
+    height: 600px;
+    justify-content: center;
+    width: 100%;
+  }
+  .empty-space {
+    height: 5rem;
+  }
+</style>
+<!-- docs: end hidden content -->
+<div class="content-placeholder d2l-body-compact">
+  Scroll to unstick
+</div>
+<d2l-floating-buttons>
+  <d2l-button primary>Primary</d2l-button>
+  <d2l-button>Secondary</d2l-button>
+</d2l-floating-buttons>
+<div class="empty-space"></div>
+```
+
+## Accessibility
+
+Daylight buttons rely on standard button semantics to ensure a smooth experience for all assistive technologies, but there are a few interesting details to note:
+
+* If the button's context is implied by visual layout, then `description` can be used to add missing context
+  * Example: if multiple page sections have an Edit button relying on visual layout to indicate which section it edits, there could be extra information in the `description` to help differentiate the Edit buttons for non-sighted users
+
+* If expanding other content in a dropdown, use the [Dropdown](../../components/dropdown) component; if building custom expand/collapse behaviour, be sure to use [`aria-expanded`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [`aria-haspopup`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes in accordance with best practices.
+
+* Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../../components/tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
+
+* For [Icon Buttons](#d2l-button-icon) where there is no visible label, `text` will be displayed in a tooltip
+  * If both `text` and `aria-label` are used, then `aria-label` will be used as the primary label while `text` will be used in a [tooltip](../../components/tooltip)
+
+* [Floating Buttons](#d2l-floating-buttons) maintain their position in the document's structure, despite sticking to the bottom of the viewport, so the tab order is unaffected and the effect is imperceptible to screen reader users
+  * Be cautious when using `always-float`, since screen magnifier users may find it difficult to locate the buttons at the bottom of a large viewport
 
 <!-- docs: start hidden content -->
 ## Future Improvements
