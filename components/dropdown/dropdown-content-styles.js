@@ -49,9 +49,6 @@ export const dropdownContentStyles = css`
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
 	}
-	:host([_fixed-positioning][opened-above]) {
-		bottom: 0;
-	}
 
 	:host([data-mobile][opened]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-animation-name) 300ms ease;
@@ -62,6 +59,11 @@ export const dropdownContentStyles = css`
 		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 16px));
 		top: auto;
+	}
+
+	:host([_fixed-positioning][opened-above]),
+	:host([_fixed-positioning][data-mobile][opened-above]:not([mobile-tray])) {
+		bottom: 0;
 	}
 
 	.d2l-dropdown-content-pointer {

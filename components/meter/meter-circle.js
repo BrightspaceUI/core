@@ -56,7 +56,8 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 
 		const primary = this._primary(this.value, this.max) || '';
-		const secondary = this._secondary(this.value, this.max, this.text);
+		const primaryAria = this._primary(this.value, this.max, true) || '';
+		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const textClasses = {
 			'd2l-meter-circle-text-ltr': !this.percent,
 			'd2l-body-standard': true,
@@ -64,7 +65,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		};
 
 		return html`
-			<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img" aria-label="${this._ariaLabel(primary, secondary)}">
+			<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img" aria-label="${this._ariaLabel(primaryAria, secondaryAria)}">
 				<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
 				<circle
 					class="d2l-meter-circle-progress-bar"

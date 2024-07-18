@@ -19,8 +19,8 @@ describe('d2l-collapsible-panel', () => {
 				</d2l-collapsible-panel>
 			`);
 
-			const button = elem.shadowRoot.querySelector('button.d2l-offscreen');
-			expect(button.textContent).to.equal('Panel Title');
+			const button = elem.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
+			expect(button.ariaLabel).to.equal('Panel Title');
 		});
 
 		it('should be expand-collapse-label if provided', async() => {
@@ -30,8 +30,8 @@ describe('d2l-collapsible-panel', () => {
 				</d2l-collapsible-panel>
 			`);
 
-			const button = elem.shadowRoot.querySelector('button.d2l-offscreen');
-			expect(button.textContent).to.equal('Label describing panel');
+			const button = elem.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
+			expect(button.ariaLabel).to.equal('Label describing panel');
 		});
 	});
 
@@ -139,7 +139,7 @@ describe('d2l-collapsible-panel', () => {
 				'.d2l-collapsible-panel-header',
 				'.d2l-collapsible-panel-header-actions',
 				'.d2l-collapsible-panel-header-secondary',
-				'button.d2l-offscreen'
+				'.d2l-collapsible-panel-opener'
 			];
 
 			for (const selector of selectors) {

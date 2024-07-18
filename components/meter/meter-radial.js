@@ -61,6 +61,8 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		const progressFill = percent * lengthOfLine;
 		const primary = this._primary(this.value, this.max);
 		const secondary = this._secondary(this.value, this.max, this.text);
+		const primaryAria = this._primary(this.value, this.max, true) || '';
+		const secondaryAria = this._secondary(this.value, this.max, this.text, true) || '';
 		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : nothing;
 		const textClasses = {
 			'd2l-meter-radial-text-ltr': !this.percent,
@@ -72,7 +74,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 			<div
 				class="d2l-meter-radial"
 				role="img"
-				aria-label="${this._ariaLabel(primary, secondary)}">
+				aria-label="${this._ariaLabel(primaryAria, secondaryAria)}">
 				<svg viewBox="0 0 84 46">
 					<path class="d2l-meter-radial-full-bar" d="M5 40a37 35 0 0 1 74 0" />
 					<path

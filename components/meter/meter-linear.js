@@ -112,6 +112,8 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 		}
 		const primary = this._primary(this.value, this.max);
 		const secondary = this._secondary(this.value, this.max, this.text);
+		const primaryAria = this._primary(this.value, this.max, true);
+		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const textClasses = {
 			'd2l-meter-linear-text-space-between': !this.textInline && secondary !== this.text,
 			'd2l-body-small': true,
@@ -126,7 +128,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 		return html `
 			<div
 				role="img"
-				aria-label="${this._ariaLabel(primary, secondary)}">
+				aria-label="${this._ariaLabel(primaryAria, secondaryAria)}">
 				<div class="d2l-meter-linear-full-bar">
 					<div class="d2l-meter-linear-inner-bar" style="width:${percentage}%;"></div>
 				</div>

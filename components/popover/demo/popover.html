@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script type="module">
+		import '../../button/button-subtle.js';
+		import '../../demo/demo-page.js';
+		import '../../link/link.js';
+		import '../test/popover.js';
+	</script>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-popover">
+
+		<h2>Popover</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle id="open1" text="Open"></d2l-button-subtle>
+				<d2l-test-popover id="popover1" style="max-width: 400px;">
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
+				</d2l-test-popover>
+				<script>
+					const popover1 = document.querySelector('#popover1');
+					document.querySelector('#open1').addEventListener('click', () => popover1.opened = !popover1.opened);
+					document.querySelector('#close1').addEventListener('click', () => popover1.opened = false);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (trap-focus)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle id="open2" text="Open"></d2l-button-subtle>
+				<d2l-test-popover trap-focus id="popover2" style="max-width: 400px;">
+					<d2l-link href="https://pirateipsum.me/" target="_blank">Pirate Ipsum</d2l-link>
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					<d2l-button-subtle id="close2" text="Close"></d2l-button-subtle>
+				</d2l-test-popover>
+				<script>
+					const popover2 = document.querySelector('#popover2');
+					document.querySelector('#open2').addEventListener('click', () => popover2.opened = !popover2.opened);
+					document.querySelector('#close2').addEventListener('click', () => popover2.opened = false);
+					popover2.addEventListener('d2l-popover-focus-enter', e => console.log(e.type, e));
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<script>
+			document.addEventListener('d2l-popover-open', e => console.log(e.type, e));
+			document.addEventListener('d2l-popover-close', e => console.log(e.type, e));
+		</script>
+</body>
+
+</html>

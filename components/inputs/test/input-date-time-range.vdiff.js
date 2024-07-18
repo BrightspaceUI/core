@@ -129,6 +129,15 @@ describe('d2l-input-date-time-range', () => {
 		});
 	});
 
+	it('is correct when wrapped in a grid', async() => {
+		const elem = await fixture(`
+			<div style="display: grid; grid-template-columns: 1fr 6fr;">
+				<span>My text</span>
+				<d2l-input-date-time-range label="Assignment Dates" child-labels-hidden></d2l-input-date-time-range>
+			</div>`);
+		await expect(elem).to.be.golden();
+	});
+
 	[
 		{
 			name: 'inline-help',
@@ -204,11 +213,17 @@ describe('d2l-input-date-time-range', () => {
 			}
 		}
 
+		async function nextFrameGolden(elem) {
+			await nextFrame();
+			await nextFrame();
+			await expect(elem).to.be.golden();
+		}
+
 		it('start equals end when inclusive', async() => {
 			const elem = await fixture(create({ inclusiveDateRange: true }));
 			await changeInnerInputTextDate(elem, startDateSelector, dateInRange);
 			await changeInnerInputTextDate(elem, endDateSelector, dateInRange, true);
-			await expect(elem).to.be.golden();
+			await nextFrameGolden(elem);
 		});
 
 		describe('auto-shift-dates', () => {
@@ -281,19 +296,19 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});
@@ -315,19 +330,19 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('basic', async() => {
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(elem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});
@@ -371,13 +386,13 @@ describe('d2l-input-date-time-range', () => {
 					it('focus start', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(startDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(actualElem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 
 					it('focus end', async() => {
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
-						await expect(actualElem).to.be.golden();
+						await nextFrameGolden(elem);
 					});
 				});
 			});
