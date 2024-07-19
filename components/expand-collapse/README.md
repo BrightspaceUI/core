@@ -4,7 +4,7 @@ The `d2l-expand-collapse-content` element can be used to create expandable and c
 
 ## Expand Collapse Content [d2l-expand-collapse-content]
 
-<!-- docs: demo code properties name:d2l-expand-collapse-content autoSize:false display:block size:small -->
+<!-- docs: demo code properties name:d2l-expand-collapse-content sandboxTitle:'Expand Collapse Content' autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';

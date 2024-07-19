@@ -74,13 +74,13 @@ The `d2l-tooltip` component is used to display additional information when users
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo code properties name:d2l-tooltip autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-tooltip sandboxTitle:'Tooltip' autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
-<!-- docs: start hidden content --> 
+<!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
@@ -141,7 +141,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
-<!-- docs: start hidden content --> 
+<!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
@@ -193,12 +193,12 @@ The `d2l-tooltip-help` component is used to display additional information when 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-<!-- docs: demo code properties name:d2l-tooltip-help autoSize:false size:medium -->
+<!-- docs: demo code properties name:d2l-tooltip-help sandboxTitle:'Help Tooltip' autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
 </script>
-<!-- docs: start hidden content --> 
+<!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
     setTimeout(function() {
@@ -227,10 +227,10 @@ The `d2l-tooltip-help` component is used to display additional information when 
 
 ### Using in a Sentence or Paragraph
 
-When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text 
+When placing a help tooltip next to other text as part of a sentence or a paragraph, use `inherit-font-style` to align its style with the adjacent text
 (see the demo example above).
 
-Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.   
-Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own. 
+Note that the help tooltip does not support being used *within* a language term, due to challenges with translation.
+Instead, your opener text will need to be a separate language term appearing before or after the other text and making sense on its own.
 
 See also the [Visibility Switch](https://daylight.d2l.dev/components/switch/#d2l-switch-visibility) for an example use case.

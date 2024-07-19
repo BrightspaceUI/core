@@ -58,7 +58,7 @@ Status Indicators are used to communicate the status of an item. They are non-in
 
 ## Status Indicator [d2l-status-indicator]
 
-<!-- docs: demo code properties name:d2l-status-indicator -->
+<!-- docs: demo code properties name:d2l-status-indicator sandboxTitle:'Status Indicator' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';

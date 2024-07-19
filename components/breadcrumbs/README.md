@@ -81,7 +81,7 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 
 ## Breadcrumbs [d2l-breadcrumbs]
 
-<!-- docs: demo code properties name:d2l-breadcrumbs display:block -->
+<!-- docs: demo code properties name:d2l-breadcrumbs sandboxTitle:'Breadcrumbs' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
@@ -103,7 +103,7 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 
 ## Breadcrumb (child) [d2l-breadcrumb]
 
-<!-- docs: demo code properties name:d2l-breadcrumb display:block -->
+<!-- docs: demo code properties name:d2l-breadcrumb sandboxTitle:'Breadcrumb' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
@@ -136,7 +136,7 @@ To make your usage of `d2l-breadcrumb` (child) accessible, use the following att
 
 Only include the current page in the breadcrumb if your page or view does not have a visible heading. You will notice that some older pages or tools in Brightspace still display the current page as the last breadcrumb despite having a visible page heading, but this is now a legacy pattern.
 
-<!-- docs: demo code properties name:d2l-breadcrumb-current-page display:block -->
+<!-- docs: demo code properties name:d2l-breadcrumb-current-page sandboxTitle:'Current Page Breadcrumb' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';

@@ -102,7 +102,7 @@ When using `d2l-list`, the `grid` attribute will enable the table-like keyboard 
 
 The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, breakpoints for responsiveness, etc.
 
-<!-- docs: demo code properties name:d2l-list display:block autoSize:false size:medium -->
+<!-- docs: demo code properties name:d2l-list sandboxTitle:'List' display:block autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -440,7 +440,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
 
-<!-- docs: demo code properties name:d2l-list-controls display:block autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-list-controls sandboxTitle:'List Controls' display:block autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -492,7 +492,7 @@ The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` s
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, a navigation link for the primary action, and selection.
 
-<!-- docs: demo code properties name:d2l-list-item autoSize:false size:small -->
+<!-- docs: demo code properties name:d2l-list-item sandboxTitle:'List Item' autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
@@ -554,7 +554,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action.
 
-<!-- docs: demo code properties name:d2l-list-item-button display:block -->
+<!-- docs: demo code properties name:d2l-list-item-button sandboxTitle:'List Item Button' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -640,7 +640,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 
 The `d2l-list-item-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
 
-<!-- docs: demo code properties name:d2l-list-item-content display:block -->
+<!-- docs: demo code properties name:d2l-list-item-content sandboxTitle:'List Item Content' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
