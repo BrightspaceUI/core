@@ -27,7 +27,7 @@ export default {
 	"components.filter.selectedFirstListLabel": "{headerText}。所選篩選器會先顯示。",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {過去一小時} other {過去 {num} 小時}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今天} one {過去 {num} 天} other {過去 {num} 天}}",
+	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今天} other {過去 {num} 天}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "過去 {num} 個月",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}，展開以選擇日期",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} 到 {endValue}",

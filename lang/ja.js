@@ -27,7 +27,7 @@ export default {
 	"components.filter.selectedFirstListLabel": "{headerText}。選択したフィルタが最初に表示されます。",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {過去 1 時間} other {過去 {num} 時間}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今日} one {過去 {num} 日間} other {過去 {num} 日間}}",
+	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今日} other {過去 {num} 日間}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "過去 {num} ヵ月",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}、展開して日付を選択",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} から {endValue}",

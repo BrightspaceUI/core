@@ -26,7 +26,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Dim canlyniadau chwilio} one {{number} canlyniad chwilio} other {{number} canlyniadau chwilio}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Mae'r hidlyddion a ddewiswyd yn ymddangos gyntaf.",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{hours, plural, =1 {Awr ddiwethaf} other {{num} awr ddiwethaf}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Awr ddiwethaf} other {{num} awr ddiwethaf}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Heddiw} one {{num} diwrnod diwethaf} other {{num} o ddiwrnodau diwethaf}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} o fisoedd diwethaf",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, ehangwch i ddewis dyddiadau",
