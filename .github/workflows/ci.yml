@@ -39,8 +39,22 @@ jobs:
         run: npm run test:wca
       - name: Accessibility Tests
         run: npm run test:axe
+      - name: Upload test report
+        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
+        uses: Brightspace/test-reporting-action@main
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
       - name: Unit Tests
         run: npm run test:unit
+      - name: Upload test report
+        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
+        uses: Brightspace/test-reporting-action@main
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
   publish:
     name: Publish static site
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}

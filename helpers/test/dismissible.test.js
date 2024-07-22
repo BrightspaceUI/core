@@ -66,7 +66,7 @@ describe('dismissible', () => {
 	});
 
 	[undefined, null, 0, 'hello', []].forEach((cb) => {
-		it(`should handle invalid callback: ${cb}`, () => {
+		it(`should handle invalid callback: ${JSON.stringify(cb)}`, () => {
 			expect(() => {
 				setDismissible(cb);
 				pressEscape();
