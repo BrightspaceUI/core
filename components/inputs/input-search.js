@@ -21,7 +21,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: Additional information communicated to screenreaders when users focus on the input
+			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
 			 * @type {string}
 			 */
 			description: { type: String, reflect: true },
