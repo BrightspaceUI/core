@@ -1,5 +1,5 @@
 import '../button.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('button', () => {
 	[
@@ -23,4 +23,12 @@ describe('button', () => {
 			});
 		});
 	});
+
+	it('disabled-tooltip', async() => {
+		const elem = await fixture(html`<d2l-button disabled disabled-tooltip="Disabled Tooltip">Disabled Button</d2l-button>`);
+		hoverElem(elem);
+		await oneEvent(elem, 'd2l-tooltip-show');
+		await expect(elem).to.be.golden();
+	});
+
 });
