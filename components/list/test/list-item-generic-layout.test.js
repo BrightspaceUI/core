@@ -111,7 +111,7 @@ const nestedFixture = html`
 		</d2l-list-item>
 		<d2l-list-item label="Test Label" href="http://d2l.com" key="item2">
 			<div class="d2l-list-item-text d2l-body-compact">Root item 2.</div>
-			<d2l-list grid></d2l-list>
+			<d2l-list grid slot="nested"></d2l-list>
 		</d2l-list-item>
 		<d2l-list-item label="Test Label" href="http://d2l.com" key="item3">
 			<div class="d2l-list-item-text d2l-body-compact">Root item 3.</div>
