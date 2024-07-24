@@ -23,7 +23,7 @@ A menu displays a list of choices or actions. They generally appear when the use
 
 ## Menu [d2l-menu]
 
-A basic menu can be defined using `d2l-menu` and a combination of menu items (e.g., `d2l-menu-item`, `d2l-menu-item-separator`).  **Important**: specify a label on your `d2l-menu` for screen-readers.
+A basic menu can be defined using `d2l-menu` and a combination of menu items (e.g., `d2l-menu-item`, `d2l-menu-item-separator`).
 
 **Note:** `d2l-menu` renders without an outer border since it's typically used in a context where a containing element defines a border (ex. `d2l-dropdown-menu` or side nav).
 
@@ -45,20 +45,12 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 | Property | Type | Description |
 |--|--|--|
-| `label` | String, required for root menu | Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item |
+| `label` | String, required for root menu | Acts as the primary label for the menu |
 
 ### Events
 
 * `d2l-menu-resize`: dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-menu` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** Acts as a primary label for the menu |
 
 ## Menu Item [d2l-menu-item]
 
@@ -104,14 +96,6 @@ The `d2l-menu-item` component is used with JS handlers and can be wired-up to th
 * `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-menu-item` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `description` | Overrides aria-label to provide extra information to screen reader users |
-
 ## Link Menu Item [d2l-menu-item-link]
 
 This `d2l-menu-item-link` is used for navigating. It gives users the ability to right-click and open in a new tab.
@@ -143,14 +127,6 @@ This `d2l-menu-item-link` is used for navigating. It gives users the ability to 
 
 * `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-menu-item-link` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `description` | Overrides aria-label to provide extra information to screen reader users |
 
 ## Checkbox Menu Item [d2l-menu-item-checkbox]
 
@@ -194,14 +170,6 @@ The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up
 * `d2l-menu-item-change`: dispatched when the selected menu item changes
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-menu-item-checkbox` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `description` | Overrides aria-label to provide extra information to screen reader users |
-
 ## Radio Menu Item [d2l-menu-item-radio]
 
 The `d2l-menu-item-radio` component is used for selection. It can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
@@ -243,14 +211,6 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 
 * `d2l-menu-item-change`: dispatched when the selected menu item changes
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-menu-item-radio` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `description` | Overrides aria-label to provide extra information to screen reader users |
 
 ## Separator Menu Item [d2l-menu-item-separator]
 
@@ -305,3 +265,8 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
   <d2l-menu-item text="The Night Sky"></d2l-menu-item>
 </d2l-menu>
 ```
+
+## ACCESSIBILITY
+
+- The `label` property for `d2l-menu` is only required for the root menu
+	- For nested menus, the label is automatically applied based on its parent menu-item

@@ -29,7 +29,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			 */
 			active: { type: Boolean, reflect: true },
 			/**
-			 * Text to be applied to menu "aria-label" for use with screen readers (REQUIRED for root menu)
+			 * ACCESSIBILITY: Acts as the primary label for the menu (REQUIRED for root menu)
 			 * @type {string}
 			 */
 			label: { type: String },

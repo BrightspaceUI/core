@@ -40,7 +40,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 */
 			text: { type: String },
 			/**
-			 * Provide a description for the menu item that will be used by screen readers
+			 * ACCESSIBILITY: Provide a description for the menu item that will be used by screen readers
 			 * @type {string}
 			 */
 			description: { type: String },
