@@ -159,7 +159,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			selectedValue: { type: String, attribute: 'selected-value' },
 
 			/**
-			 * Summary of the calendar for accessibility
+			 * ACCESSIBILITY: Summary of the calendar used by screen reader users for identifying the calendar and/or summarizing its purpose
 			 * @type {string}
 			 */
 			summary: { type: String },
