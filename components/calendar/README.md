@@ -32,6 +32,6 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 
 ## Accessibility
 
-The Daylight calendar was built as a part of the date picker initiative and generally follows the w3c's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). Of note is the keyboard behaviour following the [grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/).
+The Daylight calendar (`d2l-calendar`) was built as a part of the date picker initiative and generally follows the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). Of note is the keyboard behaviour following the [grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/).
 
 The W3C recommendations, specifically relating to `attributes` on the calendar's table elements, were followed as much as possible. However, at the time of development it was not possible to create a calendar with a `grid` role which had the desired appearance, functionality, and supported all browser/screen reader combinations that we support. We aimed to create the same experience for screen reader users as recommended by the example (e.g., announcing the expected content), but had to go about it in a more complex manner. The calendar implementation emphasized the importance of thorough screen reader testing across all supported options.
