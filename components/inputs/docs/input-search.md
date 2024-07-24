@@ -84,9 +84,9 @@ When the input is cleared, the same event will be fired with an empty value.
 
 ## Accessbility
 
-- While the component does not have a visible label, the search icon clearly indicates its purpose.
-	- While not required to meet WCAG, this [pattern](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o1p07-icons-used/) is a great way to help individuals with cognitive accessibility needs.
-	- The contrast ratio of the placeholder text can be safely ignored since the search icon serves the same purpose, and meets that criteria.
-- It is important to note that `placeholder` is not a suitable replacement for using `label` or `description`, as once something is typed in, users will lose the context the placeholder provided.
-- Using a helper like [`announce`](https://github.com/BrightspaceUI/core/blob/main/helpers/announce.js) to inform screenreaders when search results have been returned helps vision-impaired users to inform them that they can start looking through the results.
-	- It can also be used to help confirm what exactly was searched, along with how many results were found.
+- While the component does not have a visible label, the search icon clearly indicates its purpose
+	- While not required to meet WCAG, this [pattern](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o1p07-icons-used/) is a great way to help individuals with cognitive accessibility needs
+	- The contrast ratio of the placeholder text can be safely ignored since the search icon serves the same purpose, and meets that criteria
+- It is important to note that `placeholder` is not a suitable replacement for `label` or `description`, since it only applies when the input is empty, and not all users will be able to read it in the first place
+- Search results should be announced to screen reader users using a live region around the result summary or by using the [`announce`](https://github.com/BrightspaceUI/core/blob/main/helpers/announce.js) helper
+	- It can also be used to help confirm what exactly was searched, along with how many results were found
