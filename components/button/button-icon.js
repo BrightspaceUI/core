@@ -8,6 +8,7 @@ import { buttonStyles } from './button-styles.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
@@ -15,7 +16,7 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  * @slot icon - Optional slot for a custom icon
  */
-class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)))) {
+class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -35,13 +36,13 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 			 * @type {string}
 			 */
-			icon: { type: String, reflect: true },
+			icon: { type: String, reflect: true, required: true },
 
 			/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true },
+			text: { type: String, reflect: true, required: true },
 
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
