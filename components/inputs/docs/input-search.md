@@ -56,7 +56,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 | Property | Type | Description |
 |---|---|---|
 | `label` | String, required | Acts as the primary label for the input. Not visible. |
-| `description` | String | Additional information communicated to screenreaders when users focus on the input |
+| `description` | String | Additional information communicated to screenreader users when they focus on the input |
 | `disabled` | Boolean | Disables the input |
 | `maxlength` | Number | Imposes an upper character limit |
 | `no-clear` | Boolean | Prevents the "clear" button from appearing |
