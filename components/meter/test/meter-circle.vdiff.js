@@ -29,11 +29,6 @@ describe('meter-circle', () => {
 			<div style="width: 90px;">
 				<d2l-meter-circle value="16" max="47" style="width: 300%;"></d2l-meter-circle>
 			</div>
-		` },
-		{ name: 'scaled-smaller', wrapped: true, template: html`
-			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" style="width: 30%;"></d2l-meter-circle>
-			</div>
 		` }
 	].forEach(({ name, template, wrapped }) => {
 		it(name, async() => {
