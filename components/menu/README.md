@@ -275,3 +275,5 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 
 - The `label` property for `d2l-menu` is only required for the root menu
 	- For nested menus, the label is automatically applied based on its parent menu-item
+- The `d2l-menu` component and its items all follow W3C's [menubar](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) pattern best practices
+	- This includes the expected keyboard behaviour, which allows for seamless navigation within the menu and any submenus within it
