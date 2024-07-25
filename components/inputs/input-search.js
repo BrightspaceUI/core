@@ -21,7 +21,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 	static get properties() {
 		return {
 			/**
-			 * Additional information communicated in the aria-describedby on the input
+			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
 			 * @type {string}
 			 */
 			description: { type: String, reflect: true },
@@ -31,7 +31,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the input
+			 * ACCESSIBILITY: REQUIRED: Acts as the primary label for the input. Not visible.
 			 * @type {string}
 			 */
 			label: { type: String },
