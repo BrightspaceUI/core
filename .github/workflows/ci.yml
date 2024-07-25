@@ -38,18 +38,26 @@ jobs:
       - name: Validate custom-elements.json
         run: npm run test:wca
       - name: Accessibility Tests
+        id: at
         run: npm run test:axe
       - name: Upload test report
-        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
+        if: >
+          always() &&
+          github.triggering_actor != 'dependabot[bot]' &&
+          (steps.at.outcome == 'failure' || steps.at.outcome == 'success')
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
       - name: Unit Tests
+        id: ut
         run: npm run test:unit
       - name: Upload test report
-        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
+        if: >
+          always() &&
+          github.triggering_actor != 'dependabot[bot]' &&
+          (steps.ut.outcome == 'failure' || steps.ut.outcome == 'success')
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
