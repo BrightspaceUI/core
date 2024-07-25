@@ -85,6 +85,7 @@ The `d2l-menu-item` component is used with JS handlers and can be wired-up to th
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | Text displayed by the menu item |
+| `description` | String | A description of the menu item that will be used by screen readers for additional context |
 | `disabled` | Boolean | Disables the menu item |
 
 ### Events
@@ -118,10 +119,12 @@ This `d2l-menu-item-link` is used for navigating. It gives users the ability to 
 
 | Property | Type | Description |
 |--|--|--|
-| `download` | String | If the attribute is provided, it will prompt the user to download the resource instead of navigating to it. Additionally, if the attribute is provided with a value, that value will be used for the filename. |
 | `href` | String, required | The URL the menu item link navigates to |
 | `text` | String, required | Text displayed by the menu item |
+| `description` | String | A description of the menu item that will be used by screen readers for additional context |
 | `disabled` | Boolean | Disables the menu item |
+| `download` | String | If the attribute is provided, it will prompt the user to download the resource instead of navigating to it. Additionally, if the attribute is provided with a value, that value will be used for the filename. |
+| `target` | String | Where to display the linked URL |
 
 ### Slots
 
@@ -157,7 +160,8 @@ The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
+| `value` | String, required | The selectable item's value |
+| `description` | String | A description of the menu item that will be used by screen readers for additional context |
 | `disabled` | Boolean | Disables the menu item |
 | `selected` | Boolean | Thie will set the item to be selected by default |
 
@@ -199,7 +203,8 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
+| `value` | String, required | The selectable item's value |
+| `description` | String | A description of the menu item that will be used by screen readers for additional context |
 | `disabled` | Boolean | Disables the menu item |
 | `selected` | Boolean | This will set the item to be seelcted by default |
 
