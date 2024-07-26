@@ -218,6 +218,7 @@ describe('d2l-list', () => {
 						<d2l-list slot="nested">
 							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
 							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+							<d2l-list-item selectable selection-disabled key="L2-3" label="L2-3"></d2l-list-item>
 						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
@@ -253,7 +254,7 @@ describe('d2l-list', () => {
 			expect(elem.getSelectedListItems().length).to.equal(1);
 		});
 
-		it('getSelectedListItems returns array including nested selected items', async() => {
+		it('getSelectedListItems returns array including nested selectable items', async() => {
 			clickItemInput(elem.querySelector('[key="L1-1"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(elem.getSelectedListItems(true).length).to.equal(3);
@@ -261,6 +262,7 @@ describe('d2l-list', () => {
 
 		it('getSelectedListItems returns array excluding indeterminate items', async() => {
 			clickItemInput(elem.querySelector('[key="L2-1"]'));
+			clickItemInput(elem.querySelector('[key="L2-3"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(elem.getSelectedListItems(true).length).to.equal(1);
 		});
