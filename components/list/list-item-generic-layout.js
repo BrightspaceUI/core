@@ -596,6 +596,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
 		this._cellFocusedItem = this._getFocusedItemPosition(e.target);
+		console.log('_setFocusInfo', this._cellNum, this._cellFocusedItem);
 	}
 
 }

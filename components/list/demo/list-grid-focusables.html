@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../button/button-icon.js';
+			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../../tooltip/tooltip.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list.js';
+			import '../../tag-list/tag-list.js';
+			import '../../tag-list/tag-list-item.js';
+			import './demo-list.js';
+
+			import { html, LitElement } from 'lit';
+
+			// this one contains focusables in shadowDOM
+			class DemoMultipleFocusables1 extends LitElement {
+				render() {
+					return html`
+						<div style="display: inline-block; border: 1px solid black; margin: 0 1px;">
+							<d2l-button-icon text="My Button 1" icon="tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:gear"></d2l-button-icon>
+							<div style="display: inline-block; border: 1px solid orange; margin: 1px;">
+								<slot></slot>
+							</div>
+						</div>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-multiple-focusables-1', DemoMultipleFocusables1);
+
+			// this one does not contain focusables in shadowDOM
+			class DemoMultipleFocusables2 extends LitElement {
+				render() {
+					return html`
+						<div style="display: inline-block; border: 1px solid blue; margin: 0 1px;">
+							<slot></slot>
+						</div>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-multiple-focusables-2', DemoMultipleFocusables2);
+		</script>
+		<style>
+			img {
+				height: 500px;
+				object-fit: cover;
+			}
+			d2l-tag-list {
+				margin-top: 0.3rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list">
+
+			<h2>List with Multiple Focusables</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item no-primary-action selectable key="1" label="Introductory Earth Sciences">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-1>
+								<d2l-button-icon text="My Button 1" icon="tier1:ai"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:external"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-1>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-1>
+								<d2l-button-icon text="My Button 1" icon="tier1:ai"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:external"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-1>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="3" label="Geomorphology and GIS">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-1>
+								<d2l-button-icon text="My Button 1" icon="tier1:ai"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:external"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-1>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item no-primary-action selectable key="1" label="Introductory Earth Sciences">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="3" label="Geomorphology and GIS">
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item no-primary-action selectable key="1" label="Introductory Earth Sciences">
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-in"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-out"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-in"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-out"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="3" label="Geomorphology and GIS">
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-in"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:zoom-out"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:password"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:outcomes"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:home"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:send"></d2l-button-icon>
+							<d2l-demo-multiple-focusables-2>
+								<d2l-button-icon text="My Button 1" icon="tier1:search"></d2l-button-icon>
+								<d2l-button-icon text="My Button 1" icon="tier1:share"></d2l-button-icon>
+							</d2l-demo-multiple-focusables-2>
+							<d2l-button-icon text="My Button 1" icon="tier1:one-drive"></d2l-button-icon>
+							<d2l-button-icon text="My Button 1" icon="tier1:online"></d2l-button-icon>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
