@@ -1,5 +1,5 @@
 export default {
-	"components.alert.close": "Fermer l'alerte",
+	"components.alert.close": "Fermer l’alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.button-add.addItem": "Ajouter un élément",
 	"components.calendar.notSelected": "Non sélectionné(e)",
@@ -20,32 +20,79 @@ export default {
 	"components.filter.clearAnnounce": "Effacement des filtres pour : {filterName} en cours",
 	"components.filter.clearDescription": "Effacer les filtres pour : {filterName}",
 	"components.filter.loading": "Chargement des filtres",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Aucun filtre appliqué.} one {{number} filtre appliqué.} other {{number} filtres appliqués.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Aucun filtre appliqué.}
+		one {{number} filtre appliqué.}
+		many {{number} filtres appliqués.}
+		other {{number} filtres appliqués.}
+	}`,
 	"components.filter.filters": "Filtres",
 	"components.filter.noFilters": "Aucun filtre disponible",
-	"components.filter.searchResults": "{number, plural, =0 {Aucun résultat de recherche} one {{number} résultat de recherche} other {{number} résultats de recherche}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {Aucun résultat de recherche}
+		one {{number} résultat de recherche}
+		many {{number} résultats de recherche}
+		other {{number} résultats de recherche}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Les filtres sélectionnés s’affichent en premier.",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Dernière heure} other {{num} dernières heures}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Aujourd’hui} one {{num} dernier jour} other {{num} derniers jours}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Dernière heure}
+		one {{num} dernières heures}
+		many {{num} dernières heures}
+		other {{num} dernières heures}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {Aujourd’hui}
+		one {{num} dernier jour}
+		many {{num} derniers jours}
+		other {{num} derniers jours}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} derniers mois",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, développez la section pour choisir les dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "De {startValue} à {endValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Date de début : {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Date de fin : {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "Période personnalisée",
-	"components.form-element.defaultError": "{label} n'est pas valide.",
+	"components.form-element.defaultError": "{label} n’est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
-	"components.form-element.input.email.typeMismatch": "L'adresse courriel n'est pas valide",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Le nombre doit être supérieur à {min} et inférieur à {max}.} other {Le nombre doit être supérieur à {min} et inférieur ou égal à {max}.}}} other {{maxExclusive, select, true {Le nombre doit être supérieur ou égal à {min} et inférieur à {max}.} other {Le nombre doit être supérieur ou égal à {min} et inférieur ou égal à {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Le nombre doit être inférieur à {max}.} other {Le nombre doit être inférieur ou égal à {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Le nombre doit être supérieur à {min}.} other {Le nombre doit être supérieur ou égal à {min}.}}",
+	"components.form-element.input.email.typeMismatch": "L’adresse courriel n’est pas valide",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {Le nombre doit être supérieur à {min} et inférieur à {max}.}
+			other {Le nombre doit être supérieur à {min} et inférieur ou égal à {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Le nombre doit être supérieur ou égal à {min} et inférieur à {max}.}
+			other {Le nombre doit être supérieur ou égal à {min} et inférieur ou égal à {max}.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {Le nombre doit être inférieur à {max}.}
+		other {Le nombre doit être inférieur ou égal à {max}.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {Le nombre doit être supérieur à {min}.}
+		other {Le nombre doit être supérieur ou égal à {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} doit comprendre au moins {minlength} caractères",
-	"components.form-element.input.url.typeMismatch": "L'URL n'est pas valide",
+	"components.form-element.input.url.typeMismatch": "L’URL n’est pas valide",
 	"components.form-element.valueMissing": "{label} est requis.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Il y avait {count} erreur trouvée dans les informations que vous avez soumises} other {Il y avait {count} erreurs trouvées dans les informations que vous avez soumises}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Il y avait {count} erreur trouvée dans les informations que vous avez soumises}
+		many {Il y avait {count} erreurs trouvées dans les informations que vous avez soumises}
+		other {Il y avait {count} erreurs trouvées dans les informations que vous avez soumises}
+	}`,
 	"components.input-color.backgroundColor": "Couleur d’arrière-plan",
-	"components.input-color.foregroundColor": "Couleur de l'avant-plan",
+	"components.input-color.foregroundColor": "Couleur de l’avant-plan",
 	"components.input-color.none": "Aucun",
 	"components.input-date-range.endDate": "Date de fin",
 	"components.input-date-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
@@ -65,9 +112,9 @@ export default {
 	"components.input-date.errorMaxDateOnly": "La date doit être {maxDate} ou une date antérieure",
 	"components.input-date.errorMinDateOnly": "La date doit être {minDate} ou une date ultérieure",
 	"components.input-date.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
-	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utiliser la flèche vers le bas ou la touche d'entrée pour accéder au mini-calendrier.",
+	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utiliser la flèche vers le bas ou la touche d’entrée pour accéder au mini-calendrier.",
 	"components.input-date.now": "Maintenant",
-	"components.input-date.today": "Aujourd'hui",
+	"components.input-date.today": "Aujourd’hui",
 	"components.input-number.hintInteger": "Ce champ accepte uniquement les valeurs entières (sans décimales)",
 	"components.input-number.hintDecimalDuplicate": "Ce nombre comporte déjà une décimale",
 	"components.input-number.hintDecimalIncorrectComma": "Pour ajouter une décimale, utilisez la virgule « , »",
@@ -83,15 +130,15 @@ export default {
 	"components.list.keyboard": "Utiliser les <b>touches fléchées</b> pour parcourir cette liste ou les touches <b>page up/down</b> pour monter ou descendre 5 éléments à la fois.",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item.addItem": "Ajouter un élément",
-	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
+	"components.list-item-drag-handle.default": "Réordonner l’action de l’élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
 	"components.list-item-drag-handle-tooltip.title": "Commandes du clavier pour la réorganisation :",
 	"components.list-item-drag-handle-tooltip.enter-key": "Entrée",
 	"components.list-item-drag-handle-tooltip.enter-desc": "Basculer en mode réorganiser le clavier.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "Haut/bas",
-	"components.list-item-drag-handle-tooltip.up-down-desc": "Déplacer l'élément vers le haut ou vers le bas dans la liste.",
+	"components.list-item-drag-handle-tooltip.up-down-desc": "Déplacer l’élément vers le haut ou vers le bas dans la liste.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Gauche/droite",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "Changer le niveau d'imbrication.",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "Changer le niveau d’imbrication.",
 	"components.menu-item-return.return": "Retour au menu précédent.",
 	"components.menu-item-return.returnCurrentlyShowing": "Retour au menu précédent. Vous voyez actuellement {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
@@ -101,12 +148,22 @@ export default {
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
-	"components.overflow-group.moreActions": "Plus d'actions",
+	"components.overflow-group.moreActions": "Plus d’actions",
 	"components.pager-load-more.action": "En télécharger plus",
 	"components.pager-load-more.action-with-page-size": "Charger {count} de plus",
-	"components.pageable.info": "{count, plural, one {{countFormatted} élément} other {{countFormatted} éléments}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} élément} other {{countFormatted} de {totalCountFormatted} éléments}}",
-	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} élément}
+		many {{countFormatted} éléments}
+		other {{countFormatted} éléments}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} de {totalCountFormatted} élément}
+		many {{countFormatted} de {totalCountFormatted} éléments}
+		other {{countFormatted} de {totalCountFormatted} éléments}
+	}`,
+	"components.pager-load-more.status-loading": "Chargement d’autres d’éléments",
 	"components.selection.action-hint": "Sélectionner un élément pour exécuter cette action.",
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
@@ -118,8 +175,27 @@ export default {
 	"components.switch.hidden": "Masqué(e)",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-col-sort-button.addSortOrder": "Sélectionner pour ajouter un ordre de tri",
-	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l'ordre de tri",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Trié du plus récent au plus ancien} other {Trié du plus ancien au plus récent}}} numbers {{direction, select, desc {Trié du plus élevé au moins élevé} other {Trié du moins élevé au plus élevé}}} words {{direction, select, desc {Trié de Z à A} other {Trié de A à Z}}} value {Trié {selectedMenuItemText}} other {{direction, select, desc {Trié en ordre décroissant} other {Trié en ordre croissant}}}}",
+	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l’ordre de tri",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Trié du plus récent au plus ancien}
+			other {Trié du plus ancien au plus récent}
+		}}
+		numbers {{direction, select,
+			desc {Trié du plus élevé au moins élevé}
+			other {Trié du moins élevé au plus élevé}
+		}}
+		words {{direction, select,
+			desc {Trié de Z à A}
+			other {Trié de A à Z}
+		}}
+		value {Trié {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Trié en ordre décroissant}
+			other {Trié en ordre croissant}
+		}}
+	}`,
 	"components.table-controls.label": "Actions pour la table",
 	"components.tabs.next": "Défilement avant",
 	"components.tabs.previous": "Défilement arrière",

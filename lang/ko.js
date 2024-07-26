@@ -20,14 +20,30 @@ export default {
 	"components.filter.clearAnnounce": "{filterName}에 대한 필터 지우기",
 	"components.filter.clearDescription": "{filterName}에 대한 필터를 지웁니다.",
 	"components.filter.loading": "필터 로드 중",
-	"components.filter.filterCountDescription": "{number, plural, =0 {적용된 필터 없음.} other {{number}개 필터 적용됨.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {적용된 필터 없음.}
+		other {{number}개 필터 적용됨.}
+	}`,
 	"components.filter.filters": "개 필터",
 	"components.filter.noFilters": "사용 가능한 필터가 없습니다",
-	"components.filter.searchResults": "{number, plural, =0 {검색 결과 없음} other {{number}개 검색 결과}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {검색 결과 없음}
+		other {{number}개 검색 결과}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. 선택한 필터가 먼저 나타납니다.",
 	"components.filter.singleDimensionDescription": "필터 기준: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {지난 1시간} other {지난 {num}시간}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {오늘} other {지난 {num}일}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {지난 1시간}
+		other {지난 {num}시간}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {오늘}
+		other {지난 {num}일}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "지난 {num}개월",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, 확장하여 날짜 선택",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue}~{endValue}",
@@ -37,13 +53,34 @@ export default {
 	"components.form-element.defaultError": "{label}이(가) 잘못되었습니다.",
 	"components.form-element.defaultFieldLabel": "필드",
 	"components.form-element.input.email.typeMismatch": "이메일이 유효하지 않습니다.",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {숫자는 {min}보다 크고 {max}보다 작아야 합니다.} other {숫자는 {min}보다 크고 {max}보다 작거나 같아야 합니다.}}} other {{maxExclusive, select, true {숫자는 {min}보다 크거나 같고 {max}보다 작아야 합니다.} other {숫자는 {min}보다 크거나 같고 {max}보다 작거나 같아야 합니다.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {숫자는 {max}보다 작아야 합니다.} other {숫자는 {max}보다 작거나 같아야 합니다.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {숫자는 {min}보다 커야 합니다.} other {숫자는 {min}보다 크거나 같아야 합니다.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {숫자는 {min}보다 크고 {max}보다 작아야 합니다.}
+			other {숫자는 {min}보다 크고 {max}보다 작거나 같아야 합니다.}
+		}}
+		other {{maxExclusive, select,
+			true {숫자는 {min}보다 크거나 같고 {max}보다 작아야 합니다.}
+			other {숫자는 {min}보다 크거나 같고 {max}보다 작거나 같아야 합니다.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {숫자는 {max}보다 작아야 합니다.}
+		other {숫자는 {max}보다 작거나 같아야 합니다.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {숫자는 {min}보다 커야 합니다.}
+		other {숫자는 {min}보다 크거나 같아야 합니다.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label}은(는) {minlength}자 이상이어야 합니다",
 	"components.form-element.input.url.typeMismatch": "URL이 유효하지 않습니다",
 	"components.form-element.valueMissing": "{label}이(가) 필요합니다.",
-	"components.form-error-summary.errorSummary": "{count, plural, other {제출한 정보에서 {count}개의 오류가 발견되었습니다}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		other {제출한 정보에서 {count}개의 오류가 발견되었습니다}
+	}`,
 	"components.input-color.backgroundColor": "배경 색상",
 	"components.input-color.foregroundColor": "전경 색상",
 	"components.input-color.none": "없음",
@@ -70,8 +107,8 @@ export default {
 	"components.input-date.today": "오늘",
 	"components.input-number.hintInteger": "이 필드는 정수 값만 허용합니다(소수점 없음)",
 	"components.input-number.hintDecimalDuplicate": "이 숫자에 이미 소수점이 있습니다",
-	"components.input-number.hintDecimalIncorrectComma": "소수점을 추가하려면 쉼표 \",\" 문자를 사용합니다",
-	"components.input-number.hintDecimalIncorrectPeriod": "소수점을 추가하려면 마침표 \".\" 문자를 사용합니다",
+	"components.input-number.hintDecimalIncorrectComma": "소수점을 추가하려면 쉼표 “,” 문자를 사용합니다",
+	"components.input-number.hintDecimalIncorrectPeriod": "소수점을 추가하려면 마침표 “.” 문자를 사용합니다",
 	"components.input-search.clear": "검색 지우기",
 	"components.input-search.defaultPlaceholder": "검색...",
 	"components.input-search.search": "검색",
@@ -104,8 +141,14 @@ export default {
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.pager-load-more.action": "더 많이 로드",
 	"components.pager-load-more.action-with-page-size": "{count}개 더 로드",
-	"components.pageable.info": "{count, plural, other {해당 항목 수 {countFormatted}개}}",
-	"components.pageable.info-with-total": "{totalCount, plural, other {{totalCountFormatted}개 항목 중 {countFormatted}개}}",
+	"components.pageable.info":
+	`{count, plural,
+		other {해당 항목 수 {countFormatted}개}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		other {{totalCountFormatted}개 항목 중 {countFormatted}개}
+	}`,
 	"components.pager-load-more.status-loading": "더 많은 항목 로드",
 	"components.selection.action-hint": "이 작업을 수행할 항목을 선택하십시오.",
 	"components.selection.select-all": "모두 선택",
@@ -119,7 +162,26 @@ export default {
 	"components.switch.conditions": "조건을 충족해야 합니다",
 	"components.table-col-sort-button.addSortOrder": "정렬 순서를 추가하려면 선택",
 	"components.table-col-sort-button.changeSortOrder": "정렬 순서를 변경하려면 선택",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {최신에서 오래된 순으로 정렬됨} other {오래된 것에서 최신 순으로 정렬됨}}} numbers {{direction, select, desc {높은 것에서 낮은 순으로 정렬됨} other {낮은 것에서 높은 순으로 정렬됨}}} words {{direction, select, desc {Z에서 A 순으로 정렬됨} other {A에서 Z 순으로 정렬됨}}} value {{selectedMenuItemText} 정렬됨} other {{direction, select, desc {내림차순으로 정렬됨} other {오름차순으로 정렬됨}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {최신에서 오래된 순으로 정렬됨}
+			other {오래된 것에서 최신 순으로 정렬됨}
+		}}
+		numbers {{direction, select,
+			desc {높은 것에서 낮은 순으로 정렬됨}
+			other {낮은 것에서 높은 순으로 정렬됨}
+		}}
+		words {{direction, select,
+			desc {Z에서 A 순으로 정렬됨}
+			other {A에서 Z 순으로 정렬됨}
+		}}
+		value {{selectedMenuItemText} 정렬됨}
+		other {{direction, select,
+			desc {내림차순으로 정렬됨}
+			other {오름차순으로 정렬됨}
+		}}
+	}`,
 	"components.table-controls.label": "표에 대한 작업",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",

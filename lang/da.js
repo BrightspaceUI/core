@@ -20,14 +20,33 @@ export default {
 	"components.filter.clearAnnounce": "Rydder filtre for: {filterName}",
 	"components.filter.clearDescription": "Ryd filtre for: {filterName}",
 	"components.filter.loading": "Indlæser filtre",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Ingen filtre anvendt.} one {{number} filter anvendt.} other {{number} filtre anvendt.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Ingen filtre anvendt.}
+		one {{number} filter anvendt.}
+		other {{number} filtre anvendt.}
+	}`,
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",
-	"components.filter.searchResults": "{number, plural, =0 {Ingen søgeresultater} one {{number} søgeresultat} other {{number} søgeresultater}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {Ingen søgeresultater}
+		one {{number} søgeresultat}
+		other {{number} søgeresultater}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Valgte filtre vises først.",
 	"components.filter.singleDimensionDescription": "Filtrer efter: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Sidste time} other {Sidste {num} timer}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {I dag} one {Sidste {num} dag} other {Sidste {num} dage}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Sidste time}
+		other {Sidste {num} timer}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {I dag}
+		one {Sidste {num} dag}
+		other {Sidste {num} dage}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Sidste {num} måneder",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, udvid for at vælge datoer",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} til {endValue}",
@@ -37,13 +56,35 @@ export default {
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
 	"components.form-element.input.email.typeMismatch": "E-mail er ikke gyldig",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Tallet skal være større end {min} og mindre end {max}.} other {Tallet skal være større end {min} og mindre eller lig med {max}.}}} other {{maxExclusive, select, true {Tallet skal være større end eller lig med {min} og mindre end {max}.} other {Tallet skal være større end eller lig med {min} og mindre end eller lig med {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Tal skal være mindre end {max}.} other {Tal skal være mindre end eller lig med {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Tal skal være større end {min}.} other {Tal skal være større end eller lig med {min}.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {Tallet skal være større end {min} og mindre end {max}.}
+			other {Tallet skal være større end {min} og mindre eller lig med {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Tallet skal være større end eller lig med {min} og mindre end {max}.}
+			other {Tallet skal være større end eller lig med {min} og mindre end eller lig med {max}.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {Tal skal være mindre end {max}.}
+		other {Tal skal være mindre end eller lig med {max}.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {Tal skal være større end {min}.}
+		other {Tal skal være større end eller lig med {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} skal være på mindst {minlength} tegn",
 	"components.form-element.input.url.typeMismatch": "URL-adresse er ikke gyldig",
 	"components.form-element.valueMissing": "{label} er påkrævet.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Der blev fundet {count} fejl i de oplysninger, du indsendte} other {Der blev fundet {count} fejl i de oplysninger, du indsendte}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Der blev fundet {count} fejl i de oplysninger, du indsendte}
+		other {Der blev fundet {count} fejl i de oplysninger, du indsendte}
+	}`,
 	"components.input-color.backgroundColor": "Baggrundsfarve",
 	"components.input-color.foregroundColor": "Forgrundsfarve",
 	"components.input-color.none": "Ingen",
@@ -70,8 +111,8 @@ export default {
 	"components.input-date.today": "I dag",
 	"components.input-number.hintInteger": "Dette felt accepterer kun heltalsværdier (ingen decimaler)",
 	"components.input-number.hintDecimalDuplicate": "Der er allerede en decimal i dette tal",
-	"components.input-number.hintDecimalIncorrectComma": "Hvis du vil tilføje en decimal, skal du bruge komma-tegnet \",\"",
-	"components.input-number.hintDecimalIncorrectPeriod": "Hvis du vil tilføje en decimal, skal du bruge tegnet \".\"",
+	"components.input-number.hintDecimalIncorrectComma": "Hvis du vil tilføje en decimal, skal du bruge komma-tegnet “,”",
+	"components.input-number.hintDecimalIncorrectPeriod": "Hvis du vil tilføje en decimal, skal du bruge tegnet “.”",
 	"components.input-search.clear": "Ryd søgning",
 	"components.input-search.defaultPlaceholder": "Søg ...",
 	"components.input-search.search": "Søg",
@@ -104,8 +145,16 @@ export default {
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.pager-load-more.action": "Indlæs flere",
 	"components.pager-load-more.action-with-page-size": "Indlæs {count} mere",
-	"components.pageable.info": "{count, plural, one {{countFormatted} element} other {{countFormatted} elementer}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} af {totalCountFormatted} element} other {{countFormatted} af {totalCountFormatted} elementer}}",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} element}
+		other {{countFormatted} elementer}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} af {totalCountFormatted} element}
+		other {{countFormatted} af {totalCountFormatted} elementer}
+	}`,
 	"components.pager-load-more.status-loading": "Indlæser flere elementer",
 	"components.selection.action-hint": "Vælg et element for at udføre denne handling.",
 	"components.selection.select-all": "Vælg alle",
@@ -119,7 +168,26 @@ export default {
 	"components.switch.conditions": "Betingelserne skal være opfyldt",
 	"components.table-col-sort-button.addSortOrder": "Vælg for at tilføje sorteringsrækkefølge",
 	"components.table-col-sort-button.changeSortOrder": "Vælg for at ændre sorteringsrækkefølge",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Sorteret ny til gammel} other {Sorteret gammel til ny}}} numbers {{direction, select, desc {Sorteret høj til lav} other {Sorteret lav til høj}}} words {{direction, select, desc {Sorteret Z til A} other {Sorteret A til Z}}} value {Sorteret {selectedMenuItemText}} other {{direction, select, desc {Sorteret faldende} other {Sorteret stigende}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Sorteret ny til gammel}
+			other {Sorteret gammel til ny}
+		}}
+		numbers {{direction, select,
+			desc {Sorteret høj til lav}
+			other {Sorteret lav til høj}
+		}}
+		words {{direction, select,
+			desc {Sorteret Z til A}
+			other {Sorteret A til Z}
+		}}
+		value {Sorteret {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Sorteret faldende}
+			other {Sorteret stigende}
+		}}
+	}`,
 	"components.table-controls.label": "Handlinger for tabel",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",

@@ -20,14 +20,30 @@ export default {
 	"components.filter.clearAnnounce": "正在清除 {filterName} 的篩選器",
 	"components.filter.clearDescription": "清除 {filterName} 的篩選器",
 	"components.filter.loading": "正在載入篩選條件",
-	"components.filter.filterCountDescription": "{number, plural, =0 {未套用篩選器。} other {已套用 {number} 個篩選器。}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {未套用篩選器。}
+		other {已套用 {number} 個篩選器。}
+	}`,
 	"components.filter.filters": "篩選器",
 	"components.filter.noFilters": "沒有可用的篩選條件",
-	"components.filter.searchResults": "{number, plural, =0 {無搜尋結果} other {{number} 個搜尋結果}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {無搜尋結果}
+		other {{number} 個搜尋結果}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}。所選篩選器會先顯示。",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {過去一小時} other {過去 {num} 小時}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今天} other {過去 {num} 天}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {過去一小時}
+		other {過去 {num} 小時}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {今天}
+		other {過去 {num} 天}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "過去 {num} 個月",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}，展開以選擇日期",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} 到 {endValue}",
@@ -37,13 +53,34 @@ export default {
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",
 	"components.form-element.input.email.typeMismatch": "電子郵件無效",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {數字必須大於 {min} 且小於 {max}。} other {數字必須大於 {min} 且小於或等於 {max}。}}} other {{maxExclusive, select, true {數字必須大於或等於 {min} 且小於 {max}。} other {數字必須大於或等於 {min} 且小於或等於 {max}。}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {數字必須小於 {max}。} other {數字必須小於或等於 {max}。}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {數字必須大於 {min}。} other {數字必須大於或等於 {min}。}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {數字必須大於 {min} 且小於 {max}。}
+			other {數字必須大於 {min} 且小於或等於 {max}。}
+		}}
+		other {{maxExclusive, select,
+			true {數字必須大於或等於 {min} 且小於 {max}。}
+			other {數字必須大於或等於 {min} 且小於或等於 {max}。}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {數字必須小於 {max}。}
+		other {數字必須小於或等於 {max}。}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {數字必須大於 {min}。}
+		other {數字必須大於或等於 {min}。}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} 必須至少為 {minlength} 個字元",
 	"components.form-element.input.url.typeMismatch": "URL 無效",
 	"components.form-element.valueMissing": "{label} 為必填。",
-	"components.form-error-summary.errorSummary": "{count, plural, other {您提交的資訊中發現 {count} 個錯誤}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		other {您提交的資訊中發現 {count} 個錯誤}
+	}`,
 	"components.input-color.backgroundColor": "背景顏色",
 	"components.input-color.foregroundColor": "前景顏色",
 	"components.input-color.none": "無",
@@ -104,8 +141,14 @@ export default {
 	"components.overflow-group.moreActions": "其他動作",
 	"components.pager-load-more.action": "載入更多",
 	"components.pager-load-more.action-with-page-size": "再載入 {count} 個",
-	"components.pageable.info": "{count, plural, other {{countFormatted} 個項目}}",
-	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted} 項，共 {totalCountFormatted} 項}}",
+	"components.pageable.info":
+	`{count, plural,
+		other {{countFormatted} 個項目}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		other {{countFormatted} 項，共 {totalCountFormatted} 項}
+	}`,
 	"components.pager-load-more.status-loading": "正在載入更多項目",
 	"components.selection.action-hint": "選取項目以執行此動作。",
 	"components.selection.select-all": "全選",
@@ -119,7 +162,26 @@ export default {
 	"components.switch.conditions": "必須符合條件",
 	"components.table-col-sort-button.addSortOrder": "選取以新增排序順序",
 	"components.table-col-sort-button.changeSortOrder": "選取以變更排序順序",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {已排序為新至舊} other {已排序為舊至新}}} numbers {{direction, select, desc {已排序為高到低} other {已排序為低到高}}} words {{direction, select, desc {已排序為 Z 到 A} other {已排序為 A 到 Z}}} value {已排序 {selectedMenuItemText}} other {{direction, select, desc {已遞減排序} other {已遞增排序}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {已排序為新至舊}
+			other {已排序為舊至新}
+		}}
+		numbers {{direction, select,
+			desc {已排序為高到低}
+			other {已排序為低到高}
+		}}
+		words {{direction, select,
+			desc {已排序為 Z 到 A}
+			other {已排序為 A 到 Z}
+		}}
+		value {已排序 {selectedMenuItemText}}
+		other {{direction, select,
+			desc {已遞減排序}
+			other {已遞增排序}
+		}}
+	}`,
 	"components.table-controls.label": "表格動作",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動",

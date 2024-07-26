@@ -20,14 +20,33 @@ export default {
 	"components.filter.clearAnnounce": "Filters wissen voor {filterName}",
 	"components.filter.clearDescription": "Filters wissen voor {filterName}",
 	"components.filter.loading": "Laden van filters",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Geen filters toegepast.} one {{number} filter toegepast.} other {{number} filters toegepast.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Geen filters toegepast.}
+		one {{number} filter toegepast.}
+		other {{number} filters toegepast.}
+	}`,
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
-	"components.filter.searchResults": "{number, plural, =0 {Geen zoekresultaten} one {{number} zoekresultaat} other {{number} zoekresultaten}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {Geen zoekresultaten}
+		one {{number} zoekresultaat}
+		other {{number} zoekresultaten}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Geselecteerde filters verschijnen als eerste.",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Afgelopen uur} other {Afgelopen {num} uur}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Vandaag} one {Afgelopen {num} dag} other {Afgelopen {num} dagen}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Afgelopen uur}
+		other {Afgelopen {num} uur}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {Vandaag}
+		one {Afgelopen {num} dag}
+		other {Afgelopen {num} dagen}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Afgelopen {num} maanden",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, vouw uit om datums te kiezen",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} tot {endValue}",
@@ -37,13 +56,35 @@ export default {
 	"components.form-element.defaultError": "{label} is ongeldig.",
 	"components.form-element.defaultFieldLabel": "Veld",
 	"components.form-element.input.email.typeMismatch": "E-mailadres is ongeldig",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Getal moet groter zijn dan {min} en kleiner dan {max}.} other {Getal moet groter zijn dan {min} en kleiner dan of gelijk aan {max}.}}} other {{maxExclusive, select, true {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan {max}.} other {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan of gelijk aan {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Getal moet kleiner zijn dan {max}.} other {Getal moet kleiner zijn dan of gelijk aan {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Getal moet groter zijn dan {min}.} other {Getal moet groter zijn dan of gelijk aan {min}.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {Getal moet groter zijn dan {min} en kleiner dan {max}.}
+			other {Getal moet groter zijn dan {min} en kleiner dan of gelijk aan {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan {max}.}
+			other {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan of gelijk aan {max}.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {Getal moet kleiner zijn dan {max}.}
+		other {Getal moet kleiner zijn dan of gelijk aan {max}.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {Getal moet groter zijn dan {min}.}
+		other {Getal moet groter zijn dan of gelijk aan {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} moet ten minste {minlength} tekens bevatten",
 	"components.form-element.input.url.typeMismatch": "URL is niet geldig",
 	"components.form-element.valueMissing": "{label} is vereist.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Er is {count} fout gevonden in de informatie die u hebt ingediend} other {Er zijn {count} fouten gevonden in de informatie die u hebt ingediend}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Er is {count} fout gevonden in de informatie die u hebt ingediend}
+		other {Er zijn {count} fouten gevonden in de informatie die u hebt ingediend}
+	}`,
 	"components.input-color.backgroundColor": "Achtergrondkleur",
 	"components.input-color.foregroundColor": "Voorgrondkleur",
 	"components.input-color.none": "Geen",
@@ -70,8 +111,8 @@ export default {
 	"components.input-date.today": "Vandaag",
 	"components.input-number.hintInteger": "Dit veld accepteert alleen gehele getallen (geen decimalen)",
 	"components.input-number.hintDecimalDuplicate": "Dit getal bevat al een decimaal",
-	"components.input-number.hintDecimalIncorrectComma": "Als u een decimaal wilt toevoegen, gebruikt u het teken ','",
-	"components.input-number.hintDecimalIncorrectPeriod": "Als u een decimaal wilt toevoegen, gebruikt u de punt '.'",
+	"components.input-number.hintDecimalIncorrectComma": "Als u een decimaal wilt toevoegen, gebruikt u het teken ‘,’",
+	"components.input-number.hintDecimalIncorrectPeriod": "Als u een decimaal wilt toevoegen, gebruikt u de punt ‘.’",
 	"components.input-search.clear": "Zoekopdracht wissen",
 	"components.input-search.defaultPlaceholder": "Zoeken...",
 	"components.input-search.search": "Zoeken",
@@ -104,8 +145,16 @@ export default {
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.pager-load-more.action": "Meer laden",
 	"components.pager-load-more.action-with-page-size": "Laad nog {count} extra",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} van {totalCountFormatted} artikel} other {{countFormatted} van {totalCountFormatted} artikelen}}",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} item}
+		other {{countFormatted} items}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} van {totalCountFormatted} artikel}
+		other {{countFormatted} van {totalCountFormatted} artikelen}
+	}`,
 	"components.pager-load-more.status-loading": "Er worden meer items geladen",
 	"components.selection.action-hint": "Selecteer een item om deze actie uit te voeren.",
 	"components.selection.select-all": "Alles selecteren",
@@ -119,7 +168,26 @@ export default {
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",
 	"components.table-col-sort-button.addSortOrder": "Selecteer toe te voegen sorteervolgorde",
 	"components.table-col-sort-button.changeSortOrder": "Selecteer te wijzigen sorteervolgorde",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Gesorteerd van nieuw naar oud} other {Gesorteerd van oud naar nieuw}}} numbers {{direction, select, desc {Gesorteerd van hoog naar laag} other {Gesorteerd van laag naar hoog}}} words {{direction, select, desc {Gesorteerd van A naar Z} other {Gesorteerd van Z naar A}}} value {Gesorteerd op {selectedMenuItemText}} other {{direction, select, desc {Aflopend gesorteerd} other {Oplopend gesorteerd}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Gesorteerd van nieuw naar oud}
+			other {Gesorteerd van oud naar nieuw}
+		}}
+		numbers {{direction, select,
+			desc {Gesorteerd van hoog naar laag}
+			other {Gesorteerd van laag naar hoog}
+		}}
+		words {{direction, select,
+			desc {Gesorteerd van A naar Z}
+			other {Gesorteerd van Z naar A}
+		}}
+		value {Gesorteerd op {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Aflopend gesorteerd}
+			other {Oplopend gesorteerd}
+		}}
+	}`,
 	"components.table-controls.label": "Acties voor tabel",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",

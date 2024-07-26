@@ -20,14 +20,30 @@ export default {
 	"components.filter.clearAnnounce": "{filterName} フィルタのクリア",
 	"components.filter.clearDescription": "{filterName} フィルタのクリア",
 	"components.filter.loading": "フィルタのロード中",
-	"components.filter.filterCountDescription": "{number, plural, =0 {フィルタは適用されていません。} other {{number} 個のフィルタが適用されています。}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {フィルタは適用されていません。}
+		other {{number} 個のフィルタが適用されています。}
+	}`,
 	"components.filter.filters": "フィルタ",
 	"components.filter.noFilters": "使用可能なフィルタはありません",
-	"components.filter.searchResults": "{number, plural, =0 {検索結果なし} other {{number} 件の検索結果}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {検索結果なし}
+		other {{number} 件の検索結果}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}。選択したフィルタが最初に表示されます。",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {過去 1 時間} other {過去 {num} 時間}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今日} other {過去 {num} 日間}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {過去 1 時間}
+		other {過去 {num} 時間}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {今日}
+		other {過去 {num} 日間}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "過去 {num} ヵ月",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}、展開して日付を選択",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} から {endValue}",
@@ -37,13 +53,34 @@ export default {
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",
 	"components.form-element.input.email.typeMismatch": "電子メールが無効です",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {数値は {min} より大きく {max} 未満である必要があります。} other {数値は {min} より大きく {max} 以下である必要があります。}}} other {{maxExclusive, select, true {数値は {min} 以上 {max} 未満である必要があります。} other {数値は {min} 以上 {max} 以下である必要があります。}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {数値は {max} 未満である必要があります。} other {数値は {max} 以下である必要があります。}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {数値は {min} より大きい必要があります。} other {数値は {min} 以上である必要があります。}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {数値は {min} より大きく {max} 未満である必要があります。}
+			other {数値は {min} より大きく {max} 以下である必要があります。}
+		}}
+		other {{maxExclusive, select,
+			true {数値は {min} 以上 {max} 未満である必要があります。}
+			other {数値は {min} 以上 {max} 以下である必要があります。}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {数値は {max} 未満である必要があります。}
+		other {数値は {max} 以下である必要があります。}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {数値は {min} より大きい必要があります。}
+		other {数値は {min} 以上である必要があります。}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} は {minlength} 文字以上である必要があります",
 	"components.form-element.input.url.typeMismatch": "URL が有効ではありません",
 	"components.form-element.valueMissing": "{label} は必須です。",
-	"components.form-error-summary.errorSummary": "{count, plural, other {送信した情報に {count} 件のエラーが見つかりました}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		other {送信した情報に {count} 件のエラーが見つかりました}
+	}`,
 	"components.input-color.backgroundColor": "背景色",
 	"components.input-color.foregroundColor": "前景色",
 	"components.input-color.none": "なし",
@@ -104,8 +141,14 @@ export default {
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.pager-load-more.action": "さらに読み込む",
 	"components.pager-load-more.action-with-page-size": "さらに {count} 件を読み込む",
-	"components.pageable.info": "{count, plural, other {{countFormatted} 個の項目}}",
-	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 個の項目}}",
+	"components.pageable.info":
+	`{count, plural,
+		other {{countFormatted} 個の項目}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		other {{countFormatted}/{totalCountFormatted} 個の項目}
+	}`,
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",
 	"components.selection.action-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",
@@ -119,7 +162,26 @@ export default {
 	"components.switch.conditions": "条件が一致する必要があります",
 	"components.table-col-sort-button.addSortOrder": "選択して並べ替え順序を追加",
 	"components.table-col-sort-button.changeSortOrder": "選択して並べ替え順序を変更",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {新から旧へ並べ替え} other {旧から新へ並べ替え}}} numbers {{direction, select, desc {高から低へ並べ替え} other {低から高へ並べ替え}}} words {{direction, select, desc {降順に並べ替え} other {昇順に並べ替え}}} value {並べ替え {selectedMenuItemText}} other {{direction, select, desc {降順に並べ替え} other {昇順に並べ替え}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {新から旧へ並べ替え}
+			other {旧から新へ並べ替え}
+		}}
+		numbers {{direction, select,
+			desc {高から低へ並べ替え}
+			other {低から高へ並べ替え}
+		}}
+		words {{direction, select,
+			desc {降順に並べ替え}
+			other {昇順に並べ替え}
+		}}
+		value {並べ替え {selectedMenuItemText}}
+		other {{direction, select,
+			desc {降順に並べ替え}
+			other {昇順に並べ替え}
+		}}
+	}`,
 	"components.table-controls.label": "テーブルのアクション",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール",

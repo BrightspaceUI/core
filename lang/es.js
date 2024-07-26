@@ -20,14 +20,37 @@ export default {
 	"components.filter.clearAnnounce": "Borrando filtros para: {filterName}",
 	"components.filter.clearDescription": "Borrar filtros para: {filterName}",
 	"components.filter.loading": "Cargando filtros",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Sin filtros aplicados.} one {{number} filtro aplicado.} other {{number} filtros aplicados.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Sin filtros aplicados.}
+		one {{number} filtro aplicado.}
+		many {{number} filtros aplicados.}
+		other {{number} filtros aplicados.}
+	}`,
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "No hay filtros disponibles",
-	"components.filter.searchResults": "{number, plural, =0 {No se encontraron resultados de búsqueda} one {{number} resultado de búsqueda} other {{number} resultados de búsqueda}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {No se encontraron resultados de búsqueda}
+		one {{number} resultado de búsqueda}
+		many {{number} resultados de búsqueda}
+		other {{number} resultados de búsqueda}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Los filtros seleccionados aparecen primero.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Última hora} other {Últimas {num} horas}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Último {num} día} other {Últimos {num} días}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Última hora}
+		many {Últimas {num} horas}
+		other {Últimas {num} horas}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {Today}
+		one {Último {num} día}
+		many {Últimos {num} días}
+		other {Últimos {num} días}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Últimos {num} meses",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expanda para elegir fechas",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "De {startValue} a {endValue}",
@@ -37,13 +60,36 @@ export default {
 	"components.form-element.defaultError": "{label} no es válida.",
 	"components.form-element.defaultFieldLabel": "Campo",
 	"components.form-element.input.email.typeMismatch": "El correo electrónico no es válido",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {El número debe ser mayor que {min} y menor que {max}.} other {El número debe ser mayor que {min} y menor o igual que {max}.}}} other {{maxExclusive, select, true {El número debe ser mayor o igual que {min} y menor que {max}.} other {El número debe ser mayor o igual que {min} y menor o igual que {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {El número debe ser menor que {max}.} other {El número debe ser menor o igual que {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {El número debe ser mayor que {min}.} other {El número debe ser mayor o igual que {min}.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {El número debe ser mayor que {min} y menor que {max}.}
+			other {El número debe ser mayor que {min} y menor o igual que {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {El número debe ser mayor o igual que {min} y menor que {max}.}
+			other {El número debe ser mayor o igual que {min} y menor o igual que {max}.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {El número debe ser menor que {max}.}
+		other {El número debe ser menor o igual que {max}.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {El número debe ser mayor que {min}.}
+		other {El número debe ser mayor o igual que {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} debe tener al menos {minlength} caracteres",
 	"components.form-element.input.url.typeMismatch": "La dirección URL no es válida",
 	"components.form-element.valueMissing": "{label} es obligatoria.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Se encontró {count} error en la información que envió} other {Se encontraron {count} errores en la información que envió}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Se encontró {count} error en la información que envió}
+		many {Se encontraron {count} errores en la información que envió}
+		other {Se encontraron {count} errores en la información que envió}
+	}`,
 	"components.input-color.backgroundColor": "Color de fondo",
 	"components.input-color.foregroundColor": "Color del primer plano",
 	"components.input-color.none": "Ninguno",
@@ -104,8 +150,18 @@ export default {
 	"components.overflow-group.moreActions": "Más acciones",
 	"components.pager-load-more.action": "Cargar más",
 	"components.pager-load-more.action-with-page-size": "Cargar {count} más",
-	"components.pageable.info": "{count, plural, one {{countFormatted} elemento} other {{countFormatted} elementos}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} elemento} other {{countFormatted} de {totalCountFormatted} elementos}}",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} elemento}
+		many {{countFormatted} elementos}
+		other {{countFormatted} elementos}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} de {totalCountFormatted} elemento}
+		many {{countFormatted} de {totalCountFormatted} elementos}
+		other {{countFormatted} de {totalCountFormatted} elementos}
+	}`,
 	"components.pager-load-more.status-loading": "Cargando más elementos",
 	"components.selection.action-hint": "Seleccione un elemento para realizar esta acción.",
 	"components.selection.select-all": "Seleccionar todo",
@@ -119,7 +175,26 @@ export default {
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.table-col-sort-button.addSortOrder": "Seleccione para agregar el orden de clasificación",
 	"components.table-col-sort-button.changeSortOrder": "Seleccione para cambiar el orden de clasificación",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Clasificado de más nuevo a más antiguo} other {Clasificado de más antiguo a más nuevo}}} numbers {{direction, select, desc {Clasificado de más alto a más bajo} other {Clasificado de más bajo a más alto}}} words {{direction, select, desc {Clasificado de la Z a la A} other {Clasificado de la A a la Z}}} value {Clasificado {selectedMenuItemText}} other {{direction, select, desc {Clasificado de manera descendente} other {Clasificado de manera ascendente}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Clasificado de más nuevo a más antiguo}
+			other {Clasificado de más antiguo a más nuevo}
+		}}
+		numbers {{direction, select,
+			desc {Clasificado de más alto a más bajo}
+			other {Clasificado de más bajo a más alto}
+		}}
+		words {{direction, select,
+			desc {Clasificado de la Z a la A}
+			other {Clasificado de la A a la Z}
+		}}
+		value {Clasificado {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Clasificado de manera descendente}
+			other {Clasificado de manera ascendente}
+		}}
+	}`,
 	"components.table-controls.label": "Acciones de la tabla",
 	"components.tabs.next": "Desplazarse hacia adelante",
 	"components.tabs.previous": "Desplazarse hacia atrás",

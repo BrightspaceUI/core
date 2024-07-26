@@ -20,14 +20,33 @@ export default {
 	"components.filter.clearAnnounce": "{filterName} için filtreler temizleniyor",
 	"components.filter.clearDescription": "{filterName} için filtreleri temizle",
 	"components.filter.loading": "Filtreler yükleniyor",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Filtre uygulanmadı.} one {{number} filtre uygulandı.} other {{number} filtre uygulandı.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Filtre uygulanmadı.}
+		one {{number} filtre uygulandı.}
+		other {{number} filtre uygulandı.}
+	}`,
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Uygun filtre yok",
-	"components.filter.searchResults": "{number, plural, =0 {Arama sonucu yok} one {{number} arama sonucu} other {{number} arama sonucu}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {Arama sonucu yok}
+		one {{number} arama sonucu}
+		other {{number} arama sonucu}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Seçilen filtreler önce görünür.",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Son saat} other {Son {num} saat}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Bugün} one {Son {num} gün} other {Son {num} gün}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Son saat}
+		other {Son {num} saat}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {Bugün}
+		one {Son {num} gün}
+		other {Son {num} gün}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Son {num} ay",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, tarihleri seçmek için genişletin",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} - {endValue}",
@@ -37,13 +56,35 @@ export default {
 	"components.form-element.defaultError": "{label} geçersiz.",
 	"components.form-element.defaultFieldLabel": "Alan",
 	"components.form-element.input.email.typeMismatch": "E-posta geçerli değil",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Sayı {min} değerinden büyük ve {max} değerinden küçük olmalıdır.} other {Sayı {min} değerinden büyük ve {max} değerinden küçük veya bu değere eşit olmalıdır.}}} other {{maxExclusive, select, true {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük olmalıdır.} other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük veya bu değere eşit olmalıdır.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Sayı {max} değerinden küçük olmalıdır.} other {Sayı {max} değerinden küçük veya bu değere eşit olmalıdır.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Sayı {min} değerinden büyük olmalıdır.} other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {Sayı {min} değerinden büyük ve {max} değerinden küçük olmalıdır.}
+			other {Sayı {min} değerinden büyük ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
+		}}
+		other {{maxExclusive, select,
+			true {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük olmalıdır.}
+			other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {Sayı {max} değerinden küçük olmalıdır.}
+		other {Sayı {max} değerinden küçük veya bu değere eşit olmalıdır.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {Sayı {min} değerinden büyük olmalıdır.}
+		other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} en az {minlength} karakter olmalıdır",
 	"components.form-element.input.url.typeMismatch": "URL geçerli değil",
 	"components.form-element.valueMissing": "{label} zorunludur.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Gönderdiğiniz bilgilerde {count} hata bulundu} other {Gönderdiğiniz bilgilerde {count} hata bulundu}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Gönderdiğiniz bilgilerde {count} hata bulundu}
+		other {Gönderdiğiniz bilgilerde {count} hata bulundu}
+	}`,
 	"components.input-color.backgroundColor": "Arka Plan Rengi",
 	"components.input-color.foregroundColor": "Ön Plan Rengi",
 	"components.input-color.none": "Yok",
@@ -70,8 +111,8 @@ export default {
 	"components.input-date.today": "Bugün",
 	"components.input-number.hintInteger": "Bu alanda yalnızca tam sayı değerleri kabul edilir (ondalık sayı kabul edilmez)",
 	"components.input-number.hintDecimalDuplicate": "Bu sayıda zaten bir ondalık var",
-	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül \",\" karakterini kullanın",
-	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta \".\" karakterini kullanın",
+	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül “,” karakterini kullanın",
+	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta “.” karakterini kullanın",
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.defaultPlaceholder": "Ara...",
 	"components.input-search.search": "Arama",
@@ -104,8 +145,16 @@ export default {
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.pager-load-more.action": "Daha Fazla Yükle",
 	"components.pager-load-more.action-with-page-size": "{count} Tane Daha Yükle",
-	"components.pageable.info": "{count, plural, one {{countFormatted} öğe} other {{countFormatted} öğe}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} / {totalCountFormatted} öğe} other {{countFormatted} / {totalCountFormatted} öğe}}",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} öğe}
+		other {{countFormatted} öğe}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} / {totalCountFormatted} öğe}
+		other {{countFormatted} / {totalCountFormatted} öğe}
+	}`,
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
 	"components.selection.action-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin.",
 	"components.selection.select-all": "Tümünü Seç",
@@ -119,7 +168,26 @@ export default {
 	"components.switch.conditions": "Koşullar karşılanmalıdır",
 	"components.table-col-sort-button.addSortOrder": "Sıralama düzeni eklemek için seçin",
 	"components.table-col-sort-button.changeSortOrder": "Sıralama düzenini değiştirmek için seçin",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Yeniden eskiye sıralandı} other {Eskiden yeniye sıralandı}}} numbers {{direction, select, desc {Yüksekten düşüğe sıralandı} other {Düşükten yükseğe sıralandı}}} words {{direction, select, desc {Z'den A'ya sıralandı} other {A'dan Z'ye sıralandı}}} value {{selectedMenuItemText} sıralandı} other {{direction, select, desc {Azalan şekilde sıralandı} other {Artan şekilde sıralandı}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Yeniden eskiye sıralandı}
+			other {Eskiden yeniye sıralandı}
+		}}
+		numbers {{direction, select,
+			desc {Yüksekten düşüğe sıralandı}
+			other {Düşükten yükseğe sıralandı}
+		}}
+		words {{direction, select,
+			desc {Z’den A’ya sıralandı}
+			other {A’dan Z’ye sıralandı}
+		}}
+		value {{selectedMenuItemText} sıralandı}
+		other {{direction, select,
+			desc {Azalan şekilde sıralandı}
+			other {Artan şekilde sıralandı}
+		}}
+	}`,
 	"components.table-controls.label": "Tablo için eylemler",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",

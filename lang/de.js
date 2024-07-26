@@ -20,14 +20,33 @@ export default {
 	"components.filter.clearAnnounce": "Filter für {filterName} werden gelöscht",
 	"components.filter.clearDescription": "Filter für {filterName} löschen",
 	"components.filter.loading": "Filter werden geladen",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Keine Filter angewendet.} one {{number} Filter angewendet.} other {{number} Filter angewendet.}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {Keine Filter angewendet.}
+		one {{number} Filter angewendet.}
+		other {{number} Filter angewendet.}
+	}`,
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Keine verfügbaren Filter",
-	"components.filter.searchResults": "{number, plural, =0 {Kein Suchergebnis} one {{number} Suchergebnis} other {{number} Suchergebnisse}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {Kein Suchergebnis}
+		one {{number} Suchergebnis}
+		other {{number} Suchergebnisse}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Ausgewählte Filter werden zuerst angezeigt.",
 	"components.filter.singleDimensionDescription": "Filtern nach: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Letzte Stunde} other {Letzte {num} Stunden}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Heute} one {Letzter Tag} other {Letzte {num} Tage}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {Letzte Stunde}
+		other {Letzte {num} Stunden}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {Heute}
+		one {Letzter Tag}
+		other {Letzte {num} Tage}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Letzte {num} Monate",
 	"components.filter-dimension-set-date-time-range-value.label": "{text} – erweitern, um Daten auszuwählen",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} nach {endValue}",
@@ -37,13 +56,35 @@ export default {
 	"components.form-element.defaultError": "{label} ist ungültig.",
 	"components.form-element.defaultFieldLabel": "Feld",
 	"components.form-element.input.email.typeMismatch": "Die E-Mail-Adresse ist ungültig",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Zahl muss größer als {min} und kleiner als {max} sein.} other {Zahl muss größer als {min} und kleiner als oder gleich {max} sein.}}} other {{maxExclusive, select, true {Zahl muss größer als oder gleich {min} und kleiner als {max} sein.} other { Zahl muss größer als oder gleich {min} und kleiner als oder gleich {max} sein.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Zahl muss kleiner als {max} sein.} other {Zahl muss kleiner als oder gleich {max} sein.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Zahl muss größer als {min} sein.} other {Zahl muss größer als oder gleich {min} sein.}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {Zahl muss größer als {min} und kleiner als {max} sein.}
+			other {Zahl muss größer als {min} und kleiner als oder gleich {max} sein.}
+		}}
+		other {{maxExclusive, select,
+			true {Zahl muss größer als oder gleich {min} und kleiner als {max} sein.}
+			other { Zahl muss größer als oder gleich {min} und kleiner als oder gleich {max} sein.}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {Zahl muss kleiner als {max} sein.}
+		other {Zahl muss kleiner als oder gleich {max} sein.}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {Zahl muss größer als {min} sein.}
+		other {Zahl muss größer als oder gleich {min} sein.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} muss mindestens {minlength} Zeichen enthalten",
 	"components.form-element.input.url.typeMismatch": "URL ist ungültig",
 	"components.form-element.valueMissing": "{label} ist erforderlich.",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Die von Ihnen übermittelten Informationen enthalten {count} Fehler} other {Die von Ihnen übermittelten Informationen enthalten {count} Fehler}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		one {Die von Ihnen übermittelten Informationen enthalten {count} Fehler}
+		other {Die von Ihnen übermittelten Informationen enthalten {count} Fehler}
+	}`,
 	"components.input-color.backgroundColor": "Hintergrundfarbe",
 	"components.input-color.foregroundColor": "Vordergrundfarbe",
 	"components.input-color.none": "Keine",
@@ -70,8 +111,8 @@ export default {
 	"components.input-date.today": "Heute",
 	"components.input-number.hintInteger": "Dieses Feld akzeptiert nur Ganzzahlen (keine Dezimalstellen)",
 	"components.input-number.hintDecimalDuplicate": "Diese Zahl enthält bereits eine Dezimale",
-	"components.input-number.hintDecimalIncorrectComma": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Komma \",“",
-	"components.input-number.hintDecimalIncorrectPeriod": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Zeichen \".“",
+	"components.input-number.hintDecimalIncorrectComma": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Komma „,“",
+	"components.input-number.hintDecimalIncorrectPeriod": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Zeichen „.“",
 	"components.input-search.clear": "Suche löschen",
 	"components.input-search.defaultPlaceholder": "Suchen...",
 	"components.input-search.search": "Suchen",
@@ -104,8 +145,16 @@ export default {
 	"components.overflow-group.moreActions": "Weitere Aktionen",
 	"components.pager-load-more.action": "Mehr laden",
 	"components.pager-load-more.action-with-page-size": "{count} weitere laden",
-	"components.pageable.info": "{count, plural, one {{countFormatted} Element} other {{countFormatted} Elemente}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} von {totalCountFormatted} Element} other {{countFormatted} von {totalCountFormatted} Elemente}}",
+	"components.pageable.info":
+	`{count, plural,
+		one {{countFormatted} Element}
+		other {{countFormatted} Elemente}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		one {{countFormatted} von {totalCountFormatted} Element}
+		other {{countFormatted} von {totalCountFormatted} Elemente}
+	}`,
 	"components.pager-load-more.status-loading": "Weitere Elemente werden geladen",
 	"components.selection.action-hint": "Wählen Sie ein Element aus, um diese Aktion auszuführen.",
 	"components.selection.select-all": "Alle auswählen",
@@ -119,7 +168,26 @@ export default {
 	"components.switch.conditions": "Bedingungen müssen erfüllt sein",
 	"components.table-col-sort-button.addSortOrder": "Wählen Sie diese Option, um eine Sortierreihenfolge hinzuzufügen",
 	"components.table-col-sort-button.changeSortOrder": "Wählen Sie diese Option, um die Sortierreihenfolge zu ändern",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Von neu nach alt sortiert} other {Von alt nach neu sortiert}}} numbers {{direction, select, desc {Von hoch nach niedrig sortiert} other {Von niedrig nach hoch sortiert}}} words {{direction, select, desc {Von Z nach A sortiert} other {Von A nach Z sortiert}}} value {Sortiert {selectedMenuItemText}} other {{direction, select, desc {Absteigend sortiert} other {Aufsteigend sortiert}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {Von neu nach alt sortiert}
+			other {Von alt nach neu sortiert}
+		}}
+		numbers {{direction, select,
+			desc {Von hoch nach niedrig sortiert}
+			other {Von niedrig nach hoch sortiert}
+		}}
+		words {{direction, select,
+			desc {Von Z nach A sortiert}
+			other {Von A nach Z sortiert}
+		}}
+		value {Sortiert {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Absteigend sortiert}
+			other {Aufsteigend sortiert}
+		}}
+	}`,
 	"components.table-controls.label": "Aktionen für Tabelle",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",

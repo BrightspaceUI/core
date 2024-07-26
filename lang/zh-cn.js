@@ -17,17 +17,33 @@ export default {
 	"components.filter.clearAllAnnounceOverride": "正在清除 {filterText} 的所有筛选器",
 	"components.filter.clearAllDescription": "清除所有筛选器",
 	"components.filter.clearAllDescriptionOverride": "清除 {filterText} 的所有筛选器",
-	"components.filter.clearAnnounce": "正在清除筛选器：{ filterName }",
-	"components.filter.clearDescription": "清除筛选条件：{ filterName }",
+	"components.filter.clearAnnounce": "正在清除筛选器：{filterName}",
+	"components.filter.clearDescription": "清除筛选条件：{filterName}",
 	"components.filter.loading": "正在加载筛选器",
-	"components.filter.filterCountDescription": "{number, plural, =0 {未应用筛选器。} other {已应用 {number} 个筛选器。}}",
+	"components.filter.filterCountDescription":
+	`{number, plural,
+		=0 {未应用筛选器。}
+		other {已应用 {number} 个筛选器。}
+	}`,
 	"components.filter.filters": "个筛选条件",
 	"components.filter.noFilters": "无可用筛选器",
-	"components.filter.searchResults": "{number, plural, =0 {无搜索结果} other {{number} 个搜索结果}}",
+	"components.filter.searchResults":
+	`{number, plural,
+		=0 {无搜索结果}
+		other {{number} 个搜索结果}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}。先显示所选筛选器。",
 	"components.filter.singleDimensionDescription": "筛选依据：{filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {过去 1 小时} other {过去 {num} 小时}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {今天} other {过去 {num} 天}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+	`{num, plural,
+		=1 {过去 1 小时}
+		other {过去 {num} 小时}
+	}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+	`{num, plural,
+		=0 {今天}
+		other {过去 {num} 天}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "过去 {num} 个月",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}，扩展以选择日期",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} 至 {endValue}",
@@ -37,13 +53,34 @@ export default {
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",
 	"components.form-element.input.email.typeMismatch": "电子邮件无效",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {数目必须大于 {min} 且小于 {max}。} other {数目必须大于 {min} 且小于或等于 {max}。}}} other {{maxExclusive, select, true {数目必须大于或等于 {min} 且小于 {max}。} other {数目必须大于或等于 {min} 且小于或等于 {max}。}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {数字必须小于 {max}。} other {数字必须小于等于 {max}。}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {数字必须大于 {min}。} other {数字必须大于等于 {min}。}}",
+	"components.form-element.input.number.rangeError":
+	`{minExclusive, select,
+		true {{maxExclusive, select,
+			true {数目必须大于 {min} 且小于 {max}。}
+			other {数目必须大于 {min} 且小于或等于 {max}。}
+		}}
+		other {{maxExclusive, select,
+			true {数目必须大于或等于 {min} 且小于 {max}。}
+			other {数目必须大于或等于 {min} 且小于或等于 {max}。}
+		}}
+	}`,
+	"components.form-element.input.number.rangeOverflow":
+	`{maxExclusive, select,
+		true {数字必须小于 {max}。}
+		other {数字必须小于等于 {max}。}
+	}`,
+	"components.form-element.input.number.rangeUnderflow":
+	`{minExclusive, select,
+		true {数字必须大于 {min}。}
+		other {数字必须大于等于 {min}。}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} 必须至少为 {minlength} 个字符",
 	"components.form-element.input.url.typeMismatch": "URL 无效",
 	"components.form-element.valueMissing": "{label} 为必填项。",
-	"components.form-error-summary.errorSummary": "{count, plural, other {在您提交的信息中发现 {count} 个错误}}",
+	"components.form-error-summary.errorSummary":
+	`{count, plural,
+		other {在您提交的信息中发现 {count} 个错误}
+	}`,
 	"components.input-color.backgroundColor": "背景颜色",
 	"components.input-color.foregroundColor": "前景颜色",
 	"components.input-color.none": "无",
@@ -104,8 +141,14 @@ export default {
 	"components.overflow-group.moreActions": "更多操作",
 	"components.pager-load-more.action": "加载更多",
 	"components.pager-load-more.action-with-page-size": "再加载 {count} 个",
-	"components.pageable.info": "{count, plural, other {{countFormatted} 项}}",
-	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 项}}",
+	"components.pageable.info":
+	`{count, plural,
+		other {{countFormatted} 项}
+	}`,
+	"components.pageable.info-with-total":
+	`{totalCount, plural,
+		other {{countFormatted}/{totalCountFormatted} 项}
+	}`,
 	"components.pager-load-more.status-loading": "加载更多项目",
 	"components.selection.action-hint": "选择一个项目后才能执行此操作。",
 	"components.selection.select-all": "全选",
@@ -119,7 +162,26 @@ export default {
 	"components.switch.conditions": "必须符合条件",
 	"components.table-col-sort-button.addSortOrder": "选择添加排序顺序",
 	"components.table-col-sort-button.changeSortOrder": "选择更改排序顺序",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {从新到旧排序} other {从旧到新排序}}} numbers {{direction, select, desc {从高到低排序} other {从低到高排序}}} words {{direction, select, desc {从 Z 到 A 排序} other {从 A 到 Z 排序}}} value {{selectedMenuItemText} 排序} other {{direction, select, desc {降序排序} other {升序排序}}}}",
+	"components.table-col-sort-button.title":
+	`{sourceType, select,
+		dates {{direction, select,
+			desc {从新到旧排序}
+			other {从旧到新排序}
+		}}
+		numbers {{direction, select,
+			desc {从高到低排序}
+			other {从低到高排序}
+		}}
+		words {{direction, select,
+			desc {从 Z 到 A 排序}
+			other {从 A 到 Z 排序}
+		}}
+		value {{selectedMenuItemText} 排序}
+		other {{direction, select,
+			desc {降序排序}
+			other {升序排序}
+		}}
+	}`,
 	"components.table-controls.label": "对表格的操作",
 	"components.tabs.next": "向前滚动",
 	"components.tabs.previous": "向后滚动",
