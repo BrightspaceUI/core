@@ -455,6 +455,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 						const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
 						if (nestedListItems.length) {
 							previousElement = nestedListItems[nestedListItems.length - 1];
+						} else {
+							break;
 						}
 					}
 				}	while (nestedList);
