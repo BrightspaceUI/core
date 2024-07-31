@@ -34,8 +34,9 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list style="width: 400px;">
-						<d2l-list-controls slot="controls" no-sticky>
-							<d2l-button-subtle text="Action"></d2l-button-subtle>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-controls>
 						<d2l-list-item label="Item 1" key="1" selectable selected>Item 1</d2l-list-item>
 						<d2l-list-item label="Item 2" key="2" selectable>Item 2</d2l-list-item>
