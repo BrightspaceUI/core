@@ -201,6 +201,33 @@ function createGradesRows(opts) {
 	`;
 }
 
+async function createTableFixtureShared(type, rtl, tableContents, opts = {}) {
+	const tableClasses = { 'd2l-table': true, 'vdiff-target': opts.stickyHeaders };
+	const tag = defineCE(
+		class extends LitElement {
+			static get styles() { return [tableStyles]; }
+			render() {
+				const wrapper = html`
+					<d2l-table-wrapper
+						?no-column-border="${opts.noColumnBorder}"
+						?sticky-headers="${opts.stickyHeaders}"
+						?sticky-headers-scroll-wrapper="${opts.stickyHeadersScrollWrapper}"
+						style="--d2l-input-position: static;"
+						type="${type}">
+						${ opts.noTable ? tableContents : html`
+							<table class="${classMap(tableClasses)}" ?no-column-border="${opts.legacyNoColumnBorder}">${tableContents}</table>
+						`}
+					</d2l-table-wrapper>`;
+				if (!opts.bottomMargin) return wrapper;
+				return html`<div style="margin-bottom: 1000px;">${wrapper}</div>`;
+			}
+		}
+	);
+	return fixture(`<${tag}></${tag}>`,
+		{ rtl, viewport: opts?.viewport || { width: 500 } }
+	);
+}
+
 describe('table', () => {
 
 	[
@@ -211,30 +238,7 @@ describe('table', () => {
 	].forEach(({ type, rtl }) => {
 		describe(`${rtl ? 'rtl' : 'ltr'}-${type}`, () => {
 			async function createTableFixture(tableContents, opts = {}) {
-				const tableClasses = { 'd2l-table': true, 'vdiff-target': opts.stickyHeaders };
-				const tag = defineCE(
-					class extends LitElement {
-						static get styles() { return [tableStyles]; }
-						render() {
-							const wrapper = html`
-								<d2l-table-wrapper
-									?no-column-border="${opts.noColumnBorder}"
-									?sticky-headers="${opts.stickyHeaders}"
-									?sticky-headers-scroll-wrapper="${opts.stickyHeadersScrollWrapper}"
-									style="--d2l-input-position: static;"
-									type="${type}">
-									${ opts.noTable ? tableContents : html`
-										<table class="${classMap(tableClasses)}" ?no-column-border="${opts.legacyNoColumnBorder}">${tableContents}</table>
-									`}
-								</d2l-table-wrapper>`;
-							if (!opts.bottomMargin) return wrapper;
-							return html`<div style="margin-bottom: 1000px;">${wrapper}</div>`;
-						}
-					}
-				);
-				return fixture(`<${tag}></${tag}>`,
-					{ rtl, viewport: opts?.viewport || { width: 500 } }
-				);
+				return createTableFixtureShared(type, rtl, tableContents, opts);
 			}
 
 			describe('nonstick', () => {
@@ -966,4 +970,76 @@ describe('table', () => {
 			});
 		});
 	});
+
+	describe('mutations', () => {
+
+		describe('rounded-corners', () => {
+
+			let elem;
+			beforeEach(async() => {
+				const parent = await createTableFixtureShared('default', false, html`
+					<thead>
+						<tr><th>Header One</th></tr>
+						<tr><th>Header Two</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Body One</td></tr>
+						<tr><td>Body Two</td></tr>
+						<tr><td>Body Three</td></tr>
+					</tbody>
+				`);
+				elem = parent.shadowRoot.querySelector('d2l-table-wrapper');
+			});
+
+			it('first-removed', async() => {
+				elem.querySelector('table > thead > :first-child').remove();
+				await expect(elem).to.be.golden();
+			});
+
+			it('last-removed', async() => {
+				elem.querySelector('table > tbody > :last-child').remove();
+				await expect(elem).to.be.golden();
+			});
+
+		});
+
+		describe('selection', () => {
+
+			it('first-removed', async() => {
+				const parent = await createTableFixtureShared('default', false, html`
+					<thead>
+						<tr><th>Header One</th></tr>
+						<tr><th>Header Two</th></tr>
+					</thead>
+					<tbody>
+						<tr selected><td>Body One</td></tr>
+						<tr><td>Body Two</td></tr>
+						<tr><td>Body Three</td></tr>
+					</tbody>
+				`);
+				const elem = parent.shadowRoot.querySelector('d2l-table-wrapper');
+				elem.querySelector('table > tbody > :first-child').remove();
+				await expect(elem).to.be.golden();
+			});
+
+			it('last-removed', async() => {
+				const parent = await createTableFixtureShared('default', false, html`
+					<thead>
+						<tr><th>Header</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Body One</td></tr>
+						<tr><td>Body Two</td></tr>
+						<tr selected><td>Body Three</td></tr>
+					</tbody>
+				`);
+				const elem = parent.shadowRoot.querySelector('d2l-table-wrapper');
+				elem.querySelector('table > tbody > :last-child').remove();
+				await expect(elem).to.be.golden();
+			});
+
+		});
+
+	});
+
 });
