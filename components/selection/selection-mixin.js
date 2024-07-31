@@ -12,12 +12,12 @@ const keyCodes = {
 
 export class SelectionInfo {
 
-	constructor(keys, state, numDisabledSelectedKeys) {
+	constructor(keys, state, numDisabledDeselectedKeys) {
 		if (!keys) keys = [];
-		if (!numDisabledSelectedKeys) numDisabledSelectedKeys = 0;
+		if (!numDisabledDeselectedKeys) numDisabledDeselectedKeys = 0;
 		if (!state) state = SelectionInfo.states.none;
 		this._keys = keys;
-		this._numDisabledSelectedKeys = numDisabledSelectedKeys;
+		this._numDisabledDeselectedKeys = numDisabledDeselectedKeys;
 		this._state = state;
 	}
 
@@ -25,8 +25,8 @@ export class SelectionInfo {
 		return this._keys;
 	}
 
-	get numDisabledSelectedKeys() {
-		return this._numDisabledSelectedKeys;
+	get numDisabledDeselectedKeys() {
+		return this.numDisabledDeselectedKeys;
 	}
 
 	get state() {
@@ -94,7 +94,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	getSelectionInfo() {
 		let state = SelectionInfo.states.none;
-		let numDisabledSelectedKeys = 0;
+		let numDisabledDeselectedKeys = 0;
 		const keys = [];
 
 		if (this._selectAllPages) {
@@ -103,7 +103,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
-				if (selectable.disabled && !selectable.selected) numDisabledSelectedKeys++;
+				if (selectable.disabled && !selectable.selected) numDisabledDeselectedKeys++;
 			});
 
 			if (keys.length > 0) {
@@ -112,7 +112,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			}
 		}
 
-		return new SelectionInfo(keys, state, numDisabledSelectedKeys);
+		return new SelectionInfo(keys, state, numDisabledDeselectedKeys);
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
