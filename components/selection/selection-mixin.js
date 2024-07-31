@@ -116,7 +116,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
-		if (this.selectionSingle) return;
+		if (this.selectionSingle && selected) return;
 		this._selectAllPages = (selected && selectAllPages);
 
 		const { allEnabledSelected } = this.getSelectionInfo();
