@@ -453,6 +453,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			r.classList.toggle('d2l-table-row-first', r === firstRow);
 			r.classList.toggle('d2l-table-row-last', r === lastRow);
 			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && isSelected);
+			if (r === lastRow) {
+				r.classList.remove('d2l-table-selected-previous');
+			}
 
 			Array.from(r.cells).forEach((c, index) => {
 				if (isHeader && !CSS.supports('selector(:has(a, b))')) this._checkSiblingSortableCells(c);
@@ -539,7 +542,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
 		this._registerMutationObserver('_tableMutationObserver', this._handleTableChange.bind(this), this._table, {
-			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true

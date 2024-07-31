@@ -23,17 +23,15 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String |  Minimum valid date that could be selected by a user. |
 | `selected-value` | String | Currently selected date. |
-| `summary` | String | Summary of the calendar for accessibility. |
+| `summary` | String | ACCESSIBILITY: Summary of the calendar used by screen reader users for identifying the calendar and/or summarizing its purpose. |
 
 ### Events
 
 * `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 calendar date format (`YYYY-MM-DD`).
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
+## Accessibility
 
-To make your usage of `d2l-calendar` accessible, use the following property when applicable:
+The Daylight calendar (`d2l-calendar`) generally follows the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). Of note is the keyboard behaviour following the [grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/).
 
-| Attribute | Description |
-|--|--|
-| `summary` | Use to provide more context on the calendar usage. |
+The W3C recommendations, specifically relating to `attributes` on the calendar's table elements, were followed as much as possible. At the time of development it was not possible to create a calendar with a `grid` role which had the desired appearance, functionality, and supported all browser/screen reader combinations that we support; the expected screen reader experience was replicated as much as possible (e.g., announcing the expected content).
