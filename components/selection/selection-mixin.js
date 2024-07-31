@@ -12,21 +12,15 @@ const keyCodes = {
 
 export class SelectionInfo {
 
-	constructor(keys, state, numDisabledDeselectedKeys) {
+	constructor(keys, state) {
 		if (!keys) keys = [];
-		if (!numDisabledDeselectedKeys) numDisabledDeselectedKeys = 0;
 		if (!state) state = SelectionInfo.states.none;
 		this._keys = keys;
-		this._numDisabledDeselectedKeys = numDisabledDeselectedKeys;
 		this._state = state;
 	}
 
 	get keys() {
 		return this._keys;
-	}
-
-	get numDisabledDeselectedKeys() {
-		return this.numDisabledDeselectedKeys;
 	}
 
 	get state() {
@@ -94,7 +88,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	getSelectionInfo() {
 		let state = SelectionInfo.states.none;
-		let numDisabledDeselectedKeys = 0;
 		const keys = [];
 
 		if (this._selectAllPages) {
@@ -103,7 +96,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
-				if (selectable.disabled && !selectable.selected) numDisabledDeselectedKeys++;
 			});
 
 			if (keys.length > 0) {
@@ -112,16 +104,27 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			}
 		}
 
-		return new SelectionInfo(keys, state, numDisabledDeselectedKeys);
+		return new SelectionInfo(keys, state);
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
-		if (this.selectionSingle && selected) return;
-
+		if (this.selectionSingle) return;
 		this._selectAllPages = (selected && selectAllPages);
 
+		let allEnabledSelected = true;
 		this._selectionSelectables.forEach(selectable => {
-			if (!selectable.disabled && !!selectable.selected !== selected) {
+			if (!selectable.selected && !selectable.disabled) allEnabledSelected = false;
+		});
+
+		this._selectionSelectables.forEach(selectable => {
+			if (!selectable.disabled) {
+				selectable.selected = !allEnabledSelected;
+			}
+		});
+
+		this._selectionSelectables.forEach(selectable => {
+			if (selectable.disabled) return;
+			if (selectable.selected !== selected) {
 				selectable.selected = selected;
 			}
 		});
