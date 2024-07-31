@@ -147,16 +147,13 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckbox() {
-		const indeterminate = this.selectionInfo.state === SelectionInfo.states.some
-			|| this.selectionInfo.state === SelectionInfo.states.all && this.selectionInfo.numDisabledKeys;
-
 		return this.selectable ? html`
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?disabled="${this.selectionDisabled}"
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
-				?_indeterminate="${indeterminate}"
+				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
 				label="${this.label}"
 				?selected="${this.selected}"

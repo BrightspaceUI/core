@@ -49,8 +49,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 
-		const indeterminate = this.selectionInfo.state === SelectionInfo.states.some
-			|| this.selectionInfo.state === SelectionInfo.states.all && this.selectionInfo.numDisabledKeys;
+		const indeterminate = this.selectionInfo.state === SelectionInfo.states.some;
 
 		return html`
 			<d2l-input-checkbox
