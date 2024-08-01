@@ -1,8 +1,8 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
+import { _generateResetStyles, heading2Styles, heading3Styles } from '../typography/styles.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit';
-import { heading2Styles, heading3Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
@@ -44,7 +44,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	static get styles() {
-		return [ dialogStyles, heading2Styles, heading3Styles, css`
+		return [ _generateResetStyles(':host'), dialogStyles, heading2Styles, heading3Styles, css`
 
 			.d2l-dialog-footer.d2l-footer-no-content {
 				display: none;

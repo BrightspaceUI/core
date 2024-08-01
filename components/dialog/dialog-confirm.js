@@ -1,8 +1,8 @@
+import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
@@ -28,7 +28,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ dialogStyles, heading3Styles, css`
+		return [ _generateResetStyles(':host'), dialogStyles, heading3Styles, css`
 
 			.d2l-dialog-outer {
 				max-width: 420px;
