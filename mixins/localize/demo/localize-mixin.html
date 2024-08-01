@@ -8,7 +8,7 @@
 			import '../../../components/demo/demo-page.js';
 			import './localize-mixin-greeting.js';
 			import './localize-mixin-mission.js';
-			import '../localize-mixin.js';
+			import { Localize } from '../localize-mixin.js';
 
 			const resources = {
 				en: {
@@ -19,16 +19,16 @@
 				}
 			};
 
+			let localizer = {};
 			const el = document.querySelector('div');
 			const render = () => el.innerHTML = localizer.localize('basic', { employerName: 'D2L' });
 
-			const localizer = new Localize({
+			localizer = new Localize({
 				importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 1000)),
 				onResourcesChange: render
 			});
 
-			await localizer.connected;
-			hideSkeletons();
+			await localizer.ready;
 
 		</script>
 	</head>

@@ -181,13 +181,13 @@ export const Localize = class extends getLocalizeClass() {
 		this.connect(() => this.requestUpdate);
 	}
 
-	get connected() {
+	get ready() {
 		return this.__resourcesLoadedPromise;
 	}
 
 	connect() {
 		super.connect();
-		return this.__resourcesLoadedPromise;
+		return this.ready;
 	}
 
 	disconnect() {
