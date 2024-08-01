@@ -12,23 +12,17 @@ const keyCodes = {
 
 export class SelectionInfo {
 
-	constructor(keys, state, allEnabledSelected, hasDisabledItems) {
+	constructor(keys, state, allEnabledSelected) {
 		if (!allEnabledSelected) allEnabledSelected = false;
-		if (!hasDisabledItems) hasDisabledItems = false;
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
 		this._allEnabledSelected = allEnabledSelected;
-		this._hasDisabledItems = hasDisabledItems;
 		this._keys = keys;
 		this._state = state;
 	}
 
 	get allEnabledSelected() {
 		return this._allEnabledSelected;
-	}
-
-	get hasDisabledItems() {
-		return this._hasDisabledItems;
 	}
 
 	get keys() {
@@ -100,7 +94,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	getSelectionInfo() {
 		let allEnabledSelected = true;
-		let hasDisabledItems = false;
 		let state = SelectionInfo.states.none;
 		const keys = [];
 
@@ -110,7 +103,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (!selectable.disabled && !selectable.selected) allEnabledSelected = false;
-				if (selectable.disabled) hasDisabledItems = true;
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
 			});
 
@@ -120,17 +112,17 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			}
 		}
 
-		return new SelectionInfo(keys, state, allEnabledSelected, hasDisabledItems);
+		return new SelectionInfo(keys, state, allEnabledSelected);
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
 		if (this.selectionSingle && selected) return;
 		this._selectAllPages = (selected && selectAllPages);
 
-		const { allEnabledSelected, hasDisabledItems } = this.getSelectionInfo();
+		const { allEnabledSelected } = this.getSelectionInfo();
 
 		this._selectionSelectables.forEach(selectable => {
-			if (!hasDisabledItems) {
+			if (this.selectionSingle || this._selectAllPages) {
 				if (selectable.selected !== selected) selectable.selected = selected;
 			} else if (!selectable.disabled && selectable.selected !== !allEnabledSelected) {
 				selectable.selected = !allEnabledSelected;
