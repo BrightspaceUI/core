@@ -34,7 +34,9 @@ describe('meter-linear', () => {
 	[true, false].forEach(rtl => {
 		[
 			{ name: 'normal-text-fraction', template: html`<d2l-meter-linear value="4" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },
+			{ name: 'normal-text-fraction-not-embedded', template: html`<d2l-meter-linear value="4" max="10" text="Visited"></d2l-meter-linear>` },
 			{ name: 'normal-text-percent', template: html`<d2l-meter-linear value="4" max="10" text="Visited: {%}"></d2l-meter-linear>` },
+			{ name: 'normal-text-percent-not-embedded', template: html`<d2l-meter-linear value="4" max="10" text="Visited" percent></d2l-meter-linear>` },
 			{ name: 'text-inline-text-fraction', template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited"></d2l-meter-linear>` },
 			{ name: 'text-inline-text-percent', template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited" percent></d2l-meter-linear>` },
 		].forEach(({ name, template }) => {
