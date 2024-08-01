@@ -1,7 +1,7 @@
 import '../../button/button.js';
 import '../dialog-confirm.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
-import { interferingStyleWrapper } from '../typography/test/typography-shared-contents.js';
+import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
 const buttons = html`
 	<d2l-button slot="footer" primary>Yes</d2l-button>
