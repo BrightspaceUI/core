@@ -2,7 +2,7 @@ import '../dialog-fullscreen.js';
 import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 import { footer, general, long, tabs, wrapping } from './dialog-shared-contents.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { interferingStyleWrapper } from '../typography/test/typography-shared-contents.js';
+import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, noPadding: false };
