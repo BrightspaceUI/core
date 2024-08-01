@@ -1,6 +1,7 @@
 import '../../button/button.js';
 import '../dialog-confirm.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { interferingStyleWrapper } from '../typography/test/typography-shared-contents.js';
 
 const buttons = html`
 	<d2l-button slot="footer" primary>Yes</d2l-button>
@@ -71,6 +72,17 @@ describe('dialog-confirm', () => {
 					});
 				});
 			});
+
+			it('reset-styles', async() => {
+				const dialog = html`
+					<d2l-dialog-confirm title-text="Title" text="Are you sure? Like be extra sure because there's no going back." opened>
+						${buttons}
+					</d2l-dialog-confirm>
+				`;
+				await fixture(interferingStyleWrapper(dialog));
+				await expect(document).to.be.golden();
+			});
+
 		});
 	});
 });
