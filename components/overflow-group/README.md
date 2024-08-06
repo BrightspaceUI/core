@@ -1,7 +1,7 @@
 # Overflow Groups
-The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. The `OverflowGroupMixin` allows for using the chomping logic without having to use those specific element types.
+An Overflow Group adds responsive behaviour to a group of buttons, links, or menus.
 
-<!-- docs: demo autoSize:false display:block size:medium -->
+<!-- docs: demo autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
@@ -26,11 +26,27 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 	<d2l-button>Delete</d2l-button>
 </d2l-overflow-group>
 ```
+## Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use when grouping 3 or more adjacent actions
+* Consider whether visible actions can be reduced
+* Use `max-to-show` to set an upper limit on how many actions are displayed before overflowing; this can prevent users from feeling overwhelmed with top-level choices
+* Use the `subtle` `opener-style` if the actions are [Subtle Buttons](../../components/button#d2l-button-subtle)
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Avoid using `min-to-show` unless users are heavily impacted when the first 1 or 2 actions overflow into the More Actions menu
+* Don't use the `icon` `opener-type` unless it's for page-level actions in the top right corner of the page, or if space is severely limited
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 ## Overflow Group [d2l-overflow-group]
+
 Items added to this container element will no longer wrap onto a second line when the container becomes too small, but will be added to a dropdown menu with configurable styling.
 
-<!-- docs: demo code properties name:d2l-overflow-group sandboxTitle:'Overflow Group' autoSize:false display:block size:medium -->
+<!-- docs: demo code properties name:d2l-overflow-group sandboxTitle:'Overflow Group' autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
@@ -108,3 +124,9 @@ getOverflowContainer(overflowItems, mini) {
   else return html`<d2l-dropdown-button text="Overflow Menu"><d2l-dropdown-menu>${overflowItems}</d2l-dropdown-menu></d2l-dropdown-button>`;
 }
 ```
+
+## Accessibility
+
+Navigation and focus order are impacted when items overflow the viewport; they are physically moved into the More Actions menu. Since this effect is not limited to visual presentation, it affects both screen reader users and sighted users equally.
+
+The accessibility and keyboard interaction of the More Actions menu aligns with [W3C's best practices for menus](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) — see [Menu](../../components/menu) for more information.
