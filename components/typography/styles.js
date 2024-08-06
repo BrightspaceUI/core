@@ -2,7 +2,8 @@ import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 
 export const _isValidCssSelector = (selector) => {
-	const re = /([a-zA-Z0-9-_ >.#:]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
+	if (selector === ':host') return true;
+	const re = /([a-zA-Z0-9-_ >.#]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
 	const match = selector.match(re);
 
 	return !!match && match.length === 1 && match[0].length === selector.length;

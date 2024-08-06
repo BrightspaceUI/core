@@ -35,12 +35,12 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('dl > dt > dd')).to.be.true;
 	});
 
-	it('should support simple :host selectors', () => {
+	it('should support simple :host selector', () => {
 		expect(_isValidCssSelector(':host')).to.be.true;
-		expect(_isValidCssSelector(':host p')).to.be.true;
 	});
 
 	it('should not support complex :host selectors', () => {
+		expect(_isValidCssSelector(':host p')).to.be.false;
 		expect(_isValidCssSelector(':host([hidden])')).to.be.false;
 		expect(_isValidCssSelector(':host([dir="rtl"])')).to.be.false;
 	});
