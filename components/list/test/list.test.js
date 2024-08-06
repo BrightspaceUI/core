@@ -218,6 +218,7 @@ describe('d2l-list', () => {
 						<d2l-list slot="nested">
 							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
 							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+							<d2l-list-item selectable selection-disabled key="L2-3" label="L2-3"></d2l-list-item>
 						</d2l-list>
 					</d2l-list-item>
 				</d2l-list>
@@ -234,13 +235,13 @@ describe('d2l-list', () => {
 			clickItemInput(elem.querySelector('[key="L2-1"]'));
 			clickItemInput(elem.querySelector('[key="L2-2"]'));
 			const e = await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(e.detail.length).to.equal(3);
+			expect(e.detail.length).to.equal(2);
 		});
 
 		it('dispatches d2l-list-selection-changes event with batched changes when root item clicked', async() => {
 			clickItemInput(elem.querySelector('[key="L1-1"]'));
 			const e = await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(e.detail.length).to.equal(3);
+			expect(e.detail.length).to.equal(4);
 		});
 
 		it('getSelectedListItems returns empty array when no items selected', async() => {
@@ -248,21 +249,25 @@ describe('d2l-list', () => {
 		});
 
 		it('getSelectedListItems returns array with root selected items only', async() => {
+			elem.querySelector('[key="L2-3"]').selected = true;
 			clickItemInput(elem.querySelector('[key="L1-1"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(elem.getSelectedListItems().length).to.equal(1);
 		});
 
-		it('getSelectedListItems returns array including nested selected items', async() => {
+		it('getSelectedListItems returns array including nested selectable items', async() => {
+			elem.querySelector('[key="L2-3"]').selected = true;
 			clickItemInput(elem.querySelector('[key="L1-1"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedListItems(true).length).to.equal(3);
+			expect(elem.getSelectedListItems(true).length).to.equal(4);
 		});
 
 		it('getSelectedListItems returns array excluding indeterminate items', async() => {
 			clickItemInput(elem.querySelector('[key="L2-1"]'));
+			clickItemInput(elem.querySelector('[key="L2-2"]'));
+			clickItemInput(elem.querySelector('[key="L2-3"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedListItems(true).length).to.equal(1);
+			expect(elem.getSelectedListItems(true).length).to.equal(2);
 		});
 
 	});
