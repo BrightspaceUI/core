@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 
 export const _isValidCssSelector = (selector) => {
+	if (selector === ':host') return true;
 	const re = /([a-zA-Z0-9-_ >.#]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
 	const match = selector.match(re);
 
@@ -47,6 +48,26 @@ export const bodyStandardStyles = css`
 		}
 	}
 `;
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateResetStyles = (selector) => {
+
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			color: var(--d2l-color-ferrite);
+			font-size: 0.95rem;
+			font-weight: 400;
+			line-height: 1.4rem;
+			text-align: start;
+			white-space: normal;
+		}
+	`;
+};
 
 /**
  * A private helper method that should not be used by general consumers

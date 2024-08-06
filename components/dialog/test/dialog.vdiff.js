@@ -1,6 +1,7 @@
 import '../dialog.js';
 import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
-import { footer, general, long } from './dialog-shared-contents.js';
+import { footer, general, long, wrapping } from './dialog-shared-contents.js';
+import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, fullHeight: false, width: 400, critical: false };
@@ -78,6 +79,12 @@ describe('dialog', () => {
 					});
 				});
 			});
+
+			it('reset-styles', async() => {
+				await fixture(interferingStyleWrapper(createDialog({ content: html`${wrapping}${footer}` })));
+				await expect(document).to.be.golden();
+			});
+
 		});
 	});
 });
