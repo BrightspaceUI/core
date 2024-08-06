@@ -203,8 +203,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					source-type="numbers"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${item}</d2l-table-col-sort-button>
-				${item === 'Size' && this.showButtons ? html`<d2l-dropdown-context-menu text="Help"></d2l-dropdown-context-menu>` : nothing}
+					?nosort="${noSort}">${item}
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}

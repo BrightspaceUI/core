@@ -10,6 +10,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
@@ -57,7 +58,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 	}
 
 	static get styles() {
-		return css`
+		return [ offscreenStyles,
+			css`
 			:host {
 				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
 				--d2l-table-col-sort-button-additional-padding-inline-start: 0px; /* stylelint-disable-line length-zero-no-unit */
@@ -127,7 +129,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			::slotted(d2l-table-col-sort-button-item[slot="items"]) {
 				display: flex;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -137,6 +139,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		this.position = 'start';
 		this.sourceType = 'unknown';
 
+		this._announcedById = getUniqueId();
 		this._describedById = getUniqueId();
 		this._hasDropdownItems = false;
 	}
@@ -153,6 +156,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 	}
 
 	render() {
+		const buttonAlert = this.nosort
+			? undefined
+			: this.desc ? 'Sorted column in descending order' : 'Sorted column in ascending order';
 		const buttonDescription = this.nosort ? this.localize('components.table-col-sort-button.addSortOrder') : this.localize('components.table-col-sort-button.changeSortOrder');
 		const buttonTitle = this.nosort
 			? undefined
@@ -172,7 +178,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				title="${ifDefined(buttonTitle)}"
 				type="button">
 				<slot></slot>${iconView}
-			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
+			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>
+			<span id="${this._announcedById}" role="alert" class="d2l-offscreen">${buttonAlert}</span>`;
 		if (this._hasDropdownItems) {
 			return html`<d2l-dropdown>
 					${button}
