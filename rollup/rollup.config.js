@@ -19,6 +19,7 @@ const nonJsGlob = [
 	'*.*',
 	'!**/*.@(js|md|json)',
 	'!**/golden/**/*',
+	'./custom-elements.json',
 ];
 
 export default {
