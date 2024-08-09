@@ -129,4 +129,4 @@ getOverflowContainer(overflowItems, mini) {
 
 Navigation and focus order are impacted when items overflow the viewport; they are physically moved into the More Actions menu. Since this effect is not limited to visual presentation, it affects both screen reader users and sighted users equally.
 
-The accessibility and keyboard interaction of the More Actions menu aligns with [W3C's best practices for menus](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) — see [Menu](../../components/menu) for more information.
+The accessibility and keyboard interaction of the More Actions menu aligns with [W3C's best practices for menus](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) — see [Menu](../menu) for more information.
