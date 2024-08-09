@@ -153,6 +153,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				?disabled="${this.selectionDisabled}"
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
+				?_allEnabledSelected="${this.selectionInfo.allEnabledSelected}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
 				label="${this.label}"

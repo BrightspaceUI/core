@@ -40,6 +40,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {string}
 			 */
 			key: { type: String },
+			_allEnabledSelected: { type: Boolean },
 			_indeterminate: { type: Boolean },
 			_provider: { type: Object }
 		};
@@ -60,6 +61,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	constructor() {
 		super();
 		this.selected = false;
+		this._allEnabledSelected = false;
 		this._indeterminate = false;
 	}
 
@@ -118,6 +120,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					@change="${this._handleCheckboxChange}"
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
+					?allEnabledSelected="${this._allEnabledSelected}"
 					?disabled="${this.disabled}"
 					?indeterminate="${this._indeterminate}"
 					?skeleton="${this.skeleton}">
@@ -136,7 +139,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			this.dispatchEvent(new CustomEvent('d2l-selection-change', {
 				bubbles: true,
 				composed: true,
-				detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected }
+				detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected, allSelectedEnabled: this._allEnabledSelected }
 			}));
 
 		}

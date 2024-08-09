@@ -275,14 +275,16 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (!includeNested) return selectionInfo;
 
 		let keys = selectionInfo.keys;
+		let allEnabledSelected = selectionInfo.allEnabledSelected;
 
 		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
+				if (!item.allEnabledSelected && (!item.selectionDisabled && !item.selected)) allEnabledSelected = false;
 			}
 		});
 
-		return new SelectionInfo(keys, selectionInfo.state);
+		return new SelectionInfo(keys, selectionInfo.state, allEnabledSelected);
 	}
 
 	resizedCallback(width, breakpointsChanged) {

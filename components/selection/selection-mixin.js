@@ -13,9 +13,10 @@ const keyCodes = {
 export class SelectionInfo {
 
 	constructor(keys, state, allEnabledSelected) {
-		if (!allEnabledSelected) allEnabledSelected = false;
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
+		if (allEnabledSelected == null) allEnabledSelected = false;
+
 		this._allEnabledSelected = allEnabledSelected;
 		this._keys = keys;
 		this._state = state;
