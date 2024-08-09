@@ -138,8 +138,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		this.sourceType = 'unknown';
 
 		this._describedById = getUniqueId();
-		this._labelledById = getUniqueId();
-		this._labelledBySortedId = getUniqueId();
+		this._describedBySortedId = getUniqueId();
 		this._hasDropdownItems = false;
 	}
 
@@ -169,19 +168,18 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			null;
 
 		let sortedView = nothing;
-		let labelledBy = this._labelledById;
+		let describedBy = this._describedById;
 		if (buttonTitle !== undefined) {
-			sortedView = html`<span id="${this._labelledBySortedId}" hidden>${buttonTitle}</span>`;
-			labelledBy = `${this._labelledById} ${this._labelledBySortedId}`;
+			sortedView = html`<span id="${this._describedBySortedId}" hidden>${buttonTitle},</span>`;
+			describedBy = `${this._describedBySortedId} ${this._describedById}`;
 		}
 
 		const button = html`<button
-				aria-describedby="${this._describedById}"
-				aria-labelledby="${labelledBy}"
+				aria-describedby="${describedBy}"
 				class="${classMap({ 'd2l-dropdown-opener': this._hasDropdownItems })}"
 				title="${ifDefined(buttonTitle)}"
 				type="button">
-				<span id="${this._labelledById}"><slot></slot></span>${iconView}
+				<slot></slot>${iconView}
 			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>${sortedView}`;
 		if (this._hasDropdownItems) {
 			return html`<d2l-dropdown>
