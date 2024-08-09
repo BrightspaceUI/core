@@ -170,7 +170,7 @@ Floating workflow buttons `<d2l-floating-buttons>` cause buttons to float or 'do
 
 The best time to use floating workflow buttons is when users need immediate access to the buttons without scrolling. An example is a long or complex form page where it's common for users to make frequent isolated edits rather than sequentially completing the form.
 
-<!-- docs: demo code properties name:d2l-floating-buttons autoSize:false display:block size:xlarge -->
+<!-- docs: demo code properties name:d2l-floating-buttons sandboxTitle:'Floating Buttons' autoSize:false display:block size:xlarge -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/floating-buttons.js';

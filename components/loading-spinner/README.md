@@ -2,7 +2,7 @@
 
 A loading spinner indicates that something is happening and we don't know how long it will take.
 
-<!-- docs: demo name:d2l-loading-spinner -->
+<!-- docs: demo name:d2l-loading-spinner sandboxTitle:'Loading Spinner' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
