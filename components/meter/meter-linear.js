@@ -25,23 +25,14 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			}
 
 			:host > div {
-				display: block;
+				display: flex;
+				flex-direction: column;
+				gap: 0.45rem;
 			}
 
 			:host([text-inline]) > div {
 				align-items: center;
-				display: flex;
 				flex-direction: row;
-			}
-
-			:host([text-inline]) .d2l-meter-linear-full-bar {
-				margin-bottom: 0;
-				margin-left: 0;
-				margin-right: 0.45rem;
-			}
-			:host([dir="rtl"][text-inline]) .d2l-meter-linear-full-bar {
-				margin-left: 0.45rem;
-				margin-right: 0;
 			}
 
 			.d2l-meter-linear-full-bar,
@@ -54,7 +45,6 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 
 			.d2l-meter-linear-full-bar {
 				background-color: var(--d2l-color-gypsum);
-				margin-bottom: 0.45rem;
 				position: relative;
 			}
 
@@ -64,13 +54,10 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 
 			.d2l-meter-linear-inner-bar {
 				background-color: var(--d2l-color-celestine);
-				left: 0;
+				inset-inline-start: 0;
 				max-width: 100%;
 				position: absolute;
 				top: 0;
-			}
-			:host([dir="rtl"]) .d2l-meter-linear-inner-bar {
-				right: 0;
 			}
 			:host([foreground-light]) .d2l-meter-linear-inner-bar {
 				background-color: white;
@@ -80,10 +67,15 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 				color: var(--d2l-color-ferrite);
 				display: flex;
 				flex-direction: row;
+				gap: 0.45rem;
 				line-height: 1em;
+				width: 100%;
 			}
 			:host([foreground-light]) .d2l-meter-linear-text {
 				color: white;
+			}
+			:host([text-inline]) .d2l-meter-linear-text {
+				width: auto;
 			}
 
 			.d2l-meter-linear-text-space-between {
@@ -133,7 +125,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 					<div class="d2l-meter-linear-inner-bar" style="width:${percentage}%;"></div>
 				</div>
 				<div class=${classMap(textClasses)}>
-					<div class=${classMap(primaryTextClasses)}>${primary}&nbsp;</div>
+					<div class=${classMap(primaryTextClasses)}>${primary}</div>
 					${secondaryTextElement}
 				</div>
 			</div>

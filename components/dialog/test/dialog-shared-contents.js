@@ -16,6 +16,10 @@ const base = html`
 	<div>Line 4</div>
 `;
 
+export const wrapping = html`
+	<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+`;
+
 export const general = html`
 	${base}
 	<div id="bottom">Bottom</div>

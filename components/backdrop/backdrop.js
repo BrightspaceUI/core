@@ -4,6 +4,7 @@ import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '..
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
+const TRANSITION_DURATION = 200;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -47,7 +48,7 @@ class Backdrop extends LitElement {
 				opacity: 0;
 				position: fixed;
 				top: 0;
-				transition: opacity 200ms ease-in;
+				transition: opacity ${TRANSITION_DURATION}ms ease-in;
 				width: 0;
 				z-index: 999;
 			}
@@ -123,6 +124,7 @@ class Backdrop extends LitElement {
 			if (!reduceMotion && !this.noAnimateHide && isVisible(this)) {
 				this.addEventListener('transitionend', hide, { once: true });
 				this._state = 'hiding';
+				setTimeout(() => this._state === 'hiding' && hide(), TRANSITION_DURATION + 100);
 			} else {
 				hide();
 			}
