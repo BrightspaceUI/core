@@ -22,8 +22,11 @@
 			<template>
 				<d2l-button-subtle id="open1" text="Open"></d2l-button-subtle>
 				<d2l-test-popover id="popover1" style="max-width: 400px;">
-					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					<div slot="header">header content</div>
 					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					<div style="width: 600px; border: 1px solid black;">stuff</div>
+					<div slot="footer">footer content</div>
 				</d2l-test-popover>
 				<script>
 					const popover1 = document.querySelector('#popover1');

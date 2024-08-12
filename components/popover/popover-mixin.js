@@ -3,7 +3,9 @@ import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const isSupported = ('popover' in HTMLElement.prototype);
 
@@ -15,6 +17,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			_noAutoClose: { state: true },
+			_noAutoFit: { state: true },
 			_noAutoFocus: { state: true },
 			_opened: { type: Boolean, reflect: true, attribute: '_opened' },
 			_trapFocus: { state: true },
@@ -38,7 +41,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				display: none;
 				height: fit-content;
 				inset: 0;
-				margin: auto;
+				margin: 0;
 				overflow: visible;
 				padding: 0;
 				position: fixed;
@@ -54,7 +57,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				display: inline-block;
 			}
 
-			.content {
+			.content-wrapper {
 				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
 				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
@@ -111,6 +114,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	configure(properties) {
 		this._noAutoClose = properties?.noAutoClose ?? false;
+		this._noAutoFit = properties?.noAutoFit ?? false;
 		this._noAutoFocus = properties?.noAutoFocus ?? false;
 		this._trapFocus = properties?.trapFocus ?? false;
 	}
@@ -128,8 +132,13 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this._opener = getComposedActiveElement();
 		this._addAutoCloseHandlers();
+
+		await this._position();
+
 		this._dismissibleId = setDismissible(() => this.close());
+
 		this._focusContent(this);
+
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 	}
 
@@ -158,7 +167,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
 			requestAnimationFrame(() => focusable.focus());
 		} else {
-			const content = this._getContentContainer();
+			const content = this._getContentWrapper();
 			content.setAttribute('tabindex', '-1');
 			content.focus();
 		}
@@ -171,8 +180,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		this?._opener.focus();
 	}
 
-	_getContentContainer() {
-		return this.shadowRoot.querySelector('.content');
+	_getContentWrapper() {
+		return this.shadowRoot.querySelector('.content-wrapper');
 	}
 
 	_handleAutoCloseClick(e) {
@@ -180,7 +189,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		if (!this._opened || this._noAutoClose) return;
 
 		const rootTarget = e.composedPath()[0];
-		if (isComposedAncestor(this._getContentContainer(), rootTarget)
+		if (isComposedAncestor(this._getContentWrapper(), rootTarget)
 			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
 			return;
 		}
@@ -213,10 +222,42 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	_handleFocusTrapEnter() {
-		this._focusContent(this._getContentContainer());
+		this._focusContent(this._getContentWrapper());
 
 		/** Dispatched when user focus enters the popover (trap-focus option only) */
 		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
+	}
+
+	async _position(contentRect, options) {
+		if (!this._opener) return;
+
+		options = Object.assign({ updateAboveBelow: true, updateHeight: true }, options);
+
+		const content = this._getContentWrapper();
+
+		/*
+		// don't let dropdown content horizontally overflow viewport
+		this._width = null;
+
+		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position'); // todo: cleanup when switched to fixed positioning
+		const boundingContainer = getBoundingAncestor(target.parentNode);
+		const boundingContainerRect = boundingContainer.getBoundingClientRect(); // todo: cleanup when switched to fixed positioning
+		const scrollHeight = boundingContainer.scrollHeight;
+
+		await this.updateComplete;
+		*/
+
+		console.log(content.scrollWidth);
+		console.log(content.getBoundingClientRect());
+
+		//const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
+		//const availableWidth = (bounded ? boundingContainerRect.width - 60 : window.innerWidth - 40);
+		//this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
+
+		//await this.updateComplete;
+
+
+
 	}
 
 	_removeAutoCloseHandlers() {
@@ -225,12 +266,40 @@ export const PopoverMixin = superclass => class extends superclass {
 		document.removeEventListener('click', this._handleAutoCloseClick, { capture: true });
 	}
 
-	_renderPopover() {
-		const content = html`<div class="content"><slot></slot></div>`;
+	_renderPopover(content) {
 
-		if (this._trapFocus) return html`<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._opened}">
-			${content}
-		</d2l-focus-trap>`;
+		/*
+		<div
+		id="d2l-dropdown-wrapper"
+		class="d2l-dropdown-content-width vdiff-target"
+		style=${styleMap(widthStyle)}
+		?data-closing="${this._closing}">
+		*/
+
+		content = html`<div class="content-wrapper vdiff-target">${content}</div>`;
+
+		if (this._trapFocus) {
+			content = html`
+				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._opened}">
+					${content}
+				</d2l-focus-trap>
+			`
+		};
+
+		const positionStyle = {};
+		/*
+		if (this._position) {
+			for (const prop in this._position) {
+				positionStyle[prop] = `${this._position[prop]}px`;
+			}
+		}
+		*/
+
+		content = html`
+			<div class="content-position" style=${styleMap(positionStyle)}>
+				${content}
+			</div>
+		`;
 
 		return content;
 	}
