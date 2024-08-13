@@ -1,6 +1,7 @@
 import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import {
 	getComposedActiveElement,
+	getFocusables,
 	getFirstFocusableDescendant,
 	getLastFocusableDescendant,
 	getNextFocusable,
@@ -96,6 +97,53 @@ describe('focus', () => {
 			const expected = elem.getShadow1();
 			expected.focus();
 			expect(getComposedActiveElement()).to.equal(expected);
+		});
+
+	});
+
+	describe('getFocusables', () => {
+
+		const focusablesFixture = html`
+			<div>
+				<span></span>
+				<button id="1a"></button>
+				<button id="1b"></button>
+				<button id="1c" disabled></button>
+				<button id="1d" hidden></button>
+				<span id="1e" tabindex="-1"></span>
+				<div id="1f">
+					<button id="2a"></button>
+				</div>
+				<div>
+					<button id="2a"></button>
+				</div>
+				<svg><a xlink:href="javascript:void(0);"></a></svg>
+			</div>
+		`;
+
+		[
+			{ name: 'returns focusables by default', options: undefined, expected: ['1a', '1b'] },
+			{ name: 'returns only immediate focusables using deep: false', options: { deep: false }, expected: ['1a', '1b'] },
+			{ name: 'returns immediate and deep focusables using deep: true', options: { deep: true }, expected: ['1a', '1b', '2a', '2a'] },
+			{ name: 'returns only enabled focusables using disabled: false', options: { disabled: false }, expected: ['1a', '1b'] },
+			{ name: 'returns enabled and disabled focusables using disabled: true', options: { disabled: true }, expected: ['1a', '1b', '1c'] },
+			{ name: 'returns only visible focusables using hidden: false', options: { hidden: false }, expected: ['1a', '1b'] },
+			{ name: 'returns visible and hidden focusables using hidden: true', options: { hidden: true }, expected: ['1a', '1b', '1d'] },
+			{ name: 'returns only tabbable focusables using tabbablesOnly: true', options: { tabbablesOnly: true }, expected: ['1a', '1b'] },
+			{ name: 'returns non-tabblable and tabbable focusables using tabbablesOnly: false', options: { tabbablesOnly: false }, expected: ['1a', '1b', '1e'] },
+			{ name: 'returns immediate focusables that meet predicate condition', options: { predicate: elem => elem.id === '1a' }, expected: ['1a'] },
+			{ name: 'returns deep focusables that meet predicate condition', options: { deep: true, predicate: elem => elem.id === '1f' || elem.id === '2a' }, expected: ['2a'] }
+		].forEach(info => {
+
+			it(info.name, async() => {
+				const elem = await fixture(focusablesFixture);
+				const focusables = getFocusables(elem, info.options);
+				expect(focusables.length).to.equal(info.expected.length);
+				info.expected.forEach((id, i) => {
+					expect(focusables[i].id).to.equal(id);
+				});
+			});
+
 		});
 
 	});
