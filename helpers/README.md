@@ -127,7 +127,7 @@ getComposedActiveElement()
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
 
 // gets the focusable elements within the specified element
-getFocusables(node, { deep: false, disabled: false, hidden: false, predicate: elem => false, tabbablesOnly: true })
+getFocusableDescendants(node, { deep: false, disabled: false, hidden: false, predicate: elem => false, tabbablesOnly: true })
 
 // gets the focus pseudo-class to used in selectors (focus-visible if supported, or focus)
 // Usage:

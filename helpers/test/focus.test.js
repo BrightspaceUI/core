@@ -2,7 +2,7 @@ import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
-	getFocusables,
+	getFocusableDescendants,
 	getLastFocusableDescendant,
 	getNextFocusable,
 	getPreviousFocusable,
@@ -137,7 +137,7 @@ describe('focus', () => {
 
 			it(info.name, async() => {
 				const elem = await fixture(focusablesFixture);
-				const focusables = getFocusables(elem, info.options);
+				const focusables = getFocusableDescendants(elem, info.options);
 				expect(focusables.length).to.equal(info.expected.length);
 				info.expected.forEach((id, i) => {
 					expect(focusables[i].id).to.equal(id);

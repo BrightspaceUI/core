@@ -40,19 +40,19 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate, incl
 	return null;
 }
 
-export function getFocusables(node, options) {
+export function getFocusableDescendants(node, options) {
 	let focusables = [];
 
 	const composedChildren = getComposedChildren(node);
-	composedChildren.forEach(elem => {
-		if (elem.tagName === 'svg') return;
+	composedChildren.forEach(child => {
+		if (child.tagName === 'svg') return;
 		if (options?.predicate) {
-			if (!options.predicate(elem)) return;
+			if (!options.predicate(child)) return;
 		}
 
-		if (isFocusable(elem, options?.hidden, options?.tabbablesOnly, options?.disabled)) focusables.push(elem);
+		if (isFocusable(child, options?.hidden, options?.tabbablesOnly, options?.disabled)) focusables.push(child);
 		if (options?.deep) {
-			focusables = [...focusables, ...getFocusables(elem, options)];
+			focusables = [...focusables, ...getFocusableDescendants(child, options)];
 		}
 	});
 
