@@ -349,6 +349,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	}
 
+	_focusNextWithinRow(focusInfo, focusables) {
+		if (focusInfo.index === focusables.length - 1) this._focusNextCell(focusInfo.cellNum + 1);
+		else focusables[focusInfo.index + 1].focus();
+	}
+
+	_focusPreviousWithinRow(focusInfo, focusables) {
+		if (focusInfo.index === 0) this._focusNextCell(focusInfo.cellNum - 1, false);
+		else focusables[focusInfo.index - 1].focus();
+	}
+
 	_getNextFlattenedListItem(listItem) {
 
 		// check for nested list first; this check needs to account for standard list-items as well as custom
@@ -440,20 +450,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		switch (e.keyCode) {
 			case keyCodes.RIGHT:
 				if (this.dir === 'rtl') {
-					if (focusInfo.index === 0) this._focusNextCell(focusInfo.cellNum - 1, false);
-					else focusables[focusInfo.index - 1].focus();
+					this._focusPreviousWithinRow(focusInfo, focusables);
 				} else {
-					if (focusInfo.index === focusables.length - 1) this._focusNextCell(focusInfo.cellNum + 1);
-					else focusables[focusInfo.index + 1].focus();
+					this._focusNextWithinRow(focusInfo, focusables);
 				}
 				break;
 			case keyCodes.LEFT:
 				if (this.dir === 'rtl') {
-					if (focusInfo.index === focusables.length - 1) this._focusNextCell(focusInfo.cellNum + 1);
-					else focusables[focusInfo.index + 1].focus();
+					this._focusNextWithinRow(focusInfo, focusables);
 				} else {
-					if (focusInfo.index === 0) this._focusNextCell(focusInfo.cellNum - 1, false);
-					else focusables[focusInfo.index - 1].focus();
+					this._focusPreviousWithinRow(focusInfo, focusables);
 				}
 				break;
 			case keyCodes.UP:
