@@ -250,12 +250,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		const cell = this.shadowRoot?.querySelector(`[data-cell-num="${focusInfo.cellNum}"]`);
 		if (!cell) return;
 
+		let focusable;
 		const focusables = getFocusables(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
-		if (focusInfo.index <= focusables.length - 1) {
-			const focusable = focusables[focusInfo.index];
-			focusable.focus();
-			return focusable;
-		}
+
+		if (focusInfo.index <= focusables.length - 1) focusable = focusables[focusInfo.index];
+		else if (focusables.length > 0) focusable = focusables[focusables.length - 1];
+
+		if (focusable) focusable.focus();
+		return focusable;
 	}
 
 	_focusFirstCell() {
