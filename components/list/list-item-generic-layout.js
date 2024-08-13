@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getFocusables, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getFocusableDescendants, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -251,7 +251,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		if (!cell) return;
 
 		let focusable;
-		const focusables = getFocusables(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
+		const focusables = getFocusableDescendants(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
 
 		if (focusInfo.index <= focusables.length - 1) focusable = focusables[focusInfo.index];
 		else if (focusables.length > 0) focusable = focusables[focusables.length - 1];
@@ -431,7 +431,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		const cell = findComposedAncestor(node, parent => parent.classList?.contains('d2l-cell'));
 		if (!cell) return;
 
-		const focusables = getFocusables(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
+		const focusables = getFocusableDescendants(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
 		const focusInfo = {
 			cellNum: parseInt(cell.getAttribute('data-cell-num')),
 			index: focusables.findIndex(elem => elem === node)
