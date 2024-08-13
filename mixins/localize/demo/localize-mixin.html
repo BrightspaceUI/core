@@ -19,14 +19,15 @@
 				}
 			};
 
-			let localizer = {};
-			const el = document.querySelector('div');
-			const render = () => el.innerHTML = localizer.localize('basic', { employerName: 'D2L' });
-
-			localizer = new Localize({
+			const localizer = new Localize({
 				importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 1000)),
 				onResourcesChange: render
 			});
+
+			const el = document.querySelector('div');
+			function render() {
+				el.innerHTML = localizer.localize('basic', { employerName: 'D2L' });
+			}
 
 			await localizer.ready;
 

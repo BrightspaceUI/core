@@ -246,12 +246,12 @@ const staticTag = defineCE(StaticEl);
 
 const asyncTag = defineCE(
 	class extends StaticEl {
-		static getLocalizeResources(langs) {
+		static async getLocalizeResources(langs) {
 			for (let i = 0; i < langs.length; i++) {
 				if (this.langResources[langs[i]]) {
 					const resources = {
 						language: langs[i],
-						resources: this.langResources[langs[i]]
+						resources: { getsConcatenated: 'I‘m here too!' }
 					};
 					return new Promise(r => setTimeout(() => r(resources), 50));
 				}
@@ -289,8 +289,6 @@ describe('LocalizeMixin', () => {
 			});
 
 			it('should localize text without replacement arguments', () => {
-				console.log('asdasd');
-				console.log(elem.resources);
 				const val = elem.localize('hello');
 				expect(val).to.equal('Hello {name}');
 			});
@@ -310,17 +308,17 @@ describe('LocalizeMixin', () => {
 				expect(val).to.equal('Hello Bill');
 			});
 
-			it('should re-localize text when locale changes', (done) => {
+			it('should re-localize text when locale changes', () => {
 				const valInitial = elem.localize('hello', { name: 'Sam' });
 				expect(valInitial).to.equal('Hello Sam');
-				const myEventListener = () => {
+				let resolve;
+				elem.addEventListener('d2l-localize-resources-change', () => {
 					const val = elem.localize('hello', { name: 'Mary' });
 					expect(val).to.equal('Bonjour Mary');
-					elem.removeEventListener('d2l-localize-resources-change', myEventListener);
-					done();
-				};
-				elem.addEventListener('d2l-localize-resources-change', myEventListener);
+					resolve();
+				}, { once: true });
 				documentLocaleSettings.language = 'fr';
+				return new Promise(r => resolve = r);
 			});
 
 			it('should localize term using plurals', () => {
@@ -489,7 +487,7 @@ describe('LocalizeMixin', () => {
 
 				const laborDay = elem.localize('laborDay');
 				expect(navigator.languages).to.deep.equal(test.browserLangs);
-				expect(elem.__resources.laborDay.language).to.equal(test.resolvedLang);
+				expect(elem.localize.resources.laborDay.language).to.equal(test.resolvedLang);
 				expect(laborDay).to.equal(test.localizedTerm);
 			});
 		});
@@ -556,7 +554,7 @@ describe('LocalizeMixin', () => {
 			expect(val2Initial).to.equal('This is English from Test6LocalizeMixin');
 			expect(val3Initial).to.equal('This is English from Test1LocalizeMixinBase');
 			expect(val4Initial).to.equal('This is English from Test2LocalizeMixinBase');
-			const myEventListener = () => {
+			elemStatic.addEventListener('d2l-localize-resources-change', () => {
 				const val1 = elemStatic.localize('test1');
 				const val2 = elemStatic.localize('test2');
 				const val3 = elemStatic.localize('test3');
@@ -565,10 +563,8 @@ describe('LocalizeMixin', () => {
 				expect(val2).to.equal('This is English from Test6LocalizeMixin');
 				expect(val3).to.equal('This is French from Test1LocalizeMixinBase');
 				expect(val4).to.equal('This is English from Test2LocalizeMixinBase');
-				elemStatic.removeEventListener('d2l-localize-resources-change', myEventListener);
 				done();
-			};
-			elemStatic.addEventListener('d2l-localize-resources-change', myEventListener);
+			}, { once: true });
 			documentLocaleSettings.language = 'fr';
 		});
 	});
@@ -581,7 +577,7 @@ describe('LocalizeMixin', () => {
 				setTimeout(() => container.appendChild(elem));
 				const { detail } = await oneEvent(elem, 'd2l-test-localize-updated');
 				expect(detail.props.size).to.equal(1);
-				expect(detail.props.has('__resources'));
+				expect(detail.props.has('localize'));
 				done();
 			});
 		});
