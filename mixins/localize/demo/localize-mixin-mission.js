@@ -6,7 +6,6 @@ class Mission extends LocalizeMixin(LitElement) {
 	static get localizeConfig() {
 		const langResources = {
 			'en': { mission: '<b>Transforming</b> the way <linkEarth>the world</linkEarth> learns' },
-			'en-gb': { mission: '<b>Transforming</b> the way <linkEarth>the world</linkEarth> learns, but British!' },
 			'fr': { mission: '<b>Transformer</b> la façon dont <linkEarth>le monde</linkEarth> apprend' }
 		};
 		return {

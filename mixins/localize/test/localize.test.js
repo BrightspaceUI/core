@@ -42,9 +42,11 @@ describe('Localize', () => {
 
 		it('run when the document locale changes', async() => {
 			await localizer.ready;
+			expect(localizer.localize.resolvedLocales).to.have.keys(['en']);
 			document.documentElement.lang = 'en-gb';
 			await updatePromise;
 			expect(runCount).to.equal(2);
+			expect(localizer.localize.resolvedLocales).to.have.keys(['en-gb']);
 		});
 
 	});

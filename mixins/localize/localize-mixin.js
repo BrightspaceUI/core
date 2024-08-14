@@ -31,6 +31,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 		const resourcesPromise = this.constructor._getAllLocalizeResources(this.config);
 		this.#resourcesPromise = resourcesPromise;
 		const localizeResources = (await resourcesPromise).flat(Infinity);
+		// If the locale changed while resources were being fetched, abort
 		if (this.#resourcesPromise !== resourcesPromise) return;
 
 		const allResources = {};
@@ -42,9 +43,9 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			}
 		}
 		this.localize.resources = allResources;
-		this.localize.resolvedLocale = resolvedLocales;
+		this.localize.resolvedLocales = resolvedLocales;
 		if (resolvedLocales.size > 1) {
-			console.warn(`Resolved multiple locales: ${[...resolvedLocales].join(', ')}`);
+			console.warn(`Resolved multiple locales in '${this.constructor.name || this.tagName || ''}': ${[...resolvedLocales].join(', ')}`);
 		}
 
 		this.#onResourcesChange();
