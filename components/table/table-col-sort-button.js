@@ -3,7 +3,7 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
 import '../menu/menu.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
@@ -138,6 +138,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		this.sourceType = 'unknown';
 
 		this._describedById = getUniqueId();
+		this._describedBySortedId = getUniqueId();
 		this._hasDropdownItems = false;
 	}
 
@@ -166,13 +167,20 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			html`<d2l-icon icon="${this.desc ? 'tier1:arrow-toggle-down' : 'tier1:arrow-toggle-up'}"></d2l-icon>` :
 			null;
 
+		let sortedView = nothing;
+		let describedBy = this._describedById;
+		if (buttonTitle !== undefined) {
+			sortedView = html`<span id="${this._describedBySortedId}" hidden>${buttonTitle},</span>`;
+			describedBy = `${this._describedBySortedId} ${this._describedById}`;
+		}
+
 		const button = html`<button
-				aria-describedby="${this._describedById}"
+				aria-describedby="${describedBy}"
 				class="${classMap({ 'd2l-dropdown-opener': this._hasDropdownItems })}"
 				title="${ifDefined(buttonTitle)}"
 				type="button">
 				<slot></slot>${iconView}
-			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>`;
+			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>${sortedView}`;
 		if (this._hasDropdownItems) {
 			return html`<d2l-dropdown>
 					${button}
