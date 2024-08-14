@@ -8,29 +8,7 @@
 			import '../../../components/demo/demo-page.js';
 			import './localize-mixin-greeting.js';
 			import './localize-mixin-mission.js';
-			import { Localize } from '../localize-mixin.js';
-
-			const resources = {
-				en: {
-					basic: '{employerName} is my employer'
-				},
-				'en-gb': {
-					basic: '{employerName} is my employer, but British!'
-				}
-			};
-
-			const localizer = new Localize({
-				importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 1000)),
-				onResourcesChange: render
-			});
-
-			const el = document.querySelector('div');
-			function render() {
-				el.innerHTML = localizer.localize('basic', { employerName: 'D2L' });
-			}
-
-			await localizer.ready;
-
+			import '../localize-mixin.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -45,9 +23,6 @@
 			<d2l-demo-snippet>
 				<d2l-mission></d2l-mission>
 			</d2l-demo-snippet>
-
-			<h2>Non-Lit Localized</h2>
-			<div></div>
 
 		</d2l-demo-page>
 	</body>
