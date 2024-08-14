@@ -8,11 +8,11 @@ import IntlMessageFormat from 'intl-messageformat';
 
 export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em', 'button']);
 
-const validTerminators = '([>\\s/]|$)';
 const getDisallowedTagsRegex = allowedTags => {
+	const validTerminators = '([>\\s/]|$)';
 	const allowedAfterTriangleBracket = `/?(${allowedTags.join('|')})?${validTerminators}`;
 	return new RegExp(`<(?!${allowedAfterTriangleBracket})`);
-}
+};
 
 const disallowedTagsRegex = getDisallowedTagsRegex(allowedTags);
 const noAllowedTagsRegex = getDisallowedTagsRegex([]);
@@ -24,35 +24,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 	pristine = true;
 	#resolveResourcesLoaded;
 
-	static async _getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
-
-		// in dev, don't request unsupported langpacks
-		if (!importFunc.toString().includes('switch') && !useBrowserLangs) {
-			langs = langs.filter(lang => supportedLangpacks.includes(lang));
-		}
-
-		for (const lang of [...langs, fallbackLang]) {
-
-			const resources = await Promise.resolve(importFunc(lang)).catch(() => {});
-
-			if (resources) {
-
-				if (osloCollection) {
-					return await getLocalizeOverrideResources(
-						lang,
-						resources,
-						() => osloCollection
-					);
-				}
-
-				return {
-					language: lang,
-					resources
-				};
-			}
-		}
-	}
-
+	#localeChangeCallback;
 	async #defaultLocaleChangeCallback() {
 		if (!this._hasResources()) return;
 
@@ -82,19 +54,14 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			this.#resolveResourcesLoaded();
 		}
 	}
-
-	#localeChangeCallback;
-
 	connect(cb = () => this.#defaultLocaleChangeCallback()) {
 		this.#localeChangeCallback = cb;
 		LocalizeClass.documentLocaleSettings.addChangeListener(this.#localeChangeCallback);
 		this.#localeChangeCallback();
 	}
-
 	disconnect() {
 		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#localeChangeCallback);
 	}
-
 	localize(key) {
 
 		const { language, value } = this.localize.resources?.[key] ?? {};
@@ -118,7 +85,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			formattedMessage = translatedMessage.format(params);
 		} catch (e) {
 			if (e.name === 'MarkupError')	{
-				e = new Error('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
+				e = new Error('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/'); // eslint-disable-line no-ex-assign
 				formattedMessage = '';
 			}
 			console.error(e);
@@ -126,7 +93,6 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return formattedMessage;
 	}
-
 	localizeHTML(key, params = {}) {
 
 		const { language, value } = this.localize.resources?.[key] ?? {};
@@ -153,9 +119,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return formattedMessage;
 	}
-
 	__resourcesLoadedPromise = new Promise(r => this.#resolveResourcesLoaded = r);
-
 	static _generatePossibleLanguages(config) {
 
 		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase()).concat('en');
@@ -168,7 +132,6 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return Array.from(new Set([ ...langs, 'en-us', 'en' ]));
 	}
-
 	static _getAllLocalizeResources(config = this.localizeConfig) {
 		const resourcesLoadedPromises = [];
 		const superCtor = Object.getPrototypeOf(this);
@@ -183,6 +146,34 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			resourcesLoadedPromises.push(resourcesPromise);
 		}
 		return Promise.all(resourcesLoadedPromises);
+	}
+	static async _getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
+
+		// in dev, don't request unsupported langpacks
+		if (!importFunc.toString().includes('switch') && !useBrowserLangs) {
+			langs = langs.filter(lang => supportedLangpacks.includes(lang));
+		}
+
+		for (const lang of [...langs, fallbackLang]) {
+
+			const resources = await Promise.resolve(importFunc(lang)).catch(() => {});
+
+			if (resources) {
+
+				if (osloCollection) {
+					return await getLocalizeOverrideResources(
+						lang,
+						resources,
+						() => osloCollection
+					);
+				}
+
+				return {
+					language: lang,
+					resources
+				};
+			}
+		}
 	}
 
 	_hasResources() {
@@ -303,7 +294,6 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 
 };
 
-
 class MarkupError extends Error {
 	name = this.constructor.name;
 }
@@ -315,7 +305,7 @@ function validateMarkup(content, disallowedTagsRegex) {
 			return;
 		}
 		if (content._localizeMarkup) return;
-		if (Object.hasOwn(content, '_$litType$')) throw new MarkupError(`Rich-text replacements must use localizeMarkup templates. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`);
+		if (Object.hasOwn(content, '_$litType$')) throw new MarkupError('Rich-text replacements must use localizeMarkup templates. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
 
 		if (content.constructor === String && disallowedTagsRegex?.test(content)) throw new MarkupError(`Rich-text replacements may use only the following allowed elements: ${allowedTags}. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`);
 	}
@@ -330,9 +320,9 @@ export function localizeMarkup(strings, ...expressions) {
 export function localizeMarkupIntl(strings, ...expressions) {
 	strings.forEach(str => validateMarkup(str, disallowedTagsRegex));
 	expressions.forEach(exp => validateMarkup(exp, disallowedTagsRegex));
-  return strings.reduce((acc, i, idx) => {
-     return acc.push(i, expressions[idx] ?? '') && acc;
-  }, []).join('');
+	return strings.reduce((acc, i, idx) => {
+		return acc.push(i, expressions[idx] ?? '') && acc;
+	}, []).join('');
 	//return Object.assign(new String(), { _localizeMarkup: true });
 }
 

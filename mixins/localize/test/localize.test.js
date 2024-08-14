@@ -1,7 +1,5 @@
-import { fixture, html, expect } from '@brightspace-ui/testing';
 import { Localize, localizeMarkupIntl } from '../localize-mixin.js';
-import { restore, stub } from 'sinon';
-import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { expect } from '@brightspace-ui/testing';
 
 const resources = {
 	en: {
@@ -15,9 +13,8 @@ const resources = {
 
 describe('Localize', () => {
 
-	let elem, localizer, runCount, updatePromise;
+	let localizer, runCount, updatePromise;
 	beforeEach(async() => {
-		elem = await fixture(html`<div></div>`);
 		runCount = 0;
 
 		let resolve;
@@ -38,12 +35,12 @@ describe('Localize', () => {
 
 	describe('onResourcesChange', () => {
 
-		it(`runs when ready`, async() => {
+		it('runs when ready', async() => {
 			await localizer.ready;
 			expect(runCount).to.equal(1);
 		});
 
-		it(`run when the document locale changes`, async() => {
+		it('run when the document locale changes', async() => {
 			await localizer.ready;
 			document.documentElement.lang = 'en-gb';
 			await updatePromise;
@@ -52,13 +49,13 @@ describe('Localize', () => {
 
 	});
 
-	it(`can localize text`, async() => {
+	it('can localize text', async() => {
 		await localizer.ready;
 		const localized = localizer.localize('basic', { employerName: 'D2L' });
 		expect(localized).to.equal('D2L is my employer');
 	});
 
-	it(`can localize with HTML`, async() => {
+	it('can localize with HTML', async() => {
 		await localizer.ready;
 		const localized = localizer.localizeHTML('html', { spanTag: chunks => localizeMarkupIntl`<p id="my-paragraph">${chunks}</p>` });
 		expect(localized).to.equal('<p id="my-paragraph">Wrapped in tags</p>');

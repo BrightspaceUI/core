@@ -206,7 +206,7 @@ class StaticEl extends _LocalizeMixinBase(LitElement) {
 		'en': {
 			'hello': 'Hello {name}',
 			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.',
-			'tag': `<b>This won't be bold</b>`
+			'tag': '<b>This won\'t be bold</b>'
 		},
 		'fr': { 'hello': 'Bonjour {name}' }
 	};
@@ -338,12 +338,12 @@ describe('LocalizeMixin', () => {
 				expect(errArg.message).to.equal('The intl string context variable "name" was not provided to the string "Hello {name}"');
 			});
 
-			it(`should error when using tags`, () => {
+			it('should error when using tags', () => {
 				const val = elem.localize('tag');
 				expect(val).to.equal('');
 				expect(errorSpy.calledOnce).to.be.true;
 				expect(errorSpy.firstCall.args[0].message).to.equal('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
-			})
+			});
 
 		});
 
