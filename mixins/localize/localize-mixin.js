@@ -6,6 +6,17 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import IntlMessageFormat from 'intl-messageformat';
 
+export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em', 'button']);
+
+const validTerminators = '([>\\s/]|$)';
+const getDisallowedTagsRegex = allowedTags => {
+	const allowedAfterTriangleBracket = `/?(${allowedTags.join('|')})?${validTerminators}`;
+	return new RegExp(`<(?!${allowedAfterTriangleBracket})`);
+}
+
+const disallowedTagsRegex = getDisallowedTagsRegex(allowedTags);
+const noAllowedTagsRegex = getDisallowedTagsRegex([]);
+
 const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends superclass {
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
@@ -103,9 +114,13 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 		const translatedMessage = new IntlMessageFormat(value, language);
 		let formattedMessage = value;
 		try {
-			if (Object.values(params).some(v => typeof v === 'function')) throw 'localize() does not support rich text.';
+			validateMarkup(formattedMessage, noAllowedTagsRegex);
 			formattedMessage = translatedMessage.format(params);
 		} catch (e) {
+			if (e.name === 'MarkupError')	{
+				e = new Error('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
+				formattedMessage = '';
+			}
 			console.error(e);
 		}
 
@@ -132,6 +147,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			validateMarkup(unvalidated);
 			formattedMessage = unvalidated;
 		} catch (e) {
+			if (e.name === 'MarkupError') formattedMessage = '';
 			console.error(e);
 		}
 
@@ -287,36 +303,37 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 
 };
 
-export const allowedTags = Object.freeze(['d2l-link', 'd2l-tooltip-help', 'p', 'br', 'b', 'strong', 'i', 'em', 'button']);
 
-const markupError = `localizeHTML() rich-text replacements must use localizeMarkup templates with only the following allowed elements: ${allowedTags}. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`;
-const validTerminators = '([>\\s/]|$)';
-const allowedAfterTriangleBracket = `/?(${allowedTags.join('|')})?${validTerminators}`;
-const disallowedTagsRegex = new RegExp(`<(?!${allowedAfterTriangleBracket})`);
+class MarkupError extends Error {
+	name = this.constructor.name;
+}
 
-function validateMarkup(content, applyRegex) {
+function validateMarkup(content, disallowedTagsRegex) {
 	if (content) {
-		if (content.forEach) { content.forEach(item => validateMarkup(item)); return; }
-
+		if (content.forEach) {
+			content.forEach(item => validateMarkup(item));
+			return;
+		}
 		if (content._localizeMarkup) return;
-		if (Object.hasOwn(content, '_$litType$')) throw markupError;
+		if (Object.hasOwn(content, '_$litType$')) throw new MarkupError(`Rich-text replacements must use localizeMarkup templates. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`);
 
-		if (applyRegex && content.constructor === String && disallowedTagsRegex.test(content)) throw markupError;
+		if (content.constructor === String && disallowedTagsRegex?.test(content)) throw new MarkupError(`Rich-text replacements may use only the following allowed elements: ${allowedTags}. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/`);
 	}
 }
 
-//export const validateMarkup = validateMarkupLit;
-
 export function localizeMarkup(strings, ...expressions) {
-	strings.forEach(str => validateMarkup(str, true));
-	expressions.forEach(exp => validateMarkup(exp, true));
+	strings.forEach(str => validateMarkup(str, disallowedTagsRegex));
+	expressions.forEach(exp => validateMarkup(exp, disallowedTagsRegex));
 	return { ...html(strings, ...expressions), _localizeMarkup: true };
 }
 
-export function localizeMarkup2(strings, ...expressions) {
-	strings.forEach(str => validateMarkup(str, true));
-	expressions.forEach(exp => validateMarkup(exp, true));
-	return { ...html(strings, ...expressions), _localizeMarkup: true };
+export function localizeMarkupIntl(strings, ...expressions) {
+	strings.forEach(str => validateMarkup(str, disallowedTagsRegex));
+	expressions.forEach(exp => validateMarkup(exp, disallowedTagsRegex));
+  return strings.reduce((acc, i, idx) => {
+     return acc.push(i, expressions[idx] ?? '') && acc;
+  }, []).join('');
+	//return Object.assign(new String(), { _localizeMarkup: true });
 }
 
 export function generateLink({ href, target }) {

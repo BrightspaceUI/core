@@ -205,7 +205,8 @@ class StaticEl extends _LocalizeMixinBase(LitElement) {
 	static langResources = {
 		'en': {
 			'hello': 'Hello {name}',
-			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.',
+			'tag': `<b>This won't be bold</b>`
 		},
 		'fr': { 'hello': 'Bonjour {name}' }
 	};
@@ -337,6 +338,13 @@ describe('LocalizeMixin', () => {
 				expect(errArg.message).to.equal('The intl string context variable "name" was not provided to the string "Hello {name}"');
 			});
 
+			it(`should error when using tags`, () => {
+				const val = elem.localize('tag');
+				expect(val).to.equal('');
+				expect(errorSpy.calledOnce).to.be.true;
+				expect(errorSpy.firstCall.args[0].message).to.equal('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
+			})
+
 		});
 
 		it(`should only render once (${type})`, (done) => {
@@ -388,8 +396,8 @@ describe('LocalizeMixin', () => {
 			expect(consoleErrorStub).to.have.been.calledTwice;
 			expect(renderToElem(defaultTags)).lightDom.to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(renderToElem(manual)).lightDom.to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
-			expect(renderToElem(badTemplate)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
+			expect(renderToElem(disallowed)).lightDom.to.equal('');
+			expect(renderToElem(badTemplate)).lightDom.to.equal('');
 			expect(renderToElem(tooltip)).lightDom.to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(renderToElem(boldItalic)).lightDom.to.equal('This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized');
 			expect(renderToElem(pluralLink)).lightDom.to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
