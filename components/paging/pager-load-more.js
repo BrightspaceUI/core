@@ -124,6 +124,9 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 		});
 		this._loading = false;
 
+		// wait a frame for async sub-components to render
+		await new Promise(resolve => requestAnimationFrame(resolve));
+
 		const item = pageable._getItemByIndex(lastItemIndex + 1);
 
 		if (!item) return;
