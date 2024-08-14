@@ -20,8 +20,8 @@ const noAllowedTagsRegex = getDisallowedTagsRegex([]);
 const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends superclass {
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
-	#resourcesPromise;
 	pristine = true;
+	#resourcesPromise;
 	#resolveResourcesLoaded;
 
 	#localeChangeCallback;
@@ -47,21 +47,30 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 			console.warn(`Resolved multiple locales: ${[...resolvedLocales].join(', ')}`);
 		}
 
-		this._onResourcesChange();
+		this.#onResourcesChange();
 
 		if (this.pristine) {
 			this.pristine = false;
 			this.#resolveResourcesLoaded();
 		}
 	}
+
+	#onResourcesChange() {
+		this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
+		this.config?.onResourcesChange?.();
+		this.onLocalizeResourcesChange?.();
+	}
+
 	connect(cb = () => this.#defaultLocaleChangeCallback()) {
 		this.#localeChangeCallback = cb;
 		LocalizeClass.documentLocaleSettings.addChangeListener(this.#localeChangeCallback);
 		this.#localeChangeCallback();
 	}
+
 	disconnect() {
 		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#localeChangeCallback);
 	}
+
 	localize(key) {
 
 		const { language, value } = this.localize.resources?.[key] ?? {};
@@ -93,6 +102,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return formattedMessage;
 	}
+
 	localizeHTML(key, params = {}) {
 
 		const { language, value } = this.localize.resources?.[key] ?? {};
@@ -119,7 +129,9 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return formattedMessage;
 	}
+
 	__resourcesLoadedPromise = new Promise(r => this.#resolveResourcesLoaded = r);
+
 	static _generatePossibleLanguages(config) {
 
 		if (config?.useBrowserLangs) return navigator.languages.map(e => e.toLowerCase()).concat('en');
@@ -132,6 +144,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 
 		return Array.from(new Set([ ...langs, 'en-us', 'en' ]));
 	}
+
 	static _getAllLocalizeResources(config = this.localizeConfig) {
 		const resourcesLoadedPromises = [];
 		const superCtor = Object.getPrototypeOf(this);
@@ -147,6 +160,7 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 		}
 		return Promise.all(resourcesLoadedPromises);
 	}
+
 	static async _getLocalizeResources(langs, { importFunc, osloCollection, useBrowserLangs }) {
 
 		// in dev, don't request unsupported langpacks
@@ -180,14 +194,6 @@ const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends 
 		return this.constructor.localizeConfig ? Boolean(this.constructor.localizeConfig.importFunc) : this.constructor.getLocalizeResources !== undefined;
 	}
 
-	// no _
-	_onResourcesChange() {
-		/** @ignore */
-		this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
-		this.config?.onResourcesChange?.();
-		this.onLocalizeResourcesChange?.();
-	}
-
 };
 
 export const Localize = class extends getLocalizeClass() {
@@ -199,7 +205,7 @@ export const Localize = class extends getLocalizeClass() {
 	constructor(config) {
 		super();
 		this.config = config;
-		this.connect(/*() => this.requestUpdate*/);
+		this.connect();
 	}
 
 	get ready() {
@@ -211,20 +217,11 @@ export const Localize = class extends getLocalizeClass() {
 		return this.ready;
 	}
 
-	disconnect() {
-		// how should this work? Can we detect garbage collection?
-		super.disconnect();
-	}
-
 };
-
-window.Localize = Localize;
-window.localizeMarkup = localizeMarkup;
 
 export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends getLocalizeClass(superclass) {
 
 	#updatedProperties = new Map();
-	//#localizer = new LocalizeClass();
 
 	connectedCallback() {
 		super.connectedCallback();
@@ -276,7 +273,6 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinC
 	}
 
 	onLocalizeResourcesChange() {
-		//super.onResourcesChange();
 		this.requestUpdate('localize');
 	}
 
@@ -323,7 +319,6 @@ export function localizeMarkupIntl(strings, ...expressions) {
 	return strings.reduce((acc, i, idx) => {
 		return acc.push(i, expressions[idx] ?? '') && acc;
 	}, []).join('');
-	//return Object.assign(new String(), { _localizeMarkup: true });
 }
 
 export function generateLink({ href, target }) {
