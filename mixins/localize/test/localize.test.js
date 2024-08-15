@@ -1,4 +1,4 @@
-import { Localize, localizeMarkupIntl } from '../localize-mixin.js';
+import { Localize, localizeMarkup } from '../localize.js';
 import { expect } from '@brightspace-ui/testing';
 
 const resources = {
@@ -59,7 +59,7 @@ describe('Localize', () => {
 
 	it('can localize with HTML', async() => {
 		await localizer.ready;
-		const localized = localizer.localizeHTML('html', { spanTag: chunks => localizeMarkupIntl`<p id="my-paragraph">${chunks}</p>` });
+		const localized = localizer.localizeHTML('html', { spanTag: chunks => localizeMarkup`<p id="my-paragraph">${chunks}</p>` });
 		expect(localized).to.equal('<p id="my-paragraph">Wrapped in tags</p>');
 	});
 
