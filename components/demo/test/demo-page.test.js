@@ -23,4 +23,8 @@ describe('d2l-demo-page', () => {
 
 	});
 
+	it('should set isD2LDemoPage', () => {
+		expect(window.isD2LDemoPage).to.be.true;
+	});
+
 });
