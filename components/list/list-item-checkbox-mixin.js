@@ -33,7 +33,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * @ignore
 			 */
 			selectionInfo: { type: Object, attribute: false },
-			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
+			_allEnabledSelected: { type: Boolean, attribute: '_all-enabled-selected', reflect: true },
+			_indeterminate: { type: Boolean, attribute: '_indeterminate', reflect: true },
+			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true },
 		};
 	}
 
@@ -100,6 +102,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
+	get _allEnabledSelected() {
+		return this.selectionInfo.allEnabledSelected;
+	}
+
+	get _indeterminate() {
+		return this.selectionInfo.state === SelectionInfo.states.some;
+	}
+
 	async _dispatchSelected(value) {
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
@@ -153,8 +163,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				?disabled="${this.selectionDisabled}"
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
-				?_allEnabledSelected="${this.selectionInfo.allEnabledSelected}"
-				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
+				?_allEnabledSelected="${this._allEnabledSelected}"
+				?_indeterminate="${this._indeterminate}"
 				key="${this.key}"
 				label="${this.label}"
 				?selected="${this.selected}"
