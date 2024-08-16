@@ -11,6 +11,8 @@ import { selectStyles } from '../inputs/input-select-styles.js';
 
 document.body.classList.add('d2l-typography');
 
+window.isD2LDemoPage = true;
+
 (async() => {
 	const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
 	await Promise.all([
