@@ -37,22 +37,22 @@ describe('Localize', () => {
 		localizer.disconnect();
 	});
 
+	it('should not be set up before ready', async() => {
+		expect(runCount).to.equal(0);
+		expect(localizer.localize.resources).to.be.undefined;
+		expect(localizer.localize.resolvedLocale).to.be.undefined;
+		expect(localizer.pristine).to.be.true;
+	});
+
+	it('should have been set up when ready', async() => {
+		await localizer.ready;
+		expect(runCount).to.equal(1);
+		expect(localizer.localize.resources).to.be.an('object');
+		expect(localizer.localize.resolvedLocale).to.equal('en');
+		expect(localizer.pristine).to.be.false;
+	});
+
 	describe('onResourcesChange', () => {
-
-		it('should not be set up before ready', async() => {
-			expect(runCount).to.equal(0);
-			expect(localizer.localize.resources).to.be.undefined;
-			expect(localizer.localize.resolvedLocale).to.be.undefined;
-			expect(localizer.pristine).to.be.true;
-		});
-
-		it('should have run once when ready', async() => {
-			await localizer.ready;
-			expect(runCount).to.equal(1);
-			expect(localizer.localize.resources).to.be.an('object');
-			expect(localizer.localize.resolvedLocale).to.equal('en');
-			expect(localizer.pristine).to.be.false;
-		});
 
 		it('runs when the document locale changes', async() => {
 			await localizer.ready;
