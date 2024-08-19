@@ -17,17 +17,18 @@ const noAllowedTagsRegex = getDisallowedTagsRegex([]);
 export const getLocalizeClass = (superclass = class {}) => class LocalizeClass extends superclass {
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
-	pristine = true;
-	#connected = false;
-	#resourcesPromise;
-	#resolveResourcesLoaded;
 	static #localizeMarkup;
 
 	static setLocalizeMarkup(localizeMarkup) {
 		this.#localizeMarkup ??= localizeMarkup;
 	}
 
+	pristine = true;
+	#connected = false;
 	#localeChangeCallback;
+	#resourcesPromise;
+	#resolveResourcesLoaded;
+
 	async #localeChangeHandler() {
 		if (!this._hasResources()) return;
 

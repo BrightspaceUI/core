@@ -1,5 +1,5 @@
-import { Localize, localizeMarkup } from '../localize.js';
 import { expect, fixture } from '@brightspace-ui/testing';
+import { Localize, localizeMarkup } from '../localize.js';
 
 const resources = {
 	en: {
@@ -44,7 +44,7 @@ describe('Localize', () => {
 			expect(localizer.localize.resources).to.be.undefined;
 			expect(localizer.localize.resolvedLocale).to.be.undefined;
 			expect(localizer.pristine).to.be.true;
-		})
+		});
 
 		it('should have run once when ready', async() => {
 			await localizer.ready;
@@ -77,7 +77,7 @@ describe('Localize', () => {
 			await localizer.ready;
 			const localized = localizer.localize('many', 'type', 'message', 'count', 2);
 			expect(localized).to.equal('This message has 2 arguments');
-		})
+		});
 
 	});
 
