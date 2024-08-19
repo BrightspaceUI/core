@@ -1,4 +1,3 @@
-import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import { disallowedTagsRegex, getLocalizeClass, validateMarkup } from './localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { html } from 'lit';
