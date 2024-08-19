@@ -103,7 +103,11 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		} else {
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
-				if (!selectable.disabled && !selectable.selected) allEnabledSelected = false;
+				if ((function(curSelectable) {
+					if (curSelectable.selected || curSelectable._allEnabledSelected) return true;
+					if (!curSelectable.disabled && !curSelectable._allEnabledSelected) return false;
+					if (!curSelectable.disabled && !curSelectable.selected) return false;
+				})(selectable) === false) allEnabledSelected = false;
 				if (selectable._indeterminate) state = SelectionInfo.states.some;
 			});
 
@@ -122,21 +126,36 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 		let allEnabledSelected = true;
 		this._selectionSelectables.forEach(selectable => {
-			if (selectable.selected) return;
-			if (!selectable.disabled && !selectable._allEnabledSelected) return allEnabledSelected = false;
+			if (selectable.selected || selectable._allEnabledSelected) return;
+			if (!selectable.disabled && !selectable._allEnabledSelected ||
+				!selectable.disabled && !selectable.selected) {
+				return allEnabledSelected = false;
+			}
 		});
 
 		this._selectionSelectables.forEach(selectable => {
-			if (this.selectionSingle || this._selectAllPages) {
-				if (selectable.selected !== selected) selectable.selected = selected;
-				return;
+			if (this.selectionSingle || this._selectAllPages && selectable.selected !== selected) {
+				selectable.selected = selected;
 			}
-			if (selectable.disabled || (selectable.selected || selectable._allEnabledSelected) === !allEnabledSelected) return;
-			if (selectable._indeterminate && selectable._allEnabledSelected !== !allEnabledSelected) {
-				return selectable.selected = true;
+			// clearly the behaviour of L1-2 is annoying me. If there is a mixed state on the top level select all located at
+			// http://localhost:8000/components/list/demo/list-color.html (due to mixed state coming from the `selection-disabled` sub-list (Glaciation L3))
+			// then toggling the top level select all will toggle L1-1's sublist correctly, but L1-2 will remain enabled/selected
+			if (selectable.key === 'L1-2') {
+				console.log('trying to set to, !allEnabledSelected: ', !allEnabledSelected);
+				console.log('for information purposes, selected:', selected);
+				console.table([
+					{ property: 'selectable.key', value: selectable.key },
+					{ property: 'selectable.selected', value: selectable.selected },
+					{ property: 'selectable.disabled', value: selectable.disabled },
+					{ property: 'selectable._indeterminate', value: selectable._indeterminate },
+					{ property: 'selectable._allEnabledSelected', value: selectable._allEnabledSelected }
+				]);
 			}
-			if (selectable.selected !== !allEnabledSelected) {
-				return selectable.selected = !allEnabledSelected;
+			// child sublist with selection-disabled + indeterminate causes `selected === false` on parent list
+			if (!selectable.disabled && selectable._indeterminate && selectable._allEnabledSelected !== !allEnabledSelected) {
+				selectable.selected = true;
+			} else if (!selectable.disabled && selectable.selected !== !allEnabledSelected) {
+				selectable.selected = !allEnabledSelected;
 			}
 		});
 
