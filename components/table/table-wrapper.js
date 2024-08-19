@@ -659,7 +659,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		// Pick the body row with the most cells (and no colspans) to measure against
 		const candidateRowBody = [...body.rows].find(row => {
 			return row.cells.length === maxRowBodyLength
-				&& ![...row.cells].find(cell => cell.colSpan);
+				&& ![...row.cells].find(cell => cell.colSpan > 1);
 		});
 
 		if (candidateRowHeadCells.length === 0 || !candidateRowBody) return;
