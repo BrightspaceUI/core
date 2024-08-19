@@ -1,12 +1,12 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
+import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { heading3Styles } from '../typography/styles.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -52,7 +52,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	}
 
 	static get styles() {
-		return [ dialogStyles, heading3Styles, css`
+		return [ _generateResetStyles(':host'), dialogStyles, heading3Styles, css`
 
 			.d2l-dialog-header,
 			:host([critical]) .d2l-dialog-header {

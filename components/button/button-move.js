@@ -113,7 +113,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 					flex-direction: column;
 					gap: 2px;
 					margin: 0;
-					min-height: 1.8rem;
+					min-height: auto;
 					padding: 0;
 					position: relative;
 					width: 0.9rem;
@@ -144,16 +144,16 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 
 				.up-layer,
 				.down-layer {
-					height: 1.1rem;
+					height: 1.2rem;
 					left: -0.2rem;
 					position: absolute;
 					width: 1.3rem;
 				}
 				.up-layer {
-					top: -0.25rem;
+					top: -0.35rem;
 				}
 				.down-layer {
-					bottom: -0.25rem;
+					bottom: -0.35rem;
 				}
 				:host([dir="rtl"]) .up-layer,
 				:host([dir="rtl"]) .down-layer {

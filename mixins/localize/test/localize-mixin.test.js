@@ -205,7 +205,8 @@ class StaticEl extends _LocalizeMixinBase(LitElement) {
 	static langResources = {
 		'en': {
 			'hello': 'Hello {name}',
-			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+			'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.',
+			'tag': '<b>This won\'t be bold</b>'
 		},
 		'fr': { 'hello': 'Bonjour {name}' }
 	};
@@ -246,12 +247,12 @@ const staticTag = defineCE(StaticEl);
 
 const asyncTag = defineCE(
 	class extends StaticEl {
-		static getLocalizeResources(langs) {
+		static async getLocalizeResources(langs) {
 			for (let i = 0; i < langs.length; i++) {
 				if (this.langResources[langs[i]]) {
 					const resources = {
 						language: langs[i],
-						resources: this.langResources[langs[i]]
+						resources: { getsConcatenated: 'I‘m here too!' }
 					};
 					return new Promise(r => setTimeout(() => r(resources), 50));
 				}
@@ -311,13 +312,11 @@ describe('LocalizeMixin', () => {
 			it('should re-localize text when locale changes', (done) => {
 				const valInitial = elem.localize('hello', { name: 'Sam' });
 				expect(valInitial).to.equal('Hello Sam');
-				const myEventListener = () => {
+				elem.addEventListener('d2l-localize-resources-change', () => {
 					const val = elem.localize('hello', { name: 'Mary' });
 					expect(val).to.equal('Bonjour Mary');
-					elem.removeEventListener('d2l-localize-resources-change', myEventListener);
 					done();
-				};
-				elem.addEventListener('d2l-localize-resources-change', myEventListener);
+				}, { once: true });
 				documentLocaleSettings.language = 'fr';
 			});
 
@@ -335,6 +334,13 @@ describe('LocalizeMixin', () => {
 				const errArg = errorSpy.firstCall.args[0];
 				expect(errArg).to.be.instanceof(Error);
 				expect(errArg.message).to.equal('The intl string context variable "name" was not provided to the string "Hello {name}"');
+			});
+
+			it('should error when using tags', () => {
+				const val = elem.localize('tag');
+				expect(val).to.equal('');
+				expect(errorSpy.calledOnce).to.be.true;
+				expect(errorSpy.firstCall.args[0].message).to.equal('localize() does not support rich text. For more information, see: https://github.com/BrightspaceUI/core/blob/main/mixins/localize/');
 			});
 
 		});
@@ -388,8 +394,8 @@ describe('LocalizeMixin', () => {
 			expect(consoleErrorStub).to.have.been.calledTwice;
 			expect(renderToElem(defaultTags)).lightDom.to.equal('This is <strong>important</strong>, this is <strong><em>very important</em></strong>');
 			expect(renderToElem(manual)).lightDom.to.equal('This is <d2l-link href="http://d2l.com">a link</d2l-link>');
-			expect(renderToElem(disallowed)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
-			expect(renderToElem(badTemplate)).lightDom.to.equal('This is &lt;link&gt;replaceable&lt;/link&gt;');
+			expect(renderToElem(disallowed)).lightDom.to.equal('');
+			expect(renderToElem(badTemplate)).lightDom.to.equal('');
 			expect(renderToElem(tooltip)).lightDom.to.equal('This is a <d2l-tooltip-help inherit-font-style="" text="tooltip-help">Tooltip text</d2l-tooltip-help> within a sentence');
 			expect(renderToElem(boldItalic)).lightDom.to.equal('This is <b>bold</b> but not important, this is <i>italic</i> but not emphasized');
 			expect(renderToElem(pluralLink)).lightDom.to.equal('You have milk in your cart. <d2l-link href="checkout">Checkout</d2l-link>');
@@ -487,7 +493,7 @@ describe('LocalizeMixin', () => {
 
 				const laborDay = elem.localize('laborDay');
 				expect(navigator.languages).to.deep.equal(test.browserLangs);
-				expect(elem.__resources.laborDay.language).to.equal(test.resolvedLang);
+				expect(elem.localize.resources.laborDay.language).to.equal(test.resolvedLang);
 				expect(laborDay).to.equal(test.localizedTerm);
 			});
 		});
@@ -554,7 +560,7 @@ describe('LocalizeMixin', () => {
 			expect(val2Initial).to.equal('This is English from Test6LocalizeMixin');
 			expect(val3Initial).to.equal('This is English from Test1LocalizeMixinBase');
 			expect(val4Initial).to.equal('This is English from Test2LocalizeMixinBase');
-			const myEventListener = () => {
+			elemStatic.addEventListener('d2l-localize-resources-change', () => {
 				const val1 = elemStatic.localize('test1');
 				const val2 = elemStatic.localize('test2');
 				const val3 = elemStatic.localize('test3');
@@ -563,10 +569,8 @@ describe('LocalizeMixin', () => {
 				expect(val2).to.equal('This is English from Test6LocalizeMixin');
 				expect(val3).to.equal('This is French from Test1LocalizeMixinBase');
 				expect(val4).to.equal('This is English from Test2LocalizeMixinBase');
-				elemStatic.removeEventListener('d2l-localize-resources-change', myEventListener);
 				done();
-			};
-			elemStatic.addEventListener('d2l-localize-resources-change', myEventListener);
+			}, { once: true });
 			documentLocaleSettings.language = 'fr';
 		});
 	});
@@ -576,10 +580,14 @@ describe('LocalizeMixin', () => {
 		it('should pass all changed properties to updated()', (done) => {
 			fixture('<div></div>').then(async(container) => {
 				const elem = document.createElement(asyncTag);
-				setTimeout(() => container.appendChild(elem));
+				setTimeout(() => {
+					container.appendChild(elem);
+					elem.name = 'Updated Name';
+				});
 				const { detail } = await oneEvent(elem, 'd2l-test-localize-updated');
-				expect(detail.props.size).to.equal(1);
-				expect(detail.props.has('__resources'));
+				expect(detail.props.size).to.equal(2);
+				expect(detail.props.has('localize'));
+				expect(detail.props.has('name'));
 				done();
 			});
 		});
