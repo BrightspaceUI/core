@@ -309,17 +309,15 @@ describe('LocalizeMixin', () => {
 				expect(val).to.equal('Hello Bill');
 			});
 
-			it('should re-localize text when locale changes', () => {
+			it('should re-localize text when locale changes', (done) => {
 				const valInitial = elem.localize('hello', { name: 'Sam' });
 				expect(valInitial).to.equal('Hello Sam');
-				let resolve;
 				elem.addEventListener('d2l-localize-resources-change', () => {
 					const val = elem.localize('hello', { name: 'Mary' });
 					expect(val).to.equal('Bonjour Mary');
-					resolve();
+					done();
 				}, { once: true });
 				documentLocaleSettings.language = 'fr';
-				return new Promise(r => resolve = r);
 			});
 
 			it('should localize term using plurals', () => {
