@@ -4,10 +4,14 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinClass extends getLocalizeClass(superclass) {
+export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinBaseClass extends getLocalizeClass(superclass) {
 
 	#updatedProperties = new Map();
-	localizeMarkup = localizeMarkup;
+
+	constructor() {
+		super();
+		super.constructor.setLocalizeMarkup(localizeMarkup);
+	}
 
 	connectedCallback() {
 		super.connectedCallback();

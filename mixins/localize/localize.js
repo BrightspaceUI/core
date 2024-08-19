@@ -18,9 +18,14 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 
 	static documentLocaleSettings = getDocumentLocaleSettings();
 	pristine = true;
+	#connected = false;
 	#resourcesPromise;
 	#resolveResourcesLoaded;
-	localizeMarkup = localizeMarkup;
+	static #localizeMarkup;
+
+	static setLocalizeMarkup(localizeMarkup) {
+		this.#localizeMarkup ??= localizeMarkup;
+	}
 
 	#localeChangeCallback;
 	async #localeChangeHandler() {
@@ -41,7 +46,7 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 			}
 		}
 		this.localize.resources = allResources;
-		this.localize.resolvedLocales = resolvedLocales;
+		this.localize.resolvedLocale = [...resolvedLocales][0];
 		if (resolvedLocales.size > 1) {
 			console.warn(`Resolved multiple locales in '${this.constructor.name || this.tagName || ''}': ${[...resolvedLocales].join(', ')}`);
 		}
@@ -55,19 +60,23 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 	}
 
 	#onResourcesChange() {
-		this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
-		this.config?.onResourcesChange?.();
-		this.onLocalizeResourcesChange?.();
+		if (this.#connected) {
+			this.dispatchEvent?.(new CustomEvent('d2l-localize-resources-change'));
+			this.config?.onResourcesChange?.();
+			this.onLocalizeResourcesChange?.();
+		}
 	}
 
 	connect() {
 		this.#localeChangeCallback = () => this.#localeChangeHandler();
 		LocalizeClass.documentLocaleSettings.addChangeListener(this.#localeChangeCallback);
+		this.#connected = true;
 		this.#localeChangeCallback();
 	}
 
 	disconnect() {
 		LocalizeClass.documentLocaleSettings.removeChangeListener(this.#localeChangeCallback);
+		this.#connected = false;
 	}
 
 	localize(key) {
@@ -111,12 +120,12 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 		let formattedMessage = value;
 		try {
 			const unvalidated = translatedMessage.format({
-				b: chunks => this.localizeMarkup`<b>${chunks}</b>`,
-				br: () => this.localizeMarkup`<br>`,
-				em: chunks => this.localizeMarkup`<em>${chunks}</em>`,
-				i: chunks => this.localizeMarkup`<i>${chunks}</i>`,
-				p: chunks => this.localizeMarkup`<p>${chunks}</p>`,
-				strong: chunks => this.localizeMarkup`<strong>${chunks}</strong>`,
+				b: chunks => LocalizeClass.#localizeMarkup`<b>${chunks}</b>`,
+				br: () => LocalizeClass.#localizeMarkup`<br>`,
+				em: chunks => LocalizeClass.#localizeMarkup`<em>${chunks}</em>`,
+				i: chunks => LocalizeClass.#localizeMarkup`<i>${chunks}</i>`,
+				p: chunks => LocalizeClass.#localizeMarkup`<p>${chunks}</p>`,
+				strong: chunks => LocalizeClass.#localizeMarkup`<strong>${chunks}</strong>`,
 				...params
 			});
 			validateMarkup(unvalidated);
@@ -203,6 +212,7 @@ export const Localize = class extends getLocalizeClass() {
 
 	constructor(config) {
 		super();
+		super.constructor.setLocalizeMarkup(localizeMarkup);
 		this.config = config;
 		this.connect();
 	}

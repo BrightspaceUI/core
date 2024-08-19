@@ -22,6 +22,7 @@ describe('Localize', () => {
 		let resolve;
 		updatePromise = new Promise(r => resolve = r);
 
+		localizer = {};
 		localizer = new Localize({
 			importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 50)),
 			onResourcesChange: () => {
@@ -30,7 +31,6 @@ describe('Localize', () => {
 			}
 		});
 		expect(runCount).to.equal(0);
-		await localizer.ready;
 	});
 
 	afterEach(() => {
@@ -39,16 +39,28 @@ describe('Localize', () => {
 
 	describe('onResourcesChange', () => {
 
-		it('has run when ready', async() => {
+		it('should not be set up before ready', async() => {
+			expect(runCount).to.equal(0);
+			expect(localizer.localize.resources).to.be.undefined;
+			expect(localizer.localize.resolvedLocale).to.be.undefined;
+			expect(localizer.pristine).to.be.true;
+		})
+
+		it('should have run once when ready', async() => {
+			await localizer.ready;
 			expect(runCount).to.equal(1);
+			expect(localizer.localize.resources).to.be.an('object');
+			expect(localizer.localize.resolvedLocale).to.equal('en');
+			expect(localizer.pristine).to.be.false;
 		});
 
 		it('runs when the document locale changes', async() => {
-			expect(localizer.localize.resolvedLocales).to.have.keys(['en']);
+			await localizer.ready;
+			expect(localizer.localize.resolvedLocale).to.equal('en');
 			document.documentElement.lang = 'en-gb';
 			await updatePromise;
 			expect(runCount).to.equal(2);
-			expect(localizer.localize.resolvedLocales).to.have.keys(['en-gb']);
+			expect(localizer.localize.resolvedLocale).to.equal('en-gb');
 		});
 
 	});
@@ -56,11 +68,13 @@ describe('Localize', () => {
 	describe('localize()', () => {
 
 		it('should localize text', async() => {
+			await localizer.ready;
 			const localized = localizer.localize('basic', { employerName: 'D2L' });
 			expect(localized).to.equal('D2L is my employer');
 		});
 
-		it('should accept "many params"', () => {
+		it('should accept exapnded/spread params', async() => {
+			await localizer.ready;
 			const localized = localizer.localize('many', 'type', 'message', 'count', 2);
 			expect(localized).to.equal('This message has 2 arguments');
 		})
@@ -70,6 +84,7 @@ describe('Localize', () => {
 	describe('localizeHTML()', () => {
 
 		it('should localize, replacing tags with HTML', async() => {
+			await localizer.ready;
 			const localized = localizer.localizeHTML('html', { paragraph: chunks => localizeMarkup`<p id="my-paragraph">${chunks}</p>` });
 			expect(localized).to.equal('<p id="my-paragraph">Wrapped in tags</p>');
 		});
