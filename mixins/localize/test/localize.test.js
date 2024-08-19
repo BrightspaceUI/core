@@ -24,7 +24,7 @@ describe('Localize', () => {
 
 		localizer = {};
 		localizer = new Localize({
-			importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 50)),
+			importFunc: async lang => await new Promise(r => setTimeout(() => r(resources[lang]), 1)),
 			onResourcesChange: () => {
 				if (runCount) resolve();
 				runCount++;
