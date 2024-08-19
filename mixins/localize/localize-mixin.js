@@ -42,7 +42,6 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 
 		const ready = this.localize.resources !== undefined && !this.pristine;
 
-		/* is this necessary? > */
 		if (!ready) {
 			changedProperties.forEach((oldValue, propName) => {
 				this.#updatedProperties.set(propName, oldValue);
@@ -56,7 +55,6 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 			}
 		});
 		this.#updatedProperties.clear();
-		/* < is this necessary? */
 
 		return super.shouldUpdate(changedProperties);
 	}
