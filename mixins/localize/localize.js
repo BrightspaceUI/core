@@ -23,7 +23,7 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 	localizeMarkup = localizeMarkup;
 
 	#localeChangeCallback;
-	async #defaultLocaleChangeCallback() {
+	async #localeChangeHandler() {
 		if (!this._hasResources()) return;
 
 		const resourcesPromise = this.constructor._getAllLocalizeResources(this.config);
@@ -60,8 +60,8 @@ export const getLocalizeClass = (superclass = class {}) => class LocalizeClass e
 		this.onLocalizeResourcesChange?.();
 	}
 
-	connect(cb = () => this.#defaultLocaleChangeCallback()) {
-		this.#localeChangeCallback = cb;
+	connect() {
+		this.#localeChangeCallback = () => this.#localeChangeHandler();
 		LocalizeClass.documentLocaleSettings.addChangeListener(this.#localeChangeCallback);
 		this.#localeChangeCallback();
 	}
