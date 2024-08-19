@@ -1,10 +1,11 @@
 import { Localize, localizeMarkup } from '../localize.js';
-import { expect } from '@brightspace-ui/testing';
+import { expect, fixture } from '@brightspace-ui/testing';
 
 const resources = {
 	en: {
 		basic: '{employerName} is my employer',
-		html: '<spanTag>Wrapped in tags</spanTag>'
+		many: 'This {type} has {count} arguments',
+		html: '<paragraph>Wrapped in tags</paragraph>'
 	},
 	'en-gb': {
 		basic: '{employerName} is my employer, but British!'
@@ -15,6 +16,7 @@ describe('Localize', () => {
 
 	let localizer, runCount, updatePromise;
 	beforeEach(async() => {
+		await fixture('<div></div>');
 		runCount = 0;
 
 		let resolve;
@@ -27,6 +29,8 @@ describe('Localize', () => {
 				runCount++;
 			}
 		});
+		expect(runCount).to.equal(0);
+		await localizer.ready;
 	});
 
 	afterEach(() => {
@@ -35,13 +39,11 @@ describe('Localize', () => {
 
 	describe('onResourcesChange', () => {
 
-		it('runs when ready', async() => {
-			await localizer.ready;
+		it('has run when ready', async() => {
 			expect(runCount).to.equal(1);
 		});
 
-		it('run when the document locale changes', async() => {
-			await localizer.ready;
+		it('runs when the document locale changes', async() => {
 			expect(localizer.localize.resolvedLocales).to.have.keys(['en']);
 			document.documentElement.lang = 'en-gb';
 			await updatePromise;
@@ -51,16 +53,27 @@ describe('Localize', () => {
 
 	});
 
-	it('can localize text', async() => {
-		await localizer.ready;
-		const localized = localizer.localize('basic', { employerName: 'D2L' });
-		expect(localized).to.equal('D2L is my employer');
+	describe('localize()', () => {
+
+		it('should localize text', async() => {
+			const localized = localizer.localize('basic', { employerName: 'D2L' });
+			expect(localized).to.equal('D2L is my employer');
+		});
+
+		it('should accept "many params"', () => {
+			const localized = localizer.localize('many', 'type', 'message', 'count', 2);
+			expect(localized).to.equal('This message has 2 arguments');
+		})
+
 	});
 
-	it('can localize with HTML', async() => {
-		await localizer.ready;
-		const localized = localizer.localizeHTML('html', { spanTag: chunks => localizeMarkup`<p id="my-paragraph">${chunks}</p>` });
-		expect(localized).to.equal('<p id="my-paragraph">Wrapped in tags</p>');
+	describe('localizeHTML()', () => {
+
+		it('should localize, replacing tags with HTML', async() => {
+			const localized = localizer.localizeHTML('html', { paragraph: chunks => localizeMarkup`<p id="my-paragraph">${chunks}</p>` });
+			expect(localized).to.equal('<p id="my-paragraph">Wrapped in tags</p>');
+		});
+
 	});
 
 });
