@@ -13,9 +13,9 @@ const keyCodes = {
 export class SelectionInfo {
 
 	constructor(keys, state, allEnabledSelected) {
+		if (allEnabledSelected == null) allEnabledSelected = false;
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
-		if (allEnabledSelected == null) allEnabledSelected = false;
 
 		this._allEnabledSelected = allEnabledSelected;
 		this._keys = keys;
@@ -138,7 +138,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 				selectable.selected = selected;
 			}
 			// clearly the behaviour of L1-2 is annoying me. If there is a mixed state on the top level select all located at
-			// http://localhost:8000/components/list/demo/list-color.html (due to mixed state coming from the `selection-disabled` sub-list (Glaciation L3))
+			// http://localhost:8000/components/list/demo/list-color.html (due to mix coming from the `selection-disabled` sub-list (Glaciation L3))
 			// then toggling the top level select all will toggle L1-1's sublist correctly, but L1-2 will remain enabled/selected
 			if (selectable.key === 'L1-2') {
 				console.log('trying to set to, !allEnabledSelected: ', !allEnabledSelected);
