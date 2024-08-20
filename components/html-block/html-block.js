@@ -234,19 +234,12 @@ class HtmlBlock extends LitElement {
 			'd2l-html-block-compact': this.compact
 		};
 
-		if (this._embedsFeatureEnabled()) {
-			return html`
-				<div class="${classMap(renderContainerClasses)}">
-					${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
-				</div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		} else {
-			return html`
-				<div class="${classMap(renderContainerClasses)}"></div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		}
+		return html`
+			<div class="${classMap(renderContainerClasses)}">
+				${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
+			</div>
+			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
+		`;
 	}
 
 	async updated(changedProperties) {
@@ -258,10 +251,6 @@ class HtmlBlock extends LitElement {
 
 	async getLoadingComplete() {
 		return this._renderersProcessedPromise;
-	}
-
-	_embedsFeatureEnabled() {
-		return window.D2L?.LP?.Web?.UI?.Flags.Flag('shield-7574-enable-embed-rendering-framework', true);
 	}
 
 	async _handleSlotChange(e) {
@@ -315,7 +304,6 @@ class HtmlBlock extends LitElement {
 
 	async _updateRenderContainer() {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		if (!this._embedsFeatureEnabled()) renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
 	}
 
