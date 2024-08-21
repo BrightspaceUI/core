@@ -244,7 +244,7 @@ class HtmlBlock extends LitElement {
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if (changedProperties.has('embeds') && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 	}
@@ -261,6 +261,7 @@ class HtmlBlock extends LitElement {
 	async _processEmbeds() {
 		const htmlFragment = document.createRange().createContextualFragment(this.html);
 		await renderEmbeds(htmlFragment);
+		this.updated(new Map([['embeds']]));
 		return htmlFragment;
 	}
 
