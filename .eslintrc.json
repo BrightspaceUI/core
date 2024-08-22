@@ -5,8 +5,7 @@
   },
   "overrides": [{
     "files": [
-      "**/demo/**.html",
-      "helpers/getLocalizeResources.js"
+      "**/demo/**.html"
     ],
     "rules": {
       "no-console": 0
