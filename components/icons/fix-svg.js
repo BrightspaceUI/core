@@ -1,4 +1,4 @@
-export function fixSvg(svg) {
+export function fixSvg(svg, { title } = {}) {
 
 	const fills = svg.querySelectorAll('[fill]');
 	fills.forEach((fill) => {
@@ -6,7 +6,13 @@ export function fixSvg(svg) {
 	});
 
 	svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-	svg.setAttribute('focusable', 'false');
+
+	if (title != null) {
+		svg.setAttribute('title', title);
+	} else {
+		svg.setAttribute('focusable', 'false');
+	}
+
 	svg.removeAttribute('height');
 	svg.removeAttribute('width');
 

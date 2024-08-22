@@ -50,7 +50,7 @@ class Icon extends RtlMixin(LitElement) {
 		template.innerHTML = svgStr;
 
 		const svg = template.content.firstChild;
-		fixSvg(svg);
+		fixSvg(svg, { title: this.title });
 
 		return html`${unsafeSVG(template.innerHTML)}`;
 
