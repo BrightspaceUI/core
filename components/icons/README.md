@@ -58,12 +58,12 @@ To change an icon's color from Tungsten to something else, simply set it from CS
 
 Overriding the size is not recommended. However, if you must, set the `width` and `height` from CSS.
 
-## Specifying a title
+## Accessibility
 
-To provide a screen reader-friendly label for informative icons, provide the `title` attribute:
+Icons are generally intended to serve a purely decorative purpose. For icons that do provide some informative context, it may be beneficial to provide an `aria-label` for screen readers:
 
 ```html
-<d2l-icon icon="tier3:rubric-graded" style="Graded rubric icon"></d2l-icon>
+<d2l-icon icon="tier3:rubric-graded" role="img" aria-label="Graded rubric icon"></d2l-icon>
 ```
 
 ## Updating or contributing new icons
