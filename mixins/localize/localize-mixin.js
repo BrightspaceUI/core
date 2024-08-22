@@ -1,4 +1,4 @@
-import { disallowedTagsRegex, getLocalizeClass, validateMarkup } from './localize.js';
+import { disallowedTagsRegex, getLocalizeClass, validateMarkup } from '@brightspace-ui/intl/lib/localize.js';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
