@@ -216,7 +216,10 @@ class HtmlBlock extends LitElement {
 
 		const contextValsPromise = contextKeysPromise.then(contextKeys => {
 			return Promise.allSettled(contextKeys.map(key => {
-				return tryGet(key, undefined, ctx => this._context.set(key, ctx));
+				return tryGet(key, undefined, ctx => {
+					this._context.set(key, ctx);
+					this.updated(new Map([['_context']]));
+				});
 			}));
 		});
 
@@ -244,7 +247,7 @@ class HtmlBlock extends LitElement {
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if ((changedProperties.has('embeds') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 	}
@@ -261,6 +264,7 @@ class HtmlBlock extends LitElement {
 	async _processEmbeds() {
 		const htmlFragment = document.createRange().createContextualFragment(this.html);
 		await renderEmbeds(htmlFragment);
+		this.updated(new Map([['embeds']]));
 		return htmlFragment;
 	}
 
