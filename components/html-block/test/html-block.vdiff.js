@@ -149,8 +149,16 @@ describe('d2l-html-block', () => {
 
 	it('update-content', async() => {
 		const elem = await fixture(html`<d2l-html-block html="before update"></d2l-html-block>`, { viewport });
+
+		let resolve;
+		const elemUpdated = new Promise(r => resolve = r);
+		elem.updated = async function(changedProperties) {
+			await Object.getPrototypeOf(elem).updated.call(elem, changedProperties);
+			if (changedProperties.has('embeds')) resolve();
+		};
+
 		elem.html = 'after update';
-		await elem.updateComplete;
+		await elemUpdated;
 		await expect(elem).to.be.golden();
 	});
 
