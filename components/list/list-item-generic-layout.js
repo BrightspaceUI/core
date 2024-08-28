@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
-import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable, isFocusable } from '../../helpers/focus.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getFocusableDescendants, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -220,7 +220,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	firstUpdated() {
 		this.addEventListener('keydown', this._onKeydown.bind(this));
-		this.addEventListener('focusin', this._setFocusInfo.bind(this));
 	}
 
 	render() {
@@ -247,19 +246,18 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_focusCellItem(num, itemNum) {
-		const cell = this.shadowRoot && this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
+	_focusCellItem(focusInfo) {
+		const cell = this.shadowRoot?.querySelector(`[data-cell-num="${focusInfo.cellNum}"]`);
 		if (!cell) return;
 
-		const firstFocusable = getFirstFocusableDescendant(cell);
-		if (!firstFocusable) return;
+		let focusable;
+		const focusables = getFocusableDescendants(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
 
-		if (itemNum === 1) {
-			firstFocusable.focus();
-			return firstFocusable;
-		} else {
-			return this._focusNextWithinCell(firstFocusable, itemNum);
-		}
+		if (focusInfo.index <= focusables.length - 1) focusable = focusables[focusInfo.index];
+		else if (focusables.length > 0) focusable = focusables[focusables.length - 1];
+
+		if (focusable) focusable.focus();
+		return focusable;
 	}
 
 	_focusFirstCell() {
@@ -321,7 +319,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return focusable;
 	}
 
-	_focusNextRow(previous = false, num = 1) {
+	_focusNextRow(focusInfo, previous = false, num = 1) {
 
 		const curListItem = findComposedAncestor(this, node => node.role === 'rowgroup');
 		let listItem = curListItem;
@@ -335,7 +333,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		if (!listItem) return;
 		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		const focusedCellItem = listItemRow._focusCellItem(this._cellNum, this._cellFocusedItem);
+		const focusedCellItem = listItemRow._focusCellItem(focusInfo);
 
 		if (!focusedCellItem) {
 			// could not focus on same cell in adjacent list-item so try general focus on item
@@ -351,51 +349,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	}
 
-	_focusNextWithinCell(node, num = 1) {
-
-		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
-		let focusable = null;
-		let siblingNum = 1;
-		while (!focusable || siblingNum < num) {
-			node = this._getNextSiblingInCell(node);
-
-			if (!node) break;
-			++siblingNum;
-
-			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
-			if (isInteractiveDescendant(focusable)) focusable = null;
-		}
-
-		if (focusable) focusable.focus();
-		return focusable;
+	_focusNextWithinRow(focusInfo, focusables) {
+		if (focusInfo.index === focusables.length - 1) this._focusNextCell(focusInfo.cellNum + 1);
+		else focusables[focusInfo.index + 1].focus();
 	}
 
-	_focusPreviousWithinCell(node) {
-		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
-		let focusable = null;
-		while (!focusable) {
-			node = this._getPrevSiblingInCell(node);
-			if (!node) break;
-			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
-		}
-		if (focusable) focusable.focus();
-		return focusable;
-	}
-
-	_getFocusedItemPosition(node) {
-		let position = 1;
-		// walk the tree backwards until we hit the cell
-		do {
-			node = this._getPrevSiblingInCell(node);
-			if (node) {
-				const focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
-				if (focusable) {
-					++position;
-					node = focusable;
-				}
-			}
-		} while (node);
-		return position;
+	_focusPreviousWithinRow(focusInfo, focusables) {
+		if (focusInfo.index === 0) this._focusNextCell(focusInfo.cellNum - 1, false);
+		else focusables[focusInfo.index - 1].focus();
 	}
 
 	_getNextFlattenedListItem(listItem) {
@@ -428,15 +389,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		// check for sibling list-item or ancestors sibling list-items
 		return getNextListItem(listItem);
 
-	}
-
-	_getNextSiblingInCell(node) {
-		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (!cell || cell.name === node.slot) return null;
-		if (node.nextElementSibling) return node.nextElementSibling;
-
-		const sibling = getNextAncestorSibling(node);
-		return isComposedAncestor(cell, sibling) ? sibling : null;
 	}
 
 	_getPreviousFlattenedListItem(listItem) {
@@ -476,72 +428,58 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	}
 
-	_getPrevSiblingInCell(node) {
-		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (!cell || cell.name === node.slot) return null;
-		if (node.previousElementSibling) return node.previousElementSibling;
-
-		const sibling = getPreviousAncestorSibling(node);
-		return isComposedAncestor(cell, sibling) ? sibling : null;
-	}
-
-	_getThisCell() {
-		return this.shadowRoot &&
-			this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
-	}
-
 	_isContainedInSameRootList(item, node) {
 		const rootList = item?.getRootList?.(item);
 		return isComposedAncestor(rootList, node);
 	}
 
-	_onKeydown(event) {
+	_onKeydown(e) {
 		if (!this.gridActive) return;
-		let node = null;
 		let preventDefault = true;
-		switch (event.keyCode) {
+
+		const node = getComposedActiveElement();
+		const cell = findComposedAncestor(node, parent => parent.classList?.contains('d2l-cell'));
+		if (!cell) return;
+
+		const focusables = getFocusableDescendants(cell, { deep: true, predicate: elem => !isInteractiveDescendant(elem) });
+		const focusInfo = {
+			cellNum: parseInt(cell.getAttribute('data-cell-num')),
+			index: focusables.findIndex(elem => elem === node)
+		};
+
+		switch (e.keyCode) {
 			case keyCodes.RIGHT:
-				node = getComposedActiveElement();
 				if (this.dir === 'rtl') {
-					if (!this._focusPreviousWithinCell(node)) {
-						this._focusNextCell(this._cellNum - 1, false);
-					}
+					this._focusPreviousWithinRow(focusInfo, focusables);
 				} else {
-					if (!this._focusNextWithinCell(node)) {
-						this._focusNextCell(this._cellNum + 1);
-					}
+					this._focusNextWithinRow(focusInfo, focusables);
 				}
 				break;
 			case keyCodes.LEFT:
-				node = getComposedActiveElement();
 				if (this.dir === 'rtl') {
-					if (!this._focusNextWithinCell(node)) {
-						this._focusNextCell(this._cellNum + 1);
-					}
+					this._focusNextWithinRow(focusInfo, focusables);
 				} else {
-					if (!this._focusPreviousWithinCell(node)) {
-						this._focusNextCell(this._cellNum - 1, false);
-					}
+					this._focusPreviousWithinRow(focusInfo, focusables);
 				}
 				break;
 			case keyCodes.UP:
 				// move to above row, focus same item within the cell
-				this._focusNextRow(true);
+				this._focusNextRow(focusInfo, true);
 				break;
 			case keyCodes.DOWN:
 				// move to below row, focus same item within the cell
-				this._focusNextRow();
+				this._focusNextRow(focusInfo);
 				break;
 			case keyCodes.HOME:
 				if (this.dir === 'rtl') {
-					if (event.ctrlKey) {
+					if (e.ctrlKey) {
 						this._focusFirstRow();
 					} else {
 						// focus last cell
 						this._focusLastCell();
 					}
 				} else {
-					if (event.ctrlKey) {
+					if (e.ctrlKey) {
 						// focus first item of first row
 						this._focusFirstRow();
 					} else {
@@ -552,7 +490,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				break;
 			case keyCodes.END:
 				if (this.dir === 'rtl') {
-					if (event.ctrlKey) {
+					if (e.ctrlKey) {
 						// focus first item of last row
 						this._focusLastRow();
 					} else {
@@ -560,7 +498,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 						this._focusFirstCell();
 					}
 				} else {
-					if (event.ctrlKey) {
+					if (e.ctrlKey) {
 						// focus last item of last row
 						this._focusLastRow();
 					} else {
@@ -571,31 +509,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				break;
 			case keyCodes.PAGEUP:
 				// focus five rows up
-				this._focusNextRow(true, 5);
+				this._focusNextRow(focusInfo, true, 5);
 				break;
 			case keyCodes.PAGEDOWN:
 				// focus five rows down
-				this._focusNextRow(false, 5);
+				this._focusNextRow(focusInfo, false, 5);
 				break;
 			default:
 				preventDefault = false;
 		}
+
 		if (preventDefault) {
-			event.preventDefault();
-			event.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 		}
-	}
-
-	_setFocusInfo(e) {
-		e.stopPropagation();
-
-		if (!this.gridActive) return;
-		const slot = (e.path || e.composedPath()).find(node =>
-			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
-		if (!slot) return;
-
-		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
-		this._cellFocusedItem = this._getFocusedItemPosition(e.target);
+		return;
 	}
 
 }

@@ -105,14 +105,13 @@ describe('d2l-list', () => {
 						<d2l-list-item selectable key="L1-2" label="item"></d2l-list-item>
 					</d2l-list>
 				`);
+
 				const listItem = elem.querySelector(`[key="${initialFocus}"]`);
+				listItem.focus();
 
 				await sendKeysElem(listItem, 'down', keyPress);
 
-				const focusedElement = elem.querySelector('[_focusing]');
-				const focusTarget = elem.querySelector('[key="L3-2');
-
-				expect(focusedElement).to.equal(focusTarget);
+				expect(document.activeElement).to.equal(elem.querySelector('[key="L3-2'));
 			});
 		});
 
@@ -132,6 +131,7 @@ describe('d2l-list', () => {
 
 			expect(focusedElement).to.equal(listItem);
 		});
+
 	});
 
 	describe('flat', () => {

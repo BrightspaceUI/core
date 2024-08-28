@@ -599,15 +599,86 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		const body = this._table.querySelector('tbody');
 		if (!head || !body) return;
 
-		const firstRowHead = head.rows[0];
-		const firstRowBody = body.rows[0];
-		if (!firstRowHead || !firstRowBody || firstRowHead.cells.length !== firstRowBody.cells.length) return;
+		const candidateRowHeadCells = [];
 
-		for (let i = 0; i < firstRowHead.cells.length; i++) {
-			const headCell = firstRowHead.cells[i];
-			const bodyCell = firstRowBody.cells[i];
-			const bodyStyle = getComputedStyle(bodyCell);
+		// Max length of one of our body rows, which we'll try to map to our candidate head cells.
+		const maxRowBodyLength = Math.max(...([...body.rows].map(row => row.cells.length)));
+
+		const headCellsMap = [];
+		for (let i = 0; i < head.rows.length; i++) {
+			headCellsMap[i] = [];
+		}
+
+		// Build a map of which cells "exist" in each head row so we can pick out
+		// a candidate in each column to sync widths with.
+		for (let rowIndex = 0; rowIndex < head.rows.length; rowIndex++) {
+			const rowMap = headCellsMap[rowIndex];
+
+			let spanOffset = 0;
+			for (let colIndex = 0; colIndex < maxRowBodyLength; colIndex++) {
+				if (rowMap[colIndex] === null) {
+					spanOffset++;
+					continue;
+				}
+
+				const cell = head.rows[rowIndex].cells[colIndex - spanOffset];
+				rowMap[colIndex] = cell;
+
+				if (!cell) continue;
+
+				const colSpan = cell.colSpan;
+				const rowSpan = cell.rowSpan;
+
+				for (let offset = 1; offset < colSpan; offset++) {
+					rowMap[colIndex + offset] = null;
+				}
+
+				for (let offset = 1; offset < rowSpan; offset++) {
+					headCellsMap[rowIndex + offset][colIndex] = null;
+				}
+			}
+		}
+
+		// Pick out a single head cell for each column to sync widths.
+		for (let i = 0; i < maxRowBodyLength; i++) {
+			let candidateCell;
+			for (const rowMap of headCellsMap) {
+				const cell = rowMap[i];
+
+				if (cell && cell.colSpan === 1) {
+					candidateCell = cell;
+					break;
+				}
+			}
+
+			// This does not support heads without at least one single-column
+			// spanning cell in each column.
+			if (!candidateCell) return;
+
+			candidateRowHeadCells[i] = candidateCell;
+		}
+
+		// Pick the body row with the most cells (and no colspans) to measure against
+		const candidateRowBody = [...body.rows].find(row => {
+			return row.cells.length === maxRowBodyLength
+				&& ![...row.cells].find(cell => cell.colSpan > 1);
+		});
+
+		if (candidateRowHeadCells.length === 0 || !candidateRowBody) return;
+
+		let candidateRowBodyLength = 0;
+		for (const cell of candidateRowBody.cells) {
+			candidateRowBodyLength += cell.colSpan;
+		}
+
+		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
+
+		for (let i = 0; i < candidateRowHeadCells.length; i++) {
+			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
+
+			const bodyCell = candidateRowBody.cells[i];
+			const bodyStyle = getComputedStyle(bodyCell);
 
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);

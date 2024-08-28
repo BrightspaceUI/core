@@ -4,6 +4,5 @@ console.warn('Using mathjax test context, this is intended for demo pages and te
 
 addContext('d2l-mathjax', {
 	outputScale: 1.1,
-	renderLatex: !(window.location.search.indexOf('latex=false') !== -1),
-	enableMML3Support: true
+	renderLatex: !(window.location.search.indexOf('latex=false') !== -1)
 });

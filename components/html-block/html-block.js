@@ -216,7 +216,10 @@ class HtmlBlock extends LitElement {
 
 		const contextValsPromise = contextKeysPromise.then(contextKeys => {
 			return Promise.allSettled(contextKeys.map(key => {
-				return tryGet(key, undefined, ctx => this._context.set(key, ctx));
+				return tryGet(key, undefined, ctx => {
+					this._context.set(key, ctx);
+					this.updated(new Map([['_context']]));
+				});
 			}));
 		});
 
@@ -234,34 +237,23 @@ class HtmlBlock extends LitElement {
 			'd2l-html-block-compact': this.compact
 		};
 
-		if (this._embedsFeatureEnabled()) {
-			return html`
-				<div class="${classMap(renderContainerClasses)}">
-					${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
-				</div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		} else {
-			return html`
-				<div class="${classMap(renderContainerClasses)}"></div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		}
+		return html`
+			<div class="${classMap(renderContainerClasses)}">
+				${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
+			</div>
+			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
+		`;
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if ((changedProperties.has('embeds') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 	}
 
 	async getLoadingComplete() {
 		return this._renderersProcessedPromise;
-	}
-
-	_embedsFeatureEnabled() {
-		return window.D2L?.LP?.Web?.UI?.Flags.Flag('shield-7574-enable-embed-rendering-framework', true);
 	}
 
 	async _handleSlotChange(e) {
@@ -272,6 +264,7 @@ class HtmlBlock extends LitElement {
 	async _processEmbeds() {
 		const htmlFragment = document.createRange().createContextualFragment(this.html);
 		await renderEmbeds(htmlFragment);
+		this.updated(new Map([['embeds']]));
 		return htmlFragment;
 	}
 
@@ -315,7 +308,6 @@ class HtmlBlock extends LitElement {
 
 	async _updateRenderContainer() {
 		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		if (!this._embedsFeatureEnabled()) renderContainer.innerHTML = this.html;
 		await this._processRenderers(renderContainer);
 	}
 

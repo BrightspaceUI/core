@@ -40,6 +40,25 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate, incl
 	return null;
 }
 
+export function getFocusableDescendants(node, options) {
+	let focusables = [];
+
+	const composedChildren = getComposedChildren(node);
+	composedChildren.forEach(child => {
+		if (child.tagName === 'svg') return;
+		if (options?.predicate) {
+			if (!options.predicate(child)) return;
+		}
+
+		if (isFocusable(child, options?.hidden, options?.tabbablesOnly, options?.disabled)) focusables.push(child);
+		if (options?.deep) {
+			focusables = [...focusables, ...getFocusableDescendants(child, options)];
+		}
+	});
+
+	return focusables;
+}
+
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
