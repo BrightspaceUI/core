@@ -36,7 +36,13 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 			 * @type {string}
 			 */
-			icon: { type: String, reflect: true, required: true },
+			icon: {
+				type: String,
+				reflect: true,
+				required: {
+					validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon
+				}
+			},
 
 			/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
@@ -162,6 +168,8 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 		this._buttonId = getUniqueId();
 		/** @internal */
 		this._describedById = getUniqueId();
+		/** @internal */
+		this._hasCustomIcon = false;
 	}
 
 	render() {
@@ -185,11 +193,17 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
-				<slot name="icon">${icon}</slot>
+				<slot name="icon" @slotchange="${this._handleSlotChange}">${icon}</slot>
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
+	}
+
+	_handleSlotChange(e) {
+		this._hasCustomIcon = e.target.assignedNodes().find(
+			node => node.nodeType === 1 && node.tagName.toLowerCase() === 'd2l-icon-custom'
+		) !== undefined;
 	}
 
 }
