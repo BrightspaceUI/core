@@ -137,20 +137,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			if (this.selectionSingle || this._selectAllPages && selectable.selected !== selected) {
 				selectable.selected = selected;
 			}
-			// clearly the behaviour of L1-2 is annoying me. If there is a mixed state on the top level select all located at
-			// http://localhost:8000/components/list/demo/list-color.html (due to mix coming from the `selection-disabled` sub-list (Glaciation L3))
-			// then toggling the top level select all will toggle L1-1's sublist correctly, but L1-2 will remain enabled/selected
-			if (selectable.key === 'L1-2') {
-				console.log('trying to set to, !allEnabledSelected: ', !allEnabledSelected);
-				console.log('for information purposes, selected:', selected);
-				console.table([
-					{ property: 'selectable.key', value: selectable.key },
-					{ property: 'selectable.selected', value: selectable.selected },
-					{ property: 'selectable.disabled', value: selectable.disabled },
-					{ property: 'selectable._indeterminate', value: selectable._indeterminate },
-					{ property: 'selectable._allEnabledSelected', value: selectable._allEnabledSelected }
-				]);
-			}
 			// child sublist with selection-disabled + indeterminate causes `selected === false` on parent list
 			if (!selectable.disabled && selectable._indeterminate && selectable._allEnabledSelected !== !allEnabledSelected) {
 				selectable.selected = true;
