@@ -101,7 +101,7 @@ class DemoSnippet extends LitElement {
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
 				margin: 0;
-				max-width: inherit;
+				max-width: 100%;
 			}
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
