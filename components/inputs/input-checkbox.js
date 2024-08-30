@@ -233,6 +233,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 	}
 
 	_handleChange(e) {
+		console.log('input-checkbox.js > _handleChange > e.target.checked: ', e.target.checked);
 		this.checked = e.target.checked;
 		this.indeterminate = false;
 		this.dispatchEvent(new CustomEvent(
