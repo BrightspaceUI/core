@@ -129,9 +129,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		this._selectionSelectables.forEach(selectable => {
 			if (this.selectionSingle || this._selectAllPages) {
 				if (selectable.selected !== selected) selectable.selected = selected;
-			}
-			// child sublist with selection-disabled + indeterminate causes `selected === false` on parent list
-			if (!selectable.disabled && selectable._indeterminate && selectable._allEnabledSelected !== !allEnabledSelected) {
+			} else if (!selectable.disabled && selectable._indeterminate && selectable._allEnabledSelected !== !allEnabledSelected) { // child sublist with selection-disabled + indeterminate causes `selected === false` on parent list
 				selectable.selected = true;
 			} else if (!selectable.disabled && selectable.selected !== !allEnabledSelected) {
 				selectable.selected = !allEnabledSelected;
