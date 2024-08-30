@@ -55,6 +55,8 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			return;
 		}
 
+		console.log('selection-summary.js > _updateSelectSummary : ', { selectionInfo: this.selectionInfo });
+
 		/* If lazy loading items is supported (ex. d2l-list) then check the keys to determine if the plus sign should be included.
 		 * If lazy loading is not supported (ex. d2l-table-wrapper), then skip this.
 		 */
