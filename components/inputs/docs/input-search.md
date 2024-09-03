@@ -82,7 +82,7 @@ When the input is cleared, the same event will be fired with an empty value.
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-## Accessbility
+## Accessibility
 
 - While the component does not have a visible label, the search icon clearly indicates its purpose
 	- While not required to meet WCAG, this [pattern](https://www.w3.org/WAI/WCAG2/supplemental/patterns/o1p07-icons-used/) is a great way to help individuals with cognitive accessibility needs
