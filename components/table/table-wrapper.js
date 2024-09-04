@@ -575,12 +575,16 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	async _handleTableChange() {
-		await new Promise(resolve => requestAnimationFrame(resolve));
+		clearTimeout(this._tableChangeTimeout);
+		this._tableChangeTimeout = setTimeout(async() => {
+			await new Promise(resolve => requestAnimationFrame(resolve));
 
-		this._updateItemShowingCount();
-		this._applyClassNames();
-		this._syncColumnWidths();
-		this._updateStickyTops();
+			this._updateItemShowingCount();
+			this._applyClassNames();
+			this._syncColumnWidths();
+			this._updateStickyTops();
+			this._tableChangeTimeout = null;
+		}, 300);
 	}
 
 	_registerMutationObserver(observerName, callback, target, options) {
