@@ -696,6 +696,40 @@ describe('d2l-filter', () => {
 				expect(elem._dimensions[0].values[1].selected).to.be.false;
 			});
 
+			it('single set date-time range where type is "date" and dates are the same fires change events', async() => {
+				const elem = await fixture(singleSetDimensionDateTimeRangeDateFixture);
+
+				// set startValue and endValue and wait for event
+				const dateRange = elem.shadowRoot.querySelector('d2l-input-date-range');
+				dateRange.startValue = '2019-02-12T20:00:00.000Z';
+				dateRange.dispatchEvent(new CustomEvent(
+					'change', {
+						bubbles: true,
+						composed: false
+					}
+				));
+				dateRange.endValue = '2019-02-12T21:00:00.000Z';
+				dateRange.dispatchEvent(new CustomEvent(
+					'change', {
+						bubbles: true,
+						composed: false
+					}
+				));
+
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				let dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
+				let changes = dimensions[0].changes;
+				expect(changes.length).to.equal(1);
+				expect(changes[0].valueKey).to.equal('1');
+				expect(changes[0].selected).to.be.true;
+				expect(changes[0].startValue).to.equal('2019-02-12T05:00:00.000Z');
+				expect(changes[0].endValue).to.equal('2019-02-13T04:59:59.000Z');
+				expect(dateRange.hasAttribute('invalid')).to.be.false;
+			});
+
 			it('single set dimension with selection-single on fires change events', async() => {
 				const elem = await fixture(singleSetDimensionSingleSelectionFixture);
 				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
