@@ -716,12 +716,12 @@ describe('d2l-filter', () => {
 					}
 				));
 
-				let e = await oneEvent(elem, 'd2l-filter-change');
-				let dimensions = e.detail.dimensions;
+				const e = await oneEvent(elem, 'd2l-filter-change');
+				const dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
 				expect(dimensions[0].cleared).to.be.false;
-				let changes = dimensions[0].changes;
+				const changes = dimensions[0].changes;
 				expect(changes.length).to.equal(1);
 				expect(changes[0].valueKey).to.equal('1');
 				expect(changes[0].selected).to.be.true;
