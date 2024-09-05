@@ -261,6 +261,7 @@ export const tableStyles = css`
 
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
+ * @fires d2l-table-changed - Dispatched after wrapper is updated after a change in its table
  * @slot - Content to wrap
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
