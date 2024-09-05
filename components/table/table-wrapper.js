@@ -575,16 +575,26 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	async _handleTableChange() {
-		clearTimeout(this._tableChangeTimeout);
-		this._tableChangeTimeout = setTimeout(async() => {
+		const update = async() => {
 			await new Promise(resolve => requestAnimationFrame(resolve));
 
 			this._updateItemShowingCount();
 			this._applyClassNames();
 			this._syncColumnWidths();
 			this._updateStickyTops();
-			this._tableChangeTimeout = null;
-		}, 300);
+			this.dispatchEvent(new CustomEvent('d2l-table-changed', { bubbles: true, composed: false }));
+		};
+		const debounceDelay = 300;
+		if (!this._tableChangeTimeout) {
+			await update();
+			this._tableChangeTimeout = setTimeout(() => this._tableChangeTimeout = null, debounceDelay);
+		} else {
+			clearTimeout(this._tableChangeTimeout);
+			this._tableChangeTimeout = setTimeout(async() => {
+				await update();
+				this._tableChangeTimeout = null;
+			}, debounceDelay);
+		}
 	}
 
 	_registerMutationObserver(observerName, callback, target, options) {

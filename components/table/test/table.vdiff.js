@@ -6,7 +6,7 @@ import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
 
-import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -972,6 +972,11 @@ describe('table', () => {
 	});
 
 	describe('mutations', () => {
+		async function removeSelection(elem, selector) {
+			setTimeout(elem.querySelector(selector).remove());
+			await oneEvent(elem, 'd2l-table-changed');
+			await elem.updateComplete;
+		}
 
 		describe('rounded-corners', () => {
 
@@ -992,12 +997,12 @@ describe('table', () => {
 			});
 
 			it('first-removed', async() => {
-				elem.querySelector('table > thead > :first-child').remove();
+				await removeSelection(elem, 'table > thead > :first-child');
 				await expect(elem).to.be.golden();
 			});
 
 			it('last-removed', async() => {
-				elem.querySelector('table > tbody > :last-child').remove();
+				await removeSelection(elem, 'table > tbody > :last-child');
 				await expect(elem).to.be.golden();
 			});
 
@@ -1018,7 +1023,7 @@ describe('table', () => {
 					</tbody>
 				`);
 				const elem = parent.shadowRoot.querySelector('d2l-table-wrapper');
-				elem.querySelector('table > tbody > :first-child').remove();
+				await removeSelection(elem, 'table > tbody > :first-child');
 				await expect(elem).to.be.golden();
 			});
 
@@ -1034,7 +1039,7 @@ describe('table', () => {
 					</tbody>
 				`);
 				const elem = parent.shadowRoot.querySelector('d2l-table-wrapper');
-				elem.querySelector('table > tbody > :last-child').remove();
+				await removeSelection(elem, 'table > tbody > :last-child');
 				await expect(elem).to.be.golden();
 			});
 

@@ -1,7 +1,8 @@
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
 import '../table-controls.js';
-import { defineCE, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import '../demo/table-test.js';
+import { defineCE, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
@@ -100,6 +101,17 @@ describe('d2l-table-wrapper', () => {
 			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
 		});
 
+	});
+
+	describe('async-item-load', () => {
+		it('loads all items after single update', async() => {
+			const elem = await fixture(html`<d2l-test-table type="default"></d2l-test-table>`);
+			setTimeout(elem._loadItemsAsync());
+			const wrapper = elem.shadowRoot.querySelector('d2l-table-wrapper');
+			await oneEvent(wrapper, 'd2l-table-changed');
+			await wrapper.updateComplete;
+			await expect(wrapper._itemShowingCount).to.equal(10);
+		});
 	});
 
 });
