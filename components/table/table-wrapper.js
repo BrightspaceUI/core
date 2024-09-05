@@ -592,8 +592,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		} else {
 			clearTimeout(this._tableChangeTimeout);
 			this._tableChangeTimeout = setTimeout(async() => {
-				await update();
 				this._tableChangeTimeout = null;
+				await update();
 			}, debounceDelay);
 		}
 	}
