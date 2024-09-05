@@ -132,7 +132,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!opener) {
 			return;
 		}
-		opener.setAttribute('aria-haspopup', 'true');
 		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 	}
 
