@@ -136,6 +136,11 @@ export const dialogStyles = css`
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
 	}
 
+	:host([full-height]) .d2l-dialog-content > div {
+		box-sizing: border-box;
+		height: 100%;
+	}
+
 	.d2l-dialog-outer-scroll .d2l-dialog-content {
 		overflow: auto;
 	}
