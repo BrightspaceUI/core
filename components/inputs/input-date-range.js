@@ -43,7 +43,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
-			 * Hides the start and end labels visually
+			 * ACCESSIBILITY: Hides the start and end labels visually
 			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
@@ -53,7 +53,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end date input. Defaults to localized "End Date".
+			 * ACCESSIBILITY: Accessible label for the end date input. Defaults to localized "End Date".
 			 * @type {string}
 			 * @default "End Date"
 			 */
@@ -74,12 +74,12 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the input fieldset that wraps the date inputs
+			 * ACCESSIBILITY: REQUIRED: Accessible label for the input fieldset that wraps the date inputs
 			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the fieldset label visually
+			 * ACCESSIBILITY: Hides the fieldset label visually
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
@@ -104,7 +104,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start date input. Defaults to localized "Start Date".
+			 * ACCESSIBILITY: Accessible label for the start date input. Defaults to localized "Start Date".
 			 * @type {string}
 			 * @default "Start Date"
 			 */

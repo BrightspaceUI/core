@@ -52,7 +52,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Hides the fieldset label visually
+			 * ACCESSIBILITY: Hides the fieldset label visually
 			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },

@@ -140,7 +140,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * ACCESSIBILITY: Hides the label visually
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },

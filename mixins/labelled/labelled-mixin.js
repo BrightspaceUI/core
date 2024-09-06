@@ -80,12 +80,12 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 	static get properties() {
 		return {
 			/**
-			 * The id of element that provides the label for this element
+			 * ACCESSIBILITY: The id of element that provides the label for this element. Use when another visible element should act as the label.
 			 * @type {string}
 			 */
 			labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
 			/**
-			 * REQUIRED: Explicitly defined label for the element
+			 * ACCESSIBILITY: REQUIRED: Explicitly defined label for the element
 			 * @type {string}
 			 */
 			label: {
