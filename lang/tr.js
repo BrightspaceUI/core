@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL geçerli değil",
 	"components.form-element.valueMissing": "{label} zorunludur.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {Gönderdiğiniz bilgilerde {count} hata bulundu} other {Gönderdiğiniz bilgilerde {count} hata bulundu}}",
+	"components.form-error-summary.text": "Error Summary",
 	"components.input-color.backgroundColor": "Arka Plan Rengi",
 	"components.input-color.foregroundColor": "Ön Plan Rengi",
 	"components.input-color.none": "Yok",

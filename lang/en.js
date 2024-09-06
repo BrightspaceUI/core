@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL is not valid",
 	"components.form-element.valueMissing": "{label} is required.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {There was {count} error found in the information you submitted} other {There were {count} errors found in the information you submitted}}",
+	"components.form-error-summary.text": "Error Summary",
 	"components.input-color.backgroundColor": "Background Color",
 	"components.input-color.foregroundColor": "Foreground Color",
 	"components.input-color.none": "None",

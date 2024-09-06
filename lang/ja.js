@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL が有効ではありません",
 	"components.form-element.valueMissing": "{label} は必須です。",
 	"components.form-error-summary.errorSummary": "{count, plural, other {送信した情報に {count} 件のエラーが見つかりました}}",
+	"components.form-error-summary.text": "Error Summary",
 	"components.input-color.backgroundColor": "背景色",
 	"components.input-color.foregroundColor": "前景色",
 	"components.input-color.none": "なし",

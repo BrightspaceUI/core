@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL är inte giltigt",
 	"components.form-element.valueMissing": "{label} krävs.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {Det finns {count} fel i informationen som du skickade} other {Det finns {count} fel i informationen som du skickade}}",
+	"components.form-error-summary.text": "Error Summary",
 	"components.input-color.backgroundColor": "Bakgrundsfärg",
 	"components.input-color.foregroundColor": "Förgrundsfärg",
 	"components.input-color.none": "Inga",

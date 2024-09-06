@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "Nid yw'r URL yn ddilys.",
 	"components.form-element.valueMissing": "Mae angen {label}.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch} other {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch}}",
+	"components.form-error-summary.text": "Error Summary",
 	"components.input-color.backgroundColor": "Lliw Cefndir",
 	"components.input-color.foregroundColor": "Lliw Blaendir",
 	"components.input-color.none": "Dim",
