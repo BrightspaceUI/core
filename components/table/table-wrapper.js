@@ -576,6 +576,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	async _handleTableChange() {
+		const debounceDelay = 300;
 		const update = async() => {
 			await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -584,16 +585,16 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			this._syncColumnWidths();
 			this._updateStickyTops();
 			this.dispatchEvent(new CustomEvent('d2l-table-changed', { bubbles: true, composed: false }));
+			this._recentTableChange = true;
+			this._recentTableChange = setTimeout(() => this._recentTableChange = false, debounceDelay);
 		};
-		const debounceDelay = 300;
-		if (!this._tableChangeTimeout) {
-			await update();
-			this._tableChangeTimeout = setTimeout(() => this._tableChangeTimeout = null, debounceDelay);
-		} else {
-			clearTimeout(this._tableChangeTimeout);
-			this._tableChangeTimeout = setTimeout(async() => {
+
+		if (!this._recentTableChange) {
+			update();
+		} else if (!this._tableChangeTimeout) {
+			this._tableChangeTimeout = setTimeout(() => {
 				this._tableChangeTimeout = null;
-				await update();
+				update();
 			}, debounceDelay);
 		}
 	}

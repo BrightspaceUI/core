@@ -198,10 +198,10 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_loadItemsAsync() {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < 3; i++) {
-			new Promise(resolve => setTimeout(resolve, Math.random() * 200)).then(() => {
+			setTimeout(() => {
 				this._data.push({ name: `City ${startIndex + i}, Country ${startIndex + i}`, data: { 'city': `City ${startIndex + i}`, 'country': `Country ${startIndex + i}`, 'population': 26320000, 'size': 6340, 'elevation': 4 }, selected: false });
 				this.requestUpdate();
-			});
+			}, 100 + Math.random() * 200);
 		}
 	}
 

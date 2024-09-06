@@ -104,10 +104,22 @@ describe('d2l-table-wrapper', () => {
 	});
 
 	describe('async-item-load', () => {
+		let elem, wrapper;
+		beforeEach(async() => {
+			elem = await fixture(html`<d2l-test-table type="default"></d2l-test-table>`, {
+				awaitLoadingComplete:false
+			});
+			await elem.updateComplete;
+			wrapper = elem.shadowRoot.querySelector('d2l-table-wrapper');
+			await oneEvent(wrapper, 'd2l-table-changed');
+		});
+
+		it('change-event-fired', async() => {
+			await expect(wrapper._itemShowingCount).to.equal(7);
+		});
+
 		it('loads all items after single update', async() => {
-			const elem = await fixture(html`<d2l-test-table type="default"></d2l-test-table>`);
 			setTimeout(elem._loadItemsAsync());
-			const wrapper = elem.shadowRoot.querySelector('d2l-table-wrapper');
 			await oneEvent(wrapper, 'd2l-table-changed');
 			await wrapper.updateComplete;
 			await expect(wrapper._itemShowingCount).to.equal(10);
