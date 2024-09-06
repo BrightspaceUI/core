@@ -229,6 +229,24 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Dialog (full-height with iframe)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openFullHeight">Show Dialog</d2l-button>
+					<d2l-dialog id="dialogFullHeight" full-height title-text="Dialog Title">
+						<iframe id="iframeFullHeight" style="box-sizing: border-box; display: block; height: 100%; width: 100%;"></iframe>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button><d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog>
+					<script>
+						document.querySelector('#iframeFullHeight').src = window.location.href.substring(0, window.location.href.indexOf('/components'));
+						document.querySelector('#openFullHeight').addEventListener('click', () => {
+							document.querySelector('#dialogFullHeight').opened = true;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>
