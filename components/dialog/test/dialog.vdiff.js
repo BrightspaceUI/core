@@ -69,7 +69,7 @@ describe('dialog', () => {
 							dispatchFullscreenWithinEvent(elem.querySelector('#top'), false);
 						}
 					},
-					{ name: 'full-height', template: createDialog({ content: html`<div style="background-color: orange; height: 100%;"></div>${footer}`, fullHeight: true }) },
+					{ name: 'full-height', template: createDialog({ content: html`<div style="background-color: orange; border: 1px solid black; box-sizing: border-box; height: 100%;"></div>${footer}`, fullHeight: true }) },
 					{ name: 'full-height-narrow', template: createDialog({ content: html`<div>Top</div><div>Line 1</div><div>Bottom</div>`, fullHeight: true, width: 150 }) },
 				].forEach(({ name, template, action }) => {
 					it(name, async() => {
