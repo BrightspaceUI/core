@@ -44,7 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "عنوان URL غير صالح",
 	"components.form-element.valueMissing": "{label} مطلوبة.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {تم العثور على {count} خطأ في المعلومات التي أرسلتها} other {تم العثور على {count} من الأخطاء في المعلومات التي أرسلتها}}",
-	"components.form-error-summary.text": "Error Summary",
+	"components.form-error-summary.text": "Toggle error details",
 	"components.input-color.backgroundColor": "لون الخلفية",
 	"components.input-color.foregroundColor": "لون المقدمة",
 	"components.input-color.none": "لا شيء",
