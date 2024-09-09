@@ -117,8 +117,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 			// user is exiting trap via forward tabbing...
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
-				// Delay to re-apply the focus effects as a visual clue when there is only one focusable element
-				setTimeout(() => firstFocusable.focus(), 50);
+				firstFocusable.focus();
 				return;
 			}
 		}
@@ -141,8 +140,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 			// user is exiting trap via back tabbing...
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {
-				// Delay to re-apply the focus effects as a visual clue when there is only one focusable element
-				setTimeout(() => lastFocusable.focus(), 50);
+				lastFocusable.focus();
 				return;
 			}
 		}
