@@ -29,7 +29,7 @@ describe('dialog', () => {
 			[
 				{ screen: 'tall-wide', viewport: { width: 800, height: 500 } },
 				{ screen: 'tall-narrow', viewport: { width: 600, height: 500 } },
-				{ screen: 'short-wide', viewport: { width: 910, height: 400 } },
+				{ screen: 'short-wide', viewport: { width: 910, height: 370 } },
 				{ screen: 'short-narrow', viewport: { width: 890, height: 400 } }
 			].forEach(({ screen, viewport }) => {
 				describe(screen, () => {

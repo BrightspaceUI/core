@@ -152,7 +152,7 @@ export const dialogStyles = css`
 	.d2l-dialog-footer {
 		box-sizing: border-box;
 		flex: none;
-		padding: 30px 30px 12px 30px; /* 18px margin below footer children */
+		padding: 18px 30px 0 30px; /* 18px margin below footer children */
 		position: relative; /* stack footer overflow shadow on top of content */
 	}
 
@@ -183,6 +183,7 @@ export const dialogStyles = css`
 	}
 
 	@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
+
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}
@@ -198,18 +199,19 @@ export const dialogStyles = css`
 			padding: 0 20px;
 		}
 		.d2l-dialog-footer {
-			padding: 20px 20px 2px 20px;
+			padding: 18px 20px 0 20px;
 		}
 		.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
 			margin: 0 !important;
 			min-width: calc(var(--d2l-vw, 1vw) * 100);
-			top: 42px;
+			top: 5%;
 		}
 		:host(:not([in-iframe])) dialog.d2l-dialog-outer.d2l-dialog-fullscreen-mobile,
 		:host(:not([in-iframe])) div.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
-			height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-			min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+			height: calc(var(--d2l-vh, 1vh) * 95);
+			min-height: calc(var(--d2l-vh, 1vh) * 95);
 		}
+
 	}
 
 	@media (prefers-reduced-motion: reduce) {
