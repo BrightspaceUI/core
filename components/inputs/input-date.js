@@ -344,7 +344,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		this.style.maxWidth = this.inputTextWidth;
+		if (changedProperties.has('_hiddenContentWidth')) this.style.maxWidth = this.inputTextWidth;
 	}
 
 	async validate() {

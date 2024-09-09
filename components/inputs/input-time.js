@@ -393,8 +393,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
-		this.style.maxWidth = inputTextWidth;
+		this.style.maxWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
 	}
 
 	getTime() {

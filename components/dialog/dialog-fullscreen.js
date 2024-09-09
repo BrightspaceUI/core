@@ -197,6 +197,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
 		this.width = 1170;
+		this._titleId = getUniqueId();
 	}
 
 	get asyncContainerCustom() {
@@ -286,8 +287,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		this._width = Math.max(1170, this.width);
-		if (!this._titleId) this._titleId = getUniqueId();
+		if (changedProperties.has('width')) this._width = Math.max(1170, this.width);
 	}
 
 	_abort() {

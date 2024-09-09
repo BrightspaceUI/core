@@ -105,6 +105,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
 		this._titleId = getUniqueId();
+		this._textId = getUniqueId();
 	}
 
 	get asyncContainerCustom() {
@@ -199,11 +200,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		if (this.asyncState === asyncStates.complete) {
 			this.resize();
 		}
-	}
-
-	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);
-		if (!this._textId && this.describeContent) this._textId = getUniqueId();
 	}
 
 	_abort() {
