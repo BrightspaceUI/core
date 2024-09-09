@@ -179,6 +179,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	/** @ignore */
+	get inputTextWidth() {
+		return `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
+	}
+
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
@@ -238,9 +243,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	render() {
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
-		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
 		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
@@ -304,7 +307,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
-					style="${styleMap({ maxWidth: inputTextWidth })}"
+					style="${styleMap({ maxWidth: this.inputTextWidth })}"
 					.value="${this._formattedValue}">
 					${icon}
 					<slot slot="inline-help" name="inline-help"></slot>
@@ -337,6 +340,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				if (this.opened) this._open();
 			}
 		});
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		this.style.maxWidth = this.inputTextWidth;
 	}
 
 	async validate() {

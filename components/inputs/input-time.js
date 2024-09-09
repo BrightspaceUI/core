@@ -329,11 +329,9 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			`)}` : null;
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
-		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
 		const opened = this.opened && !this.disabled && !this.skeleton;
 		const dropdownIdTimezone = `${this._dropdownId}-timezone`;
 		const ariaDescribedByIds = `${this._dropdownId ? dropdownIdTimezone : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
-		this.style.maxWidth = inputTextWidth;
 
 		return html`
 			<div aria-hidden="true" class="d2l-input-time-hidden-content">
@@ -391,6 +389,12 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') this.setFormValue(this.value);
 		});
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+		this.style.maxWidth = inputTextWidth;
 	}
 
 	getTime() {

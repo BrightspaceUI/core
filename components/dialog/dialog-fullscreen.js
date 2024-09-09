@@ -214,7 +214,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
@@ -251,7 +250,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
-		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
@@ -284,6 +282,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			// while the dialog itself will not change size, we need to update overflow
 			this.resize();
 		}
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		this._width = Math.max(1170, this.width);
+		if (!this._titleId) this._titleId = getUniqueId();
 	}
 
 	_abort() {
