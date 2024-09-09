@@ -83,6 +83,15 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				padding: 0 0 5px 0;
 			}
 
+			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
+
+				.d2l-dialog-header,
+				:host([critical]) .d2l-dialog-header {
+					padding-bottom: 9px;
+				}
+
+			}
+
 		`];
 	}
 
