@@ -105,6 +105,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
 		this._titleId = getUniqueId();
+		this._textId = getUniqueId();
 	}
 
 	get asyncContainerCustom() {
@@ -158,7 +159,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			'd2l-footer-no-content': !this._hasFooterContent
 		};
 
-		if (!this._textId && this.describeContent) this._textId = getUniqueId();
 		const content = html`
 			${loading}
 			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>

@@ -36,8 +36,9 @@ export class SkeletonTestLink extends SkeletonMixin(LitElement) {
 			'd2l-link-small': this.type === 'small',
 			'd2l-skeletize': true
 		};
+		const widthSkeletonSize = `d2l-skeletize-${this.width}`;
 		if (this.width !== undefined) {
-			classes[`d2l-skeletize-${this.width}`] = true;
+			classes[widthSkeletonSize] = true;
 		}
 		return html`<a href="https://d2l.com" class="${classMap(classes)}">Link (${this.type})</a>`;
 	}

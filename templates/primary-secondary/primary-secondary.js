@@ -997,6 +997,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 	}
 
 	disconnectedCallback() {
+		super.disconnectedCallback();
 		for (const resizer of this._resizers) {
 			resizer.disconnect();
 		}
@@ -1021,7 +1022,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 		const size = this._size ?? 0;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
-			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${size}px`;
+			const dimension = this._isMobile ? 'height' : 'width';
+			secondaryPanelStyles[dimension] = `${size}px`;
 		}
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
