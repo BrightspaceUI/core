@@ -974,7 +974,7 @@ describe('table', () => {
 	describe('mutations', () => {
 		async function removeSelection(elem, selector) {
 			setTimeout(elem.querySelector(selector).remove());
-			await oneEvent(elem, 'd2l-table-changed');
+			await oneEvent(elem, 'd2l-table-wrapper-layout-change');
 			await elem.updateComplete;
 		}
 

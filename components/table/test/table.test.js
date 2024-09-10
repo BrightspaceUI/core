@@ -6,6 +6,48 @@ import { defineCE, expect, fixture, html, oneEvent, runConstructor } from '@brig
 import { LitElement } from 'lit';
 import { tableStyles } from '../table-wrapper.js';
 
+const tag = defineCE(
+	class extends LitElement {
+		static get properties() {
+			return { _data: { state: true } };
+		}
+		static get styles() { return [tableStyles]; }
+
+		constructor() {
+			super();
+			this._data = [
+				{ name: 'Row 1', selected: true },
+				{ name: 'Row 2', selected: false }
+			];
+		}
+
+		render() {
+			return html`<d2l-table-wrapper>
+				<table class="d2l-table">
+					<thead><tr>
+						<th>Header</th>
+					</tr></thead>
+					<tbody>
+						${this._data.map(row => html`<tr ?selected="${row.selected}" data-name="${row.name}">
+								<td>${row.name}</td>
+							</tr>`)}
+					</tbody>
+				</table>
+			<d2l-table-wrapper>`;
+		}
+
+		_loadItemsAsync() {
+			const startIndex = this._data.length + 1;
+			for (let i = 0; i < 3; i++) {
+				setTimeout(() => {
+					this._data.push({ name: `Row ${startIndex + i}`, selected: false });
+					this.requestUpdate();
+				}, 100 + Math.random() * 200);
+			}
+		}
+	}
+);
+
 describe('d2l-table-wrapper', () => {
 
 	describe('constructor', () => {
@@ -106,23 +148,22 @@ describe('d2l-table-wrapper', () => {
 	describe('async-item-load', () => {
 		let elem, wrapper;
 		beforeEach(async() => {
-			elem = await fixture(html`<d2l-test-table type="default"></d2l-test-table>`, {
+			elem = await fixture(`<${tag}></${tag}>`, {
 				awaitLoadingComplete:false
 			});
-			await elem.updateComplete;
 			wrapper = elem.shadowRoot.querySelector('d2l-table-wrapper');
-			await oneEvent(wrapper, 'd2l-table-changed');
+			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change');
 		});
 
 		it('change-event-fired', async() => {
-			await expect(wrapper._itemShowingCount).to.equal(7);
+			await expect(wrapper._itemShowingCount).to.equal(2);
 		});
 
 		it('loads all items after single update', async() => {
 			setTimeout(elem._loadItemsAsync());
-			await oneEvent(wrapper, 'd2l-table-changed');
+			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change');
 			await wrapper.updateComplete;
-			await expect(wrapper._itemShowingCount).to.equal(10);
+			await expect(wrapper._itemShowingCount).to.equal(5);
 		});
 	});
 

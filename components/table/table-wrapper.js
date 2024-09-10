@@ -261,7 +261,7 @@ export const tableStyles = css`
 
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
- * @fires d2l-table-changed - Dispatched after wrapper is updated after a change in its table
+ * @fires d2l-table-wrapper-layout-change - Dispatched after wrapper is updated after a change in its table
  * @slot - Content to wrap
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
@@ -374,6 +374,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+		this._recentTableChange = false;
+		this._tableChangeTimeout = null;
 	}
 
 	connectedCallback() {
@@ -584,9 +586,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			this._applyClassNames();
 			this._syncColumnWidths();
 			this._updateStickyTops();
-			this.dispatchEvent(new CustomEvent('d2l-table-changed', { bubbles: true, composed: false }));
+			this.dispatchEvent(new CustomEvent('d2l-table-wrapper-layout-change', { bubbles: true, composed: false }));
 			this._recentTableChange = true;
-			this._recentTableChange = setTimeout(() => this._recentTableChange = false, debounceDelay);
+			setTimeout(() => this._recentTableChange = false, debounceDelay);
 		};
 
 		if (!this._recentTableChange) {
