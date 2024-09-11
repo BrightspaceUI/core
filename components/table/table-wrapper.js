@@ -374,8 +374,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-		this._recentTableChange = false;
-		this._tableChangeTimeout = null;
+		this._throttleNextChange = false;
+		this._tableChangeQueued = false;
 	}
 
 	connectedCallback() {
@@ -544,7 +544,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
-		this._registerMutationObserver('_tableMutationObserver', this._handleTableChange.bind(this), this._table, {
+		this._registerMutationObserver('_tableMutationObserver', () => this._handleTableChange(), this._table, {
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
@@ -561,7 +561,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
-							this._handleTableChange();
+							this._handleTableChange(false);
 						}
 					});
 				});
@@ -574,31 +574,28 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(() => this._syncColumnWidths());
 		this._tableResizeObserver.observe(this._table);
 
-		this._handleTableChange();
+		this._handleTableChange(false);
 	}
 
-	async _handleTableChange() {
+	async _handleTableChange(throttleNextChange = true) {
 		const debounceDelay = 300;
-		const update = async() => {
-			await new Promise(resolve => requestAnimationFrame(resolve));
-
-			this._updateItemShowingCount();
-			this._applyClassNames();
-			this._syncColumnWidths();
-			this._updateStickyTops();
-			this.dispatchEvent(new CustomEvent('d2l-table-wrapper-layout-change', { bubbles: true, composed: false }));
-			this._recentTableChange = true;
-			setTimeout(() => this._recentTableChange = false, debounceDelay);
-		};
-
-		if (!this._recentTableChange) {
-			update();
-		} else if (!this._tableChangeTimeout) {
-			this._tableChangeTimeout = setTimeout(() => {
-				this._tableChangeTimeout = null;
-				update();
-			}, debounceDelay);
+		if (this._tableChangeQueued) return; // If there is an update in progress, do nothing
+		if (this._throttleNextChange) {
+			this._tableChangeQueued = true;
+			await new Promise(resolve => setTimeout(resolve, debounceDelay));
+			this._tableChangeQueued = false;
+		} else if (throttleNextChange) { // Only throttle next change if no change(including current one) is queued
+			this._throttleNextChange = true;
+			setTimeout(() => this._throttleNextChange = false, debounceDelay);
 		}
+		await new Promise(resolve => requestAnimationFrame(resolve));
+
+		this._updateItemShowingCount();
+		this._applyClassNames();
+		this._syncColumnWidths();
+		this._updateStickyTops();
+		await this._updateComplete;
+		this.dispatchEvent(new CustomEvent('d2l-table-wrapper-layout-change', { bubbles: true, composed: false }));
 	}
 
 	_registerMutationObserver(observerName, callback, target, options) {

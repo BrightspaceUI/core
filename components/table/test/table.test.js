@@ -38,7 +38,7 @@ const tag = defineCE(
 
 		_loadItemsAsync() {
 			const startIndex = this._data.length + 1;
-			for (let i = 0; i < 3; i++) {
+			for (let i = 0; i < 5; i++) {
 				setTimeout(() => {
 					this._data.push({ name: `Row ${startIndex + i}`, selected: false });
 					this.requestUpdate();
@@ -148,22 +148,25 @@ describe('d2l-table-wrapper', () => {
 	describe('async-item-load', () => {
 		let elem, wrapper;
 		beforeEach(async() => {
-			elem = await fixture(`<${tag}></${tag}>`, {
-				awaitLoadingComplete:false
-			});
+			elem = await fixture(`<${tag}></${tag}>`);
 			wrapper = elem.shadowRoot.querySelector('d2l-table-wrapper');
-			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change');
 		});
 
-		it('change-event-fired', async() => {
+		it('updates initial changes with no throttle', async() => {
 			await expect(wrapper._itemShowingCount).to.equal(2);
 		});
 
-		it('loads all items after single update', async() => {
+		it('sets next change to throttle', async() => {
 			setTimeout(elem._loadItemsAsync());
-			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change');
-			await wrapper.updateComplete;
-			await expect(wrapper._itemShowingCount).to.equal(5);
+			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change'); // First item loads
+			expect(wrapper._throttleNextChange).to.be.true;
+		});
+
+		it('loads remaining items after single change', async() => {
+			setTimeout(elem._loadItemsAsync());
+			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change'); // First item loads
+			await oneEvent(wrapper, 'd2l-table-wrapper-layout-change'); // Rest load
+			await expect(wrapper._itemShowingCount).to.equal(7);
 		});
 	});
 
