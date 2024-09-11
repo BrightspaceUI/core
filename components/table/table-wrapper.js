@@ -259,6 +259,11 @@ export const tableStyles = css`
 	}
 `;
 
+const SELECTORS = {
+	headers: 'tr.d2l-table-header, tr[header], thead tr',
+	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
+};
+
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
@@ -486,7 +491,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	_getItems() {
-		return this._table?.querySelectorAll(':not(thead) > tr:not(.d2l-table-header):not([header])') || [];
+		return this._table?.querySelectorAll(SELECTORS.items) || [];
 	}
 
 	_getItemShowingCount() {
@@ -574,13 +579,34 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._handleTableChange();
 	}
 
-	async _handleTableChange() {
+	async _handleTableChange(mutationRecords) {
+		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
+		if (mutationRecords) {
+			for (const key in updates) updates[key] = false;
+			for (const { type, removedNodes, addedNodes, target } of mutationRecords) {
+				if (type === 'attributes') {
+					updates.classNames = true;
+					continue;
+				}
+
+				updates.sticky ||= target.matches(SELECTORS.headers);
+				const affectedNodes = [...removedNodes, ...addedNodes];
+				for (const node of affectedNodes) {
+					if (!(node instanceof Element)) continue;
+					updates.classNames ||= node.matches('tr');
+					updates.syncWidths ||= node.matches('tr');
+					updates.sticky ||= node.matches(SELECTORS.headers);
+					updates.count ||= node.matches(SELECTORS.items);
+				}
+			}
+		}
+
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
-		this._updateItemShowingCount();
-		this._applyClassNames();
-		this._syncColumnWidths();
-		this._updateStickyTops();
+		if (updates.count) this._updateItemShowingCount();
+		if (updates.classNames) this._applyClassNames();
+		if (updates.syncWidths) this._syncColumnWidths();
+		if (updates.sticky) this._updateStickyTops();
 	}
 
 	_registerMutationObserver(observerName, callback, target, options) {
@@ -721,7 +747,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (!this._table || !this.stickyHeaders || this.stickyHeadersScrollWrapper) return;
 
-		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
+		const stickyRows = Array.from(this._table.querySelectorAll(SELECTORS.headers));
 		stickyRows.forEach(r => {
 			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset, 0px))`;
 			const ths = Array.from(r.querySelectorAll('th'));
