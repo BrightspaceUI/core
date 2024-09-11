@@ -76,7 +76,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
-			 * ACCESSIBILITY: Hides the start and end labels visually
+			 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
 			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
@@ -86,7 +86,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: Accessible label for the end date-time input. Defaults to localized "End Date".
+			 * ACCESSIBILITY: Label for the end date-time input. Defaults to localized "End Date".
 			 * @type {string}
 			 * @default "End Date"
 			 */
@@ -107,12 +107,12 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * ACCESSIBILITY: REQUIRED: Accessible label for the input fieldset that wraps the date-time inputs
+			 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the date-time inputs
 			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * ACCESSIBILITY: Hides the fieldset label visually
+			 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
@@ -142,7 +142,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: Accessible label for the start date-time input. Defaults to localized "Start Date".
+			 * ACCESSIBILITY: Label for the start date-time input. Defaults to localized "Start Date".
 			 * @type {string}
 			 * @default "Start Date"
 			 */

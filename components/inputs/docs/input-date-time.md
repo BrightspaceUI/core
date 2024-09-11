@@ -277,12 +277,14 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 
 ## Accessibility
 
-The date and time components generally follow the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). For details on the accessibility of the calendar within the date input components, see [Calendar Accessibility](../calendar#accessibility). A few notable accessibility-related features of these components are:
+The date and time components generally follow the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). For details on the accessibility of the calendar within the date input components, see [Calendar Accessibility](../calendar#accessibility). 
 
-* Explicitly stating the expected date format in both the description tooltip and the placeholder text
-* Trapping focus in the date input dropdown
+A few notable accessibility-related features of these components are:
+
+* The expected date format is indicated both in placeholder text and a tooltip available on hover and focus
+* Focus is trapped in the date input dropdown
 * When the date input is opened with the keyboard, focus goes to either selected date, today, or earliest valid date if today is prior to `min-date`
-* Extensive intuitive keyboard interaction support built into the components
+* Extensive intuitive keyboard interaction support
 
 ## Timezone
 
