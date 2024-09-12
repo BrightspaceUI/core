@@ -583,9 +583,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
 		if (mutationRecords) {
 			for (const key in updates) updates[key] = false;
-			for (const { type, removedNodes, addedNodes, target } of mutationRecords) {
+			for (const { type, removedNodes, addedNodes, target, attributeName } of mutationRecords) {
 				if (type === 'attributes') {
-					updates.classNames = true;
+					updates.classNames = attributeName === 'selected';
 					continue;
 				}
 
