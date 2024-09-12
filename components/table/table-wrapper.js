@@ -580,8 +580,9 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	async _handleTableChange(mutationRecords) {
+		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('table-update-filter-GAUD-6955', true) ?? true;
 		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
-		if (mutationRecords) {
+		if (flag && mutationRecords) {
 			for (const key in updates) updates[key] = false;
 			for (const { type, removedNodes, addedNodes, target, attributeName } of mutationRecords) {
 				if (type === 'attributes') {
