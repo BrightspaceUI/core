@@ -582,22 +582,24 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	async _handleTableChange(mutationRecords) {
 		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('table-update-filter-GAUD-6955', true) ?? true;
 		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
-		if (flag && mutationRecords) {
-			for (const key in updates) updates[key] = false;
-			for (const { type, removedNodes, addedNodes, target, attributeName } of mutationRecords) {
-				if (type === 'attributes') {
-					updates.classNames = attributeName === 'selected';
-					continue;
-				}
+		if (flag) {
+			if (mutationRecords) {
+				for (const key in updates) updates[key] = false;
+				for (const { type, removedNodes, addedNodes, target, attributeName } of mutationRecords) {
+					if (type === 'attributes') {
+						updates.classNames = attributeName === 'selected';
+						continue;
+					}
 
-				updates.sticky ||= target.matches(SELECTORS.headers);
-				const affectedNodes = [...removedNodes, ...addedNodes];
-				for (const node of affectedNodes) {
-					if (!(node instanceof Element)) continue;
-					updates.classNames ||= node.matches('tr');
-					updates.syncWidths ||= node.matches('tr');
-					updates.sticky ||= node.matches(SELECTORS.headers);
-					updates.count ||= node.matches(SELECTORS.items);
+					updates.sticky ||= target.matches(SELECTORS.headers);
+					const affectedNodes = [...removedNodes, ...addedNodes];
+					for (const node of affectedNodes) {
+						if (!(node instanceof Element)) continue;
+						updates.classNames ||= node.matches('tr');
+						updates.syncWidths ||= node.matches('tr');
+						updates.sticky ||= node.matches(SELECTORS.headers);
+						updates.count ||= node.matches(SELECTORS.items);
+					}
 				}
 			}
 		}
