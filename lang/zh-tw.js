@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL 無效",
 	"components.form-element.valueMissing": "{label} 為必填。",
 	"components.form-error-summary.errorSummary": "{count, plural, other {您提交的資訊中發現 {count} 個錯誤}}",
+	"components.form-error-summary.text": "Toggle error details",
 	"components.input-color.backgroundColor": "背景顏色",
 	"components.input-color.foregroundColor": "前景顏色",
 	"components.input-color.none": "無",

@@ -44,6 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL मान्य नहीं है",
 	"components.form-element.valueMissing": "{label} आवश्यक है।",
 	"components.form-error-summary.errorSummary": "{count, plural, one {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं} other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं}}",
+	"components.form-error-summary.text": "Toggle error details",
 	"components.input-color.backgroundColor": "पृष्ठभूमि का रंग",
 	"components.input-color.foregroundColor": "अग्रभूमि का रंग",
 	"components.input-color.none": "कोई नहीं",
