@@ -44,8 +44,9 @@ class Order extends LitElement {
 			${[...this.children].map((child, idx) => {
 
 				child.slot = `item-${idx + 1}`;
-				const styles = { order: this.visualOrder[idx] ?? idx };
-				const tabindex = child.focus && (this.keyboardOrder?.[idx] ?? this.visualOrder[idx]);
+				const orderIdx = this.visualOrder.indexOf(idx + 1) + 1;
+				const styles = { order: orderIdx || idx + 1 };
+				const tabindex = child.focus && (this.keyboardOrder?.indexOf(idx + 1) + 1 || orderIdx);
 
 				return html`
 					<d2l-order-item

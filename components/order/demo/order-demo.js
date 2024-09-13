@@ -19,7 +19,7 @@ class OrderDemo extends LitElement {
 
 	render() {
 		debugger;
-		return html`<d2l-order visual-order="${this.visualOrder}" keyboard-order="${this.keyboardOrder}">
+		return html`<d2l-order style="gap: 0.5rem;" visual-order="${this.visualOrder}" keyboard-order="${this.keyboardOrder}">
 			${Array(this.num).fill(0).map((item, idx) => {
 				return html`<d2l-button>${idx + 1}</d2l-button>`
 			})}
