@@ -5,7 +5,7 @@ import '../../expand-collapse/expand-collapse-content.js';
 import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../form.js';
-import '../../collapsible-panel/collapsible-panel.js'
+import '../../collapsible-panel/collapsible-panel.js';
 import { css, html, LitElement } from 'lit';
 import { heading3Styles } from '../../typography/styles.js';
 import { inputStyles } from '../../inputs/input-styles.js';
@@ -88,6 +88,14 @@ class FormPanelDemo extends LitElement {
 		`;
 	}
 
+	_onCollapse() {
+		this._expanded = false;
+	}
+
+	_onExpand() {
+		this._expanded = true;
+	}
+
 	_onInvalid() {
 		this._expanded = true;
 	}
@@ -95,14 +103,6 @@ class FormPanelDemo extends LitElement {
 	_onSubmit(e) {
 		// eslint-disable-next-line no-console
 		console.log(e.detail.formData);
-	}
-
-	_onExpand() {
-		this._expanded = true;
-	}
-
-	_onCollapse() {
-		this._expanded = false;
 	}
 }
 customElements.define('d2l-form-panel-demo', FormPanelDemo);
