@@ -60,7 +60,7 @@
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
-    "sinon": "^18",
+    "sinon": "^19",
     "stylelint": "^16",
     "web-component-analyzer": "^2"
   },
