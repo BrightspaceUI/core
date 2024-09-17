@@ -65,16 +65,6 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-input-date` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | String | Use when another visible element should act as the label |
-
 ## Date Range Input [d2l-input-date-range]
 
 Use the `<d2l-input-date-range>` component when users need to enter two dates in a range, like a course start and end date. The component consists of two input-date components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
@@ -120,17 +110,6 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-input-date-range` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `end-label` | Accessible label for the second date input |
-| `start-label` | Accessible label for the first date input |
-
 ## Time Input [d2l-input-time]
 
 Use the `<d2l-input-time>` component when users need to enter a time, without a date. The component consists of a text input field for typing a time and an attached dropdown for time selection. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
@@ -170,16 +149,6 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-input-time` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | Use when another visible element should act as the label |
 
 ## Time Range Input [d2l-input-time-range]
 
@@ -222,17 +191,6 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-input-time-range` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `end-label` | Accessible label for the second time input |
-| `start-label` | Accessible label for the first time input |
-
 ## Date-Time Input [d2l-input-date-time]
 
 Use the `<d2l-input-date-time>` component when users need to enter a single date and time, like a due date. The component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
@@ -273,16 +231,6 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-input-date-time` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/) |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `labelled-by` | String | Use when another visible element should act as the label |
 
 ## Date-Time Range Input [d2l-input-date-time-range]
 
@@ -327,16 +275,16 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
+## Accessibility
 
-To make your usage of `d2l-input-date-time-range` accessible, use the following properties when applicable:
+The date and time components generally follow the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). For details on the accessibility of the calendar within the date input components, see [Calendar Accessibility](../calendar#accessibility). 
 
-| Attribute | Description |
-|--|--|
-| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `end-label` | Accessible label for the second date-time input |
-| `start-label` | Accessible label for the first date-time input |
+A few notable accessibility-related features of these components are:
+
+* The expected date format is indicated both in placeholder text and a tooltip available on hover and focus
+* Focus is trapped in the date input dropdown
+* When the date input is opened with the keyboard, focus goes to either selected date, today, or earliest valid date if today is prior to `min-date`
+* Extensive intuitive keyboard interaction support
 
 ## Timezone
 

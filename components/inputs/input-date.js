@@ -49,7 +49,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			 */
 			hasNow: { attribute: 'has-now', type: Boolean },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
