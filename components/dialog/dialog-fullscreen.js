@@ -287,7 +287,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		if (changedProperties.has('width')) this._width = Math.max(1170, this.width);
+		this._width = Math.max(1170, this.width); // Always enforce limit
 	}
 
 	_abort() {
