@@ -55,6 +55,16 @@ class Form extends FormMixin(LitElement) {
 		this._isSubForm = false;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('d2l-dialog-close', () => {
+			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
+			if (!flag) return;
+			this.resetValidation();
+		});
+	}
+
 	render() {
 		let errorSummary = null;
 		if (this._isRootForm()) {

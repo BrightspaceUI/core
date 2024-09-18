@@ -78,6 +78,35 @@ describe('d2l-form', () => {
 				expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
 			});
 
+			it('should validate and clear validation-customs', async() => {
+				const errors = await form.validate();
+				const ele = form.querySelector('#mycheck');
+				expect(errors.get(ele)).to.include.members(['The checkbox failed validation']);
+				expect(form._errors.size).to.be.greaterThan(0);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+			});
+
+			it('should validate and clear native form elements', async() => {
+				const errors = await form.validate();
+				const ele = form.querySelector('#pets');
+				expect(errors.get(ele)).to.include.members(['Pets is required.']);
+				expect(form._errors.size).to.be.greaterThan(0);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+			});
+
+			it('should validate and clear custom form elements', async() => {
+				const formElement = form.querySelector('#custom-ele');
+				formElement.value = 'Non-empty';
+				formElement.setValidity({ rangeOverflow: true });
+				const errors = await form.validate();
+				expect(form._errors.size).to.be.greaterThan(0);
+				expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+			});
+
 		});
 
 		describe('submit', () => {
@@ -208,11 +237,14 @@ describe('d2l-form', () => {
 		describe('validate', () => {
 
 			[
-				{ noDirectNesting: false, noComposedNesting: false },
-				{ noDirectNesting: true, noComposedNesting: false },
-				{ noDirectNesting: false, noComposedNesting: true },
-			].forEach(({ noDirectNesting, noComposedNesting }) => {
-				it(`should validate nested forms in tree order with${noDirectNesting ? ' no ' : ' '}direct nesting and${noComposedNesting ? ' no ' : ' '}composed nesting`, async() => {
+				{ noDirectNesting: false, noComposedNesting: false, resetValidation: false },
+				{ noDirectNesting: true, noComposedNesting: false, resetValidation: false },
+				{ noDirectNesting: false, noComposedNesting: true, resetValidation: false },
+				{ noDirectNesting: false, noComposedNesting: false, resetValidation: true },
+				{ noDirectNesting: true, noComposedNesting: false, resetValidation: true },
+				{ noDirectNesting: false, noComposedNesting: true, resetValidation: true },
+			].forEach(({ noDirectNesting, noComposedNesting, resetValidation }) => {
+				it(`should validate nested forms in tree order with${noDirectNesting ? ' no ' : ' '}direct nesting and${noComposedNesting ? ' no ' : ' '}composed nesting${resetValidation ? ' and have no errors on resetValidation' : ''}`, async() => {
 
 					const formElement = form.querySelector('#custom-ele');
 					formElement.value = 'Non-empty';
@@ -242,6 +274,11 @@ describe('d2l-form', () => {
 
 					const actualErrors = [...errors.entries()];
 					expect(actualErrors).to.deep.equal(expectedErrors);
+					expect(form._errors.size).to.be.greaterThan(0);
+
+					if (!resetValidation) return;
+					form.resetValidation();
+					expect(form._errors.size).to.equal(0);
 				});
 			});
 

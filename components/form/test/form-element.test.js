@@ -196,6 +196,16 @@ describe('form-element', () => {
 
 	});
 
+	describe('resetValidation', () => {
+		it('should show reset validation errors', async() => {
+			await formElement.requestValidate();
+			expect(formElement.validationError).to.equal('Test form element is required.');
+			formElement.resetValidation();
+			expect(formElement.invalid).to.be.false;
+			expect(formElement.validationError).to.be.null;
+		});
+	})
+
 	describe('validate-on-init', () => {
 		it('should not validate immediately if validate-on-init is not set', async() => {
 			form.isValidationCustomValid = false;
