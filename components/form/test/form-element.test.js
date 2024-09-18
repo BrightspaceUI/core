@@ -204,7 +204,7 @@ describe('form-element', () => {
 			expect(formElement.invalid).to.be.false;
 			expect(formElement.validationError).to.be.null;
 		});
-	})
+	});
 
 	describe('validate-on-init', () => {
 		it('should not validate immediately if validate-on-init is not set', async() => {
