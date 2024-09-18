@@ -99,7 +99,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 */
 			name: { type: String },
 			/**
-			 * Sets "tabindex="-1"" on the checkbox
+			 * ACCESSIBILITY: ADVANCED: Sets "tabindex="-1"" on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property.
 			 * @type {boolean}
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },

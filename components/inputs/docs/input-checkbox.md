@@ -60,7 +60,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 | `disabled` | Boolean | Disables the input |
 | `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
 | `name` | String | Name of the input |
-| `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox |
+| `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property. |
 | `value` | String | Value of the input |
 
 ### Events
@@ -130,8 +130,6 @@ As an alternative to using the `<d2l-input-checkbox>` custom element, you can st
 
 ## Accessibility
 
-The `d2l-input-checkbox` component follows W3C's best practice recommendations for a [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/)
-
-This means that the component works in the following way:
+The `d2l-input-checkbox` component follows W3C's best practice recommendations for a [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/). This means that the component works in the following way:
 - The `Space` key is used to select a focused checkbox instead of the `Enter` key
 - The `aria-checked` state is set to `true`, `false` or `mixed` to represent if it's selected, unselected, or partially selected.
