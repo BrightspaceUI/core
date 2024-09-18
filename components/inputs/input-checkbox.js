@@ -69,7 +69,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: Use when text in `Default` slot in checkbox does not provide enough context
+			 * ACCESSIBILITY: Overrides the text in the `Default` slot for screenreader users
 			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },

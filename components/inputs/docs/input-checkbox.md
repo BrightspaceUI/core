@@ -54,7 +54,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 
 | Property | Type | Description |
 |---|---|---|
-| `aria-label` | String | Use when text in `Default` slot in checkbox does not provide enough context |
+| `aria-label` | String | Overrides the text in the `Default` slot for screenreader users |
 | `checked` | Boolean | Checked state |
 | `description` | String | Additional information communicated to screenreader users when focusing on the input |
 | `disabled` | Boolean | Disables the input |
@@ -131,5 +131,5 @@ As an alternative to using the `<d2l-input-checkbox>` custom element, you can st
 ## Accessibility
 
 The `d2l-input-checkbox` component follows W3C's best practice recommendations for a [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/). This means that the component works in the following way:
-- The `Space` key is used to select a focused checkbox instead of the `Enter` key
-- The `aria-checked` state is set to `true`, `false` or `mixed` to represent if it's selected, unselected, or partially selected.
+- The `Space` key is used to select a focused checkbox (not the `Enter` key)
+- The `aria-checked` state is set to `true`, `false` or `mixed` to represent if it's selected, unselected, or partially selected
