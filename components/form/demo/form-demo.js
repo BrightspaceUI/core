@@ -71,6 +71,7 @@ class FormNestedDemo extends LitElement {
 				</div>
 				<d2l-floating-buttons always-float>
 					<d2l-button primary @click=${this._submit}>Save</d2l-button>
+					<d2l-button @click=${this._reset}>Reset</d2l-button>
 				</d2l-floating-buttons>
 			</d2l-form>
 		`;
@@ -83,6 +84,10 @@ class FormNestedDemo extends LitElement {
 
 	_onRootSubmit(e) {
 		e.preventDefault();
+	}
+
+	_reset() {
+		if (this.shadowRoot) this.shadowRoot.querySelector('#root').reset();
 	}
 
 	_submit() {

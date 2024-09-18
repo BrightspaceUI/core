@@ -227,6 +227,18 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		await this.updatedComplete;
 	}
 
+	reset() {
+		this.invalid = false;
+		this.validationError = null;
+		this._errors = [];
+
+		this.childErrors.forEach((_, ele) => {
+			if (!isCustomFormElement(ele)) return;
+			ele.reset();
+		});
+		this.childErrors = new Map();
+	}
+
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
