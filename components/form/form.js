@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { FormMixin } from './form-mixin.js';
 
 /**
@@ -58,7 +59,13 @@ class Form extends FormMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('d2l-dialog-close', () => {
+		const dialogAncestor = findComposedAncestor(
+			this,
+			(node) => { return (node?.tagName?.includes('D2L-DIALOG')); }
+		);
+		if (!dialogAncestor) return;
+
+		dialogAncestor.addEventListener('d2l-dialog-close', () => {
 			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
 			if (!flag) return;
 			this.resetValidation();

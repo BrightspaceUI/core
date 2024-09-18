@@ -197,7 +197,7 @@ describe('form-element', () => {
 	});
 
 	describe('resetValidation', () => {
-		it('should show reset validation errors', async() => {
+		it('should reset validation errors', async() => {
 			await formElement.requestValidate();
 			expect(formElement.validationError).to.equal('Test form element is required.');
 			formElement.resetValidation();

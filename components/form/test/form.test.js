@@ -1,8 +1,9 @@
 import '../../validation/validation-custom.js';
+import '../../dialog/dialog.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 
 class TestTwoForms extends LitElement {
@@ -456,6 +457,30 @@ describe('d2l-form', () => {
 
 			});
 
+		});
+
+	});
+
+	describe('dialog form', () => {
+		it('should reset validation when dialog closes', async() => {
+			const dialog = await fixture(html`
+				<d2l-dialog opened>
+					<d2l-form id="nested-form-1">
+						<input type="text" aria-label="Input 1" name="input1" required>
+					</d2l-form>
+				</d2l-dialog>
+			`);
+
+			const form = dialog.querySelector('d2l-form');
+			form.submit();
+
+			const errors = await form.validate();
+			expect(errors.size).to.equal(1);
+			expect(form._errors.size).to.equal(1);
+
+			dialog.opened = false;
+			await oneEvent(dialog, 'd2l-dialog-close');
+			expect(form._errors.size).to.equal(0);
 		});
 
 	});
