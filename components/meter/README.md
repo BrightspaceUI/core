@@ -36,7 +36,7 @@ Meters are a visually engaging way to communicate progress or measurements.
 
 Linear meters show a horizontal progress bar.
 
-<!-- docs: demo code properties name:d2l-meter-linear sandboxTitle:'Linear Meter' -->
+<!-- docs: demo code properties name:d2l-meter-linear sandboxTitle:'Meter - Linear' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
@@ -68,7 +68,7 @@ Linear meters show a horizontal progress bar.
 
 Radial meters appear as a half circle. They have more visual weight than a linear meter and should only be used when the data is central to the user's task.
 
-<!-- docs: demo code properties name:d2l-meter-radial sandboxTitle:'Radial Meter' size:medium -->
+<!-- docs: demo code properties name:d2l-meter-radial sandboxTitle:'Meter - Radial' size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-radial.js';
@@ -92,7 +92,7 @@ Radial meters appear as a half circle. They have more visual weight than a line
 
 Circle meters display data in a compact circle format, so they're useful when horizontal space is at a premium.
 
-<!-- docs: demo code properties name:d2l-meter-circle sandboxTitle:'Circular Meter' -->
+<!-- docs: demo code properties name:d2l-meter-circle sandboxTitle:'Meter - Circular' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-circle.js';
@@ -103,7 +103,7 @@ Circle meters display data in a compact circle format, so they're useful when ho
 ## Light Foreground
 All `meter` components have a `foreground-light` style that ensures accessible contrast levels when displayed against a dark background.
 
-<!-- docs: demo code darkMode:true -->
+<!-- docs: demo code darkMode:true sandboxTitle:'Meter - Light Foreground' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
