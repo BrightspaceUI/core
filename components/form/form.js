@@ -77,17 +77,17 @@ class Form extends FormMixin(LitElement) {
 		this._submitData(submitter);
 	}
 
-	reset() {
+	resetValidation() {
 		const formElements = this._findFormElements();
 		for (const ele of formElements) {
 			if (this._hasSubForms(ele)) {
 				const forms = this._getSubForms(ele);
 				for (const form of forms) {
-					form.reset();
+					form.resetValidation();
 				}
 			} else {
 				if (isCustomFormElement(ele)) {
-					ele.reset();
+					ele.resetValidation();
 				} else if (isNativeFormElement(ele)) {
 					this._displayValid(ele);
 				}

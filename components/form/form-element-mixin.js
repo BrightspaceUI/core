@@ -227,14 +227,14 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		await this.updatedComplete;
 	}
 
-	reset() {
+	resetValidation() {
 		this.invalid = false;
 		this.validationError = null;
 		this._errors = [];
 
 		this.childErrors.forEach((_, ele) => {
 			if (!isCustomFormElement(ele)) return;
-			ele.reset();
+			ele.resetValidation();
 		});
 		this.childErrors = new Map();
 	}

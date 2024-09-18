@@ -87,7 +87,7 @@ class FormNestedDemo extends LitElement {
 	}
 
 	_reset() {
-		if (this.shadowRoot) this.shadowRoot.querySelector('#root').reset();
+		if (this.shadowRoot) this.shadowRoot.querySelector('#root').resetValidation();
 	}
 
 	_submit() {
