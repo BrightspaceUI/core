@@ -178,15 +178,24 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				margin-inline-start: 0.75rem;
 			}
 
-			.d2l-collapsible-panel.focused {
-				outline: var(--d2l-collapsible-panel-focus-outline);
-			}
+			.d2l-collapsible-panel.focused,
 			:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
 				outline: var(--d2l-collapsible-panel-focus-outline);
+			}
+			@supports selector(:has(a, b)) {
+				.d2l-collapsible-panel.focused,
+				:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
+					outline: none;
+				}
+				.d2l-collapsible-panel.focused:has(:focus-visible),
+				:host([expanded]) .d2l-collapsible-panel.focused:has(:focus-visible) .d2l-collapsible-panel-header {
+					outline: var(--d2l-collapsible-panel-focus-outline);
+				}
 			}
 			:host([expanded]) .d2l-collapsible-panel {
 				outline: none;
 			}
+
 			.d2l-collapsible-panel-header-primary {
 				align-items: center;
 				display: flex;
@@ -218,6 +227,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				align-self: self-start;
 				background-color: transparent;
 				border: none;
+				cursor: pointer;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				order: 1;
 				outline: none;
@@ -338,8 +348,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				<d2l-expand-collapse-content
 					?expanded="${this.expanded}"
 					@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
-					@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}"
-				>
+					@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
 					<div class="d2l-collapsible-panel-content">
 						<slot></slot>
 					</div>
@@ -505,7 +514,9 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	_toggleExpand() {
 		if (this.skeleton) return;
 		this.expanded = !this.expanded;
+		this.focus();
 	}
+
 }
 
 customElements.define('d2l-collapsible-panel', CollapsiblePanel);
