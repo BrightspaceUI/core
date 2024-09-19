@@ -63,6 +63,11 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 </d2l-filter>
 ```
 
+### Methods
+
+- `requestFilterClearAll()`: use to clear all selected filter dimension set values within a filter as well as any performed search
+- `requestFilterValueClear(keyObject)`: use to clear a specific filter value in a specific filter dimension. Expected input is the filter value's `keyObject` which contains both the `dimension` key and `value` key.
+
 ### Single Vs Multi Dimensional
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
 
