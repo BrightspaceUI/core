@@ -247,6 +247,22 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Dialog (overflowing content)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openScrollFocus">Show Dialog</d2l-button>
+					<d2l-dialog title-text="My Dialog" id="dialogScrollFocus">
+						<div style="height: 200px;">My content</div>
+					</d2l-dialog>
+					<script>
+						document.querySelector('#openScrollFocus').addEventListener('click', () => {
+							document.querySelector('#dialogScrollFocus').opened = true;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>

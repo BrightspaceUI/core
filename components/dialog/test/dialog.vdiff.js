@@ -1,5 +1,5 @@
 import '../dialog.js';
-import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame, sendKeys } from '@brightspace-ui/testing';
 import { footer, general, long, wrapping } from './dialog-shared-contents.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
@@ -42,6 +42,14 @@ describe('dialog', () => {
 								elem.querySelector('div').style.height = '60px';
 								elem.width = 500;
 								elem.resize();
+							}
+						},
+						{ name: 'focus on content when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+						{ name: 'focus on content when short content', template: createDialog({ content: html`<div style="height: 200px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+						{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action: 
+							async() => {
+								await sendKeys('press', 'Tab');
+								await sendKeys('press', 'Tab');
 							}
 						}
 					].forEach(({ name, template, rtl, action }) => {

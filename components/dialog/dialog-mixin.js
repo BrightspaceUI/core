@@ -43,6 +43,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_autoSize: { state: true },
+			_focusableContentElem: { state: true },
 			_fullscreenWithin: { state: true },
 			_height: { state: true },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
@@ -65,6 +66,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	constructor() {
 		super();
 		this.opened = false;
+		this._focusableContentElem = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -220,6 +222,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+				this._focusableContentElem = true;
 				this._focusElemOrDescendant(elementToFocus);
 				return;
 			}
@@ -475,6 +478,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		} else if (iframeTopOverride && this._ifrauContextInfo) {
 			styles.top = `${iframeTopOverride}px`;
 		}
+
+		if (!this._focusableContentElem) this.shadowRoot.querySelector('.d2l-dialog-content')?.setAttribute('tabindex', '0');
+		else if (this._focusableContentElem) this.shadowRoot.querySelector('.d2l-dialog-content')?.removeAttribute('tabindex');
 
 		const dialogOuterClasses = {
 			'vdiff-target': true,
