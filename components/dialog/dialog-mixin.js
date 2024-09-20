@@ -480,7 +480,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 
 		if (!this._focusableContentElem) this.shadowRoot.querySelector('.d2l-dialog-content')?.setAttribute('tabindex', '0');
-		else if (this._focusableContentElem) this.shadowRoot.querySelector('.d2l-dialog-content')?.removeAttribute('tabindex');
+		else this.shadowRoot.querySelector('.d2l-dialog-content')?.removeAttribute('tabindex');
 
 		const dialogOuterClasses = {
 			'vdiff-target': true,

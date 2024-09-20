@@ -46,7 +46,7 @@ describe('dialog', () => {
 						},
 						{ name: 'focus on content when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
 						{ name: 'focus on content when short content', template: createDialog({ content: html`<div style="height: 200px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
-						{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action: 
+						{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action:
 							async() => {
 								await sendKeys('press', 'Tab');
 								await sendKeys('press', 'Tab');
