@@ -221,8 +221,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
 				this._focusableContentElemPresent = true;
+			}
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
 				this._focusElemOrDescendant(elementToFocus);
 				return;
 			}
