@@ -34,6 +34,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			focusableContentElemPresent: { state: true },
+			/**
 			 * Whether or not the dialog is open
 			 */
 			opened: { type: Boolean, reflect: true },
@@ -43,7 +47,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_autoSize: { state: true },
-			_focusableContentElemPresent: { state: true },
 			_fullscreenWithin: { state: true },
 			_height: { state: true },
 			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
@@ -65,8 +68,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
+		this.focusableContentElemPresent = false;
 		this.opened = false;
-		this._focusableContentElemPresent = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -222,7 +225,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
-				this._focusableContentElemPresent = true;
+				this.focusableContentElemPresent = true;
 			}
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
 				this._focusElemOrDescendant(elementToFocus);
@@ -480,9 +483,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		} else if (iframeTopOverride && this._ifrauContextInfo) {
 			styles.top = `${iframeTopOverride}px`;
 		}
-
-		if (!this._focusableContentElemPresent) this.shadowRoot.querySelector('.d2l-dialog-content')?.setAttribute('tabindex', '0');
-		else this.shadowRoot.querySelector('.d2l-dialog-content')?.removeAttribute('tabindex');
 
 		const dialogOuterClasses = {
 			'vdiff-target': true,

@@ -170,6 +170,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
+		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
 		const labelId = this.critical ? `${this._criticalLabelId} ${this._titleId}` : this._titleId;
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
@@ -180,7 +181,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
+				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}" tabindex="${ifDefined(contentTabIndex)}">${content}</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>

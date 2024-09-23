@@ -3,6 +3,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
@@ -81,6 +82,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	}
 
 	render() {
+		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
@@ -88,7 +90,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 					<div class="d2l-dialog-header">
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
 					</div>` : null}
-				<div id="${this._textId}" class="d2l-dialog-content">
+				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}">
 					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">

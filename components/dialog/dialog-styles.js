@@ -133,12 +133,9 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-content:focus-visible {
-		border-radius: 3px;
-		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
-		margin-bottom: 4px;
-		margin-inline: 4px;
-		outline: none;
-		padding-inline: 26px;
+		border-radius: 6px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: -2px;
 	}
 
 	.d2l-dialog-content > div {
