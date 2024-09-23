@@ -1,5 +1,6 @@
 import '../dialog.js';
 import { expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
 
@@ -9,6 +10,16 @@ describe('d2l-dialog', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-dialog');
+		});
+
+	});
+
+	describe('properties', () => {
+
+		it('throws error when no title-text', async() => {
+			const el = await fixture(html`<d2l-dialog></d2l-dialog>`);
+			expect(() => el.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createMessage(el, 'title-text'));
 		});
 
 	});
