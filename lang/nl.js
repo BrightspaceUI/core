@@ -44,7 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL is niet geldig",
 	"components.form-element.valueMissing": "{label} is vereist.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {Er is {count} fout gevonden in de informatie die u hebt ingediend} other {Er zijn {count} fouten gevonden in de informatie die u hebt ingediend}}",
-	"components.form-error-summary.text": "Toggle error details",
+	"components.form-error-summary.text": "Foutdetails in-/uitschakelen",
 	"components.input-color.backgroundColor": "Achtergrondkleur",
 	"components.input-color.foregroundColor": "Voorgrondkleur",
 	"components.input-color.none": "Geen",

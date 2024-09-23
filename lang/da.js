@@ -44,7 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL-adresse er ikke gyldig",
 	"components.form-element.valueMissing": "{label} er påkrævet.",
 	"components.form-error-summary.errorSummary": "{count, plural, one {Der blev fundet {count} fejl i de oplysninger, du indsendte} other {Der blev fundet {count} fejl i de oplysninger, du indsendte}}",
-	"components.form-error-summary.text": "Toggle error details",
+	"components.form-error-summary.text": "Slå fejloplysninger til/fra",
 	"components.input-color.backgroundColor": "Baggrundsfarve",
 	"components.input-color.foregroundColor": "Forgrundsfarve",
 	"components.input-color.none": "Ingen",
