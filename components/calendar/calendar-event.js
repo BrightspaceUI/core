@@ -23,11 +23,7 @@ class CalendarEvent extends LitElement {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		let hasChanges = false;
-		changedProperties.forEach(oldValue => {
-			if (oldValue !== undefined) hasChanges = true;
-		});
-
+		const hasChanges = changedProperties.values().reduce((hasChanges, oldValue) => hasChanges || (oldValue !== undefined), false);
 		if (!hasChanges) return;
 
 		/** @ignore */
