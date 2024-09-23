@@ -30,11 +30,6 @@ describe('d2l-dialog', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it.skip('no title-text', async() => {
-		const el = await fixture(html`<d2l-dialog opened>My content</d2l-dialog>`);
-		await expect(el).to.be.accessible();
-	});
-
 	it.skip('tall content', async() => {
 		const el = await fixture(html`
 			<d2l-dialog opened title-text="My Dialog">
