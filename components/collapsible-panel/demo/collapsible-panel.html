@@ -113,7 +113,7 @@
 			<d2l-demo-snippet>
 					<d2l-collapsible-panel panel-title="Session: January 1, 2021: 10:00 AM" expand-collapse-label="Session on January 1">
 						<d2l-icon icon="tier3:assignments" slot="before"></d2l-icon>
-						<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more slot="actions">
+						<d2l-button-icon slot="actions" icon="tier1:fullscreen" text="Fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download" text="Download"></d2l-button-icon><d2l-dropdown-more slot="actions" text="More">
 							<d2l-dropdown-menu>
 								<d2l-menu>
 									<d2l-menu-item text="Duplicate"></d2l-menu-item>
@@ -134,7 +134,7 @@
 			<h2>With long title</h2>
 			<d2l-demo-snippet>
 					<d2l-collapsible-panel panel-title="https://en.wikipedia.org/wiki/William_Thomson,_1st_Baron_Kelvin (the guy who invented absolute zero and some other cool thermodynamics stuff)" expand-collapse-label="Session on January 1">
-						<d2l-button-icon slot="actions" icon="tier1:fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon><d2l-dropdown-more slot="actions">
+						<d2l-button-icon slot="actions" icon="tier1:fullscreen" text="Fullscreen"></d2l-button-icon><d2l-button-icon slot="actions" icon="tier1:download" text="Download"></d2l-button-icon><d2l-dropdown-more slot="actions" text="More">
 							<d2l-dropdown-menu>
 								<d2l-menu>
 									<d2l-menu-item text="Duplicate"></d2l-menu-item>
@@ -205,5 +205,14 @@
 					</d2l-collapsible-panel>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
+
+		<script>
+			document.body.addEventListener('d2l-collapsible-panel-expand', e => {
+				console.log('d2l-collapsible-panel-expand', e);
+			}, true);
+			document.body.addEventListener('d2l-collapsible-panel-collapse', e => {
+				console.log('d2l-collapsible-panel-collapse', e);
+			}, true);
+		</script>
 	</body>
 </html>
