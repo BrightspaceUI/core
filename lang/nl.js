@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Waarschuwing sluiten",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
+	"components.calendar.hasEvents": "Has Events.",
 	"components.calendar.notSelected": "Niet geselecteerd.",
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} weergeven",
