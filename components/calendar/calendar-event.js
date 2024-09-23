@@ -11,12 +11,12 @@ class CalendarEvent extends LitElement {
 			 * End date
 			 * @type {string}
 			 */
-			endDate: { attribute: 'end-date', type: String },
+			endValue: { attribute: 'end-value', type: String },
 			/**
 			 * Start date
 			 * @type {string}
 			 */
-			startDate: { attribute: 'start-date', type: String }
+			startValue: { attribute: 'start-value', type: String }
 		};
 	}
 

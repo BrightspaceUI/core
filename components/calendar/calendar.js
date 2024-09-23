@@ -592,8 +592,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			bubbles: false,
 			composed: false,
 			detail: {
-				maxDate: dates[dates.length - 1][6],
-				minDate: dates[0][0]
+				maxValue: dates[dates.length - 1][6],
+				minValue: dates[0][0]
 			}
 		}));
 	}
@@ -889,13 +889,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const eventsData = {};
 		events.forEach(eventElem => {
 
-			if (!eventElem.startDate || !eventElem.endDate) return;
+			if (!eventElem.startValue || !eventElem.endValue) return;
 
-			const startDate = getDateFromISODate(eventElem.startDate);
-			const endDate = getDateFromISODate(eventElem.endDate);
+			const startValue = getDateFromISODate(eventElem.startValue);
+			const endValue = getDateFromISODate(eventElem.endValue);
 
-			const date = startDate;
-			while (isDateInRange(date, startDate, endDate)) {
+			const date = startValue;
+			while (isDateInRange(date, startValue, endValue)) {
 
 				let yearData = eventsData[date.getFullYear()];
 				if (!yearData) {
@@ -909,7 +909,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					yearData[date.getMonth()] = monthData;
 				}
 
-				monthData[startDate.getDate()] = (monthData[startDate.getDate()] || 0) + 1;
+				monthData[startValue.getDate()] = (monthData[startValue.getDate()] || 0) + 1;
 				date.setDate(date.getDate() + 1);
 			}
 
