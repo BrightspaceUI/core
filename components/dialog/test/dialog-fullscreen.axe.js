@@ -25,12 +25,10 @@ describe('d2l-dialog-fullscreen', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it.skip('tall content', async() => {
+	it('tall content', async() => {
 		const el = await fixture(html`
 			<d2l-dialog-fullscreen opened title-text="My Dialog">
-				<div style="overflow-y: scroll; height:200px;">
-					<div style="height: 10000px;">My content</div>
-				</div>
+				<div style="height: 10000px;">My content</div>
 			</d2l-dialog-fullscreen>
 		`);
 		await expect(el).to.be.accessible();

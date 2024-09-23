@@ -132,6 +132,12 @@ export const dialogStyles = css`
 		padding: 0 30px;
 	}
 
+	.d2l-dialog-content:focus-visible {
+		border-radius: 6px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: -2px;
+	}
+
 	.d2l-dialog-content > div {
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
 	}

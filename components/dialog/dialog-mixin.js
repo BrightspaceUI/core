@@ -34,6 +34,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			focusableContentElemPresent: { state: true },
+			/**
 			 * Whether or not the dialog is open
 			 */
 			opened: { type: Boolean, reflect: true },
@@ -64,6 +68,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
+		this.focusableContentElemPresent = false;
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
@@ -219,6 +224,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
+				this.focusableContentElemPresent = true;
+			}
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
 				this._focusElemOrDescendant(elementToFocus);
 				return;
