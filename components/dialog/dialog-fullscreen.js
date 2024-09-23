@@ -8,6 +8,7 @@ import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
@@ -18,7 +19,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
  */
-class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
+class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -32,6 +33,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * @type {boolean}
 			 */
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
+			/**
+			 * REQUIRED: the title for the dialog
+			 */
+			titleText: { type: String, attribute: 'title-text', required: true },
 			/**
 			 * The preferred width (unit-less) for the dialog. Maximum 1170.
 			 */

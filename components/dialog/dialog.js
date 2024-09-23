@@ -9,6 +9,7 @@ import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
@@ -19,7 +20,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
  */
-class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
+class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -42,6 +43,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 * Whether to render the dialog at the maximum height
 			 */
 			fullHeight: { type: Boolean, attribute: 'full-height' },
+
+			/**
+			 * REQUIRED: the title for the dialog
+			 */
+			titleText: { type: String, attribute: 'title-text', required: true },
 
 			/**
 			 * The preferred width (unit-less) for the dialog
