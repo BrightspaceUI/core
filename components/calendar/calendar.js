@@ -164,6 +164,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			summary: { type: String },
 			_dialog: { type: Boolean },
+			_events: { state: true },
 			_focusDate: { type: Object },
 			_isInitialFocusDate: { type: Boolean },
 			_monthNav: { type: String },
@@ -395,6 +396,25 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				font-size: 1rem;
 				font-weight: 700;
 			}
+
+			.d2l-calendar-date-event::after {
+				background-color: var(--d2l-color-celestine);
+				border-radius: 3px;
+				bottom: 4px;
+				content: "";
+				display: inline-block;
+				height: 6px;
+				left: calc(50% - 3px);
+				position: absolute;
+				width: 6px;
+			}
+			.d2l-calendar-date-selected.d2l-calendar-date-event::after {
+				bottom: 2px;
+			}
+			td:focus .d2l-calendar-date-event::after {
+				bottom: 0;
+			}
+
 		`];
 	}
 
@@ -450,18 +470,25 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day, index) => {
+
 				const disabled = !isDateInRange(day, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
+
+				const year = day.getFullYear();
+				const month = day.getMonth();
+				const date = day.getDate();
+
+				const eventCount = this._events?.[year]?.[month]?.[date] || 0;
+
 				const classes = {
 					'd2l-calendar-date': true,
+					'd2l-calendar-date-event': eventCount > 0,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
-				const year = day.getFullYear();
-				const month = day.getMonth();
-				const date = day.getDate();
+
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
 				const description = `${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
@@ -487,6 +514,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			return html`<tr>${weekHtml}</tr>`;
 		});
+
 		const summary = this.summary ? html`<caption class="d2l-offscreen">${this.summary}</caption>` : '';
 		const calendarClasses = {
 			'd2l-calendar': true,
@@ -501,8 +529,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
 		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
 		const role = this._dialog ? 'dialog' : undefined;
+
 		return html`
-			<div role="region" aria-label="${regionLabel}">
+			<div role="region" aria-label="${regionLabel}" @d2l-calendar-event-data-change="${this._onCalendarEventDataChange}">
 				<div class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
 					<div role="application">
 						<div class="d2l-calendar-title">
@@ -528,10 +557,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 							</tbody>
 						</table>
 					</div>
-					<slot></slot>
+					<slot @slotchange="${this._onSlotChange}"></slot>
 				</div>
 			</div>
 		`;
+
 	}
 
 	updated(changedProperties) {
@@ -549,6 +579,23 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				this._dateSelected = false;
 			}
 		});
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.get('_shownYear') === undefined && changedProperties.get('_shownMonth') === undefined) return;
+
+		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
+
+		/** Dispatched when the calender view changes. "e.detail" provides the year and month in view. */
+		this.dispatchEvent(new CustomEvent('d2l-calendar-view-change', {
+			bubbles: false,
+			composed: false,
+			detail: {
+				maxDate: dates[dates.length - 1][6],
+				minDate: dates[0][0]
+			}
+		}));
 	}
 
 	async focus() {
@@ -601,6 +648,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_monthIncrease() {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
+	}
+
+	_onCalendarEventDataChange() {
+		this._updateCalendarEventData();
 	}
 
 	async _onDateSelected(e) {
@@ -793,6 +844,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		await this._updateFocusDateOnChange();
 	}
 
+	_onSlotChange(e) {
+		this._updateCalendarEventData(e.target);
+	}
+
 	async _showFocusDateMonth(prevFocusDate, upDownAnimation) {
 		this._isInitialFocusDate = false;
 		const date = await this._getDateElement(this._focusDate);
@@ -821,6 +876,46 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				this._monthNav = `${increase ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
 			}, 100); // timeout for firefox
 		}
+	}
+
+	_updateCalendarEventData(slot) {
+		slot = slot ?? this.shadowRoot.querySelector('slot');
+
+		const events = slot.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-CALENDAR-EVENT');
+
+		// handle case where end date is before start date
+		// handle case where start or end date is not specified
+
+		const eventsData = {};
+		events.forEach(eventElem => {
+
+			if (!eventElem.startDate || !eventElem.endDate) return;
+
+			const startDate = getDateFromISODate(eventElem.startDate);
+			const endDate = getDateFromISODate(eventElem.endDate);
+
+			const date = startDate;
+			while (isDateInRange(date, startDate, endDate)) {
+
+				let yearData = eventsData[date.getFullYear()];
+				if (!yearData) {
+					yearData = {};
+					eventsData[date.getFullYear()] = yearData;
+				}
+
+				let monthData = yearData[date.getMonth()];
+				if (!monthData) {
+					monthData = {};
+					yearData[date.getMonth()] = monthData;
+				}
+
+				monthData[startDate.getDate()] = (monthData[startDate.getDate()] || 0) + 1;
+				date.setDate(date.getDate() + 1);
+			}
+
+		});
+
+		this._events = eventsData;
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
