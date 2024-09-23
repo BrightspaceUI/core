@@ -30,12 +30,21 @@ describe('d2l-dialog', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it.skip('tall content', async() => {
+	it('tall content', async() => {
 		const el = await fixture(html`
 			<d2l-dialog opened title-text="My Dialog">
-				<div style="overflow-y: scroll; height:200px;">
-					<div style="height: 10000px;">My content</div>
-				</div>
+				<div style="height: 10000px;">My content</div>
+			</d2l-dialog>
+		`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('tall content with footer buttons', async() => {
+		const el = await fixture(html`
+			<d2l-dialog opened title-text="My Dialog">
+				<div style="height: 10000px;">My content</div>
+				<d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
+				<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 			</d2l-dialog>
 		`);
 		await expect(el).to.be.accessible();
