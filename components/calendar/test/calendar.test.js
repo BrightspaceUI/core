@@ -23,6 +23,7 @@ describe('d2l-calendar', () => {
 	});
 
 	describe('events', () => {
+
 		it('dispatches event when date clicked', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="1"] button');
@@ -92,6 +93,27 @@ describe('d2l-calendar', () => {
 			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
+
+		it('dispatches d2l-calendar-view-change event when user changes to previous month', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
+			setTimeout(() => el.click());
+			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
+			await aTimeout(1);
+			expect(detail.minValue).to.deep.equal(new Date(2015, 6, 26));
+			expect(detail.maxValue).to.deep.equal(new Date(2015, 8, 5));
+		});
+
+		it('dispatches d2l-calendar-view-change event when user changes to next month', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[1];
+			setTimeout(() => el.click());
+			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
+			await aTimeout(1);
+			expect(detail.minValue).to.deep.equal(new Date(2015, 8, 27));
+			expect(detail.maxValue).to.deep.equal(new Date(2015, 9, 31));
+		});
+
 	});
 
 	describe('focus date', () => {
