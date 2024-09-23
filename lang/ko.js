@@ -44,7 +44,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "URL이 유효하지 않습니다",
 	"components.form-element.valueMissing": "{label}이(가) 필요합니다.",
 	"components.form-error-summary.errorSummary": "{count, plural, other {제출한 정보에서 {count}개의 오류가 발견되었습니다}}",
-	"components.form-error-summary.text": "Toggle error details",
+	"components.form-error-summary.text": "오류 세부 정보 전환",
 	"components.input-color.backgroundColor": "배경 색상",
 	"components.input-color.foregroundColor": "전경 색상",
 	"components.input-color.none": "없음",
