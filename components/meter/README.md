@@ -103,7 +103,7 @@ Circle meters display data in a compact circle format, so they're useful when ho
 ## Light Foreground
 All `meter` components have a `foreground-light` style that ensures accessible contrast levels when displayed against a dark background.
 
-<!-- docs: demo code darkMode:true sandboxName:meter-light-foreground sandboxTitle:'Meter - Light Foreground'-->
+<!-- docs: demo code darkMode:true sandboxName:meter-light-foreground sandboxTitle:'Meter - Light Foreground' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
