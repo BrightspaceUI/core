@@ -1,8 +1,9 @@
 import '../../validation/validation-custom.js';
+import '../../dialog/dialog.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 
 class TestTwoForms extends LitElement {
@@ -76,6 +77,35 @@ describe('d2l-form', () => {
 				formElement.setValidity({ rangeOverflow: true });
 				const errors = await form.validate();
 				expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
+			});
+
+			it('should validate and clear validation-customs', async() => {
+				const errors = await form.validate();
+				const ele = form.querySelector('#mycheck');
+				expect(errors.get(ele)).to.include.members(['The checkbox failed validation']);
+				expect(form._errors.size).to.be.greaterThan(0);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+			});
+
+			it('should validate and clear native form elements', async() => {
+				const errors = await form.validate();
+				const ele = form.querySelector('#pets');
+				expect(errors.get(ele)).to.include.members(['Pets is required.']);
+				expect(form._errors.size).to.be.greaterThan(0);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+			});
+
+			it('should validate and clear custom form elements', async() => {
+				const formElement = form.querySelector('#custom-ele');
+				formElement.value = 'Non-empty';
+				formElement.setValidity({ rangeOverflow: true });
+				const errors = await form.validate();
+				expect(form._errors.size).to.be.greaterThan(0);
+				expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
 			});
 
 		});
@@ -208,11 +238,14 @@ describe('d2l-form', () => {
 		describe('validate', () => {
 
 			[
-				{ noDirectNesting: false, noComposedNesting: false },
-				{ noDirectNesting: true, noComposedNesting: false },
-				{ noDirectNesting: false, noComposedNesting: true },
-			].forEach(({ noDirectNesting, noComposedNesting }) => {
-				it(`should validate nested forms in tree order with${noDirectNesting ? ' no ' : ' '}direct nesting and${noComposedNesting ? ' no ' : ' '}composed nesting`, async() => {
+				{ noDirectNesting: false, noComposedNesting: false, resetValidation: false },
+				{ noDirectNesting: true, noComposedNesting: false, resetValidation: false },
+				{ noDirectNesting: false, noComposedNesting: true, resetValidation: false },
+				{ noDirectNesting: false, noComposedNesting: false, resetValidation: true },
+				{ noDirectNesting: true, noComposedNesting: false, resetValidation: true },
+				{ noDirectNesting: false, noComposedNesting: true, resetValidation: true },
+			].forEach(({ noDirectNesting, noComposedNesting, resetValidation }) => {
+				it(`should validate nested forms in tree order with${noDirectNesting ? ' no ' : ' '}direct nesting and${noComposedNesting ? ' no ' : ' '}composed nesting${resetValidation ? ' and have no errors on resetValidation' : ''}`, async() => {
 
 					const formElement = form.querySelector('#custom-ele');
 					formElement.value = 'Non-empty';
@@ -242,6 +275,11 @@ describe('d2l-form', () => {
 
 					const actualErrors = [...errors.entries()];
 					expect(actualErrors).to.deep.equal(expectedErrors);
+					expect(form._errors.size).to.be.greaterThan(0);
+
+					if (!resetValidation) return;
+					form.resetValidation();
+					expect(form._errors.size).to.equal(0);
 				});
 			});
 
@@ -419,6 +457,30 @@ describe('d2l-form', () => {
 
 			});
 
+		});
+
+	});
+
+	describe('dialog form', () => {
+		it('should reset validation when dialog closes', async() => {
+			const dialog = await fixture(html`
+				<d2l-dialog opened>
+					<d2l-form id="nested-form-1">
+						<input type="text" aria-label="Input 1" name="input1" required>
+					</d2l-form>
+				</d2l-dialog>
+			`);
+
+			const form = dialog.querySelector('d2l-form');
+			form.submit();
+
+			const errors = await form.validate();
+			expect(errors.size).to.equal(1);
+			expect(form._errors.size).to.equal(1);
+
+			dialog.opened = false;
+			await oneEvent(dialog, 'd2l-dialog-close');
+			expect(form._errors.size).to.equal(0);
 		});
 
 	});

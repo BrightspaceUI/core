@@ -114,6 +114,7 @@ If you're looking to emulate native form element submission, `d2l-form-native` m
 ### Methods
 - `submit()`: Submits the form. This will first perform validation on all elements within the form including nested `d2l-form` elements.
   - **Note:** If validation succeeds, the form data will be aggregated and passed back to the caller via the `d2l-form-submit` event. It will not be submitted by the form itself.
+- `resetValidation()`: Resets the validation errors. Note that this does not reset any form values. Daylight dialog components (e.g., `d2l-dialog`) will automatically run this method on close.
 - `async validate()`: Validates the form and any nested `d2l-form` elements without submitting even if validation succeeds for all elements. Returns a `Map` mapping from an element to the list of error messages associated with it.
   - **Note:** The return value will include elements and errors from both the root form and any nested descendant forms.
 

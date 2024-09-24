@@ -76,6 +76,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._handleDropdownOpenClose = this._handleDropdownOpenClose.bind(this);
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
+		this._isDialogMixin = true;
 		this._isFullHeight = false;
 		this._height = 0;
 		this._left = 0;

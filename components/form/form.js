@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { FormMixin } from './form-mixin.js';
 
 /**
@@ -55,6 +56,12 @@ class Form extends FormMixin(LitElement) {
 		this._isSubForm = false;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this._setupDialogValidationReset();
+	}
+
 	render() {
 		let errorSummary = null;
 		if (this._isRootForm()) {
@@ -75,6 +82,26 @@ class Form extends FormMixin(LitElement) {
 			return;
 		}
 		this._submitData(submitter);
+	}
+
+	resetValidation() {
+		const formElements = this._findFormElements();
+		for (const ele of formElements) {
+			if (this._hasSubForms(ele)) {
+				const forms = this._getSubForms(ele);
+				for (const form of forms) {
+					form.resetValidation();
+				}
+			} else {
+				if (isCustomFormElement(ele)) {
+					ele.resetValidation();
+				} else if (isNativeFormElement(ele)) {
+					this._displayValid(ele);
+				}
+			}
+		}
+		this._errors = new Map();
+		this._tooltips = new Map();
 	}
 
 	async submit() {
@@ -163,6 +190,21 @@ class Form extends FormMixin(LitElement) {
 		};
 		form.addEventListener('d2l-form-disconnect', onFormDisconnect);
 
+	}
+
+	_setupDialogValidationReset() {
+		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
+		if (!flag) return;
+
+		const dialogAncestor = findComposedAncestor(
+			this,
+			node => node?._isDialogMixin
+		);
+		if (!dialogAncestor) return;
+
+		dialogAncestor.addEventListener('d2l-dialog-close', () => {
+			this.resetValidation();
+		});
 	}
 
 	async _submitData(submitter) {

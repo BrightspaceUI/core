@@ -18,6 +18,7 @@ invalid state.
 | `name` | String | The name of the form control. Submitted with the form as part of a name/value pair. |
 
 **Methods:**
+- `resetValidation()`: Resets any validation errors on the form element. Note that this does not reset any form element value.
 - `setFormValue(value)`: Sets the current value of the form control. Submitted with the form as part of a name/value pair. `value` may be a:
 	1. An `Object`: `{ 'key1': val, 'key2': val }`
 		- When an `Object` is provided, all keys-value pairs will be submitted. To avoid collision it is recommended that you prefix each key with the component's `name` property value.
