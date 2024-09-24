@@ -198,7 +198,7 @@ class Form extends FormMixin(LitElement) {
 
 		const dialogAncestor = findComposedAncestor(
 			this,
-			(node) => { return (node?._isDialogMixin); }
+			node => node?._isDialogMixin
 		);
 		if (!dialogAncestor) return;
 
