@@ -59,17 +59,7 @@ class Form extends FormMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const dialogAncestor = findComposedAncestor(
-			this,
-			(node) => { return (node?._isDialogMixin); }
-		);
-		if (!dialogAncestor) return;
-
-		dialogAncestor.addEventListener('d2l-dialog-close', () => {
-			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
-			if (!flag) return;
-			this.resetValidation();
-		});
+		this._setupDialogValidationReset();
 	}
 
 	render() {
@@ -200,6 +190,21 @@ class Form extends FormMixin(LitElement) {
 		};
 		form.addEventListener('d2l-form-disconnect', onFormDisconnect);
 
+	}
+
+	_setupDialogValidationReset() {
+		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
+		if (!flag) return;
+
+		const dialogAncestor = findComposedAncestor(
+			this,
+			(node) => { return (node?._isDialogMixin); }
+		);
+		if (!dialogAncestor) return;
+
+		dialogAncestor.addEventListener('d2l-dialog-close', () => {
+			this.resetValidation();
+		});
 	}
 
 	async _submitData(submitter) {
