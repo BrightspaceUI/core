@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getNextMonth,
@@ -107,7 +107,7 @@ describe('d2l-calendar', () => {
 		it('dispatches d2l-calendar-view-change event when user changes to next month', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[1];
-			setTimeout(() => el.click());
+			clickElem(el);
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
 			await aTimeout(1);
 			expect(detail.minValue).to.deep.equal(new Date(2015, 8, 27));
