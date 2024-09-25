@@ -40,9 +40,24 @@ function getCalendarData() {
 	return calendarData;
 }
 
+function getInitialFocusDate(selectedValue, minValue, maxValue) {
+	if (selectedValue) return getDateFromISODate(selectedValue);
+	else return getDateFromISODate(getClosestValidDate(minValue, maxValue, false));
+}
+
 export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
 	return date1.getTime() === date2.getTime();
+}
+
+export function getMinMaxDatesInView(selectedValue, minValue, maxValue) {
+	getCalendarData();
+	const date = getInitialFocusDate(selectedValue, minValue, maxValue);
+	const dates = getDatesInMonthArray(date.getMonth(), date.getFullYear());
+	return {
+		maxValue: dates[dates.length - 1][6],
+		minValue: dates[0][0]
+	};
 }
 
 export function getDatesInMonthArray(shownMonth, shownYear) {
@@ -136,6 +151,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * Additional info for any day
+			 * @type {Array}
+			 */
+			dayInfos: { type: Array, attribute: 'day-infos' },
+			/**
 			 * Unique label text for calendar (necessary if multiple calendars on page)
 			 * @type {string}
 			 */
@@ -145,26 +165,23 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
-
 			/**
 			 * Minimum valid date that could be selected by a user
 			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
-
 			/**
 			 * Currently selected date
 			 * @type {string}
 			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
-
 			/**
 			 * ACCESSIBILITY: Summary of the calendar used by screen reader users for identifying the calendar and/or summarizing its purpose
 			 * @type {string}
 			 */
 			summary: { type: String },
+			_dayInfosMap: { state: true },
 			_dialog: { type: Boolean },
-			_events: { state: true },
 			_focusDate: { type: Object },
 			_isInitialFocusDate: { type: Boolean },
 			_monthNav: { type: String },
@@ -428,6 +445,19 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		getCalendarData();
 	}
 
+	get dayInfos() {
+		return this._dayInfos;
+	}
+
+	set dayInfos(val) {
+		const oldVal = this._dayInfos;
+		if (oldVal !== val) {
+			this._dayInfos = val;
+			this._updateDayInfosMap();
+			this.requestUpdate('dayInfos', oldVal);
+		}
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -455,9 +485,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		if (this._shownMonth === undefined || !this._shownYear) {
-			return nothing;
-		}
+		if (this._shownMonth === undefined || !this._shownYear) return nothing;
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th>
@@ -479,19 +507,19 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 
-				const eventCount = this._events?.[year]?.[month]?.[date] || 0;
+				const dayInfoCount = this._dayInfosMap?.get(year)?.get(month)?.get(date) || 0;
 
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-event': eventCount > 0,
+					'd2l-calendar-date-event': dayInfoCount > 0,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
 
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const eventsText = (eventCount > 0) ? `${this.localize('components.calendar.hasEvents')} ` : '';
-				const description = `${eventsText}${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
+				const dayInfoText = (dayInfoCount > 0) ? `${this.localize('components.calendar.hasEvents')} ` : '';
+				const description = `${dayInfoText}${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
@@ -532,7 +560,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const role = this._dialog ? 'dialog' : undefined;
 
 		return html`
-			<div role="region" aria-label="${regionLabel}" @d2l-calendar-event-data-change="${this._onCalendarEventDataChange}">
+			<div role="region" aria-label="${regionLabel}">
 				<div class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
 					<div role="application">
 						<div class="d2l-calendar-title">
@@ -584,6 +612,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
+
 		if (changedProperties.get('_shownYear') === undefined && changedProperties.get('_shownMonth') === undefined) return;
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
@@ -597,6 +626,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				minValue: dates[0][0]
 			}
 		}));
+
 	}
 
 	async focus() {
@@ -633,9 +663,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_getInitialFocusDate() {
-		let date;
-		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
-		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
+		const date = getInitialFocusDate(this.selectedValue, this.minValue, this.maxValue);
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		return date;
@@ -649,10 +677,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_monthIncrease() {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
-	}
-
-	_onCalendarEventDataChange() {
-		this._updateCalendarEventData();
 	}
 
 	async _onDateSelected(e) {
@@ -845,10 +869,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		await this._updateFocusDateOnChange();
 	}
 
-	_onSlotChange(e) {
-		this._updateCalendarEventData(e.target);
-	}
-
 	async _showFocusDateMonth(prevFocusDate, upDownAnimation) {
 		this._isInitialFocusDate = false;
 		const date = await this._getDateElement(this._focusDate);
@@ -879,44 +899,29 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_updateCalendarEventData(slot) {
-		slot = slot ?? this.shadowRoot.querySelector('slot');
+	_updateDayInfosMap() {
+		const dayInfosMap = new Map();
+		this.dayInfos?.forEach(dayInfo => {
+			if (!dayInfo.date) return;
 
-		const events = slot.assignedNodes({ flatten: true }).filter(node => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-CALENDAR-EVENT');
+			const date = getDateFromISODate(dayInfo.date);
+			if (!date) return;
 
-		// handle case where end date is before start date
-		// handle case where start or end date is not specified
-
-		const eventsData = {};
-		events.forEach(eventElem => {
-
-			if (!eventElem.startValue || !eventElem.endValue) return;
-
-			const startValue = getDateFromISODate(eventElem.startValue);
-			const endValue = getDateFromISODate(eventElem.endValue);
-
-			const date = startValue;
-			while (isDateInRange(date, startValue, endValue)) {
-
-				let yearData = eventsData[date.getFullYear()];
-				if (!yearData) {
-					yearData = {};
-					eventsData[date.getFullYear()] = yearData;
-				}
-
-				let monthData = yearData[date.getMonth()];
-				if (!monthData) {
-					monthData = {};
-					yearData[date.getMonth()] = monthData;
-				}
-
-				monthData[startValue.getDate()] = (monthData[startValue.getDate()] || 0) + 1;
-				date.setDate(date.getDate() + 1);
+			let yearMap = dayInfosMap.get(date.getFullYear());
+			if (!yearMap) {
+				yearMap = new Map();
+				dayInfosMap.set(date.getFullYear(), yearMap);
 			}
 
-		});
+			let monthMap = yearMap.get(date.getMonth());
+			if (!monthMap) {
+				monthMap = new Map();
+				yearMap.set(date.getMonth(), monthMap);
+			}
 
-		this._events = eventsData;
+			monthMap.set(date.getDate(), (monthMap.get(date.getDate()) || 0) + 1);
+		});
+		this._dayInfosMap = dayInfosMap;
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {

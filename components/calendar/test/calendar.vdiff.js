@@ -8,11 +8,7 @@ sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 
 const simpleTemplate = html`<d2l-calendar selected-value="2018-02-14"></d2l-calendar>`;
 const minMaxTemplate = html`<d2l-calendar min-value="2018-01-31" max-value="2018-02-27" selected-value="2018-02-14"></d2l-calendar>`;
-const eventsTemplate = html`<d2l-calendar selected-value="2018-02-14">
-	<d2l-calendar-event start-value="2018-01-29" end-value="2018-01-29"></d2l-calendar-event>
-	<d2l-calendar-event start-value="2018-02-12" end-value="2018-02-15"></d2l-calendar-event>
-	<d2l-calendar-event start-value="2018-03-03" end-value="2018-03-03"></d2l-calendar-event>
-</d2l-calendar>`;
+const eventsTemplate = html`<d2l-calendar selected-value="2018-02-14" day-infos="[{&quot;date&quot;:&quot;2018-01-29&quot;},{&quot;date&quot;:&quot;2018-02-12&quot;},{&quot;date&quot;:&quot;2018-02-13&quot;},{&quot;date&quot;:&quot;2018-02-14&quot;},{&quot;date&quot;:&quot;2018-02-15&quot;},{&quot;date&quot;:&quot;2018-03-03&quot;}]"></d2l-calendar>`;
 
 describe('calendar', () => {
 	let elem;
@@ -28,10 +24,10 @@ describe('calendar', () => {
 		{ name: 'min-max-no-selected', template: html`<d2l-calendar min-value="2017-08-31" max-value="2017-10-27" ></d2l-calendar>` },
 		{ name: 'no-selected', template: html`<d2l-calendar></d2l-calendar>` },
 		{ name: 'today-selected', template: html`<d2l-calendar selected-value="2018-02-12"></d2l-calendar>` },
-		{ name: 'events', template: eventsTemplate },
-		{ name: 'events-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="29"]')) },
-		{ name: 'events-today-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="12"]')) },
-		{ name: 'events-selected-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="14"]')) }
+		{ name: 'day-infos', template: eventsTemplate },
+		{ name: 'day-infos-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="29"]')) },
+		{ name: 'day-infos-today-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="12"]')) },
+		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="14"]')) }
 	].forEach(({ name, template, action }) => {
 		it(name, async() => {
 			await setupFixture(template);
