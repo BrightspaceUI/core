@@ -7,6 +7,22 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../calendar.js';
+
+			window._allEvents = [
+				{ date: '2024-08-21' },
+				{ date: '2024-08-22' },
+				{ date: '2024-09-04' },
+				{ date: '2024-09-19' },
+				{ date: '2024-09-20' },
+				{ date: '2024-09-20' },
+				{ date: '2024-09-28' },
+				{ date: '2024-09-30' },
+				{ date: '2024-10-02' },
+				{ date: '2024-10-30' },
+				{ date: '2024-10-31' },
+				{ date: '2024-11-01' },
+				{ date: '2024-11-11' }
+			];
 		</script>
 	</head>
 	<body unresolved>
@@ -30,6 +46,25 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-calendar min-value="2018-08-27" max-value="2018-09-30" selected-value="2018-09-08"></d2l-calendar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Calendar (with events)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-calendar id="eventsCalendar" selected-value="2024-09-16"></d2l-calendar>
+					<script type="module">
+						import { getDateFromISODate, isDateInRange } from '../../../helpers/dateTime.js';
+						import { getMinMaxDatesInView } from '../calendar.js';
+
+						const getEvents = datesInView => {
+							return window._allEvents.filter(event => isDateInRange(getDateFromISODate(event.date), datesInView.minValue, datesInView.maxValue));
+						};
+
+						const calendar = document.querySelector('#eventsCalendar');
+						calendar.dayInfos = getEvents(getMinMaxDatesInView(calendar.selectedValue));
+						calendar.addEventListener('d2l-calendar-view-change', e => calendar.dayInfos = getEvents(e.detail));
+					</script>
 				</template>
 			</d2l-demo-snippet>
 

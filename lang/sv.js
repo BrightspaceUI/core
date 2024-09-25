@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Stängningsvarning",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
+	"components.calendar.hasEvents": "Has Events.",
 	"components.calendar.notSelected": "Inte vald.",
 	"components.calendar.selected": "Markerad.",
 	"components.calendar.show": "Visa {month}",
