@@ -1,5 +1,4 @@
 import '../calendar.js';
-import '../calendar-event.js';
 import { clickElem, expect, fixture, focusElem, html, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import sinon from 'sinon';
 
