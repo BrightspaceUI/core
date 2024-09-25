@@ -140,6 +140,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				bottom: -1px;
 			}
 
+			:host([linear]) d2l-list-item-generic-layout > [slot] {
+				align-content: center;
+				padding-block: 0px;
+			}
+
+			:host([linear]) [slot="content"] {
+				align-items: center;
+			}
+
+			:host([linear]) [slot="content"] ::slotted([slot="illustration"]) {
+				max-height: 1.5rem;
+			}
+
 			:host(:first-of-type[_separators="between"]) [slot="control-container"]::before,
 			:host(:last-of-type[_separators="between"]) [slot="control-container"]::after,
 			:host([_separators="none"]) [slot="control-container"]::before,
