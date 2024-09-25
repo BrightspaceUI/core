@@ -151,7 +151,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Additional info for any day
+			 * Additional info for each day (ex. events on [{"date": "2024-09-19"}])
 			 * @type {Array}
 			 */
 			dayInfos: { type: Array, attribute: 'day-infos' },
