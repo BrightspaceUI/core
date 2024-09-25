@@ -444,18 +444,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		getCalendarData();
 	}
 
-	get dayInfos() {
-		return this._dayInfos;
-	}
-
-	set dayInfos(val) {
-		const oldVal = this._dayInfos;
-		if (oldVal !== val) {
-			this._dayInfos = val;
-			this.requestUpdate('dayInfos', oldVal);
-		}
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
