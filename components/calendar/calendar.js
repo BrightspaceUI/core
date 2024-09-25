@@ -598,6 +598,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 
+		// don't dispatch d2l-calendar-view-change when _shownYear and _shownMonth are being initialized
 		if (changedProperties.get('_shownYear') === undefined && changedProperties.get('_shownMonth') === undefined) return;
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);

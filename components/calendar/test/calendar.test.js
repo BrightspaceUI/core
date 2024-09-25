@@ -112,6 +112,15 @@ describe('d2l-calendar', () => {
 			expect(detail.maxValue).to.deep.equal(new Date(2015, 9, 31));
 		});
 
+		it('does not dispatch d2l-calendar-view-change event initially', async() => {
+			let dispatched = false;
+			const calendar = document.createElement('d2l-calendar');
+			calendar.addEventListener('d2l-calendar-view-change', () => dispatched = true);
+			document.body.appendChild(calendar);
+			await calendar.updateComplete;
+			expect(dispatched).to.equal(false);
+		});
+
 	});
 
 	describe('focus date', () => {
