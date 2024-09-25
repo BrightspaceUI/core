@@ -420,7 +420,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				content: "";
 				display: inline-block;
 				height: 6px;
-				left: calc(50% - 3px);
 				position: absolute;
 				width: 6px;
 			}
