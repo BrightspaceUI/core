@@ -47,6 +47,21 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text-supporting-info ::slotted(*) {
 				margin-top: 0.15rem;
 			}
+
+			:host-context(d2l-list-item[linear]) .d2l-list-item-content-text {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			:host-context(d2l-list-item[linear]) .d2l-list-item-content-text * {
+				display: inline;
+			}
+
+			:host-context(d2l-list-item[linear]) slot[name] {
+				display: none;
+			}
+
 		`];
 	}
 
