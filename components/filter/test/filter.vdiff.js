@@ -258,6 +258,18 @@ describe('filter', () => {
 					await expect(elem).to.be.golden();
 				});
 			});
+
+			it('search then clear', async() => {
+				const elem = await fixture(createSingleDimSingleSelection({ selected: true }));
+				elem._handleSearch({ detail: { value: 'a' } });
+				await elem.updateComplete;
+				elem.opened = true;
+				await oneEvent(elem, 'd2l-filter-dimension-first-open');
+				await nextFrame();
+				await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+				await hoverAt(0, 0);
+				await expect(elem).to.be.golden();
+			});
 		});
 
 		[

@@ -735,6 +735,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	_handleClear() {
 		const dimension = this._getActiveDimension();
 
+		if (dimension.searchType !== 'none') {
+			this._handleClearSearch(dimension);
+			const searchInput = this.shadowRoot.querySelector('d2l-input-search');
+			if (searchInput) searchInput.value = '';
+		}
+
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
@@ -743,18 +749,31 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	_handleClearAll() {
+		let hasSearch = false;
 		this._dimensions.forEach(dimension => {
-			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
-				dimension.searchValue = '';
-				this._search(dimension);
+			if (dimension.searchType !== 'none') {
+				this._handleClearSearch(dimension);
+				hasSearch = true;
 			}
 			this._performDimensionClear(dimension);
 		});
+
+		if (hasSearch) {
+			const searchInputs = this.shadowRoot.querySelectorAll('d2l-input-search');
+			searchInputs?.forEach((searchInput) => searchInput.value = '');
+		}
 
 		this._dispatchChangeEventNow(true);
 		this.requestUpdate();
 
 		this.text ? announce(this.localize('components.filter.clearAllAnnounceOverride', { filterText: this.text })) : announce(this.localize('components.filter.clearAllAnnounce'));
+	}
+
+	_handleClearSearch(dimension) {
+		if (dimension.searchValue === '') return;
+
+		dimension.searchValue = '';
+		this._search(dimension);
 	}
 
 	_handleDimensionDataChange(e) {
