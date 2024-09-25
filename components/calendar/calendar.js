@@ -180,7 +180,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			summary: { type: String },
-			_dayInfosMap: { state: true },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
 			_isInitialFocusDate: { type: Boolean },
@@ -414,7 +413,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				font-weight: 700;
 			}
 
-			.d2l-calendar-date-event::after {
+			.d2l-calendar-date-day-info::after {
 				background-color: var(--d2l-color-celestine);
 				border-radius: 3px;
 				bottom: 4px;
@@ -425,10 +424,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				position: absolute;
 				width: 6px;
 			}
-			.d2l-calendar-date-selected.d2l-calendar-date-event::after {
+			.d2l-calendar-date-selected.d2l-calendar-date-day-info::after {
 				bottom: 2px;
 			}
-			td:focus .d2l-calendar-date-event::after {
+			td:focus .d2l-calendar-date-day-info::after {
 				bottom: 0;
 			}
 
@@ -453,7 +452,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const oldVal = this._dayInfos;
 		if (oldVal !== val) {
 			this._dayInfos = val;
-			this._updateDayInfosMap();
 			this.requestUpdate('dayInfos', oldVal);
 		}
 	}
@@ -507,18 +505,18 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 
-				const dayInfoCount = this._dayInfosMap?.get(year)?.get(month)?.get(date) || 0;
+				const hasDayInfo = !!this.dayInfos?.find(dayInfo => checkIfDatesEqual(day, getDateFromISODate(dayInfo.date)));
 
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-event': dayInfoCount > 0,
+					'd2l-calendar-date-day-info': hasDayInfo,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
 
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const dayInfoText = (dayInfoCount > 0) ? `${this.localize('components.calendar.hasEvents')} ` : '';
+				const dayInfoText = hasDayInfo ? `${this.localize('components.calendar.hasEvents')} ` : '';
 				const description = `${dayInfoText}${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
@@ -586,7 +584,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 							</tbody>
 						</table>
 					</div>
-					<slot @slotchange="${this._onSlotChange}"></slot>
+					<slot></slot>
 				</div>
 			</div>
 		`;
@@ -897,31 +895,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				this._monthNav = `${increase ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
 			}, 100); // timeout for firefox
 		}
-	}
-
-	_updateDayInfosMap() {
-		const dayInfosMap = new Map();
-		this.dayInfos?.forEach(dayInfo => {
-			if (!dayInfo.date) return;
-
-			const date = getDateFromISODate(dayInfo.date);
-			if (!date) return;
-
-			let yearMap = dayInfosMap.get(date.getFullYear());
-			if (!yearMap) {
-				yearMap = new Map();
-				dayInfosMap.set(date.getFullYear(), yearMap);
-			}
-
-			let monthMap = yearMap.get(date.getMonth());
-			if (!monthMap) {
-				monthMap = new Map();
-				yearMap.set(date.getMonth(), monthMap);
-			}
-
-			monthMap.set(date.getDate(), (monthMap.get(date.getDate()) || 0) + 1);
-		});
-		this._dayInfosMap = dayInfosMap;
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
