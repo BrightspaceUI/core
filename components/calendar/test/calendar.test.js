@@ -99,7 +99,6 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
 			clickElem(el);
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
-			await aTimeout(1);
 			expect(detail.minValue).to.deep.equal(new Date(2015, 6, 26));
 			expect(detail.maxValue).to.deep.equal(new Date(2015, 8, 5));
 		});
@@ -109,7 +108,6 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[1];
 			clickElem(el);
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
-			await aTimeout(1);
 			expect(detail.minValue).to.deep.equal(new Date(2015, 8, 27));
 			expect(detail.maxValue).to.deep.equal(new Date(2015, 9, 31));
 		});
