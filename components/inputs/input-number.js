@@ -96,6 +96,13 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			disabled: { type: Boolean },
 			/**
+			 * ACCESSIBILITY: Hidden label, different from `label`, to be used on the input to provide more context for screenreader users.
+			 * To be used only if `label` is defined and `label-hidden` is NOT used.
+			 * Note that screenreader users will likely NOT hear the `label`.
+			 * @type {string}
+			 */
+			hiddenLabel: { attribute: 'hidden-label', type: String },
+			/**
 			 * ADVANCED: Hide the alert icon when input is invalid
 			 * @type {boolean}
 			 */
@@ -333,12 +340,17 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				this._updateFormattedValue();
 			}
 		});
+
+		if (this.hiddenLabel && this.label && this.labelHidden) {
+			console.warn('d2l-input-number: Define the label with only label and label-hidden');
+		}
 	}
 
 	render() {
 		const valueAlign = (this.valueAlign === 'end') ? 'end' : 'start';
 		return html`
 			<d2l-input-text
+				aria-label="${ifDefined(this.hiddenLabel)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?noValidate="${this.noValidate}"
 				?autofocus="${this.autofocus}"
