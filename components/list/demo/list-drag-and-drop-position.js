@@ -14,7 +14,8 @@ class ListDemoDragAndDropPosition extends LitElement {
 			// below are for demonstration only
 			grid: { type: Boolean },
 			hrefs: { type: Boolean },
-			selectable: { type: Boolean }
+			selectable: { type: Boolean },
+			linear: { type: Boolean }
 		};
 	}
 
@@ -77,6 +78,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"
+						?linear="${this.linear}"
 						draggable
 						?selectable="${this.selectable}"
 						drag-handle-text="${item.name}"

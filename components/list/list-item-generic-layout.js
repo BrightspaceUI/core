@@ -40,11 +40,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 */
 			alignNested: { type: String, reflect: true, attribute: 'align-nested' },
 			/**
-			 * Specifies whether lineat mode is active or not
-			 * @type {boolean}
-			 */
-			linear: { type: Boolean, attribute: 'linear' },
-			/**
 			 * Whether to constrain actions so they do not fill the item. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
