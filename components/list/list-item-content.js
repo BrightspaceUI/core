@@ -12,8 +12,11 @@ class ListItemContent extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			linear: { type: Boolean, reflect: true }
-		}
+		};
 	}
 
 	static get styles() {
