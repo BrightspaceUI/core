@@ -179,9 +179,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * @ignore
 			 */
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
-			_afterSlotWidth: { type: Number },
-			_hintType: { type: Number },
-			_formattedValue: { type: String }
+			_afterSlotWidth: { state: true },
+			_hintType: { state: true },
+			_formattedValue: { state: true }
 		};
 	}
 
