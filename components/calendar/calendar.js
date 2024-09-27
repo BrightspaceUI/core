@@ -631,7 +631,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	showYearAndMonth(year, month) {
-		if (year === undefined || month === undefined) return;
+		if (year === undefined || !(month > -1 && month < 12)) return;
 		this._shownYear = year;
 		this._shownMonth = month;
 	}

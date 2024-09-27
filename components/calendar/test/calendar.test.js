@@ -370,6 +370,18 @@ describe('d2l-calendar', () => {
 				expect(detail.maxValue).to.deep.equal(new Date(2015, 11, 5));
 			});
 
+			it('does not change the month in view if year or month are invalid', async() => {
+				let dispatched = false;
+				const calendar = await fixture(normalFixture);
+				calendar.addEventListener('d2l-calendar-view-change', () => dispatched = true);
+				calendar.showYearAndMonth(undefined, 10);
+				calendar.showYearAndMonth(2015, undefined);
+				calendar.showYearAndMonth(2015, -1);
+				calendar.showYearAndMonth(2015, 12);
+				await calendar.updateComplete;
+				expect(dispatched).to.equal(false);
+			});
+
 		});
 
 		describe('getDatesInMonthArray', () => {
