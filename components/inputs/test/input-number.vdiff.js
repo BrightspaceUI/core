@@ -105,7 +105,7 @@ describe('d2l-input-number', () => {
 			html`<d2l-input-number label="Label" value=1 max=0 label-hidden></d2l-input-number>`,
 			{ viewport: { width:600, height:80 } }
 		);
-		await focusElem(elem);
+		focusElem(elem);
 		await oneEvent(elem, 'd2l-tooltip-show');
 		await expect(elem).to.be.golden();
 	});
@@ -115,7 +115,7 @@ describe('d2l-input-number', () => {
 			html`<d2l-input-number label="Label" value=1 max=0 label-hidden input-width="50%"></d2l-input-number>`,
 			{ viewport: { width:800, height:80 } }
 		);
-		await focusElem(elem);
+		focusElem(elem);
 		await oneEvent(elem, 'd2l-tooltip-show');
 		await expect(elem).to.be.golden();
 	});
