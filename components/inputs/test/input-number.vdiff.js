@@ -17,10 +17,19 @@ describe('d2l-input-number', () => {
 		{ name: 'disabled', template: html`<d2l-input-number label="Number" value="10" disabled></d2l-input-number>` },
 		{ name: 'placeholder', template: html`<d2l-input-number label="Number" placeholder="Number..."></d2l-input-number>` },
 		{ name: 'default-value', template: html`<d2l-input-number label="Number" value="10"></d2l-input-number>` },
+		{ name: 'percentage-input-width', template: html`<d2l-input-number input-width="50%"></d2l-input-number>` },
 		{
 			name: 'after-slot',
 			template: html`
 				<d2l-input-number label="Help Text">
+					<d2l-button-icon icon="tier1:help" text="help" slot="after"></d2l-button-icon>
+				</d2l-input-number>
+			`
+		},
+		{
+			name: 'percentage-input-width-after-slot',
+			template: html`
+				<d2l-input-number label="Help Text" input-width="50%">
 					<d2l-button-icon icon="tier1:help" text="help" slot="after"></d2l-button-icon>
 				</d2l-input-number>
 			`
@@ -87,6 +96,26 @@ describe('d2l-input-number', () => {
 			{ viewport }
 		);
 		focusElem(elem);
+		await oneEvent(elem, 'd2l-tooltip-show');
+		await expect(elem).to.be.golden();
+	});
+
+	it('right side tooltip', async() => {
+		const elem = await fixture(
+			html`<d2l-input-number label="Label" value=1 max=0 label-hidden></d2l-input-number>`,
+			{ viewport: { width:600, height:80 } }
+		);
+		await focusElem(elem);
+		await oneEvent(elem, 'd2l-tooltip-show');
+		await expect(elem).to.be.golden();
+	});
+
+	it('right side tooltip with percentage input-width', async() => {
+		const elem = await fixture(
+			html`<d2l-input-number label="Label" value=1 max=0 label-hidden input-width="50%"></d2l-input-number>`,
+			{ viewport: { width:800, height:80 } }
+		);
+		await focusElem(elem);
 		await oneEvent(elem, 'd2l-tooltip-show');
 		await expect(elem).to.be.golden();
 	});
