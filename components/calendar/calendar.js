@@ -630,6 +630,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		await this._updateFocusDate(date, false, allowDisabled);
 	}
 
+	showYearAndMonth(year, month) {
+		if (year === undefined || month === undefined) return;
+		this._shownYear = year;
+		this._shownMonth = month;
+	}
+
 	_computeText(month) {
 		return this.localize(`${this._namespace}.show`, { month: calendarData.descriptor.calendar.months.long[month] });
 	}

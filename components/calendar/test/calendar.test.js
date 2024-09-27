@@ -358,6 +358,20 @@ describe('d2l-calendar', () => {
 			});
 		});
 
+		describe('showYearAndMonth', () => {
+
+			it('changes the month in view', async() => {
+				const calendar = await fixture(normalFixture);
+				setTimeout(() => {
+					calendar.showYearAndMonth(2015, 10);
+				});
+				const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
+				expect(detail.minValue).to.deep.equal(new Date(2015, 10, 1));
+				expect(detail.maxValue).to.deep.equal(new Date(2015, 11, 5));
+			});
+
+		});
+
 		describe('getDatesInMonthArray', () => {
 			it('returns expected array for Feb 2020 (days from prev month, no days from next month', () => {
 				const dates = [[
