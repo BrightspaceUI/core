@@ -609,7 +609,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			composed: false,
 			detail: {
 				maxValue: dates[dates.length - 1][6],
-				minValue: dates[0][0]
+				month: this._shownMonth,
+				minValue: dates[0][0],
+				year: this._shownYear
 			}
 		}));
 
