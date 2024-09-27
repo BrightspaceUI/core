@@ -101,6 +101,8 @@ describe('d2l-calendar', () => {
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
 			expect(detail.minValue).to.deep.equal(new Date(2015, 6, 26));
 			expect(detail.maxValue).to.deep.equal(new Date(2015, 8, 5));
+			expect(detail.month).to.equal(7);
+			expect(detail.year).to.equal(2015);
 		});
 
 		it('dispatches d2l-calendar-view-change event when user changes to next month', async() => {
@@ -110,6 +112,8 @@ describe('d2l-calendar', () => {
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
 			expect(detail.minValue).to.deep.equal(new Date(2015, 8, 27));
 			expect(detail.maxValue).to.deep.equal(new Date(2015, 9, 31));
+			expect(detail.month).to.equal(9);
+			expect(detail.year).to.equal(2015);
 		});
 
 		it('does not dispatch d2l-calendar-view-change event initially', async() => {

@@ -17,6 +17,7 @@ describe('calendar', () => {
 
 	[
 		{ name: 'dec-2019', template: html`<d2l-calendar selected-value="2019-12-01"></d2l-calendar>` }, // first row only current month days last row contains next month days
+		{ name: 'initial-value', template: html`<d2l-calendar initial-value="2024-07-01"></d2l-calendar>` },
 		{ name: 'max', template: html`<d2l-calendar max-value="2017-02-27"></d2l-calendar>` },
 		{ name: 'min', template: html`<d2l-calendar min-value="2020-01-31"></d2l-calendar>` },
 		{ name: 'min-max', template: minMaxTemplate },

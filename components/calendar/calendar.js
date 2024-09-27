@@ -40,7 +40,8 @@ function getCalendarData() {
 	return calendarData;
 }
 
-function getInitialFocusDate(selectedValue, minValue, maxValue) {
+function getInitialFocusDate(initialValue, selectedValue, minValue, maxValue) {
+	if (initialValue) return getDateFromISODate(initialValue);
 	if (selectedValue) return getDateFromISODate(selectedValue);
 	else return getDateFromISODate(getClosestValidDate(minValue, maxValue, false));
 }
@@ -50,9 +51,9 @@ export function checkIfDatesEqual(date1, date2) {
 	return date1.getTime() === date2.getTime();
 }
 
-export function getMinMaxDatesInView(selectedValue, minValue, maxValue) {
+export function getMinMaxDatesInView(initialValue, selectedValue, minValue, maxValue) {
 	getCalendarData();
-	const date = getInitialFocusDate(selectedValue, minValue, maxValue);
+	const date = getInitialFocusDate(initialValue, selectedValue, minValue, maxValue);
 	const dates = getDatesInMonthArray(date.getMonth(), date.getFullYear());
 	return {
 		maxValue: dates[dates.length - 1][6],
@@ -160,6 +161,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * @type {string}
 			 */
 			label: { attribute: 'label', reflect: true, type: String },
+			/**
+			 * Initial date to show. If provided, overrides logic for determining the default year and month to show.
+			 * @type {string}
+			 */
+			initialValue: { attribute: 'initial-value', type: String },
 			/**
 			 * Maximum valid date that could be selected by a user
 			 * @type {string}
@@ -609,7 +615,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			composed: false,
 			detail: {
 				maxValue: dates[dates.length - 1][6],
-				minValue: dates[0][0]
+				month: this._shownMonth,
+				minValue: dates[0][0],
+				year: this._shownYear
 			}
 		}));
 
@@ -649,7 +657,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_getInitialFocusDate() {
-		const date = getInitialFocusDate(this.selectedValue, this.minValue, this.maxValue);
+		const date = getInitialFocusDate(this.initialValue, this.selectedValue, this.minValue, this.maxValue);
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		return date;
