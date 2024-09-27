@@ -363,7 +363,7 @@ describe('d2l-calendar', () => {
 			it('changes the month in view', async() => {
 				const calendar = await fixture(normalFixture);
 				setTimeout(() => {
-					calendar.showYearAndMonth(2015, 10);
+					calendar.showYearAndMonth(new Date(2015, 10));
 				});
 				const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
 				expect(detail.minValue).to.deep.equal(new Date(2015, 10, 1));
@@ -374,10 +374,8 @@ describe('d2l-calendar', () => {
 				let dispatched = false;
 				const calendar = await fixture(normalFixture);
 				calendar.addEventListener('d2l-calendar-view-change', () => dispatched = true);
-				calendar.showYearAndMonth(undefined, 10);
-				calendar.showYearAndMonth(2015, undefined);
-				calendar.showYearAndMonth(2015, -1);
-				calendar.showYearAndMonth(2015, 12);
+				calendar.showYearAndMonth(undefined);
+				calendar.showYearAndMonth('not a date');
 				await calendar.updateComplete;
 				expect(dispatched).to.equal(false);
 			});

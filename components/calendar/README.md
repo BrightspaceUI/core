@@ -32,7 +32,7 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 
 ### Methods
 
-- `showYearAndMonth(year, month)`: show a specific year and month. Note: `month` is 0-based (i.e. 0 to 11).
+- `showYearAndMonth(date)`: show a specific year and month
 
 ## Accessibility
 
