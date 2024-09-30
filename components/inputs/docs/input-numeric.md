@@ -74,17 +74,6 @@ numberInput.addEventListener('change', (e) => {
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-input-number` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
-| `labelled-by` | Use when another visible element should act as the label |
-| `unit` | Use to render the unit (offscreen) as part of the label. |
-
 ### Usage
 
 **Integers Only:**
@@ -146,11 +135,9 @@ numberInput.addEventListener('change', (e) => {
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-input-percent` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
+## Accessibility
+- While `unit-label` is not mandatory by default, using the `unit` property makes it a required property
+- Despite being a lighter colour than the input text, the `unit` text still meets the [WCAG Minimum Contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) requirement of 4.5:1
+- It is important to note that `placeholder` is not a suitable replacement for `label` or any additional information, since it only applies when the input is empty, and not all users will be able to read it in the first place
+- Neither input component uses the `type="number"` to denote their numerical nature, so it must be made clear that the input is a number
+	- This is because `type="number"` does not take into consideration localizations, which can cause problems for languages that use a comma as the decimal place instead of a period
