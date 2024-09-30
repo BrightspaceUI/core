@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, emptyText, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
+	const { disabled, label, labelHidden, maxValue, minValue, opened, required, skeleton, value } = {
 		disabled: false,
 		label: 'Start Date',
 		labelHidden: true,
@@ -17,7 +17,6 @@ const create = (opts = {}) => {
 	return html`
 		<d2l-input-date
 			?disabled="${disabled}"
-			empty-text="${ifDefined(emptyText)}"
 			label="${label}"
 			?label-hidden="${labelHidden}"
 			max-value="${ifDefined(maxValue)}"
@@ -31,7 +30,6 @@ const create = (opts = {}) => {
 };
 
 const disabledFixture = create({ disabled: true, value: '1990-01-01' });
-const emptyTextFixture = create({ emptyText: 'No reminder date ever entered' });
 const labelFixture = create({ labelHidden: false, value: '2019-03-02' });
 const labelHiddenFixture = create({ value: '2020-12-30' });
 const minMaxFixture = create({ maxValue: '2018-02-27', minValue: '2018-02-13' });
@@ -48,8 +46,6 @@ describe('d2l-input-date', () => {
 
 	[
 		{ name: 'disabled', template: disabledFixture },
-		{ name: 'empty-text', template: emptyTextFixture },
-		{ name: 'empty-text-focus', template: emptyTextFixture, focus: true },
 		{ name: 'label', template: labelFixture },
 		{ name: 'label-hidden', template: labelHiddenFixture },
 		{ name: 'placeholder', template: placeholderFixture },
