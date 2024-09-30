@@ -47,7 +47,6 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
-| `empty-text` | String | Text to reassure users that they can choose not to provide a value in this field (usually not necessary) |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
