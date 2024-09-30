@@ -161,7 +161,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			unit: { type: String },
 			/**
-			 * Accessible label for the unit which will not be visually rendered
+			 * ACCESSIBILITY: Label for the unit which will not be visually rendered, required if `unit` is used
 			 * @type {string}
 			 */
 			unitLabel: { attribute: 'unit-label', type: String },
