@@ -247,10 +247,6 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 		}
 	}
 
-	async getLoadingComplete() {
-		return this._renderersProcessedPromise;
-	}
-
 	async _handleSlotChange(e) {
 		if (!e.target || !this.shadowRoot || !this.noDeferredRendering) return;
 		await this._renderInline(e.target);
