@@ -243,7 +243,7 @@ class HtmlBlock extends LitElement {
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if (this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 	}
