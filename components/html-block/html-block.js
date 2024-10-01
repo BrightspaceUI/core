@@ -1,13 +1,13 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
 import { tryGet } from '@brightspace-ui/lms-context-provider/client.js';
-import { until } from 'lit/directives/until.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -208,6 +208,7 @@ class HtmlBlock extends LitElement {
 
 		this._renderersProcessedResolve = undefined;
 		this._renderersProcessedPromise = new Promise(resolve => this._renderersProcessedResolve = resolve);
+		this._renderContainerRef = createRef();
 
 		const contextKeysPromise = getRenderers().then(renderers => renderers.reduce((keys, currentRenderer) => {
 			if (currentRenderer.contextKeys) currentRenderer.contextKeys.forEach(key => keys.push(key));
@@ -216,10 +217,7 @@ class HtmlBlock extends LitElement {
 
 		const contextValsPromise = contextKeysPromise.then(contextKeys => {
 			return Promise.allSettled(contextKeys.map(key => {
-				return tryGet(key, undefined, ctx => {
-					this._context.set(key, ctx);
-					this.updated(new Map([['_context']]));
-				});
+				return tryGet(key, undefined, ctx => this._context.set(key, ctx));
 			}));
 		});
 
@@ -238,16 +236,14 @@ class HtmlBlock extends LitElement {
 		};
 
 		return html`
-			<div class="${classMap(renderContainerClasses)}">
-				${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
-			</div>
+			<div class="${classMap(renderContainerClasses)}" ${ref(this._renderContainerRef)}></div>
 			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
 		`;
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('embeds') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
 	}
@@ -264,7 +260,6 @@ class HtmlBlock extends LitElement {
 	async _processEmbeds() {
 		const htmlFragment = document.createRange().createContextualFragment(this.html);
 		await renderEmbeds(htmlFragment);
-		this.updated(new Map([['embeds']]));
 		return htmlFragment;
 	}
 
@@ -307,8 +302,9 @@ class HtmlBlock extends LitElement {
 	}
 
 	async _updateRenderContainer() {
-		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		await this._processRenderers(renderContainer);
+		this._renderContainerRef.value.innerHTML = '';
+		this._renderContainerRef.value.append(await this._processEmbeds());
+		await this._processRenderers(this._renderContainerRef.value);
 	}
 
 	_validateHtml() {
