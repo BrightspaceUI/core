@@ -633,6 +633,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
+	getShownValue() {
+		return new Date(this._shownYear, this._shownMonth).toISOString();
+	}
+
 	async reset(allowDisabled) {
 		const date = this._getInitialFocusDate();
 		await this._updateFocusDate(date, false, allowDisabled);
