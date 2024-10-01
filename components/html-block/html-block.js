@@ -5,6 +5,7 @@ import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
 import { tryGet } from '@brightspace-ui/lms-context-provider/client.js';
@@ -142,7 +143,7 @@ const getRenderers = async() => {
 /**
  * A component for displaying user-authored HTML.
  */
-class HtmlBlock extends LitElement {
+class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -206,8 +207,6 @@ class HtmlBlock extends LitElement {
 		this._initialContextResolve = undefined;
 		this._initialContextPromise = new Promise(resolve => this._initialContextResolve = resolve);
 
-		this._renderersProcessedResolve = undefined;
-		this._renderersProcessedPromise = new Promise(resolve => this._renderersProcessedResolve = resolve);
 		this._renderContainerRef = createRef();
 
 		const contextKeysPromise = getRenderers().then(renderers => renderers.reduce((keys, currentRenderer) => {
@@ -284,7 +283,7 @@ class HtmlBlock extends LitElement {
 				loadingCompletePromises.push(renderer.getLoadingComplete());
 			}
 		}
-		Promise.all(loadingCompletePromises).then(() => this._renderersProcessedResolve());
+		Promise.all(loadingCompletePromises).then(this.resolveLoadingComplete);
 	}
 
 	async _renderInline(slot) {

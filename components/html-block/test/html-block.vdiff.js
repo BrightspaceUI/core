@@ -150,7 +150,7 @@ describe('d2l-html-block', () => {
 	it('update-content', async() => {
 		const elem = await fixture(html`<d2l-html-block html="before update"></d2l-html-block>`, { viewport });
 		elem.html = 'after update';
-		await elem.updateComplete;
+		await elem.loadingComplete;
 		await expect(elem).to.be.golden();
 	});
 
