@@ -290,7 +290,7 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV'));
 
 		if (!noDeferredRenderingContainer) {
-			this._renderersProcessedResolve();
+			this.resolveLoadingComplete();
 			return;
 		}
 		await this._processRenderers(noDeferredRenderingContainer);
