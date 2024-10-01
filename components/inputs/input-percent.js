@@ -34,7 +34,7 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
