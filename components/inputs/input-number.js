@@ -107,7 +107,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
-			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -161,7 +161,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			unit: { type: String },
 			/**
-			 * ACCESSIBILITY: Label for the unit which will not be visually rendered, required if `unit` is used
+			 * ACCESSIBILITY: Label for the unit which will not be visually rendered. Required if `unit` is used.
 			 * @type {string}
 			 */
 			unitLabel: { attribute: 'unit-label', type: String },
