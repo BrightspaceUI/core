@@ -142,8 +142,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
-			 * Placeholder text
-			 * @type {string}
+			 * @ignore
 			 */
 			placeholder: { type: String },
 			/**

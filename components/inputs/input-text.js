@@ -107,8 +107,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			pattern: { type: String },
 			/**
-			 * Placeholder text
-			 * @type {string}
+			 * @ignore
 			 */
 			placeholder: { type: String },
 			/**

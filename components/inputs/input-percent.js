@@ -49,8 +49,7 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
-			 * Placeholder text
-			 * @type {string}
+			 * @ignore
 			 */
 			placeholder: { type: String },
 			/**

@@ -54,7 +54,6 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `min` | Number | Minimum value allowed. |
 | `min-exclusive` | Boolean, default: `false` | Indicates whether the min value is exclusive. |
 | `min-fraction-digits` | Number, default: `0` | Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits` |
-| `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `value` | Number | Value of the input. |
@@ -128,7 +127,6 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 | `label-hidden` | Boolean, default: `false` | Hides the label visually (moves it to the input's `aria-label` attribute). |
 | `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
 | `min-fraction-digits` | Number | Minimum number of digits allowed after the decimal place. |
-| `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `value` | Number | Value of the input. |
 
