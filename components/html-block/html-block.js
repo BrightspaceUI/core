@@ -297,6 +297,7 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 	}
 
 	async _updateRenderContainer() {
+		if (!this._renderContainerRef.value) return;
 		this._renderContainerRef.value.innerHTML = '';
 		this._renderContainerRef.value.append(await this._processEmbeds());
 		await this._processRenderers(this._renderContainerRef.value);
