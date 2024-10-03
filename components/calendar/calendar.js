@@ -162,7 +162,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			label: { attribute: 'label', reflect: true, type: String },
 			/**
-			 * Initial date to show. If provided, overrides logic for determining the default year and month to show.
+			 * ADVANCED: Initial date to override the logic for determining default date to initially show
 			 * @type {string}
 			 */
 			initialValue: { attribute: 'initial-value', type: String },
