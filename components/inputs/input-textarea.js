@@ -71,8 +71,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			 */
 			noPadding: { type: Boolean, attribute: 'no-padding' },
 			/**
-			 * Placeholder text
-			 * @type {string}
+			 * @ignore
 			 */
 			placeholder: { type: String },
 			/**
