@@ -278,7 +278,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
-				padding: 4px;
+				padding: 3px;
 				position: relative;
 				text-align: center;
 				-webkit-user-select: none;
