@@ -41,19 +41,19 @@ class ButtonToggle extends LitElement {
 		`;
 	}
 
-	render() {
-		return html`
-			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
-			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
-		`;
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this._focusOnFirstRender) {
 			this._focusOnFirstRender = false;
 			this.focus();
 		}
+	}
+
+	render() {
+		return html`
+			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
+			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
+		`;
 	}
 
 	focus() {
