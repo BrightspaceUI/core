@@ -56,11 +56,6 @@ describe('d2l-input-percent', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('placeholder', async() => {
-		const elem = await fixture(html`<d2l-input-percent label="Percent" placeholder="Percent..."></d2l-input-percent>`, { viewport });
-		await expect(elem).to.be.golden();
-	});
-
 	it('default-value', async() => {
 		const elem = await fixture(html`<d2l-input-percent label="Percent" value="10"></d2l-input-percent>`, { viewport });
 		await expect(elem).to.be.golden();

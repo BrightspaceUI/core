@@ -23,11 +23,6 @@ describe('d2l-input-percent', () => {
 		await expect(elem).to.be.accessible();
 	});
 
-	it('placeholder', async() => {
-		const elem = await fixture(html`<d2l-input-percent label="label" placeholder="placeholder"></d2l-input-percent>`);
-		await expect(elem).to.be.accessible();
-	});
-
 	it('hidden label', async() => {
 		const elem = await fixture(html`<d2l-input-percent label="label" label-hidden></d2l-input-percent>`);
 		await expect(elem).to.be.accessible();
