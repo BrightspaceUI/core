@@ -23,18 +23,12 @@ class ButtonToggle extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			::slotted(:not(d2l-button-icon, d2l-button-subtle)) {
-				display: none;
-			}
-			:host slot[name="pressed"] {
-				display: none;
-			}
-			:host slot[name="not-pressed"] {
-				display: contents;
-			}
+			::slotted(:not(d2l-button-icon, d2l-button-subtle)),
+			:host slot[name="pressed"],
 			:host([pressed]) slot[name="not-pressed"] {
 				display: none;
 			}
+			:host slot[name="not-pressed"],
 			:host([pressed]) slot[name="pressed"] {
 				display: contents;
 			}
