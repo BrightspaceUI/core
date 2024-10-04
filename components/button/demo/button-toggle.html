@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button-icon.js';
+			import '../button-subtle.js';
+			import '../button-toggle.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-button-toggle">
+
+			<h2>Toggle Button (using d2l-button-icon)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle>
+						<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+					</d2l-button-toggle>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Toggle Button (using d2l-button-subtle)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle pressed>
+						<d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle>
+						<d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle>
+					</d2l-button-toggle>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Toggle Button (disabled)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle pressed>
+						<d2l-button-subtle slot="not-pressed" disabled icon="tier1:subscribe-hollow" text="Not Subscribed" description="Click to subscribe."></d2l-button-subtle>
+						<d2l-button-subtle slot="pressed" disabled icon="tier1:subscribe-filled" text="Subscribed" description="Click to unsubscribe."></d2l-button-subtle>
+					</d2l-button-toggle>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
