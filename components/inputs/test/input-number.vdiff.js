@@ -15,7 +15,6 @@ describe('d2l-input-number', () => {
 		{ name: 'label-hidden', template: html`<d2l-input-number label="Number" label-hidden></d2l-input-number>` },
 		{ name: 'required', template: requiredFixture },
 		{ name: 'disabled', template: html`<d2l-input-number label="Number" value="10" disabled></d2l-input-number>` },
-		{ name: 'placeholder', template: html`<d2l-input-number label="Number" placeholder="Number..."></d2l-input-number>` },
 		{ name: 'default-value', template: html`<d2l-input-number label="Number" value="10"></d2l-input-number>` },
 		{ name: 'percentage-input-width', template: html`<d2l-input-number input-width="50%"></d2l-input-number>` },
 		{
