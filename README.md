@@ -19,7 +19,7 @@ npm install @brightspace-ui/core
   * [Alert](components/alert/): alert components for displaying important information
   * [Breadcrumbs](components/breadcrumbs/): component to help users understand where they are within an application
   * [Backdrop](components/backdrop/): component for displaying backdrop behind a target element
-  * [Buttons](components/button/): normal, primary, icon and subtle buttons
+  * [Buttons](components/button/): normal, primary, icon, subtle, and toggle buttons
   * [Calendar](components/calendar/): calendar component
   * [Card](components/card/): card components
   * [Colors](components/colors/): color palette
