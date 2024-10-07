@@ -143,6 +143,30 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 </d2l-button-icon>
 ```
 
+## Toggle Button [d2l-button-toggle]
+
+The `d2l-button-toggle` element is a container for buttons that toggle a `pressed` state. Simply place a `d2l-button-icon` or `d2l-button-subtle` element in each of the `not-pressed` and `pressed` slots.
+
+<!-- docs: demo code properties name:d2l-button-toggle sandboxTitle:'Toggle Button' -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-subtle.js';
+  import '@brightspace-ui/core/components/button/button-toggle.js';
+</script>
+<d2l-button-toggle pressed>
+  <d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle>
+  <d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle>
+</d2l-button-toggle>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `pressed` | Boolean | Pressed state |
+<!-- docs: end hidden content -->
+
 ## Add Button [d2l-button-add]
 
 The `d2l-button-add` is for quickly adding new items at a specific location, such as when adding items to a curated list. Since the Add button is meant to be subtle, it should always be used in combination with more obvious methods to add items (like a menu or primary button).
