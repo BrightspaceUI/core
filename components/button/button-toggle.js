@@ -35,6 +35,11 @@ class ButtonToggle extends LitElement {
 		`;
 	}
 
+	constructor() {
+		super();
+		this.pressed = false;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this._focusOnFirstRender) {
@@ -48,6 +53,15 @@ class ButtonToggle extends LitElement {
 			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
 			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.get('pressed') === undefined) return;
+
+		/** Dispatched when the pressed state changes */
+		this.dispatchEvent(new CustomEvent('d2l-button-toggle-change'));
 	}
 
 	focus() {

@@ -165,6 +165,10 @@ The `d2l-button-toggle` element is a container for buttons that toggle a `presse
 | Property | Type | Description |
 |--|--|--|
 | `pressed` | Boolean | Pressed state |
+
+### Events
+
+- `d2l-button-toggle-change`: dispatched when the `pressed` state changes
 <!-- docs: end hidden content -->
 
 ## Add Button [d2l-button-add]

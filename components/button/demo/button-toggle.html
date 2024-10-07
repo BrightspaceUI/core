@@ -19,10 +19,13 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle>
+					<d2l-button-toggle id="toggle-button-icon">
 						<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
 						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
 					</d2l-button-toggle>
+					<script>
+						document.querySelector('#toggle-button-icon').addEventListener('d2l-button-toggle-change', e => console.log(e));
+					</script>
 				</template>
 			</d2l-demo-snippet>
 
@@ -30,10 +33,13 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
+					<d2l-button-toggle id="toggle-button-subtle" pressed>
 						<d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle>
 						<d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle>
 					</d2l-button-toggle>
+					<script>
+						document.querySelector('#toggle-button-subtle').addEventListener('d2l-button-toggle-change', e => console.log(e));
+					</script>
 				</template>
 			</d2l-demo-snippet>
 
