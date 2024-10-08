@@ -123,13 +123,14 @@ export const tableStyles = css`
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
 			--d2l-table-col-sort-button-width: unset;
 		}
-		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
-		.d2l-table > * > tr > * > d2l-table-col-sort-button[nosort] ~ :last-child {
-			padding-inline-end: calc(0.6rem + 18px);
-		}
-		.d2l-table > * > tr > * > d2l-table-col-sort-button:not([nosort]) ~ :last-child {
-			padding-inline-end: unset;
-		}
+	}
+
+	/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
+	.d2l-table th d2l-table-col-sort-button[nosort] ~ :last-child {
+		padding-inline-end: calc(0.6rem + 18px);
+	}
+	.d2l-table th d2l-table-col-sort-button:not([nosort]) ~ :last-child {
+		padding-inline-end: unset;
 	}
 
 	/* border radiuses */
