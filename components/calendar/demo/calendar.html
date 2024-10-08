@@ -62,8 +62,11 @@
 						};
 
 						const calendar = document.querySelector('#eventsCalendar');
-						calendar.dayInfos = getEvents(getMinMaxDatesInView(calendar.selectedValue));
-						calendar.addEventListener('d2l-calendar-view-change', e => calendar.dayInfos = getEvents(e.detail));
+						calendar.dayInfos = getEvents(getMinMaxDatesInView(undefined, calendar.selectedValue));
+						calendar.addEventListener('d2l-calendar-view-change', e => {
+							console.log(e);
+							calendar.dayInfos = getEvents(e.detail);
+						});
 					</script>
 				</template>
 			</d2l-demo-snippet>

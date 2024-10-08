@@ -49,11 +49,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
-			 * Placeholder text
-			 * @type {string}
-			 */
-			placeholder: { type: String },
-			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -121,7 +116,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				min-fraction-digits="${ifDefined(this.minFractionDigits)}"
 				name="${ifDefined(this.name)}"
 				?noValidate="${this.noValidate}"
-				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				unit="%"

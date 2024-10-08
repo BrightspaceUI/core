@@ -30,6 +30,10 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 * `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 calendar date format (`YYYY-MM-DD`).
 <!-- docs: end hidden content -->
 
+### Methods
+
+- `getShownValue()`: returns the date representing the year and month in view as an ISO 8601 calendar date format (`YYYY-MM-DD`).
+
 ## Accessibility
 
 The Daylight calendar (`d2l-calendar`) generally follows the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). Of note is the keyboard behaviour following the [grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/).
