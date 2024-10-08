@@ -145,7 +145,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 ## Toggle Button [d2l-button-toggle]
 
-The `d2l-button-toggle` element is a container for buttons that toggle a `pressed` state. Simply place a `d2l-button-icon` or `d2l-button-subtle` element in each of the `not-pressed` and `pressed` slots.
+The `d2l-button-toggle` element is a container for buttons that toggle a `pressed` state. The component will automatically show or hide the buttons and manage focus based on the `pressed` state. Simply place a `d2l-button-icon` or `d2l-button-subtle` element in each of the `not-pressed` and `pressed` slots. Each button should describe the state and action the user can take.
 
 <!-- docs: demo code properties name:d2l-button-toggle sandboxTitle:'Toggle Button' -->
 ```html
@@ -247,6 +247,9 @@ Daylight buttons rely on standard button semantics to ensure a smooth experience
 
 * For [Icon Buttons](#d2l-button-icon) where there is no visible label, `text` will be displayed in a tooltip
   * If both `text` and `aria-label` are used, then `aria-label` will be used as the primary label while `text` will be used in a [tooltip](../../components/tooltip)
+
+* [Toggle buttons](#d2l-button-toggle) should describe the current state and the action the user can perform. As such, `aria-pressed` should not be used on the buttons as per [W3C's Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/#:~:text=Alternatively%2C%20if%20the%20design%20were%20to%20call%20for%20the%20button%20label%20to%20change%20from%20%22Mute%22%20to%20%22Unmute%2C%22%20the%20aria%2Dpressed%20attribute%20would%20not%20be%20needed.).
+  * Example: "Unpinned, click to pin" and "Pinned, click to unpin"
 
 * [Floating Buttons](#d2l-floating-buttons) maintain their position in the document's structure, despite sticking to the bottom of the viewport, so the tab order is unaffected and the effect is imperceptible to screen reader users
   * Be cautious when using `always-float`, since screen magnifier users may find it difficult to locate the buttons at the bottom of a large viewport
