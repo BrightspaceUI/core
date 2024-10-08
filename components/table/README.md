@@ -134,9 +134,9 @@ For long tables, the header row can be made to "stick" in place as the user scro
 
 When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction. This is meant to be used within a `d2l-table-wrapper`.
 
-Note that the example below hides much of the implementation. See the code in [Multi-Faceted Sort Button](#multi-faceted-sort-button) for a more detailed implementation example.
+Note that the example below hides the implementation, and also that the code is handling the `desc` attribute so updating it in the Properties table will not have an impact on the live demo. See the code in Multi-Faceted Sort Button for a more detailed implementation example.
 
-<!-- docs: demo -->
+<!-- docs: demo properties name:d2l-table-col-sort-button sandboxTitle:'Table Sortable Column Buttons' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
@@ -182,10 +182,7 @@ Note that the example below hides much of the implementation. See the code in [M
             <thead>
               <tr>
                 <th>
-                  <d2l-table-col-sort-button
-                    @click="${this._handleSort}"
-					?desc="${this._sortDesc}"
-					source-type="words">
+                  <d2l-table-col-sort-button @click="${this._handleSort}" ?desc="${this._sortDesc}" source-type="words">
                     Column A
                   </d2l-table-col-sort-button>
                 </th>
@@ -211,6 +208,8 @@ Note that the example below hides much of the implementation. See the code in [M
 <d2l-my-sortable-table-elem></d2l-my-sortable-table-elem>
 ```
 
+The simplified property usage looks like this:
+
 ```html
 <d2l-table-wrapper>
   <table class="d2l-table">
@@ -224,21 +223,6 @@ Note that the example below hides much of the implementation. See the code in [M
   </table>
 </d2l-table-wrapper>
 ```
-
-### Properties
-
-| Property | Type | Description | Default Value |
-|---|---|---|---|
-| `desc` | boolean | Whether sort direction is descending | false |
-| `nosort` | boolean | Column is not currently sorted. Hides the ascending/descending sort icon. | false |
-| `position` | string | Position of the button content. Accepted values are 'start', 'center', and 'end'. | 'start' |
-| `source-type` | string | The type of data in the column. Used to set the title. Accepted values are 'words', 'numbers', and 'dates'. This is only applicable to cases that are not using the multi-faceted dropdown. | 'unknown' |
-
-### Slots
-| Name | Description |
-|---|---|
-| `Default` | Column header text |
-| `items` | Multi-facted sort items. Generally assigned to the `slot` attribute on a nested `d2l-table-col-sort-button-item`. |
 
 ### Slotted Item [d2l-table-col-sort-button-item]
 
@@ -522,3 +506,12 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
 | `no-sticky` | Boolean | Disables sticky positioning for the controls |
 | `select-all-pages-allowed` | Boolean | Whether all pages can be selected |
 <!-- docs: end hidden content -->
+
+## Accessibility
+
+The `d2l-table-wrapper` simply wraps an HTML table in order to add styles and functionality to that table. As such, it is important to use proper table markup. Recommendations are available in [this tutorial](https://www.w3.org/WAI/tutorials/tables/). As mentioned in the Best Practices section of this document, it is important to specify column and row headings so data is meaningful to screen reader users.
+
+The `d2l-table-col-sort-button` component was built with screen reader users at front-of-mind. Important features of note include:
+- A `source-type` attribute which lets users specify the type of data in the column in order to provide a more descriptive title to both screen reader and sighted users
+- Best effort to announce changes (e.g., change in sort order and/or sort state) to screen reader users
+- Usage of our accessible menu component for the multi-faceted sort case
