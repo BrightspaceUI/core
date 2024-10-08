@@ -134,7 +134,7 @@ For long tables, the header row can be made to "stick" in place as the user scro
 
 When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction. This is meant to be used within a `d2l-table-wrapper`.
 
-Note that the example below hides the implementation, and also that the code is handling the `desc` attribute so updating it in the Properties table will not have an impact on the live demo. See the code in Multi-Faceted Sort Button for a more detailed implementation example.
+Note that the example below hides the implementation, and also that the code is handling the `desc` attribute so updating it in the Properties table will not have an impact on the live demo. See the code in [Multi-Faceted Sort Button](#multi-faceted-sort-button) for a more detailed implementation example.
 
 <!-- docs: demo properties name:d2l-table-col-sort-button sandboxTitle:'Table Sortable Column Buttons' -->
 ```html
