@@ -224,6 +224,23 @@ The simplified property usage looks like this:
 </d2l-table-wrapper>
 ```
 
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description | Default Value |
+|---|---|---|---|
+| `desc` | boolean | Whether sort direction is descending | false |
+| `nosort` | boolean | Column is not currently sorted. Hides the ascending/descending sort icon. | false |
+| `position` | string | Position of the button content. Accepted values are 'start', 'center', and 'end'. | 'start' |
+| `source-type` | string | The type of data in the column. Used to set the title. Accepted values are 'words', 'numbers', and 'dates'. This is only applicable to cases that are not using the multi-faceted dropdown. | 'unknown' |
+
+### Slots
+| Name | Description |
+|---|---|
+| `Default` | Column header text |
+| `items` | Multi-facted sort items. Generally assigned to the `slot` attribute on a nested `d2l-table-col-sort-button-item`. |
+<!-- docs: end hidden content -->
+
 ### Slotted Item [d2l-table-col-sort-button-item]
 
 This is a radio menu item to be used within the `d2l-table-col-sort-button` component for a [multi-faceted sort](#multi-faceted-sort-button).
