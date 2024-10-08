@@ -56,7 +56,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `min-fraction-digits` | Number, default: `0` | Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits` |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
-| `unit-label` | String | Label for the unit which will not be visually rendered. Required if `unit` is used. |
+| `unit-label` | String | Label for the unit, which is only picked up by screenreaders. Required if `unit` is used. |
 | `value` | Number | Value of the input. |
 
 ### Events
@@ -138,6 +138,7 @@ numberInput.addEventListener('change', (e) => {
 
 ## Accessibility
 - While `unit-label` is not mandatory by default, using the `unit` property makes it a required property
+	- This helps provide screenreaders more context and lets you use short forms for `unit` without risking it being unclear to screenreaders (e.g. `unit` is 'lbs', but `unit-label` is 'in pounds' )
 - Despite being a lighter colour than the input text, the `unit` text still meets the [WCAG Minimum Contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) requirement of 4.5:1
 - Neither input component uses the `type="number"` to denote their numerical nature, so the `label` must make it clear that numerical input is expected
 	- This is because `type="number"` does not take into consideration localizations, which can cause problems for languages that use a comma as the decimal place instead of a period
