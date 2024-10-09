@@ -45,7 +45,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				type: String
 			},
 			/**
-			 * ACCESSIBILITY: The type of data in the column. Used to set the title.
+			 * ACCESSIBILITY: The type of data in the column (e.g., 'words'). Used to set the title.
 			 *  @type {'words'|'numbers'|'dates'|'unknown'}
 			 */
 			sourceType: {

@@ -134,7 +134,9 @@ For long tables, the header row can be made to "stick" in place as the user scro
 
 When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction. This is meant to be used within a `d2l-table-wrapper`.
 
-Note that the example below hides the implementation, and also that the code is handling the `desc` attribute so updating it in the Properties table will not have an impact on the live demo. See the code in [Multi-Faceted Sort Button](#multi-faceted-sort-button) for a more detailed implementation example.
+For the example below:
+- The implementation is hidden. See the code in [Multi-Faceted Sort Button](#multi-faceted-sort-button) for a more detailed implementation example.
+- The code itself is handling the `desc` attribute so updating it in the Properties table will not have an impact on the live demo.
 
 <!-- docs: demo properties name:d2l-table-col-sort-button sandboxTitle:'Table Sortable Column Buttons' -->
 ```html
@@ -271,7 +273,7 @@ When a single column is responsible for sorting in multiple facets (e.g., first 
 
 **WARNING**: Do NOT use this if the table is using `sticky-headers` AND multiple header rows. It is not currently supported. In that siuation, continue to put multiple `d2l-table-col-sort-button` components in the same column.
 
-<!-- docs: demo code display:block -->
+<!-- docs: demo code display:block sandboxName:table-multi-faceted-sort-button sandboxTitle:'Table Multi-Faceted Sort Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/table-col-sort-button.js';
@@ -526,9 +528,9 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
 
 ## Accessibility
 
-The `d2l-table-wrapper` simply wraps an HTML table in order to add styles and functionality to that table. As such, it is important to use proper table markup. Recommendations are available in [this tutorial](https://www.w3.org/WAI/tutorials/tables/). As mentioned in the Best Practices section of this document, it is important to specify column and row headings so data is meaningful to screen reader users.
+The `d2l-table-wrapper` simply wraps an HTML table in order to add styles and functionality to that table. As such, it is important to use proper table markup. Recommendations are available in [this tutorial](https://www.w3.org/WAI/tutorials/tables/). Make sure to include column and row headings so data is meaningful to screen reader users.
 
-The `d2l-table-col-sort-button` component was built with screen reader users at front-of-mind. Important features of note include:
-- A `source-type` attribute which lets users specify the type of data in the column in order to provide a more descriptive title to both screen reader and sighted users
-- Best effort to announce changes (e.g., change in sort order and/or sort state) to screen reader users
+The `d2l-table-col-sort-button` component was built with screen reader users at front-of-mind. Important features include:
+- A `source-type` attribute which lets users specify the type of data in the column (e.g., 'words', 'dates', or 'numbers') in order to provide a more descriptive title to both screen reader and sighted users
+- Changes to sort order and/or sort state are reflected in attributes such that they can be communicated to screen reader users if supported by the screen reader, which they are in most scenarios
 - Usage of our accessible menu component for the multi-faceted sort case
