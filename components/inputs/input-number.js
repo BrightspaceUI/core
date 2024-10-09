@@ -142,10 +142,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
-			 * @ignore
-			 */
-			placeholder: { type: String },
-			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -364,7 +360,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				?label-hidden="${this.labelHidden || this.labelledBy}"
 				.labelRequired="${false}"
 				name="${ifDefined(this.name)}"
-				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				style="${ifDefined(hasRelativeInputWidth ? styleMap(inputWidthStyle) : undefined)}"
