@@ -32,6 +32,7 @@ class ListDemoNested extends LitElement {
 			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
 			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
 			disableListGrid: { type: Boolean, attribute: 'disable-list-grid' },
+			linear: { type: Boolean },
 			_items: { state: true },
 			_loadedItems: { state: true },
 			_remainingItemCount: { state: true },
@@ -201,6 +202,7 @@ class ListDemoNested extends LitElement {
 		const hasChildren = item?.items?.length > 0;
 		return html`
 			<d2l-list-item
+				?linear="${this.linear}"
 				action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
 				?draggable="${this.isDraggable}"
 				drag-handle-text="${item.primaryText}"

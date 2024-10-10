@@ -70,6 +70,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
+			 * Whether to display the list item on a single line
+			 * @type {boolean}
+			 */
+			linear: { type: Boolean, attribute: 'linear' },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
@@ -138,6 +143,24 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			[slot="control-container"]::after {
 				bottom: -1px;
+			}
+
+			:host([linear]) d2l-list-item-generic-layout > [slot="content"] {
+				height: 2.6rem;
+			}
+
+			:host([linear]) d2l-list-item-generic-layout > [slot] {
+				align-content: center;
+				padding-block: 0;
+			}
+
+			:host([linear]) [slot="content"] {
+				align-items: center;
+			}
+
+			:host([linear]) [slot="content"] ::slotted([slot="illustration"]) {
+				max-height: calc(100% - 0.5rem);
+				overflow: hidden;
 			}
 
 			:host(:first-of-type[_separators="between"]) [slot="control-container"]::before,
@@ -466,6 +489,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	willUpdate(changedProperties) {
 		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
 			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
+		if (changedProperties.has('linear')) {
+			const content = this.querySelector('d2l-list-item-content');
+			if (content) content.linear = this.linear;
 		}
 	}
 

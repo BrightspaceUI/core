@@ -10,6 +10,15 @@ import { css, html, LitElement } from 'lit';
  */
 class ListItemContent extends LitElement {
 
+	static get properties() {
+		return {
+			/**
+			 * @ignore
+			 */
+			linear: { type: Boolean, reflect: true }
+		};
+	}
+
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
 			:host {
@@ -18,6 +27,13 @@ class ListItemContent extends LitElement {
 
 			.d2l-list-item-content-text {
 				margin: 0;
+			}
+
+			:host([linear]) .d2l-list-item-content-text > div,
+			:host([linear]) .d2l-list-item-content-text ::slotted(*) {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 
 			.d2l-list-item-content-text > div {
@@ -47,14 +63,17 @@ class ListItemContent extends LitElement {
 			.d2l-list-item-content-text-supporting-info ::slotted(*) {
 				margin-top: 0.15rem;
 			}
+
 		`];
 	}
 
 	render() {
 		return html`
 			<div class="d2l-list-item-content-text d2l-body-compact"><div><slot></slot></div></div>
+			${this.linear ? null : html`
 			<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="secondary"></slot></div>
 			<div class="d2l-list-item-content-text-supporting-info d2l-body-small"><slot name="supporting-info"></slot></div>
+			`}
 		`;
 	}
 
