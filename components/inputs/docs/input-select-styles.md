@@ -48,7 +48,7 @@ Toggling progressive disclosure is OK
 
 ## Applying styles to native select elements
 
-Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
+Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class. The styles account for several CSS pseudo-classes, including `disabled`, `focus` and `hover`.
 
 <!-- docs: demo code name:d2l-test-input-select -->
 ```html
@@ -82,125 +82,6 @@ Native `<select>` elements can be styled by importing `input-select-styles.js` i
 ## Building a Custom Select Component
 
 In addition to the `d2l-input-select` styling and [native attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attributes), there are a few suggested Mixins and properties that we recommend using when creating a custom `Select` component.
-
-### SkeletonMixin
-
-Using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) can help convey to users that the page, or at least a section of it, has not finished loading yet.
-
-<!-- docs: demo name:d2l-test-input-select -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-  import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-
-  class TestInputSelect extends SkeletonMixin(LitElement) {
-
-  static get styles() {
-    return [ super.styles, selectStyles ];
-  }
-
-  render() {
-    return html`
-      <div class="d2l-skeletize">
-        <select
-          aria-label="Choose a dinosaur:"
-          class="d2l-input-select">
-          <option>Tyrannosaurus</option>
-          <option>Velociraptor</option>
-          <option>Deinonychus</option>
-        </select>
-      </div>
-    `;
-  }
-
-  }
-  customElements.define('d2l-test-input-select', TestInputSelect);
-</script>
-<d2l-test-input-select></d2l-test-input-select>
-<d2l-test-input-select skeleton></d2l-test-input-select>
-```
-
-### RtlMixin
-
-The [`RtlMixin`](https://github.com/BrightspaceUI/core/tree/main/mixins/rtl) is ideal for supporting right-to-left languages.
-
-<!-- docs: demo name:d2l-test-input-select -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
-  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-
-  class TestInputSelect extends RtlMixin(LitElement) {
-
-  static get styles() {
-    return [ selectStyles ];
-  }
-
-  render() {
-    return html`
-      <select
-        aria-label="Choose a dinosaur:"
-        class="d2l-input-select">
-        <option>Tyrannosaurus</option>
-        <option>Velociraptor</option>
-        <option>Deinonychus</option>
-      </select>
-    `;
-  }
-
-  }
-  customElements.define('d2l-test-input-select', TestInputSelect);
-</script>
-<d2l-test-input-select dir="ltr"></d2l-test-input-select>
-<d2l-test-input-select dir="rtl"></d2l-test-input-select>
-```
-
-### Overflow
-
-Having a property related overflow can allow you to set a `max-width` on the select element in order to show overflow styles, which is ideal in situations when there are options that are very long.
-
-<!-- docs: demo name:d2l-test-input-select -->
-```html
-<script type="module">
-  import { css, html, LitElement } from 'lit';
-  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-
-  class TestInputSelect extends LitElement {
-
-    static get properties() {
-    return {
-      overflow: { type: Boolean }
-    };
-  }
-
-  static get styles() {
-    return [ selectStyles, css`
-      :host([overflow]) select {
-        max-width: 130px;
-      }
-    `];
-  }
-
-  render() {
-    return html`
-      <select
-        aria-label="Choose a dinosaur:"
-        class="d2l-input-select">
-        <option>Tyrannosaurus</option>
-        <option>Velociraptor</option>
-        <option>Deinonychus</option>
-      </select>
-    `;
-  }
-
-  }
-  customElements.define('d2l-test-input-select', TestInputSelect);
-</script>
-<d2l-test-input-select></d2l-test-input-select>
-<d2l-test-input-select overflow></d2l-test-input-select>
-```
 
 ### Invalid
 
@@ -241,8 +122,79 @@ Through the use of the [`aria-invalid`](https://developer.mozilla.org/en-US/docs
   }
   customElements.define('d2l-test-input-select', TestInputSelect);
 </script>
-<d2l-test-input-select></d2l-test-input-select>
 <d2l-test-input-select invalid></d2l-test-input-select>
+```
+
+### RtlMixin
+
+The [`RtlMixin`](https://github.com/BrightspaceUI/core/tree/main/mixins/rtl) is ideal for supporting right-to-left languages.
+
+<!-- docs: demo name:d2l-test-input-select -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit';
+  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
+  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+
+  class TestInputSelect extends RtlMixin(LitElement) {
+
+  static get styles() {
+    return [ selectStyles ];
+  }
+
+  render() {
+    return html`
+      <select
+        aria-label="Choose a dinosaur:"
+        class="d2l-input-select">
+        <option>Tyrannosaurus</option>
+        <option>Velociraptor</option>
+        <option>Deinonychus</option>
+      </select>
+    `;
+  }
+
+  }
+  customElements.define('d2l-test-input-select', TestInputSelect);
+</script>
+<d2l-test-input-select dir="rtl"></d2l-test-input-select>
+```
+
+### SkeletonMixin
+
+Using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) can help convey to users that the page, or at least a section of it, has not finished loading yet.
+
+<!-- docs: demo name:d2l-test-input-select -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit';
+  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+  import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+
+  class TestInputSelect extends SkeletonMixin(LitElement) {
+
+  static get styles() {
+    return [ super.styles, selectStyles ];
+  }
+
+  render() {
+    return html`
+      <div class="d2l-skeletize">
+        <select
+          aria-label="Choose a dinosaur:"
+          class="d2l-input-select">
+          <option>Tyrannosaurus</option>
+          <option>Velociraptor</option>
+          <option>Deinonychus</option>
+        </select>
+      </div>
+    `;
+  }
+
+  }
+  customElements.define('d2l-test-input-select', TestInputSelect);
+</script>
+<d2l-test-input-select skeleton></d2l-test-input-select>
 ```
 
 ## Accessibility
