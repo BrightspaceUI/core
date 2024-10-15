@@ -124,5 +124,5 @@ All `meter` components have a `foreground-light` style that ensures accessibl
 * `text` (String): Context information about what the meter is about. Adding one of the following between `{}` (e.g., `{x/y}`) causes replacements:
 	* `%` in the string will be replaced with percentage value
 	* `x/y` in the string will be replaced with fraction with the proper language support
-* `label-hidden` (Boolean): Hides the text visually
+* `text-hidden` (Boolean): Hides the text visually
 <!-- docs: end hidden content -->

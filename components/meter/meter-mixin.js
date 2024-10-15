@@ -9,7 +9,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 * Hides the text visually
 			 * @type {boolean}
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			textHidden: { type: Boolean, attribute: 'text-hidden' },
 			/**
 			 * Max number of units that are being measured by this meter.
 			 * Valid values: A number > 0
@@ -39,6 +39,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		super();
 		this.max = 100;
 		this.percent = false;
+		this.textHidden = false;
 		this.value = 0;
 
 		this._namespace = 'components.meter-mixin';

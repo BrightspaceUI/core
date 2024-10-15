@@ -24,7 +24,7 @@ describe('d2l-meter-circle', () => {
 	});
 
 	it('text hidden', async() => {
-		const elem = await fixture(html`<d2l-meter-circle value="10" max="10" text="Completed" label-hidden></d2l-meter-circle>`);
+		const elem = await fixture(html`<d2l-meter-circle value="10" max="10" text="Completed" text-hidden></d2l-meter-circle>`);
 		await expect(elem).to.be.accessible();
 	});
 

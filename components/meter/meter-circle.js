@@ -41,7 +41,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const primaryAria = this._primary(this.value, this.max, true) || '';
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const secondary = this._secondary(this.value, this.max, this.text);
-		const secondaryTextElement = this.text && !this.labelHidden
+		const secondaryTextElement = this.text && !this.textHidden
 			? html`<div class="d2l-body-small d2l-meter-text">${secondary}</div>`
 			: nothing;
 		const textClasses = {

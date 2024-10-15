@@ -22,7 +22,7 @@ describe('meter-circle', () => {
 		{ name: 'max-zero-with-value', template: html`<d2l-meter-circle value="10" max="0"></d2l-meter-circle>` },
 		{ name: '100-percent', template: html`<d2l-meter-circle value="10" max="10" percent></d2l-meter-circle>` },
 		{ name: 'text', template: html`<d2l-meter-circle value="10" max="10" text="Completed"></d2l-meter-circle>` },
-		{ name: 'text-label-hidden', template: html`<d2l-meter-circle value="10" max="10" text="Completed" label-hidden></d2l-meter-circle>` },
+		{ name: 'text-text-hidden', template: html`<d2l-meter-circle value="10" max="10" text="Completed" text-hidden></d2l-meter-circle>` },
 		{ name: 'foreground-light', wrapped: true, template: html`
 			<div style="background-color: var(--d2l-color-celestine); padding: 1rem;">
 				<d2l-meter-circle value="16" max="47" foreground-light></d2l-meter-circle>
