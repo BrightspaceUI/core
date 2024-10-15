@@ -73,7 +73,6 @@ npm install @brightspace-ui/core
   * [LabelledMixin](mixins/labelled/): label custom elements by referencing elements across DOM scopes
   * [LocalizeMixin](mixins/localize/): localize text in your components
   * [ProviderMixin](mixins/provider/): provide and consume data across elements in a DI-like fashion
-  * [RtlMixin](mixins/rtl/): enable components to define RTL styles
   * [SkeletonMixin](components/skeleton/): make components skeleton-aware
   * [VisibleOnAncestorMixin](mixins/visible-on-ancestor/): display element on-hover of an ancestor
 * Templates
