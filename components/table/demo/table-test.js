@@ -104,7 +104,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						${this.multiLine ? html`
 							<tr>
 								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-								${this._renderDoubleSortButton('Location')}
+								${this._renderDoubleSortButton('City', 'Country')}
 								<th scope="col" colspan="${columns.length}" sticky>
 									Metrics
 								</th>
@@ -116,7 +116,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 						` : html`
 							<tr>
 								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-								${this._renderDoubleSortButton('Location')}
+								${this._renderDoubleSortButton('City', 'Country')}
 								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 							</tr>
 						`}
@@ -195,18 +195,17 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		});
 	}
 
-	_renderDoubleSortButton(name) {
-		const noSort = this._sortField?.toLowerCase() !== 'city' && this._sortField?.toLowerCase() !== 'country';
+	_renderDoubleSortButton(item1, item2) {
 		return html`
-			<th rowspan="${this.multiLine ? 2 : 1}" scope="col">
+			<th scope="col">
 				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
-					?nosort="${noSort}">${name}
-					<d2l-table-col-sort-button-item slot="items" text="City, A to Z" data-field="city" @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="1"></d2l-table-col-sort-button-item>
-					<d2l-table-col-sort-button-item slot="items" text="City, Z to A" data-field="city" data-desc @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="2"></d2l-table-col-sort-button-item>
-					<d2l-table-col-sort-button-item slot="items" text="Country, A to Z" data-field="country" @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="3"></d2l-table-col-sort-button-item>
-					<d2l-table-col-sort-button-item slot="items" text="Country, Z to A" data-field="country" data-desc @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="4"></d2l-table-col-sort-button-item>
-				</d2l-table-col-sort-button>
+					?nosort="${this._sortField !== item1.toLowerCase()}">${item1}</d2l-table-col-sort-button>
+				<d2l-table-col-sort-button
+					@click="${this._handleSort}"
+					?desc="${this._sortDesc}"
+					?nosort="${this._sortField !== item2.toLowerCase()}">${item2}</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
