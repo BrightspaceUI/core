@@ -54,7 +54,7 @@ The styles support the pseudo-classes `disabled`, `focus`, and `hover`, as well 
 
 When applying styles to the native element, we also recommend using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) to help convey to users that the page, or at least a section of it, has not finished loading yet.
 
-<!-- docs: demo code name:d2l-test-input-select -->
+<!-- docs: demo code -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -98,22 +98,15 @@ Use the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibil
 
   class TestInputSelect extends LitElement {
 
-    static get properties() {
-    return {
-      invalid: { type: Boolean }
-    };
-  }
-
   static get styles() {
     return [ selectStyles ];
   }
 
   render() {
-    const invalid = this.invalid ? 'true' : 'false';
     return html`
       <select
         aria-label="Choose a dinosaur:"
-        aria-invalid="${invalid}"
+        aria-invalid="true"
         class="d2l-input-select">
         <option>Tyrannosaurus</option>
         <option>Velociraptor</option>
@@ -125,7 +118,7 @@ Use the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibil
   }
   customElements.define('d2l-test-input-select', TestInputSelect);
 </script>
-<d2l-test-input-select invalid></d2l-test-input-select>
+<d2l-test-input-select></d2l-test-input-select>
 ```
 
 ## Accessibility
