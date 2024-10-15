@@ -6,11 +6,6 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 	static get properties() {
 		return {
 			/**
-			 * Hides the text visually
-			 * @type {boolean}
-			 */
-			textHidden: { type: Boolean, attribute: 'text-hidden' },
-			/**
 			 * Max number of units that are being measured by this meter.
 			 * Valid values: A number > 0
 			 * @type {number}
@@ -26,6 +21,11 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 * @type {string}
 			 */
 			text: { type: String },
+			/**
+			 * Hides the text visually
+			 * @type {boolean}
+			 */
+			textHidden: { type: Boolean, attribute: 'text-hidden' },
 			/**
 			 * REQUIRED: Current number of completed units.
 			 * Valid values: A number between 0 and max
