@@ -52,26 +52,31 @@ Native `<select>` elements can be styled by importing `input-select-styles.js` i
 
 The styles support the pseudo-classes `disabled`, `focus`, and `hover`, as well as the `aria-invalid` attribute.
 
+When applying styles to the native element, we also recommend using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) to help convey to users that the page, or at least a section of it, has not finished loading yet.
+
 <!-- docs: demo code name:d2l-test-input-select -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
   import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+  import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
-  class TestInputSelect extends LitElement {
+  class TestInputSelect extends SkeletonMixin(LitElement) {
   static get styles() {
-    return [ selectStyles ];
+    return [ super.styles, selectStyles ];
   }
 
   render() {
     return html`
-      <select
-        aria-label="Choose a dinosaur:"
-        class="d2l-input-select">
-        <option>Tyrannosaurus</option>
-        <option>Velociraptor</option>
-        <option>Deinonychus</option>
-      </select>
+      <div class="d2l-skeletize">
+        <select
+          aria-label="Choose a dinosaur:"
+          class="d2l-input-select">
+          <option>Tyrannosaurus</option>
+          <option>Velociraptor</option>
+          <option>Deinonychus</option>
+        </select>
+      </div>
     `;
   }
 
@@ -81,13 +86,9 @@ The styles support the pseudo-classes `disabled`, `focus`, and `hover`, as well 
 <d2l-test-input-select></d2l-test-input-select>
 ```
 
-## Building a Custom Select Component
-
-In addition to the `d2l-input-select` styling and [native attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select#attributes), there are a few suggested Mixins and properties that we recommend using when creating a custom `Select` component.
-
 ### Invalid
 
-Through the use of the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-invalid) attribute, you are able to mark the input as invalid, which shows up both in the styling along with being picked up by screenreaders.
+Use the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-invalid) attribute to support screenreader users and apply our consistent error styles.
 
 <!-- docs: demo -->
 ```html
@@ -127,47 +128,10 @@ Through the use of the [`aria-invalid`](https://developer.mozilla.org/en-US/docs
 <d2l-test-input-select invalid></d2l-test-input-select>
 ```
 
-### SkeletonMixin
-
-Using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) can help convey to users that the page, or at least a section of it, has not finished loading yet.
-
-<!-- docs: demo -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-  import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-
-  class TestInputSelect extends SkeletonMixin(LitElement) {
-
-  static get styles() {
-    return [ super.styles, selectStyles ];
-  }
-
-  render() {
-    return html`
-      <div class="d2l-skeletize">
-        <select
-          aria-label="Choose a dinosaur:"
-          class="d2l-input-select">
-          <option>Tyrannosaurus</option>
-          <option>Velociraptor</option>
-          <option>Deinonychus</option>
-        </select>
-      </div>
-    `;
-  }
-
-  }
-  customElements.define('d2l-test-input-select', TestInputSelect);
-</script>
-<d2l-test-input-select skeleton></d2l-test-input-select>
-```
-
 ## Accessibility
 
 - Due to merely being a CSS class, the accessibility provided by `selectStyles` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
 - There are several things that can be done to make sure your `select` component is accessible, including:
   - Following the W3C [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) pattern
   - Using either the `aria-label` or `aria-labelledby` to appropriately assign a label to your component
-  - Using `label` for `optgroup` if you choose to use that element within, so that it can be read out to screenreaders
+  - Using `label` for `optgroup` if you choose to use that element within the select element, so that it can be read out to screenreaders
