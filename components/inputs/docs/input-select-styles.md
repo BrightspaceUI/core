@@ -48,7 +48,9 @@ Toggling progressive disclosure is OK
 
 ## Applying styles to native select elements
 
-Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class. The styles account for several CSS pseudo-classes, including `disabled`, `focus` and `hover`.
+Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
+
+The styles support the pseudo-classes `disabled`, `focus`, and `hover`, as well as the `aria-invalid` attribute.
 
 <!-- docs: demo code name:d2l-test-input-select -->
 ```html
@@ -87,7 +89,7 @@ In addition to the `d2l-input-select` styling and [native attributes](https://de
 
 Through the use of the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-invalid) attribute, you are able to mark the input as invalid, which shows up both in the styling along with being picked up by screenreaders.
 
-<!-- docs: demo name:d2l-test-input-select -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -125,46 +127,11 @@ Through the use of the [`aria-invalid`](https://developer.mozilla.org/en-US/docs
 <d2l-test-input-select invalid></d2l-test-input-select>
 ```
 
-### RtlMixin
-
-The [`RtlMixin`](https://github.com/BrightspaceUI/core/tree/main/mixins/rtl) is ideal for supporting right-to-left languages.
-
-<!-- docs: demo name:d2l-test-input-select -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
-  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-
-  class TestInputSelect extends RtlMixin(LitElement) {
-
-  static get styles() {
-    return [ selectStyles ];
-  }
-
-  render() {
-    return html`
-      <select
-        aria-label="Choose a dinosaur:"
-        class="d2l-input-select">
-        <option>Tyrannosaurus</option>
-        <option>Velociraptor</option>
-        <option>Deinonychus</option>
-      </select>
-    `;
-  }
-
-  }
-  customElements.define('d2l-test-input-select', TestInputSelect);
-</script>
-<d2l-test-input-select dir="rtl"></d2l-test-input-select>
-```
-
 ### SkeletonMixin
 
 Using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) can help convey to users that the page, or at least a section of it, has not finished loading yet.
 
-<!-- docs: demo name:d2l-test-input-select -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit';
@@ -199,8 +166,8 @@ Using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/comp
 
 ## Accessibility
 
-- Due to merely being a CSS class, the accessibility provided by `d2l-input-select` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
+- Due to merely being a CSS class, the accessibility provided by `selectStyles` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
 - There are several things that can be done to make sure your `select` component is accessible, including:
   - Following the W3C [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) pattern
   - Using either the `aria-label` or `aria-labelledby` to appropriately assign a label to your component
-  - Also using `label` for `optgroup` if you choose to use that element within
+  - Using `label` for `optgroup` if you choose to use that element within, so that it can be read out to screenreaders
