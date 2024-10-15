@@ -3,6 +3,7 @@ import { bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
+import { meterStyles } from './meter-styles.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
@@ -10,48 +11,20 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  */
 class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 	static get styles() {
-		return [ bodySmallStyles, bodyStandardStyles, css`
+		return [ bodySmallStyles, bodyStandardStyles, meterStyles, css`
 		:host {
 			display: inline-block;
 			width: 2.4rem;
 		}
-		.d2l-meter-circle {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-		}
-		.d2l-meter-circle-full-bar,
-		.d2l-meter-circle-progress-bar {
-			fill: none;
-			stroke-linecap: round;
+		.d2l-meter-full-bar,
+		.d2l-meter-progress-bar {
 			stroke-width: 6;
 		}
-		.d2l-meter-circle-full-bar {
+		.d2l-meter-full-bar {
 			fill: var(--d2l-meter-circle-fill, none);
-			stroke: var(--d2l-color-gypsum);
 		}
-		:host([foreground-light]) .d2l-meter-circle-full-bar {
-			stroke: rgba(255, 255, 255, 0.5);
-		}
-		.d2l-meter-circle-progress-bar {
-			stroke: var(--d2l-color-celestine);
-		}
-		:host([foreground-light]) .d2l-meter-circle-progress-bar {
-			stroke: white;
-		}
-		.d2l-meter-circle-text {
-			color: var(--d2l-color-ferrite);
-			fill: var(--d2l-color-ferrite);
+		.d2l-meter-text {
 			font-size: 0.55rem;
-			line-height: 0.8rem;
-			text-align: center;
-		}
-		:host([foreground-light]) .d2l-meter-circle-text {
-			color: white;
-			fill: white;
-		}
-		:host([dir="rtl"]) .d2l-meter-circle-text-ltr {
-			direction: ltr;
 		}
 	` ];
 	}
@@ -69,20 +42,20 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const secondaryTextElement = this.text && !this.labelHidden
-			? html`<div class="d2l-body-small d2l-meter-circle-text">${secondary}</div>`
+			? html`<div class="d2l-body-small d2l-meter-text">${secondary}</div>`
 			: nothing;
 		const textClasses = {
-			'd2l-meter-circle-text-ltr': !this.percent,
+			'd2l-meter-text-ltr': !this.percent,
 			'd2l-body-standard': true,
-			'd2l-meter-circle-text': true
+			'd2l-meter-text': true
 		};
 
 		return html`
-			<div class="d2l-meter-circle" aria-label="${this._ariaLabel(primaryAria, secondaryAria)}" role="img">
+			<div class="d2l-meter-container" aria-label="${this._ariaLabel(primaryAria, secondaryAria)}" role="img">
 				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
-					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
+					<circle class="d2l-meter-full-bar" cx="24" cy="24" r="21"></circle>
 					<circle
-						class="d2l-meter-circle-progress-bar"
+						class="d2l-meter-progress-bar"
 						cx="24" cy="24" r="21"
 						stroke-dasharray="${progressFill} ${space}"
 						stroke-dashoffset="${dashOffset}"
