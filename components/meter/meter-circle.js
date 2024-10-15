@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
-import { bodyStandardStyles } from '../typography/styles.js';
+import { bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -10,10 +10,15 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  */
 class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 	static get styles() {
-		return [ bodyStandardStyles, css`
+		return [ bodySmallStyles, bodyStandardStyles, css`
 		:host {
 			display: inline-block;
 			width: 2.4rem;
+		}
+		.d2l-meter-circle {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
 		}
 		.d2l-meter-circle-full-bar,
 		.d2l-meter-circle-progress-bar {
@@ -35,10 +40,14 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			stroke: white;
 		}
 		.d2l-meter-circle-text {
+			color: var(--d2l-color-ferrite);
 			fill: var(--d2l-color-ferrite);
 			font-size: 0.55rem;
+			line-height: 0.8rem;
+			text-align: center;
 		}
 		:host([foreground-light]) .d2l-meter-circle-text {
+			color: white;
 			fill: white;
 		}
 		:host([dir="rtl"]) .d2l-meter-circle-text-ltr {
@@ -58,6 +67,10 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const primary = this._primary(this.value, this.max) || '';
 		const primaryAria = this._primary(this.value, this.max, true) || '';
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
+		const secondary = this._secondary(this.value, this.max, this.text);
+		const secondaryTextElement = this.text && !this.labelHidden
+			? html`<div class="d2l-body-small d2l-meter-circle-text">${secondary}</div>`
+			: nothing;
 		const textClasses = {
 			'd2l-meter-circle-text-ltr': !this.percent,
 			'd2l-body-standard': true,
@@ -65,19 +78,22 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		};
 
 		return html`
-			<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img" aria-label="${this._ariaLabel(primaryAria, secondaryAria)}">
-				<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
-				<circle
-					class="d2l-meter-circle-progress-bar"
-					cx="24" cy="24" r="21"
-					stroke-dasharray="${progressFill} ${space}"
-					stroke-dashoffset="${dashOffset}"
-					visibility="${visibility}"></circle>
+			<div class="d2l-meter-circle" aria-label="${this._ariaLabel(primaryAria, secondaryAria)}" role="img">
+				<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
+					<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"></circle>
+					<circle
+						class="d2l-meter-circle-progress-bar"
+						cx="24" cy="24" r="21"
+						stroke-dasharray="${progressFill} ${space}"
+						stroke-dashoffset="${dashOffset}"
+						visibility="${visibility}"></circle>
 
-				<text class=${classMap(textClasses)} x="24" y="28" text-anchor="middle">
-					${primary}
-				</text>
-			</svg>
+					<text class=${classMap(textClasses)} x="24" y="28" text-anchor="middle">
+						${primary}
+					</text>
+				</svg>
+				${secondaryTextElement}
+			</div>
 		`;
 	}
 }

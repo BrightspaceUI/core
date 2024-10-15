@@ -18,4 +18,9 @@ describe('d2l-meter-radial', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('completed', async() => {
+		const elem = await fixture(html`<d2l-meter-radial value="10" max="10" text="Completed"></d2l-meter-radial>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });
