@@ -21,7 +21,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: The text used for the tab, as well as labelling the panel
+			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel
 			 * @type {string}
 			 */
 			text: { type: String }

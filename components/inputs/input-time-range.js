@@ -50,7 +50,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			 */
 			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
 			/**
-			 * Hides the start and end labels visually
+			 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
 			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
@@ -60,7 +60,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end time input. Defaults to localized "End Time".
+			 * ACCESSIBILITY: Label for the end time input. Defaults to localized "End Time".
 			 * @type {string}
 			 * @default "End Time"
 			 */
@@ -86,12 +86,12 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			 */
 			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the input fieldset that wraps the time inputs
+			 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the time inputs
 			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the fieldset label visually
+			 * Hides the fieldset label visually.  Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
@@ -106,7 +106,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start time input. Defaults to localized "Start Time".
+			 * ACCESSIBILITY: Label for the start time input. Defaults to localized "Start Time".
 			 * @type {string}
 			 * @default "Start Time"
 			 */

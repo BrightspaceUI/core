@@ -1,13 +1,13 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
 import { tryGet } from '@brightspace-ui/lms-context-provider/client.js';
-import { until } from 'lit/directives/until.js';
 
 export const htmlBlockContentStyles = css`
 	.d2l-html-block-rendered {
@@ -142,7 +142,7 @@ const getRenderers = async() => {
 /**
  * A component for displaying user-authored HTML.
  */
-class HtmlBlock extends LitElement {
+class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -206,9 +206,6 @@ class HtmlBlock extends LitElement {
 		this._initialContextResolve = undefined;
 		this._initialContextPromise = new Promise(resolve => this._initialContextResolve = resolve);
 
-		this._renderersProcessedResolve = undefined;
-		this._renderersProcessedPromise = new Promise(resolve => this._renderersProcessedResolve = resolve);
-
 		const contextKeysPromise = getRenderers().then(renderers => renderers.reduce((keys, currentRenderer) => {
 			if (currentRenderer.contextKeys) currentRenderer.contextKeys.forEach(key => keys.push(key));
 			return keys;
@@ -234,34 +231,17 @@ class HtmlBlock extends LitElement {
 			'd2l-html-block-compact': this.compact
 		};
 
-		if (this._embedsFeatureEnabled()) {
-			return html`
-				<div class="${classMap(renderContainerClasses)}">
-					${!this.noDeferredRendering ? until(this._processEmbeds(), nothing) : nothing}
-				</div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		} else {
-			return html`
-				<div class="${classMap(renderContainerClasses)}"></div>
-				${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
-			`;
-		}
+		return html`
+			<div class="${classMap(renderContainerClasses)}"></div>
+			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
+		`;
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if ((changedProperties.has('html') || changedProperties.has('_context')) && this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
+		if (this.html !== undefined && this.html !== null && !this.noDeferredRendering) {
 			await this._updateRenderContainer();
 		}
-	}
-
-	async getLoadingComplete() {
-		return this._renderersProcessedPromise;
-	}
-
-	_embedsFeatureEnabled() {
-		return window.D2L?.LP?.Web?.UI?.Flags.Flag('shield-7574-enable-embed-rendering-framework', true);
 	}
 
 	async _handleSlotChange(e) {
@@ -296,7 +276,7 @@ class HtmlBlock extends LitElement {
 				loadingCompletePromises.push(renderer.getLoadingComplete());
 			}
 		}
-		Promise.all(loadingCompletePromises).then(() => this._renderersProcessedResolve());
+		Promise.all(loadingCompletePromises).then(this.resolveLoadingComplete);
 	}
 
 	async _renderInline(slot) {
@@ -307,15 +287,17 @@ class HtmlBlock extends LitElement {
 			.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'DIV'));
 
 		if (!noDeferredRenderingContainer) {
-			this._renderersProcessedResolve();
+			this.resolveLoadingComplete();
 			return;
 		}
 		await this._processRenderers(noDeferredRenderingContainer);
 	}
 
 	async _updateRenderContainer() {
-		const renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		if (!this._embedsFeatureEnabled()) renderContainer.innerHTML = this.html;
+		const renderContainer = this.shadowRoot?.querySelector('.d2l-html-block-rendered');
+		if (!renderContainer) return;
+		renderContainer.innerHTML = '';
+		renderContainer.append(await this._processEmbeds());
 		await this._processRenderers(renderContainer);
 	}
 

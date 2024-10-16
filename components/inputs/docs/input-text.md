@@ -28,22 +28,13 @@ Text inputs allow users to input, edit, and select text.
 * Make sure you include an obvious indication of what the field is for. Usually this means a label.
 * Design the length of the text input to give the user a scent of how long the expected data should be.
 * Ensure the label remains visible when a user focuses on the input using their mobile device. Often this means using a top-aligned label, but a left-aligned label with a very short text input can work also.
-* Placeholder text is inaccessible so only use it for decorative or supporting text.
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use placeholder text as the label.
-* Don’t use placeholder text if it is redundant (ie: “Click to start typing”)
-* Don’t use placeholder text to communicate the required format of the input (ie: “YY/MM/DD”). Use help or label text for this.
+* Don’t use placeholder text - support for this property is being removed. Find an alternative method of communicating text input instructions.
 * Don’t use different font sizes. Text should always be Compact.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
-
-## Accessibility
-
-Due to widespread popularity, users have a strong association that placeholder text in text inputs should appear “light gray” compared to active text colour. This has been confirmed in our own usability tests; any text that appears dark enough to pass WCAG AA colour contrast tests is also interpreted as “editable” by users.
-
-Therefore in text inputs, placeholder text is a light colour (Mica), which fails colour contrast. Because of this, placeholder text should be used sparingly, and never be used to communicate crucial information unless that information is also made available to screen readers via an equivalent experience (hidden label, etc). Text which is decorative or supplemental is okay, as is using a hidden label which provides the same information.
 
 ## Text Input [d2l-input-text]
 
@@ -90,7 +81,6 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `name` | String | Name of the input |
 | `novalidate` | Boolean | Disables the built-in validation |
 | `pattern` | String | Regular expression pattern to validate the value |
-| `placeholder` | String | Placeholder text |
 | `prevent-submit` | Boolean | Prevents pressing ENTER from submitting forms |
 | `readonly` | Boolean | Makes the input read-only |
 | `required` | Boolean | Indicates that a value is required |
@@ -207,7 +197,6 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 | `minlength` | Number | Imposes a lower character limit |
 | `no-border` | Boolean | Hides the border |
 | `no-padding` | Boolean | Removes left/right padding |
-| `placeholder` | String | Placeholder text |
 | `required` | Boolean | Indicates that a value is required |
 | `rows` | Number, default: 5 | Minimum number of rows. If `rows` and `max-rows` are equal then auto-grow will be disabled. |
 | `value` | String, default: `''` | Value of the `textarea` |

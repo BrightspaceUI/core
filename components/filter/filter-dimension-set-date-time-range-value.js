@@ -141,6 +141,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				@change="${this._handleDateChange}"
 				child-labels-hidden
 				end-value="${ifDefined(this.endValue ? getLocalDateTimeFromUTCDateTime(this.endValue) : undefined)}"
+				inclusive-date-range
 				label="${this.localize('components.filter-dimension-set-date-time-range-value.text')}"
 				label-hidden
 				prefer-fixed-positioning

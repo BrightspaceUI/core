@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getNextMonth,
@@ -23,6 +23,7 @@ describe('d2l-calendar', () => {
 	});
 
 	describe('events', () => {
+
 		it('dispatches event when date clicked', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="1"] button');
@@ -92,6 +93,38 @@ describe('d2l-calendar', () => {
 			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
+
+		it('dispatches d2l-calendar-view-change event when user changes to previous month', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
+			clickElem(el);
+			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
+			expect(detail.minValue).to.deep.equal(new Date(2015, 6, 26));
+			expect(detail.maxValue).to.deep.equal(new Date(2015, 8, 5));
+			expect(detail.month).to.equal(7);
+			expect(detail.year).to.equal(2015);
+		});
+
+		it('dispatches d2l-calendar-view-change event when user changes to next month', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[1];
+			clickElem(el);
+			const { detail } = await oneEvent(calendar, 'd2l-calendar-view-change');
+			expect(detail.minValue).to.deep.equal(new Date(2015, 8, 27));
+			expect(detail.maxValue).to.deep.equal(new Date(2015, 9, 31));
+			expect(detail.month).to.equal(9);
+			expect(detail.year).to.equal(2015);
+		});
+
+		it('does not dispatch d2l-calendar-view-change event initially', async() => {
+			let dispatched = false;
+			const calendar = document.createElement('d2l-calendar');
+			calendar.addEventListener('d2l-calendar-view-change', () => dispatched = true);
+			document.body.appendChild(calendar);
+			await calendar.updateComplete;
+			expect(dispatched).to.equal(false);
+		});
+
 	});
 
 	describe('focus date', () => {
@@ -327,6 +360,23 @@ describe('d2l-calendar', () => {
 				const date2 = null;
 				expect(checkIfDatesEqual(date1, date2)).to.be.false;
 			});
+		});
+
+		describe('getShownValue', () => {
+
+			it('gets the date of the year and month in view', async() => {
+				const calendar = await fixture(normalFixture);
+				expect(new Date(calendar.getShownValue())).to.deep.equal(new Date(2015, 8, 1));
+			});
+
+			it('gets the new date of the year and month in view after the view changes', async() => {
+				const calendar = await fixture(normalFixture);
+				const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
+				clickElem(el);
+				await oneEvent(calendar, 'd2l-calendar-view-change');
+				expect(new Date(calendar.getShownValue())).to.deep.equal(new Date(2015, 7, 1));
+			});
+
 		});
 
 		describe('getDatesInMonthArray', () => {

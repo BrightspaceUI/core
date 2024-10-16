@@ -61,13 +61,9 @@ export const radioStyles = css`
 		line-height: 1.2rem;
 		margin-bottom: 0.9rem;
 		overflow-wrap: anywhere;
-		padding-left: 1.7rem;
-		padding-right: 0;
+		padding-inline-end: 0;
+		padding-inline-start: 1.7rem;
 		vertical-align: middle;
-	}
-	:host([dir="rtl"]) .d2l-input-radio-label {
-		padding-left: 0;
-		padding-right: 1.7rem;
 	}
 	.d2l-input-radio-label-disabled {
 		opacity: 0.5;
@@ -82,12 +78,7 @@ export const radioStyles = css`
 	.d2l-input-radio-label > .d2l-input-radio,
 	.d2l-input-radio-label > input[type="radio"] {
 		flex: 0 0 auto;
-		margin-left: -1.7rem;
-		margin-right: 0.5rem;
-	}
-	:host([dir="rtl"]) .d2l-input-radio-label > .d2l-input-radio,
-	:host([dir="rtl"]) .d2l-input-radio-label > input[type="radio"] {
-		margin-left: 0.5rem;
-		margin-right: -1.7rem;
+		margin-inline-end: 0.5rem;
+		margin-inline-start: -1.7rem;
 	}
 `;

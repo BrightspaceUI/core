@@ -169,7 +169,7 @@ The `add-button` attribute inserts the `d2l-button-add` component above and belo
 
 Adding new items to the list is handled entirely by consumers by listening for the `d2l-list-add-button-click` event. A simple example scenario is below.
 
-<!-- docs: demo code display:block -->
+<!-- docs: demo code display:block sandboxTitle:'List - Add Button'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -275,7 +275,7 @@ If a `d2l-list-item` is selectable then it should have a `label` attribute that 
 
 ### Example
 
-<!-- docs: demo code display:block autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium sandboxTitle:'List - Selection'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -314,7 +314,7 @@ If a `d2l-list-item` is expandable then it should have a `label` attribute that 
 
 ### Expandable List Example
 
-<!-- docs: demo code display:block autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium sandboxTitle:'List - Expandable'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -383,7 +383,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 ### Example
 
-<!-- docs: demo code display:block autoSize:false size:medium -->
+<!-- docs: demo code display:block autoSize:false size:medium sandboxTitle:'List - Drag & Drop'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';

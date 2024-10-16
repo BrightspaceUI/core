@@ -7,7 +7,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
@@ -18,7 +20,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
  */
-class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
+class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -32,6 +34,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * @type {boolean}
 			 */
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
+			/**
+			 * REQUIRED: the title for the dialog
+			 */
+			titleText: { type: String, attribute: 'title-text', required: true },
 			/**
 			 * The preferred width (unit-less) for the dialog. Maximum 1170.
 			 */
@@ -197,6 +203,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
 		this.width = 1170;
+		this._titleId = getUniqueId();
 	}
 
 	get asyncContainerCustom() {
@@ -214,7 +221,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	render() {
-		this._width = Math.max(1170, this.width);
 		const heightOverride = {} ;
 		let topOverride = null;
 		if (this._ifrauContextInfo) {
@@ -251,7 +257,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
-		if (!this._titleId) this._titleId = getUniqueId();
+		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+
 		const inner = html`
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
@@ -260,7 +267,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
+				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}" tabindex="${ifDefined(contentTabIndex)}">${content}</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
@@ -284,6 +291,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			// while the dialog itself will not change size, we need to update overflow
 			this.resize();
 		}
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		this._width = Math.max(1170, this.width); // Always enforce limit
 	}
 
 	_abort() {

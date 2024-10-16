@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.29.0",
+  "version": "3.54.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -49,7 +49,7 @@
     "@brightspace-ui/testing": "^1",
     "@rollup/plugin-dynamic-import-vars": "^2",
     "@rollup/plugin-node-resolve": "^15",
-    "@rollup/plugin-replace": "^5",
+    "@rollup/plugin-replace": "^6",
     "@web/dev-server": "^0.4",
     "chalk": "^5",
     "eslint": "^8",
@@ -60,17 +60,15 @@
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
-    "sinon": "^18",
+    "sinon": "^19",
     "stylelint": "^16",
     "web-component-analyzer": "^2"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
     "@brightspace-ui/lms-context-provider": "^1",
-    "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
     "ifrau": "^0.41",
-    "intl-messageformat": "^10",
     "lit": "^3",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"

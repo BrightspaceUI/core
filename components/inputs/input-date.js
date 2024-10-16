@@ -39,17 +39,12 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * ADVANCED: Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
-			 * @type {string}
-			 */
-			emptyText: { type: String, attribute: 'empty-text' },
-			/**
 			 * @ignore
 			 * Optionally add a 'Now' button to be used in date-time pickers only.
 			 */
 			hasNow: { attribute: 'has-now', type: Boolean },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -149,7 +144,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		super();
 
 		this.disabled = false;
-		this.emptyText = '';
 		/** @ignore */
 		this.hasNow = false;
 		this.labelHidden = false;
@@ -176,6 +170,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	static get focusElementSelector() {
 		return 'd2l-input-text';
+	}
+
+	/** @ignore */
+	get inputTextWidth() {
+		return `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 	}
 
 	/** @ignore */
@@ -219,8 +218,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			this.updateComplete.then(() => tryUpdateHiddenContentWidth());
 		});
 
-		this._formattedValue = this.emptyText ? this.emptyText : '';
-
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
 		// resize observer needed to handle case where it's initially hidden
@@ -238,9 +235,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	render() {
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
-		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
 		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
@@ -280,7 +275,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			<div aria-hidden="true" class="d2l-input-date-hidden-text">
 				<div>${formattedWideDate}</div>
 				<div>${shortDateFormat}</div>
-				<div>${this.emptyText}</div>
 			</div>
 			${errorTooltip}
 			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open ?prefer-fixed-positioning="${this.preferFixedPositioning}">
@@ -291,7 +285,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener vdiff-target"
 					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
-					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -304,7 +297,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
-					style="${styleMap({ maxWidth: inputTextWidth })}"
+					style="${styleMap({ maxWidth: this.inputTextWidth })}"
 					.value="${this._formattedValue}">
 					${icon}
 					<slot slot="inline-help" name="inline-help"></slot>
@@ -339,6 +332,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		});
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('_hiddenContentWidth')) this.style.maxWidth = this.inputTextWidth;
+	}
+
 	async validate() {
 		if (!this.shadowRoot) return;
 		const textInput = this.shadowRoot.querySelector('d2l-input-text');
@@ -353,7 +351,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	_handleBlur() {
 		this._showInfoTooltip = true;
-		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
 		this.requestValidate(true);
 	}
 
@@ -520,7 +517,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	_setFormattedValue() {
-		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : (this.emptyText ? this.emptyText : '');
+		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
 	}
 
 	async _updateValueDispatchEvent(dateInISO, setToNow) {

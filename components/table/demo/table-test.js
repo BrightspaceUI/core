@@ -41,6 +41,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	static get properties() {
 		return {
 			paging: { type: Boolean, reflect: true },
+			multiLine: { type: Boolean, attribute: 'multi-line' },
 			showButtons: { type: Boolean, attribute: 'show-buttons' },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
@@ -72,6 +73,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	constructor() {
 		super();
 
+		this.multiLine = false;
 		this.paging = false;
 		this.showButtons = false;
 		this.stickyControls = false;
@@ -99,11 +101,25 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 				<table class="d2l-table">
 					<thead>
-						<tr>
-							<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
-							${this._renderDoubleSortButton('Location')}
-							${columns.map(columnHeading => this._renderSortButton(columnHeading))}
-						</tr>
+						${this.multiLine ? html`
+							<tr>
+								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+								${this._renderDoubleSortButton('Location')}
+								<th scope="col" colspan="${columns.length}" sticky>
+									Metrics
+								</th>
+							</tr>
+							<tr>
+								<th scope="col" sticky></th>
+								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+							</tr>
+						` : html`
+							<tr>
+								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+								${this._renderDoubleSortButton('Location')}
+								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+							</tr>
+						`}
 					</thead>
 					<tbody>
 						<tr class="d2l-table-header">
@@ -182,7 +198,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_renderDoubleSortButton(name) {
 		const noSort = this._sortField?.toLowerCase() !== 'city' && this._sortField?.toLowerCase() !== 'country';
 		return html`
-			<th scope="col">
+			<th rowspan="${this.multiLine ? 2 : 1}" scope="col">
 				<d2l-table-col-sort-button
 					?desc="${this._sortDesc}"
 					?nosort="${noSort}">${name}

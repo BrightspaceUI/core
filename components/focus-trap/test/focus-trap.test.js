@@ -106,14 +106,12 @@ describe('d2l-focus-trap', () => {
 				it('wraps to first', async() => {
 					focusTrap.querySelector('#last').focus();
 					focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').focus();
-					clock.tick(50);
 					expect(document.activeElement).to.equal(elem.querySelector('#first'));
 				});
 
 				it('wraps to last', () => {
 					focusTrap.querySelector('#first').focus();
 					focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
-					clock.tick(50);
 					expect(document.activeElement).to.equal(elem.querySelector('#last'));
 				});
 

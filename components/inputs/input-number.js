@@ -8,6 +8,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const HINT_TYPES = {
 	NONE: 0,
@@ -106,7 +107,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
-			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -141,11 +142,6 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
-			 * Placeholder text
-			 * @type {string}
-			 */
-			placeholder: { type: String },
-			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -160,7 +156,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 */
 			unit: { type: String },
 			/**
-			 * Accessible label for the unit which will not be visually rendered
+			 * ACCESSIBILITY: Label for the unit, which is only picked up by screenreaders. Required if `unit` is used.
 			 * @type {string}
 			 */
 			unitLabel: { attribute: 'unit-label', type: String },
@@ -178,8 +174,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 			 * @ignore
 			 */
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
-			_hintType: { type: Number },
-			_formattedValue: { type: String }
+			_afterSlotWidth: { state: true },
+			_hintType: { state: true },
+			_formattedValue: { state: true }
 		};
 	}
 
@@ -193,6 +190,9 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				d2l-input-text:not([skeleton]) {
+					width: auto;
 				}
 			`
 		];
@@ -215,6 +215,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		this._trailingZeroes = false;
 		this._valueTrailingZeroes = '';
 		this._descriptor = getNumberDescriptor();
+		this._afterSlotWidth = 0;
 	}
 
 	get maxFractionDigits() {
@@ -334,6 +335,11 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 
 	render() {
 		const valueAlign = (this.valueAlign === 'end') ? 'end' : 'start';
+		const hasRelativeInputWidth = this.inputWidth.includes('%');
+		const inputWidthStyle = {
+			width : '100%',
+			maxWidth: `calc(${this.inputWidth} + ${this._afterSlotWidth}px)`
+		};
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
@@ -348,22 +354,22 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 				.forceInvalid="${this.invalid}"
 				?hide-invalid-icon="${this.hideInvalidIcon}"
 				id="${this._inputId}"
-				input-width="${this.inputWidth}"
+				input-width="${hasRelativeInputWidth ? 'none' : this.inputWidth}"
 				@invalid-change="${this._handleInvalidChange}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden || this.labelledBy}"
 				.labelRequired="${false}"
 				name="${ifDefined(this.name)}"
-				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
+				style="${ifDefined(hasRelativeInputWidth ? styleMap(inputWidthStyle) : undefined)}"
 				unit="${ifDefined(this.unit)}"
 				unit-label="${ifDefined(this.unitLabel)}"
 				.value="${this._formattedValue}"
 				value-align="${valueAlign}">
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
-					<slot slot="after" name="after"></slot>
+					<slot slot="after" name="after" @slotchange=${this._handleAfterSlotChange}></slot>
 					<slot slot="inline-help" name="inline-help"></slot>
 			</d2l-input-text>
 			${this._getTooltip()}
@@ -434,6 +440,13 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 		if (lang !== '') {
 			return html`<d2l-tooltip announced for="${this._inputId}" state="info" align="start" class="vdiff-target">${this.localize(lang)}</d2l-tooltip>`;
 		}
+	}
+
+	async _handleAfterSlotChange(e) {
+		const nodes = e.target.assignedNodes();
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		await inputTextElem.updateComplete;
+		this._afterSlotWidth = nodes.reduce((width, ele) => width + ele.clientWidth, 0);
 	}
 
 	_handleBlur() {

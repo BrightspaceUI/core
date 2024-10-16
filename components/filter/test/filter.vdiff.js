@@ -89,7 +89,7 @@ function createSingleDimDate() {
 	`;
 }
 function createSingleDimDateCustom(opts) {
-	const { long, customSelected, longCustomSelected, opened, startValue, type } = { long: false, customSelected: false, longCustomSelected: false, opened: false, type: 'date-time', ...opts };
+	const { long, customSelected, longCustomSelected, opened, startValue, endValue, type } = { long: false, customSelected: false, longCustomSelected: false, opened: false, type: 'date-time', ...opts };
 	return html`
 		<d2l-filter ?opened="${opened}">
 			<d2l-filter-dimension-set key="dates" text="Dates">
@@ -98,7 +98,7 @@ function createSingleDimDateCustom(opts) {
 				<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
 				<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
 				<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
-				<d2l-filter-dimension-set-date-time-range-value key="custom" ?selected="${customSelected && !longCustomSelected}" start-value="${ifDefined(startValue)}" type="${type}"></d2l-filter-dimension-set-date-time-range-value>
+				<d2l-filter-dimension-set-date-time-range-value key="custom" ?selected="${customSelected && !longCustomSelected}" start-value="${ifDefined(startValue)}" end-value="${ifDefined(endValue)}" type="${type}"></d2l-filter-dimension-set-date-time-range-value>
 				<d2l-filter-dimension-set-date-time-range-value key="custom2" text="Other text" ></d2l-filter-dimension-set-date-time-range-value>
 				${ long ? html`<d2l-filter-dimension-set-date-time-range-value key="custom3" text="Very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." ?selected="${longCustomSelected}"></d2l-filter-dimension-set-date-time-range-value>` : nothing }
 			</d2l-filter-dimension-set>
@@ -170,6 +170,7 @@ describe('filter', () => {
 				{ name: 'dates-custom-selected', template: createSingleDimDateCustom({ customSelected: true }) },
 				{ name: 'dates-custom-selected-start-value', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z' }) },
 				{ name: 'dates-custom-selected-start-value-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', type: 'date' }) },
+				{ name: 'dates-custom-selected-same-start-end-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z', type: 'date' }) },
 				{ name: 'dates-long-custom-selected', template: createSingleDimDateCustom({ long: true, longCustomSelected: true }) },
 			].forEach(({ name, template }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
@@ -256,6 +257,18 @@ describe('filter', () => {
 					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
+			});
+
+			it('search then clear', async() => {
+				const elem = await fixture(createSingleDimSingleSelection({ selected: true }));
+				elem._handleSearch({ detail: { value: 'a' } });
+				await elem.updateComplete;
+				elem.opened = true;
+				await oneEvent(elem, 'd2l-filter-dimension-first-open');
+				await nextFrame();
+				await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+				await hoverAt(0, 0);
+				await expect(elem).to.be.golden();
 			});
 		});
 

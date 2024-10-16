@@ -95,7 +95,7 @@ describe('d2l-input-number', () => {
 			});
 		});
 
-		['autocomplete', 'max', 'min', 'placeholder', 'value'].forEach((name) => {
+		['autocomplete', 'max', 'min', 'value'].forEach((name) => {
 			it(`should default "${name}" property to 'undefined' when unset`, async() => {
 				expect(elem[name]).to.equal(undefined);
 			});

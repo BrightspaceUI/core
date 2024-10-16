@@ -40,9 +40,25 @@ function getCalendarData() {
 	return calendarData;
 }
 
+function getInitialFocusDate(initialValue, selectedValue, minValue, maxValue) {
+	if (initialValue) return getDateFromISODate(initialValue);
+	if (selectedValue) return getDateFromISODate(selectedValue);
+	else return getDateFromISODate(getClosestValidDate(minValue, maxValue, false));
+}
+
 export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
 	return date1.getTime() === date2.getTime();
+}
+
+export function getMinMaxDatesInView(initialValue, selectedValue, minValue, maxValue) {
+	getCalendarData();
+	const date = getInitialFocusDate(initialValue, selectedValue, minValue, maxValue);
+	const dates = getDatesInMonthArray(date.getMonth(), date.getFullYear());
+	return {
+		maxValue: dates[dates.length - 1][6],
+		minValue: dates[0][0]
+	};
 }
 
 export function getDatesInMonthArray(shownMonth, shownYear) {
@@ -136,28 +152,35 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * Additional info for each day (ex. events on [{"date": "2024-09-19"}])
+			 * @type {Array}
+			 */
+			dayInfos: { type: Array, attribute: 'day-infos' },
+			/**
 			 * Unique label text for calendar (necessary if multiple calendars on page)
 			 * @type {string}
 			 */
 			label: { attribute: 'label', reflect: true, type: String },
 			/**
+			 * ADVANCED: Initial date to override the logic for determining default date to initially show
+			 * @type {string}
+			 */
+			initialValue: { attribute: 'initial-value', type: String },
+			/**
 			 * Maximum valid date that could be selected by a user
 			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
-
 			/**
 			 * Minimum valid date that could be selected by a user
 			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
-
 			/**
 			 * Currently selected date
 			 * @type {string}
 			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
-
 			/**
 			 * ACCESSIBILITY: Summary of the calendar used by screen reader users for identifying the calendar and/or summarizing its purpose
 			 * @type {string}
@@ -255,7 +278,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
-				padding: 4px;
+				padding: 3px;
 				position: relative;
 				text-align: center;
 				-webkit-user-select: none;
@@ -395,6 +418,24 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				font-size: 1rem;
 				font-weight: 700;
 			}
+
+			.d2l-calendar-date-day-info::after {
+				background-color: var(--d2l-color-celestine);
+				border-radius: 3px;
+				bottom: 4px;
+				content: "";
+				display: inline-block;
+				height: 6px;
+				position: absolute;
+				width: 6px;
+			}
+			.d2l-calendar-date-selected.d2l-calendar-date-day-info::after {
+				bottom: 2px;
+			}
+			td:focus .d2l-calendar-date-day-info::after {
+				bottom: 0;
+			}
+
 		`];
 	}
 
@@ -435,9 +476,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		if (this._shownMonth === undefined || !this._shownYear) {
-			return nothing;
-		}
+		if (this._shownMonth === undefined || !this._shownYear) return nothing;
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th>
@@ -450,20 +489,28 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day, index) => {
+
 				const disabled = !isDateInRange(day, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
+
+				const year = day.getFullYear();
+				const month = day.getMonth();
+				const date = day.getDate();
+
+				const hasDayInfo = !!this.dayInfos?.find(dayInfo => checkIfDatesEqual(day, getDateFromISODate(dayInfo.date)));
+
 				const classes = {
 					'd2l-calendar-date': true,
+					'd2l-calendar-date-day-info': hasDayInfo,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
-				const year = day.getFullYear();
-				const month = day.getMonth();
-				const date = day.getDate();
+
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const description = `${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
+				const dayInfoText = hasDayInfo ? `${this.localize('components.calendar.hasEvents')} ` : '';
+				const description = `${dayInfoText}${weekday} ${date} ${formatDate(day, { format: 'monthYear' })}`;
 				return html`
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
@@ -487,6 +534,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			return html`<tr>${weekHtml}</tr>`;
 		});
+
 		const summary = this.summary ? html`<caption class="d2l-offscreen">${this.summary}</caption>` : '';
 		const calendarClasses = {
 			'd2l-calendar': true,
@@ -501,6 +549,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
 		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
 		const role = this._dialog ? 'dialog' : undefined;
+
 		return html`
 			<div role="region" aria-label="${regionLabel}">
 				<div class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
@@ -532,6 +581,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				</div>
 			</div>
 		`;
+
 	}
 
 	updated(changedProperties) {
@@ -551,6 +601,28 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+
+		// don't dispatch d2l-calendar-view-change when _shownYear and _shownMonth are being initialized
+		if (changedProperties.get('_shownYear') === undefined && changedProperties.get('_shownMonth') === undefined) return;
+
+		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
+
+		/** Dispatched when the calender view changes. "e.detail" provides the year and month in view. */
+		this.dispatchEvent(new CustomEvent('d2l-calendar-view-change', {
+			bubbles: false,
+			composed: false,
+			detail: {
+				maxValue: dates[dates.length - 1][6],
+				month: this._shownMonth,
+				minValue: dates[0][0],
+				year: this._shownYear
+			}
+		}));
+
+	}
+
 	async focus() {
 		if (this._dialog) {
 			await this.updateComplete;
@@ -559,6 +631,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const button = this.shadowRoot && this.shadowRoot.querySelector('d2l-button-icon');
 			if (button) button.focus();
 		}
+	}
+
+	getShownValue() {
+		return new Date(this._shownYear, this._shownMonth).toISOString();
 	}
 
 	async reset(allowDisabled) {
@@ -585,9 +661,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_getInitialFocusDate() {
-		let date;
-		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
-		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
+		const date = getInitialFocusDate(this.initialValue, this.selectedValue, this.minValue, this.maxValue);
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		return date;

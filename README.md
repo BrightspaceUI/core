@@ -19,7 +19,7 @@ npm install @brightspace-ui/core
   * [Alert](components/alert/): alert components for displaying important information
   * [Breadcrumbs](components/breadcrumbs/): component to help users understand where they are within an application
   * [Backdrop](components/backdrop/): component for displaying backdrop behind a target element
-  * [Buttons](components/button/): normal, primary, icon and subtle buttons
+  * [Buttons](components/button/): normal, primary, icon, subtle, and toggle buttons
   * [Calendar](components/calendar/): calendar component
   * [Card](components/card/): card components
   * [Colors](components/colors/): color palette
@@ -73,7 +73,6 @@ npm install @brightspace-ui/core
   * [LabelledMixin](mixins/labelled/): label custom elements by referencing elements across DOM scopes
   * [LocalizeMixin](mixins/localize/): localize text in your components
   * [ProviderMixin](mixins/provider/): provide and consume data across elements in a DI-like fashion
-  * [RtlMixin](mixins/rtl/): enable components to define RTL styles
   * [SkeletonMixin](components/skeleton/): make components skeleton-aware
   * [VisibleOnAncestorMixin](mixins/visible-on-ancestor/): display element on-hover of an ancestor
 * Templates

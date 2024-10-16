@@ -54,13 +54,13 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 
 | Property | Type | Description |
 |---|---|---|
-| `aria-label` | String | Set instead of placing label inside to hide the visible label |
+| `aria-label` | String | Overrides the text in the `Default` slot for screenreader users |
 | `checked` | Boolean | Checked state |
-| `description` | String | A description to be added to the `input` for accessibility |
+| `description` | String | Additional information communicated to screenreader users when focusing on the input |
 | `disabled` | Boolean | Disables the input |
 | `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
 | `name` | String | Name of the input |
-| `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox |
+| `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property. |
 | `value` | String | Value of the input |
 
 ### Events
@@ -75,17 +75,9 @@ checkbox.addEventListener('change', (e) => {
 
 ### Slots
 
+* `default`: Primary text that will appear next to the input box and function as the label for the checkbox.
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-input-checkbox` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|---|---|
-| `aria-label` | Use when text on checkbox does not provide enough context |
-| `description` | Use when label on input does not provide enough context. |
 
 ### Methods
 
@@ -135,3 +127,9 @@ As an alternative to using the `<d2l-input-checkbox>` custom element, you can st
 </script>
 <d2l-my-checkbox-elem></d2l-my-checkbox-elem>
 ```
+
+## Accessibility
+
+The `d2l-input-checkbox` component follows W3C's best practice recommendations for a [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/). This means that the component works in the following way:
+- The `Space` key is used to select a focused checkbox (not the `Enter` key)
+- The `aria-checked` state is set to `true`, `false` or `mixed` to represent if it's selected, unselected, or partially selected

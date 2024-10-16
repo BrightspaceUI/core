@@ -69,7 +69,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 	static get properties() {
 		return {
 			/**
-			 * Use when text on checkbox does not provide enough context
+			 * ACCESSIBILITY: Overrides the text in the `Default` slot for screenreader users
 			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
@@ -79,7 +79,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 */
 			checked: { type: Boolean },
 			/**
-			 * Additional information communicated in the aria-describedby on the input
+			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
 			 * @type {string}
 			 */
 			description: { type: String },
@@ -99,7 +99,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 */
 			name: { type: String },
 			/**
-			 * Sets "tabindex="-1"" on the checkbox
+			 * ACCESSIBILITY: ADVANCED: Sets "tabindex="-1"" on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property.
 			 * @type {boolean}
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },

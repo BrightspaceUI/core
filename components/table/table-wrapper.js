@@ -123,10 +123,14 @@ export const tableStyles = css`
 		.d2l-table th:has(d2l-table-col-sort-button:not(:only-child)) d2l-table-col-sort-button {
 			--d2l-table-col-sort-button-width: unset;
 		}
-		/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
-		.d2l-table > * > tr > :has(d2l-table-col-sort-button[nosort]:not(:only-child)):not(:has(d2l-table-col-sort-button:not([nosort]))) :last-child {
-			padding-inline-end: calc(0.6rem + 18px);
-		}
+	}
+
+	/* has at least one d2l-table-col-sort-button with [nosort], does not have d2l-table-col-sort-button without nosort */
+	.d2l-table th d2l-table-col-sort-button[nosort] ~ :last-child {
+		padding-inline-end: calc(0.6rem + 18px);
+	}
+	.d2l-table th d2l-table-col-sort-button:not([nosort]) ~ :last-child {
+		padding-inline-end: unset;
 	}
 
 	/* border radiuses */
@@ -258,6 +262,11 @@ export const tableStyles = css`
 		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
 `;
+
+const SELECTORS = {
+	headers: 'tr.d2l-table-header, tr[header], thead tr',
+	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
+};
 
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
@@ -486,7 +495,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	_getItems() {
-		return this._table?.querySelectorAll(':not(thead) > tr:not(.d2l-table-header):not([header])') || [];
+		return this._table?.querySelectorAll(SELECTORS.items) || [];
 	}
 
 	_getItemShowingCount() {
@@ -574,13 +583,37 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._handleTableChange();
 	}
 
-	async _handleTableChange() {
+	async _handleTableChange(mutationRecords) {
+		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('table-update-filter-GAUD-6955', true) ?? true;
+		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
+		if (flag) {
+			if (mutationRecords) {
+				for (const key in updates) updates[key] = false;
+				for (const { type, removedNodes, addedNodes, target, attributeName } of mutationRecords) {
+					if (type === 'attributes') {
+						updates.classNames = attributeName === 'selected';
+						continue;
+					}
+
+					updates.sticky ||= target.matches(SELECTORS.headers);
+					const affectedNodes = [...removedNodes, ...addedNodes];
+					for (const node of affectedNodes) {
+						if (!(node instanceof Element)) continue;
+						updates.classNames ||= node.matches('tr');
+						updates.syncWidths ||= node.matches('tr');
+						updates.sticky ||= node.matches(SELECTORS.headers);
+						updates.count ||= node.matches(SELECTORS.items);
+					}
+				}
+			}
+		}
+
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
-		this._updateItemShowingCount();
-		this._applyClassNames();
-		this._syncColumnWidths();
-		this._updateStickyTops();
+		if (updates.count) this._updateItemShowingCount();
+		if (updates.classNames) this._applyClassNames();
+		if (updates.syncWidths) this._syncColumnWidths();
+		if (updates.sticky) this._updateStickyTops();
 	}
 
 	_registerMutationObserver(observerName, callback, target, options) {
@@ -599,15 +632,86 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		const body = this._table.querySelector('tbody');
 		if (!head || !body) return;
 
-		const firstRowHead = head.rows[0];
-		const firstRowBody = body.rows[0];
-		if (!firstRowHead || !firstRowBody || firstRowHead.cells.length !== firstRowBody.cells.length) return;
+		const candidateRowHeadCells = [];
 
-		for (let i = 0; i < firstRowHead.cells.length; i++) {
-			const headCell = firstRowHead.cells[i];
-			const bodyCell = firstRowBody.cells[i];
-			const bodyStyle = getComputedStyle(bodyCell);
+		// Max length of one of our body rows, which we'll try to map to our candidate head cells.
+		const maxRowBodyLength = Math.max(...([...body.rows].map(row => row.cells.length)));
+
+		const headCellsMap = [];
+		for (let i = 0; i < head.rows.length; i++) {
+			headCellsMap[i] = [];
+		}
+
+		// Build a map of which cells "exist" in each head row so we can pick out
+		// a candidate in each column to sync widths with.
+		for (let rowIndex = 0; rowIndex < head.rows.length; rowIndex++) {
+			const rowMap = headCellsMap[rowIndex];
+
+			let spanOffset = 0;
+			for (let colIndex = 0; colIndex < maxRowBodyLength; colIndex++) {
+				if (rowMap[colIndex] === null) {
+					spanOffset++;
+					continue;
+				}
+
+				const cell = head.rows[rowIndex].cells[colIndex - spanOffset];
+				rowMap[colIndex] = cell;
+
+				if (!cell) continue;
+
+				const colSpan = cell.colSpan;
+				const rowSpan = cell.rowSpan;
+
+				for (let offset = 1; offset < colSpan; offset++) {
+					rowMap[colIndex + offset] = null;
+				}
+
+				for (let offset = 1; offset < rowSpan; offset++) {
+					headCellsMap[rowIndex + offset][colIndex] = null;
+				}
+			}
+		}
+
+		// Pick out a single head cell for each column to sync widths.
+		for (let i = 0; i < maxRowBodyLength; i++) {
+			let candidateCell;
+			for (const rowMap of headCellsMap) {
+				const cell = rowMap[i];
+
+				if (cell && cell.colSpan === 1) {
+					candidateCell = cell;
+					break;
+				}
+			}
+
+			// This does not support heads without at least one single-column
+			// spanning cell in each column.
+			if (!candidateCell) return;
+
+			candidateRowHeadCells[i] = candidateCell;
+		}
+
+		// Pick the body row with the most cells (and no colspans) to measure against
+		const candidateRowBody = [...body.rows].find(row => {
+			return row.cells.length === maxRowBodyLength
+				&& ![...row.cells].find(cell => cell.colSpan > 1);
+		});
+
+		if (candidateRowHeadCells.length === 0 || !candidateRowBody) return;
+
+		let candidateRowBodyLength = 0;
+		for (const cell of candidateRowBody.cells) {
+			candidateRowBodyLength += cell.colSpan;
+		}
+
+		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
+
+		for (let i = 0; i < candidateRowHeadCells.length; i++) {
+			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
+
+			const bodyCell = candidateRowBody.cells[i];
+			const bodyStyle = getComputedStyle(bodyCell);
 
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
@@ -650,7 +754,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (!this._table || !this.stickyHeaders || this.stickyHeadersScrollWrapper) return;
 
-		const stickyRows = Array.from(this._table.querySelectorAll('tr.d2l-table-header, tr[header], thead tr'));
+		const stickyRows = Array.from(this._table.querySelectorAll(SELECTORS.headers));
 		stickyRows.forEach(r => {
 			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset, 0px))`;
 			const ths = Array.from(r.querySelectorAll('th'));

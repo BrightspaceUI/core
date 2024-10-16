@@ -34,7 +34,7 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -48,11 +48,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 			 * @type {number}
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
-			/**
-			 * Placeholder text
-			 * @type {string}
-			 */
-			placeholder: { type: String },
 			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
@@ -121,7 +116,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				min-fraction-digits="${ifDefined(this.minFractionDigits)}"
 				name="${ifDefined(this.name)}"
 				?noValidate="${this.noValidate}"
-				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				unit="%"

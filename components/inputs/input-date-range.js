@@ -43,7 +43,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
-			 * Hides the start and end labels visually
+			 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
 			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
@@ -53,7 +53,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end date input. Defaults to localized "End Date".
+			 * ACCESSIBILITY: Label for the end date input. Defaults to localized "End Date".
 			 * @type {string}
 			 * @default "End Date"
 			 */
@@ -74,12 +74,12 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the input fieldset that wraps the date inputs
+			 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the date inputs
 			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the fieldset label visually
+			 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
@@ -104,7 +104,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start date input. Defaults to localized "Start Date".
+			 * ACCESSIBILITY: Label for the start date input. Defaults to localized "Start Date".
 			 * @type {string}
 			 * @default "Start Date"
 			 */

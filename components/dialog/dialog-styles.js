@@ -132,8 +132,19 @@ export const dialogStyles = css`
 		padding: 0 30px;
 	}
 
+	.d2l-dialog-content:focus-visible {
+		border-radius: 6px;
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: -2px;
+	}
+
 	.d2l-dialog-content > div {
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
+	}
+
+	:host([full-height]) .d2l-dialog-content > div {
+		box-sizing: border-box;
+		height: 100%;
 	}
 
 	.d2l-dialog-outer-scroll .d2l-dialog-content {
@@ -147,7 +158,7 @@ export const dialogStyles = css`
 	.d2l-dialog-footer {
 		box-sizing: border-box;
 		flex: none;
-		padding: 30px 30px 12px 30px; /* 18px margin below footer children */
+		padding: 18px 30px 0 30px; /* 18px margin below footer children */
 		position: relative; /* stack footer overflow shadow on top of content */
 	}
 
@@ -178,6 +189,7 @@ export const dialogStyles = css`
 	}
 
 	@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
+
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}
@@ -193,18 +205,19 @@ export const dialogStyles = css`
 			padding: 0 20px;
 		}
 		.d2l-dialog-footer {
-			padding: 20px 20px 2px 20px;
+			padding: 18px 20px 0 20px;
 		}
 		.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
 			margin: 0 !important;
 			min-width: calc(var(--d2l-vw, 1vw) * 100);
-			top: 42px;
+			top: 5%;
 		}
 		:host(:not([in-iframe])) dialog.d2l-dialog-outer.d2l-dialog-fullscreen-mobile,
 		:host(:not([in-iframe])) div.d2l-dialog-outer.d2l-dialog-fullscreen-mobile {
-			height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
-			min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+			height: calc(var(--d2l-vh, 1vh) * 95);
+			min-height: calc(var(--d2l-vh, 1vh) * 95);
 		}
+
 	}
 
 	@media (prefers-reduced-motion: reduce) {

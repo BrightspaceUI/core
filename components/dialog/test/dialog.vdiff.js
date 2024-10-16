@@ -1,5 +1,5 @@
 import '../dialog.js';
-import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame, sendKeys } from '@brightspace-ui/testing';
 import { footer, general, long, wrapping } from './dialog-shared-contents.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
@@ -29,7 +29,7 @@ describe('dialog', () => {
 			[
 				{ screen: 'tall-wide', viewport: { width: 800, height: 500 } },
 				{ screen: 'tall-narrow', viewport: { width: 600, height: 500 } },
-				{ screen: 'short-wide', viewport: { width: 910, height: 400 } },
+				{ screen: 'short-wide', viewport: { width: 910, height: 370 } },
 				{ screen: 'short-narrow', viewport: { width: 890, height: 400 } }
 			].forEach(({ screen, viewport }) => {
 				describe(screen, () => {
@@ -42,6 +42,21 @@ describe('dialog', () => {
 								elem.querySelector('div').style.height = '60px';
 								elem.width = 500;
 								elem.resize();
+							}
+						},
+						{ name: 'focus on content when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+						{ name: 'focus on content when overflowing content and footer', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>${footer}` }), action:
+							async() => {
+								await sendKeys('press', 'Tab');
+								await sendKeys('press', 'Tab');
+								await sendKeys('press', 'Tab');
+							}
+						},
+						{ name: 'focus on content when short content', template: createDialog({ content: html`<div style="height: 200px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+						{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action:
+							async() => {
+								await sendKeys('press', 'Tab');
+								await sendKeys('press', 'Tab');
 							}
 						}
 					].forEach(({ name, template, rtl, action }) => {
@@ -69,7 +84,7 @@ describe('dialog', () => {
 							dispatchFullscreenWithinEvent(elem.querySelector('#top'), false);
 						}
 					},
-					{ name: 'full-height', template: createDialog({ fullHeight: true }) },
+					{ name: 'full-height', template: createDialog({ content: html`<div style="background-color: orange; border: 1px solid black; box-sizing: border-box; height: 100%;"></div>${footer}`, fullHeight: true }) },
 					{ name: 'full-height-narrow', template: createDialog({ content: html`<div>Top</div><div>Line 1</div><div>Bottom</div>`, fullHeight: true, width: 150 }) },
 				].forEach(({ name, template, action }) => {
 					it(name, async() => {
