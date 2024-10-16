@@ -21,6 +21,7 @@ describe('meter-radial', () => {
 		{ name: 'complete', template: html`<d2l-meter-radial value="256" max="256"></d2l-meter-radial>` },
 		{ name: 'round-to-zero', template: html`<d2l-meter-radial value="0.004" max="100" percent></d2l-meter-radial>` },
 		{ name: 'max-zero-with-value', template: html`<d2l-meter-radial value="10" max="0"></d2l-meter-radial>` },
+		{ name: 'text-hidden', template: html`<d2l-meter-radial value="10" max="10" text="Completed" text-hidden></d2l-meter-radial>` },
 		{ name: 'foreground-light', wrapped: true, template: html`
 			<div style="background-color: var(--d2l-color-celestine); padding: 1rem;">
 				<d2l-meter-radial value="16" max="47" foreground-light text="Keep going!"></d2l-meter-radial>
