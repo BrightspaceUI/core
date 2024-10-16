@@ -54,7 +54,10 @@ describe('meter-linear', () => {
 		{ name: 'normal-over-100', template: html`<d2l-meter-linear value="15" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-max-zero-with-value', template: html`<d2l-meter-linear value="5" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-foreground-light', dark: true, template: html`<d2l-meter-linear value="4" max="10" text="Visited: {%}" foreground-light></d2l-meter-linear>` },
-		{ name: 'text-inline-foreground-light', dark: true, template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited" percent foreground-light></d2l-meter-linear>` }
+		{ name: 'text-inline-foreground-light', dark: true, template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited" percent foreground-light></d2l-meter-linear>` },
+		{ name: 'normal-text-fraction-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text="Visited: {x/y}" percent text-hidden></d2l-meter-linear>` },
+		{ name: 'text-inline-text-percent-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited" percent text-hidden></d2l-meter-linear>` },
+		{ name: 'no-text-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text-hidden></d2l-meter-linear>` },
 	].forEach(({ name, template, dark }) => {
 		it(name, async() => {
 			const elem = await fixture(createTemplateWrapper(template, dark));
