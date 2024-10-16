@@ -33,7 +33,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		const primaryAria = this._primary(this.value, this.max, true) || '';
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true) || '';
 		const secondaryTextElement = this.text && !this.textHidden
-			? html`<div class="d2l-body-small d2l-meter-text">${secondary}</div>` 
+			? html`<div class="d2l-body-small d2l-meter-text">${secondary}</div>`
 			: nothing;
 		const textClasses = {
 			'd2l-meter-text-ltr': !this.percent,
