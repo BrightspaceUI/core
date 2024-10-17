@@ -363,6 +363,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					class="vdiff-target"
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
+					ignore-hierarchy
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
@@ -373,6 +374,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						class="d2l-input-time-menu"
 						@d2l-menu-item-change="${this._handleDropdownChange}"
 						id="${this._dropdownId}"
+						ignore-hierarchy
 						role="listbox">
 						${menuItems}
 					</d2l-menu>
