@@ -303,7 +303,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					prefer-fixed-positioning
 					trap-focus>
 					${header}
-					<d2l-menu label="${this.localize('components.filter.filters')}">
+					<d2l-menu label="${this.localize('components.filter.filters')}" ignore-translate>
 						${dimensions}
 					</d2l-menu>
 				</d2l-dropdown-menu>
