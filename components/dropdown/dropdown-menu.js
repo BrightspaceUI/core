@@ -135,7 +135,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		// reset to root view
 		const menu = this.__getMenuElement();
-		if(!this.ignoreHierarchy) menu.show({ preventFocus: true });
+		if (!this.ignoreHierarchy) menu.show({ preventFocus: true });
 	}
 
 	_onFocus(e) {

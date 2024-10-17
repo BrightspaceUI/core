@@ -166,7 +166,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if(this.ignoreHierarchy) {
+		if (this.ignoreHierarchy) {
 			this.childView = false;
 			return;
 		}
@@ -432,7 +432,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__isChildView() {
-		if(this.ignoreHierarchy) {
+		if (this.ignoreHierarchy) {
 			this.childView = false;
 			return;
 		}
