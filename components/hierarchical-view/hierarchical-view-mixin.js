@@ -14,10 +14,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			ignoreTranslate: { type: Boolean, attribute: 'ignore-translate', reflect: true },
-			/**
-			 * @ignore
-			 */
 			childView: { type: Boolean, reflect: true, attribute: 'child-view' },
 			/**
 			 * @ignore
@@ -53,15 +49,14 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				display: inline-block;
 				vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
 			}
-			:host([ignore-translate]) .d2l-hierarchical-view-content.d2l-child-view-show {
-				left: -100%;
+			.d2l-hierarchical-view-content {
 				position: relative;
 			}
-			:host(:not([ignore-translate])) .d2l-hierarchical-view-content.d2l-child-view-show {
+			.d2l-hierarchical-view-content.d2l-child-view-show {
 				-webkit-animation: show-child-view-animation forwards 300ms linear;
 				animation: show-child-view-animation 300ms forwards linear;
 			}
-			:host(:not([ignore-translate])) .d2l-hierarchical-view-content.d2l-child-view-hide {
+			.d2l-hierarchical-view-content.d2l-child-view-hide {
 				-webkit-animation: hide-child-view-animation forwards 300ms linear;
 				animation: hide-child-view-animation 300ms forwards linear;
 			}
@@ -70,34 +65,32 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 					-webkit-transition: none;
 					transition: none;
 				}
-				:host(:not([ignore-translate])) .d2l-hierarchical-view-content.d2l-child-view-show {
+				.d2l-hierarchical-view-content.d2l-child-view-show {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(-100%, 0);
-					transform: translate(-100%, 0);
+					left: -100%;
 				}
-				:host(:not([ignore-translate])) .d2l-hierarchical-view-content.d2l-child-view-hide {
+				.d2l-hierarchical-view-content.d2l-child-view-hide {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(0, 0);
-					transform: translate(0, 0);
+					left: 0;
 				}
 			}
 			@keyframes show-child-view-animation {
-				0% { transform: translate(0, 0); }
-				100% { transform: translate(-100%, 0); }
+				0% { left: 0; }
+				100% { left: -100%; }
 			}
 			@-webkit-keyframes show-child-view-animation {
-				0% { -webkit-transform: translate(0, 0); }
-				100% { -webkit-transform: translate(-100%, 0); }
+				0% { left: 0; }
+				100% { left: -100%; }
 			}
 			@keyframes hide-child-view-animation {
-				0% { transform: translate(-100%, 0); }
-				100% { transform: translate(0, 0); }
+				0% { left: -100%; }
+				100% { left: 0; }
 			}
 			@-webkit-keyframes hide-child-view-animation {
-				0% { -webkit-transform: translate(-100%, 0); }
-				100% { -webkit-transform: translate(0, 0); }
+				0% { left: -100%; }
+				100% { left: 0; }
 			}
 		`;
 	}
@@ -109,8 +102,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.childView = false;
 		/** @ignore */
 		this.hierarchicalView = true;
-		/** @ignore */
-		this.ignoreTranslate = false;
 		this.__focusPrevious = false;
 		this.__intersectionObserver = null;
 		this.__isAutoSized = false;
@@ -453,7 +444,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 			const data = e.detail.data;
-			const animate = (!!content.offsetParent && !reduceMotion && !this.ignoreTranslate);
+			const animate = (!!content.offsetParent && !reduceMotion);
 			const hideRoot = () => {
 				rootTarget.shown = false;
 				requestAnimationFrame(() => {
