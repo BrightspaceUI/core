@@ -152,10 +152,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 		}
 
 		await new Promise(requestAnimationFrame);
-		this.dispatchEvent(new CustomEvent('d2l-pager-load-more-loaded', {
-			bubbles: false,
-			composed: false
-		}));
+		this.dispatchEvent(new CustomEvent('d2l-pager-load-more-loaded'));
 
 	}
 
