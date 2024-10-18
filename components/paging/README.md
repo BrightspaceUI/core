@@ -101,3 +101,4 @@ pager.addEventListener('d2l-pager-load-more', e => {
 | Event | Description |
 |---|---|
 | `d2l-pager-load-more` | Dispatched when the user clicks the Load More button. The `pageSize` can be accessed from the event `target`. The consumer must call the `complete()` method on the event detail to signal completion after the new items have been loaded. |
+| `d2l-pager-load-more-loaded` | Dispatched after more items have been loaded.

@@ -43,7 +43,7 @@ describe('pager-load-more', () => {
 			e.detail.complete();
 		});
 		clickElem(pager);
-		await oneEvent(pager, 'd2l-pager-load-more');
+		await oneEvent(pager, 'd2l-pager-load-more-loaded');
 		await expect(elem).to.be.golden();
 	});
 
