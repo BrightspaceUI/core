@@ -16,10 +16,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			/**
-			 * @ignore
-			 */
-			ignoreHierarchy: { type: Boolean, attribute: 'ignore-hierarchy' },
 			_closeRadio: {
 				type: Boolean,
 				reflect: true,
@@ -65,7 +61,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.ignoreHierarchy = false;
 		this.noAutoFocus = true;
 		this.noPadding = true;
 		this._closeRadio = false;
@@ -135,7 +130,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		// reset to root view
 		const menu = this.__getMenuElement();
-		if (!this.ignoreHierarchy) menu.show({ preventFocus: true });
+		if (!menu.hasAttribute('data-root-view')) menu.show({ preventFocus: true });
 	}
 
 	_onFocus(e) {

@@ -14,10 +14,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			ignoreHierarchy: { type: Boolean, attribute: 'ignore-hierarchy' },
-			/**
-			 * @ignore
-			 */
 			childView: { type: Boolean, reflect: true, attribute: 'child-view' },
 			/**
 			 * @ignore
@@ -110,8 +106,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__isAutoSized = false;
 		this.__resizeObserver = null;
 		this.__hideAnimations = [];
-
-		this.ignoreHierarchy = false;
 	}
 
 	connectedCallback() {
@@ -166,11 +160,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (this.ignoreHierarchy) {
-			this.childView = false;
-			return;
-		}
-
 		this.addEventListener('keydown', this.__onKeyDown);
 		this.addEventListener('d2l-hierarchical-view-hide-start', this.__onHideStart);
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
@@ -209,7 +198,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	getRootView() {
-		if (!this.childView) {
+		if (!this.childView || this.hasAttribute('data-root-view')) {
 			return this;
 		}
 		const rootView = findComposedAncestor(
@@ -432,7 +421,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__isChildView() {
-		if (this.ignoreHierarchy) {
+		if (this.hasAttribute('data-root-view')) {
 			this.childView = false;
 			return;
 		}
