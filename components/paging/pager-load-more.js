@@ -136,7 +136,12 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 			requestAnimationFrame(() => item.focus());
 		} else {
 			const firstFocusable = getFirstFocusableDescendant(item);
-			if (firstFocusable) firstFocusable.focus();
+			if (firstFocusable) {
+				firstFocusable.focus();
+			} else if (item.focus === nativeFocus) {
+				item.tabIndex = -1;
+				requestAnimationFrame(() => item.focus());
+			}
 		}
 	}
 
