@@ -1,5 +1,5 @@
 import '../pager-load-more.js';
-import { clickElem, defineCE, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { reset, stub } from 'sinon';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
@@ -45,32 +45,36 @@ describe('d2l-pager-load-more', () => {
 		runConstructor('d2l-pager-load-more');
 	});
 
-	it('dispatches d2l-pager-load-more event when clicked', async() => {
-		clickElem(pagerButton);
-		await oneEvent(pager, 'd2l-pager-load-more');
-	});
-
-	it('does not dispatch d2l-pager-load-more event while loading', async() => {
-
-		clickElem(pagerButton);
-		await oneEvent(pager, 'd2l-pager-load-more');
-
-		// in loading state since e.detail.complete() was never called
-		let dispatched = false;
-		pager.addEventListener('d2l-pager-load-more', () => dispatched = true);
-		pager.shadowRoot.querySelector('button').click();
-
-		// make sure pager has a chance to dispatch the event
-		await new Promise(resolve => {
-			setTimeout(() => {
-				expect(dispatched).to.be.false;
-				resolve();
-			});
-		});
-	});
-
 	it('should have the right initial item counts', async() => {
 		expect(pager._pageableInfo).to.eql({ itemCount: 30, itemShowingCount: 10 });
+	});
+
+	describe('events', () => {
+
+		it('dispatches d2l-pager-load-more event when clicked', async() => {
+			clickElem(pagerButton);
+			await oneEvent(pager, 'd2l-pager-load-more');
+		});
+
+		it('does not dispatch d2l-pager-load-more event while loading', async() => {
+
+			clickElem(pagerButton);
+			await oneEvent(pager, 'd2l-pager-load-more');
+
+			// in loading state since e.detail.complete() was never called
+			let dispatched = false;
+			pager.addEventListener('d2l-pager-load-more', () => dispatched = true);
+			pager.shadowRoot.querySelector('button').click();
+
+			// make sure pager has a chance to dispatch the event
+			await new Promise(resolve => {
+				setTimeout(() => {
+					expect(dispatched).to.be.false;
+					resolve();
+				});
+			});
+		});
+
 	});
 
 	describe('focus', () => {
@@ -80,6 +84,7 @@ describe('d2l-pager-load-more', () => {
 			clickElem(pagerButton);
 			const e = await oneEvent(pager, 'd2l-pager-load-more');
 			e.detail.complete();
+			await oneEvent(pager, 'd2l-pager-load-more-loaded');
 			expect(getComposedActiveElement()).to.equal(pagerButton);
 		});
 
@@ -89,7 +94,8 @@ describe('d2l-pager-load-more', () => {
 			clickElem(pagerButton);
 			const e = await oneEvent(pager, 'd2l-pager-load-more');
 			e.detail.complete();
-			await waitUntil(() => getComposedActiveElement() === focusableElem.shadowRoot.querySelector('button'));
+			await oneEvent(pager, 'd2l-pager-load-more-loaded');
+			expect(getComposedActiveElement()).to.equal(focusableElem.shadowRoot.querySelector('button'));
 		});
 
 		it('should focus on first focusable descendant when no focus method is implemented', async() => {
@@ -97,7 +103,8 @@ describe('d2l-pager-load-more', () => {
 			clickElem(pagerButton);
 			const e = await oneEvent(pager, 'd2l-pager-load-more');
 			e.detail.complete();
-			await waitUntil(() => getComposedActiveElement() === el.querySelector('#focusable-descendant > button'));
+			await oneEvent(pager, 'd2l-pager-load-more-loaded');
+			expect(getComposedActiveElement()).to.equal(el.querySelector('#focusable-descendant > button'));
 		});
 
 		it('should focus on item if no other focus target can be found', async() => {
@@ -106,7 +113,8 @@ describe('d2l-pager-load-more', () => {
 			clickElem(pagerButton);
 			const e = await oneEvent(pager, 'd2l-pager-load-more');
 			e.detail.complete();
-			await waitUntil(() => getComposedActiveElement() === focusableElem);
+			await oneEvent(pager, 'd2l-pager-load-more-loaded');
+			expect(getComposedActiveElement()).to.equal(focusableElem);
 		});
 
 	});

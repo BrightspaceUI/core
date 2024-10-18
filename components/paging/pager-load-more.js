@@ -17,6 +17,7 @@ const nativeFocus = document.createElement('div').focus;
 /**
  *  A pager component for load-more paging.
  * @fires d2l-pager-load-more - Dispatched when the user clicks the load-more button. Consumers must call the provided "complete" method once items have been loaded.
+ * @fires d2l-pager-load-more-loaded - Dispatched after more items have been loaded.
  */
 class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
@@ -125,24 +126,34 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 		this._loading = false;
 
 		// wait a frame for async sub-components to render
-		await new Promise(resolve => requestAnimationFrame(resolve));
+		await new Promise(requestAnimationFrame);
 
 		const item = pageable._getItemByIndex(lastItemIndex + 1);
 
-		if (!item) return;
-		if (item.updateComplete) await item.updateComplete;
-
-		if (item.focus !== nativeFocus) {
-			requestAnimationFrame(() => item.focus());
-		} else {
-			const firstFocusable = getFirstFocusableDescendant(item);
-			if (firstFocusable) {
-				firstFocusable.focus();
-			} else if (item.focus === nativeFocus) {
-				item.tabIndex = -1;
-				requestAnimationFrame(() => item.focus());
+		let itemToFocus;
+		if (item) {
+			if (item.updateComplete) await item.updateComplete;
+			if (item.focus !== nativeFocus) {
+				itemToFocus = item;
+			} else {
+				const firstFocusable = getFirstFocusableDescendant(item);
+				if (firstFocusable) {
+					itemToFocus = firstFocusable;
+				} else if (item.focus === nativeFocus) {
+					item.tabIndex = -1;
+					itemToFocus = item;
+				}
 			}
 		}
+
+		if (itemToFocus) {
+			await new Promise(requestAnimationFrame);
+			itemToFocus.focus();
+		}
+
+		await new Promise(requestAnimationFrame);
+		this.dispatchEvent(new CustomEvent('d2l-pager-load-more-loaded'));
+
 	}
 
 }
