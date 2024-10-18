@@ -126,7 +126,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 		this._loading = false;
 
 		// wait a frame for async sub-components to render
-		await new Promise(resolve => requestAnimationFrame(resolve));
+		await new Promise(requestAnimationFrame);
 
 		const item = pageable._getItemByIndex(lastItemIndex + 1);
 
@@ -151,7 +151,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Rt
 			itemToFocus.focus();
 		}
 
-		await new Promise(setTimeout);
+		await new Promise(requestAnimationFrame);
 		this.dispatchEvent(new CustomEvent('d2l-pager-load-more-loaded', {
 			bubbles: false,
 			composed: false
