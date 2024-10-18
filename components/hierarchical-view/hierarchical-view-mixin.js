@@ -198,7 +198,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	getRootView() {
-		if (!this.childView) {
+		if (!this.childView || this.hasAttribute('data-root-view')) {
 			return this;
 		}
 		const rootView = findComposedAncestor(
@@ -421,6 +421,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__isChildView() {
+		if (this.hasAttribute('data-root-view')) {
+			this.childView = false;
+			return;
+		}
 		const parentView = findComposedAncestor(
 			this.parentNode,
 			(node) => { return node.hierarchicalView; }
