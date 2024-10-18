@@ -34,10 +34,10 @@ Alerts communicate critical information relating to the state of the system and 
 
 <d2l-button id="open" style="align-self:center;display:none;">Show Alerts</d2l-button>
 <d2l-alert id="alert" type="default" button-text="Undo" has-close-button>
-	An <a href="#d2l-alert" target="_top">Inline Alert</a> can be placed anywhere in the page content
+	Inline Alerts can be placed anywhere in the page content
 </d2l-alert>
 <d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
-	A <a href="#d2l-alert-toast" target="_top">Toast Alert</a> appears at the botttom of the viewport</a>
+	Toast Alerts appear at the botttom of the viewport</a>
 </d2l-alert-toast>
 ```
 
@@ -187,3 +187,9 @@ For cases where multiple toast alerts are unavoidable, new toast messages will a
 	Third toast alert
 </d2l-alert-toast>
 ```
+
+## Accessibility
+
+[Inline Alerts](#d2l-alert) are meant to draw attention without interrupting the user's flow, so they do not use the ARIA `alert` role. This means screen reader users do not hear them until encountering them in the content (as intended).
+
+[Toast Alerts](#d2l-alert-toast) leverage the ARIA `alert` role in alignment with the [W3C Alert Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alert/), so an assertive live region is created which causes the content of the alert to be announced immediately. This can interrupt the user, so it should be used sparingly as per our [Best Practices](#best-practices-1).
