@@ -1,5 +1,5 @@
 import '../pager-load-more.js';
-import { clickElem, defineCE, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { reset, stub } from 'sinon';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
