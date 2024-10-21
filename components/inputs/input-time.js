@@ -374,7 +374,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						@d2l-menu-item-change="${this._handleDropdownChange}"
 						id="${this._dropdownId}"
 						role="listbox"
-						data-root-view>
+						root-view>
 						${menuItems}
 					</d2l-menu>
 					<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>

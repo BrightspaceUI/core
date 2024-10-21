@@ -130,7 +130,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		// reset to root view
 		const menu = this.__getMenuElement();
-		if (!menu.hasAttribute('data-root-view')) menu.show({ preventFocus: true });
+		if (!menu.rootView) menu.show({ preventFocus: true });
 	}
 
 	_onFocus(e) {
