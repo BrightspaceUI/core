@@ -102,7 +102,7 @@ Use a toast alert to provide feedback about an operation the user has just initi
 <!-- docs: start donts -->
 * If possible, avoid displaying multiple toasts — see [Multiple Toast Alerts](#multiple-toast-alerts)
 * Don't allow the close button to be blocked by other elements, users shouldn't have to wait for it to go away on its own
-* Don’t use for instructions or critical information since they disappear and are easily ignored — use an [Inline Alert](#d2l-alert) instead
+* Don’t use for instructions or critical information since they disappear and can be easily missed or ignored — use an [Inline Alert](#d2l-alert) instead
 * Avoid having two lines with `subtext` — toasts should be very brief
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
