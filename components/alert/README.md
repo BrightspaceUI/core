@@ -37,7 +37,7 @@ Alerts communicate critical information relating to the state of the system and 
 	Inline Alerts can be placed anywhere in the page content
 </d2l-alert>
 <d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
-	Toast Alerts appear at the botttom of the viewport</a>
+	Toast Alerts appear at the botttom of the viewport
 </d2l-alert-toast>
 ```
 
@@ -57,7 +57,7 @@ Use an inline alert if there is important information a user needs to know while
 <!-- docs: start donts -->
 * Don't display more than one paragraph of text
 * Avoid overusing them — the more commonly alerts appear, the less effective they will be
-* Don't use them for promotional material or information that is not relevant to the user’s work flow
+* Don't use them for promotional material or information that is not relevant to the user’s workflow
 * Don’t use them for validation errors – instead, use the [Form](../../components/form) component for a consistent user experience
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
