@@ -90,7 +90,7 @@ Use an inline alert if there is important information a user needs to know while
 
 ## Toast Alert [d2l-alert-toast]
 
-Use a toast alert to provide feedback about an operation the user has just initiated, when the result of that operation may not be apparent or obvious to the user. Toast alearts appear at the bottom of the viewport and disappear after 4 seconds, by default.
+Use a toast alert to provide feedback about an operation the user has just initiated when the result of that operation may not be apparent or obvious to the user. Toast alerts appear at the bottom of the viewport and disappear after 4 seconds by default.
 
 ### Best Practices
 <!-- docs: start best practices -->
