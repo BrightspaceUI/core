@@ -123,7 +123,7 @@ Use the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibil
 
 ## Accessibility
 
-- Due to merely being a CSS class, the accessibility provided by `selectStyles` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
+- Due to applying styles based on a CSS class rather than being its own component, the accessibility provided by `selectStyles` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
 - There are several things that can be done to make sure your `select` component is accessible, including:
   - Following the W3C [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) pattern
   - Using either the `aria-label` or `aria-labelledby` to appropriately assign a label to your component
