@@ -262,8 +262,6 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item.js';
-  import '@brightspace-ui/core/components/tabs/tabs.js';
-  import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-menu opened>
