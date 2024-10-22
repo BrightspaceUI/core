@@ -3,6 +3,7 @@ import '../inputs/input-date-time-range.js';
 import { formatDate, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
 import { html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
@@ -57,7 +58,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 			/**
 			 * @ignore
 			 */
-			valueText: { type: String }
+			valueText: { type: String },
+			setheight: { type: Boolean }
 		};
 	}
 
@@ -72,6 +74,8 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 		this._filterSetValue = true;
 		this._minWidth = 390;
 		this._noSearchSupport = true;
+
+		this.setheight = false;
 
 		this._handleDateChange = this._handleDateChange.bind(this);
 	}
@@ -136,8 +140,12 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 	}
 
 	_getAdditionalContent() {
+		const myclasses = {
+			'has-set-height': this.setheight
+		};
 		return this.type === 'date'
-			? html`<d2l-input-date-range
+			? html`<div class="${classMap(myclasses)}">
+			<d2l-input-date-range
 				@change="${this._handleDateChange}"
 				child-labels-hidden
 				end-value="${ifDefined(this.endValue ? getLocalDateTimeFromUTCDateTime(this.endValue) : undefined)}"
@@ -146,8 +154,10 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				label-hidden
 				prefer-fixed-positioning
 				start-value="${ifDefined(this.startValue ? getLocalDateTimeFromUTCDateTime(this.startValue) : undefined)}"
-			></d2l-input-date-range>`
-			: html`<d2l-input-date-time-range
+			></d2l-input-date-range>
+		</div>`
+			: html`<div class="${classMap(myclasses)}">
+			<d2l-input-date-time-range
 				@change="${this._handleDateChange}"
 				child-labels-hidden
 				end-value="${ifDefined(this.endValue)}"
@@ -156,6 +166,7 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				prefer-fixed-positioning
 				start-value="${ifDefined(this.startValue)}"
 			></d2l-input-date-time-range>
+		</div>
 		`;
 	}
 

@@ -224,6 +224,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-top: 0.6rem;
 				width: 100%;
 			}
+
+			.has-set-height {
+				min-height: 520px;
+			}
 		`];
 	}
 
