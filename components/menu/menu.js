@@ -128,7 +128,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'label') this._labelChanged();
 
-			if (propName === '_childView' && this._childView) {
+			if (propName === 'rootView' && !this.rootView) {
 				const items = this.shadowRoot.querySelector('.d2l-menu-items');
 				items.insertBefore(this._createReturnItem(), items.childNodes[0]);
 
@@ -276,7 +276,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			return;
 		}
 
-		if (this._childView && e.keyCode === keyCodes.LEFT) {
+		if (!this.rootView && e.keyCode === keyCodes.LEFT) {
 			e.stopPropagation();
 			this.hide();
 			return;
@@ -343,7 +343,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 	}
 
 	_onViewResize(e) {
-		if (this._childView) return;
+		if (!this.rootView) return;
 
 		const eventDetails = {
 			bubbles: true,

@@ -113,7 +113,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 
-		this.__isChildView();
+		this.__updateRootView();
 
 		if (typeof(IntersectionObserver) === 'function') {
 			this.__intersectionObserver = new IntersectionObserver((entries) => {
@@ -180,7 +180,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('keyup', stopPropagation);
 		this.addEventListener('keypress', stopPropagation);
 
-		this.__isChildView();
+		this.__updateRootView();
 
 	}
 
@@ -206,12 +206,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		const rootView = findComposedAncestor(
 			this.parentNode,
 			(node) => {
-				return node.rootView || (node.hierarchicalView && !node._childView);
+				return node.rootView;
 			}
 		);
-		if (rootView) {
-			rootView.rootView = true;
-		}
 		return rootView;
 	}
 
@@ -425,21 +422,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
-	__isChildView() {
-		if (this.rootView) {
-			this._childView = false;
-			return;
-		}
-		const parentView = findComposedAncestor(
-			this.parentNode,
-			(node) => { return node.hierarchicalView; }
-		);
-
-		if (parentView) {
-			this._childView = true;
-		}
-	}
-
 	__onHideStart(e) {
 		// re-enable focusable ancestor
 		this.__resetAncestorTabIndicies(e.detail.sourceView);
@@ -584,6 +566,17 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			node = getComposedParent(node);
 		}
+	}
+
+	__updateRootView() {
+		if (!this.hasAttribute('root-view')) {
+			const parentView = findComposedAncestor(
+				this.parentNode,
+				(node) => { return node.hierarchicalView; }
+			);
+			this.rootView = !parentView;
+		}
+		this._childView = !this.rootView;
 	}
 
 };
