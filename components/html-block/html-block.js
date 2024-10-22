@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
@@ -207,8 +206,6 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 		this._initialContextResolve = undefined;
 		this._initialContextPromise = new Promise(resolve => this._initialContextResolve = resolve);
 
-		this._renderContainerRef = createRef();
-
 		const contextKeysPromise = getRenderers().then(renderers => renderers.reduce((keys, currentRenderer) => {
 			if (currentRenderer.contextKeys) currentRenderer.contextKeys.forEach(key => keys.push(key));
 			return keys;
@@ -235,7 +232,7 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 		};
 
 		return html`
-			<div class="${classMap(renderContainerClasses)}" ${ref(this._renderContainerRef)}></div>
+			<div class="${classMap(renderContainerClasses)}"></div>
 			${this.noDeferredRendering ? html`<slot @slotchange="${this._handleSlotChange}"></slot>` : ''}
 		`;
 	}
@@ -297,10 +294,11 @@ class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 	}
 
 	async _updateRenderContainer() {
-		if (!this._renderContainerRef.value) return;
-		this._renderContainerRef.value.innerHTML = '';
-		this._renderContainerRef.value.append(await this._processEmbeds());
-		await this._processRenderers(this._renderContainerRef.value);
+		const renderContainer = this.shadowRoot?.querySelector('.d2l-html-block-rendered');
+		if (!renderContainer) return;
+		renderContainer.innerHTML = '';
+		renderContainer.append(await this._processEmbeds());
+		await this._processRenderers(renderContainer);
 	}
 
 	_validateHtml() {

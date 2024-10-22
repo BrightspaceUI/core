@@ -100,3 +100,10 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 ### Events
 - `d2l-tab-panel-selected`: dispatched when a tab is selected
 <!-- docs: end hidden content -->
+
+## Accessibility
+
+The `tabs` components were built following [W3C best practices for Tabs](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) with Manual Activation. Important features include:
+- Following recommended keyboard control patterns (with the exception of the "Optional" Home, End, and Delete key patterns)
+- Using the roles of `tablist` and `tab` appropriately in order to facilitate screen reader information (e.g., "tab, 2 of 7")
+- Using `aria-selected` to indicate `tab` selection state
