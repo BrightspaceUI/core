@@ -13,6 +13,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
+ * @fires click - Dispatched when the button is clicked
  * @slot - Text of the sort button
  * @slot items - Multi-facted sort items. Generally assigned to the slot attribute on a nested d2l-table-col-sort-button-item.
  */
