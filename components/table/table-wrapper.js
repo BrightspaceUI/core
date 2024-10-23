@@ -599,7 +599,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 					const affectedNodes = [...removedNodes, ...addedNodes];
 					for (const node of affectedNodes) {
 						if (!(node instanceof Element)) continue;
-						updates.classNames ||= node.matches('tr');
+						updates.classNames ||= node.matches('tr, td, th');
 						updates.syncWidths ||= node.matches('tr');
 						updates.sticky ||= node.matches(SELECTORS.headers);
 						updates.count ||= node.matches(SELECTORS.items);
