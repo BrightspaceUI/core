@@ -423,6 +423,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onHideStart(e) {
+		if (this.rootView) e.stopPropagation();
+
 		// re-enable focusable ancestor
 		this.__resetAncestorTabIndicies(e.detail.sourceView);
 
@@ -483,6 +485,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onShowStart(e) {
+		if (this.rootView) e.stopPropagation();
+
 		// disable focusable ancestors so they can't steal focus from custom views
 		this.__removeAncestorTabIndicies(e.detail.sourceView);
 
@@ -522,6 +526,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onViewResize(e) {
+		if (this.rootView) e.stopPropagation();
 		if (this._height !== e.detail.height) {
 			this._height = e.detail.height;
 			this.style.height = `${e.detail.height}px`;
