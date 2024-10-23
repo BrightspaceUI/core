@@ -182,6 +182,12 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.__updateRootView();
 
+		if (!this.rootView) return;
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-hide-start', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-show-complete', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-show-start', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-resize', this.__stopPropagation);
 	}
 
 	getActiveView() {
@@ -423,8 +429,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onHideStart(e) {
-		if (this.rootView) e.stopPropagation();
-
 		// re-enable focusable ancestor
 		this.__resetAncestorTabIndicies(e.detail.sourceView);
 
@@ -485,8 +489,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onShowStart(e) {
-		if (this.rootView) e.stopPropagation();
-
 		// disable focusable ancestors so they can't steal focus from custom views
 		this.__removeAncestorTabIndicies(e.detail.sourceView);
 
@@ -526,7 +528,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onViewResize(e) {
-		if (this.rootView) e.stopPropagation();
 		if (this._height !== e.detail.height) {
 			this._height = e.detail.height;
 			this.style.height = `${e.detail.height}px`;
@@ -556,6 +557,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__resizeObserver = this.__resizeObserver || new ResizeObserver(this.__bound_dispatchViewResize);
 		this.__resizeObserver.disconnect();
 		this.__resizeObserver.observe(content);
+	}
+
+	__stopPropagation(e) {
+		e.stopPropagation();
 	}
 
 	__updateAncestorTabIndicies(view, sourceAttribute, targetAttribute) {
