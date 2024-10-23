@@ -1005,28 +1005,28 @@ describe('table', () => {
 
 				const trs = elem.querySelectorAll('table tr');
 				for (const tr of trs) {
-					const item =  tr.querySelector('td, th');
+					const item = tr.querySelector('td, th');
 					const newItem = item.cloneNode();
 					newItem.innerHTML = `New ${item.innerHTML}`;
 					tr.appendChild(newItem);
 				}
 				await expect(elem).to.be.golden();
-			})
+			});
 
 			it('add-then-remove-column', async() => {
 
 				const trs = elem.querySelectorAll('table tr');
 				const newItems = [];
 				for (const tr of trs) {
-					const item =  tr.querySelector('td, th');
+					const item = tr.querySelector('td, th');
 					const newItem = item.cloneNode();
-					newItem.className = "d2l-added-column"
+					newItem.className = 'd2l-added-column';
 					tr.appendChild(newItem);
-					newItems.push(newItem)
+					newItems.push(newItem);
 				}
-				for (const item of newItems) item.remove()
+				for (const item of newItems) item.remove();
 				await expect(elem).to.be.golden();
-			})
+			});
 
 		});
 
