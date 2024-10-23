@@ -60,12 +60,13 @@ describe('d2l-filter', () => {
 	it('Multiple dimensions drilling in', async() => {
 		const elem = await fixture(multiDimensionFixture);
 		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+		const menu = elem.shadowRoot.querySelector('d2l-menu');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
 
 		elem.opened = true;
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		menuItem.click();
-		await oneEvent(dropdown, 'd2l-hierarchical-view-show-complete');
+		await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 		await expect(elem).to.be.accessible({ ignoredRules: ['aria-roles', 'aria-required-children', 'aria-required-parent'] }); // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
 	});
 
