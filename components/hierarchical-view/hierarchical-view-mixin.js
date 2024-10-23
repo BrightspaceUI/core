@@ -14,15 +14,16 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			/**
 			 * @ignore
 			 */
-			childView: { type: Boolean, reflect: true, attribute: 'child-view' },
-			/**
-			 * @ignore
-			 */
 			hierarchicalView: { type: Boolean },
 			/**
 			 * @ignore
 			 */
-			shown: { type: Boolean, reflect: true }
+			rootView: { type: Boolean, attribute: 'root-view' },
+			/**
+			 * @ignore
+			 */
+			shown: { type: Boolean, reflect: true },
+			_childView: { type: Boolean, reflect: true, attribute: 'child-view' },
 		};
 	}
 
@@ -98,9 +99,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		super();
 
 		/** @ignore */
-		this.childView = false;
-		/** @ignore */
 		this.hierarchicalView = true;
+		/** @ignore */
+		this.rootView = false;
+		this._childView = false;
 		this.__focusPrevious = false;
 		this.__intersectionObserver = null;
 		this.__isAutoSized = false;
@@ -111,7 +113,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 
-		this.__isChildView();
+		this.__updateRootView();
 
 		if (typeof(IntersectionObserver) === 'function') {
 			this.__intersectionObserver = new IntersectionObserver((entries) => {
@@ -135,7 +137,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			this.__startResizeObserver();
 
-			if (!this.childView) {
+			if (!this._childView) {
 				this.addEventListener('focus', this.__focusCapture, true);
 				this.addEventListener('focusout', this.__focusOutCapture, true);
 				this.__onWindowResize = this.__onWindowResize.bind(this);
@@ -167,7 +169,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		const stopPropagation = e => {
 			// only stop for child views, so that Esc from root view can close dropdown
-			if (!this.childView) return;
+			if (!this._childView) return;
 			e.stopPropagation();
 		};
 
@@ -178,8 +180,14 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('keyup', stopPropagation);
 		this.addEventListener('keypress', stopPropagation);
 
-		this.__isChildView();
+		this.__updateRootView();
 
+		if (!this.rootView) return;
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-hide-start', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-show-complete', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-show-start', this.__stopPropagation);
+		this.addEventListener('d2l-hierarchical-view-resize', this.__stopPropagation);
 	}
 
 	getActiveView() {
@@ -198,13 +206,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	getRootView() {
-		if (!this.childView) {
+		if (this.rootView || !this._childView) {
 			return this;
 		}
 		const rootView = findComposedAncestor(
 			this.parentNode,
 			(node) => {
-				return node.hierarchicalView && !node.childView;
+				return node.rootView;
 			}
 		);
 		return rootView;
@@ -228,7 +236,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	isActive() {
-		if ((this.childView && !this.shown) || !this.shadowRoot) {
+		if ((this._childView && !this.shown) || !this.shadowRoot) {
 			return false;
 		} else {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
@@ -289,7 +297,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__autoSize(view) {
-		if (this.__isAutoSized || this.childView) return;
+		if (this.__isAutoSized || this._childView) return;
 		requestAnimationFrame(() => {
 
 			if (view.offsetParent === null) return;
@@ -420,17 +428,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
-	__isChildView() {
-		const parentView = findComposedAncestor(
-			this.parentNode,
-			(node) => { return node.hierarchicalView; }
-		);
-
-		if (parentView) {
-			this.childView = true;
-		}
-	}
-
 	__onHideStart(e) {
 		// re-enable focusable ancestor
 		this.__resetAncestorTabIndicies(e.detail.sourceView);
@@ -484,7 +481,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onKeyDown(e) {
-		if (this.childView && e.keyCode === escapeKeyCode) {
+		if (this._childView && e.keyCode === escapeKeyCode) {
 			e.stopPropagation();
 			this.hide();
 			return;
@@ -498,7 +495,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
 
-		if (this.childView && !this.shown) {
+		if (this._childView && !this.shown) {
 			/* deep link scenario */
 			this.show(e.detail.data, e.detail.sourceView);
 		}
@@ -562,6 +559,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__resizeObserver.observe(content);
 	}
 
+	__stopPropagation(e) {
+		e.stopPropagation();
+	}
+
 	__updateAncestorTabIndicies(view, sourceAttribute, targetAttribute) {
 		const rootView = this.getRootView();
 		let node = getComposedParent(view);
@@ -575,6 +576,17 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			node = getComposedParent(node);
 		}
+	}
+
+	__updateRootView() {
+		if (!this.hasAttribute('root-view')) {
+			const parentView = findComposedAncestor(
+				this.parentNode,
+				(node) => { return node.hierarchicalView; }
+			);
+			this.rootView = !parentView;
+		}
+		this._childView = !this.rootView;
 	}
 
 };

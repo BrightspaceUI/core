@@ -257,13 +257,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
-
-		// Prevent these events from bubbling out of the filter
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-hide-start', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-show-complete', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-show-start', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-resize', this._stopPropagation);
 	}
 
 	render() {
