@@ -976,6 +976,19 @@ describe('table', () => {
 		describe('rounded-corners', () => {
 
 			let elem;
+			function addColumn() {
+				const trs = elem.querySelectorAll('table tr');
+				const newItems = [];
+				for (const tr of trs) {
+					const item = tr.querySelector('td, th');
+					const newItem = item.cloneNode();
+					newItem.innerHTML = `New ${item.innerHTML}`;
+					tr.appendChild(newItem);
+					newItems.push(newItem);
+				}
+				return newItems;
+			}
+
 			beforeEach(async() => {
 				const parent = await createTableFixtureShared('default', false, html`
 					<thead>
@@ -998,6 +1011,17 @@ describe('table', () => {
 
 			it('last-removed', async() => {
 				elem.querySelector('table > tbody > :last-child').remove();
+				await expect(elem).to.be.golden();
+			});
+
+			it('add-column', async() => {
+				addColumn(elem);
+				await expect(elem).to.be.golden();
+			});
+
+			it('add-then-remove-column', async() => {
+				const newItems = addColumn(elem);
+				for (const item of newItems) item.remove();
 				await expect(elem).to.be.golden();
 			});
 
