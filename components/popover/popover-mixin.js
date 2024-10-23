@@ -57,7 +57,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				display: inline-block;
 			}
 
-			.content-wrapper {
+			.content-container {
 				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
 				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
@@ -82,19 +82,17 @@ export const PopoverMixin = superclass => class extends superclass {
 		super();
 		this.configure();
 		this._useNativePopover = isSupported ? 'manual' : undefined;
-		this._handleAutoCloseClick = this._handleAutoCloseClick.bind(this);
-		this._handleAutoCloseFocus = this._handleAutoCloseFocus.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this._opened) this._addAutoCloseHandlers();
+		if (this._opened) this.#addAutoCloseHandlers();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._removeAutoCloseHandlers();
-		this._clearDismissible();
+		this.#removeAutoCloseHandlers();
+		this.#clearDismissible();
 	}
 
 	async close() {
@@ -105,10 +103,10 @@ export const PopoverMixin = superclass => class extends superclass {
 		if (this._useNativePopover) this.hidePopover();
 
 		this._previousFocusableAncestor = null;
-		this._removeAutoCloseHandlers();
-		this._clearDismissible();
+		this.#removeAutoCloseHandlers();
+		this.#clearDismissible();
 		await this.updateComplete; // wait before applying focus to opener
-		this._focusOpener();
+		this.#focusOpener();
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 	}
 
@@ -131,15 +129,53 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
 
 		this._opener = getComposedActiveElement();
-		this._addAutoCloseHandlers();
+		this.#addAutoCloseHandlers();
 
-		await this._position();
+		await this.#position();
 
 		this._dismissibleId = setDismissible(() => this.close());
 
-		this._focusContent(this);
+		this.#focusContent(this);
 
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
+	}
+
+	renderPopover(content) {
+
+		/*
+		<div
+		id="d2l-dropdown-wrapper"
+		class="d2l-dropdown-content-width vdiff-target"
+		style=${styleMap(widthStyle)}
+		?data-closing="${this._closing}">
+		*/
+
+		content = html`<div class="content-container vdiff-target">${content}</div>`;
+
+		if (this._trapFocus) {
+			content = html`
+				<d2l-focus-trap @d2l-focus-trap-enter="${this.#handleFocusTrapEnter}" ?trap="${this._opened}">
+					${content}
+				</d2l-focus-trap>
+			`;
+		}
+
+		const positionStyle = {};
+		/*
+		if (this._position) {
+			for (const prop in this._position) {
+				positionStyle[prop] = `${this._position[prop]}px`;
+			}
+		}
+		*/
+
+		content = html`
+			<div class="content-position" style=${styleMap(positionStyle)}>
+				${content}
+			</div>
+		`;
+
+		return content;
 	}
 
 	toggleOpen(applyFocus = true) {
@@ -147,57 +183,20 @@ export const PopoverMixin = superclass => class extends superclass {
 		else return this.open(!this._noAutoFocus && applyFocus);
 	}
 
-	_addAutoCloseHandlers() {
-		this.addEventListener('blur', this._handleAutoCloseFocus, { capture: true });
-		document.body.addEventListener('focus', this._handleAutoCloseFocus, { capture: true });
-		document.addEventListener('click', this._handleAutoCloseClick, { capture: true });
-	}
-
-	_clearDismissible() {
-		if (!this._dismissibleId) return;
-		clearDismissible(this._dismissibleId);
-		this._dismissibleId = null;
-	}
-
-	_focusContent(container) {
-		if (this._noAutoFocus || this._applyFocus === false) return;
-
-		const focusable = getFirstFocusableDescendant(container);
-		if (focusable) {
-			// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
-			requestAnimationFrame(() => focusable.focus());
-		} else {
-			const content = this._getContentWrapper();
-			content.setAttribute('tabindex', '-1');
-			content.focus();
-		}
-	}
-
-	_focusOpener() {
-		if (!document.activeElement) return;
-		if (!isComposedAncestor(this, getComposedActiveElement())) return;
-
-		this?._opener.focus();
-	}
-
-	_getContentWrapper() {
-		return this.shadowRoot.querySelector('.content-wrapper');
-	}
-
-	_handleAutoCloseClick(e) {
+	#handleAutoCloseClick = (e) => {
 
 		if (!this._opened || this._noAutoClose) return;
 
 		const rootTarget = e.composedPath()[0];
-		if (isComposedAncestor(this._getContentWrapper(), rootTarget)
+		if (isComposedAncestor(this.#getContentContainer(), rootTarget)
 			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
 			return;
 		}
 
 		this.close();
-	}
+	};
 
-	_handleAutoCloseFocus() {
+	#handleAutoCloseFocus = () => {
 
 		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
 		setTimeout(() => {
@@ -219,21 +218,58 @@ export const PopoverMixin = superclass => class extends superclass {
 			this.close();
 		}, 0);
 
+	};
+
+	#addAutoCloseHandlers() {
+		this.addEventListener('blur', this.#handleAutoCloseFocus, { capture: true });
+		document.body.addEventListener('focus', this.#handleAutoCloseFocus, { capture: true });
+		document.addEventListener('click', this.#handleAutoCloseClick, { capture: true });
 	}
 
-	_handleFocusTrapEnter() {
-		this._focusContent(this._getContentWrapper());
+	#clearDismissible() {
+		if (!this._dismissibleId) return;
+		clearDismissible(this._dismissibleId);
+		this._dismissibleId = null;
+	}
+
+	#focusContent(container) {
+		if (this._noAutoFocus || this._applyFocus === false) return;
+
+		const focusable = getFirstFocusableDescendant(container);
+		if (focusable) {
+			// Removing the rAF call can allow infinite focus looping to happen in content using a focus trap
+			requestAnimationFrame(() => focusable.focus());
+		} else {
+			const content = this.#getContentContainer();
+			content.setAttribute('tabindex', '-1');
+			content.focus();
+		}
+	}
+
+	#focusOpener() {
+		if (!document.activeElement) return;
+		if (!isComposedAncestor(this, getComposedActiveElement())) return;
+
+		this?._opener.focus();
+	}
+
+	#getContentContainer() {
+		return this.shadowRoot.querySelector('.content-container');
+	}
+
+	#handleFocusTrapEnter() {
+		this.#focusContent(this.#getContentContainer());
 
 		/** Dispatched when user focus enters the popover (trap-focus option only) */
 		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
 	}
 
-	async _position(contentRect, options) {
+	async #position(contentRect, options) {
 		if (!this._opener) return;
 
 		options = Object.assign({ updateAboveBelow: true, updateHeight: true }, options);
 
-		const content = this._getContentWrapper();
+		const content = this.#getContentContainer();
 
 		/*
 		// don't let dropdown content horizontally overflow viewport
@@ -260,48 +296,10 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	}
 
-	_removeAutoCloseHandlers() {
-		this.removeEventListener('blur', this._handleAutoCloseFocus, { capture: true });
-		document.body?.removeEventListener('focus', this._handleAutoCloseFocus, { capture: true }); // DE41322: document.body can be null in some scenarios
-		document.removeEventListener('click', this._handleAutoCloseClick, { capture: true });
-	}
-
-	_renderPopover(content) {
-
-		/*
-		<div
-		id="d2l-dropdown-wrapper"
-		class="d2l-dropdown-content-width vdiff-target"
-		style=${styleMap(widthStyle)}
-		?data-closing="${this._closing}">
-		*/
-
-		content = html`<div class="content-wrapper vdiff-target">${content}</div>`;
-
-		if (this._trapFocus) {
-			content = html`
-				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._opened}">
-					${content}
-				</d2l-focus-trap>
-			`
-		};
-
-		const positionStyle = {};
-		/*
-		if (this._position) {
-			for (const prop in this._position) {
-				positionStyle[prop] = `${this._position[prop]}px`;
-			}
-		}
-		*/
-
-		content = html`
-			<div class="content-position" style=${styleMap(positionStyle)}>
-				${content}
-			</div>
-		`;
-
-		return content;
+	#removeAutoCloseHandlers() {
+		this.removeEventListener('blur', this.#handleAutoCloseFocus, { capture: true });
+		document.body?.removeEventListener('focus', this.#handleAutoCloseFocus, { capture: true }); // DE41322: document.body can be null in some scenarios
+		document.removeEventListener('click', this.#handleAutoCloseClick, { capture: true });
 	}
 
 };

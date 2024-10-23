@@ -115,7 +115,7 @@ class Popover extends PopoverMixin(LitElement) {
 			</div>
 		`;
 
-		return this._renderPopover(content);
+		return this.renderPopover(content);
 	}
 
 	willUpdate(changedProperties) {
@@ -156,6 +156,10 @@ class Popover extends PopoverMixin(LitElement) {
 		console.log('handle header slot change');
 	}
 
+	_handlePopoverClose() {
+		this.opened = false;
+	}
+
 	_handlePopoverOpen() {
 		this.opened = true;
 
@@ -163,10 +167,6 @@ class Popover extends PopoverMixin(LitElement) {
 		if (!this.noAutoFit) {
 			content.scrollTop = 0;
 		}
-	}
-
-	_handlePopoverClose() {
-		this.opened = false;
 	}
 
 }
