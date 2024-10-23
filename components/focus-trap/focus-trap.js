@@ -34,16 +34,6 @@ class FocusTrap extends FocusMixin(LitElement) {
 		`;
 	}
 
-	static #exemptSelectors = [
-		'.d2l-focus-trap-exempt',
-		'.equatio-toolbar-wrapper',
-		'.equatio-toolbar-shadow-root-container'
-	].join(', ');
-
-	static #isExempt(target) {
-		return !!target?.closest(this.#exemptSelectors);
-	}
-
 	constructor() {
 		super();
 		this.trap = false;
@@ -90,6 +80,12 @@ class FocusTrap extends FocusMixin(LitElement) {
 			traps.splice(trapIndex, 1);
 		}
 	}
+
+	static #exemptSelectors = [
+		'.d2l-focus-trap-exempt',
+		'.equatio-toolbar-wrapper',
+		'.equatio-toolbar-shadow-root-container'
+	].join(', ');
 
 	_focusFirst() {
 		const focusable = this.shadowRoot &&
@@ -145,6 +141,10 @@ class FocusTrap extends FocusMixin(LitElement) {
 			}
 		}
 		this._focusFirst();
+	}
+
+	static #isExempt(target) {
+		return !!target?.closest(this.#exemptSelectors);
 	}
 
 }
