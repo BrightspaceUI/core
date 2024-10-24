@@ -147,7 +147,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${columns.map(columnHeading => { const val = row.data[columnHeading.toLowerCase()]; return val ? html`<td>${formatter.format(val)}</td>` : null }) }
+								${columns.map(columnHeading => { const val = row.data[columnHeading.toLowerCase()]; return val ? html`<td>${formatter.format(val)}</td>` : null; }) }
 								<td>${[formatter.format(row.data.latitude), formatter.format(row.data.longitude)].join(', ')}</td>
 							</tr>
 						`)}
