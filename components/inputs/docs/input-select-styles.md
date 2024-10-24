@@ -50,58 +50,81 @@ Toggling progressive disclosure is OK
 
 Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
 
-Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
+The styles support the pseudo-classes `disabled`, `focus`, and `hover`, as well as the `aria-invalid` attribute.
 
-<!-- docs: demo code properties name:d2l-test-input-select -->
+When applying styles to the native element, we also recommend using the [`SkeletonMixin`](https://github.com/BrightspaceUI/core/tree/main/components/skeleton) to help convey to users that the page, or at least a section of it, has not finished loading yet.
+
+<!-- docs: demo code -->
 ```html
 <script type="module">
-  import { css, html, LitElement } from 'lit';
-  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
+  import { html, LitElement } from 'lit';
   import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
   import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
-  class TestInputSelect extends SkeletonMixin(RtlMixin(LitElement)) {
+  class TestInputSelect extends SkeletonMixin(LitElement) {
+  static get styles() {
+    return [ super.styles, selectStyles ];
+  }
 
-    static get properties() {
-		return {
-			disabled: { type: Boolean },
-			invalid: { type: Boolean },
-			overflow: { type: Boolean }
-		};
-	}
-
-	static get styles() {
-		return [super.styles, selectStyles,
-			css`
-				:host {
-					display: inline-block;
-				}
-				:host([overflow]) select {
-					max-width: 130px;
-				}
-			`
-		];
-	}
-
-	render() {
-		const invalid = this.invalid ? 'true' : 'false';
-		return html`
-			<div class="d2l-skeletize">
-				<select
-					aria-label="Choose a dinosaur:"
-					aria-invalid="${invalid}"
-					class="d2l-input-select"
-					?disabled="${this.disabled}">
-					<option>Tyrannosaurus</option>
-					<option>Velociraptor</option>
-					<option>Deinonychus</option>
-				</select>
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="d2l-skeletize">
+        <select
+          aria-label="Choose a dinosaur:"
+          class="d2l-input-select">
+          <option>Tyrannosaurus</option>
+          <option>Velociraptor</option>
+          <option>Deinonychus</option>
+        </select>
+      </div>
+    `;
+  }
 
   }
   customElements.define('d2l-test-input-select', TestInputSelect);
 </script>
 <d2l-test-input-select></d2l-test-input-select>
 ```
+
+### Invalid
+
+Use the [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-invalid) attribute to support screenreader users and apply our consistent error styles.
+
+<!-- docs: demo -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit';
+  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+
+  class TestInputSelect extends LitElement {
+
+  static get styles() {
+    return [ selectStyles ];
+  }
+
+  render() {
+    return html`
+      <select
+        aria-label="Choose a dinosaur:"
+        aria-invalid="true"
+        class="d2l-input-select">
+        <option>Tyrannosaurus</option>
+        <option>Velociraptor</option>
+        <option>Deinonychus</option>
+      </select>
+    `;
+  }
+
+  }
+  customElements.define('d2l-test-input-select', TestInputSelect);
+</script>
+<d2l-test-input-select></d2l-test-input-select>
+```
+
+## Accessibility
+
+- Due to applying styles based on a CSS class rather than being its own component, the accessibility provided by `selectStyles` comes purely in the way of following the guidelines for [contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html) and [focus](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
+- There are several things that can be done to make sure your `select` component is accessible, including:
+  - Following the W3C [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) pattern
+  - Using either the `aria-label` or `aria-labelledby` to appropriately assign a label to your component
+  - Using `label` for `optgroup` if you choose to use that element within the select element, so that it can be read out to screenreaders

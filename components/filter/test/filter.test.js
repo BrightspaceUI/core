@@ -172,6 +172,7 @@ describe('d2l-filter', () => {
 				</d2l-filter>
 			`);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+			const menu = elem.shadowRoot.querySelector('d2l-menu');
 			const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 			elem.opened = true;
@@ -189,9 +190,9 @@ describe('d2l-filter', () => {
 			expect(value2.shouldBubble).to.be.false;
 
 			setTimeout(() => dimensions[1].click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 			setTimeout(() => dimensions[0].click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 
 			await waitUntil(() => value2.shouldBubble, 'shouldBubble recalculated', { timeout: 3000 });
 			expect(value1.shouldBubble).to.be.true;
@@ -294,13 +295,14 @@ describe('d2l-filter', () => {
 		it('sets introductory text on a dimension in a multi-dimensional filter', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set><d2l-filter-dimension-set introductory-text="intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+			const menu = elem.shadowRoot.querySelector('d2l-menu');
 			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 
 			setTimeout(() => dimension.click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 
 			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
 			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
@@ -940,6 +942,7 @@ describe('d2l-filter', () => {
 				const elem = await fixture(multiDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+				const menu = elem.shadowRoot.querySelector('d2l-menu');
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 				elem.opened = true;
@@ -957,7 +960,7 @@ describe('d2l-filter', () => {
 				expect(eventSpy).to.be.calledTwice;
 
 				setTimeout(() => dimensions[0].click());
-				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+				await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 				expect(eventSpy).to.be.calledTwice;
 			});
 
@@ -1499,6 +1502,7 @@ describe('d2l-filter', () => {
 			it(`clicking ${testCase.key} in the header goes back to the dimension list`, async() => {
 				const elem = await fixture(multiDimensionFixture);
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+				const menu = elem.shadowRoot.querySelector('d2l-menu');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
@@ -1506,7 +1510,7 @@ describe('d2l-filter', () => {
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 
 				setTimeout(() => dimension.click());
-				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+				await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 				expect(elem._activeDimensionKey).to.not.be.null;
 
 				const event = new CustomEvent('keydown', {
@@ -1520,7 +1524,7 @@ describe('d2l-filter', () => {
 
 				const returnButton = elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
 				setTimeout(() => returnButton.dispatchEvent(event));
-				await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+				await oneEvent(menu, 'd2l-hierarchical-view-hide-complete');
 				expect(elem._activeDimensionKey).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
@@ -1531,6 +1535,7 @@ describe('d2l-filter', () => {
 			it(`set dimension - clicking ${testCase.key} in the content goes back to the dimension list`, async() => {
 				const elem = await fixture(multiDimensionFixture);
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+				const menu = elem.shadowRoot.querySelector('d2l-menu');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
@@ -1538,7 +1543,7 @@ describe('d2l-filter', () => {
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 
 				setTimeout(() => dimension.click());
-				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+				await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
 				expect(elem._activeDimensionKey).to.not.be.null;
 
 				const event = new CustomEvent('keydown', {
@@ -1553,7 +1558,7 @@ describe('d2l-filter', () => {
 				const firstListItem = elem.shadowRoot.querySelector('d2l-list-item');
 				firstListItem.focus();
 				setTimeout(() => firstListItem.dispatchEvent(event));
-				await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+				await oneEvent(menu, 'd2l-hierarchical-view-hide-complete');
 				expect(elem._activeDimensionKey).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;

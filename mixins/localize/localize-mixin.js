@@ -5,8 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinBaseClass extends getLocalizeClass(superclass) {
 
-	#updatedProperties = new Map();
-
 	constructor() {
 		super();
 		super.constructor.setLocalizeMarkup(localizeMarkup);
@@ -62,6 +60,8 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 	onLocalizeResourcesChange() {
 		this.requestUpdate('localize');
 	}
+
+	#updatedProperties = new Map();
 
 });
 
