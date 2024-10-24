@@ -48,7 +48,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			:host([shown]) {
 				display: inline-block;
-				overflow: auto;
 				vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
 			}
 			.d2l-hierarchical-view-content {

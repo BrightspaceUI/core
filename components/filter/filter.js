@@ -218,6 +218,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			/* Needed to "undo" the menu-item style for multiple dimensions */
 			d2l-hierarchical-view {
 				cursor: auto;
+				overflow: auto; /* remove with GAUD-131-dropdown-fixed-positioning flag clean up */
 			}
 
 			d2l-loading-spinner {
