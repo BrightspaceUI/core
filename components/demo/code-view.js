@@ -36,10 +36,6 @@ class CodeView extends LitElement {
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
-	firstUpdated() {
-		this._updateCode(this.shadowRoot.querySelector('slot'));
-	}
-
 	render() {
 		return html`
 			<div class="d2l-code-view-src"><slot @slotchange="${this._handleSlotChange}"></slot></div>
