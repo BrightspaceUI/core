@@ -22,16 +22,16 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
-const thText = ['Additional', 'Placeholder', 'Header', 'Row'];
+const thText = ['Additional', 'Placeholder', 'Header', 'Row', 'Cells'];
 
 const data = () => [
-	{ name: 'Ottawa, Canada', data: { 'city': 'Ottawa', 'country': 'Canada', 'population': 994837, 'size': 2790, 'elevation': 70 }, selected: true },
-	{ name: 'Toronto, Canada', data: { 'city': 'Toronto', 'country': 'Canada', 'population': 2930000, 'size': 630, 'elevation': 76 }, selected: true },
-	{ name: 'Sydney, Australia', data: { 'city': 'Sydney', 'country': 'Australia', 'population': 5312000, 'size': 12368, 'elevation': 3 }, selected: false },
-	{ name: 'Cairo, Egypt', data: { 'city': 'Cairo', 'country': 'Egypt', 'population': 9540000, 'size': 3085, 'elevation': 23 }, selected: false },
-	{ name: 'Moscow, Russia', data: { 'city': 'Moscow', 'country': 'Russia', 'population': 12712305, 'size': 2511, 'elevation': 124 }, selected: false },
-	{ name: 'London, England', data: { 'city': 'London', 'country': 'England', 'population': 8982000, 'size': 1572, 'elevation': 11 }, selected: false },
-	{ name: 'Tokyo, Japan', data: { 'city': 'Tokyo', 'country': 'Japan', 'population': 13960000, 'size': 2194, 'elevation': 40 }, selected: false }
+	{ name: 'Ottawa, Canada', data: { 'city': 'Ottawa', 'country': 'Canada', 'population': 994837, 'size': 2790, 'elevation': 70, 'latitude': 45.32, 'longitude': -75.71 }, selected: true },
+	{ name: 'Toronto, Canada', data: { 'city': 'Toronto', 'country': 'Canada', 'population': 2930000, 'size': 630, 'elevation': 76, 'latitude': 43.69, 'longitude': -79.41 }, selected: true },
+	{ name: 'Sydney, Australia', data: { 'city': 'Sydney', 'country': 'Australia', 'population': 5312000, 'size': 12368, 'elevation': 3, 'latitude': -33.86, 'longitude': 151.13 }, selected: false },
+	{ name: 'Cairo, Egypt', data: { 'city': 'Cairo', 'country': 'Egypt', 'population': 9540000, 'size': 3085, 'elevation': 23, 'latitude': 30.05, 'longitude': 31.25 }, selected: false },
+	{ name: 'Moscow, Russia', data: { 'city': 'Moscow', 'country': 'Russia', 'population': 12712305, 'size': 2511, 'elevation': 124, 'latitude': 55.70, 'longitude': 35.59 }, selected: false },
+	{ name: 'London, England', data: { 'city': 'London', 'country': 'England', 'population': 8982000, 'size': 1572, 'elevation': 11, 'latitude': 51.49, 'longitude': -0.12 }, selected: false },
+	{ name: 'Tokyo, Japan', data: { 'city': 'Tokyo', 'country': 'Japan', 'population': 13960000, 'size': 2194, 'elevation': 40, 'latitude': 35.68, 'longitude': 139.74 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -105,19 +105,21 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							<tr>
 								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
 								${this._renderDoubleSortButton('City', 'Country')}
-								<th scope="col" colspan="${columns.length}" sticky>
+								<th scope="col" colspan="${columns.length + 1}" sticky>
 									Metrics
 								</th>
 							</tr>
 							<tr>
 								<th scope="col" sticky></th>
 								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+								${this._renderMenuSortButton('Coordinates', ['Latitude', 'Longitude'])}
 							</tr>
 						` : html`
 							<tr>
 								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
 								${this._renderDoubleSortButton('City', 'Country')}
 								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
+								${this._renderMenuSortButton('Coordinates', ['Latitude', 'Longitude'])}
 							</tr>
 						`}
 					</thead>
@@ -145,7 +147,8 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 									</d2l-selection-input>
 								</th>
 								<th scope="row">${row.name}</th>
-								${columns.map(columnHeading => html`<td>${formatter.format(row.data[columnHeading.toLowerCase()])}</td>`)}
+								${columns.map(columnHeading => { const val = row.data[columnHeading.toLowerCase()]; return val ? html`<td>${formatter.format(val)}</td>` : null }) }
+								<td>${[formatter.format(row.data.latitude), formatter.format(row.data.longitude)].join(', ')}</td>
 							</tr>
 						`)}
 					</tbody>
@@ -162,7 +165,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 	_handlePagerLoadMore(e) {
 		const startIndex = this._data.length + 1;
 		for (let i = 0; i < e.target.pageSize; i++) {
-			this._data.push({ name: `City ${startIndex + i}, Country ${startIndex + i}`, data: { 'city': `City ${startIndex + i}`, 'country': `Country ${startIndex + i}`, 'population': 26320000, 'size': 6340, 'elevation': 4 }, selected: false });
+			this._data.push({ name: `City ${startIndex + i}, Country ${startIndex + i}`, data: { 'city': `City ${startIndex + i}`, 'country': `Country ${startIndex + i}`, 'population': 26320000, 'size': 6340, 'elevation': 4, 'latitude': 3, 'longitude': 3 }, selected: false });
 		}
 		this.requestUpdate();
 		e.detail.complete();
@@ -197,7 +200,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 
 	_renderDoubleSortButton(item1, item2) {
 		return html`
-			<th scope="col">
+			<th rowspan="${this.multiLine ? 2 : 1}" scope="col">
 				<d2l-table-col-sort-button
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
@@ -206,6 +209,21 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					@click="${this._handleSort}"
 					?desc="${this._sortDesc}"
 					?nosort="${this._sortField !== item2.toLowerCase()}">${item2}</d2l-table-col-sort-button>
+			</th>
+		`;
+	}
+
+	_renderMenuSortButton(name, items) {
+		const noSort = !items.map(i => i.toLowerCase()).includes(this._sortField?.toLowerCase());
+		return html`
+			<th scope="col">
+				<d2l-table-col-sort-button
+					?desc="${this._sortDesc}"
+					?nosort="${noSort}">
+					<span>${name}</span>${items.map((item, idx) => html`
+					<d2l-table-col-sort-button-item slot="items" text="${item}, ascending" data-field="${item.toLowerCase()}" @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="${idx * 2 + 1}"></d2l-table-col-sort-button-item>
+					<d2l-table-col-sort-button-item slot="items" text="${item}, descending" data-field="${item.toLowerCase()}" data-desc @d2l-table-col-sort-button-item-change="${this._handleSortComplex}" value="${idx * 2 + 2}"></d2l-table-col-sort-button-item>`)}
+				</d2l-table-col-sort-button>
 			</th>
 		`;
 	}
