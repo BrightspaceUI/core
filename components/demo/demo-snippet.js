@@ -117,10 +117,6 @@ class DemoSnippet extends LitElement {
 		this._skeletonOn = false;
 	}
 
-	firstUpdated() {
-		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
-	}
-
 	render() {
 		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		const switches = html`
@@ -137,7 +133,7 @@ class DemoSnippet extends LitElement {
 				<div class="d2l-demo-snippet-demo">
 					<div class="d2l-demo-snippet-demo-padding">
 						<slot name="_demo"></slot>
-						<slot></slot>
+						<slot @slotchange="${this._handleSlotChange}"></slot>
 					</div>
 				</div>
 				${settings}
@@ -152,13 +148,8 @@ class DemoSnippet extends LitElement {
 		changedProperties.forEach((_, prop) => {
 			if (prop === '_code') {
 				if (this.shadowRoot) this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
-				this._updateHasSkeleton();
 			}
 		});
-	}
-
-	forceCodeUpdate() {
-		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
 	}
 
 	_applyAttr(name, value, applyToShadowRoot) {
@@ -239,6 +230,10 @@ class DemoSnippet extends LitElement {
 		this._applyAttr('skeleton', this._skeletonOn, false);
 	}
 
+	_handleSlotChange(e) {
+		this._updateCode(e.target);
+	}
+
 	_removeImportedDemo() {
 		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
@@ -276,6 +271,8 @@ class DemoSnippet extends LitElement {
 		}
 		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
 		this._code = textNode.textContent;
+
+		this._updateHasSkeleton();
 	}
 
 	_updateHasSkeleton() {
