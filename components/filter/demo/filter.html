@@ -191,14 +191,14 @@
 	<script type="module">
 		document.addEventListener('d2l-filter-change', e => {
 			if (e.detail.dimensions.length === 1) {
-				console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes); // eslint-disable-line no-console
-				if (e.detail.dimensions[0].cleared) console.log(`(Dimension "${e.detail.dimensions[0].dimensionKey}" cleared)`); // eslint-disable-line no-console
+				console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes);
+				if (e.detail.dimensions[0].cleared) console.log(`(Dimension "${e.detail.dimensions[0].dimensionKey}" cleared)`);
 			} else {
-				console.log('Multiple dimension selections changed:', e.detail.dimensions); // eslint-disable-line no-console
+				console.log('Multiple dimension selections changed:', e.detail.dimensions);
 			}
 
 			if (e.detail.allCleared) {
-				console.log('(All dimensions cleared)'); // eslint-disable-line no-console
+				console.log('(All dimensions cleared)');
 			}
 		});
 

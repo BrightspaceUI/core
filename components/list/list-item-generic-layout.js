@@ -205,7 +205,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				const slot = (event.path || event.composedPath()).find((node) =>
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
-				// eslint-disable-next-line no-console
 				console.warn(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
 			},
 			capture: true

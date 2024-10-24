@@ -202,7 +202,7 @@ export function isFocusVisibleSupported() {
 			document.head.appendChild(style);
 			style.sheet.insertRule(':focus-visible { color: inherit; }');
 			_isFocusVisibleSupported = true;
-		} catch (error) {
+		} catch {
 			_isFocusVisibleSupported = false;
 		} finally {
 			style.remove();

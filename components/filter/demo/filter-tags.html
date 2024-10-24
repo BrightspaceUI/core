@@ -77,14 +77,12 @@
 				coreFilter.addEventListener('d2l-filter-change', (e) => {
 					logEvent(e, 'Filter value(s) changed!');
 				});
-				/* eslint-disable no-console */
 				function logEvent(e, text) {
 					console.group(text);
 					console.log('event', e);
 					if (e.detail) console.log('detail', e.detail);
 					console.groupEnd();
 				}
-				/* eslint-enable no-console */
 			</script>
 
 			<h2>Registered to both filters</h2>

@@ -13,7 +13,7 @@ export async function isFramed() {
 			framed = false;
 			return framed;
 		}
-	} catch (e) {
+	} catch {
 		framed = false;
 		return framed;
 	}

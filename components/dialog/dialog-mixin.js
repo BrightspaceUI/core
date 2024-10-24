@@ -19,8 +19,7 @@ window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 // https://bugs.webkit.org/show_bug.cgi?id=233320
 // starting in Chrome 102, all elements inside <dialog>s that are inside shadow roots have null offsetParent
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
-window.D2L.DialogMixin.hasNative = false && (window.HTMLDialogElement !== undefined)
-	&& (navigator.vendor && navigator.vendor.toLowerCase().indexOf('apple') === -1);
+window.D2L.DialogMixin.hasNative = false;
 if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
