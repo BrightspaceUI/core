@@ -21,7 +21,6 @@ export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends su
 
 	#loadingCompleteResolve;
 
-	// eslint-disable-next-line sort-class-members/sort-class-members
 	#loadingCompletePromise = !Object.prototype.hasOwnProperty.call(this.constructor.prototype, 'getLoadingComplete')
 		? new Promise(resolve => this.#loadingCompleteResolve = resolve)
 		: Promise.resolve();
