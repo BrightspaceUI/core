@@ -21,7 +21,7 @@ describe('meter-circle', () => {
 		{ name: 'round-to-zero', template: html`<d2l-meter-circle value="0.004" max="100"></d2l-meter-circle>` },
 		{ name: 'max-zero-with-value', template: html`<d2l-meter-circle value="10" max="0"></d2l-meter-circle>` },
 		{ name: '100-percent', template: html`<d2l-meter-circle value="10" max="10" percent></d2l-meter-circle>` },
-		{ name: 'text', template: html`<d2l-meter-circle value="10" max="10" text="Completed"></d2l-meter-circle>` },
+		{ name: 'text', template: html`<d2l-meter-circle value="10" max="10" text="Done!"></d2l-meter-circle>` },
 		{ name: 'text-text-hidden', template: html`<d2l-meter-circle value="10" max="10" text="Completed" text-hidden></d2l-meter-circle>` },
 		{ name: 'foreground-light', wrapped: true, template: html`
 			<div style="background-color: var(--d2l-color-celestine); padding: 1rem;">
@@ -30,12 +30,12 @@ describe('meter-circle', () => {
 		` },
 		{ name: 'foreground-light-text', wrapped: true, template: html`
 			<div style="background-color: var(--d2l-color-celestine); padding: 1rem;">
-				<d2l-meter-circle value="47" max="47" foreground-light text="Completed"></d2l-meter-circle>
+				<d2l-meter-circle value="47" max="47" foreground-light text="Done!"></d2l-meter-circle>
 			</div>
 		` },
 		{ name: 'scaled-larger', wrapped: true, template: html`
 			<div style="width: 90px;">
-				<d2l-meter-circle value="16" max="47" style="width: 300%;"></d2l-meter-circle>
+				<d2l-meter-circle value="16" max="47" style="width: 300%;" text="Done!"></d2l-meter-circle>
 			</div>
 		` },
 		{ name: 'scaled-smaller', wrapped: true, template: html`
