@@ -48,21 +48,12 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 | Property | Type | Description |
 |--|--|--|
 | `href` | String, required | URL or URL fragment of the link |
-| `aria-label` | String | Sets an accessible label |
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `main` | Boolean | Whether to apply the "main" link style |
 | `lines` | Number | The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified. |
 | `small` | Boolean | Whether to apply the "small" link style |
 | `target` | String | Where to display the linked URL |
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-link` accessible, use the following property when applicable:
-
-| Attribute | Description |
-|--|--|
-| `aria-label` | Use when text in link does not provide enough context. |
 
 ## Applying link styles to native anchor elements
 
@@ -91,3 +82,8 @@ Alternately, you can apply link styles to a native `<a>` element by importing th
 ```
 
 Add the `d2l-link-main` or `d2l-link-small` CSS classes to the `<a>` element to apply those styles.
+
+## Accessibility
+ - The `d2l-link` component follows the W3C's best practices for the [Link Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/link/)
+ - Use `aria-label` when the content included in the `Default` slot does not provide enough context
+ - When `target` is set to `_blank`, screen reader users are informed that the link will open up in a new tab
