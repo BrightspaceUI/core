@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.button-add.addItem": "Element hinzufügen",
-	"components.calendar.hasEvents": "Has Events.",
+	"components.calendar.hasEvents": "Hat Ereignisse.",
 	"components.calendar.notSelected": "Nicht ausgewählt.",
 	"components.calendar.selected": "Ausgewählt.",
 	"components.calendar.show": "{month} anzeigen",
