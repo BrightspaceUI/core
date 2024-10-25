@@ -73,8 +73,10 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 
 ## Accessibility
 
-- While non-interactable components traditionally shouldn't be focusable, the `tab-stop` property greatly helps screen-reader users find the the count badge
-  - Otherwise, screen-reader users would have to use the arrow keys to get to the badge, which can take considerably longer
-  - If the optional tooltip is used, then `tab-stop` isn't necessary, as the count-badge becomes focusable to render the tooltip
-- The optional tooltip makes use of the [`d2l-toolip`](../../components/tooltip), which follows the [W3C best practices for Tooltips](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
-  - The use of this tooltip can help provide additional context such as providing the exact number, if it were to go above the limit set in `max-digits`
+Notable accessibility features:
+- `tab-stop`:
+  - While non-interactable components traditionally shouldn't be focusable, this property greatly helps screen reader users find the the count badge, and removes the need to use the arrow keys to navigate to it.
+  - If the optional tooltip is used, it isn't necessary, as the count-badge becomes focusable in order to display the tooltip
+- `has-tooltip`:
+  - The optional tooltip makes use of the [`d2l-tooltip`](../../components/tooltip), which follows the [W3C best practices for Tooltips](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
+  - This tooltip can help provide additional context, such as by providing the exact count badge number if it were to go above the limit set in `max-digits`
