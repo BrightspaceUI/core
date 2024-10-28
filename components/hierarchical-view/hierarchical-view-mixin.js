@@ -50,6 +50,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				display: inline-block;
 				vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
 			}
+			.d2l-hierarchical-view-content {
+				position: relative;
+			}
 			.d2l-hierarchical-view-content.d2l-child-view-show {
 				-webkit-animation: show-child-view-animation forwards 300ms linear;
 				animation: show-child-view-animation 300ms forwards linear;
@@ -66,31 +69,29 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				.d2l-hierarchical-view-content.d2l-child-view-show {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(-100%, 0);
-					transform: translate(-100%, 0);
+					left: -100%;
 				}
 				.d2l-hierarchical-view-content.d2l-child-view-hide {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(0, 0);
-					transform: translate(0, 0);
+					left: 0;
 				}
 			}
 			@keyframes show-child-view-animation {
-				0% { transform: translate(0, 0); }
-				100% { transform: translate(-100%, 0); }
+				0% { left: 0; }
+				100% { left: -100%; }
 			}
 			@-webkit-keyframes show-child-view-animation {
-				0% { -webkit-transform: translate(0, 0); }
-				100% { -webkit-transform: translate(-100%, 0); }
+				0% { left: 0; }
+				100% { left: -100%; }
 			}
 			@keyframes hide-child-view-animation {
-				0% { transform: translate(-100%, 0); }
-				100% { transform: translate(0, 0); }
+				0% { left: -100%; }
+				100% { left: 0; }
 			}
 			@-webkit-keyframes hide-child-view-animation {
-				0% { -webkit-transform: translate(-100%, 0); }
-				100% { -webkit-transform: translate(0, 0); }
+				0% { left: -100%; }
+				100% { left: 0; }
 			}
 		`;
 	}
