@@ -57,7 +57,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'max-digits'
 			},
 			/**
-			 * REQUIRED: The number to be displayed on the badge, must be a positive integer
+			 * REQUIRED: The number to be displayed on the badge; must be a positive integer
 			 * @type {number}
 			 */
 			number: {

@@ -29,7 +29,7 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 
 | Property | Type | Description |
 |---|---|---|
-| `number` | Number, required | The number to display on the badge, must be a positive integer |
+| `number` | Number, required | The number to display on the badge; must be a positive integer |
 | `size` | String, default: `small` | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type` | String, default: `count` | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
 | `max-digits` | Number, default: `2` when `type="notification"`, `5` when `type="count"` | Specifies a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and five for `"count"` type. Must be between 1-5.
@@ -58,7 +58,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 
 | Property | Type | Description |
 |--|--|--|
-| `number` | Number, required | The number to display on the badge, must be a positive integer |
+| `number` | Number, required | The number to display on the badge; must be a positive integer |
 | `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `size` | String, default: `small` | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type` | String, default: `count` | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
@@ -75,8 +75,8 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 
 Notable accessibility features:
 - `tab-stop`:
-  - While non-interactable components traditionally shouldn't be focusable, this property greatly helps screen reader users find the the count badge, and removes the need to use the arrow keys to navigate to it.
-  - If the optional tooltip is used, it isn't necessary, as the count-badge becomes focusable in order to display the tooltip
+  - While non-interactive components traditionally shouldn't be focusable, this property greatly helps screen reader users find the the count badge, and removes the need to use the arrow keys to navigate to it
+  - This isn't needed if the optional tooltip is used, as the count-badge becomes focusable in order to display the tooltip
 - `has-tooltip`:
   - The optional tooltip makes use of the [`d2l-tooltip`](../../components/tooltip), which follows the [W3C best practices for Tooltips](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
   - This tooltip can help provide additional context, such as by providing the exact count badge number if it were to go above the limit set in `max-digits`
