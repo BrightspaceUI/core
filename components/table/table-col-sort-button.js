@@ -13,7 +13,9 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
+ * @fires click - Dispatched when the button is clicked
  * @slot - Text of the sort button
+ * @slot items - Multi-facted sort items. Generally assigned to the slot attribute on a nested d2l-table-col-sort-button-item.
  */
 export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
@@ -44,7 +46,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				type: String
 			},
 			/**
-			 * The type of data in the column. Used to set the title.
+			 * ACCESSIBILITY: The type of data in the column (e.g., 'words'). Used to set the title.
 			 *  @type {'words'|'numbers'|'dates'|'unknown'}
 			 */
 			sourceType: {
