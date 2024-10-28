@@ -17,25 +17,13 @@ export default [
 	includeIgnoreFile(gitignorePath),
 	...compat.extends('brightspace/lit-config').map(c => ({
 		...c,
-		files
+		files: c.files ?? files
 	})),
 	{
 		languageOptions: {
 			globals: {
 				Prism: false,
 			},
-		},
-	},
-	{
-		files,
-		rules: {
-			'no-restricted-syntax': [0, 'CatchClause[param=null]']
-		},
-	},
-	{
-		files: ['**/demo/**.html'],
-		rules: {
-			'no-console': 0,
 		},
 	},
 	...compat.extends('brightspace/testing-config').map(config => ({
