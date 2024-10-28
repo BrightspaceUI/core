@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
-	"components.calendar.hasEvents": "Has Events.",
+	"components.calendar.hasEvents": "Yn Cynnwys Digwyddiadau.",
 	"components.calendar.notSelected": "Heb ei Ddewis.",
 	"components.calendar.selected": "Wedi'i Ddewis.",
 	"components.calendar.show": "Dangos {month}",
