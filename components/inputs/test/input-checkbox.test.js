@@ -175,7 +175,7 @@ describe('d2l-input-checkbox', () => {
 			expect(input.checked).to.be.true;
 			expect(elem.checked).to.be.true;
 			await elem.updateComplete;
-			elem.checked = false; // eslint-disable-line require-atomic-updates
+			elem.checked = false;
 			await elem.updateComplete;
 			expect(input.checked).to.be.false;
 		});

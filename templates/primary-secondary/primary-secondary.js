@@ -1066,7 +1066,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				const key = computeSizeKey(this.storageKey);
 				try {
 					localStorage.setItem(key, this._size);
-				} catch (ex) {
+				} catch {
 					// throws if storage is full or in private mode in mobile Safari
 				}
 			}
@@ -1146,7 +1146,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				const key = computeSizeKey(this.storageKey);
 				try {
 					size = parseFloat(localStorage.getItem(key));
-				} catch (ex) {
+				} catch {
 					// may throw SecurityError if localStorage isn't allowed to be accessed
 				}
 			}
