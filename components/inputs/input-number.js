@@ -425,7 +425,7 @@ class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixi
 	_getTooltip() {
 		if (this.disabled) return null;
 		if (this.validationError && this.childErrors.size === 0 && !this.noValidate) {
-			return html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start" class="vdiff-target">${this.validationError}</d2l-tooltip>`;
+			return html`<d2l-tooltip for="${this._inputId}" state="error" align="start" class="vdiff-target">${this.validationError}</d2l-tooltip>`;
 		}
 		let lang = '';
 		if (this._hintType === HINT_TYPES.INTEGER) {

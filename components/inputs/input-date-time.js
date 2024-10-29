@@ -236,7 +236,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 
 		const dateOpened = this.opened && !this._timeOpened && !this.disabled && !this.skeleton;
 		const parsedValue = this.value ? (this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value)) : '';
-		const tooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		const inputTime = !timeHidden ? html`<d2l-input-time
 				?novalidate="${this.noValidate}"
 				@blur="${this._handleInputTimeBlur}"

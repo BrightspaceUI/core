@@ -482,8 +482,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		let tooltip = nothing;
 		if (!this.skeleton) {
 			if (this.validationError && !this.noValidate) {
-				tooltip = html`<d2l-tooltip state="error" announced for="${this._inputId}" align="start" class="vdiff-target">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
-
+				tooltip = html`<d2l-tooltip state="error" for="${this._inputId}" align="start" class="vdiff-target">${this.validationError}</d2l-tooltip>`;
 			} else if (this.instructions) {
 				tooltip = html`<d2l-tooltip align="start" for="${this._inputId}" delay="1000" class="vdiff-target">${this.instructions}</d2l-tooltip>`;
 			}

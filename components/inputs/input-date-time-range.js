@@ -224,8 +224,8 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 		const startDateTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
 		const endDateTimeInput = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
 
-		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" for="${this._startInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" for="${this._endInputId}" position="bottom" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
 		return this.renderInteractiveContainer(html`
 			${tooltipStart}
 			${tooltipEnd}
