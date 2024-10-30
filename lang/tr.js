@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Kapatma Uyarısı",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",
-	"components.calendar.hasEvents": "Has Events.",
+	"components.calendar.hasEvents": "Olayları Var.",
 	"components.calendar.notSelected": "Seçili Değil.",
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} Göster",

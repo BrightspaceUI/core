@@ -16,7 +16,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 	static get properties() {
 		return {
 			/**
-			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screenreaders. Defaults to false.
+			 * ACCESSIBILITY: When `true`, changes to the badge will be announced to screen reader users
 			 * @type {boolean}
 			 */
 			announceChanges: {
@@ -24,7 +24,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'announce-changes'
 			},
 			/**
-			 * Optionally choose to force the focus ring around the badge. Defaults to false.
+			 * Forces the focus ring around the badge
 			 * @type {boolean}
 			 */
 			forceFocusRing: {
@@ -33,7 +33,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				reflect: true
 			},
 			/**
-			 * Optionally add a tooltip on the badge. Defaults to false.
+			 * ACCESSIBILITY: Adds a tooltip on the badge, which will be visible on hover and keyboard interaction
 			 * @type {boolean}
 			 */
 			hasTooltip: {
@@ -41,7 +41,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'has-tooltip'
 			},
 			/**
-			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
+			 * Hides the count badge when `number` is zero
 			 * @type {boolean}
 			 */
 			hideZero: {
@@ -49,8 +49,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'hide-zero'
 			},
 			/**
-			 * Optionally specify a digit limit, after which numbers are truncated.
-			 * Defaults to two for "notification" type and five for "count" type.
+			 * Specifies a digit limit, after which numbers are truncated. Defaults to two for "notification" type and five for "count" type.
 			 * @type {number}
 			 */
 			maxDigits: {
@@ -58,7 +57,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'max-digits'
 			},
 			/**
-			 * REQUIRED: The number to be displayed on the badge. Must be a positive integer.
+			 * REQUIRED: The number to be displayed on the badge; must be a positive integer
 			 * @type {number}
 			 */
 			number: {
@@ -66,7 +65,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'number'
 			},
 			/**
-			 * The size of the badge. Defaults to "small".
+			 * The size of the badge
 			 * @type {'small'|'large'}
 			 */
 			size: {
@@ -75,7 +74,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'size'
 			},
 			/**
-			 * Optionally choose to add a tab stop to the badge. Defaults to false.
+			 * ACCESSIBILITY: Adds a tab stop to the badge, which allows screen reader and keyboard users to easily tab to the badge
 			 * @type {boolean}
 			 */
 			tabStop: {
@@ -83,14 +82,14 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 				attribute: 'tab-stop'
 			},
 			/**
-			 * REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled.
+			 * ACCESSIBILITY: REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled
 			 * @type {string}
 			 */
 			text: {
 				type: String
 			},
 			/**
-			 * The type of the badge. Defaults to "count".
+			 * The type of the badge
 			 * @type {'count'|'notification'}
 			 */
 			type: {
