@@ -8,6 +8,26 @@ class Popover extends PopoverMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 * @type {number}
+			 */
+			maxHeight: { type: Number, reflect: true, attribute: 'max-height' },
+			/**
+			 * Max-width (undefined). Specify a number that would be the px value.
+			 * @type {number}
+			 */
+			maxWidth: { type: Number, reflect: true, attribute: 'max-width' },
+			/**
+			 * Min-height used when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 * @type {number}
+			 */
+			minHeight: { type: Number, reflect: true, attribute: 'min-height' },
+			/**
+			 * Min-width (undefined). Specify a number that would be the px value.
+			 * @type {number}
+			 */
+			minWidth: { type: Number, reflect: true, attribute: 'min-width' },
+			/**
 			 * Whether to disable auto-close/light-dismiss
 			 * @type {boolean}
 			 */
@@ -23,10 +43,22 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			opened: { type: Boolean, reflect: true },
 			/**
+			 * Position the popover before or after the opener. Default is "block-end" (after).
+			 * @type {'block-start'|'block-end'}
+			 */
+			positionLocation: { type: String, reflect: true, attribute: 'position-location' },
+			/**
+			 * Position the popover to span from the opener edge to this grid line. Default is "all" (centered).
+			 * @type {'start'|'end'|'all'}
+			 */
+			positionSpan: { type: String, reflect: true, attribute: 'position-span' },
+			/**
 			 * Whether to render a d2l-focus-trap around the content
 			 * @type {boolean}
 			*/
-			trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' }
+			trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' },
+			_hasFooter: { state: true },
+			_hasHeader: { state: true }
 		};
 	}
 
@@ -36,16 +68,18 @@ class Popover extends PopoverMixin(LitElement) {
 				align-items: flex-start;
 				display: flex;
 				flex-direction: column;
-				/*max-width: 370px;*/
-				/*min-width: 70px;*/
-				/*position: absolute;*/
-				/*width: 100vw;*/
 			}
 			.test-content {
 				box-sizing: border-box;
 				max-width: 100%;
 				overflow-y: auto;
 				padding: 1rem;
+			}
+			.test-no-header {
+				display: none;
+			}
+			.test-no-footer {
+				display: none;
 			}
 		`];
 	}
@@ -56,61 +90,41 @@ class Popover extends PopoverMixin(LitElement) {
 		this.noAutoFocus = false;
 		this.opened = false;
 		this.trapFocus = false;
+
+		this._hasFooter = false;
+		this._hasHeader = false;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-popover-open', this._handlePopoverOpen);
-		this.addEventListener('d2l-popover-close', this._handlePopoverClose);
+		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
+		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 	}
 
 	render() {
 
-		/*
-		const topClasses = {
-			'd2l-dropdown-content-top': true,
-			'd2l-dropdown-content-top-scroll': this._topOverflow,
-			'd2l-dropdown-content-header': this._hasHeader
+		const headerClasses = {
+			'test-header': true,
+			'test-no-header': !this._hasHeader
 		};
-		const bottomClasses = {
-			'd2l-dropdown-content-bottom': true,
-			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
-			'd2l-dropdown-content-footer': this._hasFooter || (this._useMobileStyling && this.mobileTray && !this.noMobileCloseButton)
-		};
-		*/
-
-		/*
-		<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
-			<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-		</div>
-
-		<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
-			<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-			<d2l-button
-				class="dropdown-close-btn"
-				style=${styleMap(closeButtonStyles)}
-				@click=${this.close}>
-				${this.localize('components.dropdown.close')}
-			</d2l-button>
-		</div>
-
-		*/
-
-		const topClasses = {};
 		const headerStyle = {};
-		const bottomClasses = {};
+
+		const footerClasses = {
+			'test-footer': true,
+			'test-no-footer': !this._hasFooter
+		};
 		const footerStyle = {};
 
 		const content = html`
 			<div class="test-content-layout">
-				<div class="${classMap(topClasses)}" style="${styleMap(headerStyle)}">
-					<slot name="header" @slotchange="${this._handleHeaderSlotChange}"></slot>
+				<div class="${classMap(headerClasses)}" style="${styleMap(headerStyle)}">
+					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
 				</div>
-				<div class="test-content" @scroll="${this._handleContentScroll}">
+				<div class="test-content" @scroll="${this.#handleContentScroll}">
 					<slot></slot>
 				</div>
-				<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
-					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
+				<div class=${classMap(footerClasses)} style=${styleMap(footerStyle)}>
+					<slot name="footer" @slotchange="${this.#handleFooterSlotChange}"></slot>
 				</div>
 			</div>
 		`;
@@ -119,10 +133,15 @@ class Popover extends PopoverMixin(LitElement) {
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('trapFocus')) {
+		if (changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('positionLocation') || changedProperties.has('positionSpan') || changedProperties.has('trapFocus')) {
 			super.configure({
+				maxHeight: this.maxHeight,
+				maxWidth: this.maxWidth,
+				minHeight: this.minHeight,
+				minWidth: this.minWidth,
 				noAutoClose: this.noAutoClose,
 				noAutoFocus: this.noAutoFocus,
+				position: { location: this.positionLocation, span: this.positionSpan },
 				trapFocus: this.trapFocus
 			});
 		}
@@ -132,40 +151,32 @@ class Popover extends PopoverMixin(LitElement) {
 		}
 	}
 
-	_getContentBottom() {
-		return this.shadowRoot.querySelector('.content-bottom');
-	}
-
-	_getContentContainer() {
+	#getContentContainer() {
 		return this.shadowRoot.querySelector('.test-content');
 	}
 
-	_getContentTop() {
-		return this.shadowRoot.querySelector('.content-top');
-	}
-
-	_handleContentScroll() {
+	#handleContentScroll() {
 		console.log('handle content scroll');
 	}
 
-	_handleFooterSlotChange() {
-		console.log('handle footer slot change');
+	#handleFooterSlotChange(e) {
+		this._hasFooter = e.target.assignedNodes().length !== 0;
 	}
 
-	_handleHeaderSlotChange() {
-		console.log('handle header slot change');
+	#handleHeaderSlotChange(e) {
+		this._hasHeader = e.target.assignedNodes().length !== 0;
 	}
 
-	_handlePopoverClose() {
+	#handlePopoverClose() {
 		this.opened = false;
 	}
 
-	_handlePopoverOpen() {
+	#handlePopoverOpen() {
 		this.opened = true;
 
-		const content = this._getContentContainer();
-		if (!this.noAutoFit) {
-			content.scrollTop = 0;
+		const content = this.#getContentContainer();
+		if (!this.noAutoFit && content) {
+			content.scrollTop ??= 0;
 		}
 	}
 
