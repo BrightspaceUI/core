@@ -85,6 +85,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
 			_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
 			_hovering: { type: Boolean, reflect: true },
+			_hoveringControl: { type: Boolean, attribute: '_hovering-control', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
@@ -297,6 +298,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-right: -6px;
 			}
 
+			:host([_hovering-control]) [slot="outside-control-container"],
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
@@ -306,6 +308,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -1px;
 			}
 			/* below hides the border under the d2l-button-add */
+			:host([_hovering-control]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_hovering-primary-action]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_focusing-primary-action]) [slot="outside-control-container"].hide-bottom-border,
@@ -321,6 +324,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
 				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
 			}
+			:host([_hovering-control]) d2l-button-add,
 			:host([_hovering-primary-action]) d2l-button-add,
 			:host([_hovering-selection]) d2l-button-add,
 			:host([_focusing-primary-action]) d2l-button-add,
@@ -328,6 +332,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selected]) d2l-button-add {
 				--d2l-button-add-line-color: #b6cbe8; /* celestine alpha 0.3 */
 			}
+			:host([_hovering-control]) [slot="outside-control-container"],
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -621,12 +626,22 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._hovering = true;
 	}
 
+	_onMouseEnterControl() {
+		this._hoveringControl = true;
+		this._hovering = true;
+	}
+
 	_onMouseEnterPrimaryAction() {
 		this._hoveringPrimaryAction = true;
 		this._hovering = true;
 	}
 
 	_onMouseLeave() {
+		this._hovering = false;
+	}
+
+	_onMouseLeaveControl() {
+		this._hoveringControl = false;
 		this._hovering = false;
 	}
 
@@ -706,7 +721,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
 					<div class="${classMap(colorClasses)}" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
-				<div slot="expand-collapse" class="d2l-list-expand-collapse" @click="${this._toggleExpandCollapse}">
+				<div slot="expand-collapse"
+					class="d2l-list-expand-collapse"
+					@click="${this._toggleExpandCollapse}"
+					@mouseenter="${this._onMouseEnterControl}"
+					@mouseleave="${this._onMouseLeaveControl}">
 					${this._renderExpandCollapse()}
 				</div>
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
@@ -771,7 +790,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_renderOutsideControlAction(dragTarget) {
-		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+		return html`<div slot="outside-control-action"
+			@mouseenter="${this._onMouseEnterControl}"
+			@mouseleave="${this._onMouseLeaveControl}">
+				${dragTarget}
+			</div>`;
 	}
 
 	_renderOutsideControlHandleOnly(dragHandle) {
