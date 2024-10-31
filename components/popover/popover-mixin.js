@@ -291,7 +291,9 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 		this._openerIntersectionObserver = new IntersectionObserver(entries => {
 			entries.forEach(entry => this._offscreen = !entry.isIntersecting);
 		}, { threshold: 0 }); // 0-1 (0 -> intersection requires any pixel visible, 1 -> intersection requires all pixels visible)
-		this._openerIntersectionObserver.observe(this._opener);
+		if (this._opener) {
+			this._openerIntersectionObserver.observe(this._opener);
+		}
 
 	}
 
