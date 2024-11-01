@@ -38,6 +38,11 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			noAutoFocus: { type: Boolean, reflect: true, attribute: 'no-auto-focus' },
 			/**
+			 * Render without a pointer
+			 * @type {boolean}
+			 */
+			noPointer: { type: Boolean, reflect: true, attribute: 'no-pointer' },
+			/**
 			 * Whether the popover is open or not
 			 * @type {boolean}
 			 */
@@ -88,6 +93,7 @@ class Popover extends PopoverMixin(LitElement) {
 		super();
 		this.noAutoClose = false;
 		this.noAutoFocus = false;
+		this.noPointer = false;
 		this.opened = false;
 		this.trapFocus = false;
 
@@ -141,6 +147,7 @@ class Popover extends PopoverMixin(LitElement) {
 				minWidth: this.minWidth,
 				noAutoClose: this.noAutoClose,
 				noAutoFocus: this.noAutoFocus,
+				noPointer: this.noPointer,
 				position: { location: this.positionLocation, span: this.positionSpan },
 				trapFocus: this.trapFocus
 			});

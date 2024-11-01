@@ -83,6 +83,19 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Popover (no pointer)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover no-pointer>
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
 		<h2>Popover (custom max-width, single-line)</h2>
 		<d2l-demo-snippet>
 			<template>
@@ -139,7 +152,7 @@
 		<d2l-demo-snippet>
 			<template>
 				<div style="text-align: center;"><d2l-button-subtle text="Open"></d2l-button-subtle></div>
-				<d2l-test-popover position-span="start">
+				<d2l-test-popover position-span="end">
 					<div>Sink me piracy Gold Road.</div>
 				</d2l-test-popover>
 				<script>
