@@ -28,57 +28,6 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Responsive Behavior
-
-Breadcrumbs that overflow their container will appear to fade at the edge.
-
-<!-- docs: demo display:block -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
-</script>
-<d2l-breadcrumbs>
-  <d2l-breadcrumb text="Table of Contents" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Unit 1: Shakespeare" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Lesson 1: Introduction" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb text="The Comedies, Tragedies, and Histories" href="#"></d2l-breadcrumb>
-</d2l-breadcrumbs>
-```
-
-This works well for mobile or other touch devices but not as well for mouse or keyboard users, so we have two other options for managing width.
-
-### Limited Width
-
-Set a `max-width` to constrain breadcrumbs to a particular width:
-
-<!-- docs: demo code display:block -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
-</script>
-<d2l-breadcrumbs style="max-width: 250px">
-  <d2l-breadcrumb text="Trucate Basic Item 1" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Truncate Basic Item 2" href="#"></d2l-breadcrumb>
-</d2l-breadcrumbs>
-```
-
-### Compact Mode
-
-Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
-
-<!-- docs: demo code display:block -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
-</script>
-<d2l-breadcrumbs compact>
-  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
-  <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
-</d2l-breadcrumbs>
-```
-
 ## Breadcrumbs [d2l-breadcrumbs]
 
 <!-- docs: demo code properties name:d2l-breadcrumbs sandboxTitle:'Breadcrumbs' display:block -->
@@ -124,14 +73,6 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 | `target` | String | Target of the breadcrumb item |
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
-
-To make your usage of `d2l-breadcrumb` (child) accessible, use the following attribute when applicable:
-
-| Attribute | Description |
-|---|---|
-| `aria-label` | Acts as a primary label. Use if `text` does not provide enough context. |
-
 ## Current Page [d2l-breadcrumb-current-page]
 
 Only include the current page in the breadcrumb if your page or view does not have a visible heading. You will notice that some older pages or tools in Brightspace still display the current page as the last breadcrumb despite having a visible page heading, but this is now a legacy pattern.
@@ -149,3 +90,58 @@ Only include the current page in the breadcrumb if your page or view does not ha
 </d2l-breadcrumbs>
 ```
 
+## Responsive Behavior
+
+Breadcrumbs that overflow their container will appear to fade at the edge, as in this example:
+
+<!-- docs: demo display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
+<d2l-breadcrumbs>
+  <d2l-breadcrumb text="Table of Contents" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Unit 1: Shakespeare" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Lesson 1: Introduction" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Sub-lesson 3: The Breadth of Shakespearean Literature" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="The Comedies, Tragedies, Histories, and Other Long Words" href="#"></d2l-breadcrumb>
+</d2l-breadcrumbs>
+```
+
+### Limited Width
+
+Set a `max-width` to constrain breadcrumbs to a particular width:
+
+<!-- docs: demo code display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
+<d2l-breadcrumbs style="max-width: 250px">
+  <d2l-breadcrumb text="Trucate Basic Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Truncate Basic Item 2" href="#"></d2l-breadcrumb>
+</d2l-breadcrumbs>
+```
+
+### Compact Mode
+
+Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
+
+<!-- docs: demo code display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
+<d2l-breadcrumbs compact>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
+</d2l-breadcrumbs>
+```
+
+## Accessibility
+
+Breadcrumbs adhere to [W3C's Breadcrumbs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/), so they are contained in a navigation landmark region with proper aria labelling and add `aria-current` to the final breadcrumb if it represents the [Current Page](#d2l-breadcrumb-current-page).
+
+Note that we do not apply a `visited` style to breadcrumbs, since they reflect tool hiearchy and are part of the UI rather than part of the page content.
