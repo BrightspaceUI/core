@@ -332,6 +332,8 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			} else if (this.type === 'url') {
 				return this.localize('components.form-element.input.url.typeMismatch');
 			}
+		} else if (this.validity.patternMismatch && (typeof this.patternFailureText === 'string')) {
+			return this.patternFailureText;
 		}
 		return super.validationMessage;
 	}

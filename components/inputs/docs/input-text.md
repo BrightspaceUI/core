@@ -81,6 +81,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `name` | String | Name of the input |
 | `novalidate` | Boolean | Disables the built-in validation |
 | `pattern` | String | Regular expression pattern to validate the value |
+| `pattern-failure-text` | String | Text to display when input fails validation against the pattern |
 | `prevent-submit` | Boolean | Prevents pressing ENTER from submitting forms |
 | `readonly` | Boolean | Makes the input read-only |
 | `required` | Boolean | Indicates that a value is required |
