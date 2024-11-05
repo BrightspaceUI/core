@@ -34,14 +34,14 @@ describe('form-element-localize-helper', () => {
 		it('should localize required error', async() => {
 			input.required = true;
 			const errorMessage = localizeFormElement(localize, input);
-			expect(errorMessage).to.equal('Field is required.');
+			expect(errorMessage).to.equal('Field is required');
 		});
 
 		it('should localize unknown error', async() => {
 			input.pattern = '[A-Za-z]{3}';
 			input.value = 'A';
 			const errorMessage = localizeFormElement(localize, input);
-			expect(errorMessage).to.equal('Field is invalid.');
+			expect(errorMessage).to.equal('Field is invalid');
 		});
 
 	});

@@ -106,13 +106,13 @@ describe('form-element', () => {
 
 		it('should set validation message if validate has errors', async() => {
 			await formElement.requestValidate();
-			expect(formElement.validationError).to.equal('Test form element is required.');
+			expect(formElement.validationError).to.equal('Test form element is required');
 		});
 
 		[true, false].forEach(showNewErrors => {
 			it('should remove message if validate has no errors', async() => {
 				await formElement.requestValidate(true);
-				expect(formElement.validationError).to.equal('Test form element is required.');
+				expect(formElement.validationError).to.equal('Test form element is required');
 				formElement.value = 'Non-empty';
 				await formElement.validate(showNewErrors);
 				expect(formElement.validationError).to.null;
@@ -122,7 +122,7 @@ describe('form-element', () => {
 		[true, false].forEach(showNewErrors => {
 			it('should update the validation message if validate has errors', async() => {
 				await formElement.validate(true);
-				expect(formElement.validationError).to.equal('Test form element is required.');
+				expect(formElement.validationError).to.equal('Test form element is required');
 				formElement.value = 'Non-empty';
 				formElement.isValidationCustomValid = false;
 				await formElement.validate(showNewErrors);
@@ -148,14 +148,14 @@ describe('form-element', () => {
 
 		it('should validate native element validity state', async() => {
 			const errors = await formElement.validate();
-			expect(errors).to.include.members(['Test form element is required.']);
+			expect(errors).to.include.members(['Test form element is required']);
 		});
 
 		it('should validate with default validity state message', async() => {
 			formElement.value = 'Non-empty';
 			formElement.setValidity({ badInput: true });
 			const errors = await formElement.validate();
-			expect(errors).to.include.members(['Test form element is invalid.']);
+			expect(errors).to.include.members(['Test form element is invalid']);
 		});
 
 		it('should validate with overridden validity state message', async() => {
@@ -185,7 +185,7 @@ describe('form-element', () => {
 
 		it('should show validation errors by default', async() => {
 			await formElement.requestValidate();
-			expect(formElement.validationError).to.equal('Test form element is required.');
+			expect(formElement.validationError).to.equal('Test form element is required');
 		});
 
 		it('should not be marked as invalid when show errors is false', async() => {
@@ -199,7 +199,7 @@ describe('form-element', () => {
 	describe('resetValidation', () => {
 		it('should reset validation errors', async() => {
 			await formElement.requestValidate();
-			expect(formElement.validationError).to.equal('Test form element is required.');
+			expect(formElement.validationError).to.equal('Test form element is required');
 			formElement.resetValidation();
 			expect(formElement.invalid).to.be.false;
 			expect(formElement.validationError).to.be.null;
