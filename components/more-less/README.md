@@ -29,4 +29,4 @@ The `d2l-more-less` element can be used to minimize the display of long content,
 
 ## Accessibility
 
-The implementation of the `d2l-more-less` component follows the [W3C Disclosure (Show/Hide) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). It is worth noting that the content that is visually hidden is actually entirely available to a screen reader user without requiring them to click the "more" button.
+The implementation of the `d2l-more-less` component follows the [W3C Disclosure (Show/Hide) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). It is worth noting that the content that is visually hidden is not actually hidden from screen reader users since those users can interrupt the screen reader if they do not want to continue listening to the content.
