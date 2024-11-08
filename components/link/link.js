@@ -58,7 +58,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * @ignore
+			 * ACCESSIBILITY: Label to provide more context for screen reader users when the link text is not enough
+			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			/**
