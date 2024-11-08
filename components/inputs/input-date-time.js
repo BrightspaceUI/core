@@ -143,7 +143,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				const dateObj = parseISODateTime(val);
 				const localDateTime = convertUTCToLocalDateTime(dateObj);
 				this._maxValueLocalized = formatDateInISO(localDateTime);
-			} catch (e) {
+			} catch {
 				this._maxValueLocalized = undefined;
 			}
 		}
@@ -160,7 +160,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				const dateObj = parseISODateTime(val);
 				const localDateTime = convertUTCToLocalDateTime(dateObj);
 				this._minValueLocalized = formatDateInISO(localDateTime);
-			} catch (e) {
+			} catch {
 				this._minValueLocalized = undefined;
 			}
 		}
@@ -176,7 +176,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			try {
 				getLocalDateTimeFromUTCDateTime(val);
 				this._value = val;
-			} catch (e) {
+			} catch {
 				this._value = '';
 			}
 		}

@@ -4,5 +4,10 @@
 			"name": "Chromium",
 			"version": 130
 		}
-	]
+	],
+	"system": {
+		"platform": "linux",
+		"release": "6.5.0-1025-azure",
+		"arch": "x64"
+	}
 }

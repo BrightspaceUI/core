@@ -68,7 +68,7 @@ describe('d2l-form', () => {
 			it('should validate native form elements', async() => {
 				const errors = await form.validate();
 				const ele = form.querySelector('#pets');
-				expect(errors.get(ele)).to.include.members(['Pets is required.']);
+				expect(errors.get(ele)).to.include.members(['Pets is required']);
 			});
 
 			it('should validate custom form elements', async() => {
@@ -91,7 +91,7 @@ describe('d2l-form', () => {
 			it('should validate and clear native form elements', async() => {
 				const errors = await form.validate();
 				const ele = form.querySelector('#pets');
-				expect(errors.get(ele)).to.include.members(['Pets is required.']);
+				expect(errors.get(ele)).to.include.members(['Pets is required']);
 				expect(form._errors.size).to.be.greaterThan(0);
 				form.resetValidation();
 				expect(form._errors.size).to.equal(0);
@@ -259,15 +259,15 @@ describe('d2l-form', () => {
 					const expectedErrors = [
 						[form.querySelector('#mycheck'), ['The checkbox failed validation']],
 						...(nestedFormEle.noNesting ? [] : [
-							[nestedFormEle.querySelector('#nested-home-planet'), ['Home planet is required.']],
+							[nestedFormEle.querySelector('#nested-home-planet'), ['Home planet is required']],
 							[nestedFormEle.querySelector('#nested-story'), ['Wrong story']],
-							[nestedFormEle.querySelector('#nested-custom-ele'), ['Test form element is required.']],
+							[nestedFormEle.querySelector('#nested-custom-ele'), ['Test form element is required']],
 						]),
-						[form.querySelector('#pets'), ['Pets is required.']],
+						[form.querySelector('#pets'), ['Pets is required']],
 						...(composedNestedFormEle.noNesting ? [] : [
-							[composedNestedFormEle.shadowRoot.querySelector('#composed-nested-first-name'), ['First Name is required.']],
+							[composedNestedFormEle.shadowRoot.querySelector('#composed-nested-first-name'), ['First Name is required']],
 							[composedNestedFormEle.shadowRoot.querySelector('#composed-nested-pets'), ['Expected Hamster']],
-							[composedNestedFormEle.shadowRoot.querySelector('#composed-nested-custom-ele'), ['Test form element is required.']],
+							[composedNestedFormEle.shadowRoot.querySelector('#composed-nested-custom-ele'), ['Test form element is required']],
 						]),
 						[formElement, ['Test form element failed with an overridden validation message']]
 					];
@@ -401,9 +401,9 @@ describe('d2l-form', () => {
 				let errors = await elem.validate();
 
 				expect([...errors.entries()]).to.deep.equal([
-					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
-					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required']],
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required']],
 				]);
 
 				elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('#nested-form-1').remove();
@@ -411,8 +411,8 @@ describe('d2l-form', () => {
 				errors = await elem.validate();
 
 				expect([...errors.entries()]).to.deep.equal([
-					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[elem.querySelector('[name="input3"]'), ['Input 3 is required.']],
+					[elem.querySelector('d2l-test-two-forms').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[elem.querySelector('[name="input3"]'), ['Input 3 is required']],
 				]);
 
 			});
@@ -437,11 +437,11 @@ describe('d2l-form', () => {
 				let errors = await form.validate();
 
 				expect([...errors.entries()]).to.deep.equal([
-					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
-					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
-					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[form.querySelector('[name="input3"]'), ['Input 3 is required.']],
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required']],
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[form.querySelector('[name="input3"]'), ['Input 3 is required']],
 				]);
 
 				form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('#nested-form-1').remove();
@@ -449,10 +449,10 @@ describe('d2l-form', () => {
 				errors = await form.validate();
 
 				expect([...errors.entries()]).to.deep.equal([
-					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required.']],
-					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required.']],
-					[form.querySelector('[name="input3"]'), ['Input 3 is required.']],
+					[form.querySelector('[id="nested-elem-1"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input1"]'), ['Input 1 is required']],
+					[form.querySelector('[id="nested-elem-2"]').shadowRoot.querySelector('[name="input2"]'), ['Input 2 is required']],
+					[form.querySelector('[name="input3"]'), ['Input 3 is required']],
 				]);
 
 			});
