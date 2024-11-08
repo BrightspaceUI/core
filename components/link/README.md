@@ -85,5 +85,6 @@ Add the `d2l-link-main` or `d2l-link-small` CSS classes to the `<a>` element to 
 
 ## Accessibility
  - The `d2l-link` component follows the W3C's best practices for the [Link Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/link/)
- - Use `aria-label` when the content included in the `Default` slot does not provide enough context
- - When `target` is set to `_blank`, screen reader users are informed that the link will open up in a new tab
+ - Use `aria-label` when the content included in the `Default` slot does not provide enough context for screen reader users
+ - When `target` is set to `_blank`, the `d2l-link` component follows [WCAG technique G201](https://www.w3.org/TR/WCAG20-TECHS/G201.html), and gives users an advanced warning that interacting with the link will open it in a new window
+    - While this is simply read out to screen reader users, it is also visually represented by the `new-window` icon
