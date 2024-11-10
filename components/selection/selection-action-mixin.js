@@ -1,6 +1,10 @@
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionActionMixin = superclass => class extends SelectionObserverMixin(superclass) {
 
 	static get properties() {
@@ -13,8 +17,8 @@ export const SelectionActionMixin = superclass => class extends SelectionObserve
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.requiresSelection = false;
 	}
 

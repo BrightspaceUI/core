@@ -9,6 +9,10 @@ const keyCodes = Object.freeze({
 	DOWN: 40,
 });
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ArrowKeysMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -24,8 +28,8 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.arrowKeysDirection = 'leftright';
 		this.arrowKeysNoWrap = false;
 	}

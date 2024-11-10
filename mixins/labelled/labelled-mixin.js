@@ -46,6 +46,10 @@ const waitForElement = async(contextElement, selector, timeout) => {
 	});
 };
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const LabelMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -75,6 +79,10 @@ export const LabelMixin = superclass => class extends superclass {
 
 };
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const LabelledMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
 	static get properties() {
@@ -105,8 +113,8 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.labelRequired = true;
 		this._labelElem = null;
 		this._missingLabelErrorHasBeenThrown = false;
