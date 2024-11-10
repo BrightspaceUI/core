@@ -75,6 +75,10 @@ export class FormElementValidityState {
 
 }
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
@@ -113,8 +117,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 		this._onFormElementErrorsChange = this._onFormElementErrorsChange.bind(this);
 

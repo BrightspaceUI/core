@@ -1,9 +1,13 @@
 import { MenuItemSelectableMixin } from './menu-item-selectable-mixin.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const MenuItemRadioMixin = superclass => class extends MenuItemSelectableMixin(superclass) {
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		/** @ignore */
 		this.role = 'menuitemradio';
 	}

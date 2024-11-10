@@ -1,3 +1,7 @@
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const MenuItemMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -49,8 +53,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.__keyCodes = {
 			ENTER: 13,
 			LEFT: 37,
