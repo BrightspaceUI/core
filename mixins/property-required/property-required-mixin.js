@@ -22,10 +22,14 @@ export function createInvalidPropertyTypeMessage(elem, propertyName) {
 	);
 }
 
-export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
+const InternalPropertyRequiredMixin = superclass => class extends superclass {
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._requiredProperties = new Map();
 		this._initProperties(Object.getPrototypeOf(this));
 	}
@@ -115,4 +119,6 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		info.timeout = setTimeout(() => this._flushRequiredPropertyError(name), TIMEOUT_DURATION);
 	}
 
-});
+};
+
+export const PropertyRequiredMixin = dedupeMixin(InternalPropertyRequiredMixin);
