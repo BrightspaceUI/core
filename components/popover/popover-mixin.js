@@ -10,6 +10,10 @@ const isSupported = ('popover' in HTMLElement.prototype);
 // eslint-disable-next-line no-console
 console.log('Popover', isSupported);
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -75,8 +79,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		`;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.configure();
 		this._useNativePopover = isSupported ? 'manual' : undefined;
 		this._handleAutoCloseClick = this._handleAutoCloseClick.bind(this);
