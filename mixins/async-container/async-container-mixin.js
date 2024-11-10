@@ -5,6 +5,10 @@ export const asyncStates = {
 	complete: 'complete'
 };
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const AsyncContainerMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -20,8 +24,8 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._initializeAsyncState();
 		this.asyncPendingDelay = 0;
 		this._handleAsyncItemState = this._handleAsyncItemState.bind(this);
