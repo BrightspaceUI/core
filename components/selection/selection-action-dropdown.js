@@ -11,6 +11,7 @@ import { SelectionActionMixin } from './selection-action-mixin.js';
  * A dropdown opener associated with a selection component.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  * @fires d2l-selection-observer-subscribe - Internal event
+ * @typedef {ActionDropdown} ActionDropdownExported
  */
 class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(DropdownOpenerMixin(LitElement)))) {
 

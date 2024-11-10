@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A button container component for button toggles.
+ * @typedef {ButtonToggle} ButtonToggleExported
  */
 class ButtonToggle extends LitElement {
 

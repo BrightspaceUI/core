@@ -9,6 +9,7 @@ const traps = [];
 /**
  * A generic container component to trap user focus.
  * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
+ * @typedef {FocusTrap} FocusTrapExported
  */
 class FocusTrap extends FocusMixin(LitElement) {
 

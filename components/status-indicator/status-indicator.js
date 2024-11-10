@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A component for communicating the status of an item. It is non-interactive and used to assert prominence on state.
+ * @typedef {StatusIndicator} StatusIndicatorExported
  */
 class StatusIndicator extends LitElement {
 

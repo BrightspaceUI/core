@@ -10,6 +10,7 @@ import { SelectionInfo } from './selection-mixin.js';
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected.
  * @fires d2l-selection-observer-subscribe - Internal event
+ * @typedef {ActionMenuItem} ActionMenuItemExported
  */
 class ActionMenuItem extends SelectionActionMixin(MenuItemMixin(LitElement)) {
 

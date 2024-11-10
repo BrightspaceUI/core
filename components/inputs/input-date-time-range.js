@@ -65,6 +65,7 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  * @slot end - Optional content that would appear below the end input-date-time
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+ * @typedef {InputDateTimeRange} InputDateTimeRangeExported
  */
 class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))))) {
 

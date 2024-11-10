@@ -5,6 +5,7 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import { css, html, LitElement } from 'lit';
 
+/** @typedef {DemoSnippet} DemoSnippetExported */
 class DemoSnippet extends LitElement {
 
 	static get properties() {

@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit';
 /**
  * A card layout component for when the card header is loading.
  * @slot - Slot for header content being loaded
+ * @typedef {CardLoadingShimmer} CardLoadingShimmerExported
  */
 class CardLoadingShimmer extends LitElement {
 

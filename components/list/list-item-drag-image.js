@@ -7,6 +7,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+/** @typedef {ListItemDragImage} ListItemDragImageExported */
 class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {

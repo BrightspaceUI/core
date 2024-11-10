@@ -5,6 +5,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 
 /**
  * `d2l-empty-state-action-link` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a link action to the component.
+ * @typedef {EmptyStateActionLink} EmptyStateActionLinkExported
  */
 class EmptyStateActionLink extends PropertyRequiredMixin(LitElement) {
 

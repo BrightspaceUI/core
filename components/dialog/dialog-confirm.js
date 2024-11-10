@@ -10,6 +10,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
  * @slot footer - Slot for footer content such as workflow buttons
+ * @typedef {DialogConfirm} DialogConfirmExported
  */
 class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 

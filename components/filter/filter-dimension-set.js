@@ -6,6 +6,7 @@ import { html, LitElement } from 'lit';
  * @slot - For d2l-filter-dimension-set-value components
  * @slot search-empty-state - The empty state that is displayed when the search returns no results
  * @slot set-empty-state - The empty state that is displayed when the dimension-set has no values
+ * @typedef {FilterDimensionSet} FilterDimensionSetExported
  */
 class FilterDimensionSet extends LitElement {
 

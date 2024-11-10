@@ -38,6 +38,7 @@ function getStyleSheetInsertionPoint(elem) {
  *
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  * @slot - User provided content to wrap
+ * @typedef {ScrollWrapper} ScrollWrapperExported
  */
 class ScrollWrapper extends RtlMixin(LitElement) {
 

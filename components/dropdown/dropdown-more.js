@@ -7,6 +7,7 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 /**
  * A simple/minimal opener for dropdown content.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
+ * @typedef {DropdownMore} DropdownMoreExported
  */
 class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement)) {
 

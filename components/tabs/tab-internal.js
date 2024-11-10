@@ -10,6 +10,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
+/** @typedef {Tab} TabExported */
 class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {

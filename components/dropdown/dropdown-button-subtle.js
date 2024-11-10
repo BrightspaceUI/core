@@ -7,6 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 /**
  * A "d2l-button-subtle" opener for dropdown content.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
+ * @typedef {DropdownButtonSubtle} DropdownButtonSubtleExported
  */
 class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 

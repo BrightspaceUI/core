@@ -4,6 +4,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * Used to align related content below checkboxes
  * @slot - Additional related content
+ * @typedef {InputCheckboxSpacer} InputCheckboxSpacerExported
  */
 class InputCheckboxSpacer extends RtlMixin(LitElement) {
 

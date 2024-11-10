@@ -3,6 +3,7 @@ import { fixSvg } from './fix-svg.js';
 import { iconStyles } from './icon-styles.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+/** @typedef {IconCustom} IconCustomExported */
 class IconCustom extends RtlMixin(LitElement) {
 
 	static get properties() {

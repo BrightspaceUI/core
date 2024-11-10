@@ -2,6 +2,7 @@
 import { LitElement } from 'lit';
 import { ValidationCustomMixin } from './validation-custom-mixin.js';
 
+/** @typedef {ValidationCustom} ValidationCustomExported */
 class ValidationCustom extends ValidationCustomMixin(LitElement) {
 
 	async validate() {

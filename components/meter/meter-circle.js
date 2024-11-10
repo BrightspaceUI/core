@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A circular progress indicator.
+ * @typedef {MeterCircle} MeterCircleExported
  */
 class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 	static get styles() {

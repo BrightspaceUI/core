@@ -33,6 +33,7 @@ export const moveActions = Object.freeze({
 /**
  * A button component that provides a move action via a single button.
  * @fires d2l-button-move-action - Dispatched when move action occurs
+ * @typedef {ButtonMove} ButtonMoveExported
  */
 class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 

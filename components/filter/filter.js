@@ -67,6 +67,7 @@ function addSpaceListener() {
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  * @fires d2l-filter-dimension-load-more - Dispatched when a dimension load more pager clicked
+ * @typedef {Filter} FilterExported
  */
 class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 

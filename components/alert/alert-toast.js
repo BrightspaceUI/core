@@ -36,6 +36,7 @@ let ALERT_HAS_HOVER = false; // if this alert or sibling alert is hovered on
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-toast-button-press - Dispatched when the toast's action button is clicked
  * @fires d2l-alert-toast-close - Dispatched when the toast is closed
+ * @typedef {AlertToast} AlertToastExported
  */
 class AlertToast extends LitElement {
 

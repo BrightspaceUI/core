@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 /**
  * A helper for providing layout/style for a title within the `content` slot.
  * @slot - Slot for title text
+ * @typedef {CardContentTitle} CardContentTitleExported
  */
 class CardContentTitle extends LitElement {
 

@@ -7,6 +7,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A component for a "summary item" child component that describes the content in a collapsible panel.
+ * @typedef {CollapsiblePanelSummaryItem} CollapsiblePanelSummaryItemExported
  */
 class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 

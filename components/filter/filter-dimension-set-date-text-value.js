@@ -6,6 +6,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  * A component to represent a possible date value that can be selected for a dimension set (the main filter dimension type) for predefined date ranges.
  * A range property is used to define the preset text shown, as well as the start and end date values formatted as UTC strings.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
+ * @typedef {FilterDimensionSetDateTextValue} FilterDimensionSetDateTextValueExported
  */
 class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 

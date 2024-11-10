@@ -8,6 +8,7 @@ import { FormMixin } from './form-mixin.js';
  * Values of these interactive controls are aggregated but the user is responsible for handling submission via the @d2l-form-submit event.
  * @slot - The native and custom form elements that participate in validation and submission
  * @fires d2l-form-connect - Internal event
+ * @typedef {Form} FormExported
  */
 class Form extends FormMixin(LitElement) {
 

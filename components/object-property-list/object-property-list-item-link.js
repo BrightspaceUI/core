@@ -7,6 +7,7 @@ import { ObjectPropertyListItem } from './object-property-list-item.js';
 /**
  * A single object property, to be used within an object-property-list,
  * rendered as a link and with an optional icon.
+ * @typedef {ObjectPropertyListItemLink} ObjectPropertyListItemLinkExported
  */
 class ObjectPropertyListItemLink extends FocusMixin(ObjectPropertyListItem) {
 	static get properties() {

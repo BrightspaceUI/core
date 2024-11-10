@@ -6,6 +6,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A horizontal progress bar.
+ * @typedef {MeterLinear} MeterLinearExported
  */
 class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 	static get properties() {

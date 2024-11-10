@@ -15,6 +15,7 @@ const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
  * @slot - Default content placed inside of the component
+ * @typedef {MoreLess} MoreLessExported
  */
 class MoreLess extends LocalizeCoreElement(LitElement) {
 

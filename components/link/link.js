@@ -52,6 +52,7 @@ export const linkStyles = css`
 /**
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
+ * @typedef {Link} LinkExported
  */
 class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 

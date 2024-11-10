@@ -12,6 +12,7 @@ import { labelStyles } from '../typography/styles.js';
  * A button component that can be used just like the native button, but for advanced or de-emphasized actions.
  * @slot - Default content placed inside of the button
  * @slot icon - Optional slot for a custom icon
+ * @typedef {ButtonSubtle} ButtonSubtleExported
  */
 class ButtonSubtle extends ButtonMixin(LitElement) {
 

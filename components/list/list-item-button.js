@@ -7,6 +7,7 @@ import { LitElement } from 'lit';
  * @slot illustration - Image associated with the list item located at the left of the item
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @slot nested - Nested d2l-list element
+ * @typedef {ListItemButton} ListItemButtonExported
  */
 class ListItemButton extends ListItemButtonMixin(LitElement) {
 

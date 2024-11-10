@@ -6,6 +6,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A tag-list allowing the user to see (and remove) the currently applied filters.
+ * @typedef {FilterTags} FilterTagsExported
  */
 
 const CLEAR_TIMEOUT = 310; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
