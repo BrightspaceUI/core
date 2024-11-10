@@ -7,6 +7,10 @@ const intersectionObserver = new IntersectionObserver(entries => {
 	});
 }, { threshold: 0 }); // 0-1 (0 -> intersection requires any pixel visible, 1 -> intersection requires all pixels visible)
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -69,8 +73,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.dropdownOpener = true;
 		this.noAutoOpen = false;
 		this.openOnHover = false;

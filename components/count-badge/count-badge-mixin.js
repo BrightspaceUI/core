@@ -11,6 +11,10 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const maxBadgeDigits = 5;
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(SkeletonMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -143,8 +147,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.announceChanges = false;
 		this.forceFocusRing = false;
 		this.hasTooltip = false;
