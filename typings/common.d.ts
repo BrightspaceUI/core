@@ -8,7 +8,7 @@ declare global {
 	type LitElementClassType = LitElementConstructor & Pick<typeof LitElement, keyof typeof LitElement>;
 
 	// Used for mixins that use reactive element properties (updated, willUpdate, firstUpdated, connectedCallback, etc) but don't set properties or styles
-    type ReactiveElementConstructor = Constructor<ReactiveElement>;
+	type ReactiveElementConstructor = Constructor<ReactiveElement>;
 	// Used for mixins that use reactive element properties (updated, willUpdate, firstUpdated, connectedCallback, etc) and set properties or styles
 	type ReactiveElementClassType = ReactiveElementConstructor & Pick<typeof ReactiveElement, keyof typeof ReactiveElement>;
 }
