@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "ES2020",
+    "target": "ES2020",
+    "typeRoots": ["./typings", "./node_modules/@types"],
+    "checkJs": false,
+    "moduleResolution": "bundler"
+  },
+  "include": ["**/*", "**/*.js"],
+  "exclude": ["node_modules", "./tools/**/*"]
+}
