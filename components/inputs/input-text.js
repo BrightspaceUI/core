@@ -107,6 +107,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			pattern: { type: String },
 			/**
+			 * Text to display when input fails validation against the pattern
+			 */
+			patternFailureText: { type: String, attribute: 'pattern-failure-text' },
+			/**
 			 * @ignore
 			 */
 			placeholder: { type: String },

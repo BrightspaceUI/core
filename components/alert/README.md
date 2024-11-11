@@ -34,33 +34,31 @@ Alerts communicate critical information relating to the state of the system and 
 
 <d2l-button id="open" style="align-self:center;display:none;">Show Alerts</d2l-button>
 <d2l-alert id="alert" type="default" button-text="Undo" has-close-button>
-	An inline alert message.
+	Inline Alerts can be placed anywhere in the page content
 </d2l-alert>
 <d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
-	A toast alert message.
+	Toast Alerts appear at the botttom of the viewport
 </d2l-alert-toast>
 ```
 
 ## Inline Alert [d2l-alert]
 
-The `d2l-alert` component can be used to communicate important information relating to the state of the system and the user's work flow.
+Use an inline alert if there is important information a user needs to know while performing a task; the alert remains visible until the user takes action or dismisses it.
 
 ### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Do use to let the user know when the system is in a state that will prevent them from completing their action
-* Do highlight information that requires the user’s attention and/or action.
-* Do provide a clear call to action if it can help resolve the alert
-* Do provide a control to dismiss the alert and prevent the message from displaying again, if applicable
-* Do use sentence case for alert text, but avoid unnecessary punctuation by not placing periods at the end of single sentences
+* Use an alert to highlight information that requires the user’s action or attention
+* Provide a clear call to action if it can help resolve the alert
+* Use sentence case for alert text and avoid unnecessary punctuation by not placing periods at the end of single sentences
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use an inline alert in isolation for form validation errors – highlight fields with errors in red and ensure that the fields have error tooltips on focus & hover
-* Don't display more than one inline alert at a time
-* Don't display promotional material or information that is not related to the user’s key work flow
-* Don't display more than one paragraph of text in the alert
+* Don't display more than one paragraph of text
+* Avoid overusing them — the more commonly alerts appear, the less effective they will be
+* Don't use them for promotional material or information that is not relevant to the user’s workflow
+* Don’t use them for validation errors – instead, use the [Form](../../components/form) component for a consistent user experience
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -71,7 +69,7 @@ The `d2l-alert` component can be used to communicate important information relat
 </script>
 
 <d2l-alert type="default" button-text="Undo">
-	A message.
+	An inline alert message
 </d2l-alert>
 ```
 <!-- docs: start hidden content -->
@@ -92,20 +90,20 @@ The `d2l-alert` component can be used to communicate important information relat
 
 ## Toast Alert [d2l-alert-toast]
 
-The `d2l-alert-toast` component serves the same purpose as `d2l-alert`; however, it is displayed as
-a pop-up at the bottom of the screen that automatically dismisses itself by default.
+Use a toast alert to provide feedback about an operation the user has just initiated when the result of that operation may not be apparent or obvious to the user. Toast alerts appear at the bottom of the viewport and disappear after 4 seconds by default.
+
 ### Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Do make toasts dismissible via the close icon –
-* Do keep text brief – toasts shouldn’t spill onto more than one line at any screen size
-* Do use specific language – “Assignment saved” is more informative than “Successfully saved”
+* Use to convey results of a user's action when the result is not otherwise obvious
+* Keep text brief — toasts should rarely spill onto more than one line at any screen size
+* Use specific language — “Assignment saved” is more informative than “Successfully saved”
 <!-- docs: end dos -->
 <!-- docs: start donts -->
-* Avoid displaying multiple toast alerts - see [Multiple Toast Alerts](#multiple-toast-alerts)
-* Don't allow the close button to be blocked by other elements, the user doesn’t want to have to wait for it to go way on it’s own
-* Don’t use toasts to provide instructions. Change blindness and transience make them ineffective for these use cases
-* Don’t use the thumbnails or two-line variety of inline alert as a toast. Toasts should be super brief!
+* If possible, avoid displaying multiple toasts — see [Multiple Toast Alerts](#multiple-toast-alerts)
+* Don't allow the close button to be blocked by other elements; users shouldn't have to wait for the toast alert to go away on its own
+* Don’t use for instructions or critical information since toast alerts disappear and can be easily missed or ignored — use an [Inline Alert](#d2l-alert) instead
+* Avoid having two lines with `subtext` — toasts should be very brief
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -133,7 +131,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 <d2l-button id="open" style="align-self:center;display:none;">Show Alert</d2l-button>
 <!-- docs: end hidden content -->
 <d2l-alert-toast type="default" no-auto-close open>
-  A default toast alert.
+  A default toast alert
 </d2l-alert-toast>
 ```
 
@@ -155,7 +153,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 
 ### Multiple Toast Alerts
 
-Displaying more than one toast message at a time should be avoided unless absolutely necessary, since they usually disappear after 4 seconds and can be difficult to read for some users. It's often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
+Avoid displaying more than one toast message at a time unless absolutely necessary, since they disappear after 4 seconds and can be difficult to read for some users. It's often better to use an [inline alert](#d2l-alert) so that users have time to discover and read the message.
 
 For cases where multiple toast alerts are unavoidable, new toast messages will appear at the bottom and push older messages upward.
 
@@ -189,3 +187,9 @@ For cases where multiple toast alerts are unavoidable, new toast messages will a
 	Third toast alert
 </d2l-alert-toast>
 ```
+
+## Accessibility
+
+[Inline Alerts](#d2l-alert) are meant to draw attention without interrupting the user's flow, so they do not use the ARIA `alert` role. This means screen reader users do not hear them until encountering them in the content (as intended).
+
+[Toast Alerts](#d2l-alert-toast) leverage the ARIA `alert` role in alignment with the [W3C Alert Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alert/), so an assertive live region is created which causes the content of the alert to be announced immediately. This can interrupt the user, so it should be used sparingly as per our [Best Practices](#best-practices-1).

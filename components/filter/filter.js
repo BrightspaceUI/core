@@ -218,6 +218,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			/* Needed to "undo" the menu-item style for multiple dimensions */
 			d2l-hierarchical-view {
 				cursor: auto;
+				overflow: auto; /* remove with GAUD-131-dropdown-fixed-positioning flag clean up */
 			}
 
 			d2l-loading-spinner {
@@ -257,13 +258,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
-
-		// Prevent these events from bubbling out of the filter
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-hide-start', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-show-complete', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-show-start', this._stopPropagation);
-		this.addEventListener('d2l-hierarchical-view-resize', this._stopPropagation);
 	}
 
 	render() {

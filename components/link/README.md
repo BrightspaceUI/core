@@ -47,22 +47,14 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 
 | Property | Type | Description |
 |--|--|--|
+| `aria-label` | String | Label to provide more context for screen reader users when the link text is not enough |
 | `href` | String, required | URL or URL fragment of the link |
-| `aria-label` | String | Sets an accessible label |
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `main` | Boolean | Whether to apply the "main" link style |
 | `lines` | Number | The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified. |
 | `small` | Boolean | Whether to apply the "small" link style |
 | `target` | String | Where to display the linked URL |
 <!-- docs: end hidden content -->
-
-### Accessibility Properties
-
-To make your usage of `d2l-link` accessible, use the following property when applicable:
-
-| Attribute | Description |
-|--|--|
-| `aria-label` | Use when text in link does not provide enough context. |
 
 ## Applying link styles to native anchor elements
 
@@ -91,3 +83,8 @@ Alternately, you can apply link styles to a native `<a>` element by importing th
 ```
 
 Add the `d2l-link-main` or `d2l-link-small` CSS classes to the `<a>` element to apply those styles.
+
+## Accessibility
+ - The `d2l-link` component follows the W3C's best practices for the [Link Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/link/)
+ - When `target` is set to `_blank`, the `d2l-link` component follows [WCAG technique G201](https://www.w3.org/TR/WCAG20-TECHS/G201.html), and gives users an advanced warning that interacting with the link will open it in a new window
+    - While this is simply read out to screen reader users, it is also visually represented by the `new-window` icon

@@ -99,9 +99,9 @@ Now that our native input's validity state is being validated we can define cust
 ```javascript
 get validationMessage() {
 	if (this.validity.valueMissing) {
-		return 'Value is required.';
+		return 'Value is required';
 	} else if (this.validity.patternMismatch) {
-		return 'Invalid country code.';
+		return 'Invalid country code';
 	}
 	// Don't forget to call super.validationMessage to provide a default error message.
 	return super.validationMessage;

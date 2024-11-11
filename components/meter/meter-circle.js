@@ -23,7 +23,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		.d2l-meter-full-bar {
 			fill: var(--d2l-meter-circle-fill, none);
 		}
-		.d2l-meter-text {
+		.d2l-meter-circle-text {
 			font-size: 0.55rem;
 		}
 	` ];
@@ -47,6 +47,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const textClasses = {
 			'd2l-meter-text-ltr': !this.percent,
 			'd2l-body-standard': true,
+			'd2l-meter-circle-text': true,
 			'd2l-meter-text': true
 		};
 

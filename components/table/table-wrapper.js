@@ -111,9 +111,7 @@ export const tableStyles = css`
 	.d2l-table th.d2l-table-header-col-sortable-siblings d2l-table-col-sort-button {
 		--d2l-table-col-sort-button-width: unset;
 	}
-	.d2l-table-header-col-sortable-no-sorted.d2l-table-header-col-sortable-siblings :last-child {
-		padding-inline-end: calc(0.6rem + 18px);
-	}
+
 	@supports selector(:has(a, b)) {
 		.d2l-table > * > tr > th:has(d2l-table-col-sort-button) {
 			height: calc(var(--d2l-table-cell-overall-height) - var(--d2l-table-cell-col-sort-button-size-offset));
@@ -129,7 +127,8 @@ export const tableStyles = css`
 	.d2l-table th d2l-table-col-sort-button[nosort] ~ :last-child {
 		padding-inline-end: calc(0.6rem + 18px);
 	}
-	.d2l-table th d2l-table-col-sort-button:not([nosort]) ~ :last-child {
+	.d2l-table th d2l-table-col-sort-button:not([nosort]) ~ :last-child,
+	.d2l-table th d2l-table-col-sort-button:last-child:not([nosort]) {
 		padding-inline-end: unset;
 	}
 
@@ -599,7 +598,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 					const affectedNodes = [...removedNodes, ...addedNodes];
 					for (const node of affectedNodes) {
 						if (!(node instanceof Element)) continue;
-						updates.classNames ||= node.matches('tr');
+						updates.classNames ||= node.matches('tr, td, th');
 						updates.syncWidths ||= node.matches('tr');
 						updates.sticky ||= node.matches(SELECTORS.headers);
 						updates.count ||= node.matches(SELECTORS.items);
