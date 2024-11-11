@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * A button container component for button toggles.
@@ -7,6 +8,11 @@ class ButtonToggle extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * When true, consumer is expected to manage pressed state
+			 * @type {boolean}
+			 */
+			consumerManageState: { type: Boolean, attribute: 'consumer-manage-state' },
 			/**
 			 * Pressed state
 			 * @type {boolean}
@@ -37,6 +43,7 @@ class ButtonToggle extends LitElement {
 
 	constructor() {
 		super();
+		this.consumerManageState = false;
 		this.pressed = false;
 	}
 
@@ -50,8 +57,8 @@ class ButtonToggle extends LitElement {
 
 	render() {
 		return html`
-			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
-			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
+			<slot @click="${ifDefined(!this.consumerManageState ? this._handleNotPressedClick : undefined)}" name="not-pressed"></slot>
+			<slot @click="${ifDefined(!this.consumerManageState ? this._handlePressedClick : undefined)}" name="pressed"></slot>
 		`;
 	}
 

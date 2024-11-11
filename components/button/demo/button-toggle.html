@@ -54,6 +54,28 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Toggle Button (consumer-manaage-state)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle id="toggle-button-icon-consumer-manage-state" consumer-manage-state>
+						<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin." id="button-icon-not-pressed"></d2l-button-icon>
+						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin." id="button-icon-pressed"></d2l-button-icon>
+					</d2l-button-toggle>
+					<script>
+						const buttonToggle = document.querySelector('#toggle-button-icon-consumer-manage-state');
+						buttonToggle.addEventListener('d2l-button-toggle-change', e => console.log(e));
+
+						document.querySelector('#button-icon-not-pressed').addEventListener('click', () => {
+							buttonToggle.pressed = true;
+						});
+						document.querySelector('#button-icon-pressed').addEventListener('click', () => {
+							buttonToggle.pressed = false;
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 
 	</body>
