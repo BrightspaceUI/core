@@ -222,7 +222,7 @@ describe('d2l-input-text', () => {
 			elem.required = true;
 
 			const errors = await elem.validate();
-			expect(errors).to.contain('label is required.');
+			expect(errors).to.contain('label is required');
 		});
 
 		it('should be valid when required has value', async() => {

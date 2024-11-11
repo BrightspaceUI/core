@@ -55,7 +55,7 @@ describe('d2l-form-native', () => {
 		it('should validate native form elements', async() => {
 			const errors = await form.validate();
 			const ele = form.querySelector('#pets');
-			expect(errors.get(ele)).to.include.members(['Pets is required.']);
+			expect(errors.get(ele)).to.include.members(['Pets is required']);
 		});
 
 		it('should validate custom form elements', async() => {
