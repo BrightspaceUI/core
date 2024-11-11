@@ -54,11 +54,11 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Toggle Button (consumer-manaage-state)</h2>
+			<h2>Toggle Button (consumer manages state)</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle id="toggle-button-icon-consumer-manage-state" consumer-manage-state>
+					<d2l-button-toggle id="toggle-button-icon-consumer-manage-state">
 						<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin." id="button-icon-not-pressed"></d2l-button-icon>
 						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin." id="button-icon-pressed"></d2l-button-icon>
 					</d2l-button-toggle>
@@ -66,10 +66,12 @@
 						const buttonToggle = document.querySelector('#toggle-button-icon-consumer-manage-state');
 						buttonToggle.addEventListener('d2l-button-toggle-change', e => console.log(e));
 
-						document.querySelector('#button-icon-not-pressed').addEventListener('click', () => {
+						document.querySelector('#button-icon-not-pressed').addEventListener('click', (e) => {
+							e.preventDefault();
 							buttonToggle.pressed = true;
 						});
-						document.querySelector('#button-icon-pressed').addEventListener('click', () => {
+						document.querySelector('#button-icon-pressed').addEventListener('click', (e) => {
+							e.preventDefault();
 							buttonToggle.pressed = false;
 						});
 					</script>

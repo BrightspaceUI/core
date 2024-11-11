@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * A button container component for button toggles.
@@ -8,11 +7,6 @@ class ButtonToggle extends LitElement {
 
 	static get properties() {
 		return {
-			/**
-			 * When true, consumer is expected to manage pressed state
-			 * @type {boolean}
-			 */
-			consumerManageState: { type: Boolean, attribute: 'consumer-manage-state' },
 			/**
 			 * Pressed state
 			 * @type {boolean}
@@ -43,7 +37,6 @@ class ButtonToggle extends LitElement {
 
 	constructor() {
 		super();
-		this.consumerManageState = false;
 		this.pressed = false;
 	}
 
@@ -57,8 +50,8 @@ class ButtonToggle extends LitElement {
 
 	render() {
 		return html`
-			<slot @click="${ifDefined(!this.consumerManageState ? this._handleNotPressedClick : undefined)}" name="not-pressed"></slot>
-			<slot @click="${ifDefined(!this.consumerManageState ? this._handlePressedClick : undefined)}" name="pressed"></slot>
+			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
+			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
 		`;
 	}
 
@@ -85,17 +78,28 @@ class ButtonToggle extends LitElement {
 		elem.focus();
 	}
 
+	_clickCancelled(e) {
+		e.stopPropagation();
+		const customClick = new CustomEvent('click', {
+			cancelable: true
+		});
+		e.target.dispatchEvent(customClick);
+		return customClick.defaultPrevented;
+	}
+
 	async _handleClick(pressed) {
 		this.pressed = pressed;
 		await this.updateComplete;
 		this.focus();
 	}
 
-	_handleNotPressedClick() {
+	_handleNotPressedClick(e) {
+		if (this._clickCancelled(e)) return;
 		this._handleClick(true);
 	}
 
-	_handlePressedClick() {
+	_handlePressedClick(e) {
+		if (this._clickCancelled(e)) return;
 		this._handleClick(false);
 	}
 
