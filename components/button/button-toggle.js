@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A button container component for button toggles.
- * @fires click - Internal event
  */
 class ButtonToggle extends LitElement {
 
@@ -79,28 +78,17 @@ class ButtonToggle extends LitElement {
 		elem.focus();
 	}
 
-	_clickCancelled(e) {
-		e.stopPropagation();
-		const customClick = new CustomEvent('click', {
-			cancelable: true
-		});
-		e.target.dispatchEvent(customClick);
-		return customClick.defaultPrevented;
-	}
-
 	async _handleClick(pressed) {
 		this.pressed = pressed;
 		await this.updateComplete;
 		this.focus();
 	}
 
-	_handleNotPressedClick(e) {
-		if (this._clickCancelled(e)) return;
+	_handleNotPressedClick() {
 		this._handleClick(true);
 	}
 
-	_handlePressedClick(e) {
-		if (this._clickCancelled(e)) return;
+	_handlePressedClick() {
 		this._handleClick(false);
 	}
 
