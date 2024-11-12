@@ -17,7 +17,7 @@ class StatusIndicator extends LitElement {
 				reflect: true
 			},
 			/**
-			 * REQUIRED: The text that is displayed within the status indicator
+			 * ACCESSIBILITY: REQUIRED: The text that is displayed within the status indicator
 			 * @type {string}
 			 */
 			text: {
