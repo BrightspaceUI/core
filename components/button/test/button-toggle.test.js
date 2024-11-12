@@ -1,6 +1,6 @@
 import '../button-icon.js';
 import '../button-toggle.js';
-import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-toggle', () => {
 
@@ -78,8 +78,7 @@ describe('d2l-button-toggle', () => {
 		it('click with no state management', async() => {
 			el.querySelectorAll('d2l-button-icon')
 				.forEach(b => b.addEventListener('click', e => e.preventDefault()));
-			clickElem(el.querySelector('[slot="not-pressed"]'));
-			await aTimeout(10);
+			await clickElem(el.querySelector('[slot="not-pressed"]'));
 			expect(el.pressed).to.equal(false);
 		});
 
