@@ -1,6 +1,6 @@
 import '../button-icon.js';
 import '../button-toggle.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-toggle', () => {
 
@@ -61,6 +61,49 @@ describe('d2l-button-toggle', () => {
 			expect(dispatched).to.be.false;
 		});
 
+	});
+
+	describe('consumer manages state', () => {
+
+		it('click with no state management', async() => {
+			const el = await fixture(html`
+				<d2l-button-toggle>
+					<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+					<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+				</d2l-button-toggle>
+			`);
+			const buttonIcons = el.querySelectorAll('d2l-button-icon');
+			buttonIcons[0].addEventListener('click', (e) => {
+				e.preventDefault();
+			});
+			buttonIcons[1].addEventListener('click', (e) => {
+				e.preventDefault();
+			});
+			clickElem(el.querySelector('[slot="not-pressed"]'));
+			await aTimeout(100);
+			expect(el.pressed).to.equal(false);
+		});
+
+		it('click once with state management', async() => {
+			const el = await fixture(html`
+				<d2l-button-toggle>
+					<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+					<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+				</d2l-button-toggle>
+			`);
+			const buttonIcons = el.querySelectorAll('d2l-button-icon');
+			buttonIcons[0].addEventListener('click', (e) => {
+				e.preventDefault();
+				el.pressed = true;
+			});
+			buttonIcons[1].addEventListener('click', (e) => {
+				e.preventDefault();
+				el.pressed = false;
+			});
+			clickElem(el.querySelector('[slot="not-pressed"]'));
+			const e = await oneEvent(el, 'd2l-button-toggle-change');
+			expect(e.target.pressed).to.equal(true);
+		});
 	});
 
 });

@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A button container component for button toggles.
+ * @fires click - Internal event
  */
 class ButtonToggle extends LitElement {
 
