@@ -63,4 +63,39 @@ describe('d2l-button-toggle', () => {
 
 	});
 
+	describe('consumer manages state', () => {
+
+		let el;
+		beforeEach(async() => {
+			el = await fixture(html`
+				<d2l-button-toggle>
+					<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+					<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+				</d2l-button-toggle>
+			`);
+		});
+
+		it('click with no state management', async() => {
+			el.querySelectorAll('d2l-button-icon')
+				.forEach(b => b.addEventListener('click', e => e.preventDefault()));
+			await clickElem(el.querySelector('[slot="not-pressed"]'));
+			expect(el.pressed).to.equal(false);
+		});
+
+		it('click once with state management', async() => {
+			const buttonIcons = el.querySelectorAll('d2l-button-icon');
+			buttonIcons[0].addEventListener('click', (e) => {
+				e.preventDefault();
+				el.pressed = true;
+			});
+			buttonIcons[1].addEventListener('click', (e) => {
+				e.preventDefault();
+				el.pressed = false;
+			});
+			clickElem(el.querySelector('[slot="not-pressed"]'));
+			const e = await oneEvent(el, 'd2l-button-toggle-change');
+			expect(e.target.pressed).to.equal(true);
+		});
+	});
+
 });
