@@ -79,6 +79,14 @@ class ButtonToggle extends LitElement {
 	}
 
 	async _handleClick(pressed) {
+		const beforeToggleEvent = new CustomEvent('d2l-button-toggle-before-toggle', {
+			detail: {
+				beforeTogglePromise: null
+			}
+		});
+		this.dispatchEvent(beforeToggleEvent);
+		if (beforeToggleEvent.detail.beforeTogglePromise) await beforeToggleEvent.detail.beforeTogglePromise;
+
 		this.pressed = pressed;
 		await this.updateComplete;
 		this.focus();
