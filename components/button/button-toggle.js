@@ -79,17 +79,16 @@ class ButtonToggle extends LitElement {
 	}
 
 	async _handleClick(pressed) {
-		const beforeToggleEvent = new CustomEvent('d2l-button-toggle-before-toggle', {
+		const beforeToggleEvent = new CustomEvent('d2l-button-toggle-before-change', {
 			detail: {
-				beforeTogglePromise: null
-			}
+				update: (newPressed) => this._updatePressedState(newPressed)
+			},
+			cancelable: true
 		});
 		this.dispatchEvent(beforeToggleEvent);
-		if (beforeToggleEvent.detail.beforeTogglePromise) await beforeToggleEvent.detail.beforeTogglePromise;
+		if (beforeToggleEvent.defaultPrevented) return;
 
-		this.pressed = pressed;
-		await this.updateComplete;
-		this.focus();
+		this._updatePressedState(pressed);
 	}
 
 	_handleNotPressedClick() {
@@ -98,6 +97,12 @@ class ButtonToggle extends LitElement {
 
 	_handlePressedClick() {
 		this._handleClick(false);
+	}
+
+	async _updatePressedState(newPressed) {
+		this.pressed = newPressed;
+		await this.updateComplete;
+		this.focus();
 	}
 
 }

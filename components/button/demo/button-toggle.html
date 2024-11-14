@@ -63,10 +63,11 @@
 						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
 					</d2l-button-toggle>
 					<script>
-						document.querySelector('#toggle-button-icon-promise-delay').addEventListener('d2l-button-toggle-before-toggle', e => {
-							e.detail.beforeTogglePromise = new Promise((resolve) => {
-								setTimeout(resolve, 2000);
-							});
+						document.querySelector('#toggle-button-icon-promise-delay').addEventListener('d2l-button-toggle-before-change', e => {
+							e.preventDefault();
+							setTimeout(() => {
+								e.detail.update(!e.target.pressed);
+							}, 2000);
 						});
 						document.querySelector('#toggle-button-icon-promise-delay').addEventListener('d2l-button-toggle-change', e => console.log(e));
 					</script>
