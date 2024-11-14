@@ -8,6 +8,6 @@ import { Constructor } from '@open-wc/dedupe-mixin';
 declare global {
 	type LitElementConstructor = Constructor<{}>;
 	type LitElementClassType = Constructor<{}>;
-    type ReactiveElementConstructor = Constructor<{}>;
+	type ReactiveElementConstructor = Constructor<{}>;
 	type ReactiveElementClassType = Constructor<{}>;
 }
