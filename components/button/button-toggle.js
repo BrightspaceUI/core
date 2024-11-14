@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A button container component for button toggles.
+ * @fires d2l-button-toggle-before-change - Dispatched before pressed state is updated. Can be canceled to allow the consumer to handle toggling pressed state. This is useful if something needs to happen prior to the pressed state being toggled.
  */
 class ButtonToggle extends LitElement {
 
