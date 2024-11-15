@@ -13,7 +13,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const desktopMinSize = 320;
+const desktopMinSize = 0;
 
 const desktopStepDelta = 80; // try to make each keyboard step move 80px
 const desktopMinSteps = 2; // min number of keyboard presses to get from min size to max size
@@ -556,6 +556,21 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			 */
 			backgroundShading: { type: String, attribute: 'background-shading' },
 			/**
+			 * Controls if the primary and secondary panel split the page 66-33 or 50-50
+			 * @type {boolean}
+			 */
+			fiftyFifty: { type: Boolean, attribute: 'fifty-fifty' },
+			/**
+			 * Used when template is nested within another template
+			 * @type {boolean}
+			 */
+			inception: { type: Boolean },
+			/**
+			 * Controls whether the secondary panel shows or not
+			 * @type {boolean}
+			 */
+			primaryOnly: { type: Boolean, attribute: 'primary-only' },
+			/**
 			 * Controls how the primary panel's contents overflow
 			 * @type {'default'|'hidden'}
 			 */
@@ -604,6 +619,9 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				position: absolute;
 				right: 0;
 				top: 0;
+			}
+			:host([inception]) {
+				position: relative;
 			}
 			:host([hidden]) {
 				display: none;
@@ -658,6 +676,9 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				overflow-x: hidden;
 				overflow-y: scroll;
 				width: 100%;
+			}
+			:host([inception]) aside {
+				overflow-y: visible;
 			}
 
 			/* prevent margin colapse on slotted children */
@@ -1130,7 +1151,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 	}
 
 	_isResizable() {
-		return this.resizable || this._isMobile;
+		return (this.resizable || this._isMobile) && !this.primaryOnly;
 	}
 
 	_onContentResize(entries) {
@@ -1161,7 +1182,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 						this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider') :
 						this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-not-resizable');
 					const desktopDividerSize = contentRect.width - divider.offsetWidth;
-					this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+					const splitMultiplier = this.fiftyFifty ? (1 / 2) : (1 / 3);
+					this._size = Math.max(desktopMinSize, desktopDividerSize * splitMultiplier);
 				}
 			}
 		}
