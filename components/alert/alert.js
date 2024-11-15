@@ -171,6 +171,17 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.type = 'default';
 	}
 
+	static get demoProperties() {
+		return {
+			type: { type: 'select', options: ['default','critical','success','warning'], label: 'Alert Type' },
+			subtext: { type: 'text', label: 'Subtext' },
+			buttonText: { type: 'text', attribute: 'button-text', label: 'Button Text' },
+			hasCloseButton: { type: 'switch', attribute: 'has-close-button', label: 'Has Close Button' },
+			noPadding: { type: 'switch', attribute: 'no-padding', label: 'No Padding' }
+		}
+	}
+
+
 	render() {
 		const hasActions = this.buttonText && this.buttonText.length > 0 || this.hasCloseButton;
 		const alertTextClasses = {

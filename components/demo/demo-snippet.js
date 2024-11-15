@@ -3,7 +3,11 @@ import '../button/button-subtle.js';
 import '../switch/switch.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
+import '../inputs/input-date.js';
+import '../inputs/input-text.js';
 import { css, html, LitElement } from 'lit';
+import { labelStyles } from '../typography/styles.js';
+import { selectStyles } from '../inputs/input-select-styles.js';
 
 class DemoSnippet extends LitElement {
 
@@ -14,6 +18,7 @@ class DemoSnippet extends LitElement {
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
+			_controlProperties: { type: Array },
 			_fullscreen: { state: true },
 			_hasSkeleton: { type: Boolean, attribute: false },
 			_settingsPeek: { state: true },
@@ -22,7 +27,7 @@ class DemoSnippet extends LitElement {
 	}
 
 	static get styles() {
-		return css`
+		return [ labelStyles, selectStyles, css`
 			:host {
 				background-color: white;
 				border: 1px solid var(--d2l-color-tungsten);
@@ -106,7 +111,14 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-`;
+			.d2l-demo-control {
+				display: block;
+				padding-top: 0.5rem;
+			}
+			.d2l-demo-control-dropdown {
+				width: 100%;
+			}
+		`];
 	}
 
 	constructor() {
@@ -121,7 +133,9 @@ class DemoSnippet extends LitElement {
 		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		const switches = html`
 			<d2l-switch text="Fullscreen" ?on="${this._fullscreen}" @change="${this._handleFullscreenChange}"></d2l-switch><br />
-			${skeleton}`;
+			${skeleton}
+			${this._renderControls()}
+		`;
 		const settings = this.fullWidth && this._fullscreen ? html`
 			<d2l-dropdown class="settings-dropdown ${this._settingsPeek ? 'peek' : ''}">
 				<d2l-button-subtle primary icon="tier1:gear" text="Settings" class="d2l-dropdown-opener"></d2l-button-subtle>
@@ -215,6 +229,41 @@ class DemoSnippet extends LitElement {
 			.replace(/=""/g, ''); // replace empty strings for boolean attributes (="")
 	}
 
+	_getProperties() {
+		// Possible improvements:
+		// - Add more control types
+		// - Allow grouping things together to split things up more easily on the side bar (using styles)
+		// - Improve default value support (settings a value in the demo directly doesn't reflect in the control)
+
+		if (!this.shadowRoot) return;
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
+
+		this._controlProperties = [];
+
+		const doApply = (nodes) => {
+			for (let i = 0; i < nodes.length; i++) {
+				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+					if (nodes[i].constructor.properties) {
+						Object.entries(nodes[i].constructor.demoProperties).forEach(([key, value]) => {
+							this._controlProperties.push({
+								label: value.label || key,
+								attributeName: value.attribute || key,
+								type: value.type,
+								options: value.options,
+								node: nodes[i]
+							});
+						});
+					}
+
+					doApply(nodes[i].children);
+				}
+			}
+		};
+		doApply(nodes);
+	}
+
+
 	async _handleFullscreenChange(e) {
 		this._fullscreen = e.target.on;
 		this._settingsPeek = this._fullscreen;
@@ -234,12 +283,52 @@ class DemoSnippet extends LitElement {
 		this._updateCode(e.target);
 	}
 
+	_onControlValueChange(e) {
+		this._updateDemoAttribute(e.target.controlObject, e.target.value);
+	}
+
+	_onSwitchControlChange(e) {
+		this._updateDemoAttribute(e.target.controlObject, e.target.on);
+	}
+
 	_removeImportedDemo() {
 		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
 		for (let i = nodes.length - 1; i === 0; i--) {
 			nodes[i].parentNode.removeChild(nodes[i]);
 		}
+	}
+
+	_renderControls() {
+		if (!this._controlProperties?.length) return;
+
+		return this._controlProperties.map((control) => {
+			switch (control.type) {
+				case 'switch':
+					return html`<d2l-switch class="d2l-demo-control" text="${control.label}" .controlObject=${control} @change="${this._onSwitchControlChange}"></d2l-switch>`;
+				case 'select':
+					return html`
+						<div class="d2l-demo-control">
+							<label class="d2l-label-text">${control.label}</label>
+							<select class="d2l-input-select d2l-demo-control-dropdown" .controlObject=${control} aria-label=${control.label} @change=${this._onControlValueChange}>
+								${control.options.map(option => html`<option value="${option}">${option}</option>`)}
+							</select>
+						</div>
+					`;
+				case 'text':
+					return html`
+						<div class="d2l-demo-control">
+							<d2l-input-text label="${control.label}" .controlObject=${control} @change=${this._onControlValueChange}></d2l-input-text>
+						</div>
+					`;
+				case 'date':
+					return html`
+						<div class="d2l-demo-control">
+							<d2l-input-date label="${control.label}" .controlObject=${control} @change=${this._onControlValueChange}></d2l-input-date>
+						</div>
+					`;
+			}
+		});
 	}
 
 	_repeat(value, times) {
@@ -273,6 +362,16 @@ class DemoSnippet extends LitElement {
 		this._code = textNode.textContent;
 
 		this._updateHasSkeleton();
+		this._getProperties();
+	}
+
+	_updateDemoAttribute(control, value) {
+		if (value) {
+			control.node.setAttribute(control.attributeName, value);
+		} else {
+			control.node.removeAttribute(control.attributeName);
+		}
+		this._code = control.node.outerHTML;
 	}
 
 	_updateHasSkeleton() {
