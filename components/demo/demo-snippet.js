@@ -263,7 +263,6 @@ class DemoSnippet extends LitElement {
 		doApply(nodes);
 	}
 
-
 	async _handleFullscreenChange(e) {
 		this._fullscreen = e.target.on;
 		this._settingsPeek = this._fullscreen;
