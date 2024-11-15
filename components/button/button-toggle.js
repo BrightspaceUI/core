@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A button container component for button toggles.
+ * @fires d2l-button-toggle-before-change - Dispatched before pressed state is updated. Can be canceled to allow the consumer to handle toggling pressed state. This is useful if something needs to happen prior to the pressed state being toggled.
  * @typedef {ButtonToggle} ButtonToggleExported
  */
 class ButtonToggle extends LitElement {
@@ -80,9 +81,16 @@ class ButtonToggle extends LitElement {
 	}
 
 	async _handleClick(pressed) {
-		this.pressed = pressed;
-		await this.updateComplete;
-		this.focus();
+		const beforeToggleEvent = new CustomEvent('d2l-button-toggle-before-change', {
+			detail: {
+				update: (newPressed) => this._updatePressedState(newPressed)
+			},
+			cancelable: true
+		});
+		this.dispatchEvent(beforeToggleEvent);
+		if (beforeToggleEvent.defaultPrevented) return;
+
+		this._updatePressedState(pressed);
 	}
 
 	_handleNotPressedClick() {
@@ -91,6 +99,12 @@ class ButtonToggle extends LitElement {
 
 	_handlePressedClick() {
 		this._handleClick(false);
+	}
+
+	async _updatePressedState(newPressed) {
+		this.pressed = newPressed;
+		await this.updateComplete;
+		this.focus();
 	}
 
 }
