@@ -244,7 +244,7 @@ class DemoSnippet extends LitElement {
 		const doApply = (nodes) => {
 			for (let i = 0; i < nodes.length; i++) {
 				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					if (nodes[i].constructor.properties) {
+					if (nodes[i].constructor.demoProperties) {
 						Object.entries(nodes[i].constructor.demoProperties).forEach(([key, value]) => {
 							this._controlProperties.push({
 								label: value.label || key,
