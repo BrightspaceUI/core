@@ -1,4 +1,4 @@
-@import "../../colors/colors.scss";
+@use "../../colors/colors.scss";
 
 @mixin d2l-input-checkbox() {
 	-webkit-appearance: none;
@@ -21,13 +21,13 @@
 	}
 	&,
 	&:hover:disabled {
-		background-color: $d2l-color-regolith;
-		border-color: $d2l-color-galena;
+		background-color: colors.$d2l-color-regolith;
+		border-color: colors.$d2l-color-galena;
 		border-width: 1px;
 	}
 	&:hover,
 	&:focus {
-		border-color: $d2l-color-celestine;
+		border-color: colors.$d2l-color-celestine;
 		border-width: 2px;
 		outline-width: 0;
 	}
