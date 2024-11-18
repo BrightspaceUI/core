@@ -1,67 +1,67 @@
-@import "../components/colors/colors.scss";
-@import "../components/inputs/sass/checkbox.scss";
-@import "../components/inputs/sass/label.scss";
-@import "../components/inputs/sass/radio.scss";
-@import "../components/inputs/sass/select.scss";
-@import "../components/inputs/sass/text.scss";
-@import "../components/inputs/sass/textarea.scss";
-@import "../components/link/link.scss";
-@import "../components/offscreen/offscreen.scss";
-@import "../components/typography/typography.scss";
+@use "../components/colors/colors.scss";
+@use "../components/inputs/sass/checkbox.scss";
+@use "../components/inputs/sass/label.scss";
+@use "../components/inputs/sass/radio.scss";
+@use "../components/inputs/sass/select.scss";
+@use "../components/inputs/sass/text.scss";
+@use "../components/inputs/sass/textarea.scss";
+@use "../components/link/link.scss";
+@use "../components/offscreen/offscreen.scss";
+@use "../components/typography/typography.scss";
 
-@include d2l-typography-font-face();
+@include typography.d2l-typography-font-face();
 
 .d2l-test-body {
-	@include d2l-typography();
+	@include typography.d2l-typography();
 }
 .d2l-test-body-standard {
-	@include d2l-body-standard();
+	@include typography.d2l-body-standard();
 }
 .d2l-test-body-compact {
-	@include d2l-body-compact();
+	@include typography.d2l-body-compact();
 }
 .d2l-test-body-small {
-	@include d2l-body-small();
+	@include typography.d2l-body-small();
 }
 .d2l-test-heading-1 {
-	@include d2l-heading-1();
+	@include typography.d2l-heading-1();
 }
 .d2l-test-heading-2 {
-	@include d2l-heading-2();
+	@include typography.d2l-heading-2();
 }
 .d2l-test-heading-3 {
-	@include d2l-heading-3();
+	@include typography.d2l-heading-3();
 }
 .d2l-test-heading-4 {
-	@include d2l-heading-4();
+	@include typography.d2l-heading-4();
 }
 .d2l-test-label-text {
-	@include d2l-label-text();
+	@include typography.d2l-label-text();
 }
 .d2l-test-input-checkbox {
-	@include d2l-input-checkbox();
+	@include checkbox.d2l-input-checkbox();
 }
 .d2l-test-input-label {
-	@include d2l-input-label();
+	@include label.d2l-input-label();
 }
 .d2l-test-input-label-required {
-	@include d2l-input-label-required();
+	@include label.d2l-input-label-required();
 }
 .d2l-test-input-radio {
-	@include d2l-input-radio();
+	@include radio.d2l-input-radio();
 }
 .d2l-test-input-select {
-	@include d2l-input-select();
+	@include select.d2l-input-select();
 }
 .d2l-test-input-text {
-	@include d2l-input-text();
+	@include text.d2l-input-text();
 }
 .d2l-test-input-textarea {
-	@include d2l-input-textarea();
+	@include textarea.d2l-input-textarea();
 }
 .d2l-test-link {
-	@include d2l-link();
+	@include link.d2l-link();
 }
 .d2l-test-offscreen {
-	@include d2l-offscreen();
+	@include offscreen.d2l-offscreen();
 }

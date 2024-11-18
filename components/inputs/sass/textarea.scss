@@ -1,14 +1,14 @@
-@import "../../colors/colors.scss";
-@import "./text.scss";
+@use "../../colors/colors.scss";
+@use "./text.scss";
 
 @mixin d2l-input-textarea() {
-	@include d2l-input-text(
+	overflow: auto;
+	@include text.d2l-input-text(
 		$include-pseudo-classes: false,
 		$line-height: normal,
 		$padding: 0.5rem 0.75rem,
 		$padding-focus: calc(0.5rem - 1px) calc(0.75rem - 1px)
 	);
-	overflow: auto;
 	&[aria-invalid="true"] {
 		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
 		background-position: top 12px right 18px;
