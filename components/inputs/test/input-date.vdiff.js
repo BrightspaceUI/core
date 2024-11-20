@@ -352,6 +352,40 @@ describe('d2l-input-date', () => {
 				await expect(elem).to.be.golden();
 			});
 		});
+
+		describe('required revert', () => {
+
+			let elem;
+			beforeEach(async() => {
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }));
+			});
+
+			it('delete text input then blur', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await focusElem(elem);
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus then blur', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await focusElem(elem);
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+		});
 	});
 
 	describe('skeleton', () => {

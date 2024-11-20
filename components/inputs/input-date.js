@@ -383,7 +383,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		try {
 			const date = parseDate(value);
 			await this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
-		} catch (err) {
+		} catch {
 			// leave value the same when invalid input
 			this._showRevertTooltip = true;
 		}
@@ -466,7 +466,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	_handleInputTextFocus() {
-		if(this._showRevertTooltip) {
+		if (this._showRevertTooltip) {
 			this._showRevertInstructions = true;
 			this._showRevertTooltip = false;
 		}
