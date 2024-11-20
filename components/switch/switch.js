@@ -7,6 +7,7 @@ import { SwitchMixin } from './switch-mixin.js';
 /**
  * A generic switch with on/off semantics.
  * @attr {string} text - ACCESSIBILITY: REQUIRED: Acts as the primary label for the switch. Visible unless text-position is `hidden`.
+ * @fires d2l-switch-before-change - Dispatched before on-state is updated. Can be canceled to allow the consumer to handle switching the on-state. This is useful if something needs to happen prior to the on-state being switched.
  */
 class Switch extends SwitchMixin(LitElement) {
 

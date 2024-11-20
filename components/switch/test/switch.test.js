@@ -1,5 +1,5 @@
 import '../switch.js';
-import { expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 
 const switchFixture = html`<d2l-switch text="some text"></d2l-switch>`;
@@ -43,6 +43,31 @@ describe('d2l-switch', () => {
 			await oneEvent(elem, 'change');
 			expect(elem.on).to.be.true;
 		});
+	});
+
+	describe('consumer manages state', () => {
+
+		it('click with no state management', async() => {
+			const elem = await fixture(switchFixture);
+			const clickTarget = elem.shadowRoot.querySelector('.d2l-switch-container');
+			elem.addEventListener('d2l-switch-before-change', e => {
+				e.preventDefault();
+			});
+			await clickElem(clickTarget);
+			expect(elem.on).to.be.false;
+		});
+
+		it('click with state management', async() => {
+			const elem = await fixture(switchFixture);
+			const clickTarget = elem.shadowRoot.querySelector('.d2l-switch-container');
+			elem.addEventListener('d2l-switch-before-change', e => {
+				e.preventDefault();
+				e.detail.update(true);
+			});
+			await clickElem(clickTarget);
+			expect(elem.on).to.be.true;
+		});
+
 	});
 
 });

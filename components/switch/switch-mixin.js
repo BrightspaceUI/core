@@ -252,8 +252,20 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 	_toggleState() {
 		if (this.disabled) return;
+
+		const beforeChangeEvent = new CustomEvent('d2l-switch-before-change', {
+			detail: {
+				update: on => this.on = on
+			},
+			cancelable: true
+		});
+
+		this.dispatchEvent(beforeChangeEvent);
+		if (beforeChangeEvent.defaultPrevented) return;
+
 		this.on = !this.on;
 		/** Dispatched when the `on` property is updated */
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
+
 };
