@@ -626,10 +626,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	async __openedChanged(newValue) {
 
-		// DE44538: wait for dropdown content to fully render,
-		// otherwise this.getContentContainer() can return null.
-		await this.__waitForContentContainer();
-
 		this.__previousFocusableAncestor =
 			newValue === true
 				? getPreviousFocusableAncestor(this, false, false)
@@ -637,6 +633,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const doOpen = async() => {
 
+			// DE44538: wait for dropdown content to fully render,
+			// otherwise this.getContentContainer() can return null.
+			await this.__waitForContentContainer();
 			const content = this.getContentContainer();
 
 			if (!this.noAutoFit) {
