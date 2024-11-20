@@ -210,10 +210,10 @@ describe('filter', () => {
 		it('dates-custom-tooltip', async() => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple());
-			focusElem(elem.shadowRoot.querySelector('d2l-list-item'));
+			await focusElem(elem.shadowRoot.querySelector('d2l-list-item'));
 			sendKeysElem(elem, 'press', 'Tab+Space');
 			await oneEvent(elem, 'd2l-tooltip-show');
-			await nextFrame();
+			await aTimeout(200);
 			await expect(document).to.be.golden();
 		});
 
@@ -221,7 +221,6 @@ describe('filter', () => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple(true));
 			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
-			focusElem(listItem);
 			sendKeysElem(listItem, 'press', 'ArrowDown');
 			await aTimeout(200); // make sure tooltip does not appear
 			await expect(document).to.be.golden();
@@ -231,9 +230,10 @@ describe('filter', () => {
 			resetHasDisplayedKeyboardTooltip();
 			const elem = await fixture(createSingleDimDateCustomSimple(true));
 			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
-			focusElem(listItem);
-			sendKeysElem(listItem, 'press', 'ArrowDown');
-			sendKeysElem(listItem, 'press', 'ArrowUp+Space');
+			setTimeout(async() => {
+				await sendKeysElem(listItem, 'press', 'ArrowDown');
+				await sendKeysElem(listItem, 'press', 'ArrowUp+Space');
+			});
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await nextFrame();
 			await expect(document).to.be.golden();
