@@ -351,6 +351,12 @@ describe('d2l-input-date', () => {
 				await sendKeysElem(elem, 'press', 'Enter');
 				await expect(elem).to.be.golden();
 			});
+
+			it('click then click away', async() => {
+				await clickElem(elem);
+				await clickElem(document.body);
+				await expect(elem).to.be.golden();
+			});
 		});
 
 		describe('required revert', () => {

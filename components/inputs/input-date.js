@@ -368,8 +368,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	async _handleChange() {
 		this._showRevertTooltip = false;
 		const value = this._textInput.value;
+		const isNewVal = value !== this.value;
 		if (!value && !this.required) {
-			if (value !== this.value) {
+			if (isNewVal) {
 				await this._updateValueDispatchEvent('');
 				if (this._calendar) {
 					await this.updateComplete;
@@ -385,7 +386,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			await this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
 		} catch {
 			// leave value the same when invalid input
-			this._showRevertTooltip = true;
+			if (isNewVal) this._showRevertTooltip = true;
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		if (this._calendar) {
