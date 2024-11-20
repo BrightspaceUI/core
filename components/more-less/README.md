@@ -26,3 +26,7 @@ The `d2l-more-less` element can be used to minimize the display of long content,
 | `height` | String, default: `'4em'` | Maximum height of the content when in "less" mode. The `d2l-more-less` element itself will take up additional vertical space for the fading effect as well as the more/less button itself. |
 | `inactive` | Boolean | Whether the component is active or inactive |
 <!-- docs: end hidden content -->
+
+## Accessibility
+
+The implementation of the `d2l-more-less` component follows the [W3C Disclosure (Show/Hide) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). It is worth noting that the content that is visually hidden is not actually hidden from screen reader users since those users can interrupt the screen reader if they do not want to continue listening to the content.
