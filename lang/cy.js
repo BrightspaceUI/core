@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
 	"components.input-date.openInstructions": "Defnyddio fformat dyddiad {format}. Pwyswch saeth i lawr neu Enter i gael mynediad at galendr bach.",
 	"components.input-date.now": "Nawr",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "Heddiw",
 	"components.input-number.hintInteger": "Mae'r maes hwn yn derbyn gwerthoedd cyfanrif yn unig (dim degolion)",
 	"components.input-number.hintDecimalDuplicate": "Mae degol eisoes yn y nifer hwn",

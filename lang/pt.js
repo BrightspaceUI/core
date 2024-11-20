@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "A data precisa estar entre {minDate} e {maxDate}",
 	"components.input-date.openInstructions": "Adote o formato de data {format}. Use a tecla de seta para baixo ou pressione Enter para acessar o minicalendário.",
 	"components.input-date.now": "Agora",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "Hoje",
 	"components.input-number.hintInteger": "Este campo aceita apenas valores inteiros (não decimais)",
 	"components.input-number.hintDecimalDuplicate": "Já existe um decimal neste número",

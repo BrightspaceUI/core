@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "Datoen skal være mellem {minDate} og {maxDate}",
 	"components.input-date.openInstructions": "Brug datoformatet {format}. Tryk på Pil ned eller Enter for at få adgang til minikalender.",
 	"components.input-date.now": "Nu",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "I dag",
 	"components.input-number.hintInteger": "Dette felt accepterer kun heltalsværdier (ingen decimaler)",
 	"components.input-number.hintDecimalDuplicate": "Der er allerede en decimal i dette tal",

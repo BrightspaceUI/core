@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "Datum muss zwischen {minDate} und {maxDate} liegen",
 	"components.input-date.openInstructions": "Das Datumsformat {format} verwenden. Minikalender durch Abwärtspfeil oder durch Drücken der Eingabetaste aufrufen.",
 	"components.input-date.now": "Jetzt",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "Heute",
 	"components.input-number.hintInteger": "Dieses Feld akzeptiert nur Ganzzahlen (keine Dezimalstellen)",
 	"components.input-number.hintDecimalDuplicate": "Diese Zahl enthält bereits eine Dezimale",

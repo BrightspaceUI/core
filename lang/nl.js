@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "Datum moet tussen {minDate} en {maxDate} liggen",
 	"components.input-date.openInstructions": "Gebruik datumnotatie {format}. Gebruik Pijl omlaag of druk op Enter om de mini-agenda te openen.",
 	"components.input-date.now": "Nu",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "Vandaag",
 	"components.input-number.hintInteger": "Dit veld accepteert alleen gehele getallen (geen decimalen)",
 	"components.input-number.hintDecimalDuplicate": "Dit getal bevat al een decimaal",

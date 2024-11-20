@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "日期必须介于 {minDate} 和 {maxDate} 之间",
 	"components.input-date.openInstructions": "使用日期格式 {format}。利用向下箭头键或按 Enter 键访问迷你日历。",
 	"components.input-date.now": "现在",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "今天",
 	"components.input-number.hintInteger": "此字段只接受整数值（无小数）",
 	"components.input-number.hintDecimalDuplicate": "此数中已有一个小数",

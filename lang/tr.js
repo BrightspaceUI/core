@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "Tarih, {minDate} ile {maxDate} arasında olmalıdır",
 	"components.input-date.openInstructions": "{format} tarih formatını kullanın. Küçük takvime erişmek için aşağı okunu kullanın veya enter tuşuna basın.",
 	"components.input-date.now": "Şimdi",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "Bugün",
 	"components.input-number.hintInteger": "Bu alanda yalnızca tam sayı değerleri kabul edilir (ondalık sayı kabul edilmez)",
 	"components.input-number.hintDecimalDuplicate": "Bu sayıda zaten bir ondalık var",

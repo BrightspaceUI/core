@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "日付は {minDate} から {maxDate} の間にする必要があります",
 	"components.input-date.openInstructions": "日付形式 {format} を使用します。ミニカレンダーにアクセスするには下矢印を使うか Enter を押します。",
 	"components.input-date.now": "現在",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "今日",
 	"components.input-number.hintInteger": "このフィールドには整数値のみ入力できます（小数不可）。",
 	"components.input-number.hintDecimalDuplicate": "この数値にはすでに小数があります",

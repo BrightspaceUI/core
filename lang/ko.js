@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "날짜는 {minDate}와 {maxDate} 사이여야 합니다.",
 	"components.input-date.openInstructions": "{format} 날짜 형식을 사용하십시오. 미니 달력에 접근하려면 아래쪽 화살표를 누르거나 Enter 키를 누르십시오.",
 	"components.input-date.now": "현재",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "오늘",
 	"components.input-number.hintInteger": "이 필드는 정수 값만 허용합니다(소수점 없음)",
 	"components.input-number.hintDecimalDuplicate": "이 숫자에 이미 소수점이 있습니다",

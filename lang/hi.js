@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "तारीख़ {minDate} और {maxDate} के बीच होनी चाहिए",
 	"components.input-date.openInstructions": "तारीख़ फ़ॉर्मेट {format} का उपयोग करें। लघु-कैलेंडर तक पहुँचने के लिए तीर नीचे या एंटर दबाएँ।",
 	"components.input-date.now": "अभी",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "आज",
 	"components.input-number.hintInteger": "यह फ़ील्ड केवल पूर्णांक मानों (कोई दशमलव नहीं) को स्वीकार करती है",
 	"components.input-number.hintDecimalDuplicate": "इस संख्या में पहले से ही कोई दशमलव है",

@@ -69,6 +69,8 @@ export default {
 	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
 	"components.input-date.now": "الآن",
+	"components.input-date.revertWithFormat": "{label} reverted to previous value. Use date format {format}.",
+	"components.input-date.revertWithInstructions": "{label} reverted to previous value. Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.today": "اليوم",
 	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
 	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري في هذا الرقم",
