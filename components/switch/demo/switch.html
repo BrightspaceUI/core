@@ -74,7 +74,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-switch id="switch-with-confirm" text="Dark Mode"></d2l-switch>
-					<d2l-dialog-confirm id="confirm" title-text="Confirm" text="Are you sure? It's really dark.">
+					<d2l-dialog-confirm id="confirm" title-text="Confirm" text="Are you sure you want to change?">
 						<d2l-button slot="footer" primary data-dialog-action="yes">Yes</d2l-button>
 						<d2l-button slot="footer" data-dialog-action="no">No</d2l-button>
 					</d2l-dialog-confirm>
@@ -83,7 +83,7 @@
 						elem.addEventListener('d2l-switch-before-change', async e => {
 							e.preventDefault();
 							const confirmResult = await document.querySelector('#confirm').open();
-							e.detail.update(confirmResult === 'yes');
+							if (confirmResult === 'yes') e.detail.update(!elem.on);
 						});
 					</script>
 				</template>
