@@ -238,7 +238,7 @@ describe('filter', () => {
 			});
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await nextFrame();
-			await aTimeout(300);
+			await aTimeout(500);
 			await expect(document).to.be.golden();
 		});
 
@@ -293,6 +293,7 @@ describe('filter', () => {
 
 				await clickElem(elem.shadowRoot.querySelector(selector));
 				await hoverAt(0, 0);
+				await nextFrame();
 				await expect(elem).to.be.golden();
 			});
 		});
