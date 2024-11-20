@@ -223,6 +223,7 @@ describe('filter', () => {
 			const elem = await fixture(createSingleDimDateCustomSimple(true));
 			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
 			await sendKeysElem(listItem, 'press', 'ArrowDown');
+			await nextFrame();
 			await aTimeout(300); // make sure tooltip does not appear
 			await expect(document).to.be.golden();
 		});
