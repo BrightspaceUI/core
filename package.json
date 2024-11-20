@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.69.0",
+  "version": "3.70.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -11,7 +11,7 @@
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
-    "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
+    "build:sass": "sass ./test/sass.scss > ./test/sass.output.css",
     "build:wca": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
     "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
     "build-static": "rollup -c ./rollup/rollup.config.js",
@@ -59,10 +59,10 @@
     "eslint-config-brightspace": "^1.2.1",
     "glob-all": "^3",
     "messageformat-validator": "^2",
-    "node-sass": "^9",
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^2",
+    "sass": "^1",
     "sinon": "^19",
     "stylelint": "^16",
     "web-component-analyzer": "^2"
