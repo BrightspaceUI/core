@@ -103,12 +103,12 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			minlength: { type: Number },
 			/**
-			 * Regular expression pattern to validate the value
+			 * ADVANCED: Regular expression pattern to validate the value
 			 * @type {string}
 			 */
 			pattern: { type: String },
 			/**
-			 * Text to display when input fails validation against the pattern
+			 * ADVANCED: Text to display when input fails validation against the pattern.  If a list of characters is included in the message, use `LocalizeMixin`'s `localizeCharacter`.
 			 */
 			patternFailureText: { type: String, attribute: 'pattern-failure-text' },
 			/**
@@ -333,6 +333,8 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			} else if (this.type === 'url') {
 				return this.localize('components.form-element.input.url.typeMismatch');
 			}
+		} else if (this.validity.patternMismatch && (typeof this.patternFailureText === 'string')) {
+			return this.patternFailureText;
 		}
 		return super.validationMessage;
 	}

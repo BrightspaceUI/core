@@ -265,6 +265,14 @@ const localizeHTMLTag = defineCE(
 	class extends Test1LocalizeHTML((LitElement)) {}
 );
 
+const localizeCommonTag = defineCE(
+	class extends LocalizeMixin(LitElement) {
+		static get localizeConfig() {
+			return { loadCommon: true };
+		}
+	}
+);
+
 describe('LocalizeMixin', () => {
 
 	const documentLocaleSettings = getDocumentLocaleSettings();
@@ -613,6 +621,20 @@ describe('LocalizeMixin', () => {
 				});
 				container.appendChild(elem);
 			});
+		});
+
+	});
+
+	describe('common', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(`<${localizeCommonTag}></${localizeCommonTag}>`);
+		});
+
+		it('should localize "&"', () => {
+			const localized = elem.localizeCharacter('&');
+			expect(localized).to.equal('ampersand');
 		});
 
 	});
