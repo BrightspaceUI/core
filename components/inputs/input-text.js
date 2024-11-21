@@ -102,12 +102,12 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			minlength: { type: Number },
 			/**
-			 * Regular expression pattern to validate the value
+			 * ADVANCED: Regular expression pattern to validate the value
 			 * @type {string}
 			 */
 			pattern: { type: String },
 			/**
-			 * Text to display when input fails validation against the pattern
+			 * ADVANCED: Text to display when input fails validation against the pattern.  If a list of characters is included in the message, use `LocalizeMixin`'s `localizeCharacter`.
 			 */
 			patternFailureText: { type: String, attribute: 'pattern-failure-text' },
 			/**
