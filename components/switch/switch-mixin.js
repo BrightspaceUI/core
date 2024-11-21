@@ -219,13 +219,22 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.get('on') === undefined) return;
+
+		/** Dispatched when the `on` property is updated */
+		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+	}
+
 	get _labelContent() {
 		return html`<span
-						@click='${this._handleClick}'
-						@mouseenter='${this._handleSwitchHover}'
-						@mouseleave='${this._handleSwitchHoverLeave}'>
-						${this.text}
-					</span>`;
+			@click='${this._handleClick}'
+			@mouseenter='${this._handleSwitchHover}'
+			@mouseleave='${this._handleSwitchHoverLeave}'>
+			${this.text}
+		</span>`;
 	}
 
 	_handleClick() {
@@ -254,9 +263,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 		if (this.disabled) return;
 
 		const beforeChangeEvent = new CustomEvent('d2l-switch-before-change', {
-			detail: {
-				update: on => this.on = on
-			},
+			detail: { update: on => this.on = on },
 			cancelable: true
 		});
 
@@ -264,8 +271,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 		if (beforeChangeEvent.defaultPrevented) return;
 
 		this.on = !this.on;
-		/** Dispatched when the `on` property is updated */
-		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
 
 };

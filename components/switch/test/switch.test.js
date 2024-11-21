@@ -49,22 +49,21 @@ describe('d2l-switch', () => {
 
 		it('click with no state management', async() => {
 			const elem = await fixture(switchFixture);
-			const clickTarget = elem.shadowRoot.querySelector('.d2l-switch-container');
 			elem.addEventListener('d2l-switch-before-change', e => {
 				e.preventDefault();
 			});
-			await clickElem(clickTarget);
+			await clickElem(elem);
 			expect(elem.on).to.be.false;
 		});
 
 		it('click with state management', async() => {
 			const elem = await fixture(switchFixture);
-			const clickTarget = elem.shadowRoot.querySelector('.d2l-switch-container');
 			elem.addEventListener('d2l-switch-before-change', e => {
 				e.preventDefault();
 				e.detail.update(true);
 			});
-			await clickElem(clickTarget);
+			clickElem(elem);
+			await oneEvent(elem, 'change');
 			expect(elem.on).to.be.true;
 		});
 

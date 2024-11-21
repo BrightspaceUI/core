@@ -85,6 +85,7 @@
 							const confirmResult = await document.querySelector('#confirm').open();
 							if (confirmResult === 'yes') e.detail.update(!elem.on);
 						});
+						elem.addEventListener('change', e => console.log('switch changed', e.target.on));
 					</script>
 				</template>
 			</d2l-demo-snippet>
