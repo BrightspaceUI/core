@@ -103,7 +103,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 					<thead>
 						${this.multiLine ? html`
 							<tr>
-								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+								<td scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></td>
 								${this._renderDoubleSortButton('City', 'Country')}
 								<th scope="col" colspan="${columns.length + 1}" sticky>
 									Metrics
@@ -116,7 +116,7 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 							</tr>
 						` : html`
 							<tr>
-								<th scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></th>
+								<td scope="col" sticky><d2l-selection-select-all></d2l-selection-select-all></td>
 								${this._renderDoubleSortButton('City', 'Country')}
 								${columns.map(columnHeading => this._renderSortButton(columnHeading))}
 								${this._renderMenuSortButton('Coordinates', ['Latitude', 'Longitude'])}

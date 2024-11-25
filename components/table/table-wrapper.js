@@ -87,7 +87,10 @@ export const tableStyles = css`
 	/* header cells */
 	.d2l-table > thead > tr > th,
 	.d2l-table > * > tr.d2l-table-header > th,
-	.d2l-table > * > tr[header] > th {
+	.d2l-table > * > tr[header] > th,
+	.d2l-table > thead > tr > td,
+	.d2l-table > * > tr.d2l-table-header > td,
+	.d2l-table > * > tr[header] > td {
 		background-color: var(--d2l-table-header-background-color);
 		font-size: 0.7rem;
 		line-height: 0.9rem;
@@ -214,6 +217,7 @@ export const tableStyles = css`
 
 	/* all header cells */
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th,
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > td,
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > *,
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > * {
 		position: -webkit-sticky;
@@ -224,6 +228,8 @@ export const tableStyles = css`
 	/* header cells that are also sticky */
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th.d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky],
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > td.d2l-table-sticky-cell,
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > td[sticky],
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr.d2l-table-header > [sticky],
 	d2l-table-wrapper[sticky-headers]:not([sticky-headers-scroll-wrapper]) .d2l-table > * > tr[header] > .d2l-table-sticky-cell,
@@ -756,10 +762,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		const stickyRows = Array.from(this._table.querySelectorAll(SELECTORS.headers));
 		stickyRows.forEach(r => {
 			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset, 0px))`;
-			const ths = Array.from(r.querySelectorAll('th'));
+			const ths = Array.from(r.querySelectorAll('th,td'));
 			ths.forEach(th => th.style.top = thTop);
 
-			const rowHeight = r.querySelector('th:not([rowspan])')?.offsetHeight || 0;
+			const rowHeight = r.querySelector('th:not([rowspan]),td:not([rowspan])')?.offsetHeight || 0;
 			rowTop += rowHeight;
 		});
 	}
