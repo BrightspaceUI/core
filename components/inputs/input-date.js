@@ -245,14 +245,13 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
+
 		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+		const revertTooltip = this._getRevertTooltip(shortDateFormat);
 
-		const instructions = this.localize('components.input-date.openInstructions', { format: shortDateFormat });
-		const revertMessageInstructionsTooltip = this.localize('components.input-date.revertWithInstructions', { label: this.label, format: shortDateFormat });
-		const instructionsMessage = this._showRevertInstructions ? revertMessageInstructionsTooltip : instructions;
-
-		const revertMessageRevertTooltip = this.localize('components.input-date.revertWithFormat', { label: this.label, format: shortDateFormat });
-		const revertTooltip = (this._showRevertTooltip && !this.opened) ? html`<d2l-tooltip align="start" force-show announced class="vdiff-target" for="${this._inputId}">${revertMessageRevertTooltip}</d2l-tooltip>` : null;
+		const inputTextInstructions = (this._showInfoTooltip && !errorTooltip && !revertTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip)
+			? `${this.localize('components.input-date.useDateFormat', { format: shortDateFormat })} ${this.localize('components.input-date.keyboardInstructions')}`
+			: undefined;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
@@ -295,7 +294,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener vdiff-target"
-					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !revertTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? instructionsMessage : undefined)}"
+					instructions="${ifDefined(inputTextInstructions)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -358,6 +357,36 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	_close() {
 		if (!this._dropdown || !this._dropdown.opened) return;
 		this._dropdown.close();
+	}
+
+	_getRevertTooltip(shortDateFormat) {
+		if (this.opened || this.invalid || (!this._showRevertInstructions && !this._showRevertTooltip)) return null;
+
+		const revertMessage = this.localize('components.input-date.revert', { label: this.label });
+		const dateFormat = this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
+		if (this._showRevertTooltip) {
+			return html`
+				<d2l-tooltip 
+					align="start" 
+					announced 
+					class="vdiff-target" 
+					for="${this._inputId}"
+					force-show>
+					<div>${revertMessage}</div>
+					<br>
+					<div>${dateFormat}</div>
+				</d2l-tooltip>
+			`;
+		} else {
+			const keyboardInstructions = this.localize('components.input-date.keyboardInstructions');
+			return html`
+				<d2l-tooltip align="start" announced class="vdiff-target" for="${this._inputId}">
+					<div>${revertMessage}</div>
+					<br>
+					<div>${dateFormat} ${keyboardInstructions}</div>
+				</d2l-tooltip>
+			`;
+		}
 	}
 
 	_handleBlur() {

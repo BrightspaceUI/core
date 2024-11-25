@@ -357,6 +357,28 @@ describe('d2l-input-date', () => {
 				await clickElem(document.body);
 				await expect(elem).to.be.golden();
 			});
+
+			it('open then close', async() => {
+				await sendKeysElem(elem, 'press', 'Enter');
+				await sendKeys('press', 'Escape');
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
+			});
+		});
+
+		describe('required min-max revert', () => {
+
+			it('delete text input then blur', async() => {
+				const elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2012-01-01', maxValue: '2018-02-27', minValue: '2018-02-13' }));
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Tab');
+
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+
 		});
 
 		describe('required revert', () => {
