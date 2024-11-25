@@ -35,7 +35,7 @@ export default {
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "시작일: {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "종료일: {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "사용자 지정 날짜 범위",
-	"components.form-element.defaultError": "{label}이(가) 잘못되었습니다",
+	"components.form-element.defaultError": "{label}이(가) 유효하지 않습니다",
 	"components.form-element.defaultFieldLabel": "필드",
 	"components.form-element.input.email.typeMismatch": "이메일이 유효하지 않습니다.",
 	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {숫자는 {min}보다 크고 {max}보다 작아야 합니다.} other {숫자는 {min}보다 크고 {max}보다 작거나 같아야 합니다.}}} other {{maxExclusive, select, true {숫자는 {min}보다 크거나 같고 {max}보다 작아야 합니다.} other {숫자는 {min}보다 크거나 같고 {max}보다 작거나 같아야 합니다.}}}}",
