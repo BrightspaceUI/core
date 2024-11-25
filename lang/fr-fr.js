@@ -35,7 +35,7 @@ export default {
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Date de début : {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Date de fin : {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "Période personnalisée",
-	"components.form-element.defaultError": "{label} n'est pas valide",
+	"components.form-element.defaultError": "{label} n’est pas valide",
 	"components.form-element.defaultFieldLabel": "Champ",
 	"components.form-element.input.email.typeMismatch": "L'adresse e-mail n'est pas valide.",
 	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Le nombre doit être supérieur à {min} et inférieur à {max}.} other {Le nombre doit être supérieur à {min} et inférieur à ou égal à {max}.}}} other {{maxExclusive, select, true {Le nombre doit être supérieur ou égal à {min} et inférieur à {max}.} other {Le nombre doit être supérieur ou égal à {min} et inférieur ou égal à {max}.}}}}",
