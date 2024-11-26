@@ -1,5 +1,5 @@
 import '../input-date.js';
-import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
@@ -360,7 +360,7 @@ describe('d2l-input-date', () => {
 
 			it('open then close', async() => {
 				await sendKeysElem(elem, 'press', 'Enter');
-				await sendKeys('press', 'Escape');
+				sendKeys('press', 'Escape');
 				await oneEvent(elem, 'd2l-tooltip-show');
 				await expect(elem).to.be.golden();
 			});
@@ -400,7 +400,7 @@ describe('d2l-input-date', () => {
 				await sendKeysElem(elem, 'press', 'Backspace');
 				await sendKeys('press', 'Tab');
 				await focusElem(elem);
-				await oneEvent(elem, 'd2l-tooltip-show');
+				await aTimeout(100);
 				await expect(elem).to.be.golden();
 			});
 
@@ -409,8 +409,8 @@ describe('d2l-input-date', () => {
 				await sendKeysElem(elem, 'press', 'Backspace');
 				await sendKeys('press', 'Tab');
 				await focusElem(elem);
-				await oneEvent(elem, 'd2l-tooltip-show');
 				await sendKeys('press', 'Tab');
+				await aTimeout(100);
 				await expect(elem).to.be.golden();
 			});
 		});

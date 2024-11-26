@@ -5,7 +5,7 @@ import '../dropdown/dropdown-content.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getToday } from '../../helpers/dateTime.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -364,29 +364,23 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 		const revertMessage = this.localize('components.input-date.revert', { label: this.label });
 		const dateFormat = this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
-		if (this._showRevertTooltip) {
-			return html`
-				<d2l-tooltip 
-					align="start" 
-					announced 
-					class="vdiff-target" 
-					for="${this._inputId}"
-					force-show>
-					<div>${revertMessage}</div>
-					<br>
-					<div>${dateFormat}</div>
-				</d2l-tooltip>
-			`;
-		} else {
-			const keyboardInstructions = this.localize('components.input-date.keyboardInstructions');
-			return html`
-				<d2l-tooltip align="start" announced class="vdiff-target" for="${this._inputId}">
-					<div>${revertMessage}</div>
-					<br>
-					<div>${dateFormat} ${keyboardInstructions}</div>
-				</d2l-tooltip>
-			`;
-		}
+		const keyboardInstructions = this._showRevertInstructions ? this.localize('components.input-date.keyboardInstructions') : nothing;
+
+		return html`
+			<d2l-tooltip 
+				align="start" 
+				announced 
+				class="vdiff-target" 
+				for="${this._inputId}"
+				?force-show="${this._showRevertTooltip}">
+				<div>${revertMessage}</div>
+				<br>
+				<div>
+					${dateFormat}
+					${keyboardInstructions}
+				</div>
+			</d2l-tooltip>
+		`;
 	}
 
 	_handleBlur() {
