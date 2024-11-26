@@ -246,10 +246,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 
-		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
-		const revertTooltip = this._getRevertTooltip(shortDateFormat);
+		const tooltip = this._getErrorTooltip() || this._getRevertTooltip(shortDateFormat);
 
-		const inputTextInstructions = (this._showInfoTooltip && !errorTooltip && !revertTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip)
+		const inputTextInstructions = (this._showInfoTooltip && !tooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip)
 			? `${this.localize('components.input-date.useDateFormat', { format: shortDateFormat })} ${this.localize('components.input-date.keyboardInstructions')}`
 			: undefined;
 
@@ -285,8 +284,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<div>${formattedWideDate}</div>
 				<div>${shortDateFormat}</div>
 			</div>
-			${errorTooltip}
-			${revertTooltip}
+			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open ?prefer-fixed-positioning="${this.preferFixedPositioning}">
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
@@ -357,6 +355,29 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	_close() {
 		if (!this._dropdown || !this._dropdown.opened) return;
 		this._dropdown.close();
+	}
+
+	_getErrorTooltip() {
+		if (!this.validationError || this.opened || this.childErrors.size > 0) return null;
+
+		const message = (this._showRevertTooltip || this._showRevertInstructions)
+			? html`
+				<div>${this.localize('components.input-date.revert', { label: this.label })}</div>
+				<br>
+				<div>${this.validationError}</div>`
+			: this.validationError;
+
+		return html`
+			<d2l-tooltip 
+				align="start" 
+				announced 
+				class="vdiff-target" 
+				for="${this._inputId}"
+				?force-show="${this._showRevertTooltip}"
+				state="error">
+				${message}
+			</d2l-tooltip>
+		`;
 	}
 
 	_getRevertTooltip(shortDateFormat) {

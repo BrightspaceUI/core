@@ -368,14 +368,26 @@ describe('d2l-input-date', () => {
 
 		describe('required min-max revert', () => {
 
-			it('delete text input then blur', async() => {
-				const elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2012-01-01', maxValue: '2018-02-27', minValue: '2018-02-13' }));
+			let elem;
+			beforeEach(async() => {
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2012-01-01', maxValue: '2018-02-27', minValue: '2018-02-13' }));
 				await focusElem(elem);
-				await sendKeysElem(elem, 'press', 'Tab');
+				await sendKeysElem(elem, 'press', 'Tab'); // trigger validation
+			});
 
+			it('delete text input then blur', async() => {
 				await focusElem(elem);
 				await sendKeysElem(elem, 'press', 'Backspace');
 				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await focusElem(elem);
+				await aTimeout(100);
 				await expect(elem).to.be.golden();
 			});
 
