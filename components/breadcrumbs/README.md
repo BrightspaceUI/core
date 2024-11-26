@@ -47,7 +47,7 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
 
 | Property | Type | Description |
 |--|--|--|
-| `compact` | Boolean | Indicates whether the component should render in compact mode |
+| `compact` | Boolean | Renders in compact mode, displaying only the last item |
 <!-- docs: end hidden content -->
 
 ## Breadcrumb (child) [d2l-breadcrumb]
@@ -67,9 +67,9 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
 
 | Property | Type | Description |
 |--|--|--|
-| `text` | String, required | Text of the breadcrumb item |
-| `aria-label` | String | AriaLabel of breadcrumb item |
-| `href` | String | Href of the breadcrumb item |
+| `text` | String, required | The text of the breadcrumb link |
+| `aria-label` | String | ARIA label for the breadcrumb, used if `text` does not provide enough context for screen reader users |
+| `href` | String | The Url that breadcrumb is pointing to |
 | `target` | String | Target of the breadcrumb item |
 <!-- docs: end hidden content -->
 
