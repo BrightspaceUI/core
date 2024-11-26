@@ -208,6 +208,7 @@ class DemoListUxResearch extends LitElement {
 	_handleToggle(e) {
 		const item = items.find(item => item.key === e.target.parentElement.parentElement.key);
 		item.pressed = e.target.pressed;
+		this.requestUpdate();
 	}
 
 	_resetDialog() {
