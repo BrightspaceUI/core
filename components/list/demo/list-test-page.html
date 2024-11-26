@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>My Animals</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<script type="module">
+			import './list-ux-research-testing.js';
+			import '../../typography/typography.js';
+
+			(async() => {
+				const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+				await Promise.all([
+					fontsPromise
+				]);
+				document.body.removeAttribute('unresolved');
+			})();
+		</script>
+		<script>
+			window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
+		</script>
+		<style>
+			html {
+				background-color: white;
+				font-size: 20px;
+			}
+			body {
+				display: block;
+				padding: 3rem 1.5rem;
+			}
+		</style>
+	</head>
+	
+	<body unresolved class="d2l-typography">
+		<d2l-demo-list-ux-research-testing></d2l-demo-list-ux-research-testing>
+	</body>
+</html>
