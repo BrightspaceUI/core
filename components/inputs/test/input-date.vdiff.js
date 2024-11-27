@@ -397,7 +397,7 @@ describe('d2l-input-date', () => {
 
 			let elem;
 			beforeEach(async() => {
-				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }));
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }), { viewport: { width: 1000 } });
 			});
 
 			it('delete text input then blur', async() => {
