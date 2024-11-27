@@ -5,7 +5,7 @@ import '../dropdown/dropdown-content.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getToday } from '../../helpers/dateTime.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -249,7 +249,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		const tooltip = this._getErrorTooltip() || this._getRevertTooltip(shortDateFormat);
 
 		const inputTextInstructions = (this._showInfoTooltip && !tooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip)
-			? `${this.localize('components.input-date.useDateFormat', { format: shortDateFormat })} ${this.localize('components.input-date.keyboardInstructions')}`
+			? this.localize('components.input-date.openInstructions', { format: shortDateFormat })
 			: undefined;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
@@ -384,8 +384,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		if (this.opened || this.invalid || (!this._showRevertInstructions && !this._showRevertTooltip)) return null;
 
 		const revertMessage = this.localize('components.input-date.revert', { label: this.label });
-		const dateFormat = this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
-		const keyboardInstructions = this._showRevertInstructions ? this.localize('components.input-date.keyboardInstructions') : nothing;
+		const secondaryMessage = this._showRevertInstructions
+			? this.localize('components.input-date.openInstructions', { format: shortDateFormat })
+			: this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
 
 		return html`
 			<d2l-tooltip 
@@ -396,10 +397,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				?force-show="${this._showRevertTooltip}">
 				<div>${revertMessage}</div>
 				<br>
-				<div>
-					${dateFormat}
-					${keyboardInstructions}
-				</div>
+				<div>${secondaryMessage}</div>
 			</d2l-tooltip>
 		`;
 	}

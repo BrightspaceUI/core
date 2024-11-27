@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "يجب أن يكون التاريخ في {maxDate} أو قبله",
 	"components.input-date.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
 	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
 	"components.input-date.now": "الآن",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "اليوم",

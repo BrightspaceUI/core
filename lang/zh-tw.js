@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "日期必須早於 {maxDate} 或為當日",
 	"components.input-date.errorMinDateOnly": "日期必須晚於 {minDate} 或為當日",
 	"components.input-date.errorOutsideRange": "日期必須介於 {minDate} 與 {maxDate} 之間",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "使用日期格式 {format}。按向下箭頭，或按下「Enter」以存取迷你行事曆。",
 	"components.input-date.now": "立即",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "今天",

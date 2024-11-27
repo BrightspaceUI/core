@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "Rhaid i’r dyddiad fod cyn neu ar {maxDate}",
 	"components.input-date.errorMinDateOnly": "Rhaid i’r dyddiad fod ar neu ar ôl {minDate}",
 	"components.input-date.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "Defnyddio fformat dyddiad {format}. Pwyswch saeth i lawr neu Enter i gael mynediad at galendr bach.",
 	"components.input-date.now": "Nawr",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "Heddiw",

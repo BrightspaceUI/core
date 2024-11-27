@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "Datumet måste vara {maxDate} eller tidigare",
 	"components.input-date.errorMinDateOnly": "Datumet måste vara {minDate} eller senare",
 	"components.input-date.errorOutsideRange": "Datumet ska vara mellan {minDate} och {maxDate}",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "Använd datumformatet {format}. Om du vill visa minikalendern trycker du på nedåtpil eller Enter.",
 	"components.input-date.now": "Nu",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "Idag",

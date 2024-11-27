@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "A data deve ser anterior ou igual a {maxDate}",
 	"components.input-date.errorMinDateOnly": "A data deve ser igual ou posterior a {minDate}",
 	"components.input-date.errorOutsideRange": "A data precisa estar entre {minDate} e {maxDate}",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "Adote o formato de data {format}. Use a tecla de seta para baixo ou pressione Enter para acessar o minicalendário.",
 	"components.input-date.now": "Agora",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "Hoje",

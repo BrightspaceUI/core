@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "Datum moet voor of op {maxDate} liggen",
 	"components.input-date.errorMinDateOnly": "Datum moet op of na {minDate} liggen",
 	"components.input-date.errorOutsideRange": "Datum moet tussen {minDate} en {maxDate} liggen",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "Gebruik datumnotatie {format}. Gebruik Pijl omlaag of druk op Enter om de mini-agenda te openen.",
 	"components.input-date.now": "Nu",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "Vandaag",

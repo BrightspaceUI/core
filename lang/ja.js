@@ -67,7 +67,7 @@ export default {
 	"components.input-date.errorMaxDateOnly": "日付は {maxDate} 以前にする必要があります",
 	"components.input-date.errorMinDateOnly": "日付は {minDate} 以降にする必要があります",
 	"components.input-date.errorOutsideRange": "日付は {minDate} から {maxDate} の間にする必要があります",
-	"components.input-date.keyboardInstructions": "Arrow down or press enter to access mini-calendar.",
+	"components.input-date.openInstructions": "日付形式 {format} を使用します。ミニカレンダーにアクセスするには下矢印を使うか Enter を押します。",
 	"components.input-date.now": "現在",
 	"components.input-date.revert": "{label} reverted to previous value.",
 	"components.input-date.today": "今日",
