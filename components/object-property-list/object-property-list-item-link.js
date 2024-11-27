@@ -38,7 +38,6 @@ class ObjectPropertyListItemLink extends FocusMixin(ObjectPropertyListItem) {
 			${this._renderIcon()}
 			${!this.skeleton ? html`
 				<d2l-link
-					aria-label="${this.text}"
 					?download="${this.download}"
 					href="${ifDefined(this.href)}"
 					target="${ifDefined(this.target)}">
