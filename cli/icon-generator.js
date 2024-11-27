@@ -53,7 +53,6 @@ function createSvg(category, name) {
 	}
 
 	const data = readFileSync(sourcePath);
-	/* eslint-disable-next-line prefer-template */
 	const output = '// auto-generated\n' + 'export const val = `' + data + '`;\n';
 
 	writeFileSync(destPath, output);
@@ -101,7 +100,6 @@ function createCatalogue(categories) {
 		} else if (category.name === 'tier3') {
 			size = 30;
 		}
-		/* eslint-disable-next-line prefer-template */
 		output += `## ${category.name}\n\n` + 'Size: `' + size + 'px` x `' + size + '`px\n\n';
 
 		const numCols = 3;
