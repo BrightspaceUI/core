@@ -1,27 +1,27 @@
-@import "../colors/colors.scss";
+@use "../colors/colors.scss";
 
 @mixin d2l-link() {
 	&,
 	&:visited,
 	&:link,
 	&:active {
-		color: $d2l-color-celestine;
+		color: colors.$d2l-color-celestine;
 		cursor: pointer;
 		text-decoration: none;
 	}
 	&:hover {
-		color: $d2l-color-celestine-minus-1;
+		color: colors.$d2l-color-celestine-minus-1;
 		text-decoration: underline;
 	}
 	&:focus-visible {
 		border-radius: 2px;
-		outline: 2px solid $d2l-color-celestine;
+		outline: 2px solid colors.$d2l-color-celestine;
 		outline-offset: 1px;
 		text-decoration: underline;
 	}
 	.d2l-focus-visible-not-supported &:focus {
 		border-radius: 2px;
-		outline: 2px solid $d2l-color-celestine;
+		outline: 2px solid colors.$d2l-color-celestine;
 		outline-offset: 1px;
 		text-decoration: underline;
 	}
@@ -36,7 +36,7 @@
 	}
 	@media print {
 		&, &:visited, &:link, &:active {
-			color: $d2l-color-ferrite;
+			color: colors.$d2l-color-ferrite;
 		}
 	}
 }

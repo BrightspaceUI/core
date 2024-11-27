@@ -259,7 +259,7 @@ describe('d2l-input-number', () => {
 				name: 'should be invalid when empty and required',
 				fixture: requiredFixture,
 				value: null,
-				expectedError: 'label is required.'
+				expectedError: 'label is required'
 			},
 			{
 				name: 'should be valid if number is in range',

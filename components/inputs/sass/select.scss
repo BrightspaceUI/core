@@ -1,4 +1,4 @@
-@import "../../colors/colors.scss";
+@use "../../colors/colors.scss";
 
 @mixin d2l-input-select() {
 	-webkit-appearance: none;
@@ -11,7 +11,7 @@
 	border-radius: 0.3rem;
 	border-style: solid;
 	box-sizing: border-box;
-	color: $d2l-color-ferrite;
+	color: colors.$d2l-color-ferrite;
 	display: inline-block;
 	font-family: inherit;
 	font-size: 0.8rem;
@@ -25,7 +25,7 @@
 	&,
 	&:hover:disabled {
 		background-color: #ffffff;
-		border-color: $d2l-color-galena;
+		border-color: colors.$d2l-color-galena;
 		border-width: 1px;
 		box-shadow: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
 		padding: 0.4rem 0.75rem;
@@ -44,7 +44,7 @@
 	}
 	&:hover,
 	&:focus {
-		border-color: $d2l-color-celestine;
+		border-color: colors.$d2l-color-celestine;
 		border-width: 2px;
 		outline-style: none; /* Safari */
 		outline-width: 0;
@@ -56,7 +56,7 @@
 		background-position: center right 17px, center right calc(1px + 11px + 17px);
 		background-repeat: no-repeat, no-repeat;
 		background-size: 11px 7px, 0.8rem 0.8rem;
-		border-color: $d2l-color-cinnabar;
+		border-color: colors.$d2l-color-cinnabar;
 	}
 	&:disabled {
 		opacity: 0.5;
@@ -65,7 +65,7 @@
 	&:focus::-ms-value,
 	&:hover::-ms-value {
 		background-color: transparent;
-		color: $d2l-color-ferrite;
+		color: colors.$d2l-color-ferrite;
 	}
 	/* IE11 to hide the native chevron */
 	&::-ms-expand {

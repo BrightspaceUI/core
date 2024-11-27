@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../demo/demo-page.js';
+			import '../../dialog/dialog-confirm.js';
 			import '../switch.js';
 			import '../switch-visibility.js';
 		</script>
@@ -65,6 +66,27 @@
 							<li> Condition 3 </li>
 						</ul>
 					</d2l-switch-visibility>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>On/Off (confirm)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-switch id="switch-with-confirm" text="Dark Mode"></d2l-switch>
+					<d2l-dialog-confirm id="confirm" title-text="Confirm" text="Are you sure you want to change?">
+						<d2l-button slot="footer" primary data-dialog-action="yes">Yes</d2l-button>
+						<d2l-button slot="footer" data-dialog-action="no">No</d2l-button>
+					</d2l-dialog-confirm>
+					<script>
+						const elem = document.querySelector('#switch-with-confirm');
+						elem.addEventListener('d2l-switch-before-change', async e => {
+							e.preventDefault();
+							const confirmResult = await document.querySelector('#confirm').open();
+							if (confirmResult === 'yes') e.detail.update(!elem.on);
+						});
+						elem.addEventListener('change', e => console.log('switch changed', e.target.on));
+					</script>
 				</template>
 			</d2l-demo-snippet>
 

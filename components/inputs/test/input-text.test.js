@@ -222,7 +222,7 @@ describe('d2l-input-text', () => {
 			elem.required = true;
 
 			const errors = await elem.validate();
-			expect(errors).to.contain('label is required.');
+			expect(errors).to.contain('label is required');
 		});
 
 		it('should be valid when required has value', async() => {
@@ -343,6 +343,25 @@ describe('d2l-input-text', () => {
 			dispatchEvent(elem, 'input', true);
 			const errors = await elem.validate();
 			expect(errors).to.contain('label must be at least 5 characters');
+		});
+
+		it('should be invalid when value does\'t match pattern', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" pattern="[a-z]*" value="abc123"></d2l-input-text>`);
+			const errors = await elem.validate();
+			expect(errors).to.contain('label is invalid');
+		});
+
+		it('should use custom error text when value does\'t match pattern', async() => {
+			const failureText = 'must be a to z';
+			const elem = await fixture(html`<d2l-input-text label="label" pattern="[a-z]*" value="abc123" pattern-failure-text="${failureText}"></d2l-input-text>`);
+			const errors = await elem.validate();
+			expect(errors).to.contain(failureText);
+		});
+
+		it('should be valid when value matches pattern', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" pattern="[a-z]*" value="abc"></d2l-input-text>`);
+			const errors = await elem.validate();
+			expect(errors).to.be.empty;
 		});
 
 	});
