@@ -33,12 +33,12 @@ class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 			 */
 			target: { type: String, reflect: true },
 			/**
-			 * REQUIRED: text of the breadcrumb link
+			 * REQUIRED: The text of the breadcrumb link
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 			/**
-			 * ARIA label of the breadcrumb
+			 * ACCESSIBILITY: ARIA label for the breadcrumb, used if `text` does not provide enough context for screen reader users
 			 * @type {string}
 			 */
 			ariaLabel: { attribute: 'aria-label', type: String, reflect: true }
