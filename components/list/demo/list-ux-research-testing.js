@@ -91,8 +91,8 @@ class DemoListUxResearch extends LitElement {
 			<header>
 				<h1 class="d2l-heading-1">My Animals</h1>
 				<d2l-button-toggle>
-					<d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Not Public" description="Click to make public."></d2l-button-subtle>
-					<d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Public" description="Click to make not public."></d2l-button-subtle>
+					<d2l-button-subtle slot="not-pressed" icon="tier1:lock-locked" text="Not Public" description="Click to make public."></d2l-button-subtle>
+					<d2l-button-subtle slot="pressed" icon="tier1:lock-unlock" text="Public" description="Click to make not public."></d2l-button-subtle>
 				</d2l-button-toggle>
 			</header>
 			<div class="list-header-container">
