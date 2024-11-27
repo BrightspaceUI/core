@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
-import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
+import { cssEscape, getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
@@ -12,7 +13,7 @@ const modals = new Set();
 let scrollOverflow = null;
 
 /**
- * A component for displaying a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying 'role="presentation"' and 'aria-hidden="true"'.
+ * A component for displaying a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying 'aria-hidden="true"'.
  */
 class Backdrop extends LitElement {
 
@@ -85,10 +86,8 @@ class Backdrop extends LitElement {
 	disconnectedCallback() {
 		// allow body scrolling, show hidden elements, if backdrop is removed from the DOM
 		allowBodyScroll(this);
-		if (this._hiddenElements) {
-			showAccessible(this._hiddenElements);
-			this._hiddenElements = null;
-		}
+		showAccessible(this._hiddenElements);
+		this._hiddenElements = null;
 		this._state = null;
 		super.disconnectedCallback();
 	}
@@ -106,7 +105,12 @@ class Backdrop extends LitElement {
 
 			if (this._state === null) {
 				preventBodyScroll(this);
-				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`));
+				const target = this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`);
+				// aria-hidden elements cannot have focus, so wait for focus to be within target
+				waitForFocusWithinTarget(target, Date.now() + 200).then(() => {
+					if (!this.shown || this._state !== 'showing') return;
+					this._hiddenElements = hideAccessible(target);
+				});
 			}
 			this._state = 'showing';
 
@@ -188,6 +192,7 @@ function hideAccessible(target) {
 }
 
 function showAccessible(elems) {
+	if (!elems) return;
 	for (let i = 0; i < elems.length; i++) {
 		const elem = elems[i];
 		if (elem.hasAttribute(BACKDROP_ARIA_HIDDEN)) {
@@ -198,6 +203,20 @@ function showAccessible(elems) {
 		}
 		elem.removeAttribute(BACKDROP_HIDDEN);
 	}
+}
+
+async function waitForFocusWithinTarget(target, expireTime) {
+
+	if (Date.now() > expireTime) return;
+
+	const activeElem = getComposedActiveElement();
+	const targetIsAncestor = isComposedAncestor(target, activeElem);
+
+	if (targetIsAncestor) return;
+
+	await new Promise(resolve => requestAnimationFrame(resolve));
+	return waitForFocusWithinTarget(target, expireTime);
+
 }
 
 customElements.define('d2l-backdrop', Backdrop);
