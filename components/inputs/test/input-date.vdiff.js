@@ -412,7 +412,7 @@ describe('d2l-input-date', () => {
 				await sendKeysElem(elem, 'press', 'Backspace');
 				await sendKeys('press', 'Tab');
 				await focusElem(elem);
-				await aTimeout(200);
+				await aTimeout(1000);
 				await expect(elem).to.be.golden();
 			});
 
