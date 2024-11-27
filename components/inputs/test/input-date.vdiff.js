@@ -397,7 +397,7 @@ describe('d2l-input-date', () => {
 
 			let elem;
 			beforeEach(async() => {
-				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }), { viewport: { width: 1000 } });
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }));
 			});
 
 			it('delete text input then blur', async() => {
@@ -412,7 +412,7 @@ describe('d2l-input-date', () => {
 				await sendKeysElem(elem, 'press', 'Backspace');
 				await sendKeys('press', 'Tab');
 				await focusElem(elem);
-				await aTimeout(100);
+				await aTimeout(200);
 				await expect(elem).to.be.golden();
 			});
 
