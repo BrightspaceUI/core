@@ -508,10 +508,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._showRevertInstructions = false;
 	}
 
-	_handleInputTextFocus() {
+	async _handleInputTextFocus() {
 		if (this._showRevertTooltip) {
-			this._showRevertInstructions = true;
 			this._showRevertTooltip = false;
+			await this.updateComplete;
+			this._showRevertInstructions = true;
 		}
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
 
