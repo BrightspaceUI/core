@@ -5,9 +5,13 @@ import { css, html, nothing } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+const defaultPreferredPosition = {
+	location: 'block-end', // block-start, block-end
+	span: 'all', // start, end, all
+	allowFlip: true
+};
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 const isSupported = ('popover' in HTMLElement.prototype);
@@ -15,7 +19,7 @@ const isSupported = ('popover' in HTMLElement.prototype);
 // eslint-disable-next-line no-console
 console.log('Popover', isSupported);
 
-export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
+export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
@@ -36,6 +40,7 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 			_pointerPosition: { state: true },
 			_position: { state: true },
 			_preferredPosition: { state: true },
+			_rtl: { state: true },
 			_trapFocus: { state: true },
 			_useNativePopover: { type: String, reflect: true, attribute: 'popover' },
 			_width: { state: true }
@@ -195,17 +200,24 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 		this._noAutoFocus = properties?.noAutoFocus ?? false;
 		this._noPointer = properties?.noPointer ?? false;
 		this._offset = properties?.offset ?? 16;
-		this._preferredPosition = {
-			location: properties?.position?.location ?? 'block-end', // block-start, block-end
-			span: properties?.position?.span ?? 'all', // start, end, all
-			allowFlip: properties?.position?.allowFlip ?? true
-		};
+		if (!properties) {
+			this._preferredPosition = defaultPreferredPosition;
+		} else if (this._preferredPosition?.location !== properties.position?.location
+			|| this._preferredPosition?.span !== properties.position?.span
+			|| this._preferredPosition?.allowFlip !== properties.position?.allowFlip) {
+			this._preferredPosition = {
+				location: properties?.position?.location ?? 'block-end',
+				span: properties?.position?.span ?? 'all',
+				allowFlip: properties?.position?.allowFlip ?? true
+			};
+		}
 		this._trapFocus = properties?.trapFocus ?? false;
 	}
 
 	async open(applyFocus = true) {
 		if (this._opened) return;
 
+		this._rtl = document.documentElement.getAttribute('dir') === 'rtl';
 		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this._opened = true;
 
@@ -357,10 +369,9 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 	#constrainSpaceAround(spaceAround, spaceRequired, openerRect) {
 		const constrained = { ...spaceAround };
 
-		const isRTL = this.getAttribute('dir') === 'rtl';
-		if ((this._preferredPosition.span === 'end' && !isRTL) || (this._preferredPosition.span === 'start' && isRTL)) {
+		if ((this._preferredPosition.span === 'end' && !this._rtl) || (this._preferredPosition.span === 'start' && this._rtl)) {
 			constrained.left = Math.max(0, spaceRequired.width - (openerRect.width + spaceAround.right));
-		} else if ((this._preferredPosition.span === 'end' && isRTL) || (this._preferredPosition.span === 'start' && !isRTL)) {
+		} else if ((this._preferredPosition.span === 'end' && this._rtl) || (this._preferredPosition.span === 'start' && !this._rtl)) {
 			constrained.right = Math.max(0, spaceRequired.width - (openerRect.width + spaceAround.left));
 		}
 
@@ -433,11 +444,10 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 		if (!pointer) return position;
 
 		const pointerRect = pointer.getBoundingClientRect();
-		const isRTL = this.getAttribute('dir') === 'rtl';
 
 		if (this._preferredPosition.span !== 'all') {
 			const xAdjustment = Math.min(20 + ((pointerRotatedLength - pointerLength) / 2), (openerRect.width - pointerLength) / 2);
-			if (!isRTL) {
+			if (!this._rtl) {
 				if (this._preferredPosition.span === 'end') {
 					position.left = openerRect.left + xAdjustment;
 				} else {
@@ -451,7 +461,7 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 				}
 			}
 		} else {
-			if (!isRTL) {
+			if (!this._rtl) {
 				position.left = openerRect.left + ((openerRect.width - pointerRect.width) / 2);
 			} else {
 				position.right = window.innerWidth - openerRect.left - ((openerRect.width + pointerRect.width) / 2);
@@ -469,13 +479,12 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 
 	#getPosition(spaceAround, openerRect, contentRect) {
 		const position = {};
-		const isRTL = this.getAttribute('dir') === 'rtl';
 
 		if (this._location === 'block-end' || this._location === 'block-start') {
 
 			const xAdjustment = this.#getPositionXAdjustment(spaceAround, openerRect, contentRect);
 			if (xAdjustment !== null) {
-				if (!isRTL) {
+				if (!this._rtl) {
 					position.left = openerRect.left + xAdjustment;
 				} else {
 					position.right = window.innerWidth - openerRect.left - openerRect.width + xAdjustment;
@@ -511,8 +520,7 @@ export const PopoverMixin = superclass => class extends RtlMixin(superclass) {
 				return contentXAdjustment * -1;
 			}
 
-			const isRTL = this.getAttribute('dir') === 'rtl';
-			if (!isRTL) {
+			if (!this._rtl) {
 				if (spaceAround.left < contentXAdjustment) {
 					// slide content right (not enough space to center)
 					return spaceAround.left * -1;
