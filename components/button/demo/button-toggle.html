@@ -54,6 +54,26 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Toggle Button (with consumer specifying when to toggle)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle id="toggle-button-icon-promise-delay">
+						<d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+						<d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+					</d2l-button-toggle>
+					<script>
+						document.querySelector('#toggle-button-icon-promise-delay').addEventListener('d2l-button-toggle-before-change', e => {
+							e.preventDefault();
+							setTimeout(() => {
+								e.detail.update(!e.target.pressed);
+							}, 2000);
+						});
+						document.querySelector('#toggle-button-icon-promise-delay').addEventListener('d2l-button-toggle-change', e => console.log(e));
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 
 	</body>

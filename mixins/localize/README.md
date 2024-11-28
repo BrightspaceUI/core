@@ -152,6 +152,39 @@ this.localizeHTML('octopus', {
 });
 ```
 
+### Common Resources
+
+Some localization resources are common and shared across D2L applications. To use these resources, set the `loadCommon` option:
+
+```javascript
+static get localizeConfig() {
+  return {
+    loadCommon: true
+  };
+}
+```
+
+#### localizeCharacter
+
+The localized value of the following characters can be accessed using `localizeCharacter(char)`:
+* `'` (apostrophe)
+* `&` (ampersand)
+* `*` (asterisk)
+* `\` (backslash)
+* `:` (colon)
+* `,` (comma)
+* `>` (greater-than sign)
+* `<` (less-than sign)
+* `#` (number sign)
+* `%` (percent sign)
+* `|` (pipe)
+* `?` (question mark)
+* `"` (quotation mark)
+
+```javascript
+this.localizeCharacter('&'); // -> 'ampersand' in en-US
+```
+
 ## Off-Stack Language Overrides
 
 To enable OSLO, map the project's localization resources to a language collection in Brightspace by defining `osloCollection` in `localizeConfig`:

@@ -221,11 +221,11 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 	get _labelContent() {
 		return html`<span
-						@click='${this._handleClick}'
-						@mouseenter='${this._handleSwitchHover}'
-						@mouseleave='${this._handleSwitchHoverLeave}'>
-						${this.text}
-					</span>`;
+			@click='${this._handleClick}'
+			@mouseenter='${this._handleSwitchHover}'
+			@mouseleave='${this._handleSwitchHoverLeave}'>
+			${this.text}
+		</span>`;
 	}
 
 	_handleClick() {
@@ -252,8 +252,23 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 	_toggleState() {
 		if (this.disabled) return;
-		this.on = !this.on;
+
+		const beforeChangeEvent = new CustomEvent('d2l-switch-before-change', {
+			detail: { update: on => this._updateState(on) },
+			cancelable: true
+		});
+
+		this.dispatchEvent(beforeChangeEvent);
+		if (beforeChangeEvent.defaultPrevented) return;
+
+		this._updateState(!this.on);
+	}
+
+	_updateState(value) {
+		this.on = value;
+
 		/** Dispatched when the `on` property is updated */
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
+
 };

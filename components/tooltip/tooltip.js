@@ -730,9 +730,13 @@ class Tooltip extends RtlMixin(LitElement) {
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || ownerRoot?.host?.querySelector(targetSelector);
 		} else {
-			console.warn('<d2l-tooltip>: missing required attribute "for"');
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
+
+			// reduce console pollution since Safari + VO prevents inadequate SR experience for tooltips during form validation when using 'for'
+			if (!(target.tagName === 'D2L-INPUT-TEXT' && target?.invalid)) {
+				console.warn('<d2l-tooltip>: missing required attribute "for"');
+			}
 		}
 		return target;
 	}
