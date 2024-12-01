@@ -90,7 +90,9 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			_formattedValue: { type: String },
 			_inputTextFocusShowTooltip: { type: Boolean },
 			_showInfoTooltip: { type: Boolean },
-			_shownValue: { type: String }
+			_shownValue: { type: String },
+			_showRevertInstructions: { state: true },
+			_showRevertTooltip: { state: true }
 		};
 	}
 
@@ -160,10 +162,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
 		this._inputTextFocusShowTooltip = true; // true by default so hover triggers tooltip
-		this._namespace = 'components.input-date';
 		this._openCalendarOnly = false;
 		this._openedOnKeydown = false;
 		this._showInfoTooltip = true;
+		this._showRevertInstructions = false;
+		this._showRevertTooltip = false;
 		this._shownValue = '';
 
 		this._dateTimeDescriptor = getDateTimeDescriptor();
@@ -184,11 +187,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
 			const maxDate = this.maxValue ? formatDate(getDateFromISODate(this.maxValue), { format: 'medium' }) : null;
 			if (minDate && maxDate) {
-				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
+				return this.localize('components.input-date.errorOutsideRange', { minDate, maxDate });
 			} else if (maxDate) {
-				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
+				return this.localize('components.input-date.errorMaxDateOnly', { maxDate });
 			} else if (this.minValue) {
-				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
+				return this.localize('components.input-date.errorMinDateOnly', { minDate });
 			}
 		}
 		return super.validationMessage;
@@ -238,12 +241,17 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 
-		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.now`)}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
+		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize('components.input-date.clear')}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
+		const nowButton = this.hasNow ? html`<d2l-button-subtle text="${this.localize('components.input-date.now')}" @click="${this._handleSetToNow}"></d2l-button-subtle>` : null;
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error" class="vdiff-target">${this.validationError}</d2l-tooltip>` : null;
+
+		const tooltip = this._getErrorTooltip() || this._getRevertTooltip(shortDateFormat);
+
+		const inputTextInstructions = (this._showInfoTooltip && !tooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip)
+			? this.localize('components.input-date.openInstructions', { format: shortDateFormat })
+			: undefined;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
@@ -266,7 +274,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					min-value="${ifDefined(this.minValue)}"
 					selected-value="${ifDefined(this._shownValue)}">
 					<div class="d2l-calendar-slot-buttons">
-						<d2l-button-subtle text="${this.localize(`${this._namespace}.today`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+						<d2l-button-subtle text="${this.localize('components.input-date.today')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 						${nowButton}
 						${clearButton}
 					</div>
@@ -277,7 +285,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<div>${formattedWideDate}</div>
 				<div>${shortDateFormat}</div>
 			</div>
-			${errorTooltip}
+			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open ?prefer-fixed-positioning="${this.preferFixedPositioning}">
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
@@ -285,7 +293,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener vdiff-target"
-					instructions="${ifDefined((this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && this._inputTextFocusShowTooltip) ? this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat }) : undefined)}"
+					instructions="${ifDefined(inputTextInstructions)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -350,15 +358,62 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this._dropdown.close();
 	}
 
+	_getErrorTooltip() {
+		if (!this.validationError || this.opened || this.childErrors.size > 0) return null;
+
+		const message = (this._showRevertTooltip || this._showRevertInstructions)
+			? html`
+				<div>${this.localize('components.input-date.revert', { label: this.label })}</div>
+				<br>
+				<div>${this.validationError}</div>`
+			: this.validationError;
+
+		return html`
+			<d2l-tooltip 
+				align="start" 
+				announced 
+				class="vdiff-target" 
+				for="${this._inputId}"
+				?force-show="${this._showRevertTooltip}"
+				state="error">
+				${message}
+			</d2l-tooltip>
+		`;
+	}
+
+	_getRevertTooltip(shortDateFormat) {
+		if (this.opened || this.invalid || (!this._showRevertInstructions && !this._showRevertTooltip)) return null;
+
+		const revertMessage = this.localize('components.input-date.revert', { label: this.label });
+		const secondaryMessage = this._showRevertInstructions
+			? this.localize('components.input-date.openInstructions', { format: shortDateFormat })
+			: this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
+
+		return html`
+			<d2l-tooltip 
+				align="start" 
+				announced 
+				class="vdiff-target" 
+				for="${this._inputId}"
+				?force-show="${this._showRevertTooltip}">
+				<div>${revertMessage}</div>
+				<br>
+				<div>${secondaryMessage}</div>
+			</d2l-tooltip>
+		`;
+	}
+
 	_handleBlur() {
 		this._showInfoTooltip = true;
 		this.requestValidate(true);
 	}
 
 	async _handleChange() {
+		this._showRevertTooltip = false;
 		const value = this._textInput.value;
+		const isNewVal = value !== this.value;
 		if (!value && !this.required) {
-			if (value !== this.value) {
+			if (isNewVal) {
 				await this._updateValueDispatchEvent('');
 				if (this._calendar) {
 					await this.updateComplete;
@@ -374,6 +429,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			await this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
 		} catch {
 			// leave value the same when invalid input
+			if (isNewVal) this._showRevertTooltip = true;
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		if (this._calendar) {
@@ -391,6 +447,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	async _handleDateSelected(e) {
+		this._showRevertTooltip = false;
 		const value = e.target.selectedValue;
 		await this._updateValueDispatchEvent(value);
 		if (this._dropdown) {
@@ -449,9 +506,15 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	_handleInputTextBlur() {
 		this._inputTextFocusMouseup = false;
 		this._inputTextFocusShowTooltip = true;
+		this._showRevertInstructions = false;
 	}
 
-	_handleInputTextFocus() {
+	async _handleInputTextFocus() {
+		if (this._showRevertTooltip) {
+			this._showRevertTooltip = false;
+			await this.updateComplete;
+			this._showRevertInstructions = true;
+		}
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
 
 		// hide tooltip when focus, wait to see if click happened, then show
