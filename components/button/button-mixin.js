@@ -1,5 +1,9 @@
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 
 	static get properties() {
@@ -66,8 +70,8 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.disabled = false;
 
 		/** @ignore */

@@ -28,6 +28,10 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
@@ -65,8 +69,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.focusableContentElemPresent = false;
 		this.opened = false;
 		this._autoSize = true;
