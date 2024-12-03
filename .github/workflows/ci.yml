@@ -19,6 +19,8 @@ jobs:
         run: npm run lint:eslint
       - name: Lint (CSS)
         run: npm run lint:style
+      - name: Lint (Types)
+        run: npm run lint:types
   playwright:
     name: Accessibility and Unit Tests
     timeout-minutes: 15
