@@ -4,7 +4,8 @@
     "target": "ES2020",
     "typeRoots": ["./typings", "./node_modules/@types"],
     "checkJs": false,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "maxNodeModuleJsDepth": 3
   },
   "include": ["**/*", "**/*.js"],
   "exclude": ["node_modules", "./tools/**/*"]
