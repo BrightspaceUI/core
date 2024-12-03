@@ -138,12 +138,12 @@ jobs:
           git add *
           git commit -m 'auto generate lit mappings'
           RANDOM_STR=$( head /dev/urandom | tr -dc a-z0-9 | head -c 4 )
-          git push origin "HEAD:refs/heads/auto-format-$RANDOM_STR"
-          echo "mapping_branch=auto-format-$RANDOM_STR" >> $GITHUB_OUTPUT
+          git push origin "HEAD:refs/heads/auto-lit-mapping-$RANDOM_STR"
+          echo "mapping_branch=auto-lit-mapping-$RANDOM_STR" >> $GITHUB_OUTPUT
           exit 1
 
       - name: create lit mapping PR
-        if: failure() && steps.format.outputs.mapping_branch
+        if: failure() && steps.update_mapping.outputs.mapping_branch
         uses: Brightspace/third-party-actions@actions/github-script
         env:
           BRANCH_NAME: ${{ steps.update_mapping.outputs.mapping_branch }}
