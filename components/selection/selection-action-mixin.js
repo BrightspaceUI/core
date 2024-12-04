@@ -33,7 +33,7 @@ export const SelectionActionMixin = superclass => class extends LocalizeCoreElem
 
 	set selectionInfo(value) {
 		super.selectionInfo = value;
-		if (this.selectionInfo.keys.length > this.maxSelectionCount) {
+		if (this.selectionInfo.keys.length > this.maxSelectionCount || (this.selectionInfo.state === SelectionInfo.states.allPages && this._provider?.itemCount > this.maxSelectionCount)) {
 			this.disabled = true;
 			this._disabledTooltip = this.localize('components.selection.action-max-hint', { countFormatted: formatNumber(this.maxSelectionCount) });
 		} else if (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none) {
