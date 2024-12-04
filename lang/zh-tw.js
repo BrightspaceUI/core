@@ -111,7 +111,7 @@ export default {
 	"components.pageable.info": "{count, plural, other {{countFormatted} 個項目}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted} 項，共 {totalCountFormatted} 項}}",
 	"components.pager-load-more.status-loading": "正在載入更多項目",
-	"components.selection.action-max-hint": "You are over the selection limit of {countFormatted}.",
+	"components.selection.action-max-hint": "{count, plural, one {Disabled when more than {countFormatted} item is selected} other {Disabled when more than {countFormatted} items are selected}}",
 	"components.selection.action-required-hint": "選取項目以執行此動作。",
 	"components.selection.select-all": "全選",
 	"components.selection.select-all-items": "選取所有 {count} 個項目",

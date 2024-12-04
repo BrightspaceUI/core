@@ -111,7 +111,7 @@ export default {
 	"components.pageable.info": "{count, plural, other {{countFormatted} 個の項目}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 個の項目}}",
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",
-	"components.selection.action-max-hint": "You are over the selection limit of {countFormatted}.",
+	"components.selection.action-max-hint": "{count, plural, one {Disabled when more than {countFormatted} item is selected} other {Disabled when more than {countFormatted} items are selected}}",
 	"components.selection.action-required-hint": "このアクションを実行するための項目を選択します。",
 	"components.selection.select-all": "すべて選択",
 	"components.selection.select-all-items": "{count} 個の項目をすべて選択",

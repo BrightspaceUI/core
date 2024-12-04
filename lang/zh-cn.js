@@ -111,7 +111,7 @@ export default {
 	"components.pageable.info": "{count, plural, other {{countFormatted} 项}}",
 	"components.pageable.info-with-total": "{totalCount, plural, other {{countFormatted}/{totalCountFormatted} 项}}",
 	"components.pager-load-more.status-loading": "加载更多项目",
-	"components.selection.action-max-hint": "You are over the selection limit of {countFormatted}.",
+	"components.selection.action-max-hint": "{count, plural, one {Disabled when more than {countFormatted} item is selected} other {Disabled when more than {countFormatted} items are selected}}",
 	"components.selection.action-required-hint": "选择一个项目后才能执行此操作。",
 	"components.selection.select-all": "全选",
 	"components.selection.select-all-items": "选择全部 {count} 个项目",
