@@ -1,5 +1,5 @@
 import '../backdrop.js';
-import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, runConstructor } from '@brightspace-ui/testing';
 
 const backdropFixture = html`
 	<div>
@@ -21,7 +21,10 @@ const backdropFixture = html`
 const multiBackdropFixture = html`
 	<div>
 		<div id="target1">
-			<div id="target2"></div>
+			<button id="focusTarget1">Focus</button>
+			<div id="target2">
+				<button id="focusTarget2">Focus</button>
+			</div>
 			<div id="target2Sibling"></div>
 			<d2l-backdrop for-target="target2" no-animate-hide></d2l-backdrop>
 		</div>
@@ -45,6 +48,7 @@ describe('d2l-backdrop', () => {
 		it('should hide accessible elements', async() => {
 			const elem = await fixture(backdropFixture);
 			const backdrop = elem.querySelector('d2l-backdrop');
+			await focusElem(elem.querySelector('#target button'));
 			backdrop.shown = true;
 			await backdrop.updateComplete;
 
@@ -70,9 +74,43 @@ describe('d2l-backdrop', () => {
 			expect(linkAriaHidden.getAttribute('aria-hidden')).to.equal('true');
 		});
 
+		it('should not hide accessible elements until focus is inside target', async() => {
+
+			const elem = await fixture(backdropFixture);
+			const backdrop = elem.querySelector('d2l-backdrop');
+			const targetSibling = elem.querySelector('#targetSibling');
+
+			backdrop.shown = true;
+			await backdrop.updateComplete;
+
+			expect(targetSibling.hasAttribute('aria-hidden')).to.be.false;
+
+			await focusElem(elem.querySelector('#target button'));
+			await new Promise(resolve => requestAnimationFrame(resolve));
+
+			expect(targetSibling.getAttribute('aria-hidden')).to.equal('true');
+
+		});
+
+		it('should eventually hide accessible elements if focus never moves into target', async() => {
+
+			const elem = await fixture(backdropFixture);
+			const backdrop = elem.querySelector('d2l-backdrop');
+			const targetSibling = elem.querySelector('#targetSibling');
+
+			backdrop.shown = true;
+			await backdrop.updateComplete;
+
+			await aTimeout(300);
+
+			expect(targetSibling.getAttribute('aria-hidden')).to.equal('true');
+
+		});
+
 		it('should show accessible elements', async() => {
 			const elem = await fixture(backdropFixture);
 			const backdrop = elem.querySelector('d2l-backdrop');
+			await focusElem(elem.querySelector('#target button'));
 			backdrop.shown = true;
 			await backdrop.updateComplete;
 			backdrop.shown = false;
@@ -104,10 +142,12 @@ describe('d2l-backdrop', () => {
 			const elem = await fixture(multiBackdropFixture);
 
 			const backdrop1 = elem.querySelector('d2l-backdrop[for-target="target1"]');
+			await focusElem(elem.querySelector('#focusTarget1'));
 			backdrop1.shown = true;
 			await backdrop1.updateComplete;
 
 			const backdrop2 = elem.querySelector('d2l-backdrop[for-target="target2"]');
+			await focusElem(elem.querySelector('#focusTarget2'));
 			backdrop2.shown = true;
 			await backdrop2.updateComplete;
 

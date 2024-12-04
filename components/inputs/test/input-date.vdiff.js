@@ -1,5 +1,5 @@
 import '../input-date.js';
-import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
@@ -349,6 +349,79 @@ describe('d2l-input-date', () => {
 			it('open required with enter after empty text input', async() => {
 				elem.shadowRoot.querySelector('d2l-input-text').value = '';
 				await sendKeysElem(elem, 'press', 'Enter');
+				await expect(elem).to.be.golden();
+			});
+
+			it('click then click away', async() => {
+				await clickElem(elem);
+				await clickElem(document.body);
+				await expect(elem).to.be.golden();
+			});
+
+			it('open then close', async() => {
+				await sendKeysElem(elem, 'press', 'Enter');
+				sendKeys('press', 'Escape');
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
+			});
+		});
+
+		describe('required min-max revert', () => {
+
+			let elem;
+			beforeEach(async() => {
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2012-01-01', maxValue: '2018-02-27', minValue: '2018-02-13' }));
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Tab'); // trigger validation
+			});
+
+			it('delete text input then blur', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await focusElem(elem);
+				await aTimeout(100);
+				await expect(elem).to.be.golden();
+			});
+
+		});
+
+		describe('required revert', () => {
+
+			let elem;
+			beforeEach(async() => {
+				elem = await fixture(create({ label: 'Date', labelHidden: false, required: true, value: '2020-01-01' }));
+			});
+
+			it('delete text input then blur', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				focusElem(elem);
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
+			});
+
+			it('delete text input then blur then re-focus then blur', async() => {
+				await focusElem(elem);
+				await sendKeysElem(elem, 'press', 'Backspace');
+				await sendKeys('press', 'Tab');
+				await focusElem(elem);
+				await sendKeys('press', 'Tab');
 				await expect(elem).to.be.golden();
 			});
 		});

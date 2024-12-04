@@ -8,6 +8,7 @@ import { SwitchMixin } from './switch-mixin.js';
 /**
  * A variant of the generic switch configured with special icons and default text for toggling "visibility".
  * @slot - Optional content that will be displayed within the "conditions" opener tooltip when the switch is on.
+ * @fires d2l-switch-before-change - Dispatched before on-state is updated. Can be canceled to allow the consumer to handle switching the on-state. This is useful if something needs to happen prior to the on-state being switched.
  */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
