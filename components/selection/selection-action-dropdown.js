@@ -4,7 +4,6 @@ import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 
 /**
@@ -12,7 +11,7 @@ import { SelectionActionMixin } from './selection-action-mixin.js';
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  * @fires d2l-selection-observer-subscribe - Internal event
  */
-class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin(DropdownOpenerMixin(LitElement)))) {
+class ActionDropdown extends FocusMixin(SelectionActionMixin(DropdownOpenerMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -37,7 +36,7 @@ class ActionDropdown extends FocusMixin(LocalizeCoreElement(SelectionActionMixin
 			<d2l-button-subtle
 				class="vdiff-target"
 				?disabled=${this.disabled}
-				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"
+				disabled-tooltip="${ifDefined(this._disabledTooltip)}"
 				icon="tier1:chevron-down"
 				icon-right
 				text=${this.text}></d2l-button-subtle>
