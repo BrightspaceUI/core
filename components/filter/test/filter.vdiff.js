@@ -294,7 +294,7 @@ describe('filter', () => {
 
 				await clickElem(elem.shadowRoot.querySelector(selector));
 				await hoverAt(0, 0);
-				await nextFrame();
+				await aTimeout(300);
 				await expect(elem).to.be.golden();
 			});
 		});
@@ -333,6 +333,7 @@ describe('filter', () => {
 				await clickElem(elem.shadowRoot.querySelector('d2l-list-item'));
 				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]'));
 				await hoverAt(0, 0);
+				await aTimeout(300);
 				await expect(elem).to.be.golden();
 			});
 
