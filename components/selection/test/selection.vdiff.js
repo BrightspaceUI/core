@@ -35,45 +35,39 @@ describe('selection-components', () => {
 		tests: [
 			{ name: 'text', template: html`<d2l-selection-action text="action"></d2l-selection-action>` },
 			{ name: 'text-icon', template: html`<d2l-selection-action text="action" icon="tier1:gear"></d2l-selection-action>` },
-			{ name: 'disabled', template: html`<d2l-selection-action text="action" disabled></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show') }
-		],
-		requiresSelectionTemplate: html`<d2l-selection-action text="action" requires-selection></d2l-selection-action>`
+			{ name: 'requires-selection', template: html`<d2l-selection-action text="action" requires-selection></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'none', keys: [] } },
+			{ name: 'max-selection-count', template: html`<d2l-selection-action text="action" max-selection-count="2"></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'some', keys: [ 'first', 'second', 'third' ] } }
+		]
 	},
 	{
 		category: 'dropdown',
 		tests: [
 			{ name: 'text', template: html`<d2l-selection-action-dropdown text="action"></d2l-selection-action-dropdown>` },
-			{ name: 'disabled', template: html`<d2l-selection-action-dropdown text="action" disabled></d2l-selection-action-dropdown>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show') }
-		],
-		requiresSelectionTemplate: html`<d2l-selection-action-dropdown text="action" requires-selection></d2l-selection-action-dropdown>`
-	}].forEach(({ category, tests, requiresSelectionTemplate }) => {
+			{ name: 'requires-selection', template: html`<d2l-selection-action-dropdown text="action" requires-selection></d2l-selection-action-dropdown>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'none', keys: [] } },
+			{ name: 'max-selection-count', template: html`<d2l-selection-action-dropdown text="action" max-selection-count="2"></d2l-selection-action-dropdown>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'some', keys: [ 'first', 'second', 'third' ] } }
+		]
+	}].forEach(({ category, tests }) => {
+
 		describe(category, () => {
-			tests.forEach(({ name, template, waitFor }) => {
+			tests.forEach(({ name, template, waitFor, selectionInfo }) => {
+
 				it(name, async() => {
 					const elem = await fixture(template);
+					if (selectionInfo) elem.selectionInfo = selectionInfo;
 					await expect(elem).to.be.golden();
 				});
 
 				it(`${name}-focus`, async() => {
 					const elem = await fixture(template);
+					if (selectionInfo) elem.selectionInfo = selectionInfo;
 					await focusElem(elem);
 					if (waitFor) await waitFor(elem);
 					await expect(elem).to.be.golden();
 				});
-			});
 
-			[
-				{ name: 'requires-selection-none', selectionInfo: { state: 'none', keys: [] } },
-				{ name: 'requires-selection-some', selectionInfo: { state: 'some', keys: [] } },
-				{ name: 'requires-selection-all', selectionInfo: { state: 'all', keys: [] } }
-			].forEach(({ name, selectionInfo }) => {
-				it(name, async() => {
-					const elem = await fixture(requiresSelectionTemplate);
-					elem.selectionInfo = selectionInfo;
-					await expect(elem).to.be.golden();
-				});
 			});
 		});
+
 	});
 
 	describe('controls', () => {
