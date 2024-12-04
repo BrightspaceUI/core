@@ -39,7 +39,7 @@ export const SelectionActionMixin = superclass => class extends LocalizeCoreElem
 
 		if (this.selectionInfo.keys.length > this.maxSelectionCount || (this.selectionInfo.state === SelectionInfo.states.allPages && this._provider?.itemCount > this.maxSelectionCount)) {
 			this.disabled = true;
-			this._disabledTooltip = this.localize('components.selection.action-max-hint', { countFormatted: formatNumber(this.maxSelectionCount) });
+			this._disabledTooltip = this.localize('components.selection.action-max-hint', { count: this.maxSelectionCount,  countFormatted: formatNumber(this.maxSelectionCount) });
 		} else if (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none) {
 			this.disabled = true;
 			this._disabledTooltip = this.localize('components.selection.action-required-hint');
