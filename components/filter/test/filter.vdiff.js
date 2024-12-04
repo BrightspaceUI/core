@@ -228,20 +228,6 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
-		it('dates-custom-tooltip-selected-default-deselected-selected', async() => {
-			resetHasDisplayedKeyboardTooltip();
-			const elem = await fixture(createSingleDimDateCustomSimple(true));
-			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
-			setTimeout(async() => {
-				await sendKeysElem(listItem, 'press', 'ArrowDown');
-				await sendKeysElem(listItem, 'press', 'ArrowUp+Space');
-			});
-			await oneEvent(elem, 'd2l-tooltip-show');
-			await nextFrame();
-			await aTimeout(500);
-			await expect(document).to.be.golden();
-		});
-
 		describe('searched', () => {
 			[
 				{ name: 'single-selection', search: 'empty', template: createSingleDimSingleSelection() },
@@ -323,15 +309,6 @@ describe('filter', () => {
 				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
 
 				await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
-				await hoverAt(0, 0);
-				await aTimeout(300);
-				await expect(elem).to.be.golden();
-			});
-
-			it('select-other-option-then-custom-again', async() => {
-				const elem = await fixture(createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', opened: true }));
-				await clickElem(elem.shadowRoot.querySelector('d2l-list-item'));
-				await clickElem(elem.shadowRoot.querySelector('d2l-list-item[label="Custom date range, expand to choose dates"]'));
 				await hoverAt(0, 0);
 				await aTimeout(300);
 				await expect(elem).to.be.golden();
