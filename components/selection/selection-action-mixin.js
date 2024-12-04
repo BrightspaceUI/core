@@ -33,6 +33,10 @@ export const SelectionActionMixin = superclass => class extends LocalizeCoreElem
 
 	set selectionInfo(value) {
 		super.selectionInfo = value;
+
+		// if these rules are not set, we let the consumer manage the disabled property if they want
+		if (!this.requiresSelection && this.maxSelectionCount === Infinity) return;
+
 		if (this.selectionInfo.keys.length > this.maxSelectionCount || (this.selectionInfo.state === SelectionInfo.states.allPages && this._provider?.itemCount > this.maxSelectionCount)) {
 			this.disabled = true;
 			this._disabledTooltip = this.localize('components.selection.action-max-hint', { countFormatted: formatNumber(this.maxSelectionCount) });
@@ -43,6 +47,7 @@ export const SelectionActionMixin = superclass => class extends LocalizeCoreElem
 			this.disabled = false;
 			this._disabledTooltip = undefined;
 		}
+
 	}
 
 };

@@ -68,6 +68,15 @@ describe('d2l-selection-action', () => {
 		expect(dispatched).to.be.false;
 	});
 
+	it('does not dispatch d2l-selection-action-click event if disabled', async() => {
+		const el = await fixture(html`<d2l-selection-action disabled></d2l-selection-action>`);
+		let dispatched = false;
+		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		el.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(el);
+		expect(dispatched).to.be.false;
+	});
+
 });
 
 describe('d2l-selection-action-dropdown', () => {
@@ -126,6 +135,16 @@ describe('d2l-selection-action-menu-item', () => {
 
 	it('does not dispatch d2l-selection-action-click event if greater than max-selection-count is selected', async() => {
 		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" max-selection-count="2"></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		let dispatched = false;
+		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		item.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(item);
+		expect(dispatched).to.be.false;
+	});
+
+	it('does not dispatch d2l-selection-action-click event if disabled', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" disabled></d2l-selection-action-menu-item></d2l-menu>`);
 		const item = el.querySelector('d2l-selection-action-menu-item');
 		let dispatched = false;
 		item.addEventListener('d2l-selection-action-click', () => dispatched = true);

@@ -35,6 +35,7 @@ describe('selection-components', () => {
 		tests: [
 			{ name: 'text', template: html`<d2l-selection-action text="action"></d2l-selection-action>` },
 			{ name: 'text-icon', template: html`<d2l-selection-action text="action" icon="tier1:gear"></d2l-selection-action>` },
+			{ name: 'disabled', template: html`<d2l-selection-action text="action" disabled disabled-tooltip="Disabled message"></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'some', keys: [ 'first' ] } },
 			{ name: 'requires-selection', template: html`<d2l-selection-action text="action" requires-selection></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'none', keys: [] } },
 			{ name: 'max-selection-count', template: html`<d2l-selection-action text="action" max-selection-count="2"></d2l-selection-action>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'some', keys: [ 'first', 'second', 'third' ] } }
 		]
@@ -43,6 +44,7 @@ describe('selection-components', () => {
 		category: 'dropdown',
 		tests: [
 			{ name: 'text', template: html`<d2l-selection-action-dropdown text="action"></d2l-selection-action-dropdown>` },
+			{ name: 'disabled', template: html`<d2l-selection-action-dropdown text="action" disabled></d2l-selection-action-dropdown>`, selectionInfo: { state: 'some', keys: [ 'first' ] } },
 			{ name: 'requires-selection', template: html`<d2l-selection-action-dropdown text="action" requires-selection></d2l-selection-action-dropdown>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'none', keys: [] } },
 			{ name: 'max-selection-count', template: html`<d2l-selection-action-dropdown text="action" max-selection-count="2"></d2l-selection-action-dropdown>`, waitFor: elem => oneEvent(elem, 'd2l-tooltip-show'), selectionInfo: { state: 'some', keys: [ 'first', 'second', 'third' ] } }
 		]

@@ -54,12 +54,14 @@ class Action extends FocusMixin(SelectionActionMixin(ButtonMixin(LitElement))) {
 	}
 
 	render() {
+		const disabledTooltip = this._disabledTooltip || (this.disabled && this.disabledTooltip ? this.disabledTooltip : undefined);
+
 		return html`
 			<d2l-button-subtle
 				class="vdiff-target"
 				@click="${this._handleActionClick}"
 				?disabled="${this.disabled}"
-				disabled-tooltip="${ifDefined(this._disabledTooltip)}"
+				disabled-tooltip="${ifDefined(disabledTooltip)}"
 				icon="${ifDefined(this.icon)}"
 				text="${this.text}">
 			</d2l-button-subtle>

@@ -32,11 +32,13 @@ class ActionDropdown extends FocusMixin(SelectionActionMixin(DropdownOpenerMixin
 	}
 
 	render() {
+		const disabledTooltip = this._disabledTooltip || (this.disabled && this.disabledTooltip ? this.disabledTooltip : undefined);
+
 		return html`
 			<d2l-button-subtle
 				class="vdiff-target"
-				?disabled=${this.disabled}
-				disabled-tooltip="${ifDefined(this._disabledTooltip)}"
+				?disabled="${this.disabled}"
+				disabled-tooltip="${ifDefined(disabledTooltip)}"
 				icon="tier1:chevron-down"
 				icon-right
 				text=${this.text}></d2l-button-subtle>
