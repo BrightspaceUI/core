@@ -163,6 +163,7 @@ class Popover extends PopoverMixin(LitElement) {
 	}
 
 	#handleContentScroll() {
+		// eslint-disable-next-line
 		console.log('handle content scroll');
 	}
 
