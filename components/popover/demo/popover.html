@@ -6,10 +6,20 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script type="module">
+		import '../../button/button.js';
 		import '../../button/button-subtle.js';
 		import '../../demo/demo-page.js';
+		import '../../dialog/dialog.js';
 		import '../../link/link.js';
 		import '../test/popover.js';
+
+		window.wireUpPopover = demo => {
+			const popover = demo.querySelector('d2l-test-popover');
+			const openButton = demo.querySelector('d2l-button-subtle[text="Open"]');
+			openButton.addEventListener('click', () => popover.opened = !popover.opened);
+			const closeButton = demo.querySelector('d2l-button-subtle[text="Close"]');
+			if (closeButton) closeButton.addEventListener('click', () => popover.opened = false);
+		};
 	</script>
 </head>
 
@@ -20,41 +30,256 @@
 		<h2>Popover</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-button-subtle id="open1" text="Open"></d2l-button-subtle>
-				<d2l-test-popover id="popover1" style="max-width: 400px;">
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover>
+					<div slot="header">header content</div>
+					<d2l-button-subtle text="Close"></d2l-button-subtle>
 					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
-					<d2l-button-subtle id="close1" text="Close"></d2l-button-subtle>
+					<div style="border: 1px solid black; width: 600px;">stuff</div>
+					<div slot="footer">footer content</div>
 				</d2l-test-popover>
 				<script>
-					const popover1 = document.querySelector('#popover1');
-					document.querySelector('#open1').addEventListener('click', () => popover1.opened = !popover1.opened);
-					document.querySelector('#close1').addEventListener('click', () => popover1.opened = false);
+					window.wireUpPopover(document.currentScript.parentNode);
 				</script>
 			</template>
 		</d2l-demo-snippet>
+
+		<h2>Popover (content width less than min-width)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover>
+					<div>1</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (content width greater than min-width, less than max-width)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div style="text-align: center;"><d2l-button-subtle text="Open"></d2l-button-subtle></div>
+				<d2l-test-popover>
+					<div>Sink me piracy Gold Road.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (content width greater than max-width)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover>
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (no pointer)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover no-pointer>
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (custom max-width, single-line)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover max-width="1000">
+					<div>Sink me piracy Gold Road quarterdeck wherry and some.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (custom max-width, multi-line)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover max-width="1000">
+					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (custom min-width)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover min-width="60">
+					<div>1</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (position location)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover position-location="block-start">
+					<div>Sink me piracy Gold Road.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (position span)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div style="text-align: center;"><d2l-button-subtle text="Open"></d2l-button-subtle></div>
+				<d2l-test-popover position-span="end">
+					<div>Sink me piracy Gold Road.</div>
+				</d2l-test-popover>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (in a scrollable container)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div style="height: 250px; overflow: scroll;">
+					<p>Gabion warp American Main gunwalls cutlass gally cable gibbet jib keel. Trysail chantey swing the lead hempen halter hang the jib chase Jack Tar furl galleon scurvy. Brig splice the main brace provost pink rutters tender heave to Shiver me timbers belaying pin Brethren of the Coast.</p>
+					<d2l-button-subtle text="Open"></d2l-button-subtle>
+					<d2l-test-popover>
+						<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+					</d2l-test-popover>
+					<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+					<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+					<p>Hardtack hang the jib haul wind booty pillage spike hearties Pirate Round tack yard. Piracy fire ship trysail stern scurvy blow the man down skysail salmagundi lee grog blossom. Hands gabion ho schooner lad ballast keel mutiny square-rigged haul wind.</p>
+				</div>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (with DOM mutation)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div>
+					<div id="mutations-above"></div>
+					<d2l-button-subtle text="Open"></d2l-button-subtle>
+					<d2l-test-popover>
+						<d2l-button-subtle id="mutations-add-above">Add to Above</d2l-button-subtle>
+					</d2l-test-popover>
+				</div>
+				<script>
+					window.wireUpPopover(document.currentScript.parentNode);
+
+					document.querySelector('#mutations-add-above').addEventListener('click', e => {
+						const mutationsContainer = e.target.parentNode.parentNode.parentNode.querySelector('#mutations-above');
+						const newContent = document.createElement('p');
+						newContent.innerText = 'Blimey brigantine gangplank booty rope\'s end lugger heave down run a rig Yellow Jack dead men tell no tales. Pirate Round scuppers spanker hogshead Davy Jone\'s Locker heave down wench fluke marooned boom. Lanyard salmagundi careen doubloon swing the lead shrouds crow\'s nest parrel gun pressgang.';
+						mutationsContainer.appendChild(newContent);
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (in a dialog)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button id="openDialog1">Show Dialog</d2l-button>
+				<d2l-dialog id="dialog1" title-text="Dialog Title">
+					<div>
+						<p>Bilge tack furl dance the hempen jig fathom weigh anchor mizzen Blimey Jack Ketch flogging. Lee galleon avast schooner long clothes scuppers pinnace bucko deadlights gibbet. Nipper brigantine Buccaneer Gold Road matey gangway booty tender killick Brethren of the Coast.</p>
+						<d2l-button-subtle id="openPopover1" text="Open"></d2l-button-subtle>
+						<d2l-test-popover id="popover1">
+							<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
+						</d2l-test-popover>
+						<p>Piracy bowsprit Arr shrouds salmagundi scuttle heave down doubloon trysail Jack Ketch. Killick boom Jolly Roger Pieces of Eight crack Jennys tea cup Cat o'nine tails league Privateer topgallant lanyard. Cat o'nine tails coxswain scurvy spirits keelhaul quarterdeck matey nipper scallywag Jolly Roger.</p>
+						<p>Clap of thunder aye Corsair Barbary Coast prow shrouds schooner keel topmast code of conduct. Matey case shot spirits Davy Jones' Locker draft schooner Brethren of the Coast barkadeer jury mast measured fer yer chains. Bilge rat run a rig gaff warp loot clipper belaying pin main sheet lanyard avast.</p>
+						<p>Pieces of Eight lookout Letter of Marque mutiny tender spanker Jack Ketch long clothes crow's nest line. Lass draught six pounders spirits skysail jib American Main chase hulk coxswain. Run a shot across the bow galleon Cat o'nine tails brigantine reef Admiral of the Black wherry quarterdeck keelhaul coffer.</p>
+					</div>
+					<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+				<script>
+					document.querySelector('#openDialog1').addEventListener('click', () => {
+						document.querySelector('#dialog1').opened = true;
+					});
+					document.querySelector('#openPopover1').addEventListener('click', () => {
+						const popover = document.querySelector('#popover1');
+						popover.opened = !popover.opened;
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Popover (in another popover)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle id="outerOpener" text="Open"></d2l-button-subtle>
+				<d2l-test-popover id="outerPopover">
+					<d2l-button-subtle id="innerOpener" text="Open Nested"></d2l-button-subtle>
+					<d2l-test-popover id="innerPopover">
+						<div>Piracy bowsprit Arr shrouds salmagundi scuttle heave down doubloon trysail Jack Ketch. Killick boom Jolly Roger Pieces of Eight crack Jennys tea cup Cat o'nine tails league Privateer topgallant lanyard. Cat o'nine tails coxswain scurvy spirits keelhaul quarterdeck matey nipper scallywag Jolly Roger.</div>
+					</d2l-test-popover>
+				</d2l-test-popover>
+				<script>
+					document.querySelector('#outerOpener').addEventListener('click', () => {
+						const popover = document.querySelector('#outerPopover');
+						popover.opened = !popover.opened;
+					});
+					document.querySelector('#innerOpener').addEventListener('click', () => {
+						const popover = document.querySelector('#innerPopover');
+						popover.opened = !popover.opened;
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
 
 		<h2>Popover (trap-focus)</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-button-subtle id="open2" text="Open"></d2l-button-subtle>
-				<d2l-test-popover trap-focus id="popover2" style="max-width: 400px;">
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover trap-focus style="max-width: 400px;">
 					<d2l-link href="https://pirateipsum.me/" target="_blank">Pirate Ipsum</d2l-link>
 					<div>Sink me piracy Gold Road quarterdeck wherry long boat line pillage walk the plank Plate Fleet. Haul wind black spot strike colors deadlights lee Barbary Coast yo-ho-ho ballast gally Shiver me timbers. Sea Legs quarterdeck yard scourge of the seven seas coffer plunder lanyard holystone code of conduct belay.</div>
-					<d2l-button-subtle id="close2" text="Close"></d2l-button-subtle>
+					<d2l-button-subtle text="Close"></d2l-button-subtle>
 				</d2l-test-popover>
 				<script>
-					const popover2 = document.querySelector('#popover2');
-					document.querySelector('#open2').addEventListener('click', () => popover2.opened = !popover2.opened);
-					document.querySelector('#close2').addEventListener('click', () => popover2.opened = false);
-					popover2.addEventListener('d2l-popover-focus-enter', e => console.log(e.type, e));
+					window.wireUpPopover(document.currentScript.parentNode);
 				</script>
+			</template>
 			</template>
 		</d2l-demo-snippet>
 
-		<script>
-			document.addEventListener('d2l-popover-open', e => console.log(e.type, e));
-			document.addEventListener('d2l-popover-close', e => console.log(e.type, e));
-		</script>
+	</d2l-demo-page>
+
+	<script>
+		document.addEventListener('d2l-popover-open', e => console.log(e.type, e));
+		document.addEventListener('d2l-popover-close', e => console.log(e.type, e));
+		document.addEventListener('d2l-popover-focus-enter', e => console.log(e.type, e), true);
+	</script>
 </body>
 
 </html>
