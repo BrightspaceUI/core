@@ -11,7 +11,7 @@ import { SelectionInfo } from './selection-mixin.js';
  * @fires d2l-selection-observer-subscribe - Internal event
  * @typedef {Action} ActionExported
  */
-class Action extends FocusMixin(SelectionActionMixin(ButtonMixin(LitElement))) {
+class Action extends SelectionActionMixin(ButtonMixin(LitElement)) {
 
 	static get properties() {
 		return {
