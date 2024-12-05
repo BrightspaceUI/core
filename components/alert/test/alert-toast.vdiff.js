@@ -1,5 +1,5 @@
-import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
 import { defineCE, expect, fixture, focusElem, hoverElem, html, oneEvent, setViewport } from '@brightspace-ui/testing';
+import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
 import { LitElement } from 'lit';
 import sinon from 'sinon';
 
@@ -34,7 +34,7 @@ const tag = defineCE(
 			return multipleAlerts;
 		}
 	}
-)
+);
 
 describe('alert-toast', () => {
 
