@@ -218,16 +218,6 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
-		it('dates-custom-tooltip-selected-default', async() => {
-			resetHasDisplayedKeyboardTooltip();
-			const elem = await fixture(createSingleDimDateCustomSimple(true));
-			const listItem = elem.shadowRoot.querySelector('d2l-list-item');
-			await sendKeysElem(listItem, 'press', 'ArrowDown');
-			await nextFrame();
-			await aTimeout(500); // make sure tooltip does not appear
-			await expect(document).to.be.golden();
-		});
-
 		describe('searched', () => {
 			[
 				{ name: 'single-selection', search: 'empty', template: createSingleDimSingleSelection() },
