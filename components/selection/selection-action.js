@@ -2,7 +2,6 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from '../button/button-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionActionMixin } from './selection-action-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
 
@@ -12,7 +11,7 @@ import { SelectionInfo } from './selection-mixin.js';
  * @fires d2l-selection-observer-subscribe - Internal event
  * @typedef {Action} ActionExported
  */
-class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(LitElement))) {
+class Action extends FocusMixin(SelectionActionMixin(ButtonMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -55,12 +54,14 @@ class Action extends LocalizeCoreElement(SelectionActionMixin(ButtonMixin(LitEle
 	}
 
 	render() {
+		const disabledTooltip = this._disabledTooltip || (this.disabled && this.disabledTooltip ? this.disabledTooltip : undefined);
+
 		return html`
 			<d2l-button-subtle
 				class="vdiff-target"
 				@click="${this._handleActionClick}"
 				?disabled="${this.disabled}"
-				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"
+				disabled-tooltip="${ifDefined(disabledTooltip)}"
 				icon="${ifDefined(this.icon)}"
 				text="${this.text}">
 			</d2l-button-subtle>
