@@ -173,7 +173,8 @@ describe('d2l-input-time-range', () => {
 
 				it('open start', async() => {
 					const elem = await fixture(create({ endValue: time, startValue: laterTime }), { viewport });
-					await sendKeysElem(elem, 'press', 'Enter');
+					sendKeysElem(elem, 'press', 'Enter');
+					await oneEvent(elem, 'd2l-dropdown-open');
 					await expect(elem).to.be.golden();
 				});
 
@@ -181,7 +182,8 @@ describe('d2l-input-time-range', () => {
 					const elem = await fixture(create({ endValue: time, startValue: laterTime }), { viewport });
 					await focusElem(elem);
 					await sendKeys('press', 'Tab');
-					await sendKeys('press', 'Enter');
+					sendKeys('press', 'Enter');
+					await oneEvent(elem, 'd2l-dropdown-open');
 					await expect(elem).to.be.golden();
 				});
 			});
