@@ -15,6 +15,10 @@ export function isInteractiveDescendant(node) {
 	});
 }
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const InteractiveMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -35,8 +39,8 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._dismissibleId = null;
 		this._focusingToggle = false;
 		this._hasInteractiveAncestor = false;

@@ -246,6 +246,10 @@ export class NewPositionEventDetails {
 	}
 }
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -348,8 +352,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._itemDragId = getUniqueId();
 		this.draggable = false;
 		/** @ignore */

@@ -1,5 +1,9 @@
 import { isCustomFormElement } from '../form/form-helper.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const ValidationCustomMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -9,8 +13,8 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._forElement = null;
 	}
 

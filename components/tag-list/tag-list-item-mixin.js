@@ -38,6 +38,10 @@ export function resetHasDisplayedKeyboardTooltip() {
 	hasDisplayedKeyboardTooltip = false;
 }
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -164,8 +168,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;

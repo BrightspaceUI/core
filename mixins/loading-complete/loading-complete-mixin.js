@@ -1,6 +1,10 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
-export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends superclass {
+/**
+ * @template {ReactiveElementConstructor & (new (...args: any[]) => { getLoadingComplete?(): Promise<any> })} S
+ * @param {S} superclass
+ */
+export const InternalLoadingCompleteMixin = (superclass) => class extends superclass {
 	get loadingComplete() {
 		return this.getLoadingComplete();
 	}
@@ -25,4 +29,6 @@ export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends su
 		? new Promise(resolve => this.#loadingCompleteResolve = resolve)
 		: Promise.resolve();
 
-});
+};
+
+export const LoadingCompleteMixin = dedupeMixin(InternalLoadingCompleteMixin);

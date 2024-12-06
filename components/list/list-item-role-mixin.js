@@ -1,5 +1,9 @@
 import { findComposedAncestor } from '../../helpers/dom.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemRoleMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -14,8 +18,8 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._nested = false;
 	}
 

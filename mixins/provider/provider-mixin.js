@@ -29,6 +29,10 @@ export function provideInstance(node, key, obj) {
 	node._providerInstances.set(key, obj);
 }
 
+/**
+ * @template {CustomElementConstructor} S
+ * @param {S} superclass
+ */
 export const ProviderMixin = superclass => class extends superclass {
 	provideInstance(key, obj) {
 		provideInstance(this, key, obj);
@@ -46,6 +50,10 @@ export function requestInstance(node, key) {
 	return event.detail.instance;
 }
 
+/**
+ * @template {CustomElementConstructor} S
+ * @param {S} superclass
+ */
 export const RequesterMixin = superclass => class extends superclass {
 	requestInstance(key) {
 		return requestInstance(this, key);
