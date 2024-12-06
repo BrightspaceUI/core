@@ -135,13 +135,15 @@ describe('d2l-input-time', () => {
 
 		it('dropdown open keydown top', async() => {
 			const elem = await fixture(create({ value: '00:15:00' }), { viewport });
-			await sendKeysElem(elem, 'press', 'Enter');
+			sendKeysElem(elem, 'press', 'Enter');
+			await oneEvent(elem, 'd2l-dropdown-open');
 			await expect(elem).to.be.golden();
 		});
 
 		it('dropdown open keydown selected', async() => {
 			const elem = await fixture(create({ value: '02:00:00' }), { viewport });
-			await sendKeysElem(elem, 'press', 'Enter');
+			sendKeysElem(elem, 'press', 'Enter');
+			await oneEvent(elem, 'd2l-dropdown-open');
 			await expect(elem).to.be.golden();
 		});
 
