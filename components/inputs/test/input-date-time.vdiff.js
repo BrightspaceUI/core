@@ -167,7 +167,8 @@ describe('d2l-input-date-time', () => {
 		it('open time', async() => {
 			const elem = await fixture(basicFixture);
 			const textInput = elem.shadowRoot.querySelector('d2l-input-time').shadowRoot.querySelector('input');
-			await sendKeysElem(textInput, 'press', 'Enter');
+			sendKeysElem(textInput, 'press', 'Enter');
+			await oneEvent(elem, 'd2l-dropdown-open');
 			await expect(elem).to.be.golden();
 		});
 	});

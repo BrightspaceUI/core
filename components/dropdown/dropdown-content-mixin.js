@@ -632,7 +632,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		// DE44538: wait for dropdown content to fully render,
 		// otherwise this.getContentContainer() can return null.
-		await this.updateComplete;
+		await this.__waitForContentContainer();
 
 		this.__previousFocusableAncestor =
 			newValue === true
@@ -851,6 +851,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		/* scrollHeight incorrect in IE by 4px second time opened */
 		this._bottomOverflow = this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) >= 5;
 		this._topOverflow = this.__content.scrollTop !== 0;
+	}
+
+	async __waitForContentContainer() {
+		if (this.getContentContainer() !== null) return;
+		await new Promise(resolve => requestAnimationFrame(resolve));
+		return this.__waitForContentContainer();
 	}
 
 	_constrainSpaceAround(spaceAround, spaceRequired, targetRect) {
