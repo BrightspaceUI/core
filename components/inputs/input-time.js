@@ -462,9 +462,17 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
-			this.opened = true;
 			e.preventDefault();
+			await this._waitForItems();
+			this.opened = true;
 		}
+	}
+
+	async _waitForItems() {
+		const items = this.shadowRoot.querySelectorAll('d2l-menu-item-radio');
+		if (items.length > 0) return;
+		await new Promise(resolve => requestAnimationFrame(resolve));
+		return this._waitForItems();
 	}
 }
 customElements.define('d2l-input-time', InputTime);

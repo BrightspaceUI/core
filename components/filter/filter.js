@@ -49,11 +49,11 @@ function addSpaceListener() {
 	if (spaceListenerAdded) return;
 	spaceListenerAdded = true;
 	document.addEventListener('keydown', e => {
-		if (e.keyCode !== 32) return;
+		if (e.key !== ' ') return;
 		spacePressed = true;
 	});
 	document.addEventListener('keyup', e => {
-		if (e.keyCode !== 32) return;
+		if (e.key !== ' ') return;
 		spacePressed = false;
 	});
 }
@@ -245,6 +245,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			onSubscribe: this._updateActiveFiltersSubscriber.bind(this),
 			updateSubscribers: this._updateActiveFiltersSubscribers.bind(this)
 		});
+		this._spacePressedDuringLastSelection = false;
 	}
 
 	static get focusElementSelector() {
@@ -618,7 +619,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		return html`
 			<d2l-list-item
 				id="${itemId}"
-				@d2l-list-item-selected="${ifDefined(item.additionalContent ? this._handleListItemSelelcted : undefined)}"
+				@d2l-list-item-selected="${item.additionalContent ? this._handleListItemSelected : undefined}"
 				?selection-disabled="${item.disabled}"
 				?hidden="${item.hidden}"
 				key="${item.key}"
@@ -897,18 +898,23 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	}
 
 	async _handleExpandCollapse(e) {
-		const eventPromise = e.target.expanded ? e.detail.expandComplete : e.detail.collapseComplete;
+		const expanded = e.target.expanded;
+		const eventPromise = expanded ? e.detail.expandComplete : e.detail.collapseComplete;
 		const parentListItem = e.target.closest('d2l-list-item');
 		parentListItem.classList.add('expanding-content');
 
 		await eventPromise;
 		parentListItem.classList.remove('expanding-content');
+
+		if (expanded && !hasDisplayedKeyboardTooltip && this._spacePressedDuringLastSelection) {
+			await new Promise(resolve => requestAnimationFrame(resolve));
+			this._displayKeyboardTooltip = true;
+			hasDisplayedKeyboardTooltip = true;
+		}
 	}
 
-	_handleListItemSelelcted() {
-		if (hasDisplayedKeyboardTooltip || !spacePressed) return;
-		this._displayKeyboardTooltip = true;
-		hasDisplayedKeyboardTooltip = true;
+	_handleListItemSelected() {
+		this._spacePressedDuringLastSelection = spacePressed;
 	}
 
 	_handleSearch(e) {
