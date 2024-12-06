@@ -316,7 +316,7 @@ class AlertToast extends LitElement {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-toast-resize', {
 				bubbles: true,
-				composed: false,
+				composed: true,
 				detail: { bottom, heightDifference: (newHeight - oldHeight), opening, closing: false }
 			}
 		));
@@ -328,7 +328,7 @@ class AlertToast extends LitElement {
 	}
 
 	_handleSiblingResize(e) {
-		if (e?.target === this || !this.open) return;
+		if (e?.composedPath()[0] === this || !this.open) return;
 
 		if (!e.detail.opening) {
 			const containerBottom = this._innerContainer.getBoundingClientRect().bottom;
@@ -445,7 +445,7 @@ class AlertToast extends LitElement {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-alert-toast-close', {
 						bubbles: true,
-						composed: false,
+						composed: true,
 						detail: { bottom, heightDifference: -this._height, opening: false, closing: true }
 					}
 				));
