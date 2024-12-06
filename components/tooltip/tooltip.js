@@ -99,6 +99,7 @@ const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
  * @slot - Default content placed inside of the tooltip
  * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
  * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
+ * @typedef {Tooltip} TooltipExported
  */
 class Tooltip extends RtlMixin(LitElement) {
 

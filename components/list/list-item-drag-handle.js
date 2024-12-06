@@ -42,6 +42,7 @@ let hasDisplayedKeyboardTooltip = false;
 
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
+ * @typedef {ListItemDragHandle} ListItemDragHandleExported
  */
 class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElement))) {
 

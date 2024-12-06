@@ -146,6 +146,7 @@ export function getPrevMonth(month) {
 /**
  * A component can be used to display a responsively sized calendar that allows for date selection.
  * @slot - Content displayed under the calendar (e.g., buttons)
+ * @typedef {Calendar} CalendarExported
  */
 class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 

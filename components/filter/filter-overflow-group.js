@@ -14,6 +14,7 @@ function createFilterItem(node) {
 /**
  * A component that can be used to display a group of filters that will be put into an overflow filter when they no longer fit on the first line of their container
  * @slot - d2l-filters to be added to the container
+ * @typedef {FilterOverflowGroup} FilterOverflowGroupExported
 */
 class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 

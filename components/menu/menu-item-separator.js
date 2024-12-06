@@ -2,6 +2,7 @@ import { css, LitElement } from 'lit';
 
 /**
  * A component for displaying a more distinct separator between menu items.
+ * @typedef {MenuItemSeparator} MenuItemSeparatorExported
  */
 class MenuItemSeparator extends LitElement {
 

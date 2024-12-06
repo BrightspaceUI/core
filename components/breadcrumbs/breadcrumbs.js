@@ -6,6 +6,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
  * @slot - Breadcrumb items
+ * @typedef {Breadcrumbs} BreadcrumbsExported
  */
 class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {

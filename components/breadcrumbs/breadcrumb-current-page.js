@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent representing the current page.
+ * @typedef {BreadcrumbCurrentPage} BreadcrumbCurrentPageExported
  */
 class BreadcrumbCurrentPage extends LitElement {
 
