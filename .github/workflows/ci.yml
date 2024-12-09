@@ -19,6 +19,8 @@ jobs:
         run: npm run lint:eslint
       - name: Lint (CSS)
         run: npm run lint:style
+      - name: Lint (Types)
+        run: npm run lint:types
   playwright:
     name: Accessibility and Unit Tests
     timeout-minutes: 15
@@ -113,3 +115,55 @@ jobs:
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
           post-mode: once
+  update_mapping:
+    name: Update Mapping
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - name: update mapping
+        working-directory: ${{ inputs.base_path }}
+        id: update_mapping
+        env:
+          GIT_AUTHOR_NAME: Lit HTML Tag Mapping Bot
+          GIT_AUTHOR_EMAIL: lit-mapping-bot@github.d2l
+          GIT_COMMITTER_NAME: Lit HTML Tag Mapping Bot
+          GIT_COMMITTER_EMAIL: lit-mapping-bot@github.d2l
+        shell: bash
+        run: |
+          npm run generate-lit-mappings
+          if [ "$( git status -s )" == "" ]; then
+            exit 0
+          fi
+          git add *
+          git commit -m 'auto generate lit mappings'
+          RANDOM_STR=$( head /dev/urandom | tr -dc a-z0-9 | head -c 4 )
+          git push origin "HEAD:refs/heads/auto-lit-mapping-$RANDOM_STR"
+          echo "mapping_branch=auto-lit-mapping-$RANDOM_STR" >> $GITHUB_OUTPUT
+          exit 1
+
+      - name: create lit mapping PR
+        if: failure() && steps.update_mapping.outputs.mapping_branch
+        uses: Brightspace/third-party-actions@actions/github-script
+        env:
+          BRANCH_NAME: ${{ steps.update_mapping.outputs.mapping_branch }}
+        with:
+          script: |
+            const { BRANCH_NAME } = process.env
+            const { data: newPr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Auto lit mapping #${context.payload.number}`,
+              body: `Auto lit mapping #${context.payload.number}`,
+              head: BRANCH_NAME,
+              base: context.payload.pull_request.head.ref,
+              draft: true
+            });
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `PR #${newPr.number} created to update mapping.d.ts. See https://github.com/BrightspaceUI/core?tab=readme-ov-file#mappingdts-troubleshooting for troubleshooting errors`
+            })
