@@ -13,6 +13,7 @@ const MINIMUM_TARGET_SIZE = 24;
 /**
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
  * @slot - Content to be displayed in the floating container
+ * @typedef {FloatingButtons} FloatingButtonsExported
  */
 class FloatingButtons extends RtlMixin(LitElement) {
 

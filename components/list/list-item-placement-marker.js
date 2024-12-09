@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+/** @typedef {ListItemPlacementMarker} ListItemPlacementMarkerExported */
 class ListItemPlacementMarker extends RtlMixin(LitElement) {
 
 	static get styles() {

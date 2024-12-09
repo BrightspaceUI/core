@@ -3,6 +3,7 @@ import { LitElement } from 'lit';
 /**
  * A component to customize the empty state parameters for a particular filter-dimension-set.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
+ * @typedef {FilterDimensionSetEmptyState} FilterDimensionSetEmptyStateExported
  */
 class FilterDimensionSetEmptyState extends LitElement {
 

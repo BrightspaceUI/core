@@ -8,6 +8,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
  * These interactive controls are submitted using a native HTML form submission.
  * @slot - The native and custom form elements that participate in validation and submission
  * @fires submit - Dispatched when the form is submitted. Cancelling this event will prevent form submission.
+ * @typedef {FormNative} FormNativeExported
  */
 class FormNative extends FormMixin(LitElement) {
 

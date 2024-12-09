@@ -14,6 +14,7 @@ const keyCodes = {
  * An input (radio or checkbox) for use in selection components such as lists and tables.
  * @fires d2l-selection-change - Dispatched when the selected state changes
  * @fires d2l-selection-input-subscribe - Internal event
+ * @typedef {Input} InputExported
  */
 class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 

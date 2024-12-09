@@ -15,6 +15,7 @@ const illustrationAspectRatio = 500 / 330;
  * The `d2l-empty-state-illustrated` component is an empty state component that displays a title and description with an illustration. An empty state action component can be placed inside of the default slot to add an optional action.
  * @slot - Slot for empty state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
+ * @typedef {EmptyStateIllustrated} EmptyStateIllustratedExported
  */
 class EmptyStateIllustrated extends PropertyRequiredMixin(LitElement) {
 
