@@ -25,6 +25,10 @@ async function filterAsync(arr, callback) {
 	return results.filter(i => i !== fail);
 }
 
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const OverflowGroupMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -85,8 +89,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);

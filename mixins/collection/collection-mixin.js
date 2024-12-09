@@ -1,3 +1,7 @@
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const CollectionMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -10,8 +14,8 @@ export const CollectionMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.itemCount = null;
 	}
 

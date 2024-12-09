@@ -1,6 +1,10 @@
 import { cssEscape } from '../../helpers/dom.js';
 import { SelectionInfo } from './selection-mixin.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionObserverMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -20,8 +24,8 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selectionInfo = new SelectionInfo();
 		this._provider = null;
 	}

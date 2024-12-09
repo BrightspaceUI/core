@@ -1,5 +1,9 @@
 import { MenuItemMixin } from './menu-item-mixin.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin(superclass) {
 
 	static get properties() {
@@ -17,8 +21,8 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selected = false;
 	}
 

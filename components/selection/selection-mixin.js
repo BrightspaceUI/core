@@ -44,6 +44,10 @@ export class SelectionInfo {
 
 }
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionMixin = superclass => class extends RtlMixin(CollectionMixin(superclass)) {
 
 	static get properties() {
@@ -60,8 +64,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selectionNoInputArrowKeyBehaviour = false;
 		this.selectionSingle = false;
 		this._selectAllPages = false;

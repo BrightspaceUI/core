@@ -41,6 +41,10 @@ export const visibleOnAncestorStyles = css`
 
 `;
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -57,8 +61,8 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		this.animationType = 'opacity-transform';
 		this.visibleOnAncestor = false;

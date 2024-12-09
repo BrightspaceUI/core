@@ -1,5 +1,9 @@
 import { EventSubscriberController, IdSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const PageableSubscriberMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -13,8 +17,8 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		this._pageableInfo = null;
 		this._pageableEventSubscriber = new EventSubscriberController(this, 'pageable');

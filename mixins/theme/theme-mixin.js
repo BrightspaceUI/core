@@ -4,6 +4,9 @@
  * "theme" attribute could resolve automatically based on the user's
  * OS preference. For now, it's only used in menus/dropdowns by
  * the media player.
+ *
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
  */
 export const ThemeMixin = superclass => class extends superclass {
 
