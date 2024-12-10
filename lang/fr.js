@@ -117,7 +117,7 @@ export default {
 	"components.selection-controls.label": "Actions à sélectionner",
 	"components.switch.visible": "Visible",
 	"components.switch.visibleWithPeriod": "Visible.",
-	"components.switch.hidden": "Masqué(e)",
+	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-col-sort-button.addSortOrder": "Sélectionner pour ajouter un ordre de tri",
 	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l'ordre de tri",
