@@ -43,7 +43,7 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {संख्या {min} से ज़्यादा होनी चाहिए.} other {संख्या {min} से ज़्यादा या उसके बराबर होनी चाहिए.}}",
 	"components.form-element.input.text.tooShort": "{label} कम से कम {minlength} वर्णों का होना चाहिए",
 	"components.form-element.input.url.typeMismatch": "URL मान्य नहीं है",
-	"components.form-element.valueMissing": "{label} आवश्यक है",
+	"components.form-element.valueMissing": "{label} ज़रूरी है",
 	"components.form-error-summary.errorSummary": "{count, plural, one {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं} other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं}}",
 	"components.form-error-summary.text": "त्रुटि विवरण टॉगल करें",
 	"components.input-color.backgroundColor": "पृष्ठभूमि का रंग",
