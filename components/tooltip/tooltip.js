@@ -57,7 +57,6 @@ const interactiveElements = {
 const interactiveRoles = {
 	'button': true,
 	'checkbox': true,
-	'combobox': true,
 	'heading': true,
 	'img': true,
 	'link': true,
@@ -72,7 +71,12 @@ const interactiveRoles = {
 	'switch': true,
 	'tab:': true,
 	'textbox': true,
-	'treeitem': true
+	'treeitem': true,
+	'gridcell': true
+
+	'combobox': true,
+	'grid': true,
+
 };
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
