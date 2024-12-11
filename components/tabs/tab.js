@@ -5,6 +5,17 @@ import { TabMixin } from './tab-mixin.js';
 
 class Tab extends TabMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
+	renderContent() {
+		return html`<slot></slot>`;
+	}
+
+	render() {
+		return html`
+			<div class="tab-handler">
+				${this.renderContent()}
+			</div>
+		`;
+	}
 }
 
 customElements.define('d2l-tab-wip', Tab);
