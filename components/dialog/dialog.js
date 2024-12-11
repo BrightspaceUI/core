@@ -35,7 +35,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			critical: { type: Boolean },
 
 			/**
-			 * Whether to read the contents of the dialog on open. Only use if the content is relatively concise and contains only text since more complex HTML semantics will be ignored.
+			 * Causes screen readers to announce the content of the dialog on open. Only use if the content is concise and contains only text since screen readers ignore HTML semantics and some have a ~250 character limit.
 			 */
 			describeContent: { type: Boolean, attribute: 'describe-content' },
 
