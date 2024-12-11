@@ -18,6 +18,7 @@ const MODE = {
 
 /**
  * A component for quickly adding items to a specific locaiton.
+ * @typedef {ButtonAdd} ButtonAddExported
  */
 class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement)))) {
 	static get properties() {
@@ -193,6 +194,7 @@ customElements.define('d2l-button-add', ButtonAdd);
 
 /**
  * @ignore
+ * @typedef {ButtonAddIconText} ButtonAddIconTextExported
  */
 class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	static get properties() {

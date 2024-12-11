@@ -10,6 +10,7 @@ import { labelStyles } from '../typography/styles.js';
 /**
  * A button component that can be used just like the native button element.
  * @slot - Default content placed inside of the button
+ * @typedef {Button} ButtonExported
  */
 class Button extends ButtonMixin(LitElement) {
 

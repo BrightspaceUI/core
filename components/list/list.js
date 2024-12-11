@@ -27,6 +27,7 @@ const ro = new ResizeObserver(entries => {
  * @slot controls - Slot for `d2l-list-controls` to be rendered above the list
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
+ * @typedef {List} ListExported
  */
 class List extends PageableMixin(SelectionMixin(LitElement)) {
 

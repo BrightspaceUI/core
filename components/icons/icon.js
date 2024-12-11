@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { until } from 'lit/directives/until.js';
 
+/** @typedef {Icon} IconExported */
 class Icon extends RtlMixin(LitElement) {
 
 	static get properties() {

@@ -7,6 +7,7 @@ import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mi
  * @fires d2l-hierarchical-view-hide-start - Dispatched when child view will be hidden (before animation begins)
  * @fires d2l-hierarchical-view-hide-complete - Dispatched when child view is hidden (when animation ends)
  * @fires d2l-hierarchical-view-resize - Dispatched when child view is resized
+ * @typedef {HierarchicalView} HierarchicalViewExported
  */
 class HierarchicalView extends HierarchicalViewMixin(LitElement) {
 

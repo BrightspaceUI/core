@@ -5,6 +5,7 @@ import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+/** @typedef {MenuItemReturn} MenuItemReturnExported */
 class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitElement))) {
 
 	static get styles() {

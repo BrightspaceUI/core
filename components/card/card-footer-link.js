@@ -10,6 +10,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * An icon link that can be placed in the `footer` slot.
  * @slot tooltip - slot for the link tooltip
+ * @typedef {CardFooterLink} CardFooterLinkExported
  */
 class CardFooterLink extends FocusMixin(RtlMixin(LitElement)) {
 

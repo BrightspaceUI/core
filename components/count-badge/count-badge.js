@@ -6,6 +6,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+/** @typedef {CountBadge} CountBadgeExported */
 class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	static get styles() {

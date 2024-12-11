@@ -97,7 +97,7 @@ D2L employees can also view the latest main-branch demos at https://live.d2l.dev
 ### Linting
 
 ```shell
-# eslint and stylelint
+# eslint, stylelint, and mapping.d.ts tsc check
 npm run lint
 
 # eslint only
@@ -105,7 +105,21 @@ npm run lint:eslint
 
 # stylelint only
 npm run lint:style
+
+# mapping.d.ts tsc check only
+npm run lint:types
 ```
+
+#### mapping.d.ts troubleshooting
+
+Common reasons for `npm run lint:types` to fail:
+
+1. `Type 'SelectionControls' is missing the following properties from type 'HTMLElement': accessKey, accessKeyLabel, autocapitalize, dir, and 290 more.`
+  a. exported class does not extend HTMLElement or LitElement. Look for typo or missing `extends`
+  b. mixin method does not return the same type passed to it. See https://github.com/BrightspaceUI/core/blob/80789a21f1ad2841f6328135e7b427e77a7a1c63/mixins/localize/localize-mixin.js#L74-L78 for an example
+2. `Namespace '"..."' has no exported member 'BuildInf'.`
+  a. `customElements.define(...)` call has a typo
+  b. *./tools/create-mapping.sh* script isn't correctly picking up the name. Look at the `if [ "x$FILES_WITH_TYPEDEF" != "x" ]` and `if [ "x$FILES_WITH_EXPORT" != "x" ]` blocks in *./tools/create-mapping.sh*
 
 ### Testing
 

@@ -31,6 +31,7 @@ async function filterAsync(arr, callback) {
 	return results.filter(i => i !== fail);
 }
 
+/** @typedef {TagList} TagListExported */
 class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitElement))) {
 
 	static get properties() {

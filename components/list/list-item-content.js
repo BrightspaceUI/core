@@ -7,6 +7,7 @@ import { css, html, LitElement } from 'lit';
  * @slot - Primary text of the list item
  * @slot secondary - Secondary text of the list item
  * @slot supporting-info - Information that supports the list item
+ * @typedef {ListItemContent} ListItemContentExported
  */
 class ListItemContent extends LitElement {
 

@@ -14,6 +14,7 @@ let scrollOverflow = null;
 
 /**
  * A component for displaying a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying 'aria-hidden="true"'.
+ * @typedef {Backdrop} BackdropExported
  */
 class Backdrop extends LitElement {
 

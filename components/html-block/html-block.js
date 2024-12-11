@@ -141,6 +141,7 @@ const getRenderers = async() => {
 
 /**
  * A component for displaying user-authored HTML.
+ * @typedef {HtmlBlock} HtmlBlockExported
  */
 class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 

@@ -20,6 +20,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
+ * @typedef {InputTextArea} InputTextAreaExported
  */
 class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))))) {
 

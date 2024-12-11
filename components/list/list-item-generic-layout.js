@@ -29,6 +29,7 @@ const keyCodes = {
  * @slot content-action - Action associated with the content, such as a navigation link
  * @slot actions - Other actions for the list item on the far right, such as a context menu
  * @slot nested - Optional `d2l-list` for creating nested lists
+ * @typedef {ListItemGenericLayout} ListItemGenericLayoutExported
  */
 class ListItemGenericLayout extends RtlMixin(LitElement) {
 

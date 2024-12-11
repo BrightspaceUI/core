@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A half-circle progress indicator.
+ * @typedef {MeterRadial} MeterRadialExported
  */
 class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 	static get styles() {

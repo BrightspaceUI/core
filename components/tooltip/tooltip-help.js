@@ -11,6 +11,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
+ * @typedef {TooltipHelp} TooltipHelpExported
  */
 class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 
