@@ -2,13 +2,14 @@ import '../colors/colors.js';
 import { css, html, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
 	ENTER: 13,
 	SPACE: 32
 };
 
-export const TabMixin = superclass => class extends superclass {
+export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	#selected;
 	#handleClickBound;
 	#handleKeydownBound;
@@ -43,6 +44,7 @@ export const TabMixin = superclass => class extends superclass {
         }
         :host(:first-child) .d2l-tab-text {
         	margin-inline-start: 0;
+			margin-inline-end: 0.6rem;
         }
         .d2l-tab-selected-indicator {
             border-top: 4px solid var(--d2l-color-celestine);
@@ -57,6 +59,7 @@ export const TabMixin = superclass => class extends superclass {
         }
         :host(:first-child) .d2l-tab-selected-indicator {
 			margin-inline-start: 0;
+			margin-inline-end: 0.6rem;
 			width: calc(100% - 0.6rem);
 		}
         :host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
@@ -89,11 +92,6 @@ export const TabMixin = superclass => class extends superclass {
 		this.#handleClickBound = this.#handleClick.bind(this);
 		this.#handleKeydownBound = this.#handleKeydown.bind(this);
 		this.#handleKeyupBound = this.#handleKeyup.bind(this);
-
-		this.#resizeObserver = new ResizeObserver(() => {
-			this.#handleResize();
-		});
-		this.#resizeObserver.observe(this);
 	}
 
 	get selected() {
@@ -124,15 +122,23 @@ export const TabMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		this.#addEventHandlers();
+
+		if (!this.#resizeObserver) {
+			this.#resizeObserver = new ResizeObserver(() => {
+				this.#handleResize();
+			});
+			this.#resizeObserver.observe(this);
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this.#removeEventHandlers();
+
 		if (this.#resizeObserver) {
 			this.#resizeObserver.disconnect();
 			this.#resizeObserver = null;
 		}
-		this.#removeEventHandlers();
 	}
 
 	render() {
@@ -170,9 +176,13 @@ export const TabMixin = superclass => class extends superclass {
 	}
 
 	#addEventHandlers() {
-		this.addEventListener('click', this.#handleClickBound);
-		this.addEventListener('keydown', this.#handleKeydownBound);
-		this.addEventListener('keyup', this.#handleKeyupBound);
+		if (!this._eventListenersAdded) {
+			this.addEventListener('click', this.#handleClickBound);
+			this.addEventListener('keydown', this.#handleKeydownBound);
+			this.addEventListener('keyup', this.#handleKeyupBound);
+
+			this._eventListenersAdded = true;
+		}
 	}
 
 	#handleClick() {
@@ -197,9 +207,13 @@ export const TabMixin = superclass => class extends superclass {
 	}
 
 	#removeEventHandlers() {
-		this.removeEventListener('click', this.#handleClickBound);
-		this.removeEventListener('keydown', this.#handleKeydownBound);
-		this.removeEventListener('keyup', this.#handleKeyupBound);
+		if (!!this._eventListenersAdded) {
+			this.removeEventListener('click', this.#handleClickBound);
+			this.removeEventListener('keydown', this.#handleKeydownBound);
+			this.removeEventListener('keyup', this.#handleKeyupBound);
+
+			this._eventListenersAdded = false;
+		}
 	}
 
 };
