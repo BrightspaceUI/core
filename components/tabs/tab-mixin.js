@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import { css, html, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 const keyCodes = {
 	ENTER: 13,
@@ -10,11 +9,19 @@ const keyCodes = {
 };
 
 export const TabMixin = superclass => class extends superclass {
+	#selected;
+	#handleClickBound;
+	#handleKeydownBound;
+	#handleKeyupBound;
+	#resizeObserver;
 
 	static get properties() {
 		return {
+			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
+			// eslint-disable-next-line lit/no-native-attributes
+			role: { type: String, reflect: true },
 			selected: { type: Boolean, reflect: true },
-			tabIndex: { type: Number },
+			tabIndex: { type: Number, reflect: true },
 		};
 	};
 
@@ -35,7 +42,7 @@ export const TabMixin = superclass => class extends superclass {
             white-space: nowrap;
         }
         :host(:first-child) .d2l-tab-text {
-            margin-left: 0;
+        	margin-inline-start: 0;
         }
         .d2l-tab-selected-indicator {
             border-top: 4px solid var(--d2l-color-celestine);
@@ -49,7 +56,7 @@ export const TabMixin = superclass => class extends superclass {
             width: calc(100% - 1.2rem);
         }
         :host(:first-child) .d2l-tab-selected-indicator {
-			margin-left: 0;
+			margin-inline-start: 0;
 			width: calc(100% - 0.6rem);
 		}
         :host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
@@ -76,50 +83,71 @@ export const TabMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.role = 'tab';
-		this.selected = false;
+		this.#selected = false;
 		this.tabIndex = -1;
 
-		this._handleResize = this._handleResize.bind(this);
-		this._resizeObserver = null;
+		this.#handleClickBound = this.#handleClick.bind(this);
+		this.#handleKeydownBound = this.#handleKeydown.bind(this);
+		this.#handleKeyupBound = this.#handleKeyup.bind(this);
+
+		this.#resizeObserver = new ResizeObserver(() => {
+			this.#handleResize();
+		});
+		this.#resizeObserver.observe(this);
 	}
+
+	get selected() {
+        return this.#selected;
+    }
+
+    set selected(value) {
+        const oldVal = this.#selected;
+        const newVal = Boolean(value);
+        if (oldVal !== newVal) {
+            this.#selected = newVal;
+            this.requestUpdate('selected', oldVal);
+            this.setAttribute('aria-selected', this.ariaSelected);
+            if (newVal) {
+                this.dispatchEvent(new CustomEvent('d2l-tab-selected', { bubbles: true, composed: true }));
+            }
+        }
+	}
+
+    get ariaSelected() {
+        return this.selected;
+    }
+
+    set ariaSelected(_) {
+        // ariaSelected is a derivative of `selected` and should not be set directly
+    }
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('click', this._handleClick);
-		this.addEventListener('keydown', this._handleKeydown);
-		this.addEventListener('keyup', this._handleKeyup);
-
-		this.resizeObserver = new ResizeObserver(() => {
-			this.dispatchEvent(new CustomEvent('d2l-tab-resize', { bubbles: true, composed: true }));
-		});
-		this.resizeObserver.observe(this);
+		this.#addEventHandlers();
 	}
 
 	disconnectedCallback() {
-		if (this.resizeObserver) {
-			this.resizeObserver.disconnect();
-			this.resizeObserver = null;
-		}
-		removeEventListener('click', this._handleClick);
-		removeEventListener('keydown', this._handleKeydown);
-		removeEventListener('keyup', this._handleKeyup);
 		super.disconnectedCallback();
+		if (this.#resizeObserver) {
+			this.#resizeObserver.disconnect();
+			this.#resizeObserver = null;
+		}
+		this.#removeEventHandlers();
 	}
 
 	render() {
+		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
 		const contentClasses = {
 			'd2l-tab-text': true,
+			'd2l-skeletize': true,
+			'd2l-tab-text-skeletize-override': overrideSkeletonText
 		};
 
 		return html`
-			<div
-				class="${classMap(contentClasses)}"
-				aria-selected="${this.selected}"
-				role="tab"
-				tabindex=${this.tabIndex}>
+			<div class="${classMap(contentClasses)}">
 				${this.renderContent}
 			</div>
-			<div class="d2l-tab-selected-indicator"></div>
+			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}
 
@@ -141,21 +169,37 @@ export const TabMixin = superclass => class extends superclass {
 		return html`<div>Default Tab Content</div>`;
 	}
 
-	_handleClick() {
+	#addEventHandlers() {
+		this.addEventListener('click', this.#handleClickBound);
+		this.addEventListener('keydown', this.#handleKeydownBound);
+		this.addEventListener('keyup', this.#handleKeyupBound);
+	}
+
+	#handleClick() {
 		this.selected = true;
 	}
 
-	_handleKeydown(e) {
+	#handleKeydown(e) {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
 	}
 
-	_handleKeyup(e) {
+	#handleKeyup(e) {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
-			this._handleClick();
+			this.#handleClick();
 		}
+	}
+
+	#handleResize() {
+		this.dispatchEvent(new CustomEvent('d2l-tab-resize'));
+	}
+
+	#removeEventHandlers() {
+		this.removeEventListener('click', this.#handleClickBound);
+		this.removeEventListener('keydown', this.#handleKeydownBound);
+		this.removeEventListener('keyup', this.#handleKeyupBound);
 	}
 
 };
