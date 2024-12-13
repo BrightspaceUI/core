@@ -2,7 +2,7 @@ import { addExtensions, litConfig, nodeConfig, setDirectoryConfigs, testingConfi
 
 export default [
 	{
-		ignores: ['.vdiff']
+		ignores: ['build']
 	},
 	...setDirectoryConfigs(
 		addExtensions(litConfig, ['.js', '.html']),
