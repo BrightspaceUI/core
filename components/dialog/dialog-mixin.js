@@ -29,6 +29,11 @@ const abortAction = 'abort';
 const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<typeof import('lit').LitElement, keyof typeof import('lit').LitElement>} LitElementClassType
+ */
+
+/**
  * @template {LitElementClassType} S
  * @param {S} superclass
  */

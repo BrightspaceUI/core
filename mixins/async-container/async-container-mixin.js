@@ -6,6 +6,11 @@ export const asyncStates = {
 };
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<typeof import('lit').ReactiveElement, keyof typeof import('lit').ReactiveElement>} ReactiveElementClassType
+ */
+
+/**
  * @template {ReactiveElementClassType} S
  * @param {S} superclass
  */

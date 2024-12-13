@@ -4,6 +4,10 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ */
+
+/**
  * @template {LitElementConstructor} S
  * @param {S} superclass
  */

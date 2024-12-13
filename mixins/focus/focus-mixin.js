@@ -1,6 +1,10 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ */
+
+/**
  * @template {ReactiveElementConstructor} S
  * @param {S} superclass
  */

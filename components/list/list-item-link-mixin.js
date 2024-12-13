@@ -4,6 +4,11 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<typeof import('lit').LitElement, keyof typeof import('lit').LitElement>} LitElementClassType
+ */
+
+/**
  * @template {LitElementClassType} S
  * @param {S} superclass
  */

@@ -1,7 +1,7 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 /**
- * @template {ReactiveElementConstructor & (new (...args: any[]) => { getLoadingComplete?(): Promise<any> })} S
+ * @template {import('@open-wc/dedupe-mixin').Constructor<{ getLoadingComplete?(): Promise<any> }>} S
  * @param {S} superclass
  */
 export const InternalLoadingCompleteMixin = (superclass) => class extends superclass {

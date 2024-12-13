@@ -40,6 +40,11 @@ function addTabListener() {
 let hasDisplayedKeyboardTooltip = false;
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<typeof import('lit').LitElement, keyof typeof import('lit').LitElement>} LitElementClassType
+ */
+
+/**
  * @property label - The hidden label for the checkbox and expand collapse control
  * @template {LitElementClassType} S
  * @param {S} superclass

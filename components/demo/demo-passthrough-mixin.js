@@ -1,6 +1,11 @@
 import { LitElement } from 'lit';
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<typeof import('lit').LitElement, keyof typeof import('lit').LitElement>} LitElementClassType
+ */
+
+/**
  * Creates a Lit component that mirrors properties of another, and passes its properties through to
  * a specific rendered element.
  * @template {LitElementClassType} S

@@ -1,4 +1,9 @@
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<typeof import('lit').ReactiveElement, keyof typeof import('lit').ReactiveElement>} ReactiveElementClassType
+ */
+
+/**
  * This is a draft mixin that may eventually be extended to support
  * themed components, including "dark mode". At that point, the
  * "theme" attribute could resolve automatically based on the user's

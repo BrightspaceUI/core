@@ -13,6 +13,11 @@ export const inlineHelpStyles = [
 ];
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<typeof import('lit').LitElement, keyof typeof import('lit').LitElement>} LitElementClassType
+ */
+
+/**
  * @template {LitElementClassType} S
  * @param {S} superclass
  */

@@ -1,6 +1,10 @@
 import { LocalizeMixin } from '../mixins/localize/localize-mixin.js';
 
 /**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ */
+
+/**
  * @template {LitElementConstructor} S
  * @param {S} superclass
  */
