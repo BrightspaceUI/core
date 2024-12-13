@@ -50,7 +50,6 @@ export class SelectionInfo {
  * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
  */
 
-
 /**
  * @template {ReactiveElementClassType} S
  * @param {S} superclass

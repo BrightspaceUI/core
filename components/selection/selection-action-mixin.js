@@ -9,7 +9,6 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
  */
 
-
 /**
  * @template {ReactiveElementClassType} S
  * @param {S} superclass
