@@ -2,8 +2,9 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
 /**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
  * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
- * @typedef {ReactiveElementConstructor & Pick<typeof import('lit').ReactiveElement, keyof typeof import('lit').ReactiveElement>} ReactiveElementClassType
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
  */
 
 /**
