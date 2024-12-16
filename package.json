@@ -48,7 +48,7 @@
     "@brightspace-ui/stylelint-config": "^1",
     "@brightspace-ui/testing": "^1",
     "@rollup/plugin-dynamic-import-vars": "^2",
-    "@rollup/plugin-node-resolve": "^15",
+    "@rollup/plugin-node-resolve": "^16",
     "@rollup/plugin-replace": "^6",
     "@web/dev-server": "^0.4",
     "chalk": "^5",
