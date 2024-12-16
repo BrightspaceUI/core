@@ -122,7 +122,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | Property | Type | Description |
 |--|--|--|
 | `expanded` | Boolean | Whether or not the panel is expanded |
-| `expand-collapse-label` | String | Label describing the contents of the header that's used for screen reader users |
+| `expand-collapse-label` | String | Label describing the contents of the header for screen reader users |
 | `heading-style` | Number | The heading style to use |
 | `heading-level` | Number | Semantic heading level (h1-h4) |
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
@@ -395,6 +395,6 @@ By default, the panel is described by screen readers with the `panel-title` attr
 
 ### Keyboard behaviour
 
-On focus, a focus ring (blue border) goes around the clickable area of the component. When collapsed, this area is the entire panel; when expanded, it's only the header. Once focused, using the `Enter` and `Space` keys, allows the user to toggle between the show and hide states.
+On focus, a focus ring (blue border) goes around the clickable area of the component. When collapsed, this area is the entire panel; when expanded, it's only the header. When focused, users can expand or collapse the panel using the `Enter` or `Space` key.
 
 Any focusable actions placed in the `actions` slot will receive focus after the panel recevies focus. The open/close icon beside the `actions` slot looks like a button, but is an indicator of component state. It will not receive focus like a typical button.
