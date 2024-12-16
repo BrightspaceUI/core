@@ -129,7 +129,7 @@ describe('d2l-collapsible-panel', () => {
 			const elem = await fixture(html`
 				<d2l-collapsible-panel panel-title="Panel Title" skeleton>
 					<div slot="header">Header</div>
-					<d2l-button-icon slot="actions" icon="tier1:download"></d2l-button-icon>
+					<d2l-button-icon slot="actions" icon="tier1:download" text="Download"></d2l-button-icon>
 					Panel Content
 				</d2l-collapsible-panel>
 			`);
